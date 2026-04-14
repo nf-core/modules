@@ -5,29 +5,56 @@ process CELLRANGER_AGGR {
     container "nf-core/cellranger:10.0.0"
 
     input:
-    tuple val(meta), path(aggr_csv)
+    tuple val(meta), val(sample_ids)
+    path(molecule_h5_files, stageAs: "sample_???/*")
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
-    path "versions.yml"             , emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_AGGR module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    template "cellranger_aggr.py"
+    args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def sample_ids_str = sample_ids.join(' ')
+    """
+    echo "sample_id,molecule_h5" > aggregation.csv
+    sids=(${sample_ids_str})
+    dirs=(\$(ls -d sample_* | sort))
+    for i in "\${!sids[@]}"; do
+        h5=\$(find "\${dirs[\$i]}" -name "*molecule_info.h5" | head -1)
+        echo "\${sids[\$i]},\${h5}" >> aggregation.csv
+    done
+
+    cellranger aggr \\
+        --id "${prefix}" \\
+        --csv aggregation.csv \\
+        --localcores ${task.cpus} \\
+        --localmem ${task.memory.toGiga()} \\
+        ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+    END_VERSIONS
+    """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_AGGR module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p "${prefix}/outs/"
     echo "$prefix" > ${prefix}/outs/fake_file.txt
+    touch aggregation.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

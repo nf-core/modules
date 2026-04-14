@@ -2,39 +2,41 @@ name: "cellranger_aggr"
 description: Aggregate outputs from multiple Cell Ranger count or multi runs
   into a single feature-barcode matrix and secondary analysis.
 keywords:
-  - single-cell
-  - aggregation
-  - 10x genomics
-  - scRNA-seq
+  - aggregate
   - cellranger
+  - multi
 tools:
-  - "cellranger":
-      description: "Cell Ranger is a set of analysis pipelines that process Chromium
-        single-cell data to align reads, generate feature-barcode matrices, perform
-        clustering and other secondary analysis."
-      homepage: "https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger"
-      documentation: "https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/aggregate"
-      tool_dev_url: "https://github.com/10XGenomics/cellranger"
+  - cellranger:
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process
+        Chromium single-cell data to align reads, generate feature-barcode matrices, perform
+        clustering and other secondary analysis and more.
+      homepage: https://www.10xgenomics.com/support/software/cell-ranger/latest
+      documentation: https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-aggr
       licence:
         - 10x Genomics EULA
-      identifier: ""
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing aggregation-level metadata, e.g. [ id:'aggregation' ]
-    - aggr_csv:
+    - sample_ids:
+        type: val
+        description: |
+          List of sample ID strings to aggregate, e.g. ['sample_A', 'sample_B'].
+          These are used as labels in the aggregation CSV and must match the
+          directory names under which the molecule_info.h5 files are staged.
+  - molecule_h5_files:
         type: file
         description: |
-          CSV file listing all samples to aggregate. Must contain columns
-          'sample_id' and 'molecule_h5' pointing to molecule_info.h5 files
-          from cellranger count or cellranger multi outputs.
-          Library depth normalization defaults to 'mapped' (normalize by the
-          number of mapped reads). To disable normalization, pass
-          '--normalize none' via ext.args.
-        pattern: "*.csv"
-        ontologies:
-          - edam: http://edamontology.org/format_3752
+          Collected molecule_info.h5 (from cellranger count) or
+          sample_molecule_info.h5 (from cellranger multi) files for all samples.
+          Only the h5 files are needed, not the full outs directories.
+          Files are staged into numbered directories (sample_001/, sample_002/, ...)
+          via stageAs "sample_???/*". The order of files must match the order
+          of sample_ids so the correct label is assigned in the aggregation CSV.
+          Library depth normalization defaults to 'mapped'. To disable it,
+          pass '--normalize none' via ext.args.
+        pattern: "*molecule_info.h5"
 output:
   outs:
     - - meta:

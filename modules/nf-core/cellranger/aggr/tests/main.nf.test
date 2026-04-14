@@ -52,16 +52,15 @@ nextflow_process {
             process {
                 """
                 input[0] = CELLRANGER_COUNT.out.outs
-                    .map { meta, files ->
-                        def mol_info = files.find { it.name == 'molecule_info.h5' }
-                        "\${meta.id},\${mol_info}"
+                    .map { meta, files -> meta.id }
+                    .toList()
+                    .map { ids -> [ [id: 'aggregation'], ids ] }
+                input[1] = CELLRANGER_COUNT.out.outs
+                    .toList()
+                    .map { list ->
+                        list.collect { it[1] }.flatten()
+                            .findAll { it.name.endsWith('molecule_info.h5') }
                     }
-                    .collectFile(
-                        name:    'aggregation.csv',
-                        newLine: true,
-                        seed:    'sample_id,molecule_h5'
-                    )
-                    .map { csv -> [ [id: 'aggregation'], csv ] }
                 """
             }
         }
@@ -77,16 +76,21 @@ nextflow_process {
     }
 
     test("A549 chr1 - aggr from count output - stub") {
-
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id: 'aggregation' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/reference/genes_chr1_32292083_32686211.gtf', checkIfExists: true)
-                ]
+                input[0] = CELLRANGER_COUNT.out.outs
+                    .map { meta, files -> meta.id }
+                    .toList()
+                    .map { ids -> [ [id: 'aggregation'], ids ] }
+                input[1] = CELLRANGER_COUNT.out.outs
+                    .toList()
+                    .map { list ->
+                        list.collect { it[1] }.flatten()
+                            .findAll { it.name.endsWith('molecule_info.h5') }
+                    }
                 """
             }
         }
