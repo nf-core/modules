@@ -16,7 +16,7 @@ process BISMARK_COVERAGE2CYTOSINE {
     tuple val(meta), path("*.cov.gz")                      , emit: coverage,  optional: true
     tuple val(meta), path("*report.txt.gz")                , emit: report
     tuple val(meta), path("*cytosine_context_summary.txt") , emit: summary
-    tuple val("${task.process}"), val('bismark'), eval("bismark --version 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), emit: versions_bismark, topic: versions
+    tuple val("${task.process}"), val('bismark'), eval("bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), emit: versions_bismark, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,8 +36,8 @@ process BISMARK_COVERAGE2CYTOSINE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.cov.gz
-    echo | gzip > ${prefix}.report.txt.gz
+    echo "" | gzip > ${prefix}.cov.gz
+    echo "" | gzip > ${prefix}.report.txt.gz
     touch ${prefix}.cytosine_context_summary.txt
     """
 }
