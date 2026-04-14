@@ -30,7 +30,6 @@ process BWAMETH_ALIGN {
 
     bwameth.py \\
         ${args} \\
-        ${read_group} \\
         -t ${task.cpus} \\
         --reference ${index}/${fasta} \\
         ${reads} \\
