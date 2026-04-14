@@ -49,7 +49,7 @@ process REGENIE_STEP1 {
     def prefix = plink_genotype_file.baseName
     """
     touch ${prefix}_pred.list
-    echo | gzip > ${prefix}_1.loco.gz
+    echo "" | gzip > ${prefix}_1.loco.gz
     touch ${prefix}.log
     """
 }
