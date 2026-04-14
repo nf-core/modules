@@ -27,12 +27,17 @@ input:
     - fasta:
         type: file
         description: FASTA file
-        pattern: "*.{fa,fasta}"
+        pattern: "*.{fa,fasta}[.gz]"
         ontologies: []
     - fai:
         type: file
         description: FASTA index file
         pattern: "*.{fai}"
+        ontologies: []
+    - gzi:
+        type: file
+        description: Index file fot bgzip-ed FASTA
+        pattern: "*.{gzi}"
         ontologies: []
   - get_sizes:
       type: boolean

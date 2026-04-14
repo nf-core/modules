@@ -8,7 +8,7 @@ process SAMTOOLS_FAIDX {
         : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
 
     input:
-    tuple val(meta), path(fasta), path(fai)
+    tuple val(meta), path(fasta), path(fai), path(gzi)
     val get_sizes
 
     output:
