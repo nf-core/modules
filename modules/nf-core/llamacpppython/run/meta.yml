@@ -43,26 +43,17 @@ output:
           description: File with the output of LLM inference request
           ontologies: []
   versions_llama_cpp_python:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - llama-cpp-python:
-          type: string
-          description: The name of the tool
-      - python3 -c 'import llama_cpp; print(llama_cpp.__version__)':
-          type: eval
-          description: The expression to obtain the version of the tool
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - llama-cpp-python:
-          type: string
-          description: The name of the tool
-      - python3 -c 'import llama_cpp; print(llama_cpp.__version__)':
-          type: eval
-          description: The expression to obtain the version of the tool
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@toniher"
   - "@lucacozzuto"
