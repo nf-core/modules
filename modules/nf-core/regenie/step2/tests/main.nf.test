@@ -28,11 +28,13 @@ nextflow_process {
                 ]
 
                 input[2] = [
-                    [ id:'covariates' ],
+                    [ id:'plink_simulated' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[3] = []
+                input[3] = 'QuantitativeTrait'
+                input[4] = false
+                input[5] = []
                 """
             }
         }
@@ -54,11 +56,13 @@ nextflow_process {
                 ]
 
                 input[2] = [
-                    [ id:'covariates' ],
+                    [ id:'plink_simulated' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[3] = []
+                input[3] = 'BinaryTrait'
+                input[4] = true
+                input[5] = []
                 """
             }
         }
@@ -79,19 +83,21 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:false ],
+                    [ id:'plink_simulated_quantitative_phenoname' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
                 ]
 
-                input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions
+                input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco)
 
                 input[3] = [
-                    [ id:'covariates' ],
+                    [ id:'plink_simulated' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[4] = []
-                input[5] = []
+                input[4] = 'QuantitativeTrait'
+                input[5] = false
+                input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -103,9 +109,8 @@ nextflow_process {
                 { assert process.out.log.size() == 1 },
                 { assert process.out.results.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.results.get(0).get(0).size() == 1 },
-                { assert process.out.results.get(0).get(1).id == 'plink_simulated_quantitative_phenoname' },
-                { assert process.out.results.get(0).get(1).pheno_col == 'QuantitativeTrait' },
-                { assert path(process.out.log.get(0).get(2)).exists() },
+                { assert path(process.out.results.get(0).get(1)).fileName.toString() == 'plink_simulated_QuantitativeTrait.regenie.gz' },
+                { assert path(process.out.log.get(0).get(1)).exists() },
                 {
                     assert snapshot(
                         process.out.results,
@@ -131,19 +136,21 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_binary_phenoname', pheno_col:'BinaryTrait', is_binary:true ],
+                    [ id:'plink_simulated_binary_phenoname' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true)
                 ]
 
-                input[2] = REGENIE_STEP1_BINARY.out.predictions
+                input[2] = REGENIE_STEP1_BINARY.out.predictions.join(REGENIE_STEP1_BINARY.out.loco)
 
                 input[3] = [
-                    [ id:'covariates' ],
+                    [ id:'plink_simulated' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[4] = []
-                input[5] = []
+                input[4] = 'BinaryTrait'
+                input[5] = true
+                input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -155,9 +162,8 @@ nextflow_process {
                 { assert process.out.log.size() == 1 },
                 { assert process.out.results.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.results.get(0).get(0).size() == 1 },
-                { assert process.out.results.get(0).get(1).id == 'plink_simulated_binary_phenoname' },
-                { assert process.out.results.get(0).get(1).pheno_col == 'BinaryTrait' },
-                { assert path(process.out.log.get(0).get(2)).exists() },
+                { assert path(process.out.results.get(0).get(1)).fileName.toString() == 'plink_simulated_BinaryTrait.regenie.gz' },
+                { assert path(process.out.log.get(0).get(1)).exists() },
                 {
                     assert snapshot(
                         process.out.results,
@@ -183,16 +189,18 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:false ],
+                    [ id:'plink_simulated_quantitative_phenoname' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
                 ]
 
-                input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions
+                input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco)
 
                 input[3] = [[:], []]
 
-                input[4] = []
-                input[5] = []
+                input[4] = 'QuantitativeTrait'
+                input[5] = false
+                input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -204,9 +212,8 @@ nextflow_process {
                 { assert process.out.log.size() == 1 },
                 { assert process.out.results.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.results.get(0).get(0).size() == 1 },
-                { assert process.out.results.get(0).get(1).id == 'plink_simulated_quantitative_phenoname' },
-                { assert process.out.results.get(0).get(1).pheno_col == 'QuantitativeTrait' },
-                { assert path(process.out.log.get(0).get(2)).exists() },
+                { assert path(process.out.results.get(0).get(1)).fileName.toString() == 'plink_simulated_QuantitativeTrait.regenie.gz' },
+                { assert path(process.out.log.get(0).get(1)).exists() },
                 {
                     assert snapshot(
                         process.out.results,
@@ -234,19 +241,21 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:false ],
+                    [ id:'plink_simulated_quantitative_phenoname' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
                 ]
 
-                input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions
+                input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco)
 
                 input[3] = [
-                    [ id:'covariates' ],
+                    [ id:'plink_simulated' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[4] = []
-                input[5] = []
+                input[4] = 'QuantitativeTrait'
+                input[5] = false
+                input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -254,7 +263,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                {
+                    def stableResults = process.out.results.collect { result ->
+                        [result[0], result[1]]
+                    }
+                    def stableLogs = process.out.log.collect { logFile ->
+                        [logFile[0], logFile[1]]
+                    }
+                    assert snapshot(
+                        stableResults,
+                        stableLogs,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
 
@@ -276,19 +297,21 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:false ],
+                    [ id:'plink_simulated_quantitative_phenoname' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
                 ]
 
-                input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions
+                input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco)
 
                 input[3] = [
-                    [ id:'covariates' ],
+                    [ id:'plink_simulated' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[4] = []
-                input[5] = []
+                input[4] = 'QuantitativeTrait'
+                input[5] = false
+                input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -297,9 +320,21 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.results.get(0).get(0).id == 'cohort_alias' },
-                { assert path(process.out.results.get(0).get(2)).fileName.toString() == 'plink_simulated_QuantitativeTrait.regenie.gz' },
-                { assert path(process.out.log.get(0).get(2)).fileName.toString() == 'plink_simulated.log' },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.results.get(0).get(1)).fileName.toString() == 'plink_simulated_QuantitativeTrait.regenie.gz' },
+                { assert path(process.out.log.get(0).get(1)).fileName.toString() == 'plink_simulated.log' },
+                {
+                    def stableResults = process.out.results.collect { result ->
+                        [result[0], result[1]]
+                    }
+                    def stableLogs = process.out.log.collect { logFile ->
+                        [logFile[0], logFile[1]]
+                    }
+                    assert snapshot(
+                        stableResults,
+                        stableLogs,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
 
