@@ -41,12 +41,17 @@ input:
     - fasta:
         type: file
         description: Reference file the CRAM was created with (optional)
-        pattern: "*.{fasta,fa,fna}"
+        pattern: "*.{fasta,fa,fna}[.gz]"
         ontologies: []
     - fai:
         type: file
         description: FASTA ref index file
-        pattern: "*.{fasta,fa,fna}.fai"
+        pattern: "*.{fasta,fa,fna}[.gz].fai"
+        ontologies: []
+    - gzi:
+        type: file
+        description: Index file fot bgzip-ed FASTA
+        pattern: "*.{fasta,fa,fna}.gz.gzi"
         ontologies: []
 output:
   stats:
