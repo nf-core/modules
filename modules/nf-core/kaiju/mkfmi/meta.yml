@@ -34,6 +34,12 @@ input:
       pattern: "nodes.dmp"
       ontologies:
         - edam: http://edamontology.org/format_3751 # DSV
+  - names_dmp:
+      type: file
+      description: NCBI names.dmp file (mandatory)
+      pattern: "names.dmp"
+      ontologies:
+        - edam: http://edamontology.org/format_3751 # DSV
   - keep_intermediate:
       type: boolean
       description: "Keep intermediate files"
