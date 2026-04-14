@@ -36,8 +36,8 @@ process BISMARK_COVERAGE2CYTOSINE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.cov.gz
-    echo | gzip > ${prefix}.report.txt.gz
+    echo "" | gzip > ${prefix}.cov.gz
+    echo "" | gzip > ${prefix}.report.txt.gz
     touch ${prefix}.cytosine_context_summary.txt
     """
 }
