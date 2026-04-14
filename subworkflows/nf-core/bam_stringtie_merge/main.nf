@@ -16,7 +16,7 @@ workflow BAM_STRINGTIE_MERGE {
 
     STRINGTIE_STRINGTIE.out.transcript_gtf
         .map { _meta, gtf -> gtf }
-        .collect()
+        .toSortedList { a, b -> a.name <=> b.name }
         .map { gtfs -> [ [id: 'stringtie_merge'], gtfs ] }
         .set { collected_gtfs }
 
