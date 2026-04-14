@@ -8,21 +8,23 @@ workflow BAM_STRINGTIE_MERGE {
     ch_chrgtf // channel: [ meta, gtf ]
 
     main:
-    ch_stringtie_gtfs = channel.empty()
 
     STRINGTIE_STRINGTIE(
         bam_sorted,
         ch_chrgtf.map { _meta, gtf -> [gtf] },
     )
 
-    STRINGTIE_STRINGTIE.out.transcript_gtf.set { stringtie_gtfs }
+    STRINGTIE_STRINGTIE.out.transcript_gtf
+        .map { _meta, gtf -> gtf }
+        .collect()
+        .map { gtfs -> [ [id: 'stringtie_merge'], gtfs ] }
+        .set { collected_gtfs }
 
     STRINGTIE_MERGE(
-        stringtie_gtfs,
+        collected_gtfs,
         ch_chrgtf
     )
-    ch_stringtie_gtfs = STRINGTIE_MERGE.out.merged_gtf
 
     emit:
-    stringtie_gtf = ch_stringtie_gtfs // channel: [ meta, gtf ]
+    stringtie_gtf = STRINGTIE_MERGE.out.merged_gtf // channel: [ meta, gtf ]
 }
