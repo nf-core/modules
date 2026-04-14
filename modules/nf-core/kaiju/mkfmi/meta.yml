@@ -26,7 +26,14 @@ input:
         type: file
         description: Uncompressed Protein FASTA file (mandatory)
         pattern: "*.{fa,faa,fasta}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - nodes_dmp:
+      type: file
+      description: NCBI nodes.dmp file (mandatory)
+      pattern: "nodes.dmp"
+      ontologies:
+        - edam: http://edamontology.org/format_3751 # DSV
   - keep_intermediate:
       type: boolean
       description: "Keep intermediate files"
@@ -38,10 +45,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - "*.fmi":
+      - "*.{fmi,dmp}":
           type: file
-          description: Kaiju FM-index file
-          pattern: "*.{fmi}"
+          description: Kaiju FM-index file and nodes.dmp file required for Kaiju classification
+          pattern: "*.{fmi,dmp}"
           ontologies: []
   bwt:
     - - meta:
