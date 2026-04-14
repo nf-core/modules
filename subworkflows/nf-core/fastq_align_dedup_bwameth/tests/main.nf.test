@@ -63,9 +63,8 @@ nextflow_workflow {
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }
+                ).match() }
             )
         }
     }
@@ -102,9 +101,8 @@ nextflow_workflow {
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }
+                ).match() }
             )
         }
     }
@@ -141,9 +139,8 @@ nextflow_workflow {
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }
+                ).match() }
             )
         }
     }
