@@ -10,8 +10,6 @@ nextflow_process {
     tag "regenie/step1"
 
     test("homo_sapiens popgen - quantitative plink1 with covariates") {
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -23,7 +21,7 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:false ],
+                    [ id:'plink_simulated_quantitative_phenoname' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
                 ]
 
@@ -32,7 +30,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[3] = []
+                input[3] = 'QuantitativeTrait'
+                input[4] = false
+                input[5] = []
                 """
             }
         }
@@ -43,15 +43,18 @@ nextflow_process {
                 { assert process.out.predictions.size() == 1 },
                 { assert process.out.log.size() == 1 },
                 { assert process.out.predictions.get(0).get(0).id == 'plink_simulated_quantitative_phenoname' },
-                { assert process.out.predictions.get(0).get(0).pheno_col == 'QuantitativeTrait' },
+                { assert process.out.log.get(0).get(0).id == 'plink_simulated_quantitative_phenoname' },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
                     def predList = path(process.out.predictions.get(0).get(1))
-                    def predListFields = predList.text.trim().split(/\s+/, 2)
+                    def locoFile = path(process.out.predictions.get(0).get(2))
+                    def predListLines = predList.text.readLines().findAll { it }
                     assert predList.exists()
+                    assert predListLines.size() == 1
+                    def predListFields = predListLines[0].split(/\s+/)
                     assert predListFields.size() == 2
                     assert predListFields[0] == 'QuantitativeTrait'
-                    assert predListFields[1].endsWith('/plink_simulated_1.loco.gz')
+                    assert predListFields[1] == locoFile.toString()
                 },
                 {
                     def stablePredictions = process.out.predictions.collect { prediction ->
@@ -68,8 +71,6 @@ nextflow_process {
     }
 
     test("homo_sapiens popgen - binary plink1 with covariates") {
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -81,7 +82,7 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_binary_phenoname', pheno_col:'BinaryTrait', is_binary:true ],
+                    [ id:'plink_simulated_binary_phenoname' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true)
                 ]
 
@@ -90,7 +91,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[3] = []
+                input[3] = 'BinaryTrait'
+                input[4] = true
+                input[5] = []
                 """
             }
         }
@@ -101,15 +104,18 @@ nextflow_process {
                 { assert process.out.predictions.size() == 1 },
                 { assert process.out.log.size() == 1 },
                 { assert process.out.predictions.get(0).get(0).id == 'plink_simulated_binary_phenoname' },
-                { assert process.out.predictions.get(0).get(0).pheno_col == 'BinaryTrait' },
+                { assert process.out.log.get(0).get(0).id == 'plink_simulated_binary_phenoname' },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
                     def predList = path(process.out.predictions.get(0).get(1))
-                    def predListFields = predList.text.trim().split(/\s+/, 2)
+                    def locoFile = path(process.out.predictions.get(0).get(2))
+                    def predListLines = predList.text.readLines().findAll { it }
                     assert predList.exists()
+                    assert predListLines.size() == 1
+                    def predListFields = predListLines[0].split(/\s+/)
                     assert predListFields.size() == 2
                     assert predListFields[0] == 'BinaryTrait'
-                    assert predListFields[1].endsWith('/plink_simulated_1.loco.gz')
+                    assert predListFields[1] == locoFile.toString()
                 },
                 {
                     def stablePredictions = process.out.predictions.collect { prediction ->
@@ -126,8 +132,6 @@ nextflow_process {
     }
 
     test("homo_sapiens popgen - quantitative plink1 without covariates") {
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -139,13 +143,14 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:false ],
+                    [ id:'plink_simulated_quantitative_phenoname' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
                 ]
 
                 input[2] = [[:], []]
-
-                input[3] = []
+                input[3] = 'QuantitativeTrait'
+                input[4] = false
+                input[5] = []
                 """
             }
         }
@@ -156,15 +161,18 @@ nextflow_process {
                 { assert process.out.predictions.size() == 1 },
                 { assert process.out.log.size() == 1 },
                 { assert process.out.predictions.get(0).get(0).id == 'plink_simulated_quantitative_phenoname' },
-                { assert process.out.predictions.get(0).get(0).pheno_col == 'QuantitativeTrait' },
+                { assert process.out.log.get(0).get(0).id == 'plink_simulated_quantitative_phenoname' },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
                     def predList = path(process.out.predictions.get(0).get(1))
-                    def predListFields = predList.text.trim().split(/\s+/, 2)
+                    def locoFile = path(process.out.predictions.get(0).get(2))
+                    def predListLines = predList.text.readLines().findAll { it }
                     assert predList.exists()
+                    assert predListLines.size() == 1
+                    def predListFields = predListLines[0].split(/\s+/)
                     assert predListFields.size() == 2
                     assert predListFields[0] == 'QuantitativeTrait'
-                    assert predListFields[1].endsWith('/plink_simulated_1.loco.gz')
+                    assert predListFields[1] == locoFile.toString()
                 },
                 {
                     def stablePredictions = process.out.predictions.collect { prediction ->
@@ -180,10 +188,68 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens popgen - quantitative plink2 with covariates and custom bsize") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'plink_simulated_quantitative_phenoname' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+
+                input[2] = [
+                    [ id:'covariates' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+
+                input[3] = 'QuantitativeTrait'
+                input[4] = false
+                input[5] = 256
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.predictions.size() == 1 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated_quantitative_phenoname' },
+                { assert process.out.log.get(0).get(0).id == 'plink_simulated_quantitative_phenoname' },
+                { assert path(process.out.log.get(0).get(1)).exists() },
+                {
+                    def predList = path(process.out.predictions.get(0).get(1))
+                    def locoFile = path(process.out.predictions.get(0).get(2))
+                    def predListLines = predList.text.readLines().findAll { it }
+                    assert predList.exists()
+                    assert predListLines.size() == 1
+                    def predListFields = predListLines[0].split(/\s+/)
+                    assert predListFields.size() == 2
+                    assert predListFields[0] == 'QuantitativeTrait'
+                    assert predListFields[1] == locoFile.toString()
+                },
+                { assert path(process.out.predictions.get(0).get(2)).exists() },
+                {
+                    def versionInfo = process.out.versions_regenie.get(0)
+                    assert versionInfo[0] == 'REGENIE_STEP1'
+                    assert versionInfo[1] == 'regenie'
+                    assert versionInfo[2] == '4.1.2'
+                }
+            )
+        }
+
+    }
+
     test("homo_sapiens popgen - plink2 - stub") {
 
         options "-stub"
-        config "./nextflow.config"
 
         when {
             process {
@@ -196,7 +262,7 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:false ],
+                    [ id:'plink_simulated_quantitative_phenoname' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
                 ]
 
@@ -205,7 +271,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[3] = []
+                input[3] = 'QuantitativeTrait'
+                input[4] = false
+                input[5] = 256
                 """
             }
         }
@@ -213,7 +281,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                {
+                    def stablePredictions = process.out.predictions.collect { prediction ->
+                        [prediction[0], path(prediction[1]).getFileName().toString(), path(prediction[2]).getFileName().toString()]
+                    }
+                    def stableLogs = process.out.log.collect { logTuple ->
+                        [logTuple[0], path(logTuple[1]).getFileName().toString()]
+                    }
+                    assert snapshot(
+                        stablePredictions,
+                        stableLogs,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
 
