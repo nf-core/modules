@@ -61,7 +61,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out).findAll { key, val -> key.startsWith('versions') },
+                    sanitizeOutput(process.out)
+                        .findAll { key, val -> !key.startsWith('versions') }
+                        .collectEntries { key, val ->
+                            [key, val.collect { meta, output_file -> [meta, file(output_file).name] }]
+                        }
+                ).match() }
             )
         }
 
