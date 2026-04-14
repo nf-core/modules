@@ -4,15 +4,15 @@ process CIVICPY_ANNOTATE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/civicpy:5.2.0--pyhdfd78af_0'
-        : 'docker.io/griffithlab/civicpy:v5.2.0' }"
+        ? 'https://depot.galaxyproject.org/singularity/civicpy:5.3.0--pyhdfd78af_0'
+        : 'biocontainers/civicpy:5.3.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
     val annotation_genome_version
 
     output:
-    tuple val(meta), path("*.vcf"),                                                                                   emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val("${task.process}"), val('civicpy'), eval("civicpy --version | sed 's/.*version //'"), topic: versions, emit: versions_civicpy
 
     when:
@@ -20,8 +20,8 @@ process CIVICPY_ANNOTATE {
 
     script:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.civic"
-
+    prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     export CIVICPY_CACHE_FILE=\$PWD/.civicpy
 
@@ -30,13 +30,15 @@ process CIVICPY_ANNOTATE {
         --output-vcf ${prefix}.vcf \\
         --reference ${annotation_genome_version} \\
         ${args}
+
+    bgzip ${prefix}.vcf
     """
 
     stub:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.civic"
-
+    prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    touch ${prefix}.vcf
+    echo "" | gzip > ${prefix}.vcf.gz
     """
 }

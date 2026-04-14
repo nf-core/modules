@@ -1,8 +1,7 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "civicpy_annotate"
-
-description: A python client and analysis toolkit for the Clinical Interpretations of Variants in Cancer (CIViC) knowledgebase
+description: A python client and analysis toolkit to annotate variants with
+  information from the Clinical Interpretations of Variants in Cancer (CIViC)
+  knowledgebase
 keywords:
   - clinical interpretation
   - variant annotation
@@ -15,32 +14,29 @@ tools:
       documentation: "https://docs.civicpy.org/en/latest/"
       tool_dev_url: "https://github.com/griffithlab/civicpy"
       doi: "10.1200/CCI.19.00127"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:CIViCpy
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-
     - vcf:
         type: file
         description: Sorted and indexed VCF file
         pattern: "*.{vcf}"
         ontologies:
           - edam: "http://edamontology.org/format_3016"
-
     - tbi:
         type: file
         description: Tabix index for the input VCF
         pattern: "*.tbi"
-
+        ontologies: []
   - annotation_genome_version:
       type: string
       description: Reference genome version passed to civicpy (e.g. GRCh38)
-
 output:
   vcf:
     - - meta:
@@ -48,21 +44,34 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.vcf":
+      - "*.vcf.gz":
           type: file
-          description: Annotated VCF file
-          pattern: "*.vcf"
+          description: Annotated bgzipped VCF file
+          pattern: "*.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
-
+            - edam: http://edamontology.org/format_3989
+  versions_civicpy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - civicpy:
+          type: string
+          description: The name of the tool
+      - civicpy --version | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - civicpy:
+          type: string
+          description: The name of the tool
+      - civicpy --version | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@emmcauley"
 maintainers:
