@@ -35,7 +35,6 @@ process BWAMETH_ALIGN {
         --reference ${index}/${fasta} \\
         ${reads} \\
         | samtools view ${args2} -@ ${task.cpus} -bhS -o ${prefix}.bam -
-
     """
 
     stub:
