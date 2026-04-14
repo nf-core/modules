@@ -44,9 +44,9 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing phenotype file information
-          Keep only phenotype provenance in this map
-          e.g. `[ id:'plink_simulated_quantitative_phenoname' ]`
+          Groovy Map containing genotype/sample information associated with the phenotype file input
+          Keep only the shared genotype/sample identifier in this map
+          e.g. `[ id:'plink_simulated' ]`
     - pheno:
         type: file
         description: Phenotype file passed to `--phenoFile`
@@ -56,8 +56,8 @@ input:
   - - meta3:
         type: map
         description: |
-          Groovy Map containing covariate file information
-          e.g. `[ id:'covariates' ]`
+          Groovy Map containing genotype/sample information associated with the covariate input
+          e.g. `[ id:'plink_simulated' ]`
     - covar:
         type: file
         optional: true
@@ -77,11 +77,11 @@ input:
 
 output:
   predictions:
-    - - meta2:
+    - - meta:
           type: map
           description: |
-            Groovy Map containing phenotype file information
-            e.g. `[ id:'plink_simulated_quantitative_phenoname' ]`
+            Groovy Map containing genotype/sample information
+            e.g. `[ id:'plink_simulated' ]`
       - "*_pred.list":
           type: file
           description: REGENIE prediction list file
