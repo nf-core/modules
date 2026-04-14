@@ -65,7 +65,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         }
         else {
             BISMARK_GENOMEPREPARATION(
-                ch_fasta_fai
+                ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] }
             )
             ch_bismark_index = BISMARK_GENOMEPREPARATION.out.index
         }
