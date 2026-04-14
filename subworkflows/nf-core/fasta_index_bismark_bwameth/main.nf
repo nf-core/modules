@@ -28,15 +28,20 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
 
     GUNZIP(
         ch_fasta_branched.gzipped
+            .map{ meta, fasta, _fai -> [meta, fasta] }
     )
 
     SAMTOOLS_FAIDX(
-        ch_fasta_branched.unzipped.mix(GUNZIP.out.gunzip).map { meta, fasta ->
-            [meta, fasta, []]
-        },
+        ch_fasta_branched.unzipped
+            .mix(GUNZIP.out.gunzip)
+            .map { meta, fasta ->
+                [meta, fasta, []]
+            },
         false,
     )
-    ch_fasta_fai = ch_fasta_branched.unzipped.mix(GUNZIP.out.gunzip).join(SAMTOOLS_FAIDX.out.fai)
+    ch_fasta_fai = ch_fasta_branched
+        .unzipped.mix(GUNZIP.out.gunzip)
+        .join(SAMTOOLS_FAIDX.out.fai)
 
     // Aligner: bismark or bismark_hisat
     if (aligner =~ /bismark/) {
@@ -87,13 +92,13 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         else {
             if (use_mem2) {
                 BWAMETH_INDEX(
-                    ch_fasta_fai,
+                    ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
                     true,
                 )
             }
             else {
                 BWAMETH_INDEX(
-                    ch_fasta_fai,
+                    ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
                     false,
                 )
             }

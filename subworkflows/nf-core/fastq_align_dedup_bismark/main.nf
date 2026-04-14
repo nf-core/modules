@@ -29,7 +29,6 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     ch_bismark_report = channel.empty()
     ch_bismark_summary = channel.empty()
     ch_multiqc_files = channel.empty()
-    ch_versions = channel.empty()
 
     /*
      * Align with bismark
@@ -103,7 +102,6 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
         ch_alignment_reports.join(ch_methylation_report).join(ch_methylation_mbias)
     )
     ch_bismark_report = BISMARK_REPORT.out.report
-    ch_versions = ch_versions.mix(BISMARK_REPORT.out.versions)
 
     /*
      * Generate bismark summary report
