@@ -44,7 +44,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         */
         BWAMETH_ALIGN(
             ch_reads,
-            ch_fasta_fai,
+            ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
             ch_bwameth_index,
         )
         ch_alignment = BWAMETH_ALIGN.out.bam
