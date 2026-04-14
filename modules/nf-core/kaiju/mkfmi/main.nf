@@ -10,6 +10,7 @@ process KAIJU_MKFMI {
     input:
     tuple val(meta), path(fasta)
     path nodes_dmp, stageAs: "nodes.dmp"
+    path names_dmp, stageAs: "names.dmp"
     val keep_intermediate
 
     output:

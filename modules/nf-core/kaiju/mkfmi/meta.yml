@@ -47,7 +47,7 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.{fmi,dmp}":
           type: file
-          description: Kaiju FM-index file and nodes.dmp file required for Kaiju classification
+          description: Kaiju FM-index file, and input {names,nodes}.dmp NCBI taxonomy files required for downstream Kaiju commands
           pattern: "*.{fmi,dmp}"
           ontologies: []
   bwt:
