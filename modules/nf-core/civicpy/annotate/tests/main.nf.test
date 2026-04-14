@@ -12,6 +12,9 @@ nextflow_process {
     test("homo_sapiens - vcf - GRCh38") {
 
         when {
+            params {
+                module_args = '--include-status accepted'
+            }
             process {
                 """
                 input[0] = [
@@ -39,6 +42,9 @@ nextflow_process {
     test("homo_sapiens - vcf - GRCh37") {
 
         when {
+            params {
+                module_args = '--include-status accepted'
+            }
             process {
                 """
                 input[0] = [
@@ -68,6 +74,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = '--include-status accepted'
+            }
             process {
                 """
                 input[0] = [
@@ -81,13 +90,7 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    file(process.out.vcf[0][1]).name,
-                    process.out.versions_civicpy
-                ).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
