@@ -18,7 +18,7 @@ process BOWTIE_ALIGN {
     tuple val(meta), path('*fastq.gz') , emit: fastq, optional : true
     tuple val("${task.process}"), val('bowtie'), eval("bowtie --version 2>&1 | sed -n 's/.*bowtie-align-s version //p'"), emit: versions_bowtie, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
-    tuple val("${task.process}"), val('gzip'), eval("gzip --version 2>&1 | sed 's/gzip //'"), emit: versions_gzip, topic: versions
+    tuple val("${task.process}"), val('gzip'), eval("gzip --version 2>&1 | sed '1!d;s/gzip //'"), emit: versions_gzip, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
