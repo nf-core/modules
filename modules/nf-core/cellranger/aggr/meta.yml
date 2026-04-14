@@ -1,4 +1,4 @@
-name: "cellranger_aggr"
+name: cellranger_aggr
 description: Aggregate outputs from multiple Cell Ranger count or multi runs
   into a single feature-barcode matrix and secondary analysis.
 keywords:
@@ -8,35 +8,36 @@ keywords:
 tools:
   - cellranger:
       description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process
-        Chromium single-cell data to align reads, generate feature-barcode matrices, perform
-        clustering and other secondary analysis and more.
+        Chromium single-cell data to align reads, generate feature-barcode matrices,
+        perform clustering and other secondary analysis, and more.
       homepage: https://www.10xgenomics.com/support/software/cell-ranger/latest
       documentation: https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-aggr
       licence:
         - 10x Genomics EULA
+      identifier: ""
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing aggregation-level metadata, e.g. [ id:'aggregation' ]
     - sample_ids:
-        type: val
+        type: list
         description: |
           List of sample ID strings to aggregate, e.g. ['sample_A', 'sample_B'].
-          These are used as labels in the aggregation CSV and must match the
-          directory names under which the molecule_info.h5 files are staged.
+          These are used as labels in the aggregation CSV.
   - molecule_h5_files:
-        type: file
-        description: |
-          Collected molecule_info.h5 (from cellranger count) or
-          sample_molecule_info.h5 (from cellranger multi) files for all samples.
-          Only the h5 files are needed, not the full outs directories.
-          Files are staged into numbered directories (sample_001/, sample_002/, ...)
-          via stageAs "sample_???/*". The order of files must match the order
-          of sample_ids so the correct label is assigned in the aggregation CSV.
-          Library depth normalization defaults to 'mapped'. To disable it,
-          pass '--normalize none' via ext.args.
-        pattern: "*molecule_info.h5"
+      type: file
+      description: |
+        Collected molecule_info.h5 (from cellranger count) or
+        sample_molecule_info.h5 (from cellranger multi) files for all samples.
+        Only the h5 files are needed, not the full outs directories.
+        Files are staged into numbered directories (sample_001/, sample_002/, ...)
+        via stageAs "sample_???/*". The order of files must match the order
+        of sample_ids so the correct label is assigned in the aggregation CSV.
+        Library depth normalization defaults to 'mapped'. To disable it,
+        pass '--normalize none' via ext.args.
+      pattern: "*molecule_info.h5"
+      ontologies: []
 output:
   outs:
     - - meta:
@@ -44,19 +45,32 @@ output:
           description: Groovy Map containing aggregation-level metadata.
       - "**/outs/**":
           type: file
-          description: |
-            Files containing the outputs of Cell Ranger aggr, including aggregated
+          description: Files containing the outputs of Cell Ranger aggr, including aggregated
             feature-barcode matrices (filtered and raw), clustering results, and a
             web summary. See the 10x Genomics documentation for a complete list.
           pattern: "**/outs/**"
           ontologies: []
+  versions_cellranger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellranger:
+          type: string
+          description: The name of the tool
+      - "cellranger --version 2>&1 | sed 's/.*cellranger-//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellranger:
+          type: string
+          description: The name of the tool
+      - "cellranger --version 2>&1 | sed 's/.*cellranger-//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@alenaboos"
 maintainers:

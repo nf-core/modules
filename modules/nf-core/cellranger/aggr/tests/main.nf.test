@@ -68,7 +68,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.versions.size() == 1 },
+                { assert process.out.versions_cellranger.size() == 1 },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'web_summary.html' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'filtered_feature_bc_matrix.h5' }).exists() },
             )

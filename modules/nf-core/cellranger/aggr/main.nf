@@ -10,7 +10,7 @@ process CELLRANGER_AGGR {
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('cellranger'), eval("cellranger --version 2>&1 | sed 's/.*cellranger-//'"), emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,11 +38,6 @@ process CELLRANGER_AGGR {
         --localcores ${task.cpus} \\
         --localmem ${task.memory.toGiga()} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 
     stub:
@@ -55,10 +50,5 @@ process CELLRANGER_AGGR {
     mkdir -p "${prefix}/outs/"
     echo "$prefix" > ${prefix}/outs/fake_file.txt
     touch aggregation.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 }
