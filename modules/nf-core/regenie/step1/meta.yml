@@ -87,6 +87,12 @@ output:
           description: REGENIE prediction list file
           pattern: "*_pred.list"
           ontologies: []
+  loco:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genotype/sample information
+            e.g. `[ id:'plink_simulated' ]`
       - "*.loco.gz":
           type: file
           description: REGENIE LOCO prediction files
