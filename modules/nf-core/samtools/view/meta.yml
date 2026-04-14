@@ -40,7 +40,7 @@ input:
     - fasta:
         type: file
         description: Fasta reference file
-        pattern: "*.{fasta,fa}"
+        pattern: "*.{fasta,fa}[.gz]"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
     - fai:
@@ -49,6 +49,12 @@ input:
         pattern: "*.{fai}"
         ontologies:
           - edam: http://edamontology.org/format_3326 # Index
+    - gzi:
+        type: file
+        description: Index file fot bgzip-ed FASTA
+        pattern: "*.{gzi}"
+        optional: true
+        ontologies: []
   - - meta3:
         type: map
         description: |
