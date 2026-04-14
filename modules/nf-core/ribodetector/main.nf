@@ -4,8 +4,8 @@ process RIBODETECTOR {
 
 	conda "${moduleDir}/environment.yml"
 	container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5bd1ef1ec62443f20b84e08612cb008d6abed9647a56422bf71d3174146d8dd1/data' :
-        'community.wave.seqera.io/library/ribodetector_pytorch-cuda:8e2cdd88bb757059' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e0/e09889654cc95dd0baf4dfe6c4dc7a73277b731bf62b091d4da929cd597d4184/data' :
+        'community.wave.seqera.io/library/ribodetector_pytorch_pytorch-cuda:8beb3ad3c0834683' }"
 
 	input:
 	tuple val(meta), path(fastq)
