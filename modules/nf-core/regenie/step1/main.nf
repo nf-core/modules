@@ -16,7 +16,8 @@ process REGENIE_STEP1 {
     val bsize
 
     output:
-    tuple val(meta), path("*_pred.list"), path("*.loco.gz"), emit: predictions
+    tuple val(meta), path("*_pred.list"), emit: predictions
+    tuple val(meta), path("*.loco.gz"), emit: loco
     tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('regenie'), eval('regenie --version 2>&1 | sed -n "1{s/^v//;s/\\.gz$//;p}"'), topic: versions, emit: versions_regenie
 
