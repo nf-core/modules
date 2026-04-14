@@ -46,7 +46,7 @@ process MYLOASM {
     touch ${prefix}/final_contig_graph.gfa
     touch ${prefix}/alternate_assemblies/assembly_alternate.fa
     touch ${prefix}/alternate_assemblies/duplicated_contigs.fa
-    echo | gzip > ${prefix}/3-mapping/map_to_unitigs.paf.gz
+    echo "" | gzip > ${prefix}/3-mapping/map_to_unitigs.paf.gz
     touch ${prefix}/myloasm_1.log
     """
 }
