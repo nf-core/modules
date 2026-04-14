@@ -9,7 +9,7 @@ process SAMTOOLS_SORT {
 
     input:
     tuple val(meta), path(bam)
-    tuple val(meta2), path(fasta), path(fai)
+    tuple val(meta2), path(fasta), path(fai), path(gzi)
     val index_format
 
     output:
