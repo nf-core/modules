@@ -42,7 +42,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.predictions.size() == 1 },
                 { assert process.out.log.size() == 1 },
-                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated_quantitative_phenoname' },
+                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
@@ -103,7 +103,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.predictions.size() == 1 },
                 { assert process.out.log.size() == 1 },
-                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated_binary_phenoname' },
+                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
@@ -160,7 +160,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.predictions.size() == 1 },
                 { assert process.out.log.size() == 1 },
-                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated_quantitative_phenoname' },
+                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
@@ -221,7 +221,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.predictions.size() == 1 },
                 { assert process.out.log.size() == 1 },
-                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated_quantitative_phenoname' },
+                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
