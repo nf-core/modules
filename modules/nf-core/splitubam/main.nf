@@ -12,7 +12,7 @@ process SPLITUBAM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('splitubam'), eval("splitubam --version | sed 's/.* //'"), emit: versions_splitubam, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,11 +24,6 @@ process SPLITUBAM {
         $args \\
         --threads $task.cpus \\
         $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        splitubam: \$(splitubam --version | sed 's/splitubam //')
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +39,5 @@ process SPLITUBAM {
     } else { error("No `--split N` detected in args") }
     """
     $create_cmd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        splitubam: \$(splitubam --version | sed 's/splitubam //')
-    END_VERSIONS
     """
 }

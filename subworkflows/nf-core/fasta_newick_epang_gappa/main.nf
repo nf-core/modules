@@ -50,7 +50,8 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     HMMER_UNALIGNREF (
         ch_hmmer_data
             .filter { it -> ! it.data.hmmfile }
-            .map { it -> [ it.meta, it.data.refseqfile ] }
+            .map { it -> [ it.meta, it.data.refseqfile ] },
+        '| sed "/^>/!s/-//g"'
     )
     ch_hmmer_unaligned = channel.empty()
         .mix(HMMER_UNALIGNREF.out.seqreformated.map { it -> [ it[0], it[1] ] })
@@ -92,10 +93,10 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     ch_versions = ch_versions.mix(HMMER_MASKQUERY.out.versions)
 
     // 1.e Reformat alignments to "afa" (aligned fasta)
-    HMMER_AFAFORMATREF ( HMMER_MASKREF.out.maskedaln )
+    HMMER_AFAFORMATREF ( HMMER_MASKREF.out.maskedaln, '' )
     ch_versions = ch_versions.mix(HMMER_AFAFORMATREF.out.versions)
 
-    HMMER_AFAFORMATQUERY ( HMMER_MASKQUERY.out.maskedaln )
+    HMMER_AFAFORMATQUERY ( HMMER_MASKQUERY.out.maskedaln, '' )
     ch_versions = ch_versions.mix(HMMER_AFAFORMATQUERY.out.versions)
 
     // 2.a CLUSTALO_ALIGN profile alignment of query sequences to reference alignment
@@ -114,7 +115,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         ch_clustalo_data.map { it -> [ it.meta, it.data.refseqfile ] }
             .join(CLUSTALO_ALIGN.out.alignment)
     )
-    ch_versions = ch_versions.mix(EPANG_SPLIT_CLUSTALO.out.versions)
 
     // 3.a MAFFT profile alignment of query sequences to reference alignment
     MAFFT_ALIGN (
@@ -132,7 +132,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         ch_mafft_data.map { it -> [ it.meta, it.data.refseqfile ] }
             .join(MAFFT_ALIGN.out.fas)
     )
-    ch_versions = ch_versions.mix(EPANG_SPLIT_MAFFT.out.versions)
 
     // 4. Do the placement
     ch_epang_query = ch_pp_data.map { it -> [ it.meta, it.data.model, it.data.refphylogeny ] }
@@ -157,7 +156,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         ch_epang_query,
         [], []
     )
-    ch_versions = ch_versions.mix(EPANG_PLACE.out.versions)
 
     // 5. Calculate a tree with the placed sequences
     GAPPA_GRAFT ( EPANG_PLACE.out.jplace )

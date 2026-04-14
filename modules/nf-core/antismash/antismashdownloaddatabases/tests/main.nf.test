@@ -24,16 +24,13 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.database.get(0)).list().sort(),
-                    path(process.out.versions[0]).yaml,
-                    file(process.out.versions[0]).name,
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
     }
 
     test("antismash/downloaddatabases - stub") {
-
         options "-stub"
 
         when {
@@ -47,10 +44,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        file(process.out.database.get(0)).list().sort(),
-                        file(process.out.versions[0]).name,
-                    ).match()
-                }
+                    file(process.out.database.get(0)).list().sort(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
     }

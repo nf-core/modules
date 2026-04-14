@@ -4,8 +4,8 @@ process BUSCO_BUSCO {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/6456c1880785adefb4fc9b480bb7662479d5662c17f70d5e8715b7f2a63ee28b/data'
-        : 'community.wave.seqera.io/library/busco_numpy:b66937518a305dd7'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c6684133dafc676a4087ca5615907bfdaaba29210f1c8eb2082c4096a009b2cd/data'
+        : 'community.wave.seqera.io/library/busco_numpy:1877b1d6022fa08d'}"
     // Note: one test had to be disabled when switching to Busco 6.0.0, cf https://github.com/nf-core/modules/pull/8781/files
     // Try to restore it when upgrading Busco to a later version
 
@@ -23,6 +23,7 @@ process BUSCO_BUSCO {
 
     output:
     tuple val(meta), path("*-busco.batch_summary.txt"), emit: batch_summary
+    tuple val(meta), path("*-busco.batch_summary.failed.txt"), emit: batch_summary_failed, optional: true
     tuple val(meta), path("short_summary.*.txt"), emit: short_summaries_txt, optional: true
     tuple val(meta), path("short_summary.*.json"), emit: short_summaries_json, optional: true
     tuple val(meta), path("*-busco.log"), emit: log, optional: true
@@ -57,7 +58,13 @@ process BUSCO_BUSCO {
         './*-busco/*/prodigal_output/predicted_genes/tmp/',
     ]
     def clean_cmd = clean_intermediates ? "rm -fr ${intermediate_files.join(' ')}" : ''
+
+    def bbtools_memory_preferred = task.memory * 0.25
+    def bbtools_memory_minimum = 120.Mb
+    def bbtools_memory = bbtools_memory_preferred > bbtools_memory_minimum ? "${bbtools_memory_preferred.toGiga()}g" : "${bbtools_memory_minimum.toMega()}m"
     """
+    export BUSCO_BBTOOLS_MEMORY=${bbtools_memory}
+
     # Fix Augustus for Apptainer
     ENV_AUGUSTUS=/opt/conda/etc/conda/activate.d/augustus.sh
     set +u
@@ -105,14 +112,12 @@ process BUSCO_BUSCO {
     find . -xtype l -delete
 
     # Move files to avoid staging/publishing issues
-    mv ${prefix}-busco/batch_summary.txt ${prefix}-busco.batch_summary.txt
+    grep -v 'Run failed; check logs' ${prefix}-busco/batch_summary.txt > ${prefix}-busco.batch_summary.txt
     mv ${prefix}-busco/*/short_summary.*.{json,txt} . || echo "Short summaries were not available: No genes were found."
     mv ${prefix}-busco/logs/busco.log ${prefix}-busco.log
 
-    if grep 'Run failed; check logs' ${prefix}-busco.batch_summary.txt > /dev/null
-    then
-        echo "Busco run failed"
-        exit 1
+    if grep -q 'Run failed; check logs' ${prefix}-busco/batch_summary.txt; then
+        grep 'Run failed; check logs' ${prefix}-busco/batch_summary.txt > ${prefix}-busco.batch_summary.failed.txt
     fi
     """
 
