@@ -1,5 +1,5 @@
 process REGENIE_STEP2 {
-    tag "${meta.id}:${meta2.pheno_col}"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -12,12 +12,14 @@ process REGENIE_STEP2 {
     tuple val(meta2), path(pheno)
     tuple val(meta3), path(predictions), path(loco_files)
     tuple val(meta4), path(covar)
-    val(bsize)
-    val(test_model)
+    val pheno_col
+    val is_binary
+    val bsize
+    val test_model
 
     output:
-    tuple val(meta), val(meta2), path("*.regenie.gz"), emit: results
-    tuple val(meta), val(meta2), path("*.log"), emit: log
+    tuple val(meta), path("*.regenie.gz"), emit: results
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('regenie'), eval("regenie --version 2>&1 | head -n 1"), topic: versions, emit: versions_regenie
 
     when:
@@ -25,9 +27,8 @@ process REGENIE_STEP2 {
 
     script:
     def args = task.ext.args ?: ''
-    def binary_arg = meta2.is_binary ? '--bt' : ''
+    def binary_arg = is_binary ? '--bt' : ''
     def covar_arg = covar ? "--covarFile ${covar}" : ''
-    def pheno_col = meta2.pheno_col
     def genotype_flag = plink_genotype_file.name.endsWith('.pgen') ? '--pgen' : '--bed'
     def prefix = plink_genotype_file.baseName
     def bsize_arg = bsize ?: 400
@@ -53,7 +54,7 @@ process REGENIE_STEP2 {
     stub:
     def prefix = plink_genotype_file.baseName
     """
-    printf '' | gzip > ${prefix}_${meta2.pheno_col}.regenie.gz
+    printf '' | gzip > ${prefix}_${pheno_col}.regenie.gz
     touch ${prefix}.log
     """
 }
