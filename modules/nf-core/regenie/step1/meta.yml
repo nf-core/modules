@@ -23,7 +23,7 @@ input:
         description: |
           Groovy Map containing genotype information
           Keep only the genotype analysis identifier in this map
-          The PLINK bundle must already be staged with basename `meta.id`
+          REGENIE consumes the staged basename of `plink_genotype_file` as the `--bed` or `--pgen` prefix, so the `.bed/.bim/.fam` or `.pgen/.pvar/.psam` files must share one basename
           e.g. `[ id:'cohort' ]`
     - plink_genotype_file:
         type: file
@@ -44,9 +44,9 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing phenotype file information and phenotype selector
-          Keep `id` for the phenotype file identity and use `pheno_col` for the phenotype column passed to `--phenoColList`
-          e.g. `[ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:true ]`
+          Groovy Map containing phenotype file information
+          Keep only phenotype provenance in this map
+          e.g. `[ id:'plink_simulated_quantitative_phenoname' ]`
     - pheno:
         type: file
         description: Phenotype file passed to `--phenoFile`
@@ -65,6 +65,12 @@ input:
         pattern: "*.{covar,cov,txt,tsv}"
         ontologies:
           - edam: "http://edamontology.org/format_3475" # TSV
+  - pheno_col:
+      type: string
+      description: Phenotype column passed to `--phenoColList`
+  - is_binary:
+      type: boolean
+      description: Whether to add `--bt` for a binary trait
   - bsize:
       type: integer
       description: Optional block size passed to `--bsize`; pass `[]` to use the module default of `1000`
@@ -74,8 +80,8 @@ output:
     - - meta2:
           type: map
           description: |
-            Groovy Map containing phenotype file information and phenotype selector
-            e.g. `[ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:true ]`
+            Groovy Map containing phenotype file information
+            e.g. `[ id:'plink_simulated_quantitative_phenoname' ]`
       - "*_pred.list":
           type: file
           description: REGENIE prediction list file
@@ -91,8 +97,8 @@ output:
     - - meta2:
           type: map
           description: |
-            Groovy Map containing phenotype file information and phenotype selector
-            e.g. `[ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:true ]`
+            Groovy Map containing phenotype file information
+            e.g. `[ id:'plink_simulated_quantitative_phenoname' ]`
       - "*.log":
           type: file
           description: REGENIE step 1 log file
@@ -106,7 +112,7 @@ output:
       - "regenie":
           type: string
           description: The tool name
-      - "regenie --version 2>&1 | head -n 1":
+      - 'regenie --version 2>&1 | sed -n "1{s/^v//;s/\.gz$//;p}"':
           type: eval
           description: The command used to generate the version of the tool
 
@@ -118,7 +124,7 @@ topics:
       - regenie:
           type: string
           description: The tool name
-      - regenie --version 2>&1 | head -n 1:
+      - 'regenie --version 2>&1 | sed -n "1{s/^v//;s/\.gz$//;p}"':
           type: eval
           description: The command used to generate the version of the tool
 authors:
@@ -128,7 +134,7 @@ maintainers:
 containers:
   conda:
     linux_amd64:
-      lock_file: "https://wave.seqera.io/v1alpha1/builds/bd-5d361f9fcb2f85cf_1/condalock"
+      lock_file: "modules/nf-core/regenie/step1/.conda-lock/linux_amd64-bd-5d361f9fcb2f85cf_1.txt"
   docker:
     linux_amd64:
       build_id: "bd-5d361f9fcb2f85cf_1"
