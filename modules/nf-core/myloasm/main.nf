@@ -1,11 +1,11 @@
 process MYLOASM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/myloasm:0.2.0--ha6fb395_0':
-        'community.wave.seqera.io/library/myloasm:0.2.0--036e61a36965d08c' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b752566c7444cbfddc44bfb332078cf36602fcfeb1e57887cee0d5d6195e1923/data'
+        : 'community.wave.seqera.io/library/myloasm:0.5.1--1699da7b77a4bbdd'}"
 
     input:
     tuple val(meta), path(reads)
@@ -18,33 +18,27 @@ process MYLOASM {
     tuple val(meta), path("${prefix}/alternate_assemblies/duplicated_contigs.fa"), emit: contigs_dup
     tuple val(meta), path("${prefix}/3-mapping/map_to_unitigs.paf.gz")           , emit: mapping
     tuple val(meta), path("${prefix}/*.log")                                     , emit: log
-    path "versions.yml"                                                          , emit: versions
+    tuple val("${task.process}"), val('myloasm'), eval("myloasm --version | sed 's/.* //'"), emit: versions_myloasm, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    // Note: MyloAsm works best with FASTQ files for base quality information
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     myloasm \\
-        $reads \\
+        ${reads} \\
         -o ${prefix} \\
-        -t $task.cpus \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        myloasm: \$(myloasm --version | sed 's/.* //')
-    END_VERSIONS
+        -t ${task.cpus} \\
+        ${args}
     """
 
     stub:
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     mkdir -p ${prefix}/alternate_assemblies
     mkdir -p ${prefix}/3-mapping
@@ -54,10 +48,5 @@ process MYLOASM {
     touch ${prefix}/alternate_assemblies/duplicated_contigs.fa
     echo | gzip > ${prefix}/3-mapping/map_to_unitigs.paf.gz
     touch ${prefix}/myloasm_1.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        myloasm: \$(myloasm --version | sed 's/.* //')
-    END_VERSIONS
     """
 }
