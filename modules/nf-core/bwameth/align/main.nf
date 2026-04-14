@@ -23,7 +23,6 @@ process BWAMETH_ALIGN {
     def args       = task.ext.args ?: ''
     def args2      = task.ext.args2 ?: ''
     def prefix     = task.ext.prefix ?: "${meta.id}"
-    def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     """
     export BWA_METH_SKIP_TIME_CHECKS=1
     ln -sf \$(readlink ${fasta}) ${index}/${fasta}
