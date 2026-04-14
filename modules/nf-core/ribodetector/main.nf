@@ -4,8 +4,8 @@ process RIBODETECTOR {
 
 	conda "${moduleDir}/environment.yml"
 	container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/463b8ad941e7f1f2decef20844d666c1c8ac233e166d2bc766164c4a93905a3c/data' :
-        'community.wave.seqera.io/library/ribodetector:0.3.3--ad3d7071e408b502' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5bd1ef1ec62443f20b84e08612cb008d6abed9647a56422bf71d3174146d8dd1/data' :
+        'community.wave.seqera.io/library/ribodetector_pytorch-cuda:8e2cdd88bb757059' }"
 
 	input:
 	tuple val(meta), path(fastq)
@@ -23,7 +23,7 @@ process RIBODETECTOR {
 	def args = task.ext.args ?: ''
 	def prefix = task.ext.prefix ?: "${meta.id}"
 	ribodetector_bin = task.accelerator ? "ribodetector" : "ribodetector_cpu"
-	ribodetector_mem = task.accelerator ? "-m $task.memory.toGiga()" : ""
+	ribodetector_mem = task.accelerator ? "-m ${task.memory.toGiga()}" : ""
 	output = meta.single_end ? "${prefix}.nonrna.fastq.gz" : "${prefix}.nonrna.1.fastq.gz ${prefix}.nonrna.2.fastq.gz"
 
 	"""
