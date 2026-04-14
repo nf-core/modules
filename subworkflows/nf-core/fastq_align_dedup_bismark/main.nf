@@ -35,7 +35,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
      */
     BISMARK_ALIGN(
         ch_reads,
-        ch_fasta_fai,
+        ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
         ch_bismark_index,
     )
     ch_alignments = BISMARK_ALIGN.out.bam
