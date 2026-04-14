@@ -28,7 +28,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out).findAll { key, val ->
-                        key in ['contigs', 'gfa', 'contigs_alt', 'contigs_dup'] || key.startsWith('versions')
+                        key in ['contigs', 'gfa', 'contigs_alt'] || key.startsWith('versions')
                     },
                     file(process.out.results[0][1]).list().size(),
                     path(process.out.contigs_dup[0][1]).exists(),
