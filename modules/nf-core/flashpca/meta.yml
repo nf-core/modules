@@ -1,0 +1,54 @@
+name: "flashpca"
+description: "Fast principal component analysis of SNP data using FlashPCA2"
+keywords:
+  - pca
+  - principal component
+  - population structure
+  - genetics
+  - snp
+tools:
+  - "flashpca2":
+      description: "FlashPCA2 is a fast PCA tool for SNP data"
+      homepage: "https://github.com/gabraham/flashpca"
+      documentation: "https://github.com/gabraham/flashpca"
+      tool_dev_url: "https://github.com/gabraham/flashpca"
+      doi: "10.1093/bioinformatics/btx299"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information
+  - bed:
+      type: file
+      description: PLINK binary bed file
+      pattern: "*.bed"
+  - bim:
+      type: file
+      description: PLINK bim file
+      pattern: "*.bim"
+  - fam:
+      type: file
+      description: PLINK fam file
+      pattern: "*.fam"
+
+output:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information
+  - eigenvec:
+      type: file
+      description: Eigenvectors file (principal components)
+      pattern: "*.eigenvec"
+  - eigenval:
+      type: file
+      description: Eigenvalues file
+      pattern: "*.eigenval"
+  - pcs:
+      type: file
+      description: Principal components in alternative format
+      pattern: "*.pcs"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"

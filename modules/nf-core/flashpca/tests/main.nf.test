@@ -1,0 +1,35 @@
+nextflow_process {
+    name "Test Process FLASHPCA"
+    script "../main.nf"
+    process "FLASHPCA"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "flashpca"
+
+    test("flashpca - hapmap3 thinned") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'hapmap3_test' ],
+                    file("$moduleDir/tests/test_data/HM3_thinned_autosomal_overlap.bed", checkIfExists: true),
+                    file("$moduleDir/tests/test_data/HM3_thinned_autosomal_overlap.bim",  checkIfExists: true),
+                    file("$moduleDir/tests/test_data/HM3_thinned_autosomal_overlap.fam",  checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.pcs,
+                    process.out.eigenvectors,
+                    process.out.eigenvalues,
+                    process.out.pve,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+}
