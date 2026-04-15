@@ -1,33 +1,12 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+name: flashpca
 channels:
   - conda-forge
   - bioconda
-
-dependencies:
-  # FlashPCA has no official Bioconda package.
-  # We rely on a Docker/Singularity container compiled from source.
-  # 
-  # Author: Gad Abraham
-  # License: GNU General Public License v3 (GPL-3.0)
-  # Repository: https://github.com/gabraham/flashpca
-  # Container: ghcr.io/dbaku42/flashpca:2.0
-
-input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - bed:
-      type: file
-      description: PLINK BED file
-      pattern: "*.bed"
-  - bim:
-      type: file
-      description: PLINK BIM file
-      pattern: "*.bim"
-  - fam:
-      type: file
-      description: PLINK FAM file
-      pattern: "*.fam"
+dependencies: []
+# FlashPCA has no official Bioconda package.
+# We rely on a Docker/Singularity container compiled from source.
+# Author: Gad Abraham
+# License: GNU General Public License v3 (GPL-3.0)
+# Repository: https://github.com/gabraham/flashpca
+# Container: ghcr.io/dbaku42/flashpca:2.0
