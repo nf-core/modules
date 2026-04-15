@@ -24,6 +24,9 @@ process CANU {
     tuple val(meta), path("*.contigs.layout.tigInfo")   , emit: contig_info             , optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('canu'), val("2.3"), emit: versions_canu, topic: versions
+    tuple val("${task.process}"), val("minimap2"), eval("minimap2 --version"), emit: versions_minimap2, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
+
     when:
     task.ext.when == null || task.ext.when
 
