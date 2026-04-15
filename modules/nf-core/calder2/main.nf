@@ -2,22 +2,20 @@ process CALDER2 {
     tag "$meta.id"
     label 'process_high'
 
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-calder2:0.7--r43hdfd78af_1' :
         'biocontainers/r-calder2:0.7--r43hdfd78af_1' }"
-
 
     input:
     tuple val(meta), path(cool)
     val resolution
 
     output:
-    tuple val(meta), path("${prefix}/")                     , emit: output_folder
-    tuple val(meta), path("${prefix}/intermediate_data/")   , emit: intermediate_data_folder      , optional: true
-    tuple val("${task.process}"), val('calder'), val('0.7'), emit: versions_calder, topic: versions
+    tuple val(meta), path("${prefix}/")                    , emit: output_folder
+    tuple val(meta), path("${prefix}/intermediate_data/")  , emit: intermediate_data_folder, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('calder'), val('0.7'), emit: versions_calder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
