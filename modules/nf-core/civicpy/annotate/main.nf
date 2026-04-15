@@ -10,6 +10,7 @@ process CIVICPY_ANNOTATE {
     input:
     tuple val(meta), path(vcf), path(tbi)
     val annotation_genome_version
+    path cache
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -23,7 +24,7 @@ process CIVICPY_ANNOTATE {
     prefix = task.ext.prefix ?: "${meta.id}"
     if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    export CIVICPY_CACHE_FILE=\$PWD/.civicpy
+    export CIVICPY_CACHE_FILE=\$PWD/${cache}
 
     civicpy annotate-vcf \\
         --input-vcf ${vcf} \\
