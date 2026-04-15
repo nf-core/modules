@@ -1,5 +1,5 @@
 process CANVAS_GERMLINE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     container "nf-core/canvas:1.40.0"
@@ -13,7 +13,7 @@ process CANVAS_GERMLINE {
     path filter13
 
     output:
-    tuple val(meta), path("${prefix}.vcf.gz"),                          emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz"), emit: vcf
     tuple val(meta), path("${prefix}.CoverageAndVariantFrequency.txt"), emit: covandvarfreq
     tuple val("${task.process}"), val('canvas'), val('1.40.0.1613+master'), topic: versions, emit: versions_canvas
 
@@ -22,7 +22,7 @@ process CANVAS_GERMLINE {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def ploidy_vcf = (sex == 'male') ? male_ploidy_vcf : female_ploidy_vcf
+    def ploidy_vcf = sex == 'male' ? male_ploidy_vcf : female_ploidy_vcf
     """
     PLOIDYVCF=\$(mod_sex_vcf.py ${ploidy_vcf} ${prefix} ./)
 
