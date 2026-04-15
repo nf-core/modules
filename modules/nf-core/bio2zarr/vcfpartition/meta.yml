@@ -1,0 +1,78 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "bio2zarr_vcfpartition"
+description: Outputs a set of region strings that partition indexed VCF/BCF files
+  for parallel processing.
+keywords:
+  - vcf
+  - bcf
+  - partition
+  - regions
+  - parallel
+  - genomics
+tools:
+  - "bio2zarr":
+      description: "Convert bioinformatics data to Zarr"
+      homepage: "https://sgkit-dev.github.io/bio2zarr/"
+      documentation: "https://sgkit-dev.github.io/bio2zarr"
+      tool_dev_url: "https://github.com/sgkit-dev/bio2zarr"
+      doi: "10.1101/2024.06.11.598241"
+      licence:
+        - "Apache-2.0"
+      identifier: biotools:bio2zarr
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: Indexed VCF/BCF file to partition
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3020" # BCF
+    - index:
+        type: file
+        description: Index for the VCF/BCF file
+        pattern: "*.{tbi,csi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3700" # Tabix index file format
+output:
+  partitions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: The output tab-delimited region strings and the file path
+          pattern: "*.{tsv}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_vcfpartition:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcfpartition:
+          type: string
+          description: The name of the tool
+      - vcfpartition --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcfpartition:
+          type: string
+          description: The name of the tool
+      - vcfpartition --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@camlloyd"
+maintainers:
+  - "@camlloyd"
