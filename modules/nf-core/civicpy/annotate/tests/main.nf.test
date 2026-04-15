@@ -23,6 +23,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true)
                 ]
                 input[1] = 'GRCh38'
+                input[2] = [] // no cache
                 """
             }
         }
@@ -53,6 +54,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true)
                 ]
                 input[1] = 'GRCh37'
+                input[2] = [] // no cache
+
                 """
             }
         }
@@ -85,6 +88,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true)
                 ]
                 input[1] = 'GRCh38'
+                input[2] = [] // no cache
                 """
             }
         }
