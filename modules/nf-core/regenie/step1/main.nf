@@ -9,10 +9,8 @@ process REGENIE_STEP1 {
 
     input:
     tuple val(meta), path(plink_genotype_file), path(plink_variant_file), path(plink_sample_file)
-    tuple val(meta2), path(pheno)
+    tuple val(meta2), path(pheno), val(pheno_col), val(is_binary)
     tuple val(meta3), path(covar)
-    val pheno_col
-    val is_binary
     val bsize
 
     output:

@@ -53,6 +53,12 @@ input:
         pattern: "*.{phe,pheno,txt,tsv}"
         ontologies:
           - edam: "http://edamontology.org/format_3475" # TSV
+    - pheno_col:
+        type: string
+        description: Phenotype column passed to `--phenoColList`
+    - is_binary:
+        type: boolean
+        description: Whether to add `--bt` for a binary trait
   - - meta3:
         type: map
         description: |
@@ -65,12 +71,6 @@ input:
         pattern: "*.{covar,cov,txt,tsv}"
         ontologies:
           - edam: "http://edamontology.org/format_3475" # TSV
-  - pheno_col:
-      type: string
-      description: Phenotype column passed to `--phenoColList`
-  - is_binary:
-      type: boolean
-      description: Whether to add `--bt` for a binary trait
   - bsize:
       type: integer
       description: Optional block size passed to `--bsize`; pass `[]` to use the module default of `1000`
