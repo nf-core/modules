@@ -27,7 +27,7 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     // Map reads with BWA to the contaminant index, must be queryname sorted (controlled by config)
     //
 
-    BWA_MEM_CONTAMINANT(ch_reads, ch_contaminant_index, [[], []], true)
+    BWA_MEM_CONTAMINANT(ch_reads, ch_contaminant_index, [[], [], []], true)
 
     //
     // Use BAMCMP to retain only reads which map better to the primary genome.

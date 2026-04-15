@@ -106,7 +106,11 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bwa/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    input[0] = Channel.value([
+                        [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                    ])
                     """
                 }
             }
@@ -141,7 +145,11 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bwa/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    input[0] = Channel.value([
+                        [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                        ])
                     """
                 }
             }
@@ -176,7 +184,9 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bwamem2/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    input[0] = Channel.value([
+                        [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                     """
                 }
             }

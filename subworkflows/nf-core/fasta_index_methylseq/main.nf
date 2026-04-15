@@ -125,8 +125,16 @@ workflow FASTA_INDEX_METHYLSEQ {
             ch_bwamem_index = ch_bwamem_index_branched.unzipped.mix(UNTAR_BISMARK.out.untar)
         } else {
             log.info "BWA index not provided. Generating BWA index from FASTA file."
+            /*
+            / Hot fix - BWA takes tuple(meta, fasta, fai)
+            */
+
+            ch_fasta_fai = ch_fasta.map { meta, _fasta ->
+                tuple(meta, _fasta, [] )
+            }
+
             BWA_INDEX (
-                ch_fasta
+                ch_fasta_fai
             )
             ch_bwamem_index = BWA_INDEX.out.index
         }

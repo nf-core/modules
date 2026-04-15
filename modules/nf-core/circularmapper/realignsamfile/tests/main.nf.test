@@ -35,7 +35,7 @@ nextflow_process {
             script "../../../bwa/index/main.nf"
                 process {
                     """
-                    input[0] = CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta
+                    input[0] = CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta.map { meta, fasta -> [ meta, fasta, [] ] }
                     """
                 }
             }

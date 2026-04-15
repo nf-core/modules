@@ -36,7 +36,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'sarscov2'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 """
             }
@@ -48,7 +49,7 @@ nextflow_process {
                 """
                 input[0] = UMITOOLS_EXTRACT.out.reads
                 input[1] = BWA_INDEX.out.index
-                input[2] = [ [], [] ]
+                input[2] = [ [], [], [] ]
                 input[3] = true
                 """
             }
