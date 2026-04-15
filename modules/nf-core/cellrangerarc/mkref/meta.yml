@@ -60,7 +60,7 @@ output:
       - cellrangerarc_mkref:
           type: string
           description: The name of the tool
-      - "cellranger-arc --version 2>&1 | sed 's/^.[^0-9]\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/'":
+      - cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -71,7 +71,7 @@ topics:
       - cellrangerarc_mkref:
           type: string
           description: The name of the tool
-      - "cellranger-arc --version 2>&1 | sed 's/^.[^0-9]\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/'":
+      - cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
