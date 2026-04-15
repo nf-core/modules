@@ -17,7 +17,7 @@ process KAIJU_MKFMI {
     tuple val(meta), path("*.{fmi,dmp}", includeInputs: true), emit: fmi
     tuple val(meta), path("*.bwt"), optional: true, emit: bwt
     tuple val(meta), path("*.sa"), optional: true, emit: sa
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('kaiju'), eval("kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //'"), emit: versions_kaiju, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,14 +32,10 @@ process KAIJU_MKFMI {
         -n ${task.cpus} \\
         -o ${prefix} \\
         ${fasta}
+
     kaiju-mkfmi ${prefix}
 
     ${run_cleanup}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kaiju: \$(echo \$( kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //' ))
-    END_VERSIONS
     """
 
     stub:
@@ -51,10 +47,5 @@ process KAIJU_MKFMI {
     touch ${prefix}.sa
 
     ${run_cleanup}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kaiju: \$(echo \$( kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //' ))
-    END_VERSIONS
     """
 }
