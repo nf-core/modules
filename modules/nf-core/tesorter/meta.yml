@@ -41,8 +41,8 @@ input:
         description: The database HMM file used
         ontologies: []
 output:
-  - domtbl:
-      - meta:
+  domtbl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +52,8 @@ output:
           description: HMMScan raw output
           pattern: "*.{domtbl}"
           ontologies: []
-  - dom_faa:
-      - meta:
+  dom_faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +64,8 @@ output:
             analysis
           pattern: "*.dom.{faa}"
           ontologies: []
-  - dom_tsv:
-      - meta:
+  dom_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,8 +77,8 @@ output:
           pattern: "*.dom.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  - dom_gff3:
-      - meta:
+  dom_gff3:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -89,8 +89,8 @@ output:
           pattern: "*.dom.{gff3}"
           ontologies:
             - edam: http://edamontology.org/format_1975 # GFF3
-  - cls_tsv:
-      - meta:
+  cls_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -101,8 +101,8 @@ output:
           pattern: "*.cls.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  - cls_lib:
-      - meta:
+  cls_lib:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -112,8 +112,8 @@ output:
           description: Fasta library for RepeatMasker
           pattern: "*.cls.{lib}"
           ontologies: []
-  - cls_pep:
-      - meta:
+  cls_pep:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -123,13 +123,13 @@ output:
           description: The same sequences as '*.dom.faa', but id is changed with classifications
           pattern: "*.cls.{pep}"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

@@ -14,7 +14,8 @@ tools:
       documentation: "https://agat.readthedocs.io/"
       tool_dev_url: "https://github.com/NBISweden/AGAT"
       doi: "10.5281/zenodo.3552717"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:AGAT
 input:
   - - meta:
@@ -26,30 +27,41 @@ input:
         type: file
         description: Annotation file in GFF3/GTF format
         pattern: "*.{gff, gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1975"
+          - edam: "http://edamontology.org/format_2306"
 output:
-  - output_gtf:
-      - meta:
-          type: file
-          description: Annotation file in GTF format
-          pattern: "*.{gtf}"
+  output_gtf:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.agat.gtf":
           type: file
           description: Annotation file in GTF format
           pattern: "*.{gtf}"
-  - log:
-      - meta:
-          type: file
-          description: Log file of the conversion process
-          pattern: "*.{log}"
-      - "*.log":
-          type: file
-          description: Log file of the conversion process
-          pattern: "*.{log}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_2306"
+  versions_agat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agat:
+          type: string
+          description: The name of the tool
+      - agat --version | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agat:
+          type: string
+          description: The name of the tool
+      - agat --version | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@toniher"
 maintainers:

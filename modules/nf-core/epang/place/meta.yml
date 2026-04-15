@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/Pbdas/epa-ng/wiki/Full-Stack-Example"
       tool_dev_url: "https://github.com/Pbdas/epa-ng"
       doi: "10.1093/sysbio/syy054"
-      licence: ["GNU Affero General Public License v3.0"]
+      licence:
+        - "GNU Affero General Public License v3.0"
       identifier: ""
 input:
   - - meta:
@@ -21,30 +22,35 @@ input:
           e.g. [ id:'test' ]
     - queryaln:
         type: file
-        description: aligned query sequences in any supported format including phylip
-          and fasta, may be gzipped
+        description: aligned query sequences in any supported format including
+          phylip and fasta, may be gzipped
         pattern: "*"
+        ontologies: []
     - referencealn:
         type: file
-        description: reference alignment in any supported format including phylip and
-          fasta, may be gzipped
+        description: reference alignment in any supported format including phylip
+          and fasta, may be gzipped
         pattern: "*"
+        ontologies: []
     - referencetree:
         type: file
-        description: newick file containing the reference tree in which query sequences
-          will be placed
+        description: newick file containing the reference tree in which query
+          sequences will be placed
         pattern: "*"
-  - - bfastfile:
-        type: file
-        description: file argument to the --bfast parameter
-        pattern: "*"
-  - - binaryfile:
-        type: file
-        description: file argument to the --binary parameter
-        pattern: "*"
+        ontologies: []
+  - bfastfile:
+      type: file
+      description: file argument to the --bfast parameter
+      pattern: "*"
+      ontologies: []
+  - binaryfile:
+      type: file
+      description: file argument to the --binary parameter
+      pattern: "*"
+      ontologies: []
 output:
-  - epang:
-      - meta:
+  epang:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +58,8 @@ output:
       - ./.:
           type: directory
           description: directory in which EPA-NG was run
-  - jplace:
-      - meta:
+  jplace:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,16 +68,35 @@ output:
           type: file
           description: gzipped file with placement information
           pattern: "*.jplace.gz"
-  - log:
-      - "*.epa_info.log":
-          type: file
-          description: log file from placement
-          pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  log:
+    - "*.epa_info.log":
+        type: file
+        description: log file from placement
+        pattern: "*.log"
+        ontologies: []
+  versions_epang:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - epa-ng:
+          type: string
+          description: The name of the tool
+      - epa-ng --version | sed "s/EPA-ng v//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - epa-ng:
+          type: string
+          description: The name of the tool
+      - epa-ng --version | sed "s/EPA-ng v//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@erikrikarddaniel"
 maintainers:

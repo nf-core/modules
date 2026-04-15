@@ -14,7 +14,7 @@ process BBMAP_BBDUK {
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
     tuple val(meta), path('*.log')     , emit: log
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,32 +26,21 @@ process BBMAP_BBDUK {
     def trimmed  = meta.single_end ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.fastq.gz out2=${prefix}_2.fastq.gz"
     def contaminants_fa = contaminants ? "ref=$contaminants" : ''
     """
-    maxmem=\$(echo \"$task.memory\"| sed 's/ GB/g/g')
     bbduk.sh \\
-        -Xmx\$maxmem \\
+        -Xmx${task.memory.toGiga()}g \\
         $raw \\
         $trimmed \\
         threads=$task.cpus \\
         $args \\
         $contaminants_fa \\
         &> ${prefix}.bbduk.log
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "]")
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_command  = meta.single_end ? "echo '' | gzip > ${prefix}.fastq.gz" : "echo '' | gzip > ${prefix}_1.fastq.gz ; echo '' | gzip > ${prefix}_2.fastq.gz"
     """
     touch ${prefix}.bbduk.log
     $output_command
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "]")
-    END_VERSIONS
     """
 }

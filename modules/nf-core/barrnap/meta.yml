@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "barrnap"
-description: barrnap uses a hmmer profile to find rrnas in reads or contig fasta files
+description: barrnap uses a hmmer profile to find rrnas in reads or contig fasta
+  files
 keywords:
   - rrna
   - sequences
@@ -12,7 +12,8 @@ tools:
       homepage: "https://github.com/tseemann/barrnap"
       documentation: "https://github.com/tseemann/barrnap"
       tool_dev_url: "https://github.com/tseemann/barrnap"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:barrnap
 input:
   - - meta:
@@ -24,12 +25,14 @@ input:
         type: file
         description: fasta file
         pattern: "*.fasta"
+        ontologies: []
     - dbname:
         type: string
-        description: database to use(bacteria, archaea, eukaryota, metazoan mitochondria)
+        description: database to use(bacteria, archaea, eukaryota, metazoan
+          mitochondria)
 output:
-  - gff:
-      - meta:
+  gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,12 +41,30 @@ output:
           type: file
           description: gff file containing coordinates of genes
           pattern: "*.gff"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_barrnap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - barrnap:
+          type: string
+          description: The name of the tool
+      - 'barrnap --version 2>&1 | sed "s/barrnap //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - barrnap:
+          type: string
+          description: The name of the tool
+      - 'barrnap --version 2>&1 | sed "s/barrnap //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@danilodileo"
+  - "@srisarya"
 maintainers:
   - "@danilodileo"

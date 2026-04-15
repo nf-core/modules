@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process BFTOOLS_SHOWINF"
+    script "../main.nf"
+    process "BFTOOLS_SHOWINF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bftools"
+    tag "bftools/showinf"
+
+    test("ome tif") {
+        when {
+            process {
+                """
+                input[0] = [["id":0], file(params.modules_testdata_base_path + "imaging/ome-tiff/cycif-tonsil-cycle1.ome.tif", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("ometif - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [["id":0], file(params.modules_testdata_base_path + "/imaging/ome-tiff/cycif-tonsil-cycle1.ome.tif")]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -1,18 +1,19 @@
 name: agrvate
-description: Rapid identification of Staphylococcus aureus agr locus type and agr
-  operon variants
+description: Rapid identification of Staphylococcus aureus agr locus type and
+  agr operon variants
 keywords:
   - fasta
   - virulence
   - Staphylococcus aureus
 tools:
   - agrvate:
-      description: Rapid identification of Staphylococcus aureus agr locus type and
-        agr operon variants.
+      description: Rapid identification of Staphylococcus aureus agr locus type
+        and agr operon variants.
       homepage: https://github.com/VishnuRaghuram94/AgrVATE
       documentation: https://github.com/VishnuRaghuram94/AgrVATE
       tool_dev_url: https://github.com/VishnuRaghuram94/AgrVATE
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:agrvate
 input:
   - - meta:
@@ -24,9 +25,11 @@ input:
         type: file
         description: A Staphylococcus aureus fasta file.
         pattern: "*.fasta"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
 output:
-  - summary:
-      - meta:
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,16 +38,34 @@ output:
           type: file
           description: A summary of the agrvate assessment
           pattern: "*-summary.tab"
-  - results_dir:
-      - ${fasta.baseName}-results:
-          type: directory
-          description: Results of the agrvate assessment
-          pattern: "*-results"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  results_dir:
+    - ${fasta.baseName}-results:
+        type: directory
+        description: Results of the agrvate assessment
+        pattern: "*-results"
+  versions_agrvate:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agrvate:
+          type: string
+          description: The name of the tool
+      - agrvate --version | sed 's/[^0-9.]//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agrvate:
+          type: string
+          description: The name of the tool
+      - agrvate --version | sed 's/[^0-9.]//g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@abhi18av"
 maintainers:

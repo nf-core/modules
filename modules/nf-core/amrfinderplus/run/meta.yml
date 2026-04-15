@@ -24,46 +24,90 @@ input:
         type: file
         description: Nucleotide or protein sequences in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
-  - - db:
-        type: file
-        description: A compressed tarball of the AMRFinderPlus database to query
-        pattern: "*.tar.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - db:
+      type: file
+      description: A compressed tarball of the AMRFinderPlus database to query
+      pattern: "*.tar.gz"
+      ontologies:
+        - edam: "http://edamontology.org/format_3981" # TAR format
+        - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - report:
-      - meta:
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.tsv:
+      - "${prefix}.tsv":
           type: file
           description: AMRFinder+ final report
           pattern: "*.tsv"
-  - mutation_report:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  mutation_report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}-mutations.tsv:
+      - "${prefix}-mutations.tsv":
           type: file
           description: Report of organism-specific point-mutations
           pattern: "*-mutations.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-  - tool_version:
-      - VER:
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  tool_version:
+    - VER:
+        type: string
+        description: The version of the tool in string format (useful for downstream
+          tools such as hAMRronization)
+  db_version:
+    - DBVER:
+        type: string
+        description: The version of the used database in string format (useful for downstream
+          tools such as hAMRronization)
+  versions_amrfinderplus:
+    - - "${task.process}":
           type: string
-          description: The version of the tool in string format (useful for downstream
-            tools such as hAMRronization)
-  - db_version:
-      - DBVER:
+          description: Process name
+      - amrfinderplus:
           type: string
-          description: The version of the used database in string format (useful for downstream
-            tools such as hAMRronization)
+          description: Tool name
+      - amrfinder --version:
+          type: string
+          description: Tool version command
+  versions_amrfinderplus_database:
+    - - "${task.process}":
+          type: string
+          description: Process name
+      - amrfinderplus_database:
+          type: string
+          description: Database name
+      - "amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1":
+          type: string
+          description: Database version command
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: Process name
+      - amrfinderplus:
+          type: string
+          description: Tool name
+      - amrfinder --version:
+          type: string
+          description: Tool version command
+    - - "${task.process}":
+          type: string
+          description: Process name
+      - amrfinderplus_database:
+          type: string
+          description: Database name
+      - "amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1":
+          type: string
+          description: Database version command
 authors:
   - "@rpetit3"
   - "@louperelo"

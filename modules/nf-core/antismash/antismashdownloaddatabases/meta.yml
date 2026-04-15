@@ -27,16 +27,32 @@ tools:
       identifier: biotools:antismash
 input: []
 output:
-  - database:
-      - antismash_db:
-          type: directory
-          description: Download directory for antiSMASH databases
-          pattern: "antismash_db"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  database:
+    - antismash_db:
+        type: directory
+        description: Download directory for antiSMASH databases
+        pattern: "antismash_db"
+  versions_antismash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - antismash:
+          type: string
+          description: The name of the tool
+      - antismash --version | sed 's/antiSMASH //;s/-.*//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - antismash:
+          type: string
+          description: The name of the tool
+      - antismash --version | sed 's/antiSMASH //;s/-.*//g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jasmezz"
 maintainers:

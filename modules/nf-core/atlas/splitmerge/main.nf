@@ -11,27 +11,21 @@ process ATLAS_SPLITMERGE {
     tuple val(meta), path(bam), path(bai), path(read_group_settings), path(blacklist)
 
     output:
-    tuple val(meta), path("*_mergedReads.bam")  , emit: bam
-    tuple val(meta), path("*.txt.gz")           , emit: txt
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*_mergedReads.bam"), emit: bam
+    tuple val(meta), path("*.txt.gz")         , emit: txt
+    tuple val("${task.process}"), val('atlas'), eval("atlas | sed -e '2!d;s/.*Atlas //'"), emit: versions_atlas, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def optional = blacklist ? 'blacklist=${blacklist}' : ''
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args     = task.ext.args   ?: ''
     """
     atlas \\
         task=splitMerge bam=${bam} \\
         readGroupSettings=${read_group_settings}\\
-        $optional \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        atlas: \$((atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[ \t]*Atlas //')
-    END_VERSIONS
+        ${optional} \\
+        ${args}
     """
 }

@@ -27,148 +27,173 @@ input:
         type: file
         description: |
           CSV-format sample sheet with sample metadata
+        ontologies: []
     - feature_meta:
         type: file
         description: |
           TSV-format feature (e.g. gene) metadata
+        ontologies: []
     - assay_files:
         type: file
         description: |
           List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+        ontologies: []
     - variable:
         type: string
         description: |
           Variable to use for the contrast variable in the plots.
 output:
-  - boxplots_png:
-      - meta:
+  boxplots_png:
+    - - meta:
           type: file
           description: |
             Meta-keyed tuple containing PNG output for box plots covering input
             matrices.
+          ontologies: []
       - "*/png/boxplot.png":
           type: file
           description: |
             Meta-keyed tuple containing PNG output for box plots covering input
             matrices.
-  - boxplots_html:
-      - meta:
+          ontologies: []
+  boxplots_html:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing HTML output for box plots covering input
+            Meta-keyed tuple containing PNG output for box plots covering input
             matrices.
+          ontologies: []
       - "*/html/boxplot.html":
           type: file
           description: |
             Meta-keyed tuple containing HTML output for box plots covering input
             matrices.
-  - densities_png:
-      - meta:
+          ontologies: []
+  densities_png:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing PNG output for density plots
-            covering input matrices.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/png/density.png":
           type: file
           description: |
             Meta-keyed tuple containing PNG output for density plots
             covering input matrices.
-  - densities_html:
-      - meta:
+          ontologies: []
+  densities_html:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing HTML output for density plots
-            covering input matrices.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/html/density.html":
           type: file
           description: |
             Meta-keyed tuple containing HTML output for density plots
             covering input matrices.
-  - pca2d_png:
-      - meta:
+          ontologies: []
+  pca2d_png:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing a PNG output for 2D PCA plots covering
-            specified input matrix (by default the last one in the input list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/png/pca2d.png":
           type: file
           description: |
             Meta-keyed tuple containing a PNG output for 2D PCA plots covering
             specified input matrix (by default the last one in the input list.
-  - pca2d_html:
-      - meta:
+          ontologies: []
+  pca2d_html:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing an HTML output for 2D PCA plots covering
-            specified input matrix (by default the last one in the input list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/html/pca2d.html":
           type: file
           description: |
             Meta-keyed tuple containing an HTML output for 2D PCA plots covering
             specified input matrix (by default the last one in the input list.
-  - pca3d_png:
-      - meta:
+          ontologies: []
+  pca3d_png:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing a PNG output for 3D PCA plots covering
-            specified input matrix (by default the last one in the input list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/png/pca3d.png":
           type: file
           description: |
             Meta-keyed tuple containing a PNG output for 3D PCA plots covering
             specified input matrix (by default the last one in the input list.
-  - pca3d_html:
-      - meta:
+          ontologies: []
+  pca3d_html:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing an HTML output for 3D PCA plots covering
-            specified input matrix (by default the last one in the input list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/html/pca3d.html":
           type: file
           description: |
             Meta-keyed tuple containing an HTML output for 3D PCA plots covering
             specified input matrix (by default the last one in the input list.
-  - mad_png:
-      - meta:
+          ontologies: []
+  mad_png:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing a PNG output for MAD correlation plots
-            covering specified input matrix (by default the last one in the input
-            list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/png/mad_correlation.png":
           type: file
           description: |
             Meta-keyed tuple containing a PNG output for MAD correlation plots
             covering specified input matrix (by default the last one in the input
             list.
-  - mad_html:
-      - meta:
-          type: map
+          ontologies: []
+  mad_html:
+    - - meta:
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/html/mad_correlation.html":
           type: file
           description: HTML output for MAD correlation plots
           pattern: "*{.html}"
-  - dendro:
-      - meta:
+          ontologies: []
+  dendro:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing a PNG, for a sample clustering
-            dendrogramcovering specified input matrix (by default the last one in
-            the input list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/png/sample_dendrogram.png":
           type: file
           description: |
             Meta-keyed tuple containing a PNG, for a sample clustering
             dendrogramcovering specified input matrix (by default the last one in
             the input list.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

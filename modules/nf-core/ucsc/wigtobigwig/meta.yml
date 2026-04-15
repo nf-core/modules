@@ -10,7 +10,8 @@ tools:
         Convert ascii format wig file (in fixedStep, variableStep
         or bedGraph format) to binary big wig format
       homepage: http://www.genome.ucsc.edu/goldenPath/help/bigWig.html
-      licence: ["varies; see http://genome.ucsc.edu/license"]
+      licence:
+        - "varies; see http://genome.ucsc.edu/license"
       identifier: ""
 input:
   - - meta:
@@ -22,24 +23,44 @@ input:
         type: file
         description: wig file
         pattern: "*.{wig}"
-  - - sizes:
-        type: file
-        description: Chromosome sizes file
+        ontologies: []
+  - sizes:
+      type: file
+      description: Chromosome sizes file
+      ontologies: []
 output:
-  - bw:
-      - meta:
+  bw:
+    - - meta:
           type: file
           description: bigwig file
           pattern: "*.{bw}"
-      - "*.bw":
+          ontologies: []
+      - ${prefix}.bw:
           type: file
           description: bigwig file
           pattern: "*.{bw}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_ucsc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ucsc:
+          type: string
+          description: The name of the tool
+      - "482":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ucsc:
+          type: string
+          description: The name of the tool
+      - "482":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@jianhong"
   - "@projectoriented"

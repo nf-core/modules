@@ -22,13 +22,14 @@ input:
         type: file
         description: BED file
         pattern: "*.bed"
-  - - min_cluster:
-        type: integer
-        description: Minimum size of cluster
-        pattern: "*.bed"
+        ontologies: []
+  - min_cluster:
+      type: integer
+      description: Minimum size of cluster
+      pattern: "*.bed"
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,11 +38,14 @@ output:
           type: file
           description: clustered BED file
           pattern: "*.bed"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mashehu"
 maintainers:

@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "ganon_table"
-description: Generate a multi-sample report file from the output of ganon report runs
+description: Generate a multi-sample report file from the output of ganon report
+  runs
 keywords:
   - ganon
   - metagenomics
@@ -18,7 +18,8 @@ tools:
       documentation: "https://github.com/pirovc/ganon"
       tool_dev_url: "https://github.com/pirovc/ganon"
       doi: "10.1093/bioinformatics/btaa458"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:ganon
 input:
   - - meta:
@@ -30,23 +31,42 @@ input:
         type: file
         description: A list of 'tre' files from ganon report
         pattern: "*.tre"
+        ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.txt":
           type: file
-          description: Output ganon table containing taxonomic profile information of
-            multiple samples. Formatting of contents depends on --output-format.
+          description: Output ganon table containing taxonomic profile information
+            of multiple samples. Formatting of contents depends on
+            --output-format.
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_ganon:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ganon:
+          type: string
+          description: The name of the tool
+      - ganon --version 2>1 | sed 's/.*ganon //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ganon:
+          type: string
+          description: The name of the tool
+      - ganon --version 2>1 | sed 's/.*ganon //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

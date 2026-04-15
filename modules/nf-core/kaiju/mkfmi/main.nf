@@ -2,17 +2,18 @@ process KAIJU_MKFMI {
     tag "${meta.id}"
     label 'process_high'
 
-    conda "bioconda::kaiju=1.10.0"
+    conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/kaiju:1.10.0--h43eeafb_0'
         : 'biocontainers/kaiju:1.10.0--h43eeafb_0'}"
 
     input:
     tuple val(meta), path(fasta)
+    path nodes_dmp, stageAs: "nodes.dmp"
     val keep_intermediate
 
     output:
-    tuple val(meta), path("*.fmi"), emit: fmi
+    tuple val(meta), path("*.{fmi,dmp}", includeInputs: true), emit: fmi
     tuple val(meta), path("*.bwt"), optional: true, emit: bwt
     tuple val(meta), path("*.sa"), optional: true, emit: sa
     path "versions.yml", emit: versions
@@ -41,7 +42,6 @@ process KAIJU_MKFMI {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def run_cleanup = keep_intermediate ? "" : "rm -f *.{bwt,sa}"
     """

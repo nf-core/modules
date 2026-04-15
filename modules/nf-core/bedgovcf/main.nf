@@ -13,7 +13,8 @@ process BEDGOVCF {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val("bedgovcf"), eval("bedgovcf --version 2>&1 | sed 's/^bedgovcf version //'"), emit: versions_bedgovcf, topic: versions
+    tuple val("${task.process}"), val("bgzip"), eval('bgzip --version | head -1 | sed "s/bgzip (htslib) //"')    , emit: versions_bgzip, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,21 +30,11 @@ process BEDGOVCF {
         --fai $fai \\
         --config $config \\
         | bgzip --stdout --threads $task.cpus $args2 > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedgovcf: \$(echo \$(bedgovcf --version 2>&1) | sed 's/^bedgovcf version //' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedgovcf: \$(echo \$(bedgovcf --version 2>&1) | sed 's/^bedgovcf version //' )
-    END_VERSIONS
     """
 }

@@ -9,32 +9,41 @@ process ARIBA_RUN {
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta), path(db)
+    tuple val(meta2), path(db)
 
     output:
     tuple val(meta), path("${prefix}/*"), emit: results
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('ariba'), eval("ariba version 2>&1 | sed '1!d;s/ARIBA version: //'"), emit: versions_ariba, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     def db_name = db.getName().replace('.tar.gz', '')
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
     tar -xzvf ${db}
     ariba \\
         run \\
         ${db_name}/ \\
         ${reads} \\
         ${prefix} \\
-        $args \\
-        --threads $task.cpus
+        ${args} \\
+        --threads ${task.cpus}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ariba:  \$(echo \$(ariba version 2>&1) | sed 's/^.*ARIBA version: //;s/ .*\$//')
-    END_VERSIONS
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+    mkdir -p ${prefix}
+    touch ${prefix}/report.tsv
+    touch ${prefix}/debug.report.tsv
+    echo '' | gzip > ${prefix}/assembled_genes.fa.gz
+    echo '' | gzip > ${prefix}/assembled_seqs.fa.gz
+    echo '' | gzip > ${prefix}/assemblies.fa.gz
+    touch ${prefix}/version_info.txt
     """
 }

@@ -16,7 +16,7 @@ process DEEPVARIANT_MAKEEXAMPLES {
     tuple val(meta), path("${prefix}.examples.tfrecord-*-of-*.gz{,.example_info.json}"),    emit: examples
     tuple val(meta), path("${prefix}.gvcf.tfrecord-*-of-*.gz"),        emit: gvcf
     tuple val(meta), path("${prefix}_call_variant_outputs.examples.tfrecord-*-of-*.gz",  arity: "0..*"),        emit: small_model_calls
-    path "versions.yml",  emit: versions
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,11 +42,6 @@ process DEEPVARIANT_MAKEEXAMPLES {
         ${par_regions} \\
         ${args} \\
         --task {}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_makeexamples: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +54,5 @@ process DEEPVARIANT_MAKEEXAMPLES {
         touch ${prefix}.examples.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz.example_info.json
         echo "" | gzip > ${prefix}.gvcf.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_makeexamples: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 }

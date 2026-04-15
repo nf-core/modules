@@ -24,16 +24,18 @@ input:
           e.g. [ id:'test' ]
     - reads:
         type: file
-        description: Input reads from Oxford Nanopore or PacBio data in FASTA/FASTQ
-          format.
+        description: Input reads from Oxford Nanopore or PacBio data in
+          FASTA/FASTQ format.
         pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
-  - - mode:
-        type: string
-        description: Flye mode depending on the input data (source and error rate)
-        pattern: "--pacbio-raw|--pacbio-corr|--pacbio-hifi|--nano-raw|--nano-corr|--nano-hq"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - mode:
+      type: string
+      description: Flye mode depending on the input data (source and error rate)
+      pattern: "--pacbio-raw|--pacbio-corr|--pacbio-hifi|--nano-raw|--nano-corr|--nano-hq"
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,8 +44,10 @@ output:
           type: file
           description: Assembled FASTA file
           pattern: "*.fasta.gz"
-  - gfa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +56,10 @@ output:
           type: file
           description: Repeat graph in gfa format
           pattern: "*.gfa.gz"
-  - gv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  gv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +68,10 @@ output:
           type: file
           description: Repeat graph in gv format
           pattern: "*.gv.gz"
-  - txt:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -72,8 +80,9 @@ output:
           type: file
           description: Extra information and statistics about resulting contigs
           pattern: "*.txt"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,8 +91,9 @@ output:
           type: file
           description: Flye log file
           pattern: "*.log"
-  - json:
-      - meta:
+          ontologies: []
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -92,11 +102,31 @@ output:
           type: file
           description: Flye parameters
           pattern: "*.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_flye:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flye:
+          type: string
+          description: The name of the tool
+      - flye --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flye:
+          type: string
+          description: The name of the tool
+      - flye --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@mirpedrol"
 maintainers:

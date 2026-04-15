@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "star_indexversion"
 description: Get the minimal allowed index version from STAR
@@ -16,20 +15,34 @@ tools:
       doi: 10.1093/bioinformatics/bts635
       licence: ["MIT"]
       identifier: biotools:star
-
 output:
-  - index_version:
-      - "*.txt":
-          type: file
-          description: File with the minimal index version
-          pattern: "*.txt"
-
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-
+  index_version:
+    - "*.txt":
+        type: file
+        description: File with the minimal index version
+        pattern: "*.txt"
+        ontologies: []
+  versions_star:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - star:
+          type: string
+          description: The name of the tool
+      - STAR --version | sed "s/STAR_//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - star:
+          type: string
+          description: The name of the tool
+      - STAR --version | sed "s/STAR_//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

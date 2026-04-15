@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ngsbits_bedcoverage"
-description: Annotates a BED file with the average coverage of the regions from one or several BAM/CRAM file(s).
+description: Annotates a BED file with the average coverage of the regions from one
+  or several BAM/CRAM file(s).
 keywords:
   - bed
   - coverage
@@ -33,10 +33,12 @@ input:
         type: file
         description: The index file(s) from the input BAM/CRAM/SAM file(s)
         pattern: "*.{bai,crai}"
+        ontologies: []
     - bed:
         type: file
         description: Input BED file containing regions to annotate
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -44,8 +46,10 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - fasta:
         type: file
-        description: The reference FASTA to use (mandatory when CRAM files are used, otherwise optional)
+        description: The reference FASTA to use (mandatory when CRAM files are used,
+          otherwise optional)
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -56,9 +60,10 @@ input:
         description: The index file from the reference FASTA
         pattern: "*.fai"
 
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,12 +73,15 @@ output:
           description: Output BED file with average coverage of the regions
           pattern: "*.bed"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -1,0 +1,216 @@
+name: braker3
+description: |
+  Gene prediction in novel genomes using RNA-seq and protein homology information
+keywords:
+  - genome
+  - annotation
+  - braker
+  - gff
+  - gtf
+tools:
+  - braker3:
+      description: "BRAKER3 is a pipeline for fully automated prediction of protein
+        coding gene structures using protein and RNA-seq and protein homology information"
+      homepage: https://github.com/Gaius-Augustus/BRAKER
+      documentation: https://github.com/Gaius-Augustus/BRAKER
+      tool_dev_url: https://github.com/Gaius-Augustus/BRAKER
+      doi: "10.13140/RG.2.2.20047.36004"
+      licence:
+        - "Artistic-1.0"
+      identifier: biotools:braker3
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Genome assembly fasta
+        pattern: "*.{fasta,fa,fas,faa,fna}"
+        ontologies: []
+  - bam:
+      type: file
+      description: BAM file of RNA-seq data to be passed to --bam
+      pattern: "*.bam"
+      ontologies: []
+  - rnaseq_sets_dirs:
+      type: file
+      description: Directories of RNA-seq data sets to be passed to
+        --rnaseq_sets_dirs
+      ontologies: []
+  - rnaseq_sets_ids:
+      type: file
+      description: IDs of RNA-seq data sets to be passed to --rnaseq_sets_ids
+      ontologies: []
+  - proteins:
+      type: file
+      description: Protein evidence to be passed to --proteins
+      pattern: "*.{fasta,fa,fas,faa}"
+      ontologies: []
+  - hintsfile:
+      type: file
+      description: Hintsfile to be passed to --hintsfile
+      pattern: "*.{gff, gtf, gff3}"
+      ontologies: []
+output:
+  gtf:
+    - - meta:
+          type: file
+          description: Gene transfer format file as output by BRAKER3
+          pattern: "*.{gtf}"
+          ontologies: []
+      - $prefix/braker.gtf:
+          type: file
+          description: Gene transfer format file as output by BRAKER3
+          pattern: "*.{gtf}"
+          ontologies: []
+  cds:
+    - - meta:
+          type: file
+          description: Gene transfer format file as output by BRAKER3
+          pattern: "*.{gtf}"
+          ontologies: []
+      - $prefix/braker.codingseq:
+          type: file
+          description: Coding sequence file as output by BRAKER3
+          pattern: "*.{codingseq}"
+          ontologies: []
+  aa:
+    - - meta:
+          type: file
+          description: Gene transfer format file as output by BRAKER3
+          pattern: "*.{gtf}"
+          ontologies: []
+      - $prefix/braker.aa:
+          type: file
+          description: Protein sequence file as output by BRAKER3
+          pattern: "*.{aa}"
+          ontologies: []
+  log:
+    - - meta:
+          type: file
+          description: Gene transfer format file as output by BRAKER3
+          pattern: "*.{gtf}"
+          ontologies: []
+      - $prefix/braker.log:
+          type: file
+          description: BRAKER3 log file
+          pattern: "*.log"
+          ontologies: []
+  hintsfile:
+    - - meta:
+          type: file
+          description: Gene transfer format file as output by BRAKER3
+          pattern: "*.{gtf}"
+          ontologies: []
+      - $prefix/hintsfile.gff:
+          type: file
+          description: Hints file as output by BRAKER3
+          pattern: "*hintsfile.{gff}"
+          ontologies: []
+  gff3:
+    - - meta:
+          type: file
+          description: Gene transfer format file as output by BRAKER3
+          pattern: "*.{gtf}"
+          ontologies: []
+      - $prefix/braker.gff3:
+          type: file
+          description: GFF3 file as output by BRAKER3
+          pattern: "*.{gff3}"
+          ontologies: []
+  citations:
+    - - meta:
+          type: file
+          description: Gene transfer format file as output by BRAKER3
+          pattern: "*.{gtf}"
+          ontologies: []
+      - $prefix/what-to-cite.txt:
+          type: file
+          description: BRAKER3 citations
+          pattern: "what-to-cite.txt"
+          ontologies: []
+  versions_braker3:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - braker3:
+          type: string
+          description: The name of the tool
+      - braker.pl --version 2>/dev/null | sed 's/braker.pl version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_augustus:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - augustus:
+          type: string
+          description: The name of the tool
+      - augustus --version |& sed -n 's/AUGUSTUS (\(.*\)) is a gene .*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_genemarketp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genemark-etp:
+          type: string
+          description: The name of the tool
+      - gmetp.pl |& sed -n 's/ETP version \(.*\)/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_prothint:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prothint:
+          type: string
+          description: The name of the tool
+      - prothint.py --version |& sed 's/prothint.py //1':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - braker3:
+          type: string
+          description: The name of the tool
+      - braker.pl --version 2>/dev/null | sed 's/braker.pl version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - augustus:
+          type: string
+          description: The name of the tool
+      - augustus --version |& sed -n 's/AUGUSTUS (\(.*\)) is a gene .*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genemark-etp:
+          type: string
+          description: The name of the tool
+      - gmetp.pl |& sed -n 's/ETP version \(.*\)/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prothint:
+          type: string
+          description: The name of the tool
+      - prothint.py --version |& sed 's/prothint.py //1':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@kherronism"
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

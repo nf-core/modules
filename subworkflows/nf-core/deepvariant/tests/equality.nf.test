@@ -55,8 +55,8 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert path(workflow.out.wf_vcf.get(0).get(1)).md5 == path(workflow.out.pc_vcf.get(0).get(1)).md5 },
-                { assert path(workflow.out.wf_gvcf.get(0).get(1)).md5 == path(workflow.out.pc_gvcf.get(0).get(1)).md5 },
+                { assert path(workflow.out.wf_vcf[0][1]).vcf.variantsMD5 == path(workflow.out.pc_vcf[0][1]).vcf.variantsMD5 },
+                { assert path(workflow.out.wf_gvcf[0][1]).vcf.variantsMD5 == path(workflow.out.pc_gvcf[0][1]).vcf.variantsMD5 },
             )
         }
     }

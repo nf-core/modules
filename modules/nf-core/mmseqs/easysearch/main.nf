@@ -4,8 +4,8 @@ process MMSEQS_EASYSEARCH {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mmseqs2:17.b804f--hd6d6fdc_1'
-        : 'biocontainers/mmseqs2:17.b804f--hd6d6fdc_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe49c17754753d6cd9a31e5894117edaf1c81e3d6053a12bf6dc8f3af1dffe23/data'
+        : 'community.wave.seqera.io/library/mmseqs2:18.8cc5c--af05c9a98d9f6139'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -13,7 +13,7 @@ process MMSEQS_EASYSEARCH {
 
     output:
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,10 +38,6 @@ process MMSEQS_EASYSEARCH {
         --threads ${task.cpus}
 
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -49,11 +45,9 @@ process MMSEQS_EASYSEARCH {
     def args2 = task.ext.args2 ?: "*.dbtype"
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
+    echo ${args2}
     touch ${prefix}.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: /')
-    END_VERSIONS
     """
 }

@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pbtk_pbmerge"
+description: Simple tool which merges several PacBio BAM files together
+keywords:
+  - pbtk
+  - pbmerge
+  - genomics
+  - pacbio
+  - bam
+tools:
+  - "pbtk":
+      description: "pbtk - PacBio BAM toolkit"
+      homepage: "https://github.com/PacificBiosciences/pbtk"
+      documentation: "https://github.com/PacificBiosciences/pbtk#usage"
+      tool_dev_url: "https://github.com/PacificBiosciences/pbtk"
+      doi: "no DOI available"
+      licence: ["BSD-3-clause-Clear"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bams:
+        type: file
+        description: PacBio BAM files
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: The merged PacBio BAM file
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  pbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pbi":
+          type: file
+          description: BAM Pacbio index file
+          pattern: "*.bam.pbi"
+          ontologies: []
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@haidyi"
+maintainers:
+  - "@haidyi"

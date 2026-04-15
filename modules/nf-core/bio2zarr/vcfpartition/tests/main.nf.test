@@ -1,0 +1,139 @@
+nextflow_process {
+
+    name "Test Process BIO2ZARR_VCFPARTITION"
+    script "../main.nf"
+    process "BIO2ZARR_VCFPARTITION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bio2zarr"
+    tag "bio2zarr/vcfpartition"
+
+    test("homo_sapiens - vcf - partitions") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = '--num-partitions 2' // This is a target. Do not assume that the number of partitions you ask for is what you get!
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { snapshot(
+                    sanitizeOutput(process.out),
+                    file(process.out.partitions[0][1]).readLines().size(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf - partitions - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--num-partitions 2'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { snapshot(
+                    sanitizeOutput(process.out),
+                    file(process.out.partitions[0][1]).readLines().size(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf - size") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = '--partition-size 10KB' // This is a target. Do not assume that the number of partitions you ask for is what you get!
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { snapshot(
+                    sanitizeOutput(process.out),
+                    file(process.out.partitions[0][1]).readLines().size(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf - size - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--partition-size 10KB'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { snapshot(
+                    sanitizeOutput(process.out),
+                    file(process.out.partitions[0][1]).readLines().size(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+}

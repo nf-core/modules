@@ -12,36 +12,27 @@ process ARTIC_GUPPYPLEX {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
-    path  "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('artic'), eval('artic -v 2>&1 | sed "s/^.*artic //; s/ .*$//"')   , emit: versions_artic, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     artic \\
         guppyplex \\
-        $args \\
-        --directory $fastq_dir \\
+        ${args} \\
+        --directory ${fastq_dir} \\
         --output ${prefix}.fastq
 
-    pigz -p $task.cpus *.fastq
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
+    pigz -p ${task.cpus} *.fastq
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo '' | gzip > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
     """
 }

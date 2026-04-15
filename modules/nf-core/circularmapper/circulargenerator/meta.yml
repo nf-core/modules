@@ -1,9 +1,10 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "circularmapper_circulargenerator"
-description: A method to improve mappings on circular genomes, using the BWA mapper.
+description: A method to improve mappings on circular genomes, using the BWA
+  mapper.
 keywords:
-  - sort
-  - example
+  - bwa
+  - circular
+  - mapping
   - genomics
 tools:
   - "circulargenerator":
@@ -13,7 +14,8 @@ tools:
       documentation: "https://github.com/apeltzer/CircularMapper/blob/master/docs/contents/userguide.rst"
       tool_dev_url: "https://github.com/apeltzer/CircularMapper"
       doi: "no DOI available"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -25,6 +27,7 @@ input:
         type: file
         description: Genome fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -32,8 +35,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - elongation_factor:
         type: integer
-        description: The number of bases that the ends of the target chromosome in the
-          reference genome should be elongated by
+        description: The number of bases that the ends of the target chromosome in
+          the reference genome should be elongated by
   - - meta3:
         type: map
         description: |
@@ -41,11 +44,11 @@ input:
           e.g. `[ id:'sample1' ]`
     - target:
         type: string
-        description: The name of the chromosome in the reference genome that should
-          be elongated
+        description: The name of the chromosome in the reference genome that
+          should be elongated
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +57,9 @@ output:
           type: file
           description: Genome fasta file
           pattern: "*.fasta"
-  - elongated:
-      - meta:
+          ontologies: []
+  elongated:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,11 +68,28 @@ output:
           type: file
           description: File listing the chromosomes that were elongated
           pattern: "*_elongated"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_circulargenerator:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circulargenerator:
+          type: string
+          description: The name of the tool
+      - "circulargenerator -h | sed -n 's/usage: CircularGeneratorv//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circulargenerator:
+          type: string
+          description: The name of the tool
+      - "circulargenerator -h | sed -n 's/usage: CircularGeneratorv//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@apalleja"
   - "@TCLamnidis"

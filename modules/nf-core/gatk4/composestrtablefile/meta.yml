@@ -18,29 +18,50 @@ tools:
       licence: ["Apache-2.0"]
       identifier: ""
 input:
-  - - fasta:
-        type: file
-        description: FASTA reference file
-        pattern: "*.{fasta,fa}"
-  - - fasta_fai:
-        type: file
-        description: index of the FASTA reference file
-        pattern: "*.fai"
-  - - dict:
-        type: file
-        description: Sequence dictionary of the FASTA reference file
-        pattern: "*.dict"
+  - fasta:
+      type: file
+      description: FASTA reference file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: index of the FASTA reference file
+      pattern: "*.fai"
+      ontologies: []
+  - dict:
+      type: file
+      description: Sequence dictionary of the FASTA reference file
+      pattern: "*.dict"
+      ontologies: []
 output:
-  - str_table:
-      - "*.zip":
-          type: file
-          description: A zipped folder containing the STR table files
-          pattern: "*.zip"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  str_table:
+    - "*.zip":
+        type: file
+        description: A zipped folder containing the STR table files
+        pattern: "*.zip"
+        ontologies:
+          - edam: http://edamontology.org/format_3987 # ZIP format
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

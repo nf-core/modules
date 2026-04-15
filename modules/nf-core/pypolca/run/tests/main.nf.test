@@ -1,0 +1,77 @@
+// nf-core modules test pypolca/run
+nextflow_process {
+
+    name "Test Process PYPOLCA_RUN"
+    script "../main.nf"
+    process "PYPOLCA_RUN"
+
+    tag "modules"
+    tag "modules_"
+    tag "pypolca"
+    tag "pypolca/run"
+    tag "modules_nfcore"
+
+    test("sarscov2 - fastq,fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ], // reads
+                ]
+                input[1] = [
+                    [ id:'meta2' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true), // assembly to polish
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert snapshot(
+                    process.out.polished,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.report,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                )}
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq,fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ], // reads
+                ]
+                input[1] = [
+                    [ id:'meta2' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true), // assembly to polish
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

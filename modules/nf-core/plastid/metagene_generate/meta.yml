@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "plastid_metagene_generate"
+description: Compute a metagene profile of read alignments, counts, or
+  quantitative data over one or more regions of interest, optionally
+  applying a mapping rule
+keywords:
+  - genomics
+  - riboseq
+  - psite
+tools:
+  - "plastid":
+      description: "Nucleotide-resolution analysis of next-generation sequencing and genomics data"
+      homepage: "https://github.com/joshuagryphon/plastid"
+      documentation: "https://plastid.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/joshuagryphon/plastid"
+      doi: "10.1186/s12864-016-3278-x"
+      licence: ["BSD-3-clause"]
+      identifier: biotools:plastid
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Map containing reference information for the reference genome annotation file
+          e.g. `[ id:'Ensembl human v.111' ]`
+    - annotation:
+        type: file
+        description: annotation file of reference genome (BED, bigBed, GTF, GFF3)
+        pattern: "*.{bed,bigbed,gtf,gff3}"
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
+          - edam: http://edamontology.org/format_3004 # bigBed
+          - edam: http://edamontology.org/format_2306 # GTF
+          - edam: http://edamontology.org/format_1975 # GFF3
+output:
+  rois_txt:
+    - - meta:
+          type: map
+          description: |
+            Map containing reference information for the reference genome annotation file
+            e.g. `[ id:'Ensembl human v.111' ]`
+      - "*_rois.txt":
+          type: file
+          description: Tab-delimited text file describing the maximal spanning
+            window for each gene
+          pattern: "*_rois.txt"
+          ontologies: []
+  rois_bed:
+    - - meta:
+          type: map
+          description: |
+            Map containing reference information for the reference genome annotation file
+            e.g. `[ id:'Ensembl human v.111' ]`
+      - "*_rois.bed":
+          type: file
+          description: |
+            Maximal spanning windows in BED format for visualization in a genome
+            browser. The thickly-rendered portion of a window indicates its landmark.
+          pattern: "*_rois.bed"
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@suhrig"
+maintainers:
+  - "@suhrig"

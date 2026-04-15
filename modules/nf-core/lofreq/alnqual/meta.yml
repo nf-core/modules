@@ -24,13 +24,15 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-  - - fasta:
-        type: file
-        description: Reference genome FASTA file
-        pattern: "*.{fasta}"
+        ontologies: []
+  - fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fasta}"
+      ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +41,14 @@ output:
           type: file
           description: BAM/CRAM/SAM file with base and indel alignment qualities
           pattern: "*.{bam,cram,sam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@MarieLataretu"
 maintainers:

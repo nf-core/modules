@@ -48,7 +48,6 @@ process MUDSKIPPER_BULK {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}.transcriptome"
     """
     touch ${prefix}.bam

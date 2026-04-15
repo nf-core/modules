@@ -10,7 +10,8 @@ tools:
       homepage: https://github.com/fritzsedlazeck/Sniffles
       documentation: https://github.com/fritzsedlazeck/Sniffles#readme
       tool_dev_url: https://github.com/fritzsedlazeck/Sniffles
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:sniffles
 input:
   - - meta:
@@ -20,14 +21,17 @@ input:
           e.g. [ id:'test' ]
     - input:
         type: file
-        description: A single .bam/.cram file - OR - one or more .snf files - OR - a
-          single .tsv file containing a list of .snf files and optional sample ids as
-          input
+        description: A single .bam/.cram file - OR - one or more .snf files - OR -
+          a single .tsv file containing a list of .snf files and optional sample
+          ids as input
         pattern: "*.{bam,cram,snf,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
     - index:
         type: file
         description: Index of BAM/CAM file
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,6 +41,7 @@ input:
         type: file
         description: |
           Reference database in FASTA format
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -46,16 +51,20 @@ input:
         type: file
         description: Tandem repeat file
         pattern: "*.bed"
-  - - vcf_output:
-        type: file
-        description: VCF output file
-        pattern: "*.vcf.gz"
-  - - snf_output:
-        type: file
-        description: SNF output file
+        ontologies: []
+  - vcf_output:
+      type: file
+      description: VCF output file
+      pattern: "*.vcf.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3989
+  - snf_output:
+      type: file
+      description: SNF output file
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +73,10 @@ output:
           type: file
           description: Compressed VCF file
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +85,9 @@ output:
           type: file
           description: Compressed VCF file index
           pattern: "*.tbi"
-  - snf:
-      - meta:
+          ontologies: []
+  snf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,11 +96,28 @@ output:
           type: file
           description: SNF file
           pattern: "*.snf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_sniffles:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sniffles:
+          type: string
+          description: The name of the tool
+      - sniffles --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sniffles:
+          type: string
+          description: The name of the tool
+      - sniffles --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@christopher-hakkaart"
   - "@yuukiiwa"

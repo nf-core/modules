@@ -12,7 +12,7 @@ process MINIPROT_INDEX {
 
     output:
     tuple val(meta), path("*.mpi"), emit: index
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('miniprot'), eval("miniprot --version"), topic: versions, emit: versions_miniprot
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,20 +25,10 @@ process MINIPROT_INDEX {
         -d ${fasta.baseName}.mpi \\
         $args \\
         $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        miniprot: \$(miniprot --version 2>&1)
-    END_VERSIONS
     """
 
     stub:
     """
     touch ${fasta.baseName}.mpi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        miniprot: \$(miniprot --version 2>&1)
-    END_VERSIONS
     """
 }

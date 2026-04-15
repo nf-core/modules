@@ -27,13 +27,17 @@ input:
         type: file
         description: fastq file
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
     - longreads:
         type: file
         description: fastq file
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,8 +46,10 @@ output:
           type: file
           description: Filtered (compressed) fastq file
           pattern: "*.fastq.gz"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,11 +58,28 @@ output:
           type: file
           description: Standard error logging file containing summary statistics
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_filtlong:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - filtlong:
+          type: string
+          description: The tool name
+      - 'filtlong --version | sed -e "s/Filtlong v//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - filtlong:
+          type: string
+          description: The name of the tool
+      - 'filtlong --version | sed -e "s/Filtlong v//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@d4straub"
   - "@sofstam"

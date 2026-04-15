@@ -24,10 +24,12 @@ input:
         type: file
         description: BAM/CRAM file.
         pattern: "*.{bam,cram}"
+        ontologies: []
     - index:
         type: file
         description: BAI/CRAI file.
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,6 +39,7 @@ input:
         type: file
         description: Genome fasta file
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -46,9 +49,10 @@ input:
         type: file
         description: The index of the FASTA reference.
         pattern: "*.fai"
+        ontologies: []
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -58,8 +62,9 @@ output:
           description: BAM/CRAM file. Depends on how ext.prefix is set. BAM "ext.prefix
             = <filename>.bam", CRAM "ext.prefix = <filename>.cram". Defaults to cram
           pattern: "*.{bam,cram}"
-  - index:
-      - meta:
+          ontologies: []
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -68,23 +73,45 @@ output:
           type: file
           description: BAM/CRAM index file
           pattern: "*.{bai,crai}"
-  - output_index:
-      - meta:
+          ontologies: []
+  output_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
             e.g. [ id:'test', single_end:false ]
       - ${prefix}:
           type: file
-          description: BAM/CRAM alignment and the corresponding index file
+          description: BAM/CRAM file. Depends on how ext.prefix is set. BAM "ext.prefix
+            = <filename>.bam", CRAM "ext.prefix = <filename>.cram". Defaults to cram
+          pattern: "*.{bam,cram}"
+          ontologies: []
       - ${prefix}.${index}:
           type: file
-          description: BAM/CRAM alignment and the corresponding index file
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: BAM/CRAM index file
+          pattern: "*.{bai,crai}"
+          ontologies: []
+  versions_sentieon:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - sentieon driver --version | sed "s/.*-//g":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - sentieon driver --version | sed "s/.*-//g":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

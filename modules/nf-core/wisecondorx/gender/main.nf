@@ -2,46 +2,31 @@ process WISECONDORX_GENDER {
     tag "$meta.id"
     label 'process_low'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wisecondorx:1.2.9--pyhdfd78af_0':
-        'biocontainers/wisecondorx:1.2.9--pyhdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/13af39819608398807612090d4b8af7dedb8db403967e71af22dbbeeb502ead1/data':
+        'community.wave.seqera.io/library/wisecondorx:1.3.0--835c946afbce9082' }"
 
     input:
     tuple val(meta), path(npz)
     tuple val(meta2), path(reference)
 
     output:
-    tuple val(meta), stdout , emit: gender
-    path "versions.yml"     , emit: versions
+    tuple val(meta), stdout, emit: gender
+    tuple val("${task.process}"), val('wisecondorx'), eval("pip list |& sed -n 's/wisecondorx *//p'"), emit: versions_wisecondorx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     WisecondorX gender \\
         ${npz} \\
         ${reference}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wisecondorx: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
-    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     echo male
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wisecondorx: ${VERSION}
-    END_VERSIONS
     """
 }

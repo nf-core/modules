@@ -4,8 +4,8 @@ process BISMARK_DEDUPLICATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bismark:0.24.2--hdfd78af_0' :
-        'biocontainers/bismark:0.24.2--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/38e61d14ccaed82f60c967132963eb467d0fa4bccb7a21404c49b4f377735f03/data' :
+        'community.wave.seqera.io/library/bismark:0.25.1--1f50935de5d79c47' }"
 
     input:
     tuple val(meta), path(bam)
@@ -13,37 +13,25 @@ process BISMARK_DEDUPLICATE {
     output:
     tuple val(meta), path("*.deduplicated.bam")        , emit: bam
     tuple val(meta), path("*.deduplication_report.txt"), emit: report
-    path  "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('bismark'), eval("bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), emit: versions_bismark, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
     def seqtype = meta.single_end ? '-s' : '-p'
     """
     deduplicate_bismark \\
         ${args} \\
         ${seqtype} \\
         --bam ${bam}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.deduplicated.bam
     touch ${prefix}.deduplication_report.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 }

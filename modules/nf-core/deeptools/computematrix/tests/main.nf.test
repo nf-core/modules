@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             process {
-                """              
+                """
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina//bigwig/test.bigwig', checkIfExists: true)
@@ -31,7 +31,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(file(process.out.matrix.get(0).get(1)).name,
                                   process.out.table,
-                                  process.out.versions)
+                                  process.out.findAll { key, val -> key.startsWith('version') })
                                   .match()
                 }
             )

@@ -27,14 +27,16 @@ input:
           List of input fastq/fasta files of size 1 and 2 for single-end and paired-end data,
           respectively.
         pattern: "*.{fastq,fq,fasta,fa,fsa,fas,fna,fastq.gz,fq.gz,fasta.gz,fa.gz,fsa.gz,fas.gz,fna.gz}"
-  - - db:
-        type: directory
-        description: |
-          List containing the database and nodes files for Kaiju
-          e.g. [ 'database.fmi', 'nodes.dmp' ]
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - db:
+      type: directory
+      description: |
+        List containing the database and nodes files for Kaiju
+        e.g. [ 'database.fmi', 'nodes.dmp' ]
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,11 +45,15 @@ output:
           type: file
           description: Results with taxonomic classification of each read
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@talnor"
   - "@sofstam"

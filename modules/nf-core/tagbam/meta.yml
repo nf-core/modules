@@ -12,6 +12,7 @@ tools:
       documentation: "https://github.com/fellen31/tagbam"
       tool_dev_url: "https://github.com/fellen31/tagbam"
       licence: ["MIT"]
+      identifier: ""
 
 input:
   - - meta:
@@ -23,9 +24,10 @@ input:
         type: file
         description: (u)BAM file
         pattern: "*.{bam}"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +36,29 @@ output:
           type: file
           description: Tagged bam file
           pattern: "*.{bam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_tagbam:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tagbam:
+          type: string
+          description: The tool name
+      - tagbam --version | sed 's/tagbam //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tagbam:
+          type: string
+          description: The tool name
+      - tagbam --version | sed 's/tagbam //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@fellen31"
 maintainers:

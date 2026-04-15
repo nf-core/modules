@@ -21,35 +21,57 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - reads:
         type: file
         description: A fasta or fastq file of reads to align
         pattern: "*.{fasta,fastq}"
-  - - genome:
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
         type: file
         description: fasta file of reference genome
         pattern: "*.fasta"
-  - - gtf:
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - gtf:
         type: file
-        description: A annotation of use the genome
+        description: Genome annotation file
         pattern: "*.gtf"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
+
 output:
-  - sam:
-      - meta:
+  sam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.sam":
           type: file
           description: The aligned reads in sam format
           pattern: "*.sam"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sguizard"
   - "@lassefolkersen"

@@ -11,10 +11,10 @@ tools:
       documentation: "https://github.com/Pbdas/epa-ng/wiki/Full-Stack-Example"
       tool_dev_url: "https://github.com/Pbdas/epa-ng"
       doi: "10.1093/sysbio/syy054"
-      licence: ["GNU Affero General Public License v3.0"]
+      licence:
+        - "GNU Affero General Public License v3.0"
       identifier: ""
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -22,17 +22,19 @@ input:
           e.g. [ id:'test', single_end:false ]
     - refaln:
         type: file
-        description: reference alignment in any supported format including phylip and
-          fasta, may be gzipped
+        description: reference alignment in any supported format including phylip
+          and fasta, may be gzipped
         pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
+        ontologies: []
     - fullaln:
         type: file
-        description: full alignment in any supported format to split into reference
-          and query alignments
+        description: full alignment in any supported format to split into
+          reference and query alignments
         pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
+        ontologies: []
 output:
-  - query:
-      - meta:
+  query:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +42,9 @@ output:
       - "*query.fasta.gz":
           type: file
           description: query sequence alignment in gzipped fasta format
-  - reference:
-      - meta:
+          ontologies: []
+  reference:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,11 +52,28 @@ output:
       - "*reference.fasta.gz":
           type: file
           description: reference sequence alignment in gzipped fasta format
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_epang:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - epa-ng:
+          type: string
+          description: The name of the tool
+      - epa-ng --version | sed "s/EPA-ng v//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - epa-ng:
+          type: string
+          description: The name of the tool
+      - epa-ng --version | sed "s/EPA-ng v//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@erikrikarddaniel"
 maintainers:

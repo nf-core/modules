@@ -32,7 +32,6 @@ process METAPHLAN_MERGEMETAPHLANTABLES {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt

@@ -1,11 +1,10 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hhsuite_reformat"
 description: Reformat a Multiple Sequence Alignment (MSA) file
 keywords:
   - reformat
   - MSA
   - hhsuite
+  - alignment
 tools:
   - "hhsuite":
       description: "HH-suite3 for fast remote homology detection and deep protein annotation"
@@ -20,35 +19,61 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1' ]`
     - aln:
         type: file
         description: Input MSA file
         pattern: "*.{fa,fasta,fas,a2m,a3m,sto,psi,clu,fa.gz,fasta.gz,fas.gz,a2m.gz,a3m.gz,sto.gz,psi.gz,clu.gz}"
-  - - informat:
-        type: string
-        description: Format of the input MSA file
-        enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
-  - - outformat:
-        type: string
-        description: Format of the output MSA file
-        enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1984 # FASTA-ALN
+          - edam: "http://edamontology.org/format_3281" # A2M
+          - edam: "http://edamontology.org/format_1961" # Stockholm format
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - informat:
+      type: string
+      description: Format of the input MSA file
+      enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
+  - outformat:
+      type: string
+      description: Format of the output MSA file
+      enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
 output:
-  - msa:
-      - meta:
+  msa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}.${outformat}.gz":
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.${outformat}.gz:
           type: file
           description: Gzipped reformatted output MSA file
           pattern: "*.{fas.gz,a2m.gz,a3m.gz,sto.gz,psi.gz,clu.gz}"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_hhsuite:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hhsuite:
+          type: string
+          description: The name of the tool
+      - hhblits -h 2>&1 | sed -n '1s/^HHblits \([0-9.]\+\):/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hhsuite:
+          type: string
+          description: The name of the tool
+      - hhblits -h 2>&1 | sed -n '1s/^HHblits \([0-9.]\+\):/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@vagkaratzas"
 maintainers:

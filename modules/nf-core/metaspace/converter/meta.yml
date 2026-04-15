@@ -1,43 +1,64 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "metaspace_converter"
 description: Export METASPACE datasets to AnnData and SpatialData objects
 keywords:
-- anndata
-- spatialdata
-- metabolomics
-- mass spectrometry
-- imaging
+  - anndata
+  - spatialdata
+  - metabolomics
+  - mass spectrometry
+  - imaging
 tools:
-- "metaspace_converter":
-    description: "Python package to download and convert datasets from the METASPACE
-      knowledge base to common formats for single-cell and spatial omics analysis"
-    homepage: "https://metaspace2020.github.io/metaspace-converter/"
-    documentation: "https://metaspace2020.github.io/metaspace-converter/"
-    tool_dev_url: "https://github.com/metaspace2020/metaspace-converter"
-    licence: ["Apache 2.0 license"]
-    identifier: biotools:metaspace
-
+  - "metaspace_converter":
+      description: "Python package to download and convert datasets from the METASPACE
+        knowledge base to common formats for single-cell and spatial omics analysis"
+      homepage: "https://metaspace2020.github.io/metaspace-converter/"
+      documentation: "https://metaspace2020.github.io/metaspace-converter/"
+      tool_dev_url: "https://github.com/metaspace2020/metaspace-converter"
+      licence:
+        - "Apache 2.0 license"
+      identifier: biotools:metaspace
 input:
-- - ds_id:
+  - ds_id:
       type: string
-      description: METASPACE dataset ID
-
+      description: METASPACE dataset identifier to retrieve and convert to AnnData and SpatialData formats.
+  - database_name_:
+      type: string
+      description: Name of the metabolite annotation database to use (e.g., HMDB)
+  - database_version_:
+      type: string
+      description: Version of the annotation database to use (e.g., v4)
+  - fdr_:
+      type: string
+      description: False Discovery Rate threshold for filtering metabolite annotations.
+      pattern: "^(0(\\.[0-9]+)?|1(\\.0+)?)$"
+  - use_tic_:
+      type: string
+      description: |
+        Controls whether intensity values are scaled by the total ion count per pixel.
+      pattern: "^(true|false)$"
+  - metadata_as_obs_:
+      type: string
+      description: |
+        Whether to store metadata in the obs dataframe instead of uns.
+      pattern: "^(true|false)$"
 output:
-- AnnData_object:
-  - AnnData_${ds_id}.h5ad:
-      type: file
-      description: "AnnData object in .h5ad format. Obs are single pixels and vars
-        are metabolites"
-- SpatialData_object:
-  - SpatialData_${ds_id}.zarr:
-      type: directory
-      description: "SpatialData format in .zarr format"
-- versions:
-  - versions.yml:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  adata_object:
+    - AnnData_${ds_id}.h5ad:
+        type: file
+        description: "AnnData object in .h5ad format. Obs are single pixels and vars
+          are metabolites"
+        ontologies: []
+  sdata_object:
+    - SpatialData_${ds_id}.zarr:
+        type: directory
+        description: "SpatialData format in .zarr format"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 authors:
-- "@bisho2122"
+  - "@bisho2122"
 maintainers:
-- "@bisho2122"
+  - "@bisho2122"

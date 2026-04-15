@@ -1,24 +1,24 @@
 process FGBIO_COLLECTDUPLEXSEQMETRICS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d65e7c77d89e7e443384d17a94ffe31fe988b05bc7d695f2a75beaf502721925/data':
-        'community.wave.seqera.io/library/fgbio_r-ggplot2:cf2b9a5308d77b67' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4d1150a2e123f49f8c268f0ab429847afae642376fa52af713b846b084df4a9f/data'
+        : 'community.wave.seqera.io/library/fgbio:3.1.2--6e9400d507a9dc55'}"
 
     input:
-    tuple val(meta), path(grouped_bam)
-    path interval_list
+    tuple val(meta), path(grouped_bam), path(interval_list)
 
     output:
-    tuple val(meta), path("**.family_sizes.txt")        , emit: family_sizes
-    tuple val(meta), path("**.duplex_family_sizes.txt") , emit: duplex_family_sizes
+    tuple val(meta), path("**.family_sizes.txt"), emit: family_sizes
+    tuple val(meta), path("**.duplex_family_sizes.txt"), emit: duplex_family_sizes
     tuple val(meta), path("**.duplex_yield_metrics.txt"), emit: duplex_yield_metrics
-    tuple val(meta), path("**.umi_counts.txt")          , emit: umi_counts
-    tuple val(meta), path("**.duplex_qc.pdf")           , emit: duplex_qc
-    tuple val(meta), path("**.duplex_umi_counts.txt")   , emit: duplex_umi_counts, optional: true
-    path "versions.yml"                                 , emit: versions
+    tuple val(meta), path("**.umi_counts.txt"), emit: umi_counts
+    tuple val(meta), path("**.duplex_qc.pdf"), emit: duplex_qc
+    tuple val(meta), path("**.duplex_umi_counts.txt"), emit: duplex_umi_counts, optional: true
+    tuple val("${task.process}"), val('fgbio'), eval('fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\\[.*$//"'), topic: versions, emit: versions_fgbio
+    tuple val("${task.process}"), val('ggplot2'), eval('Rscript -e "cat(as.character(packageVersion(\'ggplot2\')))"'), topic: versions, emit: versions_ggplot2
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,15 +26,17 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def intervals = interval_list ? "--intervals ${bed}" : ""
+    def intervals = interval_list ? "--intervals ${interval_list}" : ""
     def mem_gb = 8
 
     if (!task.memory) {
-        log.info '[fgbio CollectDuplexSeqMetrics] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.'
-    } else if (mem_gb > task.memory.giga) {
+        log.info('[fgbio CollectDuplexSeqMetrics] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.')
+    }
+    else if (mem_gb > task.memory.giga) {
         if (task.memory.giga < 2) {
             mem_gb = 1
-        } else {
+        }
+        else {
             mem_gb = task.memory.giga - 1
         }
     }
@@ -46,16 +48,10 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
         --async-io=true \\
         --compression=1 \\
         CollectDuplexSeqMetrics \\
-        --input $grouped_bam \\
+        --input ${grouped_bam} \\
         --output ${prefix} \\
-        $intervals \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
-        ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
-    END_VERSIONS
+        ${intervals} \\
+        ${args}
     """
 
     stub:
@@ -69,12 +65,6 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
     touch ${prefix}.duplex_yield_metrics.txt
     touch ${prefix}.umi_counts.txt
     touch ${prefix}.duplex_qc.pdf
-    $touch_duplex_umi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
-        ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
-    END_VERSIONS
+    ${touch_duplex_umi}
     """
 }

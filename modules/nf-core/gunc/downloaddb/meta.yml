@@ -19,21 +19,38 @@ tools:
       licence: ["GNU General Public v3 or later (GPL v3+)"]
       identifier: biotools:gunc
 input:
-  - - db_name:
-        type: string
-        description: "Which database to download. Options: progenomes or gtdb"
-        pattern: "progenomes|gtdb"
+  - db_name:
+      type: string
+      description: "Which database to download. Options: progenomes or gtdb"
+      pattern: "progenomes|gtdb"
 output:
-  - db:
-      - "*.dmnd":
-          type: file
-          description: GUNC database file
-          pattern: "*.dmnd"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  db:
+    - "*.dmnd":
+        type: file
+        description: GUNC database file
+        pattern: "*.dmnd"
+        ontologies: []
+  versions_gunc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gunc:
+          type: string
+          description: The name of the tool
+      - gunc --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gunc:
+          type: string
+          description: The name of the tool
+      - gunc --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

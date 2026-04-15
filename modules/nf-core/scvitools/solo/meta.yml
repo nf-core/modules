@@ -6,53 +6,65 @@ keywords:
   - doublets
 tools:
   - scvitools:
-      description: "A scalable toolkit for probabilistic modeling applied to single-cell omics data"
+      description: "A scalable toolkit for probabilistic modeling applied to single-cell
+        omics data"
       homepage: "https://scvi-tools.org"
       documentation: "https://docs.scvi-tools.org/en/stable/"
       tool_dev_url: "https://github.com/scverse/scvi-tools"
       licence: ["MIT"]
+      identifier: ""
 
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-
+          e.g. `[ id:'sample1' ]`
     - h5ad:
         type: file
         description: H5AD anndata object
         pattern: "*.h5ad"
-
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5 format
+  - batch_key:
+      type: string
+      description: Column in adata.obs to use as batch. If not provided, the entire dataset is treated as a single batch.
+  - max_epochs:
+      type: integer
+      description: Maximum number of epochs to train the model. Defaults to the [heuristic default](https://docs.scvi-tools.org/en/stable/api/reference/scvi.model.get_max_epochs_heuristic.html#scvi.model.get_max_epochs_heuristic).
 output:
-  - h5ad:
-      - meta:
+  h5ad:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "*.h5ad":
           type: file
           description: H5AD anndata object without doublets
           pattern: "*.h5ad"
-
-  - predictions:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5 format
+  predictions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "*.pkl":
           type: file
           description: pandas dataframe containing the doublet classification
           pattern: "*.pkl"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LeonHafner"
 maintainers:

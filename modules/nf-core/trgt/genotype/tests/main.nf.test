@@ -29,8 +29,8 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = [[],[]]
-                input[2] = false
+                    .combine(channel.of([[]]))
+                input[1] = false
                 """
             }
         }
@@ -59,7 +59,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                ).match() }
             )
         }
 

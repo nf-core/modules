@@ -25,9 +25,10 @@ input:
         type: file
         description: Input Illunina paired-end FASTQ files
         pattern: "*.{fq.gz,fastq.gz}"
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,8 +37,10 @@ output:
           type: file
           description: The predicted serotype in tab-delimited format
           pattern: "*.tsv"
-  - txt:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,11 +49,14 @@ output:
           type: file
           description: A detailed description of the predicted serotype
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

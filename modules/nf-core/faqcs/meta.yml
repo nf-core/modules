@@ -26,9 +26,10 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for
           single-end and paired-end data, respectively.
+        ontologies: []
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +38,10 @@ output:
           type: file
           description: The trimmed/modified fastq reads
           pattern: "*trimmed.fastq.gz"
-  - stats:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +50,9 @@ output:
           type: file
           description: trimming/qc text stats file
           pattern: "*.stats.txt"
-  - debug:
-      - meta:
+          ontologies: []
+  debug:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +61,8 @@ output:
           type: directory
           description: trimming/qc files from --debug option
           pattern: "./debug"
-  - statspdf:
-      - meta:
+  statspdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,19 +71,22 @@ output:
           type: file
           description: trimming/qc pdf report file
           pattern: "*_qc_report.pdf"
-  - reads_fail:
-      - meta:
+          ontologies: []
+  reads_fail:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.discard.fastq.gz":
           type: file
-          description: Reads that failed the preprocessing (Optional with --discard args
-            setting)
+          description: Reads that failed the preprocessing (Optional with --discard
+            args setting)
           pattern: "*discard.fastq.gz"
-  - reads_unpaired:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  reads_unpaired:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +95,10 @@ output:
           type: file
           description: Reads without matching mates in paired-end files (Optional)
           pattern: "*trimmed.unpaired.fastq.gz"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -98,11 +107,14 @@ output:
           type: file
           description: fastq log file
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mjcipriano"
   - "@sateeshperi"

@@ -4,8 +4,8 @@ process VCFANNO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d6a1af15acc0fbec648812e07ccb4c1c39a926f3a98031a50f51c5b859e543e1/data':
-        'community.wave.seqera.io/library/htslib_vcfanno:398cde9953538855' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b23fffa38d9740616e3b414df24e44c22fbc0510264f79b5062b3eecd619393f/data':
+        'community.wave.seqera.io/library/htslib_vcfanno:c88d6077509197fe' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(specific_resources)
@@ -16,7 +16,7 @@ process VCFANNO {
     output:
     tuple val(meta), path("*.vcf.gz")       , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi")   , emit: tbi
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('vcfanno'), eval("vcfanno 2>&1 | sed -n 's/.*version \\([0-9.]\\+\\).*/\\1/p'"), topic: versions, emit: versions_vcfanno
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,21 +38,13 @@ process VCFANNO {
         > ${prefix}.vcf.gz \\
         && tabix ${args3} ${prefix}.vcf.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcfanno: \$(echo \$(vcfanno 2>&1 | grep version | cut -f3 -d' ' ))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcfanno: \$(echo \$(vcfanno 2>&1 | grep version | cut -f3 -d' ' ))
-    END_VERSIONS
     """
 }

@@ -21,24 +21,26 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - normal_vcf:
+    - vcfs:
         type: file
-        description: Sorted VCF/BCF file (list)
-        pattern: "*.{bcf,vcf,vcf.gz}"
-    - tumor_vcf:
-        type: file
-        description: Sorted VCF/BCF file (optional)
-        pattern: "*.{bcf,bcf.gz,vcf,vcf.gz}"
-  - - scenario:
+        description: Sorted VCF/BCF file containing sample observations, Can also be
+          a list of files
+        pattern: "*.{vcf,bcf,vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF
+          - edam: http://edamontology.org/format_3020 # BCF
+    - scenario:
         type: file
         description: Yaml file containing scenario information (optional)
         pattern: "*.{yml,yaml}"
-  - - scenario_sample_name:
-        type: string
-        description: Sample name for the scenario
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+    - scenario_aliases:
+        type: list
+        description: List of aliases for the scenario (optional)
 output:
-  - bcf:
-      - meta:
+  bcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,12 +49,31 @@ output:
           type: file
           description: BCF file containing sample observations
           pattern: "*.bcf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3020 # BCF
+  versions_varlociraptor:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - varlociraptor:
+          type: string
+          description: The tool name
+      - "varlociraptor --version | sed 's/^varlociraptor //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - varlociraptor:
+          type: string
+          description: The tool name
+      - "varlociraptor --version | sed 's/^varlociraptor //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@FriederikeHanssen"
 maintainers:
   - "@FriederikeHanssen"
+  - "@famosab"

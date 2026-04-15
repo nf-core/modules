@@ -10,7 +10,8 @@ tools:
       homepage: http://pairtools.readthedocs.io/
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -21,12 +22,14 @@ input:
     - sam:
         type: file
         description: pair file
-  - - chromsizes:
-        type: file
-        description: chromosome size file
+        ontologies: []
+  - chromsizes:
+      type: file
+      description: chromosome size file
+      ontologies: []
 output:
-  - flip:
-      - meta:
+  flip:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +38,28 @@ output:
           type: file
           description: output file of flip
           pattern: "*.{flip.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_pairtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pairtools:
+          type: string
+          description: The name of the tool
+      - pairtools --version | sed 's/.*pairtools.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pairtools:
+          type: string
+          description: The name of the tool
+      - pairtools --version | sed 's/.*pairtools.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jianhong"
 maintainers:

@@ -24,13 +24,9 @@ nextflow_process {
 
             then {
                 assertAll(
-                        { assert process.success },
-                        { assert snapshot(
-                                process.out.alignment,
-                                process.out.versions
-                            ).match("alignment - uncompressed")
-                        },
-                        )
+                    { assert process.success },
+                    { assert snapshot(process.out).match() }
+                )
             }
         }
 
@@ -48,13 +44,9 @@ nextflow_process {
 
             then {
                 assertAll(
-                        { assert process.success },
-                        { assert snapshot(
-                                process.out.alignment,
-                                process.out.versions
-                            ).match("alignment - compressed")
-                        },
-                        )
+                    { assert process.success },
+                    { assert snapshot(process.out).match() }
+                )
             }
         }
         test("fasta - align_sequence - compressed - perm_all") {
@@ -72,13 +64,9 @@ nextflow_process {
 
             then {
                 assertAll(
-                        { assert process.success },
-                        { assert snapshot(
-                                process.out.alignment,
-                                process.out.versions
-                            ).match("perm-all")
-                        },
-                        )
+                    { assert process.success },
+                    { assert snapshot(process.out).match() }
+                )
             }
         }
 }

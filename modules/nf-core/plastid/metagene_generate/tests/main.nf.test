@@ -1,0 +1,55 @@
+// nf-core modules test plastid
+nextflow_process {
+
+    name "Test Process PLASTID_METAGENE_GENERATE"
+    script "../main.nf"
+    process "PLASTID_METAGENE_GENERATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plastid"
+    tag "plastid/metagene_generate"
+
+    test("human chr20 gtf") {
+
+        when {
+            process {
+                """
+                input[0] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.rois_txt.get(0).get(1)).getText().contains('ENSG') },
+                { assert path(process.out.rois_bed.get(0).get(1)).getText().contains('ENSG') },
+                { assert snapshot(process.out.versions).match('versions') }
+            )
+        }
+    }
+
+    test("human chr20 gtf -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.rois_txt.get(0).get(1)).exists() },
+                { assert file(process.out.rois_bed.get(0).get(1)).exists() },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+
+}

@@ -1,6 +1,6 @@
 name: "canu"
-description: Accurate assembly of segmental duplications, satellites, and allelic
-  variants from high-fidelity long reads.
+description: Accurate assembly of segmental duplications, satellites, and
+  allelic variants from high-fidelity long reads.
 keywords:
   - Assembly
   - pacbio
@@ -14,7 +14,8 @@ tools:
       documentation: "https://canu.readthedocs.io/en/latest/tutorial.html"
       tool_dev_url: "https://github.com/marbl/canu"
       doi: "10.1101/gr.215087.116"
-      licence: ["GPL v2 and others"]
+      licence:
+        - "GPL v2 and others"
       identifier: biotools:canu
 input:
   - - meta:
@@ -26,18 +27,20 @@ input:
         type: file
         description: fasta/fastq file
         pattern: "*.{fasta,fastq}"
-  - - mode:
-        type: string
-        description: Canu mode depending on the input data (source and error rate)
-        pattern: "-pacbio|-nanopore|-pacbio-hifi"
-  - - genomesize:
-        type: string
-        description: An estimate of the size of the genome. Common suffices are allowed,
-          for example, 3.7m or 2.8g
-        pattern: "<number>[g|m|k]"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - mode:
+      type: string
+      description: Canu mode depending on the input data (source and error rate)
+      pattern: "-pacbio|-nanopore|-pacbio-hifi"
+  - genomesize:
+      type: string
+      description: An estimate of the size of the genome. Common suffices are
+        allowed, for example, 3.7m or 2.8g
+      pattern: "<number>[g|m|k]"
 output:
-  - report:
-      - meta:
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,30 +49,33 @@ output:
           type: file
           description: Most of the analysis reported during assembly
           pattern: "*.report"
-  - assembly:
-      - meta:
+          ontologies: []
+  assembly:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.contigs.fasta.gz":
           type: file
-          description: Everything which could be assembled and is the full assembly, including
-            both unique, repetitive, and bubble elements.
+          description: Everything which could be assembled and is the full
+            assembly, including both unique, repetitive, and bubble elements.
           pattern: "*.contigs.fasta"
-  - contigs:
-      - meta:
+          ontologies: []
+  contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.unassembled.fasta.gz":
           type: file
-          description: Reads and low-coverage contigs which could not be incorporated
-            into the primary assembly.
+          description: Reads and low-coverage contigs which could not be
+            incorporated into the primary assembly.
           pattern: "*.unassembled.fasta"
-  - corrected_reads:
-      - meta:
+          ontologies: []
+  corrected_reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +84,10 @@ output:
           type: file
           description: The reads after correction.
           pattern: "*.correctedReads.fasta.gz"
-  - corrected_trimmed_reads:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
+  corrected_trimmed_reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +96,10 @@ output:
           type: file
           description: The corrected reads after overlap based trimming
           pattern: "*.trimmedReads.fasta.gz"
-  - metadata:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
+  metadata:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -98,8 +108,9 @@ output:
           type: file
           description: (undocumented)
           pattern: "*.contigs.layout"
-  - contig_position:
-      - meta:
+          ontologies: []
+  contig_position:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -108,22 +119,79 @@ output:
           type: file
           description: The position of each read in a contig
           pattern: "*.contigs.layout.readToTig"
-  - contig_info:
-      - meta:
+          ontologies: []
+  contig_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.contigs.layout.tigInfo":
           type: file
-          description: A list of the contigs, lengths, coverage, number of reads and other
-            metadata. Essentially the same information provided in the FASTA header line.
+          description: A list of the contigs, lengths, coverage, number of reads
+            and other metadata. Essentially the same information provided in the
+            FASTA header line.
           pattern: "*.contigs.layout.tigInfo"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_canu:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - canu:
+          type: string
+          description: The name of the tool
+      - "2.3":
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_minimap2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimap2:
+          type: string
+          description: The name of the tool
+      - minimap2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - canu:
+          type: string
+          description: The name of the tool
+      - "2.3":
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimap2:
+          type: string
+          description: The name of the tool
+      - minimap2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@scorreard"
 maintainers:

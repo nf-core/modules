@@ -4,8 +4,8 @@ process CHECKV_ENDTOEND {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/checkv:1.0.1--pyhdfd78af_0':
-        'biocontainers/checkv:1.0.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/checkv:1.0.3--pyhdfd78af_0':
+        'biocontainers/checkv:1.0.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -18,7 +18,7 @@ process CHECKV_ENDTOEND {
     tuple val(meta), path ("${prefix}/complete_genomes.tsv"), emit: complete_genomes
     tuple val(meta), path ("${prefix}/proviruses.fna")      , emit: proviruses
     tuple val(meta), path ("${prefix}/viruses.fna")         , emit: viruses
-    path "versions.yml"                                     , emit: versions
+    tuple val("${task.process}"), val("checkv"), eval("checkv -h 2>&1 | sed '1!d;s/^.*CheckV v//;s/:.*//'"), topic: versions, emit: versions_checkv
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,15 +35,9 @@ process CHECKV_ENDTOEND {
         -d $db \\
         $fasta \\
         $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        checkv: \$(checkv -h 2>&1  | sed -n 's/^.*CheckV v//; s/: assessing.*//; 1p')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -54,10 +48,5 @@ process CHECKV_ENDTOEND {
     touch ${prefix}/complete_genomes.tsv
     touch ${prefix}/proviruses.fna
     touch ${prefix}/viruses.fna
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        checkv: \$(checkv -h 2>&1  | sed -n 's/^.*CheckV v//; s/: assessing.*//; 1p')
-    END_VERSIONS
     """
 }

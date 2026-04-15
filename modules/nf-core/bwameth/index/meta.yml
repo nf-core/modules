@@ -16,7 +16,8 @@ tools:
       homepage: https://github.com/brentp/bwa-meth
       documentation: https://github.com/brentp/bwa-meth
       arxiv: arXiv:1401.1129
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -27,9 +28,14 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
+  - use_mem2:
+      type: boolean
+      description: |
+        If true, use bwameth index-mem2 for indexing. If false, use bwameth index (default: false)
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: directory
           description: Directory containing bwameth genome index
           pattern: "index"
@@ -37,11 +43,27 @@ output:
           type: directory
           description: Directory containing bwameth genome index
           pattern: "index"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_bwameth_index:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwameth:
+          type: string
+          description: The name of the tool
+      - bwameth.py --version | cut -f2 -d' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwameth:
+          type: string
+          description: The name of the tool
+      - bwameth.py --version | cut -f2 -d' ':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@phue"
 maintainers:

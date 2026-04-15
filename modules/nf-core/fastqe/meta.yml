@@ -1,5 +1,6 @@
 name: "fastqe"
-description: fastqe is a bioinformatics command line tool that uses emojis to represent and analyze genomic data.
+description: fastqe is a bioinformatics command line tool that uses emojis to
+  represent and analyze genomic data.
 keywords:
   - quality control
   - fastq
@@ -12,9 +13,9 @@ tools:
       documentation: "https://github.com/fastqe/fastqe#readme"
       tool_dev_url: "https://github.com/fastqe/fastqe"
       doi: "10.21105/joss.02400"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: "biotools:fastqe"
-
 input:
   - - meta:
         type: map
@@ -26,10 +27,10 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,12 +39,29 @@ output:
           type: file
           description: Text file containing emoji
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_fastqe:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastqe:
+          type: string
+          description: The name of the tool
+      - 0.5.2:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastqe:
+          type: string
+          description: The name of the tool
+      - 0.5.2:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@adamrtalbot"
 maintainers:

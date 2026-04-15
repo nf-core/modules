@@ -65,11 +65,12 @@ process EVIGENE_TR2AACDS {
     """
 
     stub:
-    def args        = task.ext.args ?: ''
     def prefix      = task.ext.prefix ?: "${meta.id}"
     def max_memory  = 7*1024
     if (!task.memory) {
         log.info '[evigene] Available memory not known - defaulting to 7GB. Specify process memory requirements to change this.'
+    } else {
+        max_memory  = (task.memory.mega*0.8).intValue()
     }
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)

@@ -1,5 +1,6 @@
 name: anndata_barcodes
-description: Module to subset AnnData object to cells with matching barcodes from the csv file
+description: Module to subset AnnData object to cells with matching barcodes
+  from the csv file
 keywords:
   - single-cell
   - barcodes
@@ -13,7 +14,8 @@ tools:
       documentation: "https://anndata.readthedocs.io"
       tool_dev_url: "https://github.com/theislab/anndata"
       doi: "10.21105/joss.04371"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:anndata
 input:
   - - meta:
@@ -25,15 +27,18 @@ input:
         type: file
         description: Anndata object as H5AD file
         pattern: "*.h5ad"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5
     - barcodes:
         type: file
         description: |
           CSV file containing barcodes. Barcodes are written in plain text. One column, no header
         pattern: "*.csv"
-
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # CSV
 output:
-  - h5ad:
-      - meta:
+  h5ad:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,11 +49,23 @@ output:
           description: |
             AnnData file containing all cells with barcodes that match those in the input barcodes csv file
           pattern: "*.h5ad"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5
+  versions_anndata:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
 authors:
   - "@nictru"
   - "@chaochaowong"

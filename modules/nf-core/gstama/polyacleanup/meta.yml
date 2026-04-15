@@ -28,9 +28,10 @@ input:
         type: file
         description: Full Length Non Chimeric reads in fasta format
         pattern: "*.{fa,fasta}"
+        ontologies: []
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,19 +41,23 @@ output:
           description: The Full Length Non Chimeric reads cleaned from remaining polyA
             tails. The sequences are in FASTA format compressed with gzip.
           pattern: "*_tama.fa.gz"
-  - report:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*_tama_polya_flnc_report.txt.gz":
           type: file
-          description: A text file describing the number of polyA tails removed and their
-            length. Compressed with gzip.
+          description: A text file describing the number of polyA tails removed and
+            their length. Compressed with gzip.
           pattern: "*_tama_polya_flnc_report.txt.gz"
-  - tails:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tails:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,11 +66,15 @@ output:
           type: file
           description: A gzip compressed FASTA file of trimmed polyA tails.
           pattern: "*_tama_tails.fa.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sguizard"
 maintainers:
