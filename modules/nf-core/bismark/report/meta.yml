@@ -57,13 +57,27 @@ output:
           description: Bismark reports
           pattern: "*.{html,txt}"
           ontologies: []
+  versions_bismark:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bismark:
+          type: string
+          description: The name of the tool
+      - "bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bismark:
+          type: string
+          description: The name of the tool
+      - "bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@phue"
 maintainers:
