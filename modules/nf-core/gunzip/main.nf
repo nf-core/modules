@@ -19,8 +19,10 @@ process GUNZIP {
 
     script:
     def args = task.ext.args ?: ''
-    def extension = (archive.toString() - '.gz').tokenize('.')[-1]
-    def name = archive.toString() - '.gz' - ".${extension}"
+    def nameWithoutGz = archive.toString() - '.gz'
+    def extension = nameWithoutGz.tokenize('.')[-1]
+    def idx = nameWithoutGz.lastIndexOf(".${extension}")
+    def name = idx >= 0 ? nameWithoutGz[0..<idx] : nameWithoutGz
     def prefix = task.ext.prefix ?: name
     gunzip = prefix + ".${extension}"
     """
@@ -35,8 +37,10 @@ process GUNZIP {
     """
 
     stub:
-    def extension = (archive.toString() - '.gz').tokenize('.')[-1]
-    def name = archive.toString() - '.gz' - ".${extension}"
+    def nameWithoutGz = archive.toString() - '.gz'
+    def extension = nameWithoutGz.tokenize('.')[-1]
+    def idx = nameWithoutGz.lastIndexOf(".${extension}")
+    def name = idx >= 0 ? nameWithoutGz[0..<idx] : nameWithoutGz
     def prefix = task.ext.prefix ?: name
     gunzip = prefix + ".${extension}"
     """
