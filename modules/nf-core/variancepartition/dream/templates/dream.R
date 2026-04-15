@@ -227,7 +227,7 @@ if (opt\$subset_to_contrast_samples) {
 if (is_valid_string(opt\$formula)) {
     form <- as.formula(opt\$formula)
 } else {
-    model_vars <- c(contrast_variable)
+    model_vars <- contrast_variable
 
     if (is_valid_string(opt\$blocking_variables)) {
         model_vars <- c(model_vars, blocking.vars)
