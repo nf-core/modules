@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "FLASHPCA"
-description: Perform principal component analysis (PCA) on genetic data using flashpca
+description: Perform principal component analysis (PCA) on genetic data using
+  flashpca
 keywords:
   - pca
   - genetics
@@ -12,9 +12,9 @@ tools:
       homepage: "https://github.com/gabraham/flashpca"
       documentation: "https://github.com/gabraham/flashpca"
       tool_dev_url: "https://github.com/gabraham/flashpca"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -25,71 +25,84 @@ input:
         type: file
         description: PLINK BED file
         pattern: "*.bed"
+        ontologies: []
     - bim:
         type: file
         description: PLINK BIM file
         pattern: "*.bim"
+        ontologies: []
     - fam:
         type: file
         description: PLINK FAM file
         pattern: "*.fam"
-
+        ontologies: []
 output:
   pcs:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - "*.pcs.txt":
-        type: file
-        description: Principal components
-        pattern: "*.pcs.txt"
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pcs.txt":
+          type: file
+          description: Principal components
+          pattern: "*.pcs.txt"
+          ontologies: []
   eigenvectors:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - "*.eigenvectors.txt":
-        type: file
-        description: Eigenvectors
-        pattern: "*.eigenvectors.txt"
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.eigenvectors.txt":
+          type: file
+          description: Eigenvectors
+          pattern: "*.eigenvectors.txt"
+          ontologies: []
   eigenvalues:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - "*.eigenvalues.txt":
-        type: file
-        description: Eigenvalues
-        pattern: "*.eigenvalues.txt"
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.eigenvalues.txt":
+          type: file
+          description: Eigenvalues
+          pattern: "*.eigenvalues.txt"
+          ontologies: []
   pve:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - "*.pve.txt":
-        type: file
-        description: Proportion of variance explained
-        pattern: "*.pve.txt"
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pve.txt":
+          type: file
+          description: Proportion of variance explained
+          pattern: "*.pve.txt"
+          ontologies: []
   loadings:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - "*.loadings.txt":
-        type: file
-        description: SNP loadings
-        pattern: "*.loadings.txt"
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.loadings.txt":
+          type: file
+          description: SNP loadings
+          pattern: "*.loadings.txt"
+          ontologies: []
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750
 authors:
   - "@dbaku42"
