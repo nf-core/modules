@@ -23,8 +23,10 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    'QuantitativeTrait',
+                    false
                 ]
 
                 input[2] = [
@@ -32,9 +34,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[3] = 'QuantitativeTrait'
-                input[4] = false
-                input[5] = []
+                input[3] = []
                 """
             }
         }
@@ -51,8 +51,10 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_binary_phenoname', pheno_col:'BinaryTrait', is_binary:true ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true)
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true),
+                    'BinaryTrait',
+                    true
                 ]
 
                 input[2] = [
@@ -60,9 +62,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[3] = 'BinaryTrait'
-                input[4] = true
-                input[5] = []
+                input[3] = []
                 """
             }
         }
@@ -83,8 +83,10 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    'QuantitativeTrait',
+                    false
                 ]
 
                 input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco)
@@ -94,10 +96,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[4] = 'QuantitativeTrait'
-                input[5] = false
-                input[6] = []
-                input[7] = []
+                input[4] = []
+                input[5] = []
                 """
             }
         }
@@ -136,8 +136,10 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_binary_phenoname' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true)
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true),
+                    'BinaryTrait',
+                    true
                 ]
 
                 input[2] = REGENIE_STEP1_BINARY.out.predictions.join(REGENIE_STEP1_BINARY.out.loco)
@@ -147,10 +149,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[4] = 'BinaryTrait'
-                input[5] = true
-                input[6] = []
-                input[7] = []
+                input[4] = []
+                input[5] = []
                 """
             }
         }
@@ -189,18 +189,18 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    'QuantitativeTrait',
+                    false
                 ]
 
                 input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco)
 
                 input[3] = [[:], []]
 
-                input[4] = 'QuantitativeTrait'
-                input[5] = false
-                input[6] = []
-                input[7] = []
+                input[4] = []
+                input[5] = []
                 """
             }
         }
@@ -241,8 +241,10 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    'QuantitativeTrait',
+                    false
                 ]
 
                 input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco)
@@ -252,10 +254,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[4] = 'QuantitativeTrait'
-                input[5] = false
-                input[6] = []
-                input[7] = []
+                input[4] = []
+                input[5] = []
                 """
             }
         }
@@ -297,8 +297,10 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated_quantitative_phenoname' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    'QuantitativeTrait',
+                    false
                 ]
 
                 input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco)
@@ -308,10 +310,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
 
-                input[4] = 'QuantitativeTrait'
-                input[5] = false
-                input[6] = []
-                input[7] = []
+                input[4] = []
+                input[5] = []
                 """
             }
         }

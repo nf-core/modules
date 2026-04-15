@@ -9,18 +9,16 @@ process REGENIE_STEP2 {
 
     input:
     tuple val(meta), path(plink_genotype_file), path(plink_variant_file), path(plink_sample_file)
-    tuple val(meta2), path(pheno)
+    tuple val(meta2), path(pheno), val(pheno_col), val(is_binary)
     tuple val(meta3), path(predictions), path(loco_files)
     tuple val(meta4), path(covar)
-    val pheno_col
-    val is_binary
     val bsize
     val test_model
 
     output:
     tuple val(meta), path("*.regenie.gz"), emit: results
     tuple val(meta), path("*.log"), emit: log
-    tuple val("${task.process}"), val('regenie'), eval("regenie --version 2>&1 | head -n 1 | sed 's/\\.gz$//'"), topic: versions, emit: versions_regenie
+    tuple val("${task.process}"), val('regenie'), eval('regenie --version 2>&1 | sed -n "1{s/^v//;s/\\.gz$//;p}"'), topic: versions, emit: versions_regenie
 
     when:
     task.ext.when == null || task.ext.when
