@@ -2,7 +2,7 @@ process CANVAS_GERMLINE {
     tag "$meta.id"
     label 'process_high'
 
-    container "ghcr.io/clinicalgenomicsgbg/canvas:1.40.0"
+    container "quay.io/nf-core/canvas:1.40.0"
 
     input:
     tuple val(meta), path(bam), path(bai)
