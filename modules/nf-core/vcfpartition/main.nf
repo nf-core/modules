@@ -1,4 +1,4 @@
-process VCFPARTITION {
+process BIO2ZARR_VCFPARTITION {
     tag "$meta.id"
     label 'process_single'
 

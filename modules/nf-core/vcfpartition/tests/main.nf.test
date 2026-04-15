@@ -1,12 +1,13 @@
 nextflow_process {
 
-    name "Test Process VCFPARTITION"
+    name "Test Process BIO2ZARR_VCFPARTITION"
     script "../main.nf"
-    process "VCFPARTITION"
+    process "BIO2ZARR_VCFPARTITION"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "vcfpartition"
+    tag "bio2zarr"
+    tag "bio2zarr/vcfpartition"
 
     test("homo_sapiens - vcf - partitions") {
 
