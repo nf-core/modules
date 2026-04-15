@@ -1,0 +1,131 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_impute_quilt2"
+description: |
+  Impute low-coverage BAM or CRAM inputs with QUILT2 and ligate chunked outputs per chromosome.
+keywords:
+  - bam
+  - cram
+  - imputation
+  - quilt
+  - quilt2
+  - vcf
+components:
+  - quilt/quilt2
+  - glimpse2/ligate
+  - bcftools/index
+input:
+  - ch_input:
+      description: |
+        Channel with target sequencing data and optional rename files.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map for the input batch.
+        - bam_or_cram:
+            type: file
+            description: Input BAM or CRAM file, or a list of BAM or CRAM files.
+            pattern: "*.{bam,cram}"
+        - index:
+            type: file
+            description: Index for the BAM or CRAM input.
+            pattern: "*.{bai,crai}"
+        - bampaths:
+            type: file
+            description: |
+              Optional text file listing BAM or CRAM paths to impute.
+              One file per line.
+            pattern: "*.{txt,tsv}"
+        - bamnames:
+            type: file
+            description: |
+              Optional text file listing sample names in the same order as `bampaths`.
+              One file per line.
+            pattern: "*.{txt,tsv}"
+  - ch_reference_panel:
+      description: |
+        Channel with phased reference panel VCFs per chromosome.
+      structure:
+        - meta:
+            type: map
+            description: |
+              Metadata map that will be combined with the input metadata.
+              Must include `id` for the panel name and `chr` for the chromosome.
+        - vcf:
+            type: file
+            description: Reference panel VCF or BCF.
+            pattern: "*.{vcf,vcf.gz,bcf}"
+        - index:
+            type: file
+            description: Index for the reference panel VCF or BCF.
+            pattern: "*.{tbi,csi}"
+  - ch_chunks:
+      description: |
+        Channel with optional imputation chunks per chromosome.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map with the panel id and chromosome.
+        - chr:
+            type: string
+            description: Chromosome name.
+        - start:
+            type: integer
+            description: Start position of the chunk.
+        - end:
+            type: integer
+            description: End position of the chunk.
+  - ch_map:
+      description: |
+        Channel with optional genetic maps per chromosome.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map with the panel id and chromosome.
+        - map:
+            type: file
+            description: Genetic map used by QUILT2.
+            pattern: "*.{txt,map}{,gz}"
+  - ch_fasta:
+      description: |
+        Channel with optional reference FASTA data, required for CRAM inputs.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map for the reference genome.
+        - fasta:
+            type: file
+            description: Reference genome FASTA.
+            pattern: "*.{fa,fasta}"
+        - fai:
+            type: file
+            description: FASTA index file.
+            pattern: "*.fai"
+  - n_gen:
+      type: integer
+      description: Number of generations since founding or mixing.
+  - buffer:
+      type: integer
+      description: Buffer of region to perform imputation over.
+output:
+  - vcf_index:
+      description: |
+        Imputed and indexed VCFs after ligating chunked outputs per chromosome.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map combined from the input batch and panel metadata.
+        - vcf:
+            type: file
+            description: Imputed VCF file.
+            pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        - index:
+            type: file
+            description: Index for the imputed VCF or BCF file.
+            pattern: "*.{tbi,csi}"
+  - versions:
+      description: |
+        Collected software version information emitted by the constituent modules.
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"
