@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process PARSNP"
+    script "../main.nf"
+    process "PARSNP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "parsnp"
+
+    test("candidatus_portiera_aleyrodidarum - fasta") {
+        when {
+            params {
+                modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            }
+            process {
+                def dir = file("${outputDir}/genomes")
+                dir.mkdirs()
+                def genomeText = new URL(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta').text
+                new File(dir, "portiera_1.fa").text = genomeText
+                new File(dir, "portiera_2.fa").text = genomeText
+                """
+                input[0] = [[ id:'test' ], file("${outputDir}/genomes")]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            }
+            process {
+                def dir = file("${outputDir}/genomes")
+                dir.mkdirs()
+                def genomeText = new URL(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta').text
+                new File(dir, "portiera_1.fa").text = genomeText
+                new File(dir, "portiera_2.fa").text = genomeText
+                """
+                input[0] = [[ id:'test' ], file("${outputDir}/genomes")]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
