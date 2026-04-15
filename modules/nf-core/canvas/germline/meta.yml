@@ -19,9 +19,9 @@ tools:
       homepage: "https://github.com/Illumina/canvas"
       documentation: "https://github.com/Illumina/canvas/wiki"
       tool_dev_url: "https://github.com/Illumina/canvas"
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -70,7 +70,6 @@ input:
           chrX    156030895 .  N    <CNV>  .     PASS    END=156040895     CN      1
           chrY    0        .   N    <CNV>  .     PASS    END=57227415      CN      1
           ```
-
         pattern: "*.vcf"
         ontologies: []
     - female_ploidy_vcf:
@@ -89,7 +88,6 @@ input:
           #CHROM  POS  ID  REF  ALT    QUAL  FILTER  INFO          FORMAT  SAMPLE
           chrY    0    .   N    <CNV>  .     PASS    END=57227415  CN      0
           ```
-
         pattern: "*.vcf"
         ontologies: []
   - genomedir:
@@ -112,7 +110,6 @@ input:
         Available from s3://canvas-cnv-public.
       pattern: "*.bed"
       ontologies: []
-
 output:
   vcf:
     - - meta:
@@ -121,7 +118,7 @@ output:
             Groovy Map containing sample information.
             e.g. `[ id:'sample1' ]`
           ontologies: []
-      - "*.vcf.gz":
+      - ${prefix}.vcf.gz:
           type: file
           description: |
             Bgzipped VCF file containing germline CNV calls. Canvas:REF entries (non-variant regions)
@@ -135,14 +132,13 @@ output:
             Groovy Map containing sample information.
             e.g. `[ id:'sample1' ]`
           ontologies: []
-      - "*.CoverageAndVariantFrequency.txt":
+      - ${prefix}.CoverageAndVariantFrequency.txt:
           type: file
           description: |
             Tab-separated file with per-bin coverage and variant allele frequency values.
             Used as input for CANVAS_CREATESEG to generate segmentation files.
           pattern: "*.CoverageAndVariantFrequency.txt"
           ontologies: []
-
   versions_canvas:
     - - ${task.process}:
           type: string
@@ -152,8 +148,8 @@ output:
           description: The name of the tool
       - 1.40.0.1613+master:
           type: string
-          description: The version of the tool (hardcoded as Canvas is an archived tool)
-
+          description: The version of the tool (hardcoded as Canvas is an archived
+            tool)
 topics:
   versions:
     - - ${task.process}:
@@ -164,8 +160,8 @@ topics:
           description: The name of the tool
       - 1.40.0.1613+master:
           type: string
-          description: The version of the tool (hardcoded as Canvas is an archived tool)
-
+          description: The version of the tool (hardcoded as Canvas is an archived
+            tool)
 authors:
   - "@ktruve"
 maintainers:

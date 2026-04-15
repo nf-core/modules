@@ -2,7 +2,7 @@ process CANVAS_GERMLINE {
     tag "$meta.id"
     label 'process_high'
 
-    container "quay.io/nf-core/canvas:1.40.0"
+    container "nf-core/canvas:1.40.0"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -56,7 +56,7 @@ process CANVAS_GERMLINE {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.CoverageAndVariantFrequency.txt
     """
 }
