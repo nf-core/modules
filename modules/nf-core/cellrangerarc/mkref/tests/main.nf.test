@@ -12,13 +12,13 @@ nextflow_process {
     tag "unzip"
 
     setup {
-            run("UNZIP") {
-                script "../../../unzip/main.nf"
+        run("UNZIP") {
+            script "../../../unzip/main.nf"
 
-                process {
-                    """
-                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz',checkIfExists:true)]
-                    """
+            process {
+                """
+                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz',checkIfExists:true)]
+                """
             }
         }
     }
@@ -41,7 +41,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.config,
-                    process.out.versions,
                     path( "${outputDir}/cellrangerarc_reference/fasta/"                        ),
                     path( "${outputDir}/cellrangerarc_reference/genes/"                        ),
                     path( "${outputDir}/cellrangerarc_reference/regions"                       ),
@@ -60,6 +59,7 @@ nextflow_process {
                     path( "${outputDir}/cellrangerarc_reference/star/sjdbList.fromGTF.out.tab" ),
                     path( "${outputDir}/cellrangerarc_reference/star/sjdbList.out.tab"         ),
                     path( "${outputDir}/cellrangerarc_reference/star/transcriptInfo.tab"       ),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -81,10 +81,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.versions.collect{ path(it).yaml }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
