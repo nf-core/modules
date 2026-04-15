@@ -14,7 +14,7 @@ process FLASHPCA {
     tuple val(meta), path("*.eigenvalues.txt")   , emit: eigenvalues,  optional: true
     tuple val(meta), path("*.pve.txt")           , emit: pve,          optional: true
     tuple val(meta), path("*.loadings.txt")      , emit: loadings,     optional: true
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("versions.yml")        , emit: versions      // Changed to tuple with meta
 
     when:
     task.ext.when == null || task.ext.when

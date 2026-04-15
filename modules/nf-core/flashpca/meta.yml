@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: FLASHPCA
+name: "FLASHPCA"
 description: Perform principal component analysis (PCA) on genetic data using flashpca
 keywords:
   - pca
@@ -7,11 +7,11 @@ keywords:
   - flashpca
   - plink
 tools:
-  - flashpca:
-      description: Fast Principal Component Analysis of Large-Scale Genome-Wide Data
-      homepage: https://github.com/gabraham/flashpca
-      documentation: https://github.com/gabraham/flashpca
-      tool_dev_url: https://github.com/gabraham/flashpca
+  - "flashpca":
+      description: "Fast Principal Component Analysis of Large-Scale Genome-Wide Data"
+      homepage: "https://github.com/gabraham/flashpca"
+      documentation: "https://github.com/gabraham/flashpca"
+      tool_dev_url: "https://github.com/gabraham/flashpca"
       licence: ["GPL v3"]
       identifier: ""
 
@@ -20,7 +20,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'test', single_end:false ]`
+          e.g. [ id:'test', single_end:false ]
     - bed:
         type: file
         description: PLINK BED file
@@ -35,61 +35,61 @@ input:
         pattern: "*.fam"
 
 output:
-  - pcs:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
-      - "*.pcs.txt":
-          type: file
-          description: Principal components
-          pattern: "*.pcs.txt"
-  - eigenvectors:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
-      - "*.eigenvectors.txt":
-          type: file
-          description: Eigenvectors
-          pattern: "*.eigenvectors.txt"
-  - eigenvalues:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
-      - "*.eigenvalues.txt":
-          type: file
-          description: Eigenvalues
-          pattern: "*.eigenvalues.txt"
-  - pve:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
-      - "*.pve.txt":
-          type: file
-          description: Proportion of variance explained
-          pattern: "*.pve.txt"
-  - loadings:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
-      - "*.loadings.txt":
-          type: file
-          description: SNP loadings
-          pattern: "*.loadings.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  pcs:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - "*.pcs.txt":
+        type: file
+        description: Principal components
+        pattern: "*.pcs.txt"
+  eigenvectors:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - "*.eigenvectors.txt":
+        type: file
+        description: Eigenvectors
+        pattern: "*.eigenvectors.txt"
+  eigenvalues:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - "*.eigenvalues.txt":
+        type: file
+        description: Eigenvalues
+        pattern: "*.eigenvalues.txt"
+  pve:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - "*.pve.txt":
+        type: file
+        description: Proportion of variance explained
+        pattern: "*.pve.txt"
+  loadings:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - "*.loadings.txt":
+        type: file
+        description: SNP loadings
+        pattern: "*.loadings.txt"
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
 authors:
   - "@dbaku42"
