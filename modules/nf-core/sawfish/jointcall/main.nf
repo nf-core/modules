@@ -25,7 +25,7 @@ process SAWFISH_JOINTCALL {
     tuple val(meta), path("*/samples/*/copynum.summary.json")                                    , emit: copynum_summary           , optional: true
     tuple val(meta), path("*/samples/*/maf.bw")                                                  , emit: maf_bw                    , optional: true
     tuple val(meta), path("*/sawfish.log")                                                       , emit: log
-    tuple val("${task.process}"), val("sawfish"), eval('sawfish --version | sed "s/sawfish //g"'), emit: versions_sawfish          , topic: versions
+    tuple val("${task.process}"), val("sawfish"), eval('sawfish --version | sed "s/.* //g"')     , emit: versions_sawfish          , topic: versions
 
     when:
     task.ext.when == null || task.ext.when

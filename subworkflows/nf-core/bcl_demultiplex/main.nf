@@ -20,6 +20,7 @@ workflow BCL_DEMULTIPLEX {
     ch_interop = channel.empty()
     ch_logs = channel.empty()
     ch_sav_files = channel.empty()
+    ch_undetermined  = channel.empty()
 
     // MODULE: bclconvert
     // Demultiplex the bcl files
@@ -28,6 +29,7 @@ workflow BCL_DEMULTIPLEX {
         ch_interop = ch_interop.mix(BCLCONVERT.out.interop)
         ch_reports = ch_reports.mix(BCLCONVERT.out.reports)
         ch_logs = ch_logs.mix(BCLCONVERT.out.logs)
+        ch_undetermined = ch_undetermined.mix(BCLCONVERT.out.undetermined)
         ch_sav_files = ch_sav_files.mix(BCLCONVERT.out.reports)
         ch_fastq_with_meta = ch_fastq_with_meta.mix(
             generateReadgroupBCLCONVERT(
@@ -46,6 +48,7 @@ workflow BCL_DEMULTIPLEX {
         ch_interop = ch_interop.mix(BCL2FASTQ.out.interop)
         ch_reports = ch_reports.mix(BCL2FASTQ.out.reports)
         ch_stats = ch_stats.mix(BCL2FASTQ.out.stats)
+        ch_undetermined = ch_undetermined.mix(BCL2FASTQ.out.undetermined)
         ch_sav_files = ch_sav_files.mix(BCL2FASTQ.out.stats)
         ch_fastq_with_meta = ch_fastq_with_meta.mix(
             generateReadgroupBCL2FASTQ(
@@ -57,7 +60,8 @@ workflow BCL_DEMULTIPLEX {
     // MODULE: multiqcsav
     ch_mqcsav_input = ch_flowcell
         .map { meta, _samplesheet, flowcell ->
-            def interop = files(file(flowcell).resolve("InterOp/*.bin"), checkIfExists: true)
+            def interopDir = file(flowcell).resolve("InterOp")
+            def interop = file(interopDir).exists() ? files("${interopDir}/*.bin") : []
             def xml = files(file(flowcell).resolve("*.xml"), checkIfExists: true)
             return [meta, xml, interop]
         }
@@ -83,15 +87,16 @@ workflow BCL_DEMULTIPLEX {
     }
 
     emit:
-    fastq       = ch_fastq.fastq
-    empty_fastq = ch_fastq.empty
-    reports     = ch_reports
-    stats       = ch_stats
-    interop     = ch_interop
-    logs        = ch_logs
-    sav_report  = MULTIQCSAV.out.report
-    sav_data    = MULTIQCSAV.out.data
-    sav_plots   = MULTIQCSAV.out.plots
+    fastq           = ch_fastq.fastq
+    empty_fastq     = ch_fastq.empty
+    reports         = ch_reports
+    stats           = ch_stats
+    interop         = ch_interop
+    logs            = ch_logs
+    undetermined    = ch_undetermined
+    sav_report      = MULTIQCSAV.out.report
+    sav_data        = MULTIQCSAV.out.data
+    sav_plots       = MULTIQCSAV.out.plots
 }
 
 def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {

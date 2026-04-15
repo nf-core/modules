@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process OPENMS_TEXTEXPORTER"
+    script "../main.nf"
+    process "OPENMS_TEXTEXPORTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openms/textexporter"
+
+    test("proteomics - export - idxml") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // TSV rows are prefixed with their data type (PROTEIN, PEPTIDE, etc.)
+                { assert file(process.out.tsv[0][1]).readLines().any { it.contains('PROTEIN') } },
+                { assert file(process.out.tsv[0][1]).readLines().any { it.contains('PEPTIDE') } },
+                { assert snapshot(
+                    file(process.out.tsv[0][1]).readLines().findAll { it.startsWith('#') }.join('\n').md5(),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - export - idxml - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

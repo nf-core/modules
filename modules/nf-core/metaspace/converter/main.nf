@@ -23,11 +23,21 @@ process METASPACE_CONVERTER {
     task.ext.when == null || task.ext.when
 
     script:
+
     database_name    = database_name_ ?: 'HMDB'
     database_version = database_version_ ?: 'v4'
     fdr              = fdr_ ?: '0.1'
     use_tic          = use_tic_ ?: 'true'
     metadata_as_obs  = metadata_as_obs_ ?: 'false'
+
+    """
+    echo ${database_name}
+    echo ${database_version}
+    echo ${fdr}
+    echo ${use_tic}
+    echo ${metadata_as_obs}
+    """
+
     template 'run_metaspace_converter.py'
 
     stub:
