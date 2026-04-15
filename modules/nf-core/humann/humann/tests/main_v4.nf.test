@@ -4,8 +4,11 @@ nextflow_process {
     script "../main.nf"
     process "HUMANN4"
     tag "modules"
-    tag "modules_"
+    tag "modules_nfcore"
     tag "humann"
+    tag "humann/humann"
+    tag "metaphlan/metaphlan"
+    tag "untar"
 
     setup{
         run("UNTAR") {

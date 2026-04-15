@@ -4,8 +4,11 @@ nextflow_process {
     script "../main.nf"
     process "HUMANN3"
     tag "modules"
-    tag "modules_"
+    tag "modules_nfcore"
     tag "humann"
+    tag "humann/humann"
+    tag "metaphlan/metaphlan"
+    tag "untar"
 //    config "./nextflow.config"
     setup{
         run("UNTAR") {
@@ -85,7 +88,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.pathabundance, process.out.pathcoverage, process.out.reactions).match() }
+                { assert snapshot(process.out.pathabundance, process.out.pathcoverage, process.out.reactions, process.out.versions).match() }
             )
         }
 
@@ -113,7 +116,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.pathabundance, process.out.pathcoverage, process.out.reactions).match() }
+                { assert snapshot(process.out.pathabundance, process.out.pathcoverage, process.out.reactions, process.out.versions).match() }
             )
         }
 
