@@ -29,7 +29,7 @@ nextflow_process {
                 { assert snapshot(
 					path(process.out.selected[0][1]).linesGzip[3..7],
 					path(process.out.unselected[0][1]).linesGzip[3..7],
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )

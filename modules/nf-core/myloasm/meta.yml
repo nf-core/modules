@@ -53,7 +53,7 @@ output:
           description: Primary assembly contigs in FASTA format
           pattern: "assembly_primary.fa"
           ontologies:
-            - edam: http://edamontology.org/format_1929 # FASTA format
+            - edam: http://edamontology.org/format_1929 # FASTA
   gfa:
     - - meta:
           type: map
@@ -77,7 +77,7 @@ output:
           description: Alternative assembly contigs in FASTA format
           pattern: "assembly_alternate.fa"
           ontologies:
-            - edam: http://edamontology.org/format_1929 # FASTA format
+            - edam: http://edamontology.org/format_1929 # FASTA
   contigs_dup:
     - - meta:
           type: map
@@ -89,7 +89,7 @@ output:
           description: Duplicated contigs in FASTA format
           pattern: "duplicated_contigs.fa"
           ontologies:
-            - edam: http://edamontology.org/format_1929 # FASTA format
+            - edam: http://edamontology.org/format_1929 # FASTA
   mapping:
     - - meta:
           type: map
@@ -101,7 +101,7 @@ output:
           description: Mapping of reads to unitigs in PAF format (compressed)
           pattern: "map_to_unitigs.paf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989 # GZIP
   log:
     - - meta:
           type: map
@@ -114,13 +114,27 @@ output:
           pattern: "*.log"
           ontologies:
             - edam: http://edamontology.org/format_2330 # Textual format
+  versions_myloasm:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - myloasm:
+          type: string
+          description: The name of the tool
+      - myloasm --version | sed 's/.* //':
+          type: eval
+          description: The expression used to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - myloasm:
+          type: string
+          description: The name of the tool
+      - myloasm --version | sed 's/.* //':
+          type: eval
+          description: The expression used to obtain the version of the tool
 authors:
   - "@vagkaratzas"
 maintainers:
