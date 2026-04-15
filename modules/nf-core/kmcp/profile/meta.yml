@@ -32,9 +32,7 @@ input:
           - edam: http://edamontology.org/format_3989 # GZIP format
   - db:
       type: directory
-      description: |
-        Database directory that also includes containing NCBI-style taxdump taxonomy files (`nodes.dmp`, `names.dmp`)
-        and a two column accession ID to taxid TSV file ending in `*map`
+      description: Database directory containing taxdump files and taxid file
 output:
   profile:
     - - meta:
