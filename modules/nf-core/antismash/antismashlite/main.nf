@@ -38,7 +38,7 @@ process ANTISMASH_ANTISMASHLITE {
     tuple val(meta), path("${prefix}/*region*.gbk")                       , emit: gbk_results                , optional: true
     tuple val(meta), path("${prefix}/clusterblastoutput.txt")             , emit: clusterblastoutput         , optional: true
     tuple val(meta), path("${prefix}/knownclusterblastoutput.txt")        , emit: knownclusterblastoutput    , optional: true
-    path "versions.yml"                                                   , emit: versions
+    tuple val("${task.process}"), val('antismash-lite'), eval("antismash --version | sed 's/antiSMASH //'"), emit: versions_antismash, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,7 +50,6 @@ process ANTISMASH_ANTISMASHLITE {
         Reason:
         This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
         The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
-
     """
 
     assert false: deprecation_message
@@ -72,11 +71,6 @@ process ANTISMASH_ANTISMASHLITE {
         --logfile ${prefix}/${prefix}.log \\
         --databases ${databases} \\
         ${sequence_input}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -86,7 +80,6 @@ process ANTISMASH_ANTISMASHLITE {
         Reason:
         This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
         The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
-
     """
 
     assert false: deprecation_message
@@ -107,10 +100,5 @@ process ANTISMASH_ANTISMASHLITE {
     touch ${prefix}/js/jquery.js
     touch ${prefix}/regions.js
     touch ${prefix}/test.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
-    END_VERSIONS
     """
 }

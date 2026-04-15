@@ -7,7 +7,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
-  NFT_VER: "0.9.4"
+  NFT_VER: "0.9.5"
   NXF_ANSI_LOG: false
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
   NXF_VER: "25.10.2"
@@ -74,7 +74,7 @@ jobs:
           python-version: "3.14"
 
       - name: Set up nf-test
-        uses: nf-core/setup-nf-test@v1
+        uses: nf-core/setup-nf-test@ce65500579e8587607aab289ecb3a9c343c32e79 # v2
         with:
           version: "${{ env.NFT_VER }}"
           install-pdiff: true
