@@ -315,7 +315,7 @@ if (!is.null(opt\$formula)) {
 } else {
     # Put the contrast variable first in zero-intercept designs so each
     # contrast level is represented directly in the design matrix.
-    model_vars <- c(contrast_variable)
+    model_vars <- contrast_variable
 
     if (!is.null(opt\$blocking_variables)) {
         # Include blocking variables (including pairing variables if any)
