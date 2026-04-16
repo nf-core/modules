@@ -3,12 +3,10 @@ process HUMANN_RENORM {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::humann=3.0.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/humann:3.0.0--pyh5e36f6f_1"
-    } else {
-        container "quay.io/biocontainers/humann:3.0.0--pyh5e36f6f_1"
-    }
+    conda "bioconda::humann=3.0.0"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/humann:3.0.0--pyh5e36f6f_1'
+        : 'quay.io/biocontainers/humann:3.0.0--pyh5e36f6f_1'}"
 
     input:
     tuple val(meta), path(input)
