@@ -1,4 +1,5 @@
 process BAMCMP {
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
@@ -21,8 +22,8 @@ process BAMCMP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_primary"
-    def prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
+    prefix = task.ext.prefix ?: "${meta.id}_primary"
+    prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
 
     if ("$primary_aligned_bam" == "${prefix}.bam"  | "$contaminant_aligned_bam" == "${prefix}.bam"  ) {
         error "Input and output names for the primary-genome bam file are the same, use \"task.ext.prefix\" to disambiguate!"
@@ -51,8 +52,8 @@ process BAMCMP {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}_primary"
-    def prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
+    prefix = task.ext.prefix ?: "${meta.id}_primary"
+    prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
 
     if ("$primary_aligned_bam" == "${prefix}.bam"  | "$contaminant_aligned_bam" == "${prefix}.bam"  )
         error "Input and output names for the primary-genome bam file are the same, use \"task.ext.prefix\" to disambiguate!"
