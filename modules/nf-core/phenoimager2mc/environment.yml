@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10.20
+  - pip=25.3
+  - pip:
+    - ome_types==0.6.3
+    - phenoimager2mc==0.3.2
