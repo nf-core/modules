@@ -1,0 +1,91 @@
+name: diamond_deepclust
+description: Fast graph-based protein sequence clustering using DIAMOND deepclust
+keywords:
+  - clustering
+  - protein
+  - diamond
+  - deepclust
+  - proteomics
+tools:
+  - diamond:
+      description: Accelerated BLAST compatible local sequence aligner
+      homepage: https://github.com/bbuchfink/diamond
+      documentation: https://github.com/bbuchfink/diamond/wiki
+      tool_dev_url: https://github.com/bbuchfink/diamond
+      doi: "10.1038/s41592-021-01101-x"
+      licence:
+        - "GPL v3-or-later"
+      identifier: biotools:diamond
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input protein FASTA file to be clustered
+        pattern: "*.{fa,faa,fasta,fa.gz,faa.gz,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - save_aln:
+      type: boolean
+      description: |
+        Whether to save clustering alignments to a file (--aln-out)
+        WARNING: unusable in this version (2.1.24) of diamond due to bug, leaving as placeholder
+output:
+  clusters:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.tsv:
+          type: file
+          description: |
+            Tab-separated file mapping each member sequence to its cluster
+            representative. The first column contains the representative
+            accession and the second column contains the member sequence
+            accession.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  alignment:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.aln:
+          type: file
+          description: |
+            Optional. Tab-separated file containing the clustering alignments,
+            produced when save_aln is true (--aln-out).
+          pattern: "*.aln"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_diamond:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diamond:
+          type: string
+          description: The name of the tool
+      - diamond --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diamond:
+          type: string
+          description: The name of the tool
+      - diamond --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
