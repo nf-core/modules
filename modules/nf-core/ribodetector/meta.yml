@@ -93,3 +93,38 @@ authors:
   - "@maxibor"
 maintainers:
   - "@maxibor"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ribodetector:0.3.3--ad3d7071e408b502
+      build_id: bd-ad3d7071e408b502_1
+      scan_id: sc-408506540aa13673_3
+    linux/arm64:
+      name: community.wave.seqera.io/library/ribodetector:0.3.3--6a7080e95297ee85
+      build_id: bd-6a7080e95297ee85_1
+      scan_id: sc-616160e1b9188bd4_2
+    linux/amd64+cuda12:
+      name: community.wave.seqera.io/library/ribodetector_pytorch-gpu_cuda-version:811a681473448f10
+      build_id: bd-811a681473448f10_1
+      scan_id: sc-bd9352efb9c141d2_1
+    linux/amd64+cuda11:
+      name: community.wave.seqera.io/library/ribodetector_pytorch-gpu_cuda-version:b13a02b25508139f
+      build_id: bd-b13a02b25508139f_1
+      scan_id: sc-60e9801765c6a0f0_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ribodetector:0.3.3--5932c2e0c31912db
+      build_id: bd-5932c2e0c31912db_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/463b8ad941e7f1f2decef20844d666c1c8ac233e166d2bc766164c4a93905a3c/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ribodetector:0.3.3--9376f5e1554cc026
+      build_id: bd-9376f5e1554cc026_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8a/8ad4d85aa47f5b2562e9ecfa7e464e7d1e054eb321043d8e8a33c3a9159ae811/data
+    linux/amd64+cuda12:
+      name: oras://community.wave.seqera.io/library/ribodetector_pytorch-gpu_cuda-version:cced3ad1f9589501
+      build_id: bd-cced3ad1f9589501_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b71fb81b909f9d1e1090e3d1d8f10b9da95405bed1d0f01a6be71f0ef0b51170/data
+    linux/amd64+cuda11:
+      name: oras://community.wave.seqera.io/library/ribodetector_pytorch-gpu_cuda-version:98b9ed04a509e20d
+      build_id: bd-98b9ed04a509e20d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/562a5060502d049a50cf863a323c216dd3ca81f1817dfff73970169c704800d4/data
