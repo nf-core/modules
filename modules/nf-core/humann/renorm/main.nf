@@ -41,7 +41,7 @@ process HUMANN_RENORM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "stub" | gzip > ${prefix}_renorm.tsv.gz
+    echo "" | gzip > ${prefix}_renorm.tsv.gz
 
     """
 }
