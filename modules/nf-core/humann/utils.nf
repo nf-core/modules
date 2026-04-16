@@ -29,12 +29,12 @@ process testhumann3{
 
     output:
     val "x3"
-    shell: """echo x3 """
+    script: """echo x3 """
 }
 process testhumann4{
     container  'ghcr.io/vdblab/biobakery-profiler:4.0.6--4.0.0.alpha.1-final_smaller-pt2'
     output:
     val "x4"
-    shell: """echo x4 """
+    script: """echo x4 """
 
 }
