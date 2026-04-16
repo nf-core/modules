@@ -51,8 +51,8 @@ process BAMCMP {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}_primary"
-    prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
+    def prefix = task.ext.prefix ?: "${meta.id}_primary"
+    def prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
 
     if ("$primary_aligned_bam" == "${prefix}.bam"  | "$contaminant_aligned_bam" == "${prefix}.bam"  )
         error "Input and output names for the primary-genome bam file are the same, use \"task.ext.prefix\" to disambiguate!"
