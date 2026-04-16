@@ -12,7 +12,7 @@ process DIAMOND_DEEPCLUST {
 
     output:
     tuple val(meta), path("*.tsv"), emit: clusters
-    tuple val("${task.process}"), val('diamond'), eval("diamond --version | sed 's/diamond version //g'"), emit: versions_diamond, topic: versions
+    tuple val("${task.process}"), val('diamond'), eval("diamond --version | sed 's/.* //g'"), emit: versions_diamond, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
