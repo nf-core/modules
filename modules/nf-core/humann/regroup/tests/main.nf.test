@@ -1,11 +1,13 @@
 nextflow_process {
 
-    name "Test Process HUMANN3_REGROUP"
+    name "Test Process HUMANN_REGROUP"
     script "../main.nf"
-    process "HUMANN3_REGROUP"
+    process "HUMANN_REGROUP"
     tag "modules"
-    tag "modules_"
+    tag "modules_nfcore"
     tag "humann"
+    tag "humann/regroup"
+    tag "untar"
     setup {
         run("UNTAR", alias: "UNTAR_v3_util") {
             script "modules/nf-core/untar/main.nf"

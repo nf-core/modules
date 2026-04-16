@@ -1,2 +1,53 @@
-// this is to make testing possible, as we chose the container based on what the process is aliased to
-include { HUMANNREGROUP as HUMANN3_REGROUP; HUMANNREGROUP as HUMANN4_REGROUP } from './base'
+include { getConda; getContainer } from '../utils'
+
+def getProcessNamePrefix(task_process) {
+    return task_process.tokenize(':')[-1].tokenize('_')[0]
+}
+
+process HUMANN_REGROUP {
+    tag "$meta.id"
+    label 'process_low'
+
+    conda { getConda(getProcessNamePrefix(task.process)) }
+    container { getContainer(getProcessNamePrefix(task.process)) }
+
+    input:
+    tuple val(meta), path(input)
+    val groups
+    path utility_db
+
+    output:
+    tuple val(meta), path("*_regroup.tsv.gz"), emit: regroup
+    tuple val("${task.process}"), val('HUMAnN'), eval("humann --version 2>&1 | sed 's/humann v//'"), emit: versions_humann, topic: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    if [[ $input == *.gz ]]; then
+        gunzip -c $input > input.tsv
+    else
+        mv $input input.tsv
+    fi
+    STATIC_CONFIG=`python -c "import humann; print(humann.__file__.replace('__init__.py', 'humann.cfg'))"`
+    cat \$STATIC_CONFIG  | sed "s|utility_mapping = .*|utility_mapping = ${utility_db}|g" > humann.cfg
+    export HUMANN_CONFIG=humann.cfg
+    humann_config --print
+    humann_regroup_table \\
+        --input input.tsv \\
+        --output ${prefix}_regroup.tsv \\
+        --groups $groups \\
+        $args
+
+    gzip -n ${prefix}_regroup.tsv
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}_regroup.tsv.gz
+    """
+}
