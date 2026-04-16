@@ -24,6 +24,7 @@ process DIAMOND_DEEPCLUST {
     diamond \\
         deepclust \\
         ${args} \\
+        --memory-limit  "${task.memory.toGiga()}" \\
         -p ${task.cpus} \\
         --db ${fasta} \\
         --out ${prefix}.tsv
