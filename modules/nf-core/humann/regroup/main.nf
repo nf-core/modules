@@ -4,8 +4,8 @@ process HUMANN_REGROUP {
     tag "$meta.id"
     label 'process_low'
 
-    conda { getConda(getHumannVersion(task.process)) }
-    container { getContainer(getHumannVersion(task.process)) }
+    conda { getConda(task.ext.version ?: getHumannVersion(task.process)) }
+    container { getContainer(task.ext.version ?: getHumannVersion(task.process)) }
 
     input:
     tuple val(meta), path(input)

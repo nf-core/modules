@@ -5,8 +5,8 @@ process HUMANN_HUMANN {
     tag "$meta.id"
     label 'process_high'
 
-    conda { getConda(getHumannVersion(task.process)) }
-    container { getContainer(getHumannVersion(task.process)) }
+    conda { getConda(task.ext.version ?: getHumannVersion(task.process)) }
+    container { getContainer(task.ext.version ?: getHumannVersion(task.process)) }
 
     input:
     tuple val(meta), path(input)
@@ -31,7 +31,7 @@ process HUMANN_HUMANN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def processName = getHumannVersion(task.process)
+    def processName = task.ext.version ?: getHumannVersion(task.process)
     def nuc_ext = getExt(processName)
     def pangenome_string = "--taxonomic-profile ${profile}"
     """
