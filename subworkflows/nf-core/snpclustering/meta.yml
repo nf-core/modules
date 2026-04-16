@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/nf-core/meta-schema.json
+
+name: "snpclustering"
+description: "Convert a multi-sample VCF to PLINK BED format, run FlashPCA-based dimensionality reduction, clustering, cluster quality metrics, and visualisation."
+keywords:
+  - genomics
+  - clustering
+  - pca
+  - vcf
+  - plink
+  - flashpca
+  - nf-core
+authors:
+  - "Donald Baku (@dbaku42)"
+
+components:
+  - plink2/vcf
+  - plink2/pgen2bed
+  - pca/flashpca
+  - clustering
+  - cluster/metrics
+  - cluster/viz
+
+input:
+  - vcf_ch:
+      type: tuple
+      description: "Channel containing metadata and a multi-sample VCF file"
+      pattern: "[ val(meta), path(vcf) ]"
+
+output:
+  - plink_bed:
+      type: tuple
+      description: "Channel containing PLINK BED/BIM/FAM files"
+      pattern: "[ val(meta), path(bed), path(bim), path(fam) ]"
+  - pca:
+      type: tuple
+      description: "Channel containing PCA outputs"
+  - cluster_labels:
+      type: tuple
+      description: "Channel containing cluster assignments"
+  - metrics:
+      type: tuple
+      description: "Channel containing clustering metrics"
+  - plots:
+      type: tuple
+      description: "Channel containing clustering visualisations"
+  - versions:
+      type: file
+      description: "File containing software versions"
+      pattern: "versions.yml"
