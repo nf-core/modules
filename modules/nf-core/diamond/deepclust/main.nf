@@ -9,9 +9,11 @@ process DIAMOND_DEEPCLUST {
 
     input:
     tuple val(meta), path(fasta)
+    val save_aln
 
     output:
     tuple val(meta), path("*.tsv"), emit: clusters
+    tuple val(meta), path("*.aln"), optional: true, emit: alignment
     tuple val("${task.process}"), val('diamond'), eval("diamond --version | sed 's/.* //g'"), emit: versions_diamond, topic: versions
 
     when:
@@ -20,21 +22,25 @@ process DIAMOND_DEEPCLUST {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def aln_out = save_aln ? "--aln-out ${prefix}.aln" : ''
     """
     diamond \\
         deepclust \\
         ${args} \\
-        --memory-limit  "${task.memory.toGiga()}" \\
+        --memory-limit  "${task.memory.toGiga()}G" \\
         -p ${task.cpus} \\
         --db ${fasta} \\
-        --out ${prefix}.tsv
+        --out ${prefix}.tsv \\
+        ${aln_out}
     """
 
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def aln_out = save_aln ? "touch ${prefix}.aln" : ''
     """
     echo "${args}"
     touch ${prefix}.tsv
+    ${aln_out}
     """
 }

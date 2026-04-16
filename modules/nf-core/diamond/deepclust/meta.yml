@@ -28,6 +28,9 @@ input:
         pattern: "*.{fa,faa,fasta,fa.gz,faa.gz,fasta.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
+  - save_aln:
+      type: boolean
+      description: Whether to save clustering alignments to a file (--aln-out)
 output:
   clusters:
     - - meta:
@@ -45,6 +48,20 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  alignment:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.aln":
+          type: file
+          description: |
+            Optional. Tab-separated file containing the clustering alignments,
+            produced when save_aln is true (--aln-out).
+          pattern: "*.aln"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   versions_diamond:
     - - ${task.process}:
           type: string
@@ -52,7 +69,7 @@ output:
       - diamond:
           type: string
           description: The name of the tool
-      - diamond --version | sed 's/diamond version //g':
+      - diamond --version | sed 's/.* //g':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -63,7 +80,7 @@ topics:
       - diamond:
           type: string
           description: The name of the tool
-      - diamond --version | sed 's/diamond version //g':
+      - diamond --version | sed 's/.* //g':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

@@ -17,6 +17,7 @@ nextflow_process {
                     [ id:'human' ], // meta map
                     file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
                 ]
+                input[1] = false
                 """
             }
         }
@@ -43,6 +44,31 @@ nextflow_process {
                     [ id:'human' ], // meta map
                     file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
                 ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("human - fasta - save_aln - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'human' ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
+                ]
+                input[1] = true
                 """
             }
         }
