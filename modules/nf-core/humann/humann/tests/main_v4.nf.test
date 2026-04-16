@@ -3,7 +3,7 @@ nextflow_process {
     name "Test Process HUMANN_HUMANN v4"
     script "../main.nf"
     process "HUMANN_HUMANN"
-    config "./nextflow.config"
+    config "./nextflow_v4.config"
     tag "modules"
     tag "modules_nfcore"
     tag "humann"
@@ -101,7 +101,7 @@ nextflow_process {
             def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}', '**/*.log', '**/*.biom', 'humann3/*', 'untar/*'])
 	    println(stable_name)
             // stable_path: All files in ${params.outdir}/ with stable content
-            def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore', ignore: ['**/*.log', '**/*.biom'])
+            def stable_path = getAllFilesFromDir(params.outdir, ignore: ['**/*.log', '**/*.biom'])
 	    println(stable_path)
             assertAll(
                 { assert workflow.success},
