@@ -76,22 +76,28 @@ output:
           pattern: "app/app.R"
           ontologies:
             - edam: http://edamontology.org/format_3999 # R script
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_shinyngs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shinyngs:
+          type: string
+          description: The name of the tool
+      - 'Rscript -e "library(shinyngs); cat(as.character(packageVersion(''shinyngs'')))"':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shinyngs:
+          type: string
+          description: The name of the tool
+      - 'Rscript -e "library(shinyngs); cat(as.character(packageVersion(''shinyngs'')))"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
 maintainers:

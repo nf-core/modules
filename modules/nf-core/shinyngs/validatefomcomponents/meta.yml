@@ -101,22 +101,28 @@ output:
           pattern: "/*.contrasts_file.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_shinyngs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shinyngs:
+          type: string
+          description: The name of the tool
+      - 'Rscript -e "library(shinyngs); cat(as.character(packageVersion(''shinyngs'')))"':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shinyngs:
+          type: string
+          description: The name of the tool
+      - 'Rscript -e "library(shinyngs); cat(as.character(packageVersion(''shinyngs'')))"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
 maintainers:
