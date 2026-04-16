@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process VCF2CIRCOS"
+    script "../main.nf"
+    process "VCF2CIRCOS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcf2circos"
+
+    test("homo_sapiens - internal vcf, html output") {
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://github.com/bioinfo-chru-strasbourg/vcf2circos/raw/refs/tags/1.2.0/tests/example.vcf', checkIfExists: true),
+                    [],
+                    'html'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file('/data/work/CHUUMI/felix/data/vcf2circos/Static/options.json', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - internal vcf, html output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://github.com/bioinfo-chru-strasbourg/vcf2circos/raw/refs/tags/1.2.0/tests/example.vcf', checkIfExists: true),
+                    [],
+                    'html'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}
