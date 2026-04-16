@@ -101,13 +101,6 @@ jobs:
           paths: "${{ join(fromJson(steps.list-gpu-highmem.outputs.components), ' ') }}"
           tags: "gpu_highmem"
 
-      - name: debug
-        run: |
-          echo "gpu paths: ${{ steps.list-gpu.outputs.components }}"
-          echo "gpu shards: ${{ steps.shards-gpu.outputs.shard }} / ${{ steps.shards-gpu.outputs.total_shards }}"
-          echo "gpu_highmem paths: ${{ steps.list-gpu-highmem.outputs.components }}"
-          echo "gpu_highmem shards: ${{ steps.shards-gpu-highmem.outputs.shard }} / ${{ steps.shards-gpu-highmem.outputs.total_shards }}"
-
   # Standard GPU tests (g4dn.xlarge - 4 vCPU, 16 GB RAM, T4 GPU)
   # Runs tests tagged "gpu" (20+ modules: parabricks, amulety, cellpose, etc.)
   nf-test-gpu:
