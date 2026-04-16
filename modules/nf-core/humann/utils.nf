@@ -6,9 +6,11 @@ def getHumannVersion(task_process, default_version='HUMANN3') {
     def name = task_process.tokenize(':')[-1]
     if (name.startsWith('HUMANN3')) return 'HUMANN3'
     if (name.startsWith('HUMANN4')) return 'HUMANN4'
-    log.warn "Process '${name}' is not aliased to HUMANN3 or HUMANN4. " +
-        "Defaulting to ${default_version}. " +
-        "Use 'include { HUMANN_... as HUMANN3_... }' to select version explicitly."
+    if (!name.startsWith('HUMANN_')) {
+        log.warn "Process '${name}' is not aliased to HUMANN3 or HUMANN4. " +
+            "Defaulting to ${default_version}. " +
+            "Use 'include { HUMANN_... as HUMANN3_... }' to select version explicitly."
+    }
     return default_version
 }
 
