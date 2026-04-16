@@ -6,7 +6,7 @@ process HUMANN_RENORM {
     conda "bioconda::humann=3.0.0"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/humann:3.0.0--pyh5e36f6f_1'
-        : 'quay.io/biocontainers/humann:3.0.0--pyh5e36f6f_1'}"
+        : 'biocontainers/humann:3.0.0--pyh5e36f6f_1'}"
 
     input:
     tuple val(meta), path(input)
@@ -14,6 +14,9 @@ process HUMANN_RENORM {
     output:
     tuple val(meta), path("*_renorm.tsv.gz"), emit: renorm
     tuple val("${task.process}"), val('HUMAnN'), eval("humann --version 2>&1 | sed 's/humann v//'"), emit: versions_humann, topic: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
