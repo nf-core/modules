@@ -1,15 +1,15 @@
 nextflow_process {
 
-    name "Test Process HUMANN_HUMANN as HUMANN3"
+    name "Test Process HUMANN_HUMANN"
     script "../main.nf"
-    process "HUMANN3"
+    process "HUMANN_HUMANN"
+    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "humann"
     tag "humann/humann"
     tag "metaphlan/metaphlan"
     tag "untar"
-//    config "./nextflow.config"
     setup{
         run("UNTAR") {
             script "modules/nf-core/untar/main.nf"
