@@ -30,7 +30,9 @@ input:
           - edam: http://edamontology.org/format_1929 # FASTA
   - save_aln:
       type: boolean
-      description: Whether to save clustering alignments to a file (--aln-out)
+      description: |
+        Whether to save clustering alignments to a file (--aln-out)
+        WARNING: unusable in this version (2.1.24) of diamond due to bug, leaving as placeholder
 output:
   clusters:
     - - meta:

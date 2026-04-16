@@ -9,7 +9,7 @@ process DIAMOND_DEEPCLUST {
 
     input:
     tuple val(meta), path(fasta)
-    val save_aln
+    val save_aln // WARNING: unusable in this version (2.1.24) of diamond due to bug, leaving as placeholder
 
     output:
     tuple val(meta), path("${prefix}.tsv"), emit: clusters
