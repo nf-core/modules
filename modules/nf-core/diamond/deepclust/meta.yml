@@ -38,7 +38,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.tsv":
+      - ${prefix}.tsv:
           type: file
           description: |
             Tab-separated file mapping each member sequence to its cluster
@@ -54,7 +54,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.aln":
+      - ${prefix}.aln:
           type: file
           description: |
             Optional. Tab-separated file containing the clustering alignments,

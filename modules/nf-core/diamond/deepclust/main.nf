@@ -12,8 +12,8 @@ process DIAMOND_DEEPCLUST {
     val save_aln
 
     output:
-    tuple val(meta), path("*.tsv"), emit: clusters
-    tuple val(meta), path("*.aln"), optional: true, emit: alignment
+    tuple val(meta), path("${prefix}.tsv"), emit: clusters
+    tuple val(meta), path("${prefix}.aln"), optional: true, emit: alignment
     tuple val("${task.process}"), val('diamond'), eval("diamond --version | sed 's/.* //g'"), emit: versions_diamond, topic: versions
 
     when:
