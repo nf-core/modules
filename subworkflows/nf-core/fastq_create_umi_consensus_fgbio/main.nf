@@ -56,8 +56,8 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     ch_fasta_fai_dict = channel.of(fasta_fai_dict)
 
     ch_fasta_fai = ch_fasta_fai_dict.map {
-        meta, fasta, fai, _dict -> [meta, fasta, fai ] }
-        
+        meta, fasta, fai, _dict -> [ meta, fasta, fai ] }
+
     if (aligner == "bwa-mem") {
         if (!bwa_index) {
             BWAMEM1_INDEX(ch_fasta_fai)
