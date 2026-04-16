@@ -4,8 +4,9 @@ nextflow_process {
     script "../main.nf"
     process "HUMANN_RENORM"
     tag "modules"
-    tag "modules_"
+    tag "modules_nfcore"
     tag "humann"
+    tag "humann/renorm"
 
     test("humann_renorm sarscov2 - tsv - stub") {
 
