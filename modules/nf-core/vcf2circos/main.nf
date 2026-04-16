@@ -1,11 +1,11 @@
 process VCF2CIRCOS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcf2circos:1.2.0--pyhdfd78af_0':
-        'biocontainers/vcf2circos:1.2.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vcf2circos:1.2.0--pyhdfd78af_0'
+        : 'biocontainers/vcf2circos:1.2.0--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(vcf), path(vcf_index), val(output_extension)
@@ -33,7 +33,7 @@ process VCF2CIRCOS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.${output_extension}
     """
