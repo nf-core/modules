@@ -1,12 +1,12 @@
-include { getConda; getContainer; getExt } from '../utils'
+include { getConda; getContainer; getExt; getHumannVersion } from '../utils'
 // Taken 98% from https://github.com/nf-core/modules/pull/1089/files
 
 process HUMANN_HUMANN {
     tag "$meta.id"
     label 'process_high'
 
-    conda { getConda(task.process.tokenize(':').last()) }
-    container { getContainer(task.process.tokenize(':').last()) }
+    conda { getConda(getHumannVersion(task.process)) }
+    container { getContainer(getHumannVersion(task.process)) }
 
     input:
     tuple val(meta), path(input)
@@ -31,11 +31,8 @@ process HUMANN_HUMANN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def processName = task.process.tokenize(':').last()
+    def processName = getHumannVersion(task.process)
     def nuc_ext = getExt(processName)
-    if (nuc_ext == null) {
-        throw new IllegalArgumentException("this process must be aliased to either HUMANN3 or HUMANN4 to ensure the right parameters and containers are used; detected ${processName}")
-    }
     def pangenome_string = "--taxonomic-profile ${profile}"
     """
     PROTS_DB=`find -L "${protein_db}" -name "*.dmnd" -exec dirname {} \\;`

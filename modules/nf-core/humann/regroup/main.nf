@@ -1,15 +1,11 @@
-include { getConda; getContainer } from '../utils'
-
-def getProcessNamePrefix(task_process) {
-    return task_process.tokenize(':')[-1].tokenize('_')[0]
-}
+include { getConda; getContainer; getHumannVersion } from '../utils'
 
 process HUMANN_REGROUP {
     tag "$meta.id"
     label 'process_low'
 
-    conda { getConda(getProcessNamePrefix(task.process)) }
-    container { getContainer(getProcessNamePrefix(task.process)) }
+    conda { getConda(getHumannVersion(task.process)) }
+    container { getContainer(getHumannVersion(task.process)) }
 
     input:
     tuple val(meta), path(input)

@@ -2,6 +2,16 @@ def getProcessName(task_process) {
     return task_process.tokenize(':')[-1]
 }
 
+def getHumannVersion(task_process, default_version='HUMANN3') {
+    def name = task_process.tokenize(':')[-1]
+    if (name.startsWith('HUMANN3')) return 'HUMANN3'
+    if (name.startsWith('HUMANN4')) return 'HUMANN4'
+    log.warn "Process '${name}' is not aliased to HUMANN3 or HUMANN4. " +
+        "Defaulting to ${default_version}. " +
+        "Use 'include { HUMANN_... as HUMANN3_... }' to select version explicitly."
+    return default_version
+}
+
 def getContainer(name)  {
     return [
 	'HUMANN3': 'ghcr.io/vdblab/biobakery-profiler:4.0.5--3.6.1_smaller-pt2',
