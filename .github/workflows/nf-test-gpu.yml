@@ -81,7 +81,7 @@ jobs:
         with:
           max_shards: 2
           paths: "${{ join(fromJson(steps.list.outputs.components), ' ') }}"
-          tags: "gpu"
+          tags: "gpu,gpu_highmem"
       - name: debug
         run: |
           echo ${{ steps.list.outputs.components }}
