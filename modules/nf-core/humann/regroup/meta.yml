@@ -13,33 +13,64 @@ tools:
       documentation: https://github.com/biobakery/biobakery/wiki/humann3
       tool_dev_url: https://github.com/biobakery/humann
       doi: "10.7554/eLife.65088"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - input:
-      type: file
-      description: Tab separated abundance file of HUMAnN3
-      pattern: "*.{tsv.gz,tsv}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - input:
+        type: file
+        description: Tab separated abundance file of HUMAnN3
+        pattern: "*.{tsv.gz,tsv}"
   - groups:
-      type: value
-      description: Regroup abundance values to MetaCyc reaction (RXN) abundances
+      type: string
+      description: Regroup abundance values to a functional category (e.g. uniref90_rxn, uniref50_rxn)
       pattern: "{uniref90_rxn,uniref50_rxn}"
+  - utility_db:
+      type: directory
+      description: HUMAnN utility mapping database directory
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - regroup:
-      type: file
-      description: Re-grouped compressed tab separated text file
-      pattern: "*.{tsv.gz}"
+  regroup:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_regroup.tsv.gz":
+          type: file
+          description: Re-grouped compressed tab separated text file
+          pattern: "*.{tsv.gz}"
+  versions_humann:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - HUMAnN:
+          type: string
+          description: The name of the tool
+      - humann --version 2>&1 | sed 's/humann v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - HUMAnN:
+          type: string
+          description: The name of the tool
+      - humann --version 2>&1 | sed 's/humann v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@d4straub"
+  - "@nickp60"
+maintainers:
+  - "@nickp60"

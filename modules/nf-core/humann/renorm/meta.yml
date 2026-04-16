@@ -13,29 +13,57 @@ tools:
       documentation: https://github.com/biobakery/biobakery/wiki/humann3
       tool_dev_url: https://github.com/biobakery/humann
       doi: "10.7554/eLife.65088"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - input:
-      type: file
-      description: Tab separated abundance file of HUMAnN3
-      pattern: "*.{tsv.gz,tsv}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - input:
+        type: file
+        description: Tab separated abundance file of HUMAnN3
+        pattern: "*.{tsv.gz,tsv}"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - renorm:
-      type: file
-      description: Normalized compressed tab separated text file
-      pattern: "*.{tsv.gz}"
+  renorm:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_renorm.tsv.gz":
+          type: file
+          description: Normalized compressed tab separated text file
+          pattern: "*.{tsv.gz}"
+  versions_humann:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - HUMAnN:
+          type: string
+          description: The name of the tool
+      - humann --version 2>&1 | sed 's/humann v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - HUMAnN:
+          type: string
+          description: The name of the tool
+      - humann --version 2>&1 | sed 's/humann v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@d4straub"
+  - "@nickp60"
+maintainers:
+  - "@nickp60"
