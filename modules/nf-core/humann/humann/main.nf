@@ -10,7 +10,7 @@ process HUMANN_HUMANN {
 
     input:
     tuple val(meta), path(input)
-    tuple val(meta_profile), path(profile)
+    tuple val(meta2), path(profile)
     path nucleotide_db
     path protein_db
     path utility_db
@@ -70,10 +70,10 @@ process HUMANN_HUMANN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    for suf in genefamilies.tsv.gz pathabundance.tsv.gz pathcoverage.tsv.gz reactions.tsv.gz
-    do
-        echo stub | gzip >  ${prefix}_\$suf
-    done
+    echo "" | gzip > ${prefix}_genefamilies.tsv.gz
+    echo "" | gzip > ${prefix}_pathabundance.tsv.gz
+    echo "" | gzip > ${prefix}_pathcoverage.tsv.gz
+    echo "" | gzip > ${prefix}_reactions.tsv.gz
     touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
