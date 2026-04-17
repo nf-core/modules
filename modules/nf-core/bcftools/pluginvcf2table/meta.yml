@@ -1,0 +1,108 @@
+name: bcftools_pluginvcf2table
+description: |
+  Converts VCF/BCF files into a tab-delimited table using the bcftools +vcf2table plugin.
+  Each variant is output as one row, with INFO and FORMAT fields as columns.
+keywords:
+  - bcftools
+  - vcf
+  - table
+  - variant calling
+tools:
+  - bcftools:
+      description: |
+        BCFtools is a set of utilities for variant calling and manipulating VCF/BCF files.
+        The +vcf2table plugin converts VCF records into a tab-delimited table format.
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://www.htslib.org/doc/bcftools.html
+      doi: "10.1093/gigascience/giab008"
+      licence:
+        - "MIT"
+      identifier: biotools:bcftools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF/BCF file to be converted (optionally bgzipped).
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies: []
+    - tbi:
+        type: file
+        description: Index of the VCF/BCF file (required when vcf is bgzipped).
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing regions file information
+          e.g. [ id:'test' ]
+    - regions:
+        type: file
+        description: |
+          Optional. Restrict the operation to regions listed in this BED or VCF file.
+          Relies on a tabix index.
+        pattern: "*.{bed,vcf,vcf.gz}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing targets file information
+          e.g. [ id:'test' ]
+    - targets:
+        type: file
+        description: |
+          Optional. Restrict the operation to regions listed in this file
+          (does not rely on index files).
+        pattern: "*.{bed,vcf,vcf.gz}"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing samples file information
+          e.g. [ id:'test' ]
+    - samples:
+        type: file
+        description: |
+          Optional. File of sample names to include or exclude.
+        pattern: "*.txt"
+        ontologies: []
+output:
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Tab-delimited table output from bcftools +vcf2table.
+          pattern: "*.txt"
+          ontologies: []
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcftools:
+          type: string
+          description: The name of the tool
+      - "bcftools --version":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcftools:
+          type: string
+          description: The name of the tool
+      - "bcftools --version":
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@emmcauley"
+maintainers:
+  - "@emmcauley"
