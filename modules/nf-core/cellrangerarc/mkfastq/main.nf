@@ -1,5 +1,5 @@
 process CELLRANGERARC_MKFASTQ {
-    tag "mkfastq"
+    tag "$meta.id"
     label 'process_medium'
 
     // WARNING !! Cell Ranger ARC mkfastq results are not deterministic, so the number of threads used in the process might affect the results.
@@ -12,7 +12,7 @@ process CELLRANGERARC_MKFASTQ {
 
     output:
     tuple val(meta), path("${prefix}/outs/fastq_path/*.fastq.gz"), emit: fastq
-    path "versions.yml"                                          , emit: versions
+    tuple val("${task.process}"), val('cellrangerarc'), eval("cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//'"), emit: versions_cellrangerarc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process CELLRANGERARC_MKFASTQ {
         --run=${bcl} \\
         --csv=${csv} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +47,5 @@ process CELLRANGERARC_MKFASTQ {
     echo | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_R1_001.fastq.gz
     echo | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_R2_001.fastq.gz
     echo | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_R3_001.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 }
