@@ -36,11 +36,11 @@ workflow FASTQ_ALIGN_BWAALN {
         }
 
     // Drop the index_meta, as the id of the index is now kept within the read meta.
-    ch_preppedinput_for_bwaaln = ch_prepped_input.multiMap { meta, reads, _meta_index, index ->
-        reads: [meta, reads]
-        index: [meta, index]
-    }
+    ch_preppedinput_for_bwaaln_reads = ch_prepped_input.map {
+        meta, reads, _meta_index, _index -> [meta, reads] }
 
+    ch_preppedinput_for_bwaaln_index = ch_prepped_input.map {
+        meta, _reads, _meta_index, index -> [meta, index] }
 
     // Set as independent channel to allow repeated joining but _with_ sample specific metadata
     // to ensure right reference goes with right sample
@@ -48,34 +48,37 @@ workflow FASTQ_ALIGN_BWAALN {
     ch_index_newid = ch_prepped_input.map { meta, _reads, _meta_index, index -> [meta, index] }
 
     // Alignment and conversion to bam
-    BWA_ALN(ch_preppedinput_for_bwaaln.reads, ch_preppedinput_for_bwaaln.index)
+    BWA_ALN(ch_preppedinput_for_bwaaln_reads, ch_preppedinput_for_bwaaln_index)
 
-    ch_sai_for_bam = ch_reads_newid
+    ch_sai_joined = ch_reads_newid
         .join(BWA_ALN.out.sai)
-        .branch { meta, _reads, _sai ->
-            pe: !meta.single_end
-            se: meta.single_end
-        }
+        .join(ch_index_newid) // Add index
+
+    // Paired-end
+    ch_sai_for_bam_pe = ch_sai_joined
+        .filter { meta, _reads, _sai, _index -> !meta.single_end }
+
+    // Single-end
+    ch_sai_for_bam_se = ch_sai_joined
+        .filter { meta, _reads, _sai, _index -> meta.single_end }
 
     // Split as PE/SE have different SAI -> BAM commands
-    ch_sai_for_bam_pe = ch_sai_for_bam.pe
-        .join(ch_index_newid)
-        .multiMap { meta, reads, sai, index ->
-            reads: [meta, reads, sai]
-            index: [meta, index]
-        }
+    ch_sai_for_bam_pe_reads = ch_sai_for_bam_pe
+        .map { meta, reads, sai, _index -> [meta, reads, sai] }
 
-    ch_sai_for_bam_se = ch_sai_for_bam.se
-        .join(ch_index_newid)
-        .multiMap { meta, reads, sai, index ->
-            reads: [meta, reads, sai]
-            index: [meta, index]
-        }
+    ch_sai_for_bam_pe_index = ch_sai_for_bam_pe
+        .map { meta, _reads, _sai, index -> [meta, index] }
+
+    ch_sai_for_bam_se_reads = ch_sai_for_bam_se
+        .map { meta, reads, sai, _index -> [meta, reads, sai] }
+
+    ch_sai_for_bam_se_index = ch_sai_for_bam_se
+        .map { meta, _reads, _sai, index -> [meta, index] }
 
 
-    BWA_SAMPE(ch_sai_for_bam_pe.reads, ch_sai_for_bam_pe.index)
+    BWA_SAMPE(ch_sai_for_bam_pe_reads, ch_sai_for_bam_pe_index)
 
-    BWA_SAMSE(ch_sai_for_bam_se.reads, ch_sai_for_bam_se.index)
+    BWA_SAMSE(ch_sai_for_bam_se_reads, ch_sai_for_bam_se_index)
 
     ch_bam_for_index = BWA_SAMPE.out.bam.mix(BWA_SAMSE.out.bam)
 
