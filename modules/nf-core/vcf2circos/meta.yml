@@ -78,7 +78,7 @@ output:
       - "vcf2circos":
           type: string
           description: The name of the tool
-      - "vcf2circos --help | grep Version | sed 's/^Version: //'":
+      - "vcf2circos --help | sed -n 's/^Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -90,7 +90,7 @@ topics:
       - vcf2circos:
           type: string
           description: The name of the tool
-      - "vcf2circos --help | grep Version | sed 's/^Version: //'":
+      - "vcf2circos --help | sed -n 's/^Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
