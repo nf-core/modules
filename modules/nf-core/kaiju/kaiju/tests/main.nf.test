@@ -34,7 +34,7 @@ nextflow_process {
 
                 input[1] = UNTAR.out.untar
                     .map {
-                        meta, untar -> 
+                        meta, untar ->
                             db = [
                                 untar,
                                 file(params.modules_testdata_base_path + "delete_me/kaiju/nodes.dmp", checkIfExists: true),
@@ -72,7 +72,7 @@ nextflow_process {
 
                 input[1] = UNTAR.out.untar
                     .map {
-                        meta, untar -> 
+                        meta, untar ->
                             db = [
                                 untar,
                                 file(params.modules_testdata_base_path + "delete_me/kaiju/nodes.dmp", checkIfExists: true),
@@ -111,7 +111,7 @@ nextflow_process {
 
                 input[1] = UNTAR.out.untar
                     .map {
-                        meta, untar -> 
+                        meta, untar ->
                             db = [
                                 untar,
                                 file(params.modules_testdata_base_path + "delete_me/kaiju/nodes.dmp", checkIfExists: true),
