@@ -53,11 +53,11 @@ output:
         type: file
         description: Configuration file
         ontologies: []
-  versions_cellrangerarc_mkref:
+  versions_cellrangerarc:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - cellrangerarc_mkref:
+      - cellrangerarc:
           type: string
           description: The name of the tool
       - cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//':
@@ -68,7 +68,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - cellrangerarc_mkref:
+      - cellrangerarc:
           type: string
           description: The name of the tool
       - cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//':
