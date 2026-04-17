@@ -13,7 +13,7 @@ process VCF2CIRCOS {
 
     output:
     tuple val(meta), path("*.{html,png,jpg,jpeg,webp,svg,pdf,eps,json}"), emit: circos, optional: true
-    tuple val("${task.process}"), val('vcf2circos'), eval("vcf2circos --help | grep Version | sed 's/^Version: //'"), topic: versions, emit: versions_vcf2circos
+    tuple val("${task.process}"), val('vcf2circos'), eval("vcf2circos --help | sed -n 's/^Version: //p'"), topic: versions, emit: versions_vcf2circos
 
     when:
     task.ext.when == null || task.ext.when
