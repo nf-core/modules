@@ -12,8 +12,8 @@ process BAMCMP {
     tuple val(meta), path(primary_aligned_bam), path(contaminant_aligned_bam)
 
     output:
-    tuple val(meta), path("*_primary.bam") , emit: primary_filtered_bam
-    tuple val(meta), path("*_contaminant.bam"), emit: contamination_bam
+    tuple val(meta), path("${meta.id}_primary.bam") , emit: primary_filtered_bam
+    tuple val(meta), path("${meta.id}_contaminant.bam"), emit: contamination_bam
     tuple val("${task.process}"), val('bamcmp'), eval('echo 2.2'), topic: versions, emit: versions_bamcmp
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
