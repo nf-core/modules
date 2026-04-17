@@ -1,0 +1,68 @@
+name: carveme_carve
+description: Reconstruct genome-scale metabolic models from protein FASTA files using CarveMe
+keywords:
+  - metabolic model
+  - genome-scale
+  - sbml
+  - flux balance analysis
+  - metabolic reconstruction
+tools:
+  - carveme:
+      description: CarveMe is a python-based tool for genome-scale metabolic model
+        reconstruction.
+      homepage: https://carveme.readthedocs.io
+      documentation: https://carveme.readthedocs.io
+      tool_dev_url: https://github.com/cdanielmachado/carveme
+      doi: "10.1093/nar/gky537"
+      licence:
+        - "Apache-2.0"
+      identifier: biotools:carveme
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Protein FASTA file
+        pattern: "*.{fa,faa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+output:
+  model:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.xml":
+          type: file
+          description: SBML genome-scale metabolic model file
+          pattern: "*.xml"
+          ontologies: []
+  versions_carveme:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - carveme:
+          type: string
+          description: The name of the tool
+      - "pip show carveme | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - carveme:
+          type: string
+          description: The name of the tool
+      - "pip show carveme | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
