@@ -2,19 +2,20 @@ nextflow_process {
     name "Test Process FLASHPCA"
     script "../main.nf"
     process "FLASHPCA"
+
     tag "modules"
     tag "modules_nfcore"
     tag "flashpca"
 
-    test("flashpca - hapmap3 thinned") {
+    test("flashpca - test") {
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'hapmap3_test' ],
-                    file("$moduleDir/tests/test_data/HM3_thinned_autosomal_overlap.bed", checkIfExists: true),
-                    file("$moduleDir/tests/test_data/HM3_thinned_autosomal_overlap.bim",  checkIfExists: true),
-                    file("$moduleDir/tests/test_data/HM3_thinned_autosomal_overlap.fam",  checkIfExists: true)
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'data/genomics/homo_sapiens/gsm/flashpca/test.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'data/genomics/homo_sapiens/gsm/flashpca/test.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'data/genomics/homo_sapiens/gsm/flashpca/test.fam', checkIfExists: true)
                 ]
                 """
             }
