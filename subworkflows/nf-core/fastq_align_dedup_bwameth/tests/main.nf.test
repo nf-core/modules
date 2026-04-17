@@ -59,13 +59,12 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.index.collect { meta, index -> file(index).name },
+                    workflow.out.bai.collect { meta, index -> file(index).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }
+                ).match() }
             )
         }
     }
@@ -98,13 +97,12 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.index.collect { meta, index -> file(index).name },
+                    workflow.out.bai.collect { meta, index -> file(index).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }
+                ).match() }
             )
         }
     }
@@ -137,13 +135,12 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.index.collect { meta, index -> file(index).name },
+                    workflow.out.bai.collect { meta, index -> file(index).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }
+                ).match() }
             )
         }
     }

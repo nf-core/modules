@@ -8,7 +8,7 @@ process BOWTIE2_BUILD {
         'community.wave.seqera.io/library/bowtie2_htslib_samtools_pigz:edeb13799090a2a6' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta), path(fai)
 
     output:
     tuple val(meta), path('bowtie2')    , emit: index
