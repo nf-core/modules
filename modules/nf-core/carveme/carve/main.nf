@@ -11,7 +11,7 @@ process CARVEME_CARVE {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.xml")                                                                              , emit: model
+    tuple val(meta), path("${prefix}.xml")                                                                              , emit: model
     tuple val("${task.process}"), val('carveme'), eval("pip show carveme | sed -n 's/^Version: //p'"), topic: versions, emit: versions_carveme
 
     when:
@@ -19,7 +19,7 @@ process CARVEME_CARVE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     carve \\
         ${fasta} \\
@@ -29,7 +29,7 @@ process CARVEME_CARVE {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "${args}"
     touch ${prefix}.xml
