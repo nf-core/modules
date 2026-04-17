@@ -62,7 +62,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.volcanos_png[0][1]).name, //assert unstable file
                     process.out.volcanos_html,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
