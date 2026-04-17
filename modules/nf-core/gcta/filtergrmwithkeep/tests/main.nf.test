@@ -1,0 +1,157 @@
+nextflow_process {
+
+    name "Test Process GCTA_FILTERGRMWITHKEEP"
+    script "../main.nf"
+    process "GCTA_FILTERGRMWITHKEEP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/filtergrmwithkeep"
+    tag "gcta/makegrmpart"
+    tag "gcta/removerelatedsubjects"
+
+    setup {
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_DENSE") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_dense', part_gcta_job:1, nparts_gcta:1 ],
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'all_variants' ], []]
+                """
+            }
+        }
+
+        run("GCTA_REMOVERELATEDSUBJECTS", alias: "GCTA_REMOVERELATEDSUBJECTS_KEEP") {
+            script "../../removerelatedsubjects/main.nf"
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = dense_grm
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - filter dense GRM with keep file") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = dense_grm
+                input[1] = GCTA_REMOVERELATEDSUBJECTS_KEEP.out.keep_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.filtered_grm.size() == 1 },
+                { assert process.out.filtered_grm.get(0).get(0).id == "plink_simulated_dense.part_1_1" },
+                {
+                    assert snapshot(
+                        process.out.filtered_grm
+                    ).match("filtered_grm")
+                },
+                {
+                    def row = process.out.filtered_grm.get(0)
+                    assert file(row.get(1)).exists()
+                    assert file(row.get(2)).exists()
+                    assert file(row.get(3)).exists()
+                },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("versions") }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - fail when meta id does not match dense GRM basename") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = dense_grm.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    [[ id:'contract_dense_mismatch' ], grm_id, grm_bin, grm_n_bin]
+                }
+                input[1] = GCTA_REMOVERELATEDSUBJECTS_KEEP.out.keep_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - filter dense GRM with keep file - stub") {
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = dense_grm
+                input[1] = GCTA_REMOVERELATEDSUBJECTS_KEEP.out.keep_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.filtered_grm.size() == 1 },
+                { assert process.out.filtered_grm.get(0).get(0).id == "plink_simulated_dense.part_1_1" },
+                {
+                    assert snapshot(
+                        process.out.filtered_grm
+                    ).match("stub_filtered_grm")
+                },
+                {
+                    def row = process.out.filtered_grm.get(0)
+                    assert file(row.get(1)).exists()
+                    assert file(row.get(2)).exists()
+                    assert file(row.get(3)).exists()
+                },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("stub_versions") }
+            )
+        }
+    }
+}
