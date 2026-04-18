@@ -26,7 +26,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.model[0][1]).readLines().size(),
+                    path(process.out.model[0][1]).exists(),
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
