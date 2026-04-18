@@ -30,7 +30,7 @@ nextflow_process {
         }
 
         then {
-                def lines = path(process.out.prep_read_outcomes_file[0][1]).readLines()
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
                 def reads_used = lines[1] =~ /USED: (\d+)/
                 def reads_clipped = lines[9] =~ /CLIPPED: (\d+)/
             assertAll(
@@ -63,7 +63,7 @@ nextflow_process {
         }
 
         then {
-                def lines = path(process.out.prep_read_outcomes_file[0][1]).readLines()
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
                 def reads_used = lines[1] =~ /USED: (\d+)/
             assertAll(
                 { assert process.success },
@@ -94,7 +94,7 @@ nextflow_process {
         }
 
         then {
-                def lines = path(process.out.prep_read_outcomes_file[0][1]).readLines()
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
                 def reads_used = lines[1] =~ /USED: (\d+)/
             assertAll(
                 { assert process.success },
@@ -125,7 +125,7 @@ nextflow_process {
         }
 
         then {
-                def lines = path(process.out.prep_read_outcomes_file[0][1]).readLines()
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
                 def reads_used = lines[1] =~ /USED: (\d+)/
             assertAll(
                 { assert process.success },
@@ -161,7 +161,7 @@ nextflow_process {
         }
 
         then {
-                def lines = path(process.out.prep_read_outcomes_file[0][1]).readLines()
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
                 def reads_used = lines[1] =~ /USED: (\d+)/
             assertAll(
                 { assert process.success },
@@ -191,7 +191,7 @@ nextflow_process {
         }
 
         then {
-                def lines = path(process.out.prep_read_outcomes_file[0][1]).readLines()
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
                 def reads_used = lines[1] =~ /USED: (\d+)/
                 def reads_clipped = lines[9] =~ /CLIPPED: (\d+)/
             assertAll(
