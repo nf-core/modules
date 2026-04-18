@@ -28,7 +28,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.elfasta,
                     process.out.log.collect { [it[0], file(it[1]).exists()] },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -56,7 +56,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.elfasta,
                     process.out.log.collect { [it[0], file(it[1]).exists()] },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

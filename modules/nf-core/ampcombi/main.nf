@@ -24,7 +24,9 @@ process AMPCOMBI {
     tuple val(meta), path("amp_ref_database/*.dmnd")        , emit: results_db_dmnd , optional:true
     tuple val(meta), path("amp_ref_database/*.clean.fasta") , emit: results_db_fasta, optional:true
     tuple val(meta), path("amp_ref_database/*.tsv")         , emit: results_db_tsv  , optional:true
-    path "versions.yml"                                     , emit: versions
+    tuple val("${task.process}"), val('ampcombi'), val('0.1.7'), emit: versions_ampcombi, topic: versions
+// As the module is deprecated and not run, we're hardcoding the version as instructed in
+// https://nf-co.re/docs/guidelines/components/modules#emission-of-versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,18 +49,13 @@ process AMPCOMBI {
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
     """
     ampcombi \\
-        --path_list '${amp_input.collect{"$it"}.join("' '")}' \\
+        --path_list '${amp_input.collect{file_path -> "$file_path"}.join("' '")}' \\
         --sample_list ${prefix} \\
         ${db} \\
         --faa ${faa_input} \\
         ${args} \\
         --log True \\
         --threads ${task.cpus} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
     stub:
     def deprecation_message = """
@@ -88,10 +85,5 @@ process AMPCOMBI {
     touch amp_ref_database/*.dmnd
     touch amp_ref_database/*.clean.fasta
     touch amp_ref_database/*.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
 }

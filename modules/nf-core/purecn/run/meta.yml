@@ -33,9 +33,19 @@ input:
         description: Coverage file generated from Coverage.R
         pattern: "*.txt"
         ontologies: []
+    - vcf:
+        type: file
+        description: VCF containing variant calls
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - normal_db:
       type: file
-      description: normal pannel database
+      description: Normal panel database
+      ontologies: []
+  - mapping_bias:
+      type: file
+      description: Mapping bias file generated with normal panel
       ontologies: []
   - genome:
       type: string
@@ -76,6 +86,19 @@ output:
           description: |
             Tab-delimited file containing segmentation results
           pattern: "*_dnacopy.seg"
+          ontologies: []
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.csv:
+          type: file
+          description: |
+            Tab-delimited file containing sample purity, ploidy
+            and flags information
+          pattern: "${prefix}.csv"
           ontologies: []
   genes_csv:
     - - meta:
@@ -176,6 +199,17 @@ output:
           type: file
           description: multisample segmentation results
           pattern: "*_multisample.seg"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.log":
+          type: file
+          description: Log file of the analysis
+          pattern: "*.log"
           ontologies: []
   versions:
     - versions.yml:

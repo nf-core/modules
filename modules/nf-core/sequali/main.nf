@@ -4,8 +4,8 @@ process SEQUALI {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9ed3be5b0d3beb64807ec93b25a80b55abdcdffe684114d12ddef78461dd64e9/data':
-        'community.wave.seqera.io/library/sequali:0.12.0--07485bec824d914a' }"
+        'https://depot.galaxyproject.org/singularity/sequali:1.0.2--py312h0fa9677_0':
+        'biocontainers/sequali:1.0.2--py312h0fa9677_0' }"
 
     input:
 
@@ -15,7 +15,7 @@ process SEQUALI {
 
     tuple val(meta), path("*.html"), emit: html
     tuple val(meta), path("*.json"), emit: json
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('sequali'), eval('sequali --version |& sed \'1!d ; s/sequali //\''), emit: versions_sequali, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,25 +34,13 @@ process SEQUALI {
         --json ${prefix}.json \\
         $read_1_bam \\
         $read_2
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sequali: \$(sequali --version |& sed '1!d ; s/sequali //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}.html
     touch ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sequali: \$(sequali --version |& sed '1!d ; s/sequali //')
-    END_VERSIONS
     """
 }
-

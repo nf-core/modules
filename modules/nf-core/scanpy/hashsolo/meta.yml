@@ -23,36 +23,59 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - input_h5ad:
+    - data:
         type: file
-        description: The (annotated) data matrix of shape n_obs x n_vars. Rows
-          correspond to cells and columns to genes.
-        pattern: "*.h5ad"
-        ontologies: []
+        description: |
+          A directory in 10x Genomics format containing `matrix.mtx.gz`, `features.tsv.gz`, `barcodes.tsv.gz` (hashing count matrix), or an AnnData (`.h5ad`) file with hashing counts stored in `.obs`.
+        ontologies:
+          - edam: "http://edamontology.org/data_3917" # count matrix
     - cell_hashing_columns:
         type: list
         description: |
-          List of cell hashing columns to use for demultiplexing.
-          e.g. `['hash_1', 'hash_2']`
-  - priors:
-      type: list
-      description: |
-        List of priors to use
+          Groovy list (`['hash_1', 'hash_2']`) of `.obs` columns that contain cell hashing counts.
+          Can be `[]` if the data is in 10x Genomics format, as the columns are derived from the input.
 
 output:
+  assignment:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_assignment_hashsolo.csv":
+          type: file
+          description: |
+            CSV file containing hashsolo assignment results
+          pattern: "*_assignment_hashsolo.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   h5ad:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test' ]
-          pattern: "*.h5ad"
-      - "*.h5ad":
+            e.g. `[ id:'sample1' ]`
+      - "*_hashsolo.h5ad":
           type: file
           description: |
-            AnnData file containing cluster feature, etc.
-          pattern: "*.h5ad"
-          ontologies: []
+            Processed AnnData object containing hashsolo results
+          pattern: "*_hashsolo.h5ad"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5 format
+  params:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*_params_hashsolo.csv"
+      - "*_params_hashsolo.csv":
+          type: file
+          description: |
+            CSV file containing parameters used in hashsolo analysis
+          pattern: "*_params_hashsolo.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   versions:
     - versions.yml:
         type: file
@@ -62,5 +85,7 @@ output:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@seohyonkim"
+  - "@LuisHeinzlmeier"
 maintainers:
   - "@seohyonkim"
+  - "@LuisHeinzlmeier"

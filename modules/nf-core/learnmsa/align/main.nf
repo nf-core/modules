@@ -1,7 +1,7 @@
 process LEARNMSA_ALIGN {
     tag "$meta.id"
     label 'process_medium'
-    container "registry.hub.docker.com/felbecker/learnmsa:2.0.9"
+    container "registry.hub.docker.com/felbecker/learnmsa:2.0.14"
 
     input:
     tuple val(meta), path(fasta)
@@ -32,7 +32,6 @@ process LEARNMSA_ALIGN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.aln

@@ -12,7 +12,7 @@ process EMBOSS_REVSEQ {
 
     output:
     tuple val(meta), path("*.${sequences.name - ~/.*\./}"), emit: revseq
-    path "versions.yml"                                   , emit: versions
+    tuple val("${task.process}"), val("emboss"), eval("revseq -version 2>&1 | sed 's/EMBOSS://'"), topic: versions, emit: versions_emboss
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,24 +27,13 @@ process EMBOSS_REVSEQ {
         $args \\
         $sequences \\
         $outfile
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        emboss: \$(echo \$(revseq -version 2>&1) | sed 's/EMBOSS://')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = sequences.name - ~/.*\./
     def outfile = "${prefix}.rev.${suffix}"
     """
     touch ${outfile}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        emboss: \$(echo \$(revseq -version 2>&1) | sed 's/EMBOSS://')
-    END_VERSIONS
     """
 }

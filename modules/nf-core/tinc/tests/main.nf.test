@@ -19,7 +19,7 @@ nextflow_process {
             }
 
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', tumour_sample:'HCC1395_HCC1395T', normal_sample:'HCC1395_HCC1395N' ],
                     file(params.modules_testdata_base_path + 'delete_me/tinc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds', checkIfExists: true),

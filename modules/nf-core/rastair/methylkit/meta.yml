@@ -1,0 +1,51 @@
+name: rastair_methylkit
+description: Parses rastair call output and converts it into a MethylKit-compatible format.
+keywords:
+  - methylation
+  - rastair
+  - C->T conversion
+  - bisulphite
+  - bisulfite
+  - mCtoT
+  - methylkit
+  - convert
+  - parser
+tools:
+  - rastair:
+      description: |
+        A tool for rapid genome-wide assessment of C->T conversion as a readout for methylation. The module uses a script bundled with Rastair to convert formats.
+      homepage: https://bitbucket.org/bsblabludwig/rastair/src/master/
+      documentation: https://bitbucket.org/bsblabludwig/rastair/src/master/README.md
+      licence: ["GPL-3.0"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - rastair_call_txt:
+        type: file
+        description: Text file from `rastair call`
+        pattern: "*.rastair_call.txt"
+output:
+  methylkit:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*methylkit.txt.gz":
+          type: file
+          description: Gzipped text file in MethylKit format.
+          pattern: "*methylkit.txt.gz"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@eduard-casas"
+maintainers:
+  - "@eduard-casas"

@@ -11,7 +11,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,182c20f31394d1d406428dab96ec3b3e"
+                    [
+                        "MUSE_CALL",
+                        "muse",
+                        "2.1.2"
+                    ]
                 ],
                 "txt": [
                     [
@@ -21,27 +25,32 @@
                         "test.MuSE.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,182c20f31394d1d406428dab96ec3b3e"
+                "versions_muse": [
+                    [
+                        "MUSE_CALL",
+                        "muse",
+                        "2.1.2"
+                    ]
                 ]
-            },
-            {
-                "MUSE_CALL": {
-                    "MuSE": "2.1.2"
-                }
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-04-04T11:48:22.223976"
+        "timestamp": "2026-02-09T13:42:41.011197"
     },
     "human - bam": {
         "content": [
-            [
-                "versions.yml:md5,182c20f31394d1d406428dab96ec3b3e"
-            ],
+            {
+                "versions_muse": [
+                    [
+                        "MUSE_CALL",
+                        "muse",
+                        "2.1.2"
+                    ]
+                ]
+            },
             [
                 "##MuSE_call=\"MuSE -f genome.fasta -O test -n 2 call test2.paired_end.recalibrated.sorted.bam test.paired_end.recalibrated.sorted.bam\"",
                 "##TUMOR=\"Sample=tumour,File=test2.paired_end.recalibrated.sorted.bam\"",
@@ -75,9 +84,9 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-04-04T11:48:09.865014"
+        "timestamp": "2026-02-09T13:42:21.510877"
     }
 }

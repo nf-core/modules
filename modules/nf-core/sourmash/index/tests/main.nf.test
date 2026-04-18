@@ -9,6 +9,7 @@ nextflow_process {
     tag "sourmash"
     tag "sourmash/index"
     tag "sourmash/sketch"
+    tag "blah"
 
     setup {
         run("SOURMASH_SKETCH") {
@@ -38,12 +39,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions,
-                                  file(process.out.signature_index.get(0).get(1)).name)
-                                  .match() }
+                { assert snapshot(
+                        file(process.out.signature_index.get(0).get(1)).name,
+                        process.out.findAll { key, val -> key.startsWith("versions")}
+                    ).match()
+                }
             )
         }
-
     }
 
     test("sarscov2 genome [fasta] - stub") {

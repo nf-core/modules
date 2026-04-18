@@ -33,7 +33,8 @@ nextflow_process {
                 {assert zipFile.isValid()},
                 {assert snapshot(
                     metaFile,
-                    dataFile).match()}
+                    dataFile,
+                    process.out.findAll { key, val -> key.startsWith('versions') }).match()}
             )
         }
     }

@@ -41,7 +41,6 @@ process GT_SUFFIXERATOR {
 
     stub:
     if ( mode !in [ 'dna', 'protein' ] ) { error "Mode must be one of 'dna', or 'protein'" }
-    def args        = task.ext.args     ?: ''
     prefix          = task.ext.prefix   ?: "${meta.id}"
     def touch_ssp   = mode == "protein" ? "touch $prefix/suffixerator.ssp" : ''
     """

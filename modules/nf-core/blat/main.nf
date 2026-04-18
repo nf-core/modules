@@ -13,7 +13,7 @@ process BLAT {
 
     output:
     tuple val(meta), path("*.psl"), emit: psl
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("blat"), eval("blat 2>&1 | sed '1!d;s/^.*BLAT v. //;s/ fast.*//'"), topic: versions, emit: versions_blat
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,22 +41,11 @@ process BLAT {
     then
         rm ${prefix}.fasta
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blat: \$(echo \$(blat 2>&1) | sed 's/^.*BLAT v. //; s/ fast.*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.psl
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blat: \$(echo \$(blat 2>&1) | sed 's/^.*BLAT v. //; s/ fast.*\$//')
-    END_VERSIONS
     """
 }

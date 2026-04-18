@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "bedtools_shuffle"
-description: bedtools shuffle will randomly permute the genomic locations of a feature
-  file among a genome defined in a genome file
+description: bedtools shuffle will randomly permute the genomic locations of a
+  feature file among a genome defined in a genome file
 keywords:
   - bed
   - shuffleBed
@@ -54,7 +53,6 @@ input:
       pattern: "*.{bed}"
       ontologies:
         - edam: "http://edamontology.org/format_3003"
-
 output:
   bed:
     - - meta:
@@ -68,15 +66,28 @@ output:
           pattern: "*.{bed}"
           ontologies:
             - edam: "http://edamontology.org/format_3003"
-
+  versions_bedtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - bedtools --version | sed -e 's/bedtools v//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - bedtools --version | sed -e 's/bedtools v//g':
+          type: eval
+          description: The expression to obtain the version of the tool
 
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@itrujnara"
 maintainers:

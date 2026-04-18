@@ -96,7 +96,7 @@ nextflow_process {
                     process.out.fasta_bacteria_scg,
                     process.out.b6,
                     process.out.seqlength,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -140,7 +140,7 @@ nextflow_process {
                     process.out.fasta_bacteria_scg,
                     process.out.b6,
                     process.out.seqlength,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -174,4 +174,3 @@ nextflow_process {
 
     }
 }
-

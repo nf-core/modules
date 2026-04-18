@@ -68,13 +68,16 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
                         'web_summary.html',
                         'scalefactors_json.json',
                         'barcodes.tsv.gz',
                         'features.tsv.gz',
-                        'matrix.mtx.gz'
+                        'matrix.mtx.gz',
+                        'components.csv',
+                        'projection.csv',
+                        'variance.csv'
                         ]}
                     ).match()
                 },
@@ -87,7 +90,7 @@ nextflow_process {
         }
     }
 
-    test("spaceranger v1 (stub) - homo_sapiens - fasta - gtf - fastq - tif - csv") {
+    test("spaceranger v1 - homo_sapiens - fasta - gtf - fastq - tif - csv - stub") {
 
         setup {
             run("SPACERANGER_MKGTF") {
@@ -144,7 +147,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -204,7 +207,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
                         'web_summary.html',
                         'scalefactors_json.json',
@@ -222,6 +225,93 @@ nextflow_process {
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'features.tsv.gz' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'matrix.mtx.gz' }).exists() }
+            )
+        }
+    }
+
+    test("spaceranger hd - homo_sapiens - fasta - gtf - fastq - tif - csv") {
+        setup {
+            run("SPACERANGER_MKGTF") {
+                script "../../mkgtf/main.nf"
+                process {
+                    """
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                    """
+                }
+            }
+        }
+
+        setup {
+            run("SPACERANGER_MKREF") {
+                script "../../mkref/main.nf"
+                process {
+                    """
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                    input[2] = 'GRCh38'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [
+                        id: 'Visium_HD_Human_Lung_Cancer_HD_Only_Experiment2'
+                    ], // Meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-lung-cancer-post-xenium_hd_ffpe/Visium_HD_Human_Lung_Cancer_HD_Only_Experiment2_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-lung-cancer-post-xenium_hd_ffpe/Visium_HD_Human_Lung_Cancer_HD_Only_Experiment2_S1_L001_R2_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-lung-cancer-post-xenium_hd_ffpe/Visium_HD_Human_Lung_Cancer_HD_Only_Experiment2_S1_L002_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-lung-cancer-post-xenium_hd_ffpe/Visium_HD_Human_Lung_Cancer_HD_Only_Experiment2_S1_L002_R2_001.fastq.gz', checkIfExists: true)
+                    ], // Reads
+                    [], // Image
+                    'H1-84QJZFR', // Slide
+                    'D1', // Area
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-lung-cancer-post-xenium_hd_ffpe/Visium_HD_Human_Lung_Cancer_HD_Only_Experiment2_image.tif', checkIfExists: true), // Cytaimage
+                    [], // Darkimage
+                    [], // Colorizedimage
+                    [], // Manual alignment (default: automatic alignment)
+                    [] // Slide specification (default: automatic download)
+                ]
+                input[1] = SPACERANGER_MKREF.out.reference // Reference
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-lung-cancer-post-xenium_hd_ffpe/Visium_HD_Human_Lung_Cancer_HD_Only_Experiment2_probe_set.csv', checkIfExists: true) // Probeset (default: use the one included with Space Ranger)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.outs.get(0).get(1).findAll { file(it).name !in [
+                        'web_summary.html',
+                        'scalefactors_json.json',
+                        'molecule_info.h5',
+                        'barcodes.tsv.gz',
+                        'features.tsv.gz',
+                        'matrix.mtx.gz',
+                        'feature_slice.h5',
+                        'components.csv',
+                        'projection.csv',
+                        'variance.csv',
+                        'cloupe_008um.cloupe',
+                        'cloupe.cloupe'
+                        ]}
+                    ).match()
+                },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'web_summary.html' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'scalefactors_json.json' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'molecule_info.h5' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'features.tsv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'feature_slice.h5' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'components.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'projection.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'variance.csv' }).exists() }
             )
         }
     }

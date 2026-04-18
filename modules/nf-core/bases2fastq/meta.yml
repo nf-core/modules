@@ -35,10 +35,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/Samples/**/*_R*.fastq.gz:
+      - ${prefix}/Samples/**/*_R*.fastq.gz:
           type: file
           description: Demultiplexed sample FASTQ files
-          pattern: "output/Samples/*/*_R*.fastq.gz"
+          pattern: "${prefix}/Samples/*/*_R*.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   sample_json:
@@ -47,10 +47,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/Samples/**/*_stats.json:
+      - ${prefix}/Samples/**/*_stats.json:
           type: file
           description: Demultiplexed sample stats
-          pattern: "output/Samples/*/*.json"
+          pattern: "${prefix}/Samples/*/*.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
   qc_report:
@@ -59,10 +59,21 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/*.html:
+      - ${prefix}/*_QC.html:
           type: file
           description: QC HTML report
-          pattern: "output/*.html"
+          pattern: "${prefix}//*_QC.html"
+          ontologies: []
+  multiqc_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/multiqc_report.html:
+          type: file
+          description: Multiqc HTML report
+          pattern: "${prefix}/multiqc_report.html"
           ontologies: []
   run_stats:
     - - meta:
@@ -70,10 +81,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/RunStats.json:
+      - ${prefix}/RunStats.json:
           type: file
           description: QC HTML report
-          pattern: "output/*.html"
+          pattern: "${prefix}/*.html"
           ontologies: []
   generated_run_manifest:
     - - meta:
@@ -81,10 +92,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/RunManifest.json:
+      - ${prefix}/RunManifest.json:
           type: file
           description: Updated Run Manifest JSON from the run_manifest csv
-          pattern: "output/RunManifest.json"
+          pattern: "${prefix}/RunManifest.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
   metrics:
@@ -93,10 +104,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/Metrics.csv:
+      - ${prefix}/Metrics.csv:
           type: file
           description: Sample metrics
-          pattern: "output/Metrics.csv"
+          pattern: "${prefix}/Metrics.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
   unassigned:
@@ -105,19 +116,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/UnassignedSequences.csv:
+      - ${prefix}/UnassignedSequences.csv:
           type: file
           description: Unassigned Sequences
-          pattern: "output/UnassignedSequences.csv"
+          pattern: "${prefix}/UnassignedSequences.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_bases2fastq:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bases2fastq:
+          type: string
+          description: The tool name
+      - bases2fastq --version | sed "s/.*version //;s/,.*//":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bases2fastq:
+          type: string
+          description: The tool name
+      - bases2fastq --version | sed "s/.*version //;s/,.*//":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@edmundmiller"
 maintainers:

@@ -70,21 +70,18 @@ output:
     - - meta:
           type: map
           description: A Groovy map containing sample information
-      - $prefix:
-          type: directory
-          description: Directory containing the files that compose the genomicsdb workspace,
-            this is only output for create mode, as update changes an existing db
-          pattern: "*/$prefix"
+      - ${prefix}:
+          type: file
+          description: genomicsdb
+          ontologies: []
   updatedb:
     - - meta:
           type: map
           description: A Groovy map containing sample information
-      - $updated_db:
-          type: directory
-          description: Directory containing the files that compose the updated genomicsdb
-            workspace, this is only output for update mode, and should be the same path
-            as the input wspace.
-          pattern: "same/path/as/wspace"
+      - ${updated_db}:
+          type: file
+          description: updated genomicsdb
+          ontologies: []
   intervallist:
     - - meta:
           type: map
@@ -95,13 +92,27 @@ output:
             only created by get intervals mode.
           pattern: "*.interval_list"
           ontologies: []
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GCJMackenzie"
 maintainers:

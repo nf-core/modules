@@ -1,0 +1,75 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "trimal"
+description: trimAl is a tool for the automated removal of spurious sequences or poorly
+  aligned regions from a multiple sequence alignment.
+keywords:
+  - alignment
+  - trimming
+  - phylogeny
+tools:
+  - "trimal":
+      description: "A tool for automated alignment trimming in large-scale phylogenetic
+        analyses."
+      homepage: "https://trimal.cgenomics.org/"
+      documentation: "https://trimal.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/inab/trimal/tree/trimAl"
+      doi: "10.1093/bioinformatics/btp348"
+      licence: ["GPL v3-or-later", "GPL v3 or later (GPL v3+)"]
+      identifier: biotools:trimal
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - aln:
+        type: file
+        description: Input file in several formats (e.g., clustal, fasta, nexus, phylip32, phylip40, pir).
+        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/data_0863
+  - out_format:
+      type: string
+      description: Output format (e.g., pir, mega, nexus, clustal, fasta, phylip). Default is set to "trimal".
+      pattern: "*"
+output:
+  trimal:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}.${out_extension}:
+          type: file
+          description: Trimmed multiple sequence alignment file
+          pattern: "*.*"
+          ontologies:
+            - edam: http://edamontology.org/data_1916 # Alignment
+            - edam: http://edamontology.org/format_1982 # ClustalW format
+            - edam: http://edamontology.org/format_1997 # PHYLIP format
+            - edam: http://edamontology.org/format_1998 # phylipnon
+            - edam: http://edamontology.org/format_1929 # FASTA
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}.html:
+          type: file
+          description: HTML summary file, needs -htmlout to be set in ext.args along with
+            a trimming method
+          pattern: "*.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@IceGreb"
+maintainers:
+  - "@IceGreb"

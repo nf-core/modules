@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process ORFIPY"
+    script "../main.nf"
+    process "ORFIPY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "modules_orfipy"
+    tag "orf"
+    tag "orfipy"
+
+    test("orfipy - fastq.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_orfipy' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.bed.get(0).get(1).endsWith("test_orfipy/test_orfipy.bed")
+            process.out.findAll { key, val -> key.startsWith("versions")}
+        }
+    }
+
+    test("orfipy - fastq.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_orfipy' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.bed.get(0).get(1).endsWith("test_orfipy/test_orfipy.bed")
+            process.out.findAll { key, val -> key.startsWith("versions")}
+        }
+
+    }
+
+}

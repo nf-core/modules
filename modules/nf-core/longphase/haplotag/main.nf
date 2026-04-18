@@ -4,8 +4,8 @@ process LONGPHASE_HAPLOTAG {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/longphase:1.7.3--hf5e1c6e_0':
-        'biocontainers/longphase:1.7.3--hf5e1c6e_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/83fce1d397cf71705cc096fc0e0e52f7013bdd471ef68ee53ae765688e5c439c/data':
+        'community.wave.seqera.io/library/longphase_samtools:8c61296cae7a5fc0' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(snps), path(svs), path(mods)
@@ -16,7 +16,7 @@ process LONGPHASE_HAPLOTAG {
     output:
     tuple val(meta), path("*.{bam,cram}"), emit: bam
     tuple val(meta), path("*.log")       , emit: log , optional: true
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val("longphase"), eval("longphase --version | head -n 1 | sed 's/Version: //'"), emit: versions_longphase, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,11 +42,6 @@ process LONGPHASE_HAPLOTAG {
     if [ -f "${prefix}.out" ]; then
         mv ${prefix}.out ${prefix}.log
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        longphase: \$(longphase --version | head -n 1 | sed 's/Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process LONGPHASE_HAPLOTAG {
     """
     touch ${prefix}.${suffix}
     ${log}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        longphase: \$(longphase --version | head -n 1 | sed 's/Version: //')
-    END_VERSIONS
     """
 }

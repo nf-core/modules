@@ -41,9 +41,9 @@ nextflow_process {
             script "modules/nf-core/rgi/main/main.nf"
             process {
                 """
-                input[0] = [                                                                                                                                                                     
-                    [ id:'test', single_end:false ], // meta map                                                                                                                              
-                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)                                                                          
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 input[1] = RGI_CARDANNOTATION.out.db
                 input[2] = []

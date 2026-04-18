@@ -4,8 +4,8 @@ process BISCUIT_MERGECG {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b542bbe1f99afd494ef07423ea8b52f2b8a081b85f92db2726c283c78da3cf0/data':
-        'community.wave.seqera.io/library/biscuit_samtools:84373c8a97fa63b8' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/5021d3f67d0221a5fa1eb692573a20fa28a5a552754d89c4351eb0eba42eadb0/data':
+        'community.wave.seqera.io/library/biscuit_samtools:1e5147589c9d9ec1' }"
 
 
     input:
@@ -15,7 +15,8 @@ process BISCUIT_MERGECG {
 
     output:
     tuple val(meta), path("*.bed.gz"), emit: bed
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('biscuit'), eval("biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'"), emit: versions_biscuit, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version |& sed '1!d; s/^.*samtools //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,24 +34,12 @@ process BISCUIT_MERGECG {
         $bed \\
         | LC_ALL=C sort -k1,1 -k2,2n \\
         | bgzip $args2 -c > ${prefix}.bed.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
-        samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.bed.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
-        samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
-    END_VERSIONS
     """
 
 

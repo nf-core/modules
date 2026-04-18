@@ -4,8 +4,8 @@ process SHINYNGS_STATICDIFFERENTIAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fc080dc45831489dd70b8183314a5a6f840064d6c78f3466790df0fba1503d0/data' :
-        'community.wave.seqera.io/library/r-shinyngs:2.2.4--2bf759f8be585e75' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d782b4f11adf8f3cad6af74ea585468decd873a171da1dae0e4a24a82bb29020/data' :
+        'community.wave.seqera.io/library/r-shinyngs:2.4.0--709fc6932be670a5' }"
 
     input:
     tuple val(meta), path(differential_result)                              // Differential info: contrast and differential stats
@@ -14,7 +14,7 @@ process SHINYNGS_STATICDIFFERENTIAL {
     output:
     tuple val(meta), path("*/png/volcano.png")      , emit: volcanos_png
     tuple val(meta), path("*/html/volcano.html")    , emit: volcanos_html, optional: true
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('shinyngs'), eval('Rscript -e "library(shinyngs); cat(as.character(packageVersion(\'shinyngs\')))"'), emit: versions_shinyngs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +30,6 @@ process SHINYNGS_STATICDIFFERENTIAL {
         --feature_metadata "$feature_meta" \\
         --outdir "$prefix" \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +38,5 @@ process SHINYNGS_STATICDIFFERENTIAL {
     mkdir -p $prefix/png && mkdir $prefix/html
     touch $prefix/png/volcano.png
     touch $prefix/html/volcano.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
-    END_VERSIONS
     """
 }

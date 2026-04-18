@@ -14,7 +14,7 @@ process CELLRANGERARC_MKREF {
     output:
     path "${reference_name}", emit: reference
     path "config"           , emit: config
-    path "versions.yml"     , emit: versions
+    tuple val("${task.process}"), val('cellrangerarc_mkref'), eval("cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//'"), emit: versions_cellrangerarc_mkref, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +27,7 @@ process CELLRANGERARC_MKREF {
     def fast_name = fasta.name
     def gtf_name = gtf.name
     def motifs_name = motifs.name
-    def reference_config = reference_config.name
+    def reference_config_name = reference_config.name
     def args = task.ext.args ?: ''
 
     if ( !reference_name ){
@@ -46,7 +46,7 @@ process CELLRANGERARC_MKREF {
     gtf = "${gtf_name}"
     motifs = "${motifs_name}"
     add = "${args}"
-    reference_config = "${reference_config}"
+    reference_config = "${reference_config_name}"
 
     if ( reference_config == "[]" ):
 
@@ -75,11 +75,6 @@ process CELLRANGERARC_MKREF {
         --config=config \\
         --nthreads=${task.cpus} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 
     stub:
@@ -87,14 +82,9 @@ process CELLRANGERARC_MKREF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
+
     """
     mkdir -p "${reference_name}/"
     touch config
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 }

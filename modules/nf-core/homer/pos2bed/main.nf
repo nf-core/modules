@@ -17,7 +17,6 @@ process HOMER_POS2BED {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '4.11'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

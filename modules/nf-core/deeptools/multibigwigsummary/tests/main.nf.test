@@ -22,6 +22,10 @@ nextflow_process {
                     [ bigwig1, bigwig2 ],
                     [ "test_bigwig1", "test_bigwig2" ]
                 ]
+                input[1] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
                 """
             }
         }
@@ -49,6 +53,10 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     [ bigwig1, bigwig2 ],
                     [ "test_bigwig1", "test_bigwig2" ]
+                ]
+                input[1] = [
+                    [ id:'no_blacklist' ],
+                    []
                 ]
                 """
             }

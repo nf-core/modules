@@ -2,14 +2,47 @@
     "sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq]": {
         "content": [
             "test.methylated_1_bismark_bt2_SE_report.html",
-            [
-                "versions.yml:md5,12d0b9440211d6540bbdc42e14fa18e6"
-            ]
+            {
+                "versions_bismark": [
+                    [
+                        "BISMARK_REPORT",
+                        "bismark",
+                        "0.25.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-04-14T16:37:06.937978987",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-14T18:47:46.955822618"
+            "nf-test": "0.9.4",
+            "nextflow": "26.03.1"
+        }
+    },
+    "sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq] | stub": {
+        "content": [
+            {
+                "report": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.report.html:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_bismark": [
+                    [
+                        "BISMARK_REPORT",
+                        "bismark",
+                        "0.25.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-14T16:37:18.645241963",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "26.03.1"
+        }
     }
 }

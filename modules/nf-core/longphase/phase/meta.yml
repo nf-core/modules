@@ -1,7 +1,7 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "longphase_phase"
-description: LongPhase is an ultra-fast program for simultaneously co-phasing SNPs,
-  small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms.
+description: LongPhase is an ultra-fast program for simultaneously co-phasing
+  SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio
+  platforms.
 keywords:
   - phase
   - long-read
@@ -15,9 +15,9 @@ tools:
       documentation: "https://github.com/twolinin/longphase"
       tool_dev_url: "https://github.com/twolinin/longphase"
       doi: "10.1093/bioinformatics/btac058"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -34,7 +34,7 @@ input:
         description: Index of sorted BAM/CRAM file(s)
         pattern: "*.{bai,crai,csi}"
         ontologies: []
-    - snps:
+    - snvs:
         type: file
         description: VCF file with SNPs (and INDELs)
         pattern: "*.{vcf,vcf.gz}"
@@ -70,25 +70,63 @@ input:
         pattern: "*.fai"
         ontologies: []
 output:
-  vcf:
+  snv_vcf:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.vcf.gz":
+      - ${prefix}.vcf.gz:
           type: file
-          description: Compressed VCF file with phased variants
+          description: Compressed VCF file with phased SNVs and indels
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  sv_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_SV.vcf.gz:
+          type: file
+          description: Compressed VCF file with phased SVs
+          pattern: "*_SV.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  mod_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_mod.vcf.gz:
+          type: file
+          description: Compressed VCF file with phased modifications
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  versions_longphase:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - longphase:
+          type: string
+          description: The name of the tool
+      - "longphase --version | head -n 1 | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - longphase:
+          type: string
+          description: The name of the tool
+      - "longphase --version | head -n 1 | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@fellen31"
 maintainers:

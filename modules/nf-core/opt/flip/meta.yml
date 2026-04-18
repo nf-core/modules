@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "opt_flip"
+description: "flip corrects probes that are aligning to the opposite strand of their intended target genes by reverse complementing them"
+keywords:
+  - opt
+  - opt flip
+  - transcripts
+  - off-target probes
+  - align probes
+tools:
+  - "opt":
+      description: "opt is a simple program that aligns probe sequences to transcript sequences to detect potential off-target probe activity"
+      homepage: "https://github.com/JEFworks-Lab/off-target-probe-tracker"
+      documentation: "https://github.com/JEFworks-Lab/off-target-probe-tracker/blob/main/README.md"
+      tool_dev_url: "https://github.com/JEFworks-Lab/off-target-probe-tracker"
+      licence: [GPL-3.0 license]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information of the probe panel sequences used for the xenium experiment
+          e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
+    - probes_fasta:
+        type: file
+        description: Fasta file for the probe sequences used in the xenium experiment
+        pattern: "*.fasta"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing the information of the genomic features and fasta files used as references
+          e.g. `[ id:'gencode_references' ]`
+    - ref_annot_gff:
+        type: file
+        description: Reference annotations in gff format
+        pattern: "*.gff"
+        ontologies: []
+    - ref_annot_fa:
+        type: file
+        description: Reference annotations in fasta format
+        pattern: "*.fa"
+        ontologies: []
+
+output:
+  fwd_oriented_fa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing information of the forward oriented fasta generated with the probes panel sequences 'opt flip'
+            e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
+      - "${meta.id}/fwd_oriented.fa":
+          type: file
+          description: The forward oriented fasta file
+          pattern: "*.fa"
+          ontologies: []
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@khersameesh24"
+maintainers:
+  - "@khersameesh24"
