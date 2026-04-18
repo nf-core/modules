@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "blat"
 description: Queries a sequence subject
 keywords:
@@ -12,7 +11,8 @@ tools:
       homepage: "https://kentinformatics.com/"
       documentation: "https://kentinformatics.com/documentation"
       doi: "10.1101/gr.229202"
-      licence: ["Free for academic, nonprofit and personal use"]
+      licence:
+        - "Free for academic, nonprofit and personal use"
       identifier: biotools:blat
 input:
   - - meta:
@@ -47,13 +47,27 @@ output:
           description: Search results
           pattern: "*.{psl}"
           ontologies: []
+  versions_blat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blat:
+          type: string
+          description: The name of the tool
+      - blat 2>&1 | sed '1!d;s/^.*BLAT v. //;s/ fast.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blat:
+          type: string
+          description: The name of the tool
+      - blat 2>&1 | sed '1!d;s/^.*BLAT v. //;s/ fast.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@d-jch"
 maintainers:

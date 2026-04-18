@@ -15,7 +15,7 @@ process BISMARK_SUMMARY {
 
     output:
     path("*report.{html,txt}"), emit: summary
-    tuple val("${task.process}"), val('bismark'), eval('bismark --version 2>&1 | sed -n "s/^.*Bismark Version: v//p" | tr -d "[:space:]"'), emit: versions_bismark, topic: versions
+    tuple val("${task.process}"), val('bismark'), eval("bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), emit: versions_bismark, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
