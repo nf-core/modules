@@ -110,7 +110,7 @@ workflow BAM_QC_RNASEQ {
         .join(BAM_RSEQC.out.readdistribution_txt,          remainder: true)
         .join(BAM_RSEQC.out.readduplication_pos_xls,       remainder: true)
         .join(BAM_RSEQC.out.tin_txt,                       remainder: true)
-        .map { row -> [row[0], row.drop(1).findAll { it != null }.collectMany { e -> e instanceof List ? e : [e] }] }
+        .map { row -> [row[0], row.drop(1).findAll { it != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }
 
     emit:
     // Aggregated
