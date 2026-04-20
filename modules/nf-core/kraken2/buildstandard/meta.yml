@@ -23,13 +23,14 @@ tools:
 input:
   - cleaning:
       type: boolean
-      description: activate or deactivate (true or false) cleaning of intermediate files
+      description: activate or deactivate (true or false) cleaning of intermediate
+        files
 output:
   db:
     - ${prefix}:
         type: directory
-        description: Directory containing the Kraken2 'standard' database that can be
-          used to perform taxonomic classification
+        description: Directory containing the Kraken2 'standard' database that can
+          be used to perform taxonomic classification
         pattern: "*/"
   versions_kraken2:
     - - ${task.process}:
@@ -38,7 +39,7 @@ output:
       - kraken2:
           type: string
           description: The name of the tool
-      - kraken2 --version 2>&1 | sed 's/^.*Kraken version //; s/ .*/:
+      - kraken2 --version 2>&1 | head -1 | sed "s/^.*Kraken version //; s/ .*//":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -49,7 +50,7 @@ topics:
       - kraken2:
           type: string
           description: The name of the tool
-      - kraken2 --version 2>&1 | sed 's/^.*Kraken version //; s/ .*/:
+      - kraken2 --version 2>&1 | head -1 | sed "s/^.*Kraken version //; s/ .*//":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
