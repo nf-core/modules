@@ -20,7 +20,7 @@ process PROTEUS_READPROTEINGROUPS {
     tuple val(meta), path("*raw_proteingroups_tab.tsv")         , emit: raw_tab
     tuple val(meta), path("*normalized_proteingroups_tab.tsv")  , emit: norm_tab
     tuple val(meta), path("*R_sessionInfo.log")                 , emit: session_info
-    path "versions.yml"                                         , emit: versions
+    path "versions.yml"                                         , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
