@@ -1,17 +1,18 @@
 process PHARMCAT_VCFPREPROCESSOR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b27c134f2226e65c3be9687fdcd6dfb5eebb7998bf1ad89ff396c914fe6d81a/data'
-        : 'community.wave.seqera.io/library/pharmcat3:3.1.1--876b7152770ba008'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e7dd711a2b130b55d33e119a346ef8040191bf7834a3c393ed6e29d7d9026d5e/data'
+        : 'community.wave.seqera.io/library/pharmcat3:3.2.0--5126bb296d1e59ac'}"
 
     input:
     tuple val(meta), path(vcf_gz), path(vcf_index)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
-    tuple val(meta4), path(pharmcat_positions)
+    tuple val(meta4), path(pharmcat_positions), path(pharmcat_positions_index)
+    tuple val(meta5), path(pharmcat_uniallelic_positions), path(pharmcat_uniallelic_positions_index)
 
     output:
     tuple val(meta), path("*.preprocessed.vcf.bgz"),                                                                                                    emit: preprocessed_vcf
@@ -31,7 +32,7 @@ process PHARMCAT_VCFPREPROCESSOR {
         --reference-genome ${fasta} \\
         --reference-pgx-vcf ${pharmcat_positions} \\
         --output-dir . \\
-        $args
+        ${args}
     """
 
     stub:

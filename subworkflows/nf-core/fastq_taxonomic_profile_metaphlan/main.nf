@@ -18,7 +18,7 @@ workflow FASTQ_TAXONOMIC_PROFILE_METAPHLAN {
     ch_versions = ch_versions.mix(METAPHLAN_METAPHLAN.out.versions.first())
 
     metaphlan_merged_profiles_txt = METAPHLAN_MERGEMETAPHLANTABLES(METAPHLAN_METAPHLAN.out.profile
-        .map { meta, profile -> [[id: 'all_samples'], profile] }
+        .map { _meta, profile -> [[id: 'all_samples'], profile] }
         .groupTuple(sort: { profile -> profile.getName() }))
         .txt
     ch_versions = ch_versions.mix(METAPHLAN_MERGEMETAPHLANTABLES.out.versions.first())

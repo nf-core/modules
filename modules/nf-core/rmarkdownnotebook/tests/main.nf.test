@@ -11,9 +11,6 @@ nextflow_process {
     test("test_rmarkdownnotebook") {
 
         when {
-            params{
-                module_args = false
-            }
             process {
                 """
                 input[0] = [
@@ -43,16 +40,13 @@ nextflow_process {
     test("test_rmarkdownnotebook_parametrize") {
 
         when {
-            params{
-                module_args = true
-            }
             process {
                 """
                 input[0] = [
                     [ id:'test_rmd' ],
                     file(params.modules_testdata_base_path + 'generic/notebooks/rmarkdown/rmarkdown_notebook.Rmd', checkIfExists: true)
                 ]
-                input[1] = [input_filename: "hello.txt", n_iter: 12]
+                input[1] = [input_filename: "hello.txt", n_iter: 12, input_dir: "./"]
                 input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)
                 """
             }
@@ -77,9 +71,6 @@ nextflow_process {
         options "-stub"
 
         when {
-            params{
-                module_args = false
-            }
             process {
                 """
                 input[0] = [

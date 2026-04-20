@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fastqdl"
 description: Download FASTQ files from SRA or ENA repositories.
 keywords:
@@ -14,9 +13,9 @@ tools:
       documentation: "https://github.com/rpetit3/fastq-dl"
       tool_dev_url: "https://github.com/rpetit3/fastq-dl"
       doi: "10.5281/zenodo.13957735"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:fastq-dl
-
 input:
   - - meta:
         type: map
@@ -26,7 +25,6 @@ input:
     - accession:
         type: string
         description: ENA/SRA accession to query
-
 output:
   fastq:
     - - meta:
@@ -39,7 +37,7 @@ output:
           description: FASTQ files downloaded from ENA or SRA
           pattern: "*.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   runinfo:
     - - meta:
           type: map
@@ -52,7 +50,7 @@ output:
             downloaded
           pattern: "*-run-info.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   runmergers:
     - - meta:
           type: map
@@ -65,14 +63,28 @@ output:
             --group-by-experiment or --group-by-sample
           pattern: "*-run-mergers.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_fastqdl:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastq-dl:
+          type: string
+          description: The name of the tool
+      - fastq-dl --version |& sed "s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastq-dl:
+          type: string
+          description: The name of the tool
+      - fastq-dl --version |& sed "s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@camlloyd"
 maintainers:

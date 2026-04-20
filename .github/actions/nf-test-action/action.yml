@@ -13,7 +13,7 @@ inputs:
   paths:
     description: "Test paths"
     required: true
-  tag:
+  tags:
     description: "Tag to pass as argument for nf-test --tag parameter"
     required: false
     default: ""
@@ -27,7 +27,7 @@ runs:
         java-version: "17"
 
     - name: Set up Nextflow
-      uses: nf-core/setup-nextflow@v2
+      uses: nf-core/setup-nextflow@b4ec1bc7c16a94435159de94a05253542fddf6ef # v3
       with:
         version: "${{ env.NXF_VER }}"
 
@@ -37,7 +37,7 @@ runs:
         python-version: "3.14"
 
     - name: Set up nf-test
-      uses: nf-core/setup-nf-test@v1
+      uses: nf-core/setup-nf-test@ce65500579e8587607aab289ecb3a9c343c32e79 # v2
       with:
         version: "${{ env.NFT_VER }}"
         install-pdiff: true

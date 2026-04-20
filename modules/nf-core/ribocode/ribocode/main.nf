@@ -32,13 +32,13 @@ process RIBOCODE_RIBOCODE {
         -a $annotation \\
         -c $config \\
         -o ${prefix} \\
-        $args 2>&1 | tee ribocode_output.log || true
+        $args 2>&1 | tee ribocode_output.log
 
     # Check if RiboCode output contains error messages
     if grep -qiE "^Error|Error:" ribocode_output.log; then
         echo "ERROR: RiboCode failed. Check the output above for details." >&2
         echo "Common causes:" >&2
-        echo "  - Invalid config file from metaplots (try lowering cutoff via ext.args, e.g., '-f0_percent 0.5')" >&2
+        echo "  - Invalid config file from metaplots (try lower cutoffs in the RIBOCODE_METAPLOTS step, e.g., '-f0_percent 0.5', though note that this lowers confidence in resulting annotation)" >&2
         echo "  - Insufficient data from Ribo-Seq alignment" >&2
         exit 1
     fi

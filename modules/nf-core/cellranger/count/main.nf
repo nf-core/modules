@@ -10,7 +10,7 @@ process CELLRANGER_COUNT {
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
-    path "versions.yml"                , emit: versions
+    path "versions.yml"                , emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,6 +22,11 @@ process CELLRANGER_COUNT {
     }
     args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo ${args}
+    """
+
     template "cellranger_count.py"
 
     stub:

@@ -14,7 +14,7 @@ process CELLRANGER_MKFASTQ {
     tuple val(meta), path("*_outs/outs/fastq_path/Reports")                        , optional:true, emit: reports
     tuple val(meta), path("*_outs/outs/fastq_path/Stats")                          , optional:true, emit: stats
     tuple val(meta), path("*_outs/outs/interop_path/*.bin")                        , emit: interop
-    path "versions.yml"                                                            , emit: versions
+    tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process CELLRANGER_MKFASTQ {
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 
     stub:
@@ -64,10 +59,5 @@ process CELLRANGER_MKFASTQ {
     gzip "${prefix}_outs/outs/fastq_path/Undetermined_fake_file.fastq"
     gzip "${prefix}_outs/outs/fastq_path/sample/files/fake_sample_S1_R1_001.fastq"
     gzip "${prefix}_outs/outs/fastq_path/sample/files/fake_sample_S1_I1_001.fastq"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 }

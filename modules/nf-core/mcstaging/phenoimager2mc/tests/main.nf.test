@@ -33,11 +33,9 @@ nextflow_process {
             }
         }
         then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(
-                      file(process.out.tif[0][1]).name,
-                      process.out.versions).match() }
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
         }
     }
@@ -68,11 +66,9 @@ test("phenoimager2mc - tif - stub") {
             }
         }
         then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(
-                      file(process.out.tif[0][1]).name,
-                      process.out.versions).match() }
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
         }
     }
