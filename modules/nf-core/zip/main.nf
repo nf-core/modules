@@ -12,7 +12,7 @@ process ZIP {
 
     output:
     tuple val(meta), path("${prefix}.zip"), emit: zipped_archive
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('zip'), eval("7za --help | sed 's/.*p7zip Version //; s/(.*//'"), emit: versions_zip, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
