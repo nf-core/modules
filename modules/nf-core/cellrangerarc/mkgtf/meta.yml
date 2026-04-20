@@ -28,13 +28,27 @@ output:
         type: directory
         description: The filtered GTF transcriptome file
         pattern: "*.filtered.gtf"
+  versions_cellrangerarc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellrangerarc:
+          type: string
+          description: The name of the tool
+      - cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellrangerarc:
+          type: string
+          description: The name of the tool
+      - cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ggabernet"
   - "@edmundmiller"
