@@ -4,8 +4,8 @@ process ATLAS_CALL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0':
-        'biocontainers/atlas:0.9.9--h082e891_0' }"
+        'https://depot.galaxyproject.org/singularity/atlas:2.0.2--h2a744bc_0':
+        'biocontainers/atlas:2.0.2--h2a744bc_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(pmd), path(recal)
@@ -16,29 +16,29 @@ process ATLAS_CALL {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val("${task.process}"), val('atlas'), eval("(atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[[:space:]]*Atlas //'"), emit: versions_atlas, topic: versions
+    tuple val("${task.process}"), val('atlas'), eval("atlas 2>&1 | sed -n 's/^ *ATLAS //p;'"), emit: versions_atlas, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args               = task.ext.args   ?: ''
-    def recal_file         = recal           ? "recal=${recal}" : ""
-    def pmd_file           = pmd             ? "pmdFile=${pmd}" : ""
-    def known_alleles_file = known_alleles   ? "alleles=${known_alleles}" : ""
+    def recal_file         = recal           ? "--recal ${recal}" : ""
+    def pmd_file           = pmd             ? "--pmd ${pmd}" : ""
+    def known_alleles_file = known_alleles   ? "--alleles ${known_alleles}" : ""
 
     def valid_method = ['MLE', 'Bayesian', 'allelePresence', 'randomBase', 'majorityBase']
     if ( !valid_method.contains(method) )  { error "Unrecognised calling method for ATLAS_CALL. Options: MLE, Bayesian, allelePresence, randomBase, majorityBase" }
 
     """
     atlas \\
-        task=call \\
-        bam=${bam} \\
-        fasta=${fasta} \\
+        call \\
+        --bam ${bam} \\
+        --fasta ${fasta} \\
         ${recal_file} \\
         ${pmd_file} \\
         ${known_alleles_file} \\
-        method=${method} \\
+        --method ${method} \\
         ${args}
     """
 
