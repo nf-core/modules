@@ -21,7 +21,7 @@ process SYLPH_SKETCHGENOMES {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ls -1 genomes/* > genomes.txt
+    find -L genomes/ -type f > genomes.txt
 
     sylph sketch \\
         -t ${task.cpus} \\

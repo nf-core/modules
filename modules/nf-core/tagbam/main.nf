@@ -12,7 +12,7 @@ process TAGBAM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('tagbam'), eval("tagbam --version | sed 's/tagbam //'"), topic: versions, emit: versions_tagbam
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process TAGBAM {
         --threads $task.cpus \\
         --input $bam \\
         --output-file ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tagbam: \$(tagbam --version | sed 's/tagbam //')
-    END_VERSIONS
     """
 
     stub:
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tagbam: \$(tagbam --version | sed 's/tagbam //')
-    END_VERSIONS
     """
 }

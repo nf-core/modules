@@ -10,7 +10,8 @@ tools:
       homepage: "https://github.com/YangLab/CIRCexplorer2/"
       documentation: "https://circexplorer2.readthedocs.io/en/latest/"
       doi: "10.1101/gr.202895.115"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: biotools:CIRCexplorer2
 input:
   - - meta:
@@ -45,13 +46,27 @@ output:
           description: Annotated circRNA TXT file
           pattern: "*.{txt}"
           ontologies: []
+  versions_circexplorer2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circexplorer2:
+          type: string
+          description: The name of the tool
+      - CIRCexplorer2 --version 2>&1; true:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circexplorer2:
+          type: string
+          description: The name of the tool
+      - CIRCexplorer2 --version 2>&1; true:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@BarryDigby"
 maintainers:

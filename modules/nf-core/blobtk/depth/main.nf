@@ -31,10 +31,5 @@ process BLOBTK_DEPTH {
     def prefix      = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.regions.bed.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blobtk: \$(blobtk --version | cut -d' ' -f2)
-    END_VERSIONS
     """
 }

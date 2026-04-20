@@ -1,6 +1,7 @@
 name: "sourmash_gather"
-description: Search a metagenome sourmash signature against one or many reference
-  databases and return the minimum set of genomes that contain the k-mers in the metagenome.
+description: Search a metagenome sourmash signature against one or many
+  reference databases and return the minimum set of genomes that contain the
+  k-mers in the metagenome.
 keywords:
   - FracMinHash sketch
   - signature
@@ -18,7 +19,8 @@ tools:
       documentation: https://sourmash.readthedocs.io/
       tool_dev_url: https://github.com/sourmash-bio/sourmash
       doi: "10.21105/joss.00027"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:sourmash
 input:
   - - meta:
@@ -115,13 +117,27 @@ output:
             The names of all prefetch-matched signatures from the database in CSV format.
           pattern: "*{csv.gz}"
           ontologies: []
+  versions_sourmash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourmash:
+          type: string
+          description: The name of the tool
+      - sourmash --version 2>&1 | sed 's/^sourmash //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourmash:
+          type: string
+          description: The name of the tool
+      - sourmash --version 2>&1 | sed 's/^sourmash //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vmikk"
   - "@taylorreiter"
