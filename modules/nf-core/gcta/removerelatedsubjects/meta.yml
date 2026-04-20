@@ -1,0 +1,99 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_removerelatedsubjects"
+description: Remove related individuals from a dense GRM using `gcta --grm-cutoff`
+keywords:
+  - gcta
+  - grm
+  - genetics
+tools:
+  - "gcta":
+      description: "Genome-wide Complex Trait Analysis (GCTA) estimates genetic relationships, variance components, and association statistics from genome-wide data."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://yanglab.westlake.edu.cn/software/gcta/"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing dense GRM metadata.
+          `meta.id` is the required GRM basename consumed by `--grm` and must match
+          the staged dense GRM files.
+          e.g. `[ id:'tiny_dense' ]` requires
+          `tiny_dense.grm.id`, `tiny_dense.grm.bin`, and `tiny_dense.grm.N.bin`.
+    - grm_id:
+        type: file
+        description: Dense GRM sample identifier file with basename `${meta.id}`
+        pattern: "*.grm.id"
+        ontologies: []
+    - grm_bin:
+        type: file
+        description: Dense GRM binary matrix file with basename `${meta.id}`
+        pattern: "*.grm.bin"
+        ontologies: []
+    - grm_n_bin:
+        type: file
+        description: Dense GRM sample-count matrix file with basename `${meta.id}`
+        pattern: "*.grm.N.bin"
+        ontologies: []
+
+output:
+  grm_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing dense GRM metadata.
+            `meta.id` remains the dense-GRM basename contract used for `--grm`.
+      - "*_unrel05.grm.id":
+          type: file
+          description: Relatedness-filtered GRM sample identifier file
+          pattern: "*_unrel05.grm.id"
+          ontologies: []
+      - "*_unrel05.grm.bin":
+          type: file
+          description: Relatedness-filtered GRM binary matrix file
+          pattern: "*_unrel05.grm.bin"
+          ontologies: []
+      - "*_unrel05.grm.N.bin":
+          type: file
+          description: Relatedness-filtered GRM sample-count matrix file
+          pattern: "*_unrel05.grm.N.bin"
+          ontologies: []
+  keep_file:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing dense GRM metadata.
+            `meta.id` remains the dense-GRM basename contract used for `--grm`.
+      - "*_unrel05.grm.id":
+          type: file
+          description: Keep file of unrelated individuals emitted by GCTA
+          pattern: "*_unrel05.grm.id"
+          ontologies: []
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the version was collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//':
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+authors:
+  - "@andongni"
+maintainers:
+  - "@andongni"
