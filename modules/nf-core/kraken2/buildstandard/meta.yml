@@ -32,6 +32,8 @@ output:
         description: Directory containing the Kraken2 'standard' database that can
           be used to perform taxonomic classification
         pattern: "*/"
+        ontologies:
+          - edam: http://edamontology.org/data_1049 # Directory
   versions_kraken2:
     - - ${task.process}:
           type: string

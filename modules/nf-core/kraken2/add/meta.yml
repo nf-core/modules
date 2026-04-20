@@ -29,7 +29,7 @@ input:
         description: fasta file that will be added to the database
         pattern: "*.{fa,fasta,fna,ffn}"
         ontologies:
-          - edam: http://edamontology.org/format_1929
+          - edam: http://edamontology.org/format_1929 # FASTA
   - taxonomy_names:
       type: file
       description: used for associating sequences with taxonomy IDs
@@ -41,13 +41,13 @@ input:
       description: tree nodes using NCBI taxonomy nomenclature
       pattern: "*.dmp"
       ontologies:
-        - edam: http://edamontology.org/data_3028
+        - edam: http://edamontology.org/data_3028 # Taxonomy
   - accession2taxid:
       type: file
       description: associates sequence accession IDs to taxonomy IDs
       pattern: "*.accession2taxid"
       ontologies:
-        - edam: http://edamontology.org/data_3028
+        - edam: http://edamontology.org/data_3028 # Taxonomy
   - seqid2taxid:
       type: file
       description: optional premade 2 column seq2taxid map file. Must be named
@@ -55,7 +55,7 @@ input:
         upstream build step.
       pattern: "seqid2taxid.map"
       ontologies:
-        - edam: http://edamontology.org/data_3028
+        - edam: http://edamontology.org/data_3028 # Taxonomy
 output:
   library_added_files:
     - - meta:
@@ -70,7 +70,7 @@ output:
             including FASTA files, masked FASTAs, and prelim_map files.
           pattern: "*"
           ontologies:
-            - edam: http://edamontology.org/format_1929
+            - edam: http://edamontology.org/format_1929 # FASTA
   seqid2taxid_map:
     - - meta:
           type: map
@@ -84,7 +84,7 @@ output:
             or premade.
           pattern: "seqid2taxid.map"
           ontologies:
-            - edam: http://edamontology.org/data_3028
+            - edam: http://edamontology.org/data_3028 # Taxonomy
   taxonomy_files:
     - - meta:
           type: map
@@ -98,7 +98,7 @@ output:
             nodes.dmp, names.dmp, and .accession2taxid files.
           pattern: "*"
           ontologies:
-            - edam: http://edamontology.org/data_3028
+            - edam: http://edamontology.org/data_3028 # Taxonomy
   versions_kraken2:
     - - ${task.process}:
           type: string
