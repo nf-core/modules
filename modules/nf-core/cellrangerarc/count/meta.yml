@@ -33,27 +33,35 @@ input:
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
-  - reference:
-      type: directory
-      description: Directory containing all the reference indices needed by Cell Ranger
-        ARC
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reference:
+        type: directory
+        description: Directory containing all the reference indices needed by Cell Ranger
+          ARC
 output:
   outs:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - ${meta.id}/outs/**:
+      - "${prefix}/outs/**":
           type: file
           description: Files containing the outputs of Cell Ranger ARC
-          pattern: "${meta.id}/outs/*"
+          pattern: "${prefix}/outs/*"
           ontologies: []
   lib:
-    - ${meta.id}_lib.csv:
-        type: file
-        description: Library
-        pattern: "*_lib.csv"
-        ontologies:
-          - edam: http://edamontology.org/format_3752 # CSV
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "${prefix}_lib.csv":
+          type: file
+          description: Library
+          pattern: "${prefix}_lib.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   versions_cellrangerarc:
     - - ${task.process}:
           type: string
