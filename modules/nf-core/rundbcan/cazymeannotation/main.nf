@@ -1,22 +1,22 @@
 process RUNDBCAN_CAZYMEANNOTATION {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.2.6--pyhdfd78af_0' :
-        'biocontainers/dbcan:5.2.6--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/dbcan:5.2.8--pyhdfd78af_0'
+        : 'biocontainers/dbcan:5.2.8--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(input_raw_data)
     path dbcan_db
 
     output:
-    tuple val(meta), path("${prefix}_overview.tsv")            , emit: cazyme_annotation
-    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")   , emit: dbcanhmm_results
+    tuple val(meta), path("${prefix}_overview.tsv"), emit: cazyme_annotation
+    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv"), emit: dbcanhmm_results
     tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
-    tuple val(meta), path("${prefix}_diamond.out")             , emit: dbcandiamond_results
-    path  "versions.yml"                                       , emit: versions
+    tuple val(meta), path("${prefix}_diamond.out"), emit: dbcandiamond_results
+    tuple val("${task.process}"), val('rundbcan'), eval("run_dbcan version | sed 's/dbCAN version: //g'"), emit: versions_rundbcan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process RUNDBCAN_CAZYMEANNOTATION {
     mv dbCAN_hmm_results.tsv ${prefix}_dbCAN_hmm_results.tsv
     mv dbCANsub_hmm_results.tsv ${prefix}_dbCANsub_hmm_results.tsv
     mv diamond.out ${prefix}_diamond.out
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
-    END_VERSIONS
     """
 
     stub:
@@ -50,10 +45,5 @@ process RUNDBCAN_CAZYMEANNOTATION {
     touch ${prefix}_dbCAN_hmm_results.tsv
     touch ${prefix}_dbCANsub_hmm_results.tsv
     touch ${prefix}_diamond.out
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
-    END_VERSIONS
     """
 }

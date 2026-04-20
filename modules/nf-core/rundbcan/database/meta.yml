@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "rundbcan_database"
-description: command from run_dbcan to prepare the database for dbCAN annotation.
+description: command from run_dbcan to prepare the database for dbCAN
+  annotation.
 keywords:
   - dbCAN
   - download
@@ -15,23 +15,37 @@ tools:
       documentation: "https://run-dbcan.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/bcb-unl/run_dbcan"
       doi: "10.1093/nar/gkad328"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: biotools:dbcan
-
+input: []
 output:
   dbcan_db:
     - dbcan_db:
         type: directory
         description: Download directory for dbCAN databases
         pattern: "dbcan_db"
+  versions_rundbcan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rundbcan:
+          type: string
+          description: The name of the tool
+      - "run_dbcan version | sed 's/dbCAN version: //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rundbcan:
+          type: string
+          description: The name of the tool
+      - "run_dbcan version | sed 's/dbCAN version: //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Xinpeng021001"
 maintainers:

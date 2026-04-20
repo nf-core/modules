@@ -37,7 +37,11 @@
                     ]
                 ],
                 "12": [
-                    "versions.yml:md5,b3b2fdbf18a2af95cc972c93ae3d9b86"
+                    [
+                        "RUNDBCAN_EASYSUBSTRATE",
+                        "rundbcan",
+                        "5.2.8"
+                    ]
                 ],
                 "2": [
                     [
@@ -201,32 +205,24 @@
                         "stub_total_cgc_info.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,b3b2fdbf18a2af95cc972c93ae3d9b86"
+                "versions_rundbcan": [
+                    [
+                        "RUNDBCAN_EASYSUBSTRATE",
+                        "rundbcan",
+                        "5.2.8"
+                    ]
                 ]
-            },
-            {
-                "RUNDBCAN_EASYSUBSTRATE": {
-                    "dbcan": "5.2.6"
-                }
             }
         ],
+        "timestamp": "2026-04-20T12:56:22.019632962",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2026-02-02T13:21:03.654343854"
+            "nf-test": "0.9.5",
+            "nextflow": "24.10.3"
+        }
     },
     "easysubstrate - simplified": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test_overview.tsv:md5,946555b9669d8e0b1705ca512ad3c60d"
-                ]
-            ],
+            false,
             [
                 [
                     {
@@ -243,14 +239,7 @@
                     "test_dbCANsub_hmm_results.tsv:md5,d771df5ab5b2967ced24c04fe54abf17"
                 ]
             ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test_diamond.out:md5,f6d902c0af43d8b33a41d647327c673e"
-                ]
-            ],
+            true,
             [
                 [
                     {
@@ -294,19 +283,20 @@
                     "test_total_cgc_info.tsv:md5,86b551fe09a76b253b6c955363255af9"
                 ]
             ],
-            [
-                "versions.yml:md5,b3b2fdbf18a2af95cc972c93ae3d9b86"
-            ],
             {
-                "RUNDBCAN_EASYSUBSTRATE": {
-                    "dbcan": "5.2.6"
-                }
+                "versions_rundbcan": [
+                    [
+                        "RUNDBCAN_EASYSUBSTRATE",
+                        "rundbcan",
+                        "5.2.8"
+                    ]
+                ]
             }
         ],
+        "timestamp": "2026-04-20T15:59:57.278107864",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2026-02-02T15:25:26.403675169"
+            "nf-test": "0.9.5",
+            "nextflow": "24.10.3"
+        }
     }
 }
