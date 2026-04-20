@@ -42,5 +42,6 @@ process KRAKEN2_BUILD {
     echo "${args}"
     mkdir -p kraken2-database/
     touch kraken2-database/{hash,opts,tax}.k2d
+    touch kraken2-database/unmapped.txt
     """
 }
