@@ -122,7 +122,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
@@ -131,7 +131,7 @@ nextflow_workflow {
                 ])
                 input[1] = true  // skip_fastqc
                 input[2] = false // with_umi
-                input[3] = false // skip_umi_extract
+                input[3] = true  // skip_umi_extract
                 input[4] = false // skip_trimming
                 input[5] = 0     // umi_discard_read
                 input[6] = 1     // min_trimmed_reads
@@ -146,7 +146,7 @@ nextflow_workflow {
                     workflow.out.reads,
                     workflow.out.trim_read_count,
                     workflow.out.trim_unpaired,
-).match() }
+                ).match() }
             )
         }
     }
