@@ -4,8 +4,8 @@ process PROTEUS_READPROTEINGROUPS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-503e259d7d34ce533ce66c4c8871af4ab409db6d:1e504ef71c83943061a39b6260d826b988bfa56f-0':
-        'biocontainers/mulled-v2-503e259d7d34ce533ce66c4c8871af4ab409db6d:1e504ef71c83943061a39b6260d826b988bfa56f-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d0008e2c0054e7cb33f3acef6ea417d157945a6f5774f6b7bdc1ef19cf95b249/data':
+        'community.wave.seqera.io/library/bioconductor-limma_r-proteus-bartongroup_r-base_r-ggplot2_r-plotly:855c86e2407bbedb' }"
 
     input:
     tuple val(meta), path(samplesheet), path(intensities)
