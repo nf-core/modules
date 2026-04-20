@@ -138,7 +138,7 @@ workflow FASTQ_REMOVE_RRNA {
             SEQKIT_REPLACE_U2T.out.fastx
                 .map { _meta, fasta_file -> fasta_file }
                 .collectFile(name: 'rrna_combined_dna.fasta', newLine: true)
-                .map { fasta_file -> [[id: 'rrna_refs'], fasta_file] }
+                .map { fasta_file -> [[id: 'rrna_refs'], fasta_file, []] }
                 .set { ch_combined_fasta }
 
             BOWTIE2_BUILD(
@@ -161,7 +161,7 @@ workflow FASTQ_REMOVE_RRNA {
         BOWTIE2_ALIGN(
             ch_reads_for_bowtie2.single_end,
             ch_bowtie2_index,
-            [[], []],  // No reference fasta needed
+            [[], [], []],  // No reference fasta needed
             true,      // save_unaligned - for single-end this works correctly
             false,     // sort_bam - not needed
         )
@@ -175,7 +175,7 @@ workflow FASTQ_REMOVE_RRNA {
         BOWTIE2_ALIGN_PE(
             ch_reads_for_bowtie2.paired_end,
             ch_bowtie2_index,
-            [[], []],  // No reference fasta needed for BAM output
+            [[], [], []],  // No reference fasta needed for BAM output
             false,     // save_unaligned - we'll extract from BAM instead
             false,     // sort_bam - not needed
         )

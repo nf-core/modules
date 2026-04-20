@@ -31,7 +31,7 @@ process CENTRIFUGER_BUILD {
 
    """
     #Create reference file from staged input file(s)
-    ls -1 genomes/* > reference_list.txt
+    find -L genomes/ -type f > reference_list.txt
 
     mkdir -p ${prefix}
 
