@@ -9,9 +9,9 @@ process HIFIASM {
 
     input:
     tuple val(meta) , path(long_reads)        , path(ul_reads)
-    tuple val(meta1), path(paternal_kmer_dump), path(maternal_kmer_dump)
-    tuple val(meta2), path(hic_read1)         , path(hic_read2)
-    tuple val(meta3), path(bin_files)
+    tuple val(meta2), path(paternal_kmer_dump), path(maternal_kmer_dump)
+    tuple val(meta3), path(hic_read1)         , path(hic_read2)
+    tuple val(meta4), path(bin_files)
 
     output:
     tuple val(meta), path("*.r_utg.gfa")                             , emit: raw_unitigs      , optional: true
