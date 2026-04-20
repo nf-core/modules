@@ -120,6 +120,14 @@ workflow BAM_DEDUP_UMI {
         .mix(UMI_DEDUP_GENOME.out.idxstats)
         .transpose()
 
+    // Genome-side only; transcriptome stats excluded (MultiQC can't
+    // disambiguate them from genome stats without extra work).
+    ch_per_sample_mqc_bundle = ch_genomic_dedup_log
+        .join(UMI_DEDUP_GENOME.out.stats,    remainder: true)
+        .join(UMI_DEDUP_GENOME.out.flagstat, remainder: true)
+        .join(UMI_DEDUP_GENOME.out.idxstats, remainder: true)
+        .map { row -> [row[0], row.drop(1).findAll { it != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }
+
     emit:
     bam                            = UMI_DEDUP_GENOME.out.bam // channel: [ val(meta), path(bam) ]
     index                          = UMI_DEDUP_GENOME.out.index // channel: [ val(meta), path(bai) ]
@@ -129,6 +137,9 @@ workflow BAM_DEDUP_UMI {
     stats                          = UMI_DEDUP_GENOME.out.stats.mix(UMI_DEDUP_TRANSCRIPTOME.out.stats) // channel: [ val(meta), path(stats)]
     flagstat                       = UMI_DEDUP_GENOME.out.flagstat.mix(UMI_DEDUP_TRANSCRIPTOME.out.flagstat) // channel: [ val(meta), path(flagstat)]
     idxstats                       = UMI_DEDUP_GENOME.out.idxstats.mix(UMI_DEDUP_TRANSCRIPTOME.out.idxstats) // channel: [ val(meta), path(idxstats)]
+    genome_stats                   = UMI_DEDUP_GENOME.out.stats // channel: [ val(meta), path(stats) ]
+    genome_flagstat                = UMI_DEDUP_GENOME.out.flagstat // channel: [ val(meta), path(flagstat) ]
+    genome_idxstats                = UMI_DEDUP_GENOME.out.idxstats // channel: [ val(meta), path(idxstats) ]
     tsv_edit_distance              = ch_tsv_edit_distance // channel: [ val(meta), path(tsv) ]
     tsv_per_umi                    = ch_tsv_per_umi // channel: [ val(meta), path(tsv) ]
     tsv_umi_per_position           = ch_tsv_umi_per_position // channel: [ val(meta), path(tsv) ]
@@ -138,4 +149,5 @@ workflow BAM_DEDUP_UMI {
     transcriptome_sorted_bam       = SAMTOOLS_SORT.out.bam // channel: [ val(meta), path(bam) ] - name-sorted
     transcriptome_sorted_bam_index = UMI_DEDUP_TRANSCRIPTOME.out.index // channel: [ val(meta), path(index) ] - coordinate-sorted dedup index
     transcriptome_filtered_bam     = UMITOOLS_PREPAREFORRSEM.out.bam // channel: [ val(meta), path(bam) ] - paired-end filtered
+    per_sample_mqc_bundle          = ch_per_sample_mqc_bundle // channel: [ val(meta), list(files) ]
 }
