@@ -42,7 +42,11 @@ output:
             Groovy Map containing sample information
       - "*biotype_counts_mqc.tsv":
           type: file
-          description: Biotype counts formatted for MultiQC
+          description: |
+            Biotype counts formatted for MultiQC. The process fails if the
+            number of biotype rows exceeds the threshold passed via
+            `ext.args = '--max_biotypes N'` (default 100), since MultiQC
+            cannot render a bar plot with that many categories.
           pattern: "*biotype_counts_mqc.tsv"
           ontologies: []
   rrna:

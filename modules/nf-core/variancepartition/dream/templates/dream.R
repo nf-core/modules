@@ -227,10 +227,10 @@ if (opt\$subset_to_contrast_samples) {
 if (is_valid_string(opt\$formula)) {
     form <- as.formula(opt\$formula)
 } else {
-    form <- '~ 0'
+    model_vars <- contrast_variable
 
     if (is_valid_string(opt\$blocking_variables)) {
-        form <- paste(form, paste(blocking.vars, collapse = ' + '), sep=' + ')
+        model_vars <- c(model_vars, blocking.vars)
     }
 
     # Make sure all the appropriate variables are factors
@@ -238,8 +238,9 @@ if (is_valid_string(opt\$formula)) {
         metadata[[v]] <- as.factor(make.names(metadata[[v]]))
     }
 
-    # Variable of interest goes last
-    form <- as.formula(paste(form, contrast_variable, sep = ' + '))
+    # Put the contrast variable first in zero-intercept designs so each
+    # contrast level is represented directly in the design matrix.
+    form <- as.formula(paste('~ 0 +', paste(model_vars, collapse = ' + ')))
 }
 print(form)
 
