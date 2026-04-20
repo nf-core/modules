@@ -4,15 +4,15 @@ process CUSTOM_MULTIQCCUSTOMBIOTYPE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/python:3.12' :
-        'biocontainers/python:3.12' }"
+        'https://depot.galaxyproject.org/singularity/python:3.12.12' :
+        'biocontainers/python:3.12.12' }"
 
     input:
     tuple val(meta), path(count)
     tuple val(meta2), path(header)
 
     output:
-    tuple val(meta), path("*biotype_counts_mqc.tsv")     , emit: tsv
+    tuple val(meta), path("*biotype_counts_mqc.tsv")      , emit: tsv
     tuple val(meta), path("*biotype_counts_rrna_mqc.tsv") , emit: rrna
     path "versions.yml"                                   , emit: versions, topic: versions
 
