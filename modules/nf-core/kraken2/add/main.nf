@@ -18,7 +18,7 @@ process KRAKEN2_ADD {
     tuple val(meta), path("${prefix}/library/added/*", includeInputs: true), emit: library_added_files
     tuple val(meta), path("${prefix}/seqid2taxid.map", includeInputs: true), optional: true, emit: seqid2taxid_map
     tuple val(meta), path("${prefix}/taxonomy/*", includeInputs: true), emit: taxonomy_files
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('kraken2'), eval('kraken2 --version 2>&1 | head -1 | sed "s/^.*Kraken version //; s/ .*//"'), topic: versions, emit: versions_kraken2
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process KRAKEN2_ADD {
         --db ${prefix} \\
         --threads ${task.cpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kraken2: \$(echo \$(kraken2 --version 2>&1) | sed 's/^.*Kraken version //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process KRAKEN2_ADD {
     echo "${args}"
     mkdir -p "${prefix}"/library/added "${prefix}"/taxonomy
     touch "${prefix}"/library/added/test.txt "${prefix}"/seqid2taxid.map "${prefix}"/taxonomy/{nodes,names}.dmp
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kraken2: \$(echo \$(kraken2 --version 2>&1) | sed 's/^.*Kraken version //; s/ .*\$//')
-    END_VERSIONS
     """
 }
