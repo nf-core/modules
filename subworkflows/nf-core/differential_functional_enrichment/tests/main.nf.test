@@ -40,7 +40,10 @@ nextflow_workflow {
 
                 input[0] = ch_input
                 input[1] = channel.of([[], [], [], [], [], []])
-                input[2] = channel.of([[], []])
+                input[2] = channel.of([
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    []
+                ])
                 input[3] = channel.of([
                     ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
                     [],  //
@@ -89,10 +92,10 @@ nextflow_workflow {
                 ])
                 ch_transcript_lengths = channel.of([ [], [] ])
                 ch_control_features = channel.of([ [], [] ])
-                ch_contrasts = channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                     .groupTuple()
                 ch_input = channel.of([
@@ -125,10 +128,14 @@ nextflow_workflow {
                     .map { meta, file, genesets, background, method ->
                         [meta, [], '', '']
                     }
+                ch_samplesheet = ch_input
+                    .map { meta, file, genesets, background, method ->
+                        [meta, []]
+                    }
 
                 input[0] = ch_input
                 input[1] = channel.of([[], [], [], [], [], []])
-                input[2] = channel.of([[], []])
+                input[2] = ch_samplesheet
                 input[3] = ch_featuresheet
                 """
             }
@@ -170,8 +177,8 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(testDataSetup.expression_test_data_dir + testDataSetup.samplesheet_file)
                 ])
-                ch_transcript_lengths = channel.of([ [], [] ])
-                ch_control_features = channel.of([ [], [] ])
+                ch_transcript_lengths = channel.of([ [ id:'test' ], [] ])
+                ch_control_features = channel.of([ [ id:'test' ], [] ])
                 ch_contrasts = channel.fromPath(file(testDataSetup.expression_test_data_dir + testDataSetup.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
@@ -217,7 +224,7 @@ nextflow_workflow {
 
                 // define other input files using ch_input meta
                 ch_contrasts = ch_input
-                    .map {it[0]}
+                    .map { meta, file, genesets, background, method -> [meta] }
                     .combine(
                         channel.fromPath(file(testData.contrasts_file))
                             .splitCsv ( header:true, sep:',' )
@@ -227,10 +234,10 @@ nextflow_workflow {
                     )
                     .groupTuple()
                 ch_samplesheet = ch_input
-                    .map {it[0]}
+                    .map { meta, file, genesets, background, method -> [meta] }
                     .combine( channel.of(file(testData.samplesheet_file)) )
                 ch_featuresheet = ch_input
-                    .map {it[0]}
+                    .map { meta, file, genesets, background, method -> [meta] }
                     .combine(
                         channel.of([
                             file(testData.abundance_file),
@@ -281,8 +288,8 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(testDataSetup.expression_test_data_dir + testDataSetup.samplesheet_file)
                 ])
-                ch_transcript_lengths = channel.of([ [], [] ])
-                ch_control_features = channel.of([ [], [] ])
+                ch_transcript_lengths = channel.of([ [ id:'test' ], [] ])
+                ch_control_features = channel.of([ [ id:'test' ], [] ])
                 ch_contrasts = channel.fromPath(file(testDataSetup.expression_test_data_dir + testDataSetup.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
@@ -319,9 +326,13 @@ nextflow_workflow {
                     .map { meta, file, genesets, background, method ->
                         [meta, [], '', '']
                     }
+                ch_samplesheet = ch_input
+                    .map { meta, file, genesets, background, method ->
+                        [meta, []]
+                    }
                 input[0] = ch_input
                 input[1] = channel.of([[], [], [], [], [], []])
-                input[2] = channel.of([[], []])
+                input[2] = ch_samplesheet
                 input[3] = ch_featuresheet
                 """
             }
@@ -361,8 +372,8 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(testDataSetup.expression_test_data_dir + testDataSetup.samplesheet_file)
                 ])
-                ch_transcript_lengths = channel.of([ [], [] ])
-                ch_control_features = channel.of([ [], [] ])
+                ch_transcript_lengths = channel.of([ [ id:'test' ], [] ])
+                ch_control_features = channel.of([ [ id:'test' ], [] ])
                 ch_contrasts = channel.fromPath(file(testDataSetup.expression_test_data_dir + testDataSetup.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
@@ -432,7 +443,7 @@ nextflow_workflow {
 
                 // define other input files using ch_input meta
                 ch_contrasts = ch_input
-                    .map {it[0]}
+                    .map { meta, file, genesets, background, method -> [meta] }
                     .combine(
                         channel.fromPath(file(testData.contrasts_file))
                             .splitCsv ( header:true, sep:',' )
@@ -442,10 +453,10 @@ nextflow_workflow {
                     )
                     .groupTuple()
                 ch_samplesheet = ch_input
-                    .map {it[0]}
+                    .map { meta, file, genesets, background, method -> [meta] }
                     .combine( channel.of(file(testData.samplesheet_file)) )
                 ch_featuresheet = ch_input
-                    .map {it[0]}
+                    .map { meta, file, genesets, background, method -> [meta] }
                     .combine(
                         channel.of([
                             file(testData.abundance_file),
@@ -501,7 +512,16 @@ nextflow_workflow {
                 ])
 
                 ch_contrasts = channel.of([[], [], [], [], [], []])
-                ch_samplesheet = channel.of([[], []])
+                ch_samplesheet = channel.of([
+                    [
+                        'id':'treatment_mCherry_hND6',
+                        'method_differential':'deseq2',
+                        'params': [
+                            'differential_method': 'deseq2'
+                        ]
+                    ],
+                    []
+                ])
                 ch_featuresheet = channel.of([
                     [
                         'id':'treatment_mCherry_hND6',
@@ -563,7 +583,10 @@ nextflow_workflow {
 
                 input[0] = ch_input
                 input[1] = channel.of([[], [], [], [], [], []])
-                input[2] = channel.of([[], []])
+                input[2] = channel.of([
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    []
+                ])
                 input[3] = channel.of([
                     ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
                     [],
