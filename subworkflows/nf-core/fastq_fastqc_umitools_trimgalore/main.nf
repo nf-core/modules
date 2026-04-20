@@ -82,12 +82,12 @@ workflow FASTQ_FASTQC_UMITOOLS_TRIMGALORE {
         TRIMGALORE.out.reads
             .join(trim_log, remainder: true)
             .map { meta, reads_, trim_log_ ->
-                if (trim_log) {
+                if (trim_log_) {
                     def num_reads = getTrimGaloreReadsAfterFiltering(meta.single_end ? trim_log_ : trim_log_[-1])
                     [meta, reads_, num_reads]
                 }
                 else {
-                    [meta, reads, min_trimmed_reads.toFloat() + 1]
+                    [meta, reads_, min_trimmed_reads.toFloat() + 1]
                 }
             }
             .set { ch_num_trimmed_reads }
