@@ -1,0 +1,66 @@
+name: "centrifuger_quantification"
+description: Quantification (taxonomic profiling) of Centrifuger model
+keywords:
+  - metagenomics
+  - quantification
+  - Centrifuger
+tools:
+  - "centrifuger":
+      description: " Centruger is An efficient taxonomic classification method that
+        compares sequencing reads against a microbial genome database."
+      homepage: "https://github.com/mourisl/centrifuger"
+      documentation: "https://github.com/mourisl/centrifuger"
+      tool_dev_url: "https://github.com/mourisl/centrifuger"
+      doi: "10.1186/s13059-024-03244-4"
+      licence:
+        - "MIT"
+      identifier: biotools:centrifuger
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' single_end:false ]`
+    - classification_file:
+        type: file
+        description: Path to file containing classification results
+  - db:
+      type: directory
+      description: Path to directory containing Centrfuger db files
+output:
+  report_file:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "${meta.id}.tsv":
+          type: file
+          description: |
+            File containing taxonomic profiling results
+          pattern: "${prefix}.tsv"
+  versions_centrifuger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - centrifuger:
+          type: string
+          description: The name of the tool
+      - centrifuger -v 2>&1 | sed 's/Centrifuger v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - centrifuger:
+          type: string
+          description: The name of the tool
+      - centrifuger -v 2>&1 | sed 's/Centrifuger v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@haris18s"
+maintainers:
+  - "@haris18s"
+  - "@sofstam"
+  - "@jfy133"
