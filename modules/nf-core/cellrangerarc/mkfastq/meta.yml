@@ -42,7 +42,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}/outs/fastq_path/*.fastq.gz:
+      - "${prefix}/outs/fastq_path/*.fastq.gz":
           type: file
           description: Unaligned FastQ files
           pattern: "${prefix}/outs/fastq_path/*.fastq.gz"

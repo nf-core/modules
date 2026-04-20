@@ -43,9 +43,9 @@ process CELLRANGERARC_MKFASTQ {
 
     """
     mkdir -p "${prefix}/outs/fastq_path/"
-    echo | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_I1_001.fastq.gz
-    echo | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_R1_001.fastq.gz
-    echo | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_R2_001.fastq.gz
-    echo | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_R3_001.fastq.gz
+    echo "" | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_I1_001.fastq.gz
+    echo "" | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_R1_001.fastq.gz
+    echo "" | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_R2_001.fastq.gz
+    echo "" | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_R3_001.fastq.gz
     """
 }
