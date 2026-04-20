@@ -14,7 +14,7 @@ process HIFIASM {
     tuple val(meta3), path(bin_files)
 
     output:
-    tuple val(meta), path("*.r_utg.gfa")                             , emit: raw_unitigs
+    tuple val(meta), path("*.r_utg.gfa")                             , emit: raw_unitigs      , optional: true
     tuple val(meta), path("*.bin")                                   , emit: bin_files        , optional: true
     tuple val(meta), path("*.p_utg.gfa")                             , emit: processed_unitigs, optional: true
     tuple val(meta), path("${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa"), emit: primary_contigs  , optional: true
