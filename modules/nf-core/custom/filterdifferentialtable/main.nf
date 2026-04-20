@@ -4,8 +4,8 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pandas:1.5.2' :
-        'biocontainers/pandas:1.5.2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4d7a62daafff045d7ea7739aac6e24d495ab94512525d73bcd865f5cf27cfe0f/data' :
+        'community.wave.seqera.io/library/pandas:1.5.2--8aad09419bb2ac73' }"
 
     input:
     tuple val(meta), path(input_file)
