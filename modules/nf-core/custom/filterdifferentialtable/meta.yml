@@ -96,13 +96,27 @@ output:
           pattern: "*_filtered_down.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
+  versions_customfilterdifferentialtable:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - CUSTOM_FILTERDIFFERENTIALTABLE:
+          type: string
+          description: The name of the tool
+      - python -c "import pandas as pd; print(pd.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - CUSTOM_FILTERDIFFERENTIALTABLE:
+          type: string
+          description: The name of the tool
+      - python -c "import pandas as pd; print(pd.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
   - "@WackerO"

@@ -16,7 +16,7 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     tuple val(meta), path("*_filtered.tsv")         , emit: filtered
     tuple val(meta), path("*_filtered_up.tsv")      , emit: filtered_up
     tuple val(meta), path("*_filtered_down.tsv")    , emit: filtered_down
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('CUSTOM_FILTERDIFFERENTIALTABLE'), eval("python -c \"import pandas as pd; print(pd.__version__)\""), emit: versions_customfilterdifferentialtable, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -71,10 +71,6 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     filtered_table_up.to_csv("${prefix}_filtered_up.tsv", sep='\t', index=False)
     filtered_table_down.to_csv("${prefix}_filtered_down.tsv", sep='\t', index=False)
 
-    # Write versions
-    with open('versions.yml', 'w') as version_file:
-        version_file.write('"${task.process}":\\n')
-        version_file.write(f"    pandas: {pd.__version__}\\n")
     """
 
     stub:
@@ -83,6 +79,5 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     touch ${prefix}_filtered.tsv
     touch ${prefix}_filtered_up.tsv
     touch ${prefix}_filtered_down.tsv
-    echo '"${task.process}":\\n    pandas: 1.5.2' > versions.yml
     """
 }
