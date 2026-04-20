@@ -13,7 +13,7 @@ process CUSTOM_TABULARTOGSEACHIP {
 
     output:
     tuple val(meta), path("*.chip"), emit: chip
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('CUSTOM_TABULARTOGSEACHIP'), eval("awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//'"), emit: versions_custom_tabulartogseachip, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,10 +36,6 @@ process CUSTOM_TABULARTOGSEACHIP {
     tail -n +2 $tabular | awk -F'\\t' -v id=\$id_col -v symbol=\$symbol_col '{print \$id"\\t"\$symbol"\\tNA"}' >> \${outfile}.tmp
     mv \${outfile}.tmp \${outfile}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -48,9 +44,6 @@ process CUSTOM_TABULARTOGSEACHIP {
     outfile=${prefix}.chip
     touch \$outfile
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
-    END_VERSIONS
+
     """
 }
