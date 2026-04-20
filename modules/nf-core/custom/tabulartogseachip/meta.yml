@@ -24,7 +24,7 @@ input:
           features ids, and another column with the features symbols.
         pattern: "*.{tsv}"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   - - id:
         type: string
         description: The name of the column containing feature ids
@@ -44,13 +44,27 @@ output:
             https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats
           pattern: "*.chip"
           ontologies: []
+  versions_custom_tabulartogseachip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - CUSTOM_TABULARTOGSEACHIP:
+          type: string
+          description: The name of the tool
+      - awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - CUSTOM_TABULARTOGSEACHIP:
+          type: string
+          description: The name of the tool
+      - awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
   - "@suzannejin"
