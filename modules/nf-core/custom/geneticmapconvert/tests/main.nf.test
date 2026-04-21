@@ -29,7 +29,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
                     path(process.out.stitch_map[0][1]).readLines()[0..2],
@@ -66,7 +66,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
                     path(process.out.stitch_map[0][1]).readLines()[0..2],
@@ -93,7 +93,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
                     path(process.out.stitch_map[0][1]).readLines()[0..2],
@@ -123,7 +123,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
                     path(process.out.stitch_map[0][1]).readLines()[0..2],
@@ -219,7 +219,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
                     path(process.out.stitch_map[0][1]).readLines()[0..2],
@@ -361,7 +361,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
                     path(process.out.stitch_map[0][1]).readLines()[0..2],
@@ -413,7 +413,7 @@ nextflow_process {
         then {
             assert snapshot(
                 sanitizeOutput(process.out),
-                path(process.out.versions_geneticmapconvert[0]).yaml
+                path(process.out.versions[0]).yaml
             ).match()
         }
     }
