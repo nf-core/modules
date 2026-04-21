@@ -1,20 +1,16 @@
 process CELLRANGERARC_MKREF {
-    tag "$reference_name"
+    tag "$meta.id"
     label 'process_medium'
 
     container "nf-core/cellranger-arc:2.0.2"
 
     input:
-    path fasta
-    path gtf
-    path motifs
-    path reference_config
-    val reference_name
+    tuple val(meta), path(fasta), path(gtf), path(motifs), path(reference_config)
 
     output:
-    path "${reference_name}", emit: reference
-    path "config"           , emit: config
-    tuple val("${task.process}"), val('cellrangerarc_mkref'), eval("cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//'"), emit: versions_cellrangerarc_mkref, topic: versions
+    tuple val(meta), path("${prefix}"), emit: reference
+    tuple val(meta), path("config")   , emit: config
+    tuple val("${task.process}"), val('cellrangerarc'), eval("cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//'"), emit: versions_cellrangerarc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,15 +20,13 @@ process CELLRANGERARC_MKREF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def fast_name = fasta.name
+    def fasta_name = fasta.name
     def gtf_name = gtf.name
     def motifs_name = motifs.name
     def reference_config_name = reference_config.name
     def args = task.ext.args ?: ''
 
-    if ( !reference_name ){
-        reference_name = "cellrangerarc_reference"
-    }
+    prefix = task.ext.prefix ?: "${meta.id}_reference"
 
     // unlike cellranger mkref and spaceranger mkref, cellranger-arc mkref is not *yet* implemented in the
     // 10x martian runtime. It is therefore not necessary to specify --localcores and --localmem
@@ -42,7 +36,7 @@ process CELLRANGERARC_MKREF {
     from os.path import exists
     import shutil
 
-    fasta = "${fast_name}"
+    fasta = "${fasta_name}"
     gtf = "${gtf_name}"
     motifs = "${motifs_name}"
     add = "${args}"
@@ -53,7 +47,7 @@ process CELLRANGERARC_MKREF {
         config = open("config", "w")
         config.write("{\\n")
         config.write('\\torganism: "{}"\\n'.format(fasta.split(".")[0]))
-        config.write('\\tgenome: ["cellrangerarc_reference"]\\n')
+        config.write('\\tgenome: ["${prefix}"]\\n')
         config.write('\\tinput_fasta: ["{}"]\\n'.format(fasta))
         config.write('\\tinput_gtf: ["{}"]\\n'.format(gtf))
         if motifs != "[]":
@@ -82,9 +76,18 @@ process CELLRANGERARC_MKREF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-
+    prefix = task.ext.prefix ?: "${meta.id}_reference"
     """
-    mkdir -p "${reference_name}/"
+    mkdir -p "${prefix}"/fasta "${prefix}"/genes "${prefix}"/regions "${prefix}"/star
     touch config
+    touch "${prefix}"/reference.json
+    touch "${prefix}"/fasta/${prefix}.fa.{,amb,ann,bwt,fai,pac,sa}
+    echo "" | gzip > "${prefix}"/genes/genes.gtf.gz
+    touch "${prefix}"/regions/{motifs.pfm,transcripts.bed,tss.bed}
+    touch "${prefix}"/star/{chrLength,chrName,chrNameLength,chrStart,genomeParameters}.txt
+    touch "${prefix}"/star/{exonGeTrInfo,exonInfo,geneInfo,transcriptInfo}.tab
+    touch "${prefix}"/star/{Genome,SA,SAindex}
+    touch "${prefix}"/star/sjdbInfo.txt
+    touch "${prefix}"/star/sjdbList{,.fromGTF}.out.tab
     """
 }
