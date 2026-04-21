@@ -22,12 +22,19 @@ workflow BAM_MARKDUPLICATES_PICARD {
 
     BAM_STATS_SAMTOOLS(ch_reads_index, ch_fasta_fai)
 
+    ch_per_sample_mqc_bundle = BAM_STATS_SAMTOOLS.out.stats
+        .join(BAM_STATS_SAMTOOLS.out.flagstat,   remainder: true)
+        .join(BAM_STATS_SAMTOOLS.out.idxstats,   remainder: true)
+        .join(PICARD_MARKDUPLICATES.out.metrics, remainder: true)
+        .map { row -> [row[0], row.drop(1).findAll { it != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }
+
     emit:
-    bam      = PICARD_MARKDUPLICATES.out.bam // channel: [ val(meta), path(bam) ]
-    cram     = PICARD_MARKDUPLICATES.out.cram // channel: [ val(meta), path(cram) ]
-    metrics  = PICARD_MARKDUPLICATES.out.metrics // channel: [ val(meta), path(metrics) ]
-    index    = SAMTOOLS_INDEX.out.index // channel: [ val(meta), path(index) ]
-    stats    = BAM_STATS_SAMTOOLS.out.stats // channel: [ val(meta), path(stats) ]
-    flagstat = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
-    idxstats = BAM_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
+    bam                   = PICARD_MARKDUPLICATES.out.bam // channel: [ val(meta), path(bam) ]
+    cram                  = PICARD_MARKDUPLICATES.out.cram // channel: [ val(meta), path(cram) ]
+    metrics               = PICARD_MARKDUPLICATES.out.metrics // channel: [ val(meta), path(metrics) ]
+    index                 = SAMTOOLS_INDEX.out.index // channel: [ val(meta), path(index) ]
+    stats                 = BAM_STATS_SAMTOOLS.out.stats // channel: [ val(meta), path(stats) ]
+    flagstat              = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
+    idxstats              = BAM_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
+    per_sample_mqc_bundle = ch_per_sample_mqc_bundle // channel: [ val(meta), list(files) ]
 }
