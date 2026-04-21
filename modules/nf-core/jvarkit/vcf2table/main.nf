@@ -5,7 +5,7 @@ process JVARKIT_VCF2TABLE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/jvarkit:2024.08.25--hdfd78af_1':
-        'biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
+        'quay.io/biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(regions_file)

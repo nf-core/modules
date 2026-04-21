@@ -2,7 +2,7 @@ process CELLRANGERARC_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger-arc:2.0.2"
+    container "quay.io/nf-core/cellranger-arc:2.0.2"
 
     input:
     tuple val(meta), val(sample_type), val(sub_sample), path(reads, stageAs: "fastqs/*")

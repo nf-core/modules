@@ -5,7 +5,7 @@ process MERFIN_HIST {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/merfin:1.0--h4ac6f70_2':
-        'biocontainers/merfin:1.0--h4ac6f70_2' }"
+        'quay.io/biocontainers/merfin:1.0--h4ac6f70_2' }"
 
     input:
     tuple val(meta), path(fasta_assembly)   // Required Input -sequence files can be FASTA or FASTQ; uncompressed, gz compressed.

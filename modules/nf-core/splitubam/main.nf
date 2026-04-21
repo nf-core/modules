@@ -5,7 +5,7 @@ process SPLITUBAM {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/splitubam:0.1.1--hc9368f3_0':
-        'biocontainers/splitubam:0.1.1--hc9368f3_0' }"
+        'quay.io/biocontainers/splitubam:0.1.1--hc9368f3_0' }"
 
     input:
     tuple val(meta), path(bam)

@@ -5,7 +5,7 @@ process SMNCOPYNUMBERCALLER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smncopynumbercaller:1.1.2--py310h7cba7a3_0' :
-        'biocontainers/smncopynumbercaller:1.1.2--py310h7cba7a3_0' }"
+        'quay.io/biocontainers/smncopynumbercaller:1.1.2--py310h7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

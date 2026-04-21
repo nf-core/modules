@@ -5,7 +5,7 @@ process SOURCEPREDICT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sourcepredict:0.5.1--pyhdfd78af_0':
-        'biocontainers/sourcepredict:0.5.1--pyhdfd78af_0' }"
+        'quay.io/biocontainers/sourcepredict:0.5.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(kraken_parse)

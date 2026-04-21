@@ -6,7 +6,7 @@ process FAMSA_GUIDETREE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/famsa:2.2.2--h9f5acd7_0':
-        'biocontainers/famsa:2.2.2--h9f5acd7_0' }"
+        'quay.io/biocontainers/famsa:2.2.2--h9f5acd7_0' }"
 
     input:
     tuple val(meta), path(fasta)

@@ -6,7 +6,7 @@ process PLASTID_PSITE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plastid:0.6.1--py39had3e4b6_2':
-        'biocontainers/plastid:0.6.1--py39had3e4b6_2' }"
+        'quay.io/biocontainers/plastid:0.6.1--py39had3e4b6_2' }"
 
     input:
     tuple val(meta), path(bam), path(bam_index)

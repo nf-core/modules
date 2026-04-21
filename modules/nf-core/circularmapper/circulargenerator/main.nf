@@ -8,7 +8,7 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h2a3209d_3':
-        'biocontainers/circularmapper:1.93.5--h2a3209d_3' }"
+        'quay.io/biocontainers/circularmapper:1.93.5--h2a3209d_3' }"
 
     input:
     tuple val(meta), path(reference)

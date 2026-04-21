@@ -5,7 +5,7 @@ process HELITRONSCANNER_DRAW {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/helitronscanner:1.0--hdfd78af_0':
-        'biocontainers/helitronscanner:1.0--hdfd78af_0' }"
+        'quay.io/biocontainers/helitronscanner:1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
