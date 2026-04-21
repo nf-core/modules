@@ -15,7 +15,8 @@ tools:
       documentation: "https://github.com/shenwei356/kmcp#documents"
       tool_dev_url: "https://github.com/shenwei356/kmcp"
       doi: "10.1093/bioinformatics/btac845"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -37,9 +38,9 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}:
           type: directory
-          description: Output directory containing all .unik files and a summary file
-            in .txt format. Every .unik file contains the sequence/reference ID,chunk
-            index, number of chunks, and genome size of reference.
+          description: Output directory containing all .unik files and a summary
+            file in .txt format. Every .unik file contains the sequence/reference
+            ID,chunk index, number of chunks, and genome size of reference.
           pattern: "*/"
   info:
     - - meta:
@@ -52,13 +53,27 @@ output:
           description: Summary file that is generated for later use
           pattern: "*_info.txt"
           ontologies: []
+  versions_kmcp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmcp:
+          type: string
+          description: The name of the tool
+      - kmcp version 2>&1 | sed 's/^.*kmcp v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmcp:
+          type: string
+          description: The name of the tool
+      - kmcp version 2>&1 | sed 's/^.*kmcp v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sofstam"
 maintainers:
