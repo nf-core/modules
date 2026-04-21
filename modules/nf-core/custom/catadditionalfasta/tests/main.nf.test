@@ -34,8 +34,8 @@ nextflow_process {
                 { assert snapshot(
                     process.out.fasta,
                     process.out.gtf,
-                    process.out.versions_python,
-                    path(process.out.versions_python[0]).yaml
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
@@ -67,7 +67,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions_python[0]).yaml
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
