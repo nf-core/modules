@@ -540,9 +540,9 @@ nextflow_workflow {
                 ch_control_features = Channel.value([ [], [] ])
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
-                    .map{
-                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
-                    }
+                    .map{[
+                        [ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison
+                    ]}
                     .groupTuple()
                 ch_input = Channel.of(
                     [
