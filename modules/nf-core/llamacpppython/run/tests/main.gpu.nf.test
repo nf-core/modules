@@ -23,8 +23,7 @@ nextflow_process {
                     input[0] = [
                         [ id:'test_model' ],
                         "ggml-org/gemma-3-1b-it-GGUF",
-                        "gemma-3-1b-it-Q4_K_M.gguf",
-                        "./hf_cache"
+                        "gemma-3-1b-it-Q4_K_M.gguf"
                     ]
                     """
                 }
@@ -32,9 +31,6 @@ nextflow_process {
         }
 
         when {
-            params {
-              module_args = '--seed 42'
-            }
             process {
                 """
                 def promptFile = file('prompt.json')
@@ -77,9 +73,6 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-              module_args = '--seed 42'
-            }
             process {
                 """
                 def promptFile = file('prompt.json')

@@ -22,8 +22,7 @@ nextflow_process {
                     input[0] = [
                         [ id:'test_model' ],
                         "ggml-org/gemma-3-1b-it-GGUF",
-                        "gemma-3-1b-it-Q4_K_M.gguf",
-                        "./hf_cache"
+                        "gemma-3-1b-it-Q4_K_M.gguf"
                     ]
                     """
                 }
@@ -31,12 +30,8 @@ nextflow_process {
         }
 
         when {
-            params {
-              module_args = '--seed 42'
-            }
             process {
                 """
-                // Generate prompt.json with provided content
                 def promptFile = file('prompt.json')
                 promptFile.text = '''[
     {
@@ -73,15 +68,12 @@ nextflow_process {
 
     test("stub - run inference with json prompt") {
 
+        config "./nextflow.config"
         options "-stub"
 
         when {
-            params {
-              module_args = '--seed 42'
-            }
             process {
                 """
-                // Generate prompt.json with provided content
                 def promptFile = file('prompt.json')
                 promptFile.text = '''[
     {
@@ -95,7 +87,6 @@ nextflow_process {
 ]
 '''
 
-                // Generate an empty stub_model.gguf file
                 def modelFile = file('stub_model.gguf')
                 modelFile.text = ''
 
