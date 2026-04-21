@@ -50,8 +50,8 @@ output:
       - cnvpytor:
           type: string
           description: The tool name
-      - 1.3.2:
-          type: string
+      - cnvpytor --version 2>&1 | sed -n 's/.*CNVpytor //p':
+          type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
@@ -61,8 +61,8 @@ topics:
       - cnvpytor:
           type: string
           description: The tool name
-      - 1.3.2:
-          type: string
+      - cnvpytor --version 2>&1 | sed -n 's/.*CNVpytor //p':
+          type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@sima-r"
