@@ -1,0 +1,134 @@
+name: modkit_dmr_pair
+description: |
+  Performs pairwise differential methylation analysis between two samples using modkit dmr pair.
+  Computes per-site differential methylation scores (effect size, Cohen's h) and fits an HMM
+  to call discrete differentially methylated regions (DMRs). Inputs are tabix-indexed bedMethyl
+  files (e.g., from modkit pileup). Optionally restricts analysis to provided genomic regions
+  (e.g., CpG islands).
+keywords:
+  - methylation
+  - dmr
+  - differential-methylation
+  - ont
+  - long-read
+  - nanopore
+  - cpg
+tools:
+  - modkit:
+      description: A bioinformatics tool for working with modified bases in Oxford
+        Nanopore sequencing data
+      homepage: https://github.com/nanoporetech/modkit
+      documentation: https://nanoporetech.github.io/modkit/
+      tool_dev_url: https://github.com/nanoporetech/modkit
+      licence: ["Oxford Nanopore Technologies PLC. Public License Version 1.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing control sample information
+          e.g. `[ id:'normal', condition:'WholeBlood' ]`
+    - control_bed:
+        type: file
+        description: |
+          Tabix-indexed bedMethyl file for the control (reference) sample, produced
+          by modkit pileup. Must be bgzipped.
+        pattern: "*.bed.gz"
+        ontologies:
+          - edam: "format_3003"
+    - control_tbi:
+        type: file
+        description: Tabix index for the control bedMethyl file
+        pattern: "*.bed.gz.tbi"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing experimental sample information
+          e.g. `[ id:'tumor', condition:'Tumor' ]`
+    - experiment_bed:
+        type: file
+        description: |
+          Tabix-indexed bedMethyl file for the experimental sample (e.g., tumor),
+          produced by modkit pileup. Must be bgzipped.
+        pattern: "*.bed.gz"
+        ontologies:
+          - edam: "format_3003"
+    - experiment_tbi:
+        type: file
+        description: Tabix index for the experimental bedMethyl file
+        pattern: "*.bed.gz.tbi"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference genome information
+          e.g. `[ id:'hg38' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file; must match the reference used for alignment
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "format_1929"
+    - fai:
+        type: file
+        description: FASTA index file (.fai)
+        pattern: "*.fai"
+        ontologies:
+          - edam: "format_3003"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing regions file information.
+          Pass `[ id:'genome_wide' ]` with an empty list `[]` to run genome-wide (no --regions-bed).
+          e.g. `[ id:'cpg_islands' ]`
+    - regions_bed:
+        type: file
+        description: |
+          Optional BED file of genomic regions to restrict DMR analysis to
+          (e.g., UCSC CpG islands). Pass as empty list `[]` for genome-wide analysis.
+        pattern: "*.bed"
+        ontologies:
+          - edam: "format_3003"
+
+output:
+  - sites:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information from the control input
+      - "*.dmr_sites.bed":
+          type: file
+          description: |
+            Per-site differential methylation scores. Tab-separated BED file with columns:
+            chrom, start, end, name, score, num_sites, a_counts, b_counts, a_percentages,
+            b_percentages, a_frac_modified, b_frac_modified, effect_size, cohen_h,
+            cohen_h_low, cohen_h_high. Header line prefixed with #.
+          pattern: "*.dmr_sites.bed"
+          ontologies:
+            - edam: "format_3003"
+  - segments:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information from the control input
+      - "*.dmr_segments.bed":
+          type: file
+          description: |
+            HMM-segmented discrete DMR blocks. Same column structure as the sites file.
+            The 'name' column is 'different' for DMR blocks and 'same' for unchanged regions.
+            Only rows with name='different' and sufficient effect_size / cohen_h pass
+            downstream filtering.
+          pattern: "*.dmr_segments.bed"
+          ontologies:
+            - edam: "format_3003"
+  - versions_modkit:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies: []
+
+authors:
+  - "@sahuno"
+maintainers:
+  - "@sahuno"

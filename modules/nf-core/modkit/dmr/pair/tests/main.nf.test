@@ -1,0 +1,160 @@
+nextflow_process {
+
+    name "Test Process MODKIT_DMR_PAIR"
+    script "../main.nf"
+    process "MODKIT_DMR_PAIR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "modkit"
+    tag "modkit/dmr/pair"
+
+    // -------------------------------------------------------------------------
+    // Stub tests — run in CI without real bedMethyl data or the modkit container
+    // -------------------------------------------------------------------------
+
+    test("homo sapiens - bedMethyl pair, no regions - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002_normal' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz.tbi',
+                         checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'HG002_tumor' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz.tbi',
+                         checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',
+                         checkIfExists: true)
+                ]
+                input[3] = [ [ id: 'genome_wide' ], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - bedMethyl pair, with regions BED - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002_normal' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz.tbi',
+                         checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'HG002_tumor' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz.tbi',
+                         checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',
+                         checkIfExists: true)
+                ]
+                input[3] = Channel.of('chr1\t242196370\t242196400')
+                    .collectFile(name: 'regions.bed', newLine: true)
+                    .map { file -> [ [ id:'regions' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Real test — requires local test data until nf-core/test-datasets PR merges.
+    // Uses the same bedMethyl for both control and experiment (no real DMRs
+    // expected — all segments will be 'same'). Tests that the tool runs end-to-end
+    // and produces non-empty sites and segments BED files.
+    //
+    // To run locally, override modules_testdata_base_path in tests/config/nf-test.config:
+    //   modules_testdata_base_path = '/data1/greenbab/users/ahunos/apps/openSource/modules/tests/test_datasets_public/'
+    // and symlink / stage the bedmethyl files:
+    //   genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz
+    //   genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz.tbi
+    //   genomics/homo_sapiens/genome/genome.fasta (full hg38 required — not the nf-core subset)
+    // -------------------------------------------------------------------------
+
+    test("homo sapiens - bedMethyl pair, no regions, genome-wide") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002_normal' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz.tbi',
+                         checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'HG002_tumor' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bedmethyl/HG002_PAW70337_giab_10reads.bedmethyl.gz.tbi',
+                         checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',
+                         checkIfExists: true)
+                ]
+                input[3] = [ [ id: 'genome_wide' ], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.sites[0][1]).exists() },
+                { assert path(process.out.sites[0][1]).size() > 0 },
+                { assert path(process.out.segments[0][1]).exists() },
+                { assert path(process.out.segments[0][1]).size() > 0 },
+                { assert snapshot(
+                    file(process.out.sites[0][1]).name,
+                    file(process.out.segments[0][1]).name,
+                    process.out.versions_modkit
+                ).match() }
+            )
+        }
+    }
+}
