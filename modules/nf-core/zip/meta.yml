@@ -45,7 +45,7 @@ output:
       - zip:
           type: string
           description: The name of the tool
-      - 7za --help | sed 's/.*p7zip Version //; s/(.*//':
+      - 7za i 2>&1 | grep 'p7zip Version' | sed 's/.*p7zip Version //; s/(.*//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -56,7 +56,7 @@ topics:
       - zip:
           type: string
           description: The name of the tool
-      - 7za --help | sed 's/.*p7zip Version //; s/(.*//':
+      - 7za i 2>&1 | grep 'p7zip Version' | sed 's/.*p7zip Version //; s/(.*//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
