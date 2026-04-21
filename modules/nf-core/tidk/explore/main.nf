@@ -4,8 +4,8 @@ process TIDK_EXPLORE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tidk:0.2.41--hdbdd923_0':
-        'biocontainers/tidk:0.2.41--hdbdd923_0' }"
+        'https://depot.galaxyproject.org/singularity/tidk:0.2.7--h6872113_0':
+        'biocontainers/tidk:0.2.7--h6872113_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -13,7 +13,7 @@ process TIDK_EXPLORE {
     output:
     tuple val(meta), path("*.tidk.explore.tsv") , emit: explore_tsv
     tuple val(meta), path("*.top.sequence.txt") , emit: top_sequence, optional: true
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('tidk'), eval("tidk --version | sed 's/tidk //'"), emit: versions_tidk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,10 +36,6 @@ process TIDK_EXPLORE {
         > ${prefix}.top.sequence.txt \\
         || echo "No sequence identified"
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tidk: \$(tidk --version | sed 's/tidk //')
-    END_VERSIONS
     """
 
     stub:
@@ -48,9 +44,5 @@ process TIDK_EXPLORE {
     touch ${prefix}.tidk.explore.tsv
     touch ${prefix}.top.sequence.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tidk: \$(tidk --version | sed 's/tidk //')
-    END_VERSIONS
     """
 }
