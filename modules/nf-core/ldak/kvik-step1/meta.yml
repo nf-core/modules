@@ -1,0 +1,152 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ldak_kvik_step1"
+description: "Run LDAK-KVIK step 1 to fit the genome-wide model and emit step 2 prediction
+  artifacts"
+keywords:
+  - "ldak"
+  - "kvik"
+  - "gwas"
+  - "association"
+tools:
+  - "ldak6":
+      description: "LDAK and LDAK-KVIK for mixed-model GWAS and heritability analysis."
+      homepage: "https://dougspeed.com/ldak/"
+      documentation: "https://dougspeed.com/ldak-kvik/"
+      tool_dev_url: "https://github.com/dougspeed/LDAK"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing genotype information
+          Keep only the genotype analysis identifier in this map
+          The PLINK bundle must already be staged with basename `meta.id`
+          e.g. `[ id:'merged_chr' ]`
+    - bed:
+        type: file
+        description: PLINK BED genotype file passed to `--bfile`
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+    - bim:
+        type: file
+        description: PLINK BIM variant file paired with the BED input
+        pattern: "*.bim"
+        ontologies: []
+    - fam:
+        type: file
+        description: PLINK FAM sample file paired with the BED input
+        pattern: "*.fam"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing phenotype information
+          Keep `id` as the phenotype-specific analysis identifier used for the step 1 output prefix
+          Use `is_binary` to request the documented binary step 1 mode via `--binary YES`
+          e.g. `[ id:'Y1', is_binary:false ]`
+    - phenotype_file:
+        type: file
+        description: Phenotype file passed to `--pheno`
+        pattern: "*.{txt,tsv,pheno,phe}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing quantitative covariate information
+          e.g. `[ id:'qcov' ]`
+    - quant_covariates_file:
+        type: file
+        optional: true
+        description: Optional quantitative covariates file passed to `--covar`;
+          provide `[]` when absent
+        pattern: "*.{txt,tsv,covar,cov}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing categorical covariate information
+          e.g. `[ id:'ccov' ]`
+    - cat_covariates_file:
+        type: file
+        optional: true
+        description: Optional categorical covariates file passed to `--factors`;
+          provide `[]` when absent
+        pattern: "*.{txt,tsv,covar,cov}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - mpheno:
+      type: integer
+      description: Optional phenotype column index passed to `--mpheno`; provide
+        `[]` to use the module fallback of `1`
+output:
+  predictions:
+    - - meta2:
+          type: map
+          description: |
+            Groovy Map containing phenotype information
+            e.g. `[ id:'Y1', is_binary:false ]`
+      - "${meta2.id}.step1.root":
+          type: file
+          description: LDAK-KVIK step 1 root file
+          pattern: "*.step1.root"
+          ontologies: []
+      - "${meta2.id}.step1.loco.details":
+          type: file
+          description: LDAK-KVIK step 1 LOCO details file
+          pattern: "*.step1.loco.details"
+          ontologies: []
+      - "${meta2.id}.step1.loco.prs":
+          type: file
+          description: LDAK-KVIK step 1 LOCO PRS file
+          pattern: "*.step1.loco.prs"
+          ontologies: []
+  effects:
+    - - meta2:
+          type: map
+          description: |
+            Groovy Map containing phenotype information
+            e.g. `[ id:'Y1', is_binary:false ]`
+      - "${meta2.id}.step1.effects":
+          type: file
+          description: Optional LDAK-KVIK step 1 effects file produced for quantitative traits
+          pattern: "*.step1.effects"
+          ontologies: []
+  log:
+    - - meta2:
+          type: map
+          description: |
+            Groovy Map containing phenotype information
+            e.g. `[ id:'Y1', is_binary:false ]`
+      - "${meta2.id}.step1.log":
+          type: file
+          description: LDAK-KVIK step 1 log file
+          pattern: "*.step1.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_ldak6:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The command used to generate the version of the tool
+authors:
+  - "@andongni"
+maintainers:
+  - "@andongni"

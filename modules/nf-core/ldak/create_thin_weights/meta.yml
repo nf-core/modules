@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "create_thin_weights"
+description: "Create a simple unit-weight file from an LDAK thinned predictor list"
+keywords:
+  - "ldak"
+  - "weights"
+  - "thin"
+  - "gwas"
+tools:
+  - "gawk":
+      description: "GNU Awk implementation used to convert a predictor list to unit weights."
+      homepage: "https://www.gnu.org/software/gawk/"
+      documentation: "https://www.gnu.org/software/gawk/manual/gawk.html"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing predictor-list metadata
+          e.g. `[ id:'example' ]`
+    - thin_predictors_file:
+        type: file
+        description: Thinned predictor list with one predictor identifier per line
+        pattern: "*.{in,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+output:
+  thin_weights:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing predictor-list metadata
+            e.g. `[ id:'example' ]`
+      - "weights.thin":
+          type: file
+          description: Unit-weight file with predictor ID and weight columns
+          pattern: "weights.thin"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_gawk:
+    - - "${task.process}":
+          type: string
+          description: The process the versions were collected from
+      - "gawk":
+          type: string
+          description: The tool name
+      - "gawk --version | sed -n '1{s/GNU Awk //;s/,.*//;p}'":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gawk:
+          type: string
+          description: The tool name
+      - gawk --version | sed -n '1{s/GNU Awk //;s/,.*//;p}':
+          type: eval
+          description: The command used to generate the version of the tool
+authors:
+  - "@andongni"
+maintainers:
+  - "@andongni"

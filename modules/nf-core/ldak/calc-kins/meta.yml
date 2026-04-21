@@ -1,0 +1,77 @@
+name: calc_kins
+description: Calculate LDAK kinship matrices with configurable power and optional SNP weights
+keywords:
+  - ldak
+  - kinship
+  - grm
+  - weights
+tools:
+  - ldak6:
+      description: LDAK toolset for kinship, heritability, and association analyses
+      homepage: https://dougspeed.com/ldak/
+      documentation: https://dougspeed.com/ldak/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing genotype-bundle metadata.
+          Expected keys:
+            - id (string): Sample identifier used as output prefix (for example, 'chr01.vcf').
+    - bed:
+        type: file
+        description: PLINK BED genotype file
+    - bim:
+        type: file
+        description: PLINK BIM variant file
+    - fam:
+        type: file
+        description: PLINK FAM sample file
+  - power:
+      type: string
+      description: LDAK `--power` value controlling SNP weighting model (for example, '-.25' or '-1')
+  - - meta2:
+        type: map
+        description: Metadata map paired with optional weights input.
+    - weights_file:
+        type: file
+        description: Optional LDAK weights file passed to `--weights`; provide [] to skip. If absent, module sets `--ignore-weights YES`.
+output:
+  ldak_grm:
+    - - meta:
+          type: map
+          description: Metadata map carried forward from input
+      - ${meta.id}.grm.bin:
+          type: file
+          description: LDAK GRM binary matrix
+      - ${meta.id}.grm.id:
+          type: file
+          description: LDAK GRM sample identifiers
+      - ${meta.id}.grm.details:
+          type: file
+          description: LDAK GRM details file
+      - ${meta.id}.grm.adjust:
+          type: file
+          description: LDAK GRM adjustment factors
+  versions_ldak6:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+authors:
+  - "andongni"

@@ -1,0 +1,150 @@
+name: ldak_reml
+description: Run LDAK REML heritability estimation on a precomputed GRM and phenotype
+keywords:
+  - ldak
+  - reml
+  - heritability
+tools:
+  - ldak6:
+      description: LDAK toolset for kinship, heritability, and association analyses
+      homepage: https://dougspeed.com/ldak/
+      documentation: https://dougspeed.com/ldak/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing phenotype metadata.
+          Expected keys:
+            - id (string): Output prefix for REML artifacts.
+            - is_binary (boolean): Trait type flag used to gate optional `--prevalence`.
+            - prevalence (number, optional): Disease prevalence (0-1) used when `is_binary` is true.
+    - phenotype_file:
+        type: file
+        description: Headerless phenotype file passed to `--pheno`
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing GRM metadata.
+          Expected keys:
+            - id (string): GRM identifier.
+            - grm_prefix (string, optional): GRM prefix passed to `--grm` (without `.grm.*` suffixes).
+    - grm_bin:
+        type: file
+        description: GRM binary matrix (`.grm.bin`)
+    - grm_id:
+        type: file
+        description: GRM sample identifiers (`.grm.id`)
+    - grm_details:
+        type: file
+        description: GRM details (`.grm.details`)
+    - grm_adjust:
+        type: file
+        description: GRM adjustment factors (`.grm.adjust`)
+  - - meta3:
+        type: map
+        description: Metadata map paired with optional keep input.
+    - keep_file:
+        type: file
+        description: Optional keep file for sample filtering; pass [] when GRM is pre-filtered
+  - - meta4:
+        type: map
+        description: Metadata map paired with optional quantitative covariates input.
+    - quant_covariates_file:
+        type: file
+        description: Optional quantitative covariates file passed to `--covar`; pass [] when absent
+  - - meta5:
+        type: map
+        description: Metadata map paired with optional categorical covariates input.
+    - cat_covariates_file:
+        type: file
+        description: Optional categorical covariates file passed to `--factors`; pass [] when absent
+  - mpheno:
+      type: integer
+      description: Optional phenotype column index passed to `--mpheno`; pass [] to use fallback `1`
+output:
+  reml_results:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.reml:
+          type: file
+          description: REML summary output (`<meta.id>.reml`)
+  coeff:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.coeff:
+          type: file
+          description: Optional coefficient output (`<meta.id>.coeff`)
+  combined:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.combined:
+          type: file
+          description: Optional combined output (`<meta.id>.combined`)
+  cross:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.cross:
+          type: file
+          description: Optional cross output (`<meta.id>.cross`)
+  indi_blp:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.indi.blp:
+          type: file
+          description: Optional individual BLP output (`<meta.id>.indi.blp`)
+  indi_res:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.indi.res:
+          type: file
+          description: Optional individual residual output (`<meta.id>.indi.res`)
+  progress:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.progress:
+          type: file
+          description: Optional progress output (`<meta.id>.progress`)
+  share:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.share:
+          type: file
+          description: Optional share output (`<meta.id>.share`)
+  vars:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.vars:
+          type: file
+          description: Optional variance component output (`<meta.id>.vars`)
+  versions_ldak6:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+authors:
+  - "andongni"

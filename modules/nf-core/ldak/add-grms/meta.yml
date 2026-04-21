@@ -1,0 +1,71 @@
+name: ldak_add_grms
+description: Combine multiple LDAK per-chromosome GRMs into one genome-wide GRM
+  using an MGRM list
+keywords:
+  - ldak
+  - grm
+  - kinship
+tools:
+  - ldak6:
+      description: LDAK toolset for kinship, heritability, and association
+        analyses
+      homepage: https://dougspeed.com/ldak/
+      documentation: https://dougspeed.com/ldak/
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing GRM aggregation metadata.
+          Expected keys:
+            - id (string): Output prefix for the combined GRM.
+    - mgrm_file:
+        type: file
+        description: Text file listing GRM prefixes to combine (one prefix per
+          line)
+        ontologies: []
+    - grm_files:
+        type: file
+        description: Staged GRM files referenced by `mgrm_file` (`.grm.bin`,
+          `.grm.id`, `.grm.details`, `.grm.adjust`)
+        ontologies: []
+output:
+  combined_grm:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input (`meta.id` is used as output prefix)
+      - ${meta.id}.grm.bin:
+          type: file
+          description: Combined LDAK GRM binary matrix
+      - ${meta.id}.grm.id:
+          type: file
+          description: Combined LDAK GRM sample identifiers
+      - ${meta.id}.grm.details:
+          type: file
+          description: Combined LDAK GRM details
+      - ${meta.id}.grm.adjust:
+          type: file
+          description: Combined LDAK GRM adjustment factors
+  versions_ldak6:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+authors:
+  - "andongni"
