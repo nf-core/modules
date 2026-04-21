@@ -4,8 +4,8 @@ process GENOMAD_ENDTOEND {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bb/bbaadac0c5d49bb7c664d9d3651521aa638b795cdbab7eb9493ec66350508f97/data'
-        : 'community.wave.seqera.io/library/genomad:1.11.2--1e14efa5dfbf0dc3'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9c/9ce142cdc455bfd9d969463e057da9ee362f7274e6c9fbeb0381c0e3234cae89/data'
+        : 'community.wave.seqera.io/library/genomad:1.12.0--17634a7f0b465d30'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -26,7 +26,7 @@ process GENOMAD_ENDTOEND {
     tuple val(meta), path("*_summary/*_virus_genes.tsv")                                   , emit: virus_genes
     tuple val(meta), path("*_summary/*_virus_proteins.faa.gz")                             , emit: virus_proteins
     tuple val(meta), path("*_summary/*_virus_summary.tsv")                                 , emit: virus_summary
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('genomad'), eval("genomad --version 2>&1 | sed 's/^.*geNomad, version //; s/ .*//'"), topic: versions, emit: versions_genomad
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,11 +44,6 @@ process GENOMAD_ENDTOEND {
 
     gzip ./**/*.fna
     gzip ./**/*.faa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genomad: \$(echo \$(genomad --version 2>&1) | sed 's/^.*geNomad, version //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -78,10 +73,5 @@ process GENOMAD_ENDTOEND {
     touch ${filename}_summary/${filename}_virus_genes.tsv
     echo "" | gzip > ${filename}_summary/${filename}_virus_proteins.faa.gz
     touch ${filename}_summary/${filename}_virus_summary.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genomad: \$(echo \$(genomad --version 2>&1) | sed 's/^.*geNomad, version //; s/ .*\$//')
-    END_VERSIONS
     """
 }
