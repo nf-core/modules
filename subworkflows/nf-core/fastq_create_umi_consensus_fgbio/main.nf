@@ -57,7 +57,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
             // Remap - BWAMEM1_INDEX now takes ch_fasta_fai as input
             ch_fasta_fai = ch_fasta_fai_dict.map {
                 meta, fasta, fai, _dict -> [ meta, fasta, fai ] }
-                
+
             BWAMEM1_INDEX(ch_fasta_fai)
         }
 
