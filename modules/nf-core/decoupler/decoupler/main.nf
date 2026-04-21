@@ -16,7 +16,7 @@ process DECOUPLER_DECOUPLER {
     tuple val(meta), path("*estimate_decoupler.tsv"), emit: dc_estimate
     tuple val(meta), path("*pvals_decoupler.tsv"), emit: dc_pvals
     tuple val(meta), path("*estimate_decoupler_plot.png"), emit: png
-    path "versions.yml", emit: versions_decoupler, topic: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
