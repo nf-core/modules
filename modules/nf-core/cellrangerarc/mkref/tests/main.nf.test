@@ -2,7 +2,6 @@ nextflow_process {
 
     name "Test Process CELLRANGERARC_MKREF"
     script "../main.nf"
-    config "./nextflow.config"
     process "CELLRANGERARC_MKREF"
 
     tag "modules"
@@ -12,13 +11,13 @@ nextflow_process {
     tag "unzip"
 
     setup {
-            run("UNZIP") {
-                script "../../../unzip/main.nf"
+        run("UNZIP") {
+            script "../../../unzip/main.nf"
 
-                process {
-                    """
-                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz',checkIfExists:true)]
-                    """
+            process {
+                """
+                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz',checkIfExists:true)]
+                """
             }
         }
     }
@@ -27,39 +26,28 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive.map{it[1]}+"/chr19.fa"
-                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz',checkIfExists:true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt',checkIfExists:true)
-                input[3] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/cellranger_arc_mkref_test_mm39_chr19_config.json',checkIfExists:true)
-                input[4] = "cellrangerarc_reference"
+                input[0] = channel.of([
+                    [id: "cellrangerarc"]
+                ])
+                .combine(UNZIP.out.unzipped_archive.map{it[1]}+"/chr19.fa")
+                .combine(channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/cellranger_arc_mkref_test_mm39_chr19_config.json',checkIfExists:true)
+                ]))
                 """
             }
         }
         then {
-
             assertAll(
                 { assert process.success },
                 { assert snapshot(
                     process.out.config,
-                    process.out.versions,
-                    path( "${outputDir}/cellrangerarc_reference/fasta/"                        ),
-                    path( "${outputDir}/cellrangerarc_reference/genes/"                        ),
-                    path( "${outputDir}/cellrangerarc_reference/regions"                       ),
-                    path( "${outputDir}/cellrangerarc_reference/reference.json"                ),
-                    path( "${outputDir}/cellrangerarc_reference/star/chrLength.txt"            ),
-                    path( "${outputDir}/cellrangerarc_reference/star/chrName.txt"              ),
-                    path( "${outputDir}/cellrangerarc_reference/star/chrNameLength.txt"        ),
-                    path( "${outputDir}/cellrangerarc_reference/star/chrStart.txt"             ),
-                    path( "${outputDir}/cellrangerarc_reference/star/exonGeTrInfo.tab"         ),
-                    path( "${outputDir}/cellrangerarc_reference/star/exonInfo.tab"             ),
-                    path( "${outputDir}/cellrangerarc_reference/star/geneInfo.tab"             ),
-                    path( "${outputDir}/cellrangerarc_reference/star/Genome"                   ),
-                    path( "${outputDir}/cellrangerarc_reference/star/SA"                       ),
-                    path( "${outputDir}/cellrangerarc_reference/star/SAindex"                  ),
-                    path( "${outputDir}/cellrangerarc_reference/star/sjdbInfo.txt"             ),
-                    path( "${outputDir}/cellrangerarc_reference/star/sjdbList.fromGTF.out.tab" ),
-                    path( "${outputDir}/cellrangerarc_reference/star/sjdbList.out.tab"         ),
-                    path( "${outputDir}/cellrangerarc_reference/star/transcriptInfo.tab"       ),
+                    getAllFilesFromDir(process.out.reference[0][1])
+                        .collect{
+                            f -> f.name == "genomeParameters.txt" ? f.name : f
+                        },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -70,21 +58,22 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive.map{it[1]}+"/chr19.fa"
-                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz',checkIfExists:true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt',checkIfExists:true)
-                input[3] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/cellranger_arc_mkref_test_mm39_chr19_config.json',checkIfExists:true)
-                input[4] = "cellrangerarc_reference"
+                input[0] = channel.of([
+                    [id: "cellrangerarc"]
+                ])
+                .combine(UNZIP.out.unzipped_archive.map{it[1]}+"/chr19.fa")
+                .combine(channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/cellranger_arc_mkref_test_mm39_chr19_config.json',checkIfExists:true)
+                ]))
                 """
             }
         }
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.versions.collect{ path(it).yaml }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
