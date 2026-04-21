@@ -1,22 +1,22 @@
 process PARSNP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/parsnp:2.1.5--0605933fc69e7b20':
-        'community.wave.seqera.io/library/parsnp:2.1.5--2c7f64ad14a79523' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community.wave.seqera.io/library/parsnp:2.1.5--0605933fc69e7b20'
+        : 'community.wave.seqera.io/library/parsnp:2.1.5--2c7f64ad14a79523'}"
 
     input:
-    tuple val(meta), path(genomes, stageAs: "genomes")
+    tuple val(meta), path(genomes, stageAs: "genomes/*")
     path reference
 
     output:
-    tuple val(meta), path("*.xmfa")        , emit: xmfa
-    tuple val(meta), path("*.ggr")         , emit: ggr
+    tuple val(meta), path("*.xmfa"), emit: xmfa
+    tuple val(meta), path("*.ggr"), emit: ggr
     tuple val(meta), path("*.snps.mblocks"), emit: snps_mblocks, optional: true
-    tuple val(meta), path("*.tree")        , emit: tree
-    tuple val(meta), path("partition")     , emit: partition, optional: true
+    tuple val(meta), path("*.tree"), emit: tree
+    tuple val(meta), path("partition"), emit: partition, optional: true
     tuple val("${task.process}"), val('parsnp'), eval("parsnp --version 2>/dev/null | tail -n 1 | sed 's/parsnp //'"), topic: versions, emit: versions_parsnp
 
     when:
@@ -51,5 +51,6 @@ process PARSNP {
     touch ${prefix}.ggr
     touch ${prefix}.snps.mblocks
     touch ${prefix}.tree
+    mkdir partition
     """
 }
