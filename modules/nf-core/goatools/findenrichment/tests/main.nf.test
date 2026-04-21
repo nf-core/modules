@@ -20,7 +20,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'generic/txt/population_genes.txt', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/gene_ontology/go_annotation.gaf', checkIfExists: true)
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'generic/obo/ontology.obo', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'generic/gene_ontology/ontology.obo', checkIfExists: true)
                 input[2] = []
                 """
             }
@@ -48,8 +48,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'generic/txt/population_genes.txt', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/gene_ontology/go_annotation.gaf', checkIfExists: true)
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'generic/obo/ontology.obo', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'generic/obo/ontology_slim.obo', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'generic/gene_ontology/ontology.obo', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'generic/gene_ontology/ontology_slim.obo', checkIfExists: true)
                 """
             }
         }
@@ -78,7 +78,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'generic/txt/population_genes.txt', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/gene_ontology/go_annotation.gaf', checkIfExists: true)
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'generic/obo/ontology.obo', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'generic/gene_ontology/ontology.obo', checkIfExists: true)
                 input[2] = []
                 """
             }

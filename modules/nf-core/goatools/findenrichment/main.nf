@@ -26,7 +26,7 @@ process GOATOOLS_FINDENRICHMENT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     goatools \\
-        find_enrichment
+        find_enrichment \\
         $args \\
         $obo_arg \\
         $goslim_arg \\
