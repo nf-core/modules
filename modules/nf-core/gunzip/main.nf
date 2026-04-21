@@ -19,10 +19,9 @@ process GUNZIP {
 
     script:
     def args = task.ext.args ?: ''
-    def nameWithoutGz = archive.toString() - '.gz'
-    def extension = nameWithoutGz.tokenize('.')[-1]
-    def idx = nameWithoutGz.lastIndexOf(".${extension}")
-    def name = idx >= 0 ? nameWithoutGz[0..<idx] : nameWithoutGz
+    def nameWithoutGz = archive.extension == 'gz' ? archive.baseName : archive.name
+	def extension = file(nameWithoutGz).extension
+	def name = file(nameWithoutGz).baseName
     def prefix = task.ext.prefix ?: name
     gunzip = prefix + ".${extension}"
     """

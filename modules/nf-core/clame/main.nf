@@ -17,7 +17,7 @@ process CLAME {
     tuple val(meta), path("*.index")  , emit: index
     tuple val(meta), path("*.links")  , emit: links
     tuple val(meta), path("*.result") , emit: result
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('clame'), eval("clame -h 2>&1 | sed '2!d;s/version //;s/ .*//'"), emit: versions_clame, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +31,6 @@ process CLAME {
         -nt $task.cpus \\
         -multiFasta ${fasta} \\
         -output ${prefix} || test -f ${prefix}.binning
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clame: \$(echo \$(clame -h | sed -n '2p' | cut -d ' ' -f 2 ))
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +41,5 @@ process CLAME {
     touch ${prefix}.index
     touch ${prefix}.links
     touch ${prefix}.result
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clame: \$(echo \$(clame -h | sed -n '2p' | cut -d ' ' -f 2 ))
-    END_VERSIONS
     """
 }
