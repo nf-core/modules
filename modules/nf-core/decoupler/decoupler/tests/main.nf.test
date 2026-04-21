@@ -55,7 +55,9 @@ nextflow_process {
                     pngFiles*.getFileName().toString(),
                     estimateFiles*.readLines().size(),
                     pvalsFiles*.readLines().size(),
-                    path(process.out.versions[0]).yaml
+                    process.out
+                        .findAll { key, val -> key.startsWith('versions') }
+                        .collect { key, val -> [ (key) : path(val[0]).yaml ] }
             ).match()}
         )
     }
@@ -107,7 +109,9 @@ nextflow_process {
                     pngFiles*.getFileName().toString(),
                     estimateFiles*.readLines().size(),
                     pvalsFiles*.readLines().size(),
-                    path(process.out.versions[0]).yaml
+                    process.out
+                        .findAll { key, val -> key.startsWith('versions') }
+                        .collect { key, val -> [ (key) : path(val[0]).yaml ] }
                 ).match()}
             )
         }
@@ -142,7 +146,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    path(process.out.versions[0]).yaml
+                    process.out
+                        .findAll { key, val -> key.startsWith('versions') }
+                        .collect { key, val -> [ (key) : path(val[0]).yaml ] }
                 ).match() }
             )
         }
