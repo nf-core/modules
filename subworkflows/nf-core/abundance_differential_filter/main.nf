@@ -255,7 +255,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         ch_diff_filter_params.fc_input,
         ch_diff_filter_params.stat_input
     )
-    ch_versions = ch_versions.mix(CUSTOM_FILTERDIFFERENTIALTABLE.out.versions.first())
 
     emit:
 
