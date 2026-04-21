@@ -4,8 +4,7 @@
             [
                 [
                     {
-                        "id": "test",
-                        "single_end": false
+                        "id": "test"
                     },
                     "genome_transcriptome.fasta:md5,6a20c1a2e465519320a0d01f338f5cb5"
                 ]
@@ -13,21 +12,25 @@
             [
                 [
                     {
-                        "id": "test",
-                        "single_end": false
+                        "id": "test"
                     },
                     "genome_transcriptome.gtf:md5,bc88d95e7f27540e6b9906105d5be361"
                 ]
             ],
             [
                 "versions.yml:md5,5917ae30ad1ee71ad6b62659d5b628d1"
-            ]
+            ],
+            {
+                "CUSTOM_CATADDITIONALFASTA": {
+                    "python": "3.12.2"
+                }
+            }
         ],
+        "timestamp": "2026-04-21T15:56:01.689273654",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-19T21:07:02.01253345"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     },
     "sarscov2 - fastq - gtf - stub": {
         "content": [
@@ -35,8 +38,7 @@
                 "0": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -44,8 +46,7 @@
                 "1": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.gtf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -56,8 +57,7 @@
                 "fasta": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -65,21 +65,25 @@
                 "gtf": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.gtf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
+                "versions_python": [
                     "versions.yml:md5,8ab7a953e43316a447ad37b2e29e9c75"
                 ]
+            },
+            {
+                "CUSTOM_CATADDITIONALFASTA": {
+                    "python": "3.12.2"
+                }
             }
         ],
+        "timestamp": "2026-04-21T15:56:10.905607297",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-19T21:07:12.9817063"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     }
 }

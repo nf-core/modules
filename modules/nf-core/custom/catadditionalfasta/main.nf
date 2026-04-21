@@ -12,9 +12,9 @@ process CUSTOM_CATADDITIONALFASTA {
     val  biotype
 
     output:
-    tuple val(meta), path("*/*.fasta") , emit: fasta
-    tuple val(meta), path("*/*.gtf")   , emit: gtf
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("*/*.fasta"), emit: fasta
+    tuple val(meta), path("*/*.gtf")  , emit: gtf
+    path "versions.yml"               , emit: versions_python, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
