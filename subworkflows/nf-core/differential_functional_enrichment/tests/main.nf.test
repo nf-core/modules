@@ -133,6 +133,11 @@ nextflow_workflow {
                         [meta, []]
                     }
 
+                ch_samplesheet = ch_input
+                    .map { meta, file, genesets, background, method ->
+                        [meta, []]
+                    }
+
                 input[0] = ch_input
                 input[1] = channel.of([[], [], [], [], [], []])
                 input[2] = ch_samplesheet
