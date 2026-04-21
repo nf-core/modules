@@ -84,7 +84,7 @@ process CELLRANGERARC_MKREF {
     touch "${prefix}"/fasta/${prefix}.fa.{,amb,ann,bwt,fai,pac,sa}
     echo "" | gzip > "${prefix}"/genes/genes.gtf.gz
     touch "${prefix}"/regions/{motifs.pfm,transcripts.bed,tss.bed}
-    touch "${prefix}"/star/{chrLength,chrName,chrNameLength,chrStart}.txt
+    touch "${prefix}"/star/{chrLength,chrName,chrNameLength,chrStart,genomeParameters}.txt
     touch "${prefix}"/star/{exonGeTrInfo,exonInfo,geneInfo,transcriptInfo}.tab
     touch "${prefix}"/star/{Genome,SA,SAindex}
     touch "${prefix}"/star/sjdbInfo.txt
