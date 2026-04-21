@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - "conda-forge::cuda-version=12.4"
+  - "conda-forge::cuda-runtime"
+  - pip:
+      - "https://github.com/abetlen/llama-cpp-python/releases/download/v0.3.16-cu124/llama_cpp_python-0.3.16-cp311-cp311-linux_x86_64.whl"
