@@ -11,6 +11,7 @@ tools:
       tool_dev_url: "https://github.com/constantAmateur/SoupX"
       doi: "10.1093/gigascience/giaa151"
       licence: ["MIT"]
+      identifier: ""
 
 input:
   - - meta:
@@ -23,15 +24,19 @@ input:
         type: file
         description: filtered H5AD file (after CellRanger filtering)
         pattern: "*.h5ad"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5
 
     - h5ad_raw:
         type: file
         description: raw H5AD file (before CellRanger filtering)
         pattern: "*.h5ad"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5
 
 output:
-  - h5ad:
-      - meta:
+  h5ad:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,12 +45,16 @@ output:
           type: file
           description: H5AD anndata object with ambient RNA removed
           pattern: "*.h5ad"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 
 authors:
   - "@LeonHafner"

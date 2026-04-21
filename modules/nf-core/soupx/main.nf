@@ -4,11 +4,8 @@ process SOUPX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/anndata2ri_bioconductor-singlecellexperiment_leidenalg_python-igraph_pruned:c2538291aadd50cb':
-        'community.wave.seqera.io/library/anndata2ri_bioconductor-singlecellexperiment_leidenalg_python-igraph_pruned:1b1b2ad4205f41be' }"
-
-    // Prevent /tmp mount for singularity and set the numba cache dir and general TMPDIR
-    containerOptions "${workflow.containerEngine == 'singularity' ? '--no-mount tmp --env NUMBA_CACHE_DIR=' + workDir + ' --env TMPDIR=' + workDir : ''}"
+        'oras://community.wave.seqera.io/library/bioconductor-anndatar_bioconductor-rhdf5_r-leidenbase_r-seurat_r-soupx:b67b9fe9c42610c9':
+        'community.wave.seqera.io/library/bioconductor-anndatar_bioconductor-rhdf5_r-leidenbase_r-seurat_r-soupx:9582ccf4a756d29e' }"
 
     input:
     tuple val(meta), path(h5ad_filtered), path(h5ad_raw)
@@ -22,17 +19,20 @@ process SOUPX {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    template 'soupx.py'
+    template 'soupx.R'
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}.h5ad
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        SoupX: \$(Rscript -e "suppressMessages(library(SoupX)); cat(as.character(packageVersion('SoupX')), '\n')")
+        r-base: \$(Rscript -e "cat(as.character(getRversion()))")
+        soupx: \$(Rscript -e "suppressMessages(library(SoupX)); cat(as.character(packageVersion('SoupX')))")
+        anndatar: \$(Rscript -e "suppressMessages(library(anndataR)); cat(as.character(packageVersion('anndataR')))")
+        seurat: \$(Rscript -e "suppressMessages(library(Seurat)); cat(as.character(packageVersion('Seurat')))")
+        leidenbase: \$(Rscript -e "suppressMessages(library(leidenbase)); cat(as.character(packageVersion('leidenbase')))")
     END_VERSIONS
     """
 }
