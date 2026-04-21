@@ -9,7 +9,7 @@ process CUSTOM_CATADDITIONALFASTA {
     input:
     tuple val(meta), path(fasta), path(gtf)
     tuple val(meta2), path(add_fasta)
-    val  biotype
+    val(biotype)
 
     output:
     tuple val(meta), path("*/*.fasta"), emit: fasta
@@ -20,10 +20,19 @@ process CUSTOM_CATADDITIONALFASTA {
     task.ext.when == null || task.ext.when
 
     script:
+    prefix2 = task.ext.prefix2 ?: "${meta2.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_${prefix2}"
+
+    """
+    echo $prefix2
+    echo $prefix
+    """
+
     template 'fasta2gtf.py'
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix2 = task.ext.prefix2 ?: "${meta2.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_${prefix2}"
     """
     mkdir out
     touch out/${prefix}.fasta
