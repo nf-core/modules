@@ -301,7 +301,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
-                        .map{tuple(it, it.variable, it.reference, it.target)}
+                        .map{tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)}
                 input[1] = Channel.of([[id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
@@ -330,7 +330,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
-                        .map{tuple(it, it.variable, it.reference, it.target)}
+                        .map{tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)}
                 input[1] = Channel.of([[id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
@@ -359,7 +359,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
-                        .map{tuple(it, it.variable, it.reference, it.target)}
+                        .map{tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)}
                 input[1] = Channel.of([[id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
@@ -388,7 +388,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
-                        .map{tuple(it, it.variable, it.reference, it.target)}
+                        .map{tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)}
                 input[1] = Channel.of([[id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
@@ -412,7 +412,7 @@ nextflow_process {
         when {
             process {                """
                 input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
-                        .map{tuple(it, it.variable, it.reference, it.target)}
+                        .map{tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)}
                 input[1] = Channel.of([[id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
