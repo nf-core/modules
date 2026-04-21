@@ -13,6 +13,9 @@ nextflow_process {
     test("sarscov2 | paired-end | [bam]") {
 
         when {
+            params {
+                module_args = '--num-gpus 1'
+            }
             process {
                 """
                 input[0] = [
@@ -53,6 +56,9 @@ nextflow_process {
     test("sarscov2 | paired-end | [bam] | intervals") {
 
         when {
+            params {
+                module_args = '--num-gpus 1'
+            }
             process {
                 """
                 input[0] = [
@@ -94,6 +100,9 @@ nextflow_process {
     test("homo_sapiens | paired-end | [cram]") {
 
         when {
+            params {
+                module_args = '--num-gpus 1'
+            }
             process {
                 """
                 input[0] = [
