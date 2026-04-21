@@ -13,7 +13,7 @@ process CENTRIFUGE_KREPORT {
 
     output:
     tuple val(meta), path('*.txt'), emit: kreport
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val("centrifuge"), eval("centrifuge --version 2>&1 | sed '1!d;s/.* version //'"), emit: versions_centrifuge, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,22 +27,11 @@ process CENTRIFUGE_KREPORT {
         ${args} \\
         -x \$db_name \\
         ${report} > ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        centrifuge: \$( centrifuge --version  | sed -n 1p | sed 's/^.*centrifuge-class version //')
-    END_VERSIONS
     """
 
     stub:
-    def _args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        centrifuge: \$( centrifuge --version  | sed -n 1p | sed 's/^.*centrifuge-class version //')
-    END_VERSIONS
     """
 }
