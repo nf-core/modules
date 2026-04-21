@@ -9,7 +9,7 @@ process PARABRICKS_STARFUSION {
 
     input:
     tuple val(meta), path(chimeric_junction)
-    tuple val(meta1), path(genome_lib_dir)
+    tuple val(meta2), path(genome_lib_dir)
 
     output:
     tuple val(meta), path("fusion_predictions.tsv"),                emit: fusions
