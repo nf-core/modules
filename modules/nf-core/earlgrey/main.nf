@@ -2,7 +2,6 @@ process EARLGREY {
     tag "${meta.id}"
     label 'process_medium'
 
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/earlgrey:7.0.3--hd63eeec_0'
@@ -14,7 +13,6 @@ process EARLGREY {
 
     output:
     tuple val(meta), path("${meta.id}"), emit: output_directory
-    //tuple val(meta), path("${meta.id}/*.fasta"), emit: fasta_files
     tuple val(meta), path("*/*/${meta.id}_summaryFiles/*.gff"), emit: gff
     tuple val(meta), path("*/*/${meta.id}_summaryFiles/*family*.kable"), emit: summary_family_kable
     tuple val(meta), path("*/*/${meta.id}_summaryFiles/*family*.txt"), emit: summary_family_txt
@@ -35,6 +33,7 @@ process EARLGREY {
     def decompress = genome.getExtension() == "gz" ? "gunzip -c ${genome} > ${input}" : ""
     def famdb_dir = "/usr/local/share/RepeatMasker/Libraries/famdb/"
     def localdb = famdb ? "mv */*.h5.gz ${famdb_dir}" : ""
+    def decompress_h5 = famdb ? "gunzip -f ${famdb_dir}/*.h5.gz" : ""
 
     """
     # unzip genome
@@ -52,7 +51,8 @@ process EARLGREY {
     # download the required partitions from Dfam 3.9
     # curl -o 'dfam39_full.#1.h5.gz' 'https://dfam.org/releases/current/families/FamDB/dfam39_full.[0].h5.gz'
 
-    # gunzip -f *.gz
+    # Decompress partitions
+    ${decompress_h5}
 
     # move up to RepeatMasker main directory
     cd /usr/local/share/RepeatMasker/
@@ -99,13 +99,6 @@ process EARLGREY {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
-    //               Have a look at the following examples:
-    //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
-    //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
-    // TODO nf-core: If the module doesn't use arguments ($args), you SHOULD remove:
-    //               - The definition of args `def args = task.ext.args ?: ''` above.
-    //               - The use of the variable in the script `echo $args ` below.
     """
     echo ${args}
 

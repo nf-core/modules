@@ -1,36 +1,18 @@
 {
     "Should run with stub": {
         "content": [
+            [
+                
+            ],
             {
-                "0": [
-                    
-                ],
-                "1": [
-                    
-                ],
-                "2": [
-                    
-                ],
-                "3": [
-                    
-                ],
-                "fasta_files": [
-                    
-                ],
-                "gff_files": [
-                    
-                ],
-                "output_directory": [
-                    
-                ],
                 "versions_earlgrey": [
                     
                 ]
             }
         ],
-        "timestamp": "2026-03-11T12:02:06.261210327",
+        "timestamp": "2026-04-21T16:56:02.860350941",
         "meta": {
-            "nf-test": "0.9.4",
+            "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
     },
@@ -38,34 +20,646 @@
         "content": [
             {
                 "0": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            [
+                                "testEarlGrey.log:md5,3ae6268a02e0f3ee42554b3922151ad7",
+                                [
+                                    "test-families.fa:md5,94edf6e68c4db12d03303fc8a7955aa3",
+                                    "test-families.stk:md5,ba676e6691cf27749cc612d4b561be81",
+                                    "test-rmod.log:md5,4e5842763140fc14a44764129066a776",
+                                    "test.nhr:md5,1a41cb6d0b00c28f62ad60e75ae2f6fc",
+                                    "test.nin:md5,ed014c238fc77fbf737e46b616f9cdc0",
+                                    "test.njs:md5,4629ef95893684cc89f170b2b35cea1a",
+                                    "test.nnd:md5,2002e13acf59079a1a5782c918894579",
+                                    "test.nni:md5,26a954ba0fd80983b550d8f6b8b35ff8",
+                                    "test.nog:md5,30896f123998e926ea2237b89091e7fe",
+                                    "test.nsq:md5,8e25c213271987d747aa3e8afe3cf038",
+                                    "test.translation:md5,6a65ee4c61e657c8aff745191f37c938"
+                                ],
+                                [
+                                    "test.filteredRepeats.withDivergence.gff:md5,0acdabf138a9fea78b130b3360e3151d",
+                                    "test_classification_landscape.pdf:md5,4b4d5a831b9212d3c2a8b7c57a33ce14",
+                                    "test_split_class_landscape.pdf:md5,d7a77e31ca3017b14c731a5ae02d1fe1",
+                                    "test_summary_table.tsv:md5,94b260abdfa32d4669aef5ef2d0c9a4f"
+                                ],
+                                [
+                                    "GCF_024498275.1_ASM2449827v1_genomic.fna.prep.align:md5,ef71eb7d5bdcd34aa02c2bc2b59f57d2",
+                                    "GCF_024498275.1_ASM2449827v1_genomic.fna.prep.cat:md5,05962fc3840be4199db5217a91b1a188",
+                                    "GCF_024498275.1_ASM2449827v1_genomic.fna.prep.masked:md5,324877cbae3781f2456c99c875a2f999",
+                                    "GCF_024498275.1_ASM2449827v1_genomic.fna.prep.out:md5,7bc881d7a73a0a592a76f7353331b1da",
+                                    "GCF_024498275.1_ASM2449827v1_genomic.fna.prep.tbl:md5,08a3e95a3e4cd80dea2d14eea04c6ef5"
+                                ],
+                                [
+                                    [
+                                        [
+                                            
+                                        ],
+                                        "consensi.fa:md5,824eacf265e909a37e45d1b1e6485fe3",
+                                        "consensi.fa.classified:md5,94edf6e68c4db12d03303fc8a7955aa3",
+                                        "families-classified.stk:md5,ba676e6691cf27749cc612d4b561be81",
+                                        "families.stk:md5,b94647839d1056a4b509e1f3a389de94",
+                                        "genome.2bit:md5,bb596a2abf28ba1a65d2cf9f2fea5154",
+                                        "rmod.log:md5,4e5842763140fc14a44764129066a776",
+                                        [
+                                            "consensi.fa:md5,c930d55c41de62ebc5cd1caf8c5d3e13",
+                                            "consensi.fa.nhr:md5,14e8a886bb5e80e2a3a66c7fe443af5e",
+                                            "consensi.fa.nin:md5,da822d7bb0900b9edd1f781b3a29fffb",
+                                            "consensi.fa.njs:md5,ad2efbd089522b6fadf3cdac3f9124ea",
+                                            "consensi.fa.nog:md5,ec3c53287e164064ec45ee668adf7a43",
+                                            "consensi.fa.nsd:md5,dd46029d2ac8e20cd3eaa0e1415f3e30",
+                                            "consensi.fa.nsi:md5,2af72b2bf29d1a2af09f05bd833f3f9d",
+                                            "consensi.fa.nsq:md5,a4f88aa1e9d1e6f60b19deac41dd2952",
+                                            "families.stk:md5,9007ee93639a868abaefd771ccc448bb",
+                                            "family-1.fa:md5,a1e7150bcfbbfd56d3673084c35c01f6",
+                                            "family-1.fa.refiner.stk:md5,3801360e64580f27d2cd0f2e1e54405a",
+                                            "family-1.fa.refiner_cons:md5,66e9a3c63448c3a4248ad13322a84d34",
+                                            "family-10.fa:md5,751aeda84a222634c715e178ff56c240",
+                                            "family-10.fa.refiner.stk:md5,d01c86bd567dc265d5a9a1a1bdac8831",
+                                            "family-10.fa.refiner_cons:md5,89bbc6cc24002682fa645349dd6eb96e",
+                                            "family-11.fa:md5,5d6503eab2be5650f0c972f429bfba66",
+                                            "family-11.fa.refiner.stk:md5,a652b38dde340b8d449a2abb1382c1cf",
+                                            "family-11.fa.refiner_cons:md5,734f8ad0cad2577e22aa2136d1d4c04d",
+                                            "family-12.fa:md5,ff0e2c9430eeb370c471492ab5753ef0",
+                                            "family-12.fa.refiner.stk:md5,c1a993df327ad0b43bdb911521525ee8",
+                                            "family-12.fa.refiner_cons:md5,51ad5d2c8ee805b507b072a7a3ec91ff",
+                                            "family-13.fa:md5,97da90069af4f4e340b0e95961320d2f",
+                                            "family-13.fa.refiner.stk:md5,67368834567ee0aa6eb5b92fcbddc18a",
+                                            "family-13.fa.refiner_cons:md5,a94f95a7f6ff40b8d179129d5fec8748",
+                                            "family-14.fa:md5,91487c67d5053e40f95683f0b8bb2e4e",
+                                            "family-14.fa.refiner.stk:md5,59978dd8f2911a92c55a291764ba58f3",
+                                            "family-14.fa.refiner_cons:md5,2decc634399231ce25c276a491f30751",
+                                            "family-15.fa:md5,eaf894984eb87e4c83aa0b212192b553",
+                                            "family-15.fa.refiner.stk:md5,b7b6d7de127ffd4f4016ab12d544e33a",
+                                            "family-15.fa.refiner_cons:md5,031071536e5c880d2cdb7afe339e0d19",
+                                            "family-16.fa:md5,c3bf977514c47e85b51b7d0f2d440715",
+                                            "family-16.fa.refiner.stk:md5,1e82079b0dae0b76b3e9e412ef070465",
+                                            "family-16.fa.refiner_cons:md5,a1f496b2bf6b6ab579db9369daaf99d3",
+                                            "family-2.fa:md5,7e4389cff08a9625611849fcabab918b",
+                                            "family-2.fa.refiner.stk:md5,ae1b3ac63b5b73ca12313b09790a799a",
+                                            "family-2.fa.refiner_cons:md5,52ab803f958b327890bd8507111f6136",
+                                            "family-3.fa:md5,37fc0d611c1229f25daa16dd8f56ee15",
+                                            "family-3.fa.refiner.stk:md5,667baa8272705359c3e7bd8387865ad0",
+                                            "family-3.fa.refiner_cons:md5,d8c4fb7608bb489de1dbb873af6cddfb",
+                                            "family-4.fa:md5,23f6d9c5f4ff60cb9b266250ad2d5dd9",
+                                            "family-4.fa.refiner.stk:md5,d076af15935dab9dce954b9756cd64a7",
+                                            "family-4.fa.refiner_cons:md5,1a5126df9cc4a582d73937bb2dc35532",
+                                            "family-5.fa:md5,bede925c465a711da8a0815855d554b0",
+                                            "family-5.fa.refiner.stk:md5,ba230e2595a781ae6a163fc34219e0a2",
+                                            "family-5.fa.refiner_cons:md5,e7d0553a129592861477871442822ca4",
+                                            "family-6.fa:md5,c47333d6cb1f88b75c1a24afc76553f1",
+                                            "family-6.fa.refiner.stk:md5,078e4ceb4b438f315f83ed5c6b81e30c",
+                                            "family-6.fa.refiner_cons:md5,fd685f182d7c1b28df06f137887dae23",
+                                            "family-7.fa:md5,2fe6c42743a5f0474ea74a09cda49395",
+                                            "family-7.fa.refiner.stk:md5,339a9911e771d43b34a75296e29ae419",
+                                            "family-7.fa.refiner_cons:md5,c30ada50e988c41eeddd626e0d868ebf",
+                                            "family-8.fa:md5,35c92d78759edf070dd6afe1ced7bb3e",
+                                            "family-8.fa.refiner.stk:md5,8a217e4ab541cbb0ef00679b6292ed29",
+                                            "family-8.fa.refiner_cons:md5,93f412095789a38b35a5dc47e0a43d54",
+                                            "family-9.fa:md5,01ed3c3c4bed31d98a8133c0a782e907",
+                                            "family-9.fa.refiner.stk:md5,30d0bb338d40072f4909c4c8979ad58e",
+                                            "family-9.fa.refiner_cons:md5,be855e9b00cd38e4cc36d07520a4bea2",
+                                            "filter-stage-1.log:md5,64fedb764ca25f9582ffa9299c2cbe11",
+                                            "index.html:md5,f329ee6b7df4531453fbce6e0685db02",
+                                            "makeblastdb.log:md5,49d0a5201d582054ce4dc5c4e71b9b78",
+                                            "refined-cons.fa:md5,cd7abec61c30f9ab91accf78995ca7b4",
+                                            "refined-cons.fa.njs:md5,292fe0c888a16d12f8a219011980197b",
+                                            "refined-cons.fa.nsd:md5,a49fe74ff1774f15dd9f3cd78510fa3b",
+                                            "refined-cons.fa.nsi:md5,f8e057a6ea7ab696dfbf8dae0a2eed29",
+                                            "repeatscout.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                            "sampleDB-1.fa:md5,ca73742aa136e746f1557f594621efaf",
+                                            "sampleDB-1.fa.entry_batch:md5,00e203c27a008672cf72ce3953e1204a",
+                                            "sampleDB-1.fa.lfreq:md5,88940902f7b5cb746f9f1f0d6803e0cf",
+                                            "sampleDB-1.fa.nhr:md5,9ccc36636d1fcbcebb8a56daa50e3715",
+                                            "sampleDB-1.fa.nin:md5,2b95052903f494c62aa17427e59c2745",
+                                            "sampleDB-1.fa.njs:md5,1d54611f10212522a9fe94ecb7a852c1",
+                                            "sampleDB-1.fa.nnd:md5,71b9db457d318914064e8690974fba30",
+                                            "sampleDB-1.fa.nni:md5,65800fe0f809db058dfcbc18709af730",
+                                            "sampleDB-1.fa.nog:md5,58b8792f16fdf0091a309c3026ea6943",
+                                            "sampleDB-1.fa.nsq:md5,4ff73f1e1a6fc267d9bf130418855f08",
+                                            "sampleDB-1.fa.rscons:md5,17a2574ebef1a5a54a4ca9a3e53af9d1",
+                                            "sampleDB-1.fa.rscons-ranges.tsv:md5,85a2e67ecacc0b558aa001d1ce14c039",
+                                            "sampleDB-1.fa.rscons.filtered:md5,c930d55c41de62ebc5cd1caf8c5d3e13"
+                                        ],
+                                        [
+                                            "blastdbcmd.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                            "consensi.fa:md5,eb9e9c25138734ef78dd5a1b17ed0a2b",
+                                            "families.stk:md5,33cf75b53f6c1334a4d5ff31b0ffa589",
+                                            "family-3.fa:md5,590d0b9bf2584b40ae6c5c01ab8e2761",
+                                            "family-3.fa.refiner.stk:md5,33ed3dfa6c263c630e93a8a4bce31748",
+                                            "family-3.fa.refiner_cons:md5,eff363e1798701fab697ef5a64f920a8",
+                                            [
+                                                "errors:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                                "images_sorted:md5,909a1c140a3a0832412165a97bfaae65"
+                                            ],
+                                            "index.html:md5,a2f88082d68f457ecd8ac548c6795da5",
+                                            "makeblastdb.log:md5,165755b91bb0e948b58aae8307f98689",
+                                            "msps.out:md5,1462f00d0237866a32745d79a5712fe8",
+                                            "sampleDB-2.fa:md5,ca73742aa136e746f1557f594621efaf",
+                                            "sampleDB-2.fa.entry_batch:md5,00e203c27a008672cf72ce3953e1204a",
+                                            "sampleDB-2.fa.masked:md5,7c293030b4982de2bf4d37f010c562b6",
+                                            "sampleDB-2.fa.masked.nhr:md5,fe4e3f147bbfbd1f3cefd3a1cea4dbee",
+                                            "sampleDB-2.fa.masked.nin:md5,1a2837c8a999f04765c8f04c63b837e1",
+                                            "sampleDB-2.fa.masked.njs:md5,07513b108412e0085d80cad3e850f1bd",
+                                            "sampleDB-2.fa.masked.nnd:md5,81d426636860cf7afa9c82097f58482c",
+                                            "sampleDB-2.fa.masked.nni:md5,f03fef8004d00077a18809f7540a93ed",
+                                            "sampleDB-2.fa.masked.nog:md5,b526704e4085478377e5933108ef93df",
+                                            "sampleDB-2.fa.masked.nsq:md5,ef146bf5a0561fa8f19d75ca6b764ae7",
+                                            "seqnames:md5,998a6aa24d88680d399cc0149b73b73b",
+                                            [
+                                                "combo:md5,de1e34f1444e83096cc64d77b8b70a9a",
+                                                "ele_no:md5,035032ee8b3366b341c48b0e9ba66601",
+                                                "eles:md5,f968cfb5f79db677db9a708eacd86f4a",
+                                                "fam_no:md5,ecf27a776cdfc771defab1c5d19de9ab",
+                                                "families:md5,78984d7a7c9a0870b7afaea61bb1becc",
+                                                "naive_edge_no:md5,db808f3548cda91f1e57a5f765e214d9",
+                                                "naive_ele_no:md5,34c6e1feaf7f5084f3014d5d11fb727e",
+                                                "naive_eles:md5,37d668f0390a173b00a641711ca628b8",
+                                                "new_msps:md5,0a6eec87025b238b0a8cc21a9f54bdca",
+                                                "obsolete:md5,f36d470fca3d59d4267377a2cc294abc",
+                                                "ori_msp_no:md5,5131e6710ad926457f97498945b6a565",
+                                                "redef_ele_no:md5,1454a6e7a7facc5711db10ed2ed0034f",
+                                                "redef_msp_no:md5,ff4da50c05473ef35e9f3442d39fec27",
+                                                "unproc:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                            ],
+                                            "tmpConsDB-1.nhr:md5,d275ad7a2857c03cd9a44c86a43a4528",
+                                            "tmpConsDB-1.nin:md5,31040fba5a99bc574a6c710a5b9c802e",
+                                            "tmpConsDB-1.njs:md5,a68a0015b136b920821b85e46fd6becd",
+                                            "tmpConsDB-1.nog:md5,df85d18647b8f011ed85756b3145e111",
+                                            "tmpConsDB-1.nsd:md5,e1762b31a61da7f576b2ea09746b71d7",
+                                            "tmpConsDB-1.nsi:md5,214b6d3346f83281aa6707af947157e4",
+                                            "tmpConsDB-1.nsq:md5,3442d60baf998f9aecac64ebe4c2913b"
+                                        ],
+                                        "tmpConsensi.fa:md5,9519c8ec30a95b57c5fd61185433e295"
+                                    ]
+                                ],
+                                [
+                                    
+                                ],
+                                [
+                                    [
+                                        "ltrfinder_reformat_label.gff:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                        "test.filteredRepeats.bed:md5,0f61445f7d158ebbf84300383b02a21e",
+                                        "test.filteredRepeats.bed.bak:md5,38cc22ef3261c49224b56b87863cce6c",
+                                        "test.filteredRepeats.gff:md5,7697f6608878ddacd6534326b1d37de8",
+                                        "test.filteredRepeats.summary:md5,a5d5bd17c82d4e11a5a77c806d23df3d",
+                                        "test.mergedRepeats.bed:md5,38cc22ef3261c49224b56b87863cce6c",
+                                        "test.mergedRepeats.revisedTable:md5,a5d5bd17c82d4e11a5a77c806d23df3d",
+                                        "test.out.gff2:md5,af0c52bb5a3069b1a70e7562ba0b025f",
+                                        "test.out.gff2.bak:md5,af0c52bb5a3069b1a70e7562ba0b025f",
+                                        "test.out.gff3:md5,a1a02b5b1ef0a2c1ee27157676499bad",
+                                        "test.rclabel.gff:md5,70ca27eff0978cf5e46e357ab98a73cc",
+                                        "test.rmerge.gff:md5,51bb9a80daab9e9d873508e58d93b64c",
+                                        "test.rmerge.gff.filtered:md5,4ddbbc8fd2b6febcfed8ade12b543f5a",
+                                        "test.rmerge.gff.sorted:md5,51bb9a80daab9e9d873508e58d93b64c",
+                                        "test.summary.txt:md5,7fd205a0193baa0a330434adf8135039",
+                                        [
+                                            
+                                        ],
+                                        [
+                                            "repeatcraft.cfg:md5,2606df81c1ebd1e7cfd1db9237897a7e"
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    [
+                                        [
+                                            [
+                                                
+                                            ],
+                                            "test-families.fa.nonsatellite:md5,0bfb0b00311e31532dab1e70208c0d64",
+                                            "test-families.fa.nonsatellite.classified:md5,429204ad9b0a5ad50fe95ced8df09f81",
+                                            "tmpConsensi.fa:md5,18faedd00fd281bb48c77eaa86c4f9d1"
+                                        ],
+                                        "missing_consensi.txt:md5,b97876374f4502329479c3d147d4b258",
+                                        "test-families.fa:md5,99151c8f871e374d0bd87e964017d176",
+                                        "test-families.fa.bak:md5,538fc43f679599b3b06fef573b099b62",
+                                        "test-families.fa.strained:md5,429204ad9b0a5ad50fe95ced8df09f81",
+                                        [
+                                            "test-families.fa:md5,99151c8f871e374d0bd87e964017d176",
+                                            "test-families.fa.mreps:md5,f574e9ffc685761586fdcceae453aa6c",
+                                            "test-families.fa.nonsatellite:md5,0bfb0b00311e31532dab1e70208c0d64",
+                                            "test-families.fa.sassr:md5,c091f9f8a3555084578b9656d19e2fcb",
+                                            "test-families.fa.satellites:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                            "test-families.fa.trf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                        ]
+                                    ],
+                                    "test-families.fa.strained:md5,429204ad9b0a5ad50fe95ced8df09f81"
+                                ],
+                                [
+                                    "test-families.fa.strained:md5,429204ad9b0a5ad50fe95ced8df09f81",
+                                    "test.familyLevelCount.kable:md5,7fa721b1c34c0c9f32d1772d3baede1e",
+                                    "test.familyLevelCount.txt:md5,ae92ab3d40b4f9f796587ed547802815",
+                                    "test.filteredRepeats.bed:md5,0f61445f7d158ebbf84300383b02a21e",
+                                    "test.filteredRepeats.gff:md5,7697f6608878ddacd6534326b1d37de8",
+                                    "test.highLevelCount.kable:md5,f4c40f1f4ad6bad6276bd8776ab72d39",
+                                    "test.highLevelCount.txt:md5,4f144b32dd8fd1d5e2ba81fe1bf738a5",
+                                    "test.summaryPie.pdf:md5,9b1f3981d8ea95ceb70b0342a3d23eb0",
+                                    "test_classification_landscape.pdf:md5,4b4d5a831b9212d3c2a8b7c57a33ce14",
+                                    "test_divergence_summary_table.tsv:md5,94b260abdfa32d4669aef5ef2d0c9a4f",
+                                    "test_split_class_landscape.pdf:md5,d7a77e31ca3017b14c731a5ae02d1fe1"
+                                ]
+                            ]
+                        ]
+                    ]
                 ],
                 "1": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filteredRepeats.gff:md5,7697f6608878ddacd6534326b1d37de8"
+                    ]
                 ],
                 "2": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.familyLevelCount.kable:md5,7fa721b1c34c0c9f32d1772d3baede1e"
+                    ]
                 ],
                 "3": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.familyLevelCount.txt:md5,ae92ab3d40b4f9f796587ed547802815"
+                    ]
                 ],
-                "fasta_files": [
-                    
+                "4": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.highLevelCount.kable:md5,f4c40f1f4ad6bad6276bd8776ab72d39"
+                    ]
                 ],
-                "gff_files": [
-                    
+                "5": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.highLevelCount.txt:md5,4f144b32dd8fd1d5e2ba81fe1bf738a5"
+                    ]
+                ],
+                "6": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.summaryPie.pdf:md5,9b1f3981d8ea95ceb70b0342a3d23eb0"
+                    ]
+                ],
+                "7": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_classification_landscape.pdf:md5,4b4d5a831b9212d3c2a8b7c57a33ce14"
+                    ]
+                ],
+                "8": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_split_class_landscape.pdf:md5,d7a77e31ca3017b14c731a5ae02d1fe1"
+                    ]
+                ],
+                "9": [
+                    [
+                        "EARLGREY",
+                        "earlgrey",
+                        "7.0.3"
+                    ]
+                ],
+                "classification_landscape_plot": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_classification_landscape.pdf:md5,4b4d5a831b9212d3c2a8b7c57a33ce14"
+                    ]
+                ],
+                "gff": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filteredRepeats.gff:md5,7697f6608878ddacd6534326b1d37de8"
+                    ]
                 ],
                 "output_directory": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            [
+                                "testEarlGrey.log:md5,3ae6268a02e0f3ee42554b3922151ad7",
+                                [
+                                    "test-families.fa:md5,94edf6e68c4db12d03303fc8a7955aa3",
+                                    "test-families.stk:md5,ba676e6691cf27749cc612d4b561be81",
+                                    "test-rmod.log:md5,4e5842763140fc14a44764129066a776",
+                                    "test.nhr:md5,1a41cb6d0b00c28f62ad60e75ae2f6fc",
+                                    "test.nin:md5,ed014c238fc77fbf737e46b616f9cdc0",
+                                    "test.njs:md5,4629ef95893684cc89f170b2b35cea1a",
+                                    "test.nnd:md5,2002e13acf59079a1a5782c918894579",
+                                    "test.nni:md5,26a954ba0fd80983b550d8f6b8b35ff8",
+                                    "test.nog:md5,30896f123998e926ea2237b89091e7fe",
+                                    "test.nsq:md5,8e25c213271987d747aa3e8afe3cf038",
+                                    "test.translation:md5,6a65ee4c61e657c8aff745191f37c938"
+                                ],
+                                [
+                                    "test.filteredRepeats.withDivergence.gff:md5,0acdabf138a9fea78b130b3360e3151d",
+                                    "test_classification_landscape.pdf:md5,4b4d5a831b9212d3c2a8b7c57a33ce14",
+                                    "test_split_class_landscape.pdf:md5,d7a77e31ca3017b14c731a5ae02d1fe1",
+                                    "test_summary_table.tsv:md5,94b260abdfa32d4669aef5ef2d0c9a4f"
+                                ],
+                                [
+                                    "GCF_024498275.1_ASM2449827v1_genomic.fna.prep.align:md5,ef71eb7d5bdcd34aa02c2bc2b59f57d2",
+                                    "GCF_024498275.1_ASM2449827v1_genomic.fna.prep.cat:md5,05962fc3840be4199db5217a91b1a188",
+                                    "GCF_024498275.1_ASM2449827v1_genomic.fna.prep.masked:md5,324877cbae3781f2456c99c875a2f999",
+                                    "GCF_024498275.1_ASM2449827v1_genomic.fna.prep.out:md5,7bc881d7a73a0a592a76f7353331b1da",
+                                    "GCF_024498275.1_ASM2449827v1_genomic.fna.prep.tbl:md5,08a3e95a3e4cd80dea2d14eea04c6ef5"
+                                ],
+                                [
+                                    [
+                                        [
+                                            
+                                        ],
+                                        "consensi.fa:md5,824eacf265e909a37e45d1b1e6485fe3",
+                                        "consensi.fa.classified:md5,94edf6e68c4db12d03303fc8a7955aa3",
+                                        "families-classified.stk:md5,ba676e6691cf27749cc612d4b561be81",
+                                        "families.stk:md5,b94647839d1056a4b509e1f3a389de94",
+                                        "genome.2bit:md5,bb596a2abf28ba1a65d2cf9f2fea5154",
+                                        "rmod.log:md5,4e5842763140fc14a44764129066a776",
+                                        [
+                                            "consensi.fa:md5,c930d55c41de62ebc5cd1caf8c5d3e13",
+                                            "consensi.fa.nhr:md5,14e8a886bb5e80e2a3a66c7fe443af5e",
+                                            "consensi.fa.nin:md5,da822d7bb0900b9edd1f781b3a29fffb",
+                                            "consensi.fa.njs:md5,ad2efbd089522b6fadf3cdac3f9124ea",
+                                            "consensi.fa.nog:md5,ec3c53287e164064ec45ee668adf7a43",
+                                            "consensi.fa.nsd:md5,dd46029d2ac8e20cd3eaa0e1415f3e30",
+                                            "consensi.fa.nsi:md5,2af72b2bf29d1a2af09f05bd833f3f9d",
+                                            "consensi.fa.nsq:md5,a4f88aa1e9d1e6f60b19deac41dd2952",
+                                            "families.stk:md5,9007ee93639a868abaefd771ccc448bb",
+                                            "family-1.fa:md5,a1e7150bcfbbfd56d3673084c35c01f6",
+                                            "family-1.fa.refiner.stk:md5,3801360e64580f27d2cd0f2e1e54405a",
+                                            "family-1.fa.refiner_cons:md5,66e9a3c63448c3a4248ad13322a84d34",
+                                            "family-10.fa:md5,751aeda84a222634c715e178ff56c240",
+                                            "family-10.fa.refiner.stk:md5,d01c86bd567dc265d5a9a1a1bdac8831",
+                                            "family-10.fa.refiner_cons:md5,89bbc6cc24002682fa645349dd6eb96e",
+                                            "family-11.fa:md5,5d6503eab2be5650f0c972f429bfba66",
+                                            "family-11.fa.refiner.stk:md5,a652b38dde340b8d449a2abb1382c1cf",
+                                            "family-11.fa.refiner_cons:md5,734f8ad0cad2577e22aa2136d1d4c04d",
+                                            "family-12.fa:md5,ff0e2c9430eeb370c471492ab5753ef0",
+                                            "family-12.fa.refiner.stk:md5,c1a993df327ad0b43bdb911521525ee8",
+                                            "family-12.fa.refiner_cons:md5,51ad5d2c8ee805b507b072a7a3ec91ff",
+                                            "family-13.fa:md5,97da90069af4f4e340b0e95961320d2f",
+                                            "family-13.fa.refiner.stk:md5,67368834567ee0aa6eb5b92fcbddc18a",
+                                            "family-13.fa.refiner_cons:md5,a94f95a7f6ff40b8d179129d5fec8748",
+                                            "family-14.fa:md5,91487c67d5053e40f95683f0b8bb2e4e",
+                                            "family-14.fa.refiner.stk:md5,59978dd8f2911a92c55a291764ba58f3",
+                                            "family-14.fa.refiner_cons:md5,2decc634399231ce25c276a491f30751",
+                                            "family-15.fa:md5,eaf894984eb87e4c83aa0b212192b553",
+                                            "family-15.fa.refiner.stk:md5,b7b6d7de127ffd4f4016ab12d544e33a",
+                                            "family-15.fa.refiner_cons:md5,031071536e5c880d2cdb7afe339e0d19",
+                                            "family-16.fa:md5,c3bf977514c47e85b51b7d0f2d440715",
+                                            "family-16.fa.refiner.stk:md5,1e82079b0dae0b76b3e9e412ef070465",
+                                            "family-16.fa.refiner_cons:md5,a1f496b2bf6b6ab579db9369daaf99d3",
+                                            "family-2.fa:md5,7e4389cff08a9625611849fcabab918b",
+                                            "family-2.fa.refiner.stk:md5,ae1b3ac63b5b73ca12313b09790a799a",
+                                            "family-2.fa.refiner_cons:md5,52ab803f958b327890bd8507111f6136",
+                                            "family-3.fa:md5,37fc0d611c1229f25daa16dd8f56ee15",
+                                            "family-3.fa.refiner.stk:md5,667baa8272705359c3e7bd8387865ad0",
+                                            "family-3.fa.refiner_cons:md5,d8c4fb7608bb489de1dbb873af6cddfb",
+                                            "family-4.fa:md5,23f6d9c5f4ff60cb9b266250ad2d5dd9",
+                                            "family-4.fa.refiner.stk:md5,d076af15935dab9dce954b9756cd64a7",
+                                            "family-4.fa.refiner_cons:md5,1a5126df9cc4a582d73937bb2dc35532",
+                                            "family-5.fa:md5,bede925c465a711da8a0815855d554b0",
+                                            "family-5.fa.refiner.stk:md5,ba230e2595a781ae6a163fc34219e0a2",
+                                            "family-5.fa.refiner_cons:md5,e7d0553a129592861477871442822ca4",
+                                            "family-6.fa:md5,c47333d6cb1f88b75c1a24afc76553f1",
+                                            "family-6.fa.refiner.stk:md5,078e4ceb4b438f315f83ed5c6b81e30c",
+                                            "family-6.fa.refiner_cons:md5,fd685f182d7c1b28df06f137887dae23",
+                                            "family-7.fa:md5,2fe6c42743a5f0474ea74a09cda49395",
+                                            "family-7.fa.refiner.stk:md5,339a9911e771d43b34a75296e29ae419",
+                                            "family-7.fa.refiner_cons:md5,c30ada50e988c41eeddd626e0d868ebf",
+                                            "family-8.fa:md5,35c92d78759edf070dd6afe1ced7bb3e",
+                                            "family-8.fa.refiner.stk:md5,8a217e4ab541cbb0ef00679b6292ed29",
+                                            "family-8.fa.refiner_cons:md5,93f412095789a38b35a5dc47e0a43d54",
+                                            "family-9.fa:md5,01ed3c3c4bed31d98a8133c0a782e907",
+                                            "family-9.fa.refiner.stk:md5,30d0bb338d40072f4909c4c8979ad58e",
+                                            "family-9.fa.refiner_cons:md5,be855e9b00cd38e4cc36d07520a4bea2",
+                                            "filter-stage-1.log:md5,64fedb764ca25f9582ffa9299c2cbe11",
+                                            "index.html:md5,f329ee6b7df4531453fbce6e0685db02",
+                                            "makeblastdb.log:md5,49d0a5201d582054ce4dc5c4e71b9b78",
+                                            "refined-cons.fa:md5,cd7abec61c30f9ab91accf78995ca7b4",
+                                            "refined-cons.fa.njs:md5,292fe0c888a16d12f8a219011980197b",
+                                            "refined-cons.fa.nsd:md5,a49fe74ff1774f15dd9f3cd78510fa3b",
+                                            "refined-cons.fa.nsi:md5,f8e057a6ea7ab696dfbf8dae0a2eed29",
+                                            "repeatscout.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                            "sampleDB-1.fa:md5,ca73742aa136e746f1557f594621efaf",
+                                            "sampleDB-1.fa.entry_batch:md5,00e203c27a008672cf72ce3953e1204a",
+                                            "sampleDB-1.fa.lfreq:md5,88940902f7b5cb746f9f1f0d6803e0cf",
+                                            "sampleDB-1.fa.nhr:md5,9ccc36636d1fcbcebb8a56daa50e3715",
+                                            "sampleDB-1.fa.nin:md5,2b95052903f494c62aa17427e59c2745",
+                                            "sampleDB-1.fa.njs:md5,1d54611f10212522a9fe94ecb7a852c1",
+                                            "sampleDB-1.fa.nnd:md5,71b9db457d318914064e8690974fba30",
+                                            "sampleDB-1.fa.nni:md5,65800fe0f809db058dfcbc18709af730",
+                                            "sampleDB-1.fa.nog:md5,58b8792f16fdf0091a309c3026ea6943",
+                                            "sampleDB-1.fa.nsq:md5,4ff73f1e1a6fc267d9bf130418855f08",
+                                            "sampleDB-1.fa.rscons:md5,17a2574ebef1a5a54a4ca9a3e53af9d1",
+                                            "sampleDB-1.fa.rscons-ranges.tsv:md5,85a2e67ecacc0b558aa001d1ce14c039",
+                                            "sampleDB-1.fa.rscons.filtered:md5,c930d55c41de62ebc5cd1caf8c5d3e13"
+                                        ],
+                                        [
+                                            "blastdbcmd.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                            "consensi.fa:md5,eb9e9c25138734ef78dd5a1b17ed0a2b",
+                                            "families.stk:md5,33cf75b53f6c1334a4d5ff31b0ffa589",
+                                            "family-3.fa:md5,590d0b9bf2584b40ae6c5c01ab8e2761",
+                                            "family-3.fa.refiner.stk:md5,33ed3dfa6c263c630e93a8a4bce31748",
+                                            "family-3.fa.refiner_cons:md5,eff363e1798701fab697ef5a64f920a8",
+                                            [
+                                                "errors:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                                "images_sorted:md5,909a1c140a3a0832412165a97bfaae65"
+                                            ],
+                                            "index.html:md5,a2f88082d68f457ecd8ac548c6795da5",
+                                            "makeblastdb.log:md5,165755b91bb0e948b58aae8307f98689",
+                                            "msps.out:md5,1462f00d0237866a32745d79a5712fe8",
+                                            "sampleDB-2.fa:md5,ca73742aa136e746f1557f594621efaf",
+                                            "sampleDB-2.fa.entry_batch:md5,00e203c27a008672cf72ce3953e1204a",
+                                            "sampleDB-2.fa.masked:md5,7c293030b4982de2bf4d37f010c562b6",
+                                            "sampleDB-2.fa.masked.nhr:md5,fe4e3f147bbfbd1f3cefd3a1cea4dbee",
+                                            "sampleDB-2.fa.masked.nin:md5,1a2837c8a999f04765c8f04c63b837e1",
+                                            "sampleDB-2.fa.masked.njs:md5,07513b108412e0085d80cad3e850f1bd",
+                                            "sampleDB-2.fa.masked.nnd:md5,81d426636860cf7afa9c82097f58482c",
+                                            "sampleDB-2.fa.masked.nni:md5,f03fef8004d00077a18809f7540a93ed",
+                                            "sampleDB-2.fa.masked.nog:md5,b526704e4085478377e5933108ef93df",
+                                            "sampleDB-2.fa.masked.nsq:md5,ef146bf5a0561fa8f19d75ca6b764ae7",
+                                            "seqnames:md5,998a6aa24d88680d399cc0149b73b73b",
+                                            [
+                                                "combo:md5,de1e34f1444e83096cc64d77b8b70a9a",
+                                                "ele_no:md5,035032ee8b3366b341c48b0e9ba66601",
+                                                "eles:md5,f968cfb5f79db677db9a708eacd86f4a",
+                                                "fam_no:md5,ecf27a776cdfc771defab1c5d19de9ab",
+                                                "families:md5,78984d7a7c9a0870b7afaea61bb1becc",
+                                                "naive_edge_no:md5,db808f3548cda91f1e57a5f765e214d9",
+                                                "naive_ele_no:md5,34c6e1feaf7f5084f3014d5d11fb727e",
+                                                "naive_eles:md5,37d668f0390a173b00a641711ca628b8",
+                                                "new_msps:md5,0a6eec87025b238b0a8cc21a9f54bdca",
+                                                "obsolete:md5,f36d470fca3d59d4267377a2cc294abc",
+                                                "ori_msp_no:md5,5131e6710ad926457f97498945b6a565",
+                                                "redef_ele_no:md5,1454a6e7a7facc5711db10ed2ed0034f",
+                                                "redef_msp_no:md5,ff4da50c05473ef35e9f3442d39fec27",
+                                                "unproc:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                            ],
+                                            "tmpConsDB-1.nhr:md5,d275ad7a2857c03cd9a44c86a43a4528",
+                                            "tmpConsDB-1.nin:md5,31040fba5a99bc574a6c710a5b9c802e",
+                                            "tmpConsDB-1.njs:md5,a68a0015b136b920821b85e46fd6becd",
+                                            "tmpConsDB-1.nog:md5,df85d18647b8f011ed85756b3145e111",
+                                            "tmpConsDB-1.nsd:md5,e1762b31a61da7f576b2ea09746b71d7",
+                                            "tmpConsDB-1.nsi:md5,214b6d3346f83281aa6707af947157e4",
+                                            "tmpConsDB-1.nsq:md5,3442d60baf998f9aecac64ebe4c2913b"
+                                        ],
+                                        "tmpConsensi.fa:md5,9519c8ec30a95b57c5fd61185433e295"
+                                    ]
+                                ],
+                                [
+                                    
+                                ],
+                                [
+                                    [
+                                        "ltrfinder_reformat_label.gff:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                        "test.filteredRepeats.bed:md5,0f61445f7d158ebbf84300383b02a21e",
+                                        "test.filteredRepeats.bed.bak:md5,38cc22ef3261c49224b56b87863cce6c",
+                                        "test.filteredRepeats.gff:md5,7697f6608878ddacd6534326b1d37de8",
+                                        "test.filteredRepeats.summary:md5,a5d5bd17c82d4e11a5a77c806d23df3d",
+                                        "test.mergedRepeats.bed:md5,38cc22ef3261c49224b56b87863cce6c",
+                                        "test.mergedRepeats.revisedTable:md5,a5d5bd17c82d4e11a5a77c806d23df3d",
+                                        "test.out.gff2:md5,af0c52bb5a3069b1a70e7562ba0b025f",
+                                        "test.out.gff2.bak:md5,af0c52bb5a3069b1a70e7562ba0b025f",
+                                        "test.out.gff3:md5,a1a02b5b1ef0a2c1ee27157676499bad",
+                                        "test.rclabel.gff:md5,70ca27eff0978cf5e46e357ab98a73cc",
+                                        "test.rmerge.gff:md5,51bb9a80daab9e9d873508e58d93b64c",
+                                        "test.rmerge.gff.filtered:md5,4ddbbc8fd2b6febcfed8ade12b543f5a",
+                                        "test.rmerge.gff.sorted:md5,51bb9a80daab9e9d873508e58d93b64c",
+                                        "test.summary.txt:md5,7fd205a0193baa0a330434adf8135039",
+                                        [
+                                            
+                                        ],
+                                        [
+                                            "repeatcraft.cfg:md5,2606df81c1ebd1e7cfd1db9237897a7e"
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    [
+                                        [
+                                            [
+                                                
+                                            ],
+                                            "test-families.fa.nonsatellite:md5,0bfb0b00311e31532dab1e70208c0d64",
+                                            "test-families.fa.nonsatellite.classified:md5,429204ad9b0a5ad50fe95ced8df09f81",
+                                            "tmpConsensi.fa:md5,18faedd00fd281bb48c77eaa86c4f9d1"
+                                        ],
+                                        "missing_consensi.txt:md5,b97876374f4502329479c3d147d4b258",
+                                        "test-families.fa:md5,99151c8f871e374d0bd87e964017d176",
+                                        "test-families.fa.bak:md5,538fc43f679599b3b06fef573b099b62",
+                                        "test-families.fa.strained:md5,429204ad9b0a5ad50fe95ced8df09f81",
+                                        [
+                                            "test-families.fa:md5,99151c8f871e374d0bd87e964017d176",
+                                            "test-families.fa.mreps:md5,f574e9ffc685761586fdcceae453aa6c",
+                                            "test-families.fa.nonsatellite:md5,0bfb0b00311e31532dab1e70208c0d64",
+                                            "test-families.fa.sassr:md5,c091f9f8a3555084578b9656d19e2fcb",
+                                            "test-families.fa.satellites:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                            "test-families.fa.trf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                        ]
+                                    ],
+                                    "test-families.fa.strained:md5,429204ad9b0a5ad50fe95ced8df09f81"
+                                ],
+                                [
+                                    "test-families.fa.strained:md5,429204ad9b0a5ad50fe95ced8df09f81",
+                                    "test.familyLevelCount.kable:md5,7fa721b1c34c0c9f32d1772d3baede1e",
+                                    "test.familyLevelCount.txt:md5,ae92ab3d40b4f9f796587ed547802815",
+                                    "test.filteredRepeats.bed:md5,0f61445f7d158ebbf84300383b02a21e",
+                                    "test.filteredRepeats.gff:md5,7697f6608878ddacd6534326b1d37de8",
+                                    "test.highLevelCount.kable:md5,f4c40f1f4ad6bad6276bd8776ab72d39",
+                                    "test.highLevelCount.txt:md5,4f144b32dd8fd1d5e2ba81fe1bf738a5",
+                                    "test.summaryPie.pdf:md5,9b1f3981d8ea95ceb70b0342a3d23eb0",
+                                    "test_classification_landscape.pdf:md5,4b4d5a831b9212d3c2a8b7c57a33ce14",
+                                    "test_divergence_summary_table.tsv:md5,94b260abdfa32d4669aef5ef2d0c9a4f",
+                                    "test_split_class_landscape.pdf:md5,d7a77e31ca3017b14c731a5ae02d1fe1"
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                "split_class_landscape_plot": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_split_class_landscape.pdf:md5,d7a77e31ca3017b14c731a5ae02d1fe1"
+                    ]
+                ],
+                "summary_family_kable": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.familyLevelCount.kable:md5,7fa721b1c34c0c9f32d1772d3baede1e"
+                    ]
+                ],
+                "summary_family_txt": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.familyLevelCount.txt:md5,ae92ab3d40b4f9f796587ed547802815"
+                    ]
+                ],
+                "summary_highLevel_kable": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.highLevelCount.kable:md5,f4c40f1f4ad6bad6276bd8776ab72d39"
+                    ]
+                ],
+                "summary_highLevel_txt": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.highLevelCount.txt:md5,4f144b32dd8fd1d5e2ba81fe1bf738a5"
+                    ]
+                ],
+                "summary_plot": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.summaryPie.pdf:md5,9b1f3981d8ea95ceb70b0342a3d23eb0"
+                    ]
                 ],
                 "versions_earlgrey": [
-                    
+                    [
+                        "EARLGREY",
+                        "earlgrey",
+                        "7.0.3"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-03-11T12:01:58.334465",
+        "timestamp": "2026-04-21T16:55:54.658724024",
         "meta": {
-            "nf-test": "0.9.4",
+            "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
     }
