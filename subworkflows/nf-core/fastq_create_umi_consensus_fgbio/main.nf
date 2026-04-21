@@ -50,16 +50,14 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     // the user can choose here to use either bwa-mem (default) or bwa-mem2
     aligned_bam = channel.empty()
 
-    /*
-    / Hot fix to BWAMEM1_INDEX now takes ch_fasta_fai as input
-    */
     ch_fasta_fai_dict = channel.of(fasta_fai_dict)
-
-    ch_fasta_fai = ch_fasta_fai_dict.map {
-        meta, fasta, fai, _dict -> [ meta, fasta, fai ] }
 
     if (aligner == "bwa-mem") {
         if (!bwa_index) {
+            // Remap - BWAMEM1_INDEX now takes ch_fasta_fai as input
+            ch_fasta_fai = ch_fasta_fai_dict.map {
+                meta, fasta, fai, _dict -> [ meta, fasta, fai ] }
+                
             BWAMEM1_INDEX(ch_fasta_fai)
         }
 
