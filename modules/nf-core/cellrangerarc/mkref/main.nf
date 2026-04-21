@@ -20,7 +20,7 @@ process CELLRANGERARC_MKREF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def fast_name = fasta.name
+    def fasta_name = fasta.name
     def gtf_name = gtf.name
     def motifs_name = motifs.name
     def reference_config_name = reference_config.name
@@ -36,7 +36,7 @@ process CELLRANGERARC_MKREF {
     from os.path import exists
     import shutil
 
-    fasta = "${fast_name}"
+    fasta = "${fasta_name}"
     gtf = "${gtf_name}"
     motifs = "${motifs_name}"
     add = "${args}"
@@ -78,7 +78,16 @@ process CELLRANGERARC_MKREF {
     }
     prefix = task.ext.prefix ?: "${meta.id}_reference"
     """
-    mkdir -p "${prefix}/"
+    mkdir -p "${prefix}"/fasta "${prefix}"/genes "${prefix}"/regions "${prefix}"/star
     touch config
+    touch "${prefix}"/reference.json
+    touch "${prefix}"/fasta/${prefix}.fa.{,amb,ann,bwt,fai,pac,sa}
+    echo "" | gzip > "${prefix}"/genes/genes.gtf.gz
+    touch "${prefix}"/regions/{motifs.pfm,transcripts.bed,tss.bed}
+    touch "${prefix}"/star/{chrLength,chrName,chrNameLength,chrStart}.txt
+    touch "${prefix}"/star/{exonGeTrInfo,exonInfo,geneInfo,transcriptInfo}.tab
+    touch "${prefix}"/star/{Genome,SA,SAindex}
+    touch "${prefix}"/star/sjdbInfo.txt
+    touch "${prefix}"/star/sjdbList{,.fromGTF}.out.tab
     """
 }
