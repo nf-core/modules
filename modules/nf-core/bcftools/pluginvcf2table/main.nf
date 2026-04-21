@@ -1,11 +1,11 @@
 process BCFTOOLS_PLUGINVCF2TABLE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/bcftools:1.23.1--16b1a31e5dc795f7' :
-        'community.wave.seqera.io/library/bcftools:1.23.1--4d193a5f61d4aed7' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'oras://community.wave.seqera.io/library/bcftools:1.23.1--16b1a31e5dc795f7'
+        : 'community.wave.seqera.io/library/bcftools:1.23.1--4d193a5f61d4aed7'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -17,16 +17,15 @@ process BCFTOOLS_PLUGINVCF2TABLE {
     tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version"), topic: versions, emit: versions_bcftools
 
-
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args   ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    def regions_file = regions    ? "--regions-file ${regions}" : ''
-    def targets_file = targets    ? "--targets-file ${targets}" : ''
-    def samples_file = samples    ? "--samples-file ${samples}" : ''
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def regions_file = regions ? "--regions-file ${regions}" : ''
+    def targets_file = targets ? "--targets-file ${targets}" : ''
+    def samples_file = samples ? "--samples-file ${samples}" : ''
     """
     bcftools \\
         +vcf2table \\

@@ -24,11 +24,13 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
+        ontologies: []
     - vcf:
         type: file
         description: VCF/BCF file to be converted (optionally bgzipped).
         pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
     - tbi:
         type: file
         description: Index of the VCF/BCF file (required when vcf is bgzipped).
@@ -39,30 +41,37 @@ input:
         description: |
           Groovy Map containing regions file information
           e.g. [ id:'test' ]
+        ontologies: []
     - regions:
         type: file
         description: |
           Optional. Restrict the operation to regions listed in this BED or VCF file.
           Relies on a tabix index.
         pattern: "*.{bed,vcf,vcf.gz}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_3016" # VCF
   - - meta3:
         type: map
         description: |
           Groovy Map containing targets file information
           e.g. [ id:'test' ]
+        ontologies: []
     - targets:
         type: file
         description: |
           Optional. Restrict the operation to regions listed in this file
           (does not rely on index files).
         pattern: "*.{bed,vcf,vcf.gz}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_3016" # VCF
   - - meta4:
         type: map
         description: |
           Groovy Map containing samples file information
           e.g. [ id:'test' ]
+        ontologies: []
     - samples:
         type: file
         description: |
@@ -76,11 +85,13 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          ontologies: []
       - "*.txt":
           type: file
           description: Tab-delimited table output from bcftools +vcf2table.
           pattern: "*.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   versions_bcftools:
     - - ${task.process}:
           type: string
