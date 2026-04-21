@@ -45,7 +45,7 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "${meta.id}_primary.bam":
+      - "${prefix}.bam":
           type: file
           description: Bam file containing the reads which align better to the primary
             genome.
@@ -55,7 +55,7 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "${meta.id}_contaminant.bam":
+      - "${prefix2}.bam":
           type: file
           description: Bam file containing the reads which align better to the contaminant
             genome.

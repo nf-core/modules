@@ -12,8 +12,8 @@ process BAMCMP {
     tuple val(meta), path(primary_aligned_bam), path(contaminant_aligned_bam)
 
     output:
-    tuple val(meta), path("${meta.id}_primary.bam") , emit: primary_filtered_bam
-    tuple val(meta), path("${meta.id}_contaminant.bam"), emit: contamination_bam
+    tuple val(meta), path("${prefix}.bam") , emit: primary_filtered_bam
+    tuple val(meta), path("${prefix2}.bam"), emit: contamination_bam
     tuple val("${task.process}"), val('bamcmp'), eval('echo 2.2'), topic: versions, emit: versions_bamcmp
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
@@ -22,20 +22,20 @@ process BAMCMP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_primary"
-    def prefix2 = task.ext.args3 ?: "${meta.id}_contaminant"
+    prefix = task.ext.prefix ?: "${meta.id}_primary"
+    prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
 
     if ("$primary_aligned_bam" == "${prefix}.bam"  | "$contaminant_aligned_bam" == "${prefix}.bam"  ) {
         error "Input and output names for the primary-genome bam file are the same, use \"task.ext.prefix\" to disambiguate!"
     }
     if ("$primary_aligned_bam" == "${prefix2}.bam" | "$contaminant_aligned_bam" == "${prefix2}.bam" ) {
-        error "Input and output names for the contaminant-genome bam file are the same, use \"task.ext.args3\" to disambiguate!"
+        error "Input and output names for the contaminant-genome bam file are the same, use \"task.ext.prefix2\" to disambiguate!"
     }
     if ("primary_aligned_bam"    == "contaminant_aligned_bam" ) {
         error "Input file names for the two bam files are the same, ensure they are renamed upstream."
     }
     if ("${prefix}.bam"    == "${prefix2}.bam" ) {
-        error "Output names for the two bam files are identical, use \"task.ext.prefix\" and \"task.ext.args3\" to disambiguate!"
+        error "Output names for the two bam files are identical, use \"task.ext.prefix\" and \"task.ext.prefix2\" to disambiguate!"
     }
     """
     bamcmp \\
@@ -52,17 +52,17 @@ process BAMCMP {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}_primary"
-    def prefix2 = task.ext.args3 ?: "${meta.id}_contaminant"
+    prefix = task.ext.prefix ?: "${meta.id}_primary"
+    prefix2 = task.ext.args3 ?: "${meta.id}_contaminant"
 
     if ("$primary_aligned_bam" == "${prefix}.bam"  | "$contaminant_aligned_bam" == "${prefix}.bam"  )
         error "Input and output names for the primary-genome bam file are the same, use \"task.ext.prefix\" to disambiguate!"
     if ("$primary_aligned_bam" == "${prefix2}.bam" | "$contaminant_aligned_bam" == "${prefix2}.bam" )
-        error "Input and output names for the contaminant-genome bam file are the same, use \"task.ext.args3\" to disambiguate!"
+        error "Input and output names for the contaminant-genome bam file are the same, use \"task.ext.prefix2\" to disambiguate!"
     if ("primary_aligned_bam"    == "contaminant_aligned_bam" )
         error "Input file names for the two bam files are the same, ensure they are renamed upstream."
     if ("${prefix}.bam"    == "${prefix2}.bam" )
-        error "Output names for the two bam files are identical, use \"task.ext.prefix\" and \"task.ext.args3\" to disambiguate!"
+        error "Output names for the two bam files are identical, use \"task.ext.prefix\" and \"task.ext.prefix2\" to disambiguate!"
     """
     touch ${prefix}.bam
     touch ${prefix2}.bam
