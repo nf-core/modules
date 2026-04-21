@@ -40,7 +40,10 @@ nextflow_workflow {
 
                 input[0] = ch_input
                 input[1] = channel.of([[], [], [], [], [], []])
-                input[2] = channel.of([[], []])
+                input[2] = channel.of([
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    []
+                ])
                 input[3] = channel.of([
                     ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
                     [],  //
@@ -124,9 +127,14 @@ nextflow_workflow {
                         [meta, [], '', '']
                     }
 
+                ch_samplesheet = ch_input
+                    .map { meta, file, genesets, background, method ->
+                        [meta, []]
+                    }
+
                 input[0] = ch_input
                 input[1] = channel.of([[], [], [], [], [], []])
-                input[2] = channel.of([[], []])
+                input[2] = ch_samplesheet
                 input[3] = ch_featuresheet
                 """
             }
@@ -313,9 +321,13 @@ nextflow_workflow {
                     .map { meta, file, genesets, background, method ->
                         [meta, [], '', '']
                     }
+                ch_samplesheet = ch_input
+                    .map { meta, file, genesets, background, method ->
+                        [meta, []]
+                    }
                 input[0] = ch_input
                 input[1] = channel.of([[], [], [], [], [], []])
-                input[2] = channel.of([[], []])
+                input[2] = ch_samplesheet
                 input[3] = ch_featuresheet
                 """
             }
@@ -492,7 +504,16 @@ nextflow_workflow {
                 ])
 
                 ch_contrasts = channel.of([[], [], [], [], [], []])
-                ch_samplesheet = channel.of([[], []])
+                ch_samplesheet = channel.of([
+                    [
+                        'id':'treatment_mCherry_hND6',
+                        'method_differential':'deseq2',
+                        'params': [
+                            'differential_method': 'deseq2'
+                        ]
+                    ],
+                    []
+                ])
                 ch_featuresheet = channel.of([
                     [
                         'id':'treatment_mCherry_hND6',
@@ -554,7 +575,10 @@ nextflow_workflow {
 
                 input[0] = ch_input
                 input[1] = channel.of([[], [], [], [], [], []])
-                input[2] = channel.of([[], []])
+                input[2] = channel.of([
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    []
+                ])
                 input[3] = channel.of([
                     ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
                     [],
