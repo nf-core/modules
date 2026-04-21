@@ -49,10 +49,10 @@ write_h5ad(adata, paste0(prefix, ".h5ad"))
 # versions.yml
 versions <- c(
     '"${task.process}":',
-    paste0("    r-base: ",    as.character(getRversion())),
-    paste0("    soupx: ",     as.character(packageVersion("SoupX"))),
-    paste0("    anndatar: ",  as.character(packageVersion("anndataR"))),
-    paste0("    seurat: ",    as.character(packageVersion("Seurat"))),
+    paste0("    r-base: ",     as.character(getRversion())),
+    paste0("    soupx: ",      as.character(packageVersion("SoupX"))),
+    paste0("    anndatar: ",   as.character(packageVersion("anndataR"))),
+    paste0("    seurat: ",     as.character(packageVersion("Seurat"))),
     paste0("    leidenbase: ", as.character(packageVersion("leidenbase")))
 )
 writeLines(versions, "versions.yml")
