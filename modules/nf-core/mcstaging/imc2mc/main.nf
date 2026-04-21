@@ -14,13 +14,15 @@ process MCSTAGING_IMC2MC {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "imc2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
-    }
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/imc2mc
+
+Reason:
+Renamed module to match the tool/subtool convention
+"""
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    assert false: deprecation_message
     """
     python /imc2mc/scripts/imc2mc.py \
         -i ${txtfile} \

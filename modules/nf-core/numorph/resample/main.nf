@@ -15,8 +15,6 @@ process NUMORPH_RESAMPLE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     mkdir -p ./results/stitched
@@ -28,12 +26,16 @@ process NUMORPH_RESAMPLE {
     parameter_file=\$(readlink -f ${parameter_file})
     results_dir=\$(readlink -f ./results)
 
-    numorph_analyze 'input_dir' \$stitch_directory 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'resample' 'NM_variables' '' 'use_processed_images' 'stitched'
-
+    numorph_analyze 'input_dir' \$stitch_directory \\
+        'output_dir' \$results_dir \\
+        'parameter_file' \$parameter_file \\
+        'sample_name' ${meta.id} \\
+        'stage' 'resample' \\
+        'NM_variables' '' \\
+        'use_processed_images' 'stitched'
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

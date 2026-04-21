@@ -60,7 +60,8 @@ workflow BCL_DEMULTIPLEX {
     // MODULE: multiqcsav
     ch_mqcsav_input = ch_flowcell
         .map { meta, _samplesheet, flowcell ->
-            def interop = files(file(flowcell).resolve("InterOp/*.bin"), checkIfExists: true)
+            def interopDir = file(flowcell).resolve("InterOp")
+            def interop = file(interopDir).exists() ? files("${interopDir}/*.bin") : []
             def xml = files(file(flowcell).resolve("*.xml"), checkIfExists: true)
             return [meta, xml, interop]
         }

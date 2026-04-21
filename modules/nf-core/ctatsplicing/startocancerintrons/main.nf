@@ -20,7 +20,8 @@ process CTATSPLICING_STARTOCANCERINTRONS {
     tuple val(meta), path("*.ctat-splicing.igv.html")            , emit: igv_html                 , optional: true
     tuple val(meta), path("*.igv.tracks")                        , emit: igv_tracks               , optional: true
     tuple val(meta), path("*.chckpts")                           , emit: chckpts                  , optional: true
-    path "versions.yml"                                          , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('ctatsplicing'), val("0.0.3"), emit: versions_ctatsplicing, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +34,6 @@ process CTATSPLICING_STARTOCANCERINTRONS {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def bam_arg = bam ? "--bam_file ${bam}" : ""
-    def VERSION = '0.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def create_index = bam && !bai ? "samtools index ${bam}" : ""
     """
     ${create_index}
@@ -45,17 +45,11 @@ process CTATSPLICING_STARTOCANCERINTRONS {
         --output_prefix ${prefix} \\
         --ctat_genome_lib ${genome_lib} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ctat-splicing: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def create_igv_files = args.contains("--vis") ? "touch ${prefix}.introns.for_IGV.bed && touch ${prefix}.ctat-splicing.igv.html && touch ${prefix}.igv.tracks" : ""
     """
     ${create_igv_files}
@@ -67,11 +61,5 @@ process CTATSPLICING_STARTOCANCERINTRONS {
     touch ${prefix}.cancer.introns.prelim
     touch ${prefix}.introns
     touch ${prefix}.chckpts
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ctat-splicing: $VERSION
-    END_VERSIONS
     """
 }

@@ -12,7 +12,7 @@ process BISMARK_REPORT {
 
     output:
     tuple val(meta), path("*report.{html,txt}"), emit: report
-    path  "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val("bismark"), eval("bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), topic: versions, emit: versions_bismark
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,11 +21,6 @@ process BISMARK_REPORT {
     def args = task.ext.args ?: ''
     """
     bismark2report ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -33,10 +28,5 @@ process BISMARK_REPORT {
     """
     touch ${prefix}.report.txt
     touch ${prefix}.report.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 }

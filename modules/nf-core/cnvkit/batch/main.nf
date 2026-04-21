@@ -8,9 +8,8 @@ process CNVKIT_BATCH {
         : 'community.wave.seqera.io/library/cnvkit_htslib_samtools:86928c121163aca7'}"
 
     input:
-    tuple val(meta), path(tumor), path(normal)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fasta_fai)
+    tuple val(meta), path(tumor), path(tumor_index), path(normal), path(normal_index)
+    tuple val(meta2), path(fasta), path(fasta_fai)
     tuple val(meta4), path(targets)
     tuple val(meta5), path(reference)
     val panel_of_normals
@@ -101,14 +100,11 @@ process CNVKIT_BATCH {
     """
     stub:
     def tumor_exists = tumor ? true : false
-    def normal_exists = normal ? true : false
     def reference_exists = reference ? true : false
     // identify BED naming pattern
     def bed_prefix = reference_exists ? reference.BaseName : targets ? targets.BaseName : ""
     def bed_suffix = reference_exists ? "-tmp.bed" : ".bed"
     // execute samtools only when cram files are input, cnvkit runs natively on cram but is prohibitively slow
-    def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
-    def normal_cram = normal_exists && normal.Extension == "cram" ? true : false
     def out_base_name = tumor_exists ? tumor.BaseName : normal.BaseName
     """
     touch ${bed_prefix}.antitarget${bed_suffix}
