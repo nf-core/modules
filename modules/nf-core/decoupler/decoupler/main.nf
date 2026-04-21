@@ -4,8 +4,8 @@ process DECOUPLER_DECOUPLER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dc0ee6d6033b9f04c6377ad3b1cf5f924e3243626ab8d7be836d9d6617f8da4e/data' :
-        'community.wave.seqera.io/library/decoupler-py_matplotlib_pandas_scanpy:369a5afe315b9b30' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b5d8e776c3b3a00c25d9a94adbde00008018e5f9eb4aa73c17cb7b886ddc1ae3/data' :
+        'community.wave.seqera.io/library/decoupler-py_matplotlib_pandas_python_scanpy:c539733016e15bbc' }"
 
     input:
     tuple val(meta), path(mat)
@@ -32,11 +32,11 @@ process DECOUPLER_DECOUPLER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        decoupler-py: \$(python -c "import decoupler; print(decoupler.__version__)")
-        matplotlib: \$(python -c "import matplotlib; print(matplotlib.__version__)")
-        pandas: \$(python -c "import pandas; print(pandas.__version__)")
+        decoupler-py: \$(pip show decoupler | sed -n 's/Version: //p')
+        matplotlib: \$(pip show matplotlib | sed -n 's/Version: //p')
+        pandas: \$(pip show pandas | sed -n 's/Version: //p')
         python: \$(python --version | cut -f 2 -d " ")
-        scanpy: \$(python -c "import scanpy; print(scanpy.__version__)")
+        scanpy: \$(pip show scanpy | sed -n 's/Version: //p')
     END_VERSIONS
     """
 }
