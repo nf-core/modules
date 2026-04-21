@@ -12,7 +12,7 @@ process BISCUIT_INDEX {
 
     output:
     tuple val(meta), path("BiscuitIndex"), emit: index
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('biscuit'), eval("biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'"), emit: versions_biscuit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,11 +24,6 @@ process BISCUIT_INDEX {
         index \\
         $args \\
         $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process BISCUIT_INDEX {
     touch ${fasta}.dau.sa
     touch ${fasta}.par.bwt
     touch ${fasta}.par.sa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
-    END_VERSIONS
     """
 }

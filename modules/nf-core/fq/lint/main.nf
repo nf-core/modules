@@ -8,7 +8,7 @@ process FQ_LINT {
         'biocontainers/fq:0.12.0--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(fastq)
+    tuple val(meta), path(fastq, arity: '1..2')
 
     output:
     tuple val(meta), path("*.fq_lint.txt"), emit: lint
