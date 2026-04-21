@@ -18,7 +18,7 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
     task.ext.when == null || task.ext.when
 
     script:
-    config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
+    config = "/LIBS/GUID = \\\"${UUID.randomUUID().toString()}\\\"\\n/libs/cloud/report_instance_identity = \\\"true\\\"\\n"
 
     """
     echo ${config}
