@@ -22,6 +22,11 @@ process CUSTOM_GTFFILTER {
     prefix = task.ext.prefix ?: "${meta.id}"
     suffix = "gtf" + (gtf.extension == 'gz' ? '.gz' : '')
     args   = task.ext.args ?: ''
+
+    """
+    echo $args
+    """
+
     template 'gtffilter.py'
 
     stub:

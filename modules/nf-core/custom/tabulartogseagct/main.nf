@@ -12,7 +12,7 @@ process CUSTOM_TABULARTOGSEAGCT {
 
     output:
     tuple val(meta), path("*.gct"), emit: gct
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('mawk'), eval("mawk --version | sed '1!d;s/mawk //;s/ .*//'"), emit: versions_mawk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,20 +31,11 @@ process CUSTOM_TABULARTOGSEAGCT {
     echo -e "#1.2\$(printf '\\t%.0s' {1..\$n_columns})\\n\$((n_lines-1))\\t\$((n_columns-1))\$(printf '\\t%.0s' {1..\$((n_columns-1))})" > \$gct_file
     echo -e "NAME\\tDESCRIPTION\\t\$(head -n 1 ${tabular} | cut -f1 -d\$'${separator}' --complement | awk -F'${separator}' 'BEGIN { OFS = "\\t"}; {\$1=\$1}1' )" >> \$gct_file
     cat ${tabular} | tail -n +2 | awk -F'${separator}' 'BEGIN { OFS = "\\t"} {\$1=\$1"\\tNA"}1' >> \$gct_file
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        awk: \$(mawk -W version | head -n 1 | awk '{print  \$2}')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gct
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        awk: \$(mawk -W version | head -n 1 | awk '{print  \$2}')
-    END_VERSIONS
     """
 }
