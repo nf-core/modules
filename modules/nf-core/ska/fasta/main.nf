@@ -5,7 +5,7 @@ process SKA_FASTA {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ska:1.0--he860b03_0':
-        'biocontainers/ska:1.0--he860b03_0' }"
+        'quay.io/biocontainers/ska:1.0--he860b03_0' }"
 
     input:
     tuple val(meta), path(fastas), path(fasta_list)

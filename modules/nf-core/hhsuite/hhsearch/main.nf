@@ -5,7 +5,7 @@ process HHSUITE_HHSEARCH {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hhsuite:3.3.0--py311pl5321h9f068be_13':
-        'biocontainers/hhsuite:3.3.0--py311pl5321h9f068be_13' }"
+        'quay.io/biocontainers/hhsuite:3.3.0--py311pl5321h9f068be_13' }"
 
     input:
     tuple val(meta) , path(aln)

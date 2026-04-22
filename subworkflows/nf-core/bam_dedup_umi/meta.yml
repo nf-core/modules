@@ -168,6 +168,48 @@ output:
             type: file
             description: Idxstats file
             pattern: "*.idxstats"
+  - genome_stats:
+      description: Channel containing BAM statistics for the genome-aligned BAM only (transcriptome excluded)
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - stats:
+            type: file
+            description: BAM statistics file
+            pattern: "*.stats"
+  - genome_flagstat:
+      description: Channel containing flagstat for the genome-aligned BAM only
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - flagstat:
+            type: file
+            description: Flagstat file
+            pattern: "*.flagstat"
+  - genome_idxstats:
+      description: Channel containing idxstats for the genome-aligned BAM only
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - idxstats:
+            type: file
+            description: Idxstats file
+            pattern: "*.idxstats"
+  - per_sample_mqc_bundle:
+      description: |
+        Per-sample MultiQC-feeding outputs (genome-side only: genomic dedup log,
+        genome stats, flagstat, idxstats) joined on meta. Transcriptome stats
+        excluded (MultiQC can't disambiguate them from genome stats).
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - files:
+            type: file
+            description: List of MultiQC-relevant files for the sample
   - multiqc_files:
       description: Channel containing files for MultiQC
       structure:

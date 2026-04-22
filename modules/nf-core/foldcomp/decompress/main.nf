@@ -5,7 +5,7 @@ process FOLDCOMP_DECOMPRESS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/foldcomp:1.0.0--h7f5d12c_0':
-        'biocontainers/foldcomp:1.0.0--h7f5d12c_0' }"
+        'quay.io/biocontainers/foldcomp:1.0.0--h7f5d12c_0' }"
 
     input:
     tuple val(meta), path(fcz)

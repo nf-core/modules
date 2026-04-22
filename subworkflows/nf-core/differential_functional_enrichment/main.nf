@@ -151,10 +151,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     ch_versions = ch_versions
         .mix(GPROFILER2_GOST.out.versions)
-        .mix(CUSTOM_TABULARTOGSEAGCT.out.versions)
-        .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
-        .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
-        .mix(DECOUPLER_DECOUPLER.out.versions)
         .mix(PROPR_GREA.out.versions)
 
     emit:

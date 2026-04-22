@@ -5,7 +5,7 @@ process PLOTSR {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/plotsr:1.1.1--pyh7cba7a3_0'
-        : 'biocontainers/plotsr:1.1.1--pyh7cba7a3_0'}"
+        : 'quay.io/biocontainers/plotsr:1.1.1--pyh7cba7a3_0'}"
 
     input:
     tuple val(meta), path(syri)

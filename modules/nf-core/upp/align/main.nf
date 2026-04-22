@@ -5,7 +5,7 @@ process UPP_ALIGN {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/sepp:4.5.6--py312h87e0c26_4'
-        : 'biocontainers/sepp:4.5.6--py312h87e0c26_4'}"
+        : 'quay.io/biocontainers/sepp:4.5.6--py312h87e0c26_4'}"
 
     input:
     tuple val(meta), path(fasta_unaligned), path(fasta_aligned)

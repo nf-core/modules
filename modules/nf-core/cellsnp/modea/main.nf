@@ -5,7 +5,7 @@ process CELLSNP_MODEA {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cellsnp-lite:1.2.3--h6141fd1_2' :
-        'biocontainers/cellsnp-lite:1.2.3--h6141fd1_2' }"
+        'quay.io/biocontainers/cellsnp-lite:1.2.3--h6141fd1_2' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(region_vcf), path(barcode)
