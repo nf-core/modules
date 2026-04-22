@@ -102,6 +102,14 @@ process EARLGREY {
     """
     echo ${args}
 
-    mkdir ${prefix}
+    mkdir -p ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.filteredRepeats.gff
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.familyLevelCount.kable
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.familyLevelCount.txt
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.highLevelCount.kable
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.highLevelCount.txt
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.summaryPie.pdf
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}_classification_landscape.pdf
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}_split_class_landscape.pdf
     """
 }
