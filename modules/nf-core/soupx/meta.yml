@@ -6,9 +6,9 @@ description: |
   provide cluster assignments to SoupX, which then estimates per-cluster contamination and adjusts
   counts. The adjusted counts are written to the output H5AD as an `ambient` layer.
 
-  Process-scope parameters (override via `ext.*` in a config block):
-    - `ext.npcs`              Number of principal components (also controls FindNeighbors dims = 1:npcs). Default: 50.
-    - `ext.cluster_algorithm` Seurat FindClusters algorithm: louvain | louvain_multilevel | slm | leiden. Default: leiden.
+  Tunable flags via `ext.args` (space-separated `--key value` pairs):
+    --npcs               Number of principal components (also controls FindNeighbors dims = 1:npcs). Default: 50.
+    --cluster_algorithm  Seurat FindClusters algorithm: louvain | louvain_multilevel | slm | leiden. Default: leiden.
 keywords:
   - single-cell
   - transcriptomics
