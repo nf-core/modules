@@ -18,7 +18,7 @@ process SOUPX {
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_soupx"
     template 'soupx.R'
 
     stub:
