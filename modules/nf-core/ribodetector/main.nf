@@ -15,7 +15,7 @@ process RIBODETECTOR {
 	tuple val(meta), path("*.nonrna*.fastq.gz"), emit: fastq
 	tuple val(meta), path("*.log")             , emit: log
 	tuple val("${task.process}"), val('ribodetector'), eval('ribodetector --version | sed "s/ribodetector //"'), emit: versions_ribodetector, topic: versions
-	tuple val("${task.process}"), val('cuda'), eval('python -c "import torch; print(torch.version.cuda or \'cpu\')"'), emit: versions_cuda, topic: versions
+	tuple val("${task.process}"), val('cuda'), eval('python -c "import torch; print(torch.version.cuda or \'no CUDA available\')"'), emit: versions_cuda, topic: versions
 
 	when:
 	task.ext.when == null || task.ext.when
