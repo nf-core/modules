@@ -5,14 +5,14 @@ process FCSGX_FETCHDB {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-fcs-gx:0.5.5--h9948957_0':
-        'biocontainers/ncbi-fcs-gx:0.5.5--h9948957_0' }"
+        'quay.io/biocontainers/ncbi-fcs-gx:0.5.5--h9948957_0' }"
 
     input:
     val manifest // URL of manifest. Should not stage locally.
 
     output:
     path "$prefix"      , emit: database
-    path "versions.yml" , emit: versions
+    tuple val("${task.process}"), val('fcsgx'), eval("gx --help | sed '/build/!d; s/.*:v//; s/-.*//'"), emit: versions_fcsgx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +25,6 @@ process FCSGX_FETCHDB {
         get \\
         --mft "${manifest.toUriString()}" \\
         --dir "$prefix"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fcsgx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
-    END_VERSIONS
     """
 
     stub:
@@ -37,10 +32,5 @@ process FCSGX_FETCHDB {
     prefix = task.ext.prefix ?: "gxdb_$manifest.baseName"
     """
     touch ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fcsgx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
-    END_VERSIONS
     """
 }

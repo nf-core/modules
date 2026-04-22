@@ -5,7 +5,7 @@ process PHYLOFLASH {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/phyloflash:3.4.2--hdfd78af_1' :
-        'biocontainers/phyloflash:3.4.2--hdfd78af_1' }"
+        'quay.io/biocontainers/phyloflash:3.4.2--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(reads)

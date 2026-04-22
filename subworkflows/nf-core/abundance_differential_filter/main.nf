@@ -73,9 +73,13 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // simply use the first output from DIFFERENTIAL modules is that depending
     // on the contrast setting etc, these modules may subset matrices, hence
     // not returning the full normalized matrix as NORM modules would do.
+    ch_first_contrast = ch_contrasts
+        .map { meta, contrasts, variables, references, targets, formulas, comparisons ->
+            tuple(meta, contrasts[0], variables[0], references[0], targets[0], formulas[0], comparisons[0])
+        }
     norm_inputs = ch_input
         .combine(ch_samplesheet_with_control, by:0)
-        .join(ch_contrasts.transpose()) // by using join instead of combine, it only returns the inner join with the first contrast
+        .combine(ch_first_contrast, by:0)
         .multiMap(criteria)
 
     // ----------------------------------------------------
@@ -195,6 +199,18 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .mix(DESEQ2_NORM.out.vst_counts)
         .groupTuple()
 
+    ch_dispersion_plot = DESEQ2_DIFFERENTIAL.out.dispersion_plot_png
+
+    ch_md_plot = LIMMA_DIFFERENTIAL.out.md_plot
+
+    ch_rdata = DESEQ2_DIFFERENTIAL.out.rdata
+        .mix(LIMMA_DIFFERENTIAL.out.rdata)
+
+    ch_size_factors = DESEQ2_DIFFERENTIAL.out.size_factors
+
+    ch_session_info = DESEQ2_DIFFERENTIAL.out.session_info
+        .mix(LIMMA_DIFFERENTIAL.out.session_info)
+
     // ----------------------------------------------------
     // Filter DE results
     // ----------------------------------------------------
@@ -239,9 +255,9 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         ch_diff_filter_params.fc_input,
         ch_diff_filter_params.stat_input
     )
-    ch_versions = ch_versions.mix(CUSTOM_FILTERDIFFERENTIALTABLE.out.versions.first())
 
     emit:
+
     // main results
     results_genewise           = ch_results
     results_genewise_filtered  = CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered
@@ -249,9 +265,24 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // pairwise results
     adjacency                  = PROPR_PROPD.out.adjacency
 
-    // other
+    // other matrices
     normalised_matrix          = ch_normalised_matrix
     variance_stabilised_matrix = ch_variance_stabilised_matrix
+
+    // differential model
     model                      = ch_model
+
+    // size factors
+    size_factors               = ch_size_factors
+
+    // plots
+    dispersion_plot            = ch_dispersion_plot
+    md_plot                    = ch_md_plot
+
+    // rdata and session info
+    rdata                      = ch_rdata
+    session_info               = ch_session_info
+
+    // versions
     versions                   = ch_versions
 }

@@ -5,7 +5,7 @@ process DEEPARG_PREDICT {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/deeparg:1.0.4--pyhdfd78af_0'
-        : 'biocontainers/deeparg:1.0.4--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/deeparg:1.0.4--pyhdfd78af_0'}"
 
     /*
     We have to force docker/singularity to mount a fake file to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
@@ -26,7 +26,8 @@ process DEEPARG_PREDICT {
     tuple val(meta), path("*.align.daa.tsv"), emit: daa_tsv
     tuple val(meta), path("*.mapping.ARG"), emit: arg
     tuple val(meta), path("*.mapping.potential.ARG"), emit: potential_arg
-    path "versions.yml", emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('deeparg'), val('1.0.4'), emit: versions_deeparg, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,8 +35,6 @@ process DEEPARG_PREDICT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.4'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     DATABASE=`find -L ${db} -type d -name "database" | sed 's/database//'`
 
@@ -52,26 +51,14 @@ process DEEPARG_PREDICT {
         -o ${prefix} \\
         -d \$DATABASE \\
         --model ${model}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeparg: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.4'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.align.daa
     touch ${prefix}.align.daa.tsv
     touch ${prefix}.mapping.ARG
     touch ${prefix}.mapping.potential.ARG
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeparg: ${VERSION}
-    END_VERSIONS
     """
 }

@@ -4,8 +4,8 @@ process DIAMOND_MAKEDB {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.16--h13889ed_0'
-        : 'biocontainers/diamond:2.1.16--h13889ed_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.24--hf93d47f_0'
+        : 'biocontainers/diamond:2.1.24--hf93d47f_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -15,7 +15,7 @@ process DIAMOND_MAKEDB {
 
     output:
     tuple val(meta), path("*.dmnd"), emit: db
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('diamond'), eval("diamond --version | sed 's/diamond version //g'"), emit: versions_diamond, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +43,6 @@ process DIAMOND_MAKEDB {
         ${insert_taxonmap} \\
         ${insert_taxonnodes} \\
         ${insert_taxonnames}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diamond: \$(diamond --version 2>&1 | tail -n 1 | sed 's/^diamond version //')
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process DIAMOND_MAKEDB {
     """
     echo "${args}"
     touch ${prefix}.dmnd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diamond: \$(diamond --version 2>&1 | tail -n 1 | sed 's/^diamond version //')
-    END_VERSIONS
     """
 }

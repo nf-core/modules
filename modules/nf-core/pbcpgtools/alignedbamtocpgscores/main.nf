@@ -5,7 +5,7 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pb-cpg-tools:3.0.0--h9ee0642_0':
-        'biocontainers/pb-cpg-tools:3.0.0--h9ee0642_0' }"
+        'quay.io/biocontainers/pb-cpg-tools:3.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -20,7 +20,7 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
     tuple val(meta), path("*.hap2.bed.gz")        , emit: hap2_bed          , optional: true
     tuple val(meta), path("*.hap2.bed.gz.tbi")    , emit: hap2_bed_index    , optional: true
     tuple val(meta), path("*.hap2.bw")            , emit: hap2_bigwig       , optional: true
-    path "versions.yml"                           , emit: versions
+    tuple val("${task.process}"), val("pbcpgtools"), eval("aligned_bam_to_cpg_scores --version | sed 's/.* //'"), emit: versions_pbcpgtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
         --output-prefix ${prefix} \\
         --threads ${task.cpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbcpgtools: \$(aligned_bam_to_cpg_scores --version | sed 's/.* //')
-    END_VERSIONS
     """
 
     stub:
@@ -55,10 +50,5 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
     echo "" | gzip > ${prefix}.hap2.bed.gz
     touch ${prefix}.hap2.bed.gz.tbi
     touch ${prefix}.hap2.bw
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbcpgtools: \$(aligned_bam_to_cpg_scores --version | sed 's/.* //')
-    END_VERSIONS
     """
 }

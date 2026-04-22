@@ -4,7 +4,7 @@ process ARGNORM {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/argnorm:0.8.0--pyhdfd78af_0'
-        : 'biocontainers/argnorm:0.8.0--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/argnorm:0.8.0--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(input_tsv)
@@ -13,7 +13,7 @@ process ARGNORM {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('argnorm'), eval('argnorm --version'), emit: versions_argnorm, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process ARGNORM {
         -o ${prefix} \\
         ${db_args} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        argnorm: \$(argnorm --version)
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process ARGNORM {
 
     """
     touch ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        argnorm: \$(argnorm --version)
-    END_VERSIONS
     """
 }

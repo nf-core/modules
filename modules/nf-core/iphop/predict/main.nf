@@ -5,7 +5,7 @@ process IPHOP_PREDICT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/iphop:1.3.2--pyhdfd78af_0':
-        'biocontainers/iphop:1.3.2--pyhdfd78af_0' }"
+        'quay.io/biocontainers/iphop:1.3.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)

@@ -5,7 +5,7 @@ process COPTR_EXTRACT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/coptr:1.1.4--pyhdfd78af_3':
-        'biocontainers/coptr:1.1.4--pyhdfd78af_3' }"
+        'quay.io/biocontainers/coptr:1.1.4--pyhdfd78af_3' }"
 
     input:
     tuple val(meta), path(bam, stageAs: "bamfolder/*")

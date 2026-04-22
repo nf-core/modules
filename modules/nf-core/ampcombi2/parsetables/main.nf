@@ -5,7 +5,7 @@ process AMPCOMBI2_PARSETABLES {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ampcombi:2.0.1--pyhdfd78af_0':
-        'biocontainers/ampcombi:2.0.1--pyhdfd78af_0' }"
+        'quay.io/biocontainers/ampcombi:2.0.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(amp_input)
@@ -27,7 +27,7 @@ process AMPCOMBI2_PARSETABLES {
     tuple val(meta), path("amp_${opt_amp_db}_database/*.txt")      , emit: db_txt     , optional:true
     tuple val(meta), path("amp_${opt_amp_db}_database/*.fasta")    , emit: db_fasta   , optional:true
     tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/")   , emit: db_mmseqs  , optional:true
-    path "versions.yml"                                            , emit: versions
+    tuple val("${task.process}"), val('ampcombi'), eval("ampcombi --version | sed 's/ampcombi //'"), emit: versions_ampcombi, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,11 +49,6 @@ process AMPCOMBI2_PARSETABLES {
         ${interpro} \\
         ${args} \\
         --threads ${task.cpus}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
 
     stub:
@@ -79,10 +74,5 @@ process AMPCOMBI2_PARSETABLES {
     touch amp_${opt_amp_db}_database/mmseqs2/ref_DB.index
     touch amp_${opt_amp_db}_database/mmseqs2/ref_DB.lookup
     touch amp_${opt_amp_db}_database/mmseqs2/ref_DB.source
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
 }

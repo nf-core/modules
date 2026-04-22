@@ -5,10 +5,11 @@ process SHAPEIT5_LIGATE {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/shapeit5:5.1.1--hb60d31d_0'
-        : 'biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
+        : 'quay.io/biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
 
     input:
     tuple val(meta), path(input_list), path(input_list_index)
+    val suffix_
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants
@@ -20,7 +21,8 @@ process SHAPEIT5_LIGATE {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = suffix_ ?: "vcf.gz"
+    assert suffix in ["vcf", "vcf.gz", "bcf", "bcf.gz"]
 
     // Create file list using Groovy (most portable)
     def file_list = input_list
@@ -40,8 +42,8 @@ process SHAPEIT5_LIGATE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
-
+    def suffix = suffix_ ?: "vcf.gz"
+    assert suffix in ["vcf", "vcf.gz", "bcf", "bcf.gz"]
     def create_cmd = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     """
     ${create_cmd} ${prefix}.${suffix}

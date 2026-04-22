@@ -5,7 +5,7 @@ process CRISPRESSO2 {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/crispresso2:2.3.3--py39hff726c5_0' :
-        'biocontainers/crispresso2:2.3.3--py39hff726c5_0' }"
+        'quay.io/biocontainers/crispresso2:2.3.3--py39hff726c5_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -14,7 +14,7 @@ process CRISPRESSO2 {
     tuple val(meta), path("CRISPResso_on_*")        , emit: results
     tuple val(meta), path("*.html")                 , emit: html
     tuple val(meta), path("CRISPResso_on_*/*.txt")  , emit: txt
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('crispresso2'), eval("CRISPResso --version 2>&1 | sed 's/CRISPResso //'"), emit: versions_crispresso2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,16 +32,12 @@ process CRISPRESSO2 {
     }
 
     """
+    export MPLCONFIGDIR=.matplotlib
     CRISPResso \\
         ${read_inputs} \\
         --name ${prefix} \\
         --output_folder . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        crispresso2: \$(CRISPResso --version 2>&1 | grep -o 'CRISPResso version [0-9.]*' | sed 's/CRISPResso version //')
-    END_VERSIONS
     """
 
     stub:
@@ -49,6 +45,7 @@ process CRISPRESSO2 {
     """
     #!/usr/bin/env bash
     set -e
+    export MPLCONFIGDIR=.matplotlib
 
     mkdir -p CRISPResso_on_${prefix}
     touch CRISPResso_on_${prefix}/${prefix}.html
@@ -56,10 +53,5 @@ process CRISPRESSO2 {
     touch CRISPResso_on_${prefix}/CRISPResso_mapping_statistics.txt
     touch CRISPResso_on_${prefix}/quantification_of_editing_frequency.txt
     touch ${prefix}.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        crispresso2: 2.3.3
-    END_VERSIONS
     """
 }

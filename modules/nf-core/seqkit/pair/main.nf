@@ -5,7 +5,7 @@ process SEQKIT_PAIR {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqkit:2.9.0--h9ee0642_0':
-        'biocontainers/seqkit:2.9.0--h9ee0642_0' }"
+        'quay.io/biocontainers/seqkit:2.9.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +13,7 @@ process SEQKIT_PAIR {
     output:
     tuple val(meta), path("*.paired.fastq.gz")                  , emit: reads
     tuple val(meta), path("*.unpaired.fastq.gz"), optional: true, emit: unpaired_reads
-    path "versions.yml"                                         , emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +30,6 @@ process SEQKIT_PAIR {
 
     # gzip fastq
     find . -maxdepth 1 -name "*.fastq" -exec gzip {} \;
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
-    END_VERSIONS
     """
 
     stub:
@@ -42,11 +37,6 @@ process SEQKIT_PAIR {
     """
     echo "" | gzip > ${prefix}_1.paired.fastq.gz
     echo "" | gzip > ${prefix}_2.paired.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
-    END_VERSIONS
     """
 
 }

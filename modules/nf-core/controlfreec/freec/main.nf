@@ -5,7 +5,7 @@ process CONTROLFREEC_FREEC {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/control-freec:11.6b--hdbdd923_0'
-        : 'biocontainers/control-freec:11.6b--hdbdd923_0'}"
+        : 'quay.io/biocontainers/control-freec:11.6b--hdbdd923_0'}"
 
     input:
     tuple val(meta), path(mpileup_normal), path(mpileup_tumor), path(cpn_normal), path(cpn_tumor), path(minipileup_normal), path(minipileup_tumor)
@@ -30,7 +30,7 @@ process CONTROLFREEC_FREEC {
     tuple val(meta), path("*_ratio.txt"), emit: ratio
     tuple val(meta), path("config.txt"), emit: config
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('controlfreec'), eval("echo 11.6b"), emit: versions_controlfreec, topic: versions
+    tuple val("${task.process}"), val('controlfreec'), val("11.6b"), emit: versions_controlfreec, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

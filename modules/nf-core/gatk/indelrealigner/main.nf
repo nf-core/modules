@@ -5,7 +5,7 @@ process GATK_INDELREALIGNER {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11'
-        : 'biocontainers/gatk:3.5--hdfd78af_11'}"
+        : 'quay.io/biocontainers/gatk:3.5--hdfd78af_11'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(intervals)
@@ -16,7 +16,7 @@ process GATK_INDELREALIGNER {
 
     output:
     tuple val(meta), path("*.bam"), path("*.bai"), emit: bam
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('gatk'), eval('gatk3 --version'), emit: versions_gatk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,10 +49,6 @@ process GATK_INDELREALIGNER {
         -o ${prefix}.bam \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk: \$(echo \$(gatk3 --version))
-    END_VERSIONS
     """
 
     stub:
@@ -73,9 +69,5 @@ process GATK_INDELREALIGNER {
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk: \$(echo \$(gatk3 --version))
-    END_VERSIONS
     """
 }

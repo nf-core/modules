@@ -5,7 +5,7 @@ process SAGEPROTEOMICS_SAGE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sage-proteomics:0.14.7--h031d066_0' :
-        'biocontainers/sage-proteomics:0.14.7--h031d066_0' }"
+        'quay.io/biocontainers/sage-proteomics:0.14.7--h031d066_0' }"
 
     input:
     tuple val(meta),  path("*.mzML")

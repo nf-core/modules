@@ -5,7 +5,7 @@ process CNVKIT_REFERENCE {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/cnvkit:0.9.12--pyhdfd78af_0'
-        : 'biocontainers/cnvkit:0.9.12--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/cnvkit:0.9.12--pyhdfd78af_0'}"
 
     input:
     path fasta
@@ -14,7 +14,7 @@ process CNVKIT_REFERENCE {
 
     output:
     path "*.cnn",        emit: cnn
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('cnvkit'), eval('cnvkit.py version | sed -e "s/cnvkit v//g"'), emit: versions_cnvkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process CNVKIT_REFERENCE {
         --antitargets ${antitargets} \\
         --output ${prefix}.reference.cnn \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-    END_VERSIONS
     """
 
     stub:
@@ -43,9 +38,5 @@ process CNVKIT_REFERENCE {
 
     """
     touch ${prefix}.reference.cnn
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-    END_VERSIONS
     """
 }

@@ -5,14 +5,14 @@ process BAMALIGNCLEANER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bamaligncleaner:0.2.2--pyhdfd78af_0' :
-        'biocontainers/bamaligncleaner:0.2.2--pyhdfd78af_0' }"
+        'quay.io/biocontainers/bamaligncleaner:0.2.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('bamaligncleaner'), eval("bamAlignCleaner --version | sed 's/.*version //'"), emit: versions_bamaligncleaner, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,6 @@ process BAMALIGNCLEANER {
         $args \\
         -o ${prefix}.bam \\
         ${bam}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamaligncleaner: \$(bamAlignCleaner --version | sed 's/.*version //')
-    END_VERSIONS
     """
 
     stub:
@@ -38,10 +33,5 @@ process BAMALIGNCLEANER {
 
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamaligncleaner: \$(bamAlignCleaner --version | sed 's/.*version //')
-    END_VERSIONS
     """
 }

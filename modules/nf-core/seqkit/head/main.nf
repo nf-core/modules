@@ -5,14 +5,14 @@ process SEQKIT_HEAD {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqkit:2.10.0--h9ee0642_0':
-        'biocontainers/seqkit:2.10.0--h9ee0642_0' }"
+        'quay.io/biocontainers/seqkit:2.10.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fastqs), val(seq_count)
 
     output:
     tuple val(meta), path("${prefix}_subset_*"), emit: subset
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +30,6 @@ process SEQKIT_HEAD {
             -o "${prefix}_subset_\$(basename \$f)" \\
             \$f
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +39,5 @@ process SEQKIT_HEAD {
     do
        echo "" | gzip > "${prefix}_subset_\$(basename \$f)"
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
-    END_VERSIONS
     """
 }

@@ -5,14 +5,14 @@ process EMBOSS_REVSEQ {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/emboss:6.6.0--h86d058a_5':
-        'biocontainers/emboss:6.6.0--h86d058a_5' }"
+        'quay.io/biocontainers/emboss:6.6.0--h86d058a_5' }"
 
     input:
     tuple val(meta), path(sequences)
 
     output:
     tuple val(meta), path("*.${sequences.name - ~/.*\./}"), emit: revseq
-    path "versions.yml"                                   , emit: versions
+    tuple val("${task.process}"), val("emboss"), eval("revseq -version 2>&1 | sed 's/EMBOSS://'"), topic: versions, emit: versions_emboss
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process EMBOSS_REVSEQ {
         $args \\
         $sequences \\
         $outfile
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        emboss: \$(echo \$(revseq -version 2>&1) | sed 's/EMBOSS://')
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process EMBOSS_REVSEQ {
     def outfile = "${prefix}.rev.${suffix}"
     """
     touch ${outfile}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        emboss: \$(echo \$(revseq -version 2>&1) | sed 's/EMBOSS://')
-    END_VERSIONS
     """
 }

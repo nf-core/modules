@@ -5,7 +5,7 @@ process AMPCOMBI {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ampcombi:0.1.7--pyhdfd78af_0':
-        'biocontainers/ampcombi:0.1.7--pyhdfd78af_0' }"
+        'quay.io/biocontainers/ampcombi:0.1.7--pyhdfd78af_0' }"
 
     input:
     tuple val(meta),  path(amp_input)
@@ -24,7 +24,9 @@ process AMPCOMBI {
     tuple val(meta), path("amp_ref_database/*.dmnd")        , emit: results_db_dmnd , optional:true
     tuple val(meta), path("amp_ref_database/*.clean.fasta") , emit: results_db_fasta, optional:true
     tuple val(meta), path("amp_ref_database/*.tsv")         , emit: results_db_tsv  , optional:true
-    path "versions.yml"                                     , emit: versions
+    tuple val("${task.process}"), val('ampcombi'), val('0.1.7'), emit: versions_ampcombi, topic: versions
+// As the module is deprecated and not run, we're hardcoding the version as instructed in
+// https://nf-co.re/docs/guidelines/components/modules#emission-of-versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -54,11 +56,6 @@ process AMPCOMBI {
         ${args} \\
         --log True \\
         --threads ${task.cpus} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
     stub:
     def deprecation_message = """
@@ -88,10 +85,5 @@ process AMPCOMBI {
     touch amp_ref_database/*.dmnd
     touch amp_ref_database/*.clean.fasta
     touch amp_ref_database/*.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
 }

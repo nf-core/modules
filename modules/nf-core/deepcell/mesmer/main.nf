@@ -2,7 +2,7 @@ process DEEPCELL_MESMER {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/deepcell_mesmer:0.4.1_noentry"
+    container "quay.io/nf-core/deepcell_mesmer:0.4.1_noentry"
 
     input:
     tuple val(meta) , path(img)
@@ -20,7 +20,6 @@ process DEEPCELL_MESMER {
     def args             = task.ext.args ?: ''
     def prefix           = task.ext.prefix ?: "${meta.id}"
     def membrane_command = membrane_img ? "--membrane-image $membrane_img" : ""
-    def VERSION          = "0.4.1"
 
     """
     python /usr/src/app/run_app.py mesmer \\
