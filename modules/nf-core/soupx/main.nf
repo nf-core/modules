@@ -22,7 +22,7 @@ process SOUPX {
     template 'soupx.R'
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_soupx"
     """
     touch ${prefix}.h5ad
 
