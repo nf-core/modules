@@ -23,7 +23,7 @@ process SOUPX {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     def args_map = [:]
-    (task.ext.args ?: '').findAll(/--(\S+)\s+(\S+)/) { _, k, v -> args_map[k] = v }
+    (task.ext.args ?: '').findAll(/--(\S+)\s+(\S+)/) { full, k, v -> args_map[k] = v }
     npcs              = (args_map.npcs ?: 50) as Integer
     cluster_algorithm = [ louvain: 1, louvain_multilevel: 2, slm: 3, leiden: 4 ][args_map.cluster_algorithm ?: 'leiden'] ?: error("Unknown cluster_algorithm '${args_map.cluster_algorithm}'. Must be one of: louvain, louvain_multilevel, slm, leiden.")
     template 'soupx.R'
