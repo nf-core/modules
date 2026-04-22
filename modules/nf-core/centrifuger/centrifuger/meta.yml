@@ -59,7 +59,6 @@ output:
           pattern: "${prefix}.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 #TSV
-
   fastq_classified:
     - - meta:
           type: map
@@ -72,7 +71,6 @@ output:
           pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
           ontologies:
             - edam: http://edamontology.org/format_1930
-
   fastq_unclassified:
     - - meta:
           type: map
@@ -92,7 +90,7 @@ output:
       - centrifuger:
           type: string
           description: The name of the tool
-      - centrifuger -v 2>&1 | head -n 1 | cut -d ' ' -f 2 | sed 's/^v//':
+      - centrifuger -v 2>&1 | sed 's/Centrifuger v//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -103,7 +101,7 @@ topics:
       - centrifuger:
           type: string
           description: The name of the tool
-      - centrifuger -v 2>&1 | head -n 1 | cut -d ' ' -f 2 | sed 's/^v//':
+      - centrifuger -v 2>&1 | sed 's/Centrifuger v//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

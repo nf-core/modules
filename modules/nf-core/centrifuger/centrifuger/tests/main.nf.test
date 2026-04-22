@@ -40,7 +40,7 @@ nextflow_process {
             assertAll(
                 {assert process.success },
                 { assert snapshot(
-                    file(process.out.classification_file[0][1]).name,
+                    process.out.classification_file,
                     file(process.out.fastq_classified[0][1]).name,
                     file(process.out.fastq_unclassified[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -71,7 +71,7 @@ nextflow_process {
             assertAll(
                 {assert process.success },
                 { assert snapshot(
-                    file(process.out.classification_file[0][1]).name,
+                    process.out.classification_file,
                     process.out.fastq_classified[0][1].collect { file(it).name },
                     process.out.fastq_unclassified[0][1].collect {file (it).name },
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -100,12 +100,7 @@ nextflow_process {
         then {
             assertAll(
                 {assert process.success },
-                { assert snapshot(
-                    file(process.out.classification_file[0][1]).name,
-                    file(process.out.fastq_classified[0][1]).name,
-                    file(process.out.fastq_unclassified[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() } // strips paths and empty MD5s automatically
             )
         }
 
