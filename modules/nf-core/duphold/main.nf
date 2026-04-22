@@ -3,7 +3,7 @@ process DUPHOLD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/duphold:0.2.1--h516909a_1':
         'biocontainers/duphold:0.2.1--h516909a_1' }"
 

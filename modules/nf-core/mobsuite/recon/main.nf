@@ -3,7 +3,7 @@ process MOBSUITE_RECON {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mob_suite:3.1.9--pyhdfd78af_0':
         'biocontainers/mob_suite:3.1.9--pyhdfd78af_0' }"
 

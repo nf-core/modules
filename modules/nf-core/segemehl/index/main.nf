@@ -3,7 +3,7 @@ process SEGEMEHL_INDEX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/segemehl:0.3.4--hc2ea5fd_5':
         'biocontainers/segemehl:0.3.4--hc2ea5fd_5' }"
 

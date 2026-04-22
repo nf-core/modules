@@ -3,7 +3,7 @@ process MACSYFINDER_SEARCH {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/macsyfinder:2.1.6--pyhdfd78af_0' :
         'biocontainers/macsyfinder:2.1.6--pyhdfd78af_0' }"
 

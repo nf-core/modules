@@ -3,7 +3,7 @@ process MACREL_CONTIGS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/macrel:1.4.0--pyh7e72e81_0':
         'biocontainers/macrel:1.4.0--pyh7e72e81_0' }"
 

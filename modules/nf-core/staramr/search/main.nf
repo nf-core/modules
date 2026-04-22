@@ -3,7 +3,7 @@ process STARAMR_SEARCH {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/staramr:0.10.0--pyhdfd78af_0':
         'biocontainers/staramr:0.10.0--pyhdfd78af_0' }"
 

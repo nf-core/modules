@@ -4,7 +4,7 @@ process MGIKIT_DEMULTIPLEX {
 
     conda "${moduleDir}/environment.yml"
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mgikit:2.1.0--h3ab6199_0' :
         'biocontainers/mgikit:2.1.0--h3ab6199_0' }"
 

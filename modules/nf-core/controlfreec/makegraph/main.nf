@@ -3,7 +3,7 @@ process CONTROLFREEC_MAKEGRAPH {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/control-freec:11.6b--hdbdd923_0'
         : 'biocontainers/control-freec:11.6b--hdbdd923_0'}"
 

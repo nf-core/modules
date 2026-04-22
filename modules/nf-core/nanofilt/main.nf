@@ -3,7 +3,7 @@ process NANOFILT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nanofilt:2.8.0--py_0':
         'biocontainers/nanofilt:2.8.0--py_0' }"
 

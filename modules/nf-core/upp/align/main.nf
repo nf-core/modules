@@ -3,7 +3,7 @@ process UPP_ALIGN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/sepp:4.5.6--py312h87e0c26_4'
         : 'biocontainers/sepp:4.5.6--py312h87e0c26_4'}"
 

@@ -4,7 +4,7 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h4a94de4_1':
         'biocontainers/circularmapper:1.93.5--h4a94de4_1' }"
 

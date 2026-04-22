@@ -4,7 +4,7 @@ process FAMSA_GUIDETREE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/famsa:2.2.2--h9f5acd7_0':
         'biocontainers/famsa:2.2.2--h9f5acd7_0' }"
 

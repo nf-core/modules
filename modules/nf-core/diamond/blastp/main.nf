@@ -3,7 +3,7 @@ process DIAMOND_BLASTP {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.23--hf93d47f_0'
         : 'biocontainers/diamond:2.1.23--hf93d47f_0'}"
 

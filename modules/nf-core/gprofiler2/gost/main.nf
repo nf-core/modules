@@ -3,7 +3,7 @@ process GPROFILER2_GOST {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e4/e4b0e10a72db4ad519c128c4e3cef6e10bc1a83440af31f105ab389a5532589a/data':
         'community.wave.seqera.io/library/r-ggplot2_r-gprofiler2:fab855ea9f680400' }"
 

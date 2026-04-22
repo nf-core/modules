@@ -3,7 +3,7 @@ process AUTHENTICT_DEAM2CONT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/authentict:1.0.1--py311h9f5acd7_0':
         'biocontainers/authentict:1.0.1--py311h9f5acd7_0' }"
 

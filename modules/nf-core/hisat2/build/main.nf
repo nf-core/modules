@@ -3,7 +3,7 @@ process HISAT2_BUILD {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hisat2:2.2.2--h503566f_0' :
         'biocontainers/hisat2:2.2.2--h503566f_0'}"
 

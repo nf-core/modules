@@ -3,7 +3,7 @@ process PRESIDENT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/president:0.6.8--pyhdfd78af_0' :
         'biocontainers/president:0.6.8--pyhdfd78af_0' }"
 

@@ -3,7 +3,7 @@ process DEEPTOOLS_COMPUTEMATRIX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deeptools:3.5.6--pyhdfd78af_0':
         'biocontainers/deeptools:3.5.6--pyhdfd78af_0' }"
 

@@ -4,7 +4,7 @@ process SVTK_BAFTEST {
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk-sv/issues/787
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svtk:0.0.20190615--py37h73a75cf_2':
         'biocontainers/svtk:0.0.20190615--py37h73a75cf_2' }"
 

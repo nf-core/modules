@@ -3,7 +3,7 @@ process EAGLE2 {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/eagle2:2.4.1--h6a68c12_0':
         'biocontainers/eagle2:2.4.1--h6a68c12_0' }"
 

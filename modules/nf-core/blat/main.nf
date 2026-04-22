@@ -3,7 +3,7 @@ process BLAT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-blat:472--h9b8f530_0':
         'biocontainers/ucsc-blat:472--h664eb37_1' }"
 

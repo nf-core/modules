@@ -3,7 +3,7 @@ process GETORGANELLE_FROMREADS {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.0--pyh7cba7a3_0'
         : 'biocontainers/getorganelle:1.7.7.0--pyh7cba7a3_0'}"
 

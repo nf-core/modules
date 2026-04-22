@@ -3,7 +3,7 @@ process SKA_FASTA {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ska:1.0--he860b03_0':
         'biocontainers/ska:1.0--he860b03_0' }"
 

@@ -3,7 +3,7 @@ process FAIRY_SKETCH {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fairy:0.5.8--hc1c3326_0' :
         'biocontainers/fairy:0.5.8--hc1c3326_0' }"
 

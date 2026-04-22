@@ -3,7 +3,7 @@ process FASTX_COLLAPSER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fastx_toolkit:0.0.14--hdbdd923_11':
         'biocontainers/fastx_toolkit:0.0.14--hdbdd923_11' }"
 

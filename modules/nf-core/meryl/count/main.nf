@@ -3,7 +3,7 @@ process MERYL_COUNT {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/meryl:1.4.1--h4ac6f70_0':
         'biocontainers/meryl:1.4.1--h4ac6f70_0' }"
 

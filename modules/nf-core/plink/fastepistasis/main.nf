@@ -4,7 +4,7 @@ process PLINK_FASTEPISTASIS {
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h031d066_5':
         'biocontainers/plink:1.90b6.21--h031d066_5' }"
 

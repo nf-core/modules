@@ -3,7 +3,7 @@ process MAFFT_GUIDETREE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mafft:7.525--h031d066_1':
         'biocontainers/mafft:7.525--h031d066_1' }"
 

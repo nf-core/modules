@@ -3,7 +3,7 @@ process ELPREP_FILTER {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/elprep:5.1.3--he881be0_1':
         'biocontainers/elprep:5.1.3--he881be0_1' }"
 

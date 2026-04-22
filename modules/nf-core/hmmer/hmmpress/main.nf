@@ -3,7 +3,7 @@ process HMMER_HMMPRESS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.4--hdbdd923_1' :
         'biocontainers/hmmer:3.4--hdbdd923_1' }"
 

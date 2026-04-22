@@ -3,7 +3,7 @@ process QUILT_QUILT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/r-quilt:1.0.5--r43h06b5641_0'
         : 'biocontainers/r-quilt:1.0.5--r43h06b5641_0'}"
 

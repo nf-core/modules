@@ -3,7 +3,7 @@ process RGI_BWT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/rgi:6.0.5--pyh05cac1d_0'
         : 'biocontainers/rgi:6.0.5--pyh05cac1d_0'}"
 

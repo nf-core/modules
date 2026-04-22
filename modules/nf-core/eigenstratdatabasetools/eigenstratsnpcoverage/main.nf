@@ -3,7 +3,7 @@ process EIGENSTRATDATABASETOOLS_EIGENSTRATSNPCOVERAGE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/eigenstratdatabasetools:1.1.0--hdfd78af_0':
         'biocontainers/eigenstratdatabasetools:1.1.0--hdfd78af_0' }"
 

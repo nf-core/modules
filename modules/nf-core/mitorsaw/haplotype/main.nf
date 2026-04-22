@@ -3,7 +3,7 @@ process MITORSAW_HAPLOTYPE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mitorsaw:0.2.7--h9ee0642_0':
         'biocontainers/mitorsaw:0.2.7--h9ee0642_0' }"
 

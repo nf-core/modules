@@ -4,7 +4,7 @@ process TSEBRA {
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tsebra:1.1.2.5--pyhca03a8a_0':
         'biocontainers/tsebra:1.1.2.5--pyhca03a8a_0' }"
 

@@ -3,7 +3,7 @@ process KHMER_NORMALIZEBYMEDIAN {
     label 'process_long'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/khmer:3.0.0a3--py37haa7609a_2' :
         'biocontainers/khmer:3.0.0a3--py37haa7609a_2' }"
 

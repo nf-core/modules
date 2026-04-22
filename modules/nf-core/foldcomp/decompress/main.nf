@@ -3,7 +3,7 @@ process FOLDCOMP_DECOMPRESS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/foldcomp:1.0.0--h7f5d12c_0':
         'biocontainers/foldcomp:1.0.0--h7f5d12c_0' }"
 

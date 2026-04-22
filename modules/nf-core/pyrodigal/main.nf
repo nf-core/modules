@@ -3,7 +3,7 @@ process PYRODIGAL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-2fe9a8ce513c91df34b43a6610df94c3a2eb3bd0:da1134ad604a59a6f439bdcc3f6df690eba47e9a-0':
         'biocontainers/mulled-v2-2fe9a8ce513c91df34b43a6610df94c3a2eb3bd0:da1134ad604a59a6f439bdcc3f6df690eba47e9a-0' }"
 

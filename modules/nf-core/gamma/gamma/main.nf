@@ -5,7 +5,7 @@ process GAMMA_GAMMA {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gamma%3A2.1--hdfd78af_0':
         'biocontainers/gamma:2.1--hdfd78af_0' }"
 

@@ -4,7 +4,7 @@ process WHATSHAP_STATS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/whatshap:2.8--py39h2de1943_0':
         'biocontainers/whatshap:2.8--py39h2de1943_0' }"
 

@@ -6,7 +6,7 @@ process COMET {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/comet-ms:2026011--h9ee0642_0'
         : 'biocontainers/comet-ms:2026011--h9ee0642_0'}"
 

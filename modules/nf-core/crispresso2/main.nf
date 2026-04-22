@@ -3,7 +3,7 @@ process CRISPRESSO2 {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/crispresso2:2.3.3--py39hff726c5_0' :
         'biocontainers/crispresso2:2.3.3--py39hff726c5_0' }"
 

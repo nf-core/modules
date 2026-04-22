@@ -3,7 +3,7 @@ process BEAGLE5_BEAGLE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/beagle:5.5_27Feb25.75f--hdfd78af_0'
         : 'biocontainers/beagle:5.5_27Feb25.75f--hdfd78af_0'}"
 

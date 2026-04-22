@@ -3,7 +3,7 @@ process AMRFINDERPLUS_UPDATE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:4.2.7--hf69ffd2_0':
         'biocontainers/ncbi-amrfinderplus:4.2.7--hf69ffd2_0' }"
 

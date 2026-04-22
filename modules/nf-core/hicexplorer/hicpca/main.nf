@@ -3,7 +3,7 @@ process HICEXPLORER_HICPCA {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hicexplorer:3.7.2--pyhdfd78af_1':
         'biocontainers/hicexplorer:3.7.2--pyhdfd78af_1' }"
 

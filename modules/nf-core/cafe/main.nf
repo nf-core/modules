@@ -2,7 +2,7 @@ process CAFE {
     label 'process_high'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cafe:5.1.0--h43eeafb_0':
         'biocontainers/cafe:5.1.0--h43eeafb_0' }"
 

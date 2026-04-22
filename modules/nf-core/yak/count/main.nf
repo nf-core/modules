@@ -3,7 +3,7 @@ process YAK_COUNT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/yak:0.1--h577a1d6_6':
         'biocontainers/yak:0.1--h577a1d6_6' }"
 

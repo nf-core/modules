@@ -3,7 +3,7 @@ process MAGECK_MLE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mageck:0.5.9.5--py39h1f90b4d_3':
         'biocontainers/mageck:0.5.9.5--py39h1f90b4d_3' }"
 

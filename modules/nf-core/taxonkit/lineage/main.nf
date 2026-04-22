@@ -3,7 +3,7 @@ process TAXONKIT_LINEAGE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/taxonkit:0.18.0--h9ee0642_0':
         'biocontainers/taxonkit:0.18.0--h9ee0642_0' }"
 
