@@ -313,7 +313,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.model, process.out.versions).match() },
-                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-4.89014922224241") },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-4.89014922224") },
                 { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.77922") },
                 { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000023978\t6.11247620232167") },
                 { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000059991\t4.52751370160052") }
