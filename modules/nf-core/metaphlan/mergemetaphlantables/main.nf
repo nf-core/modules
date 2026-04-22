@@ -2,9 +2,9 @@ process METAPHLAN_MERGEMETAPHLANTABLES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaphlan:4.1.1--pyhdfd78af_0' :
-        'biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
+        'quay.io/biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(profiles)

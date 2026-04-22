@@ -3,7 +3,7 @@ process BISCUIT_BLASTER {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aaeb89e389e66d5353d6c5b92ecb9f237298c1a774cdd9bf515101d55433c0c8/data':
         'community.wave.seqera.io/library/biscuit_samblaster_samtools:43a8310dd6e0bec1' }"
 
