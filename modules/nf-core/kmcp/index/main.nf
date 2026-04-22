@@ -9,6 +9,8 @@ process KMCP_INDEX {
 
     input:
     tuple val(meta), path(compute_dir)
+    tuple val(meta2), path(taxdmp, stageAs: "taxdmp/*")
+    tuple val(meta3), path(seq2taxidmap, stageAs: "taxdmp/*")
 
     output:
     tuple val(meta), path("${prefix}"), emit: kmcp
@@ -29,6 +31,9 @@ process KMCP_INDEX {
         --threads ${task.cpus} \\
         --log ${prefix}.log \\
         --out-dir ${prefix}
+
+    ## Optionally copy over taxonomy files if provided for downstream module
+    ${taxdmp || seq2taxidmap ? "cp -r taxdmp/ ${prefix}/" : ''}
     """
 
     stub:
@@ -36,5 +41,8 @@ process KMCP_INDEX {
     """
     mkdir ${prefix}
     touch ${prefix}.log
+
+    ## Optionally copy over taxonomy files if provided for downstream module
+    ${taxdmp || seq2taxidmap ? "cp -r taxdmp/ ${prefix}/" : ''}
     """
 }
