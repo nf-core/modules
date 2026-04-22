@@ -5,7 +5,7 @@ process SYLPH_SKETCH {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/sylph:0.9.0--ha6fb395_0'
-        : 'biocontainers/sylph:0.9.0--ha6fb395_0'}"
+        : 'quay.io/biocontainers/sylph:0.9.0--ha6fb395_0'}"
 
     input:
     tuple val(meta), path(reads)

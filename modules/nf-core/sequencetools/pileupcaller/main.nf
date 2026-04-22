@@ -5,7 +5,7 @@ process SEQUENCETOOLS_PILEUPCALLER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sequencetools:1.6.0.0--hebebf5b_0':
-        'biocontainers/sequencetools:1.6.0.0--hebebf5b_0' }"
+        'quay.io/biocontainers/sequencetools:1.6.0.0--hebebf5b_0' }"
 
     input:
     tuple val(meta), path(mpileup)

@@ -5,7 +5,7 @@ process BAMTOOLS_SPLIT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bamtools:2.5.2--hdcf5f25_2' :
-        'biocontainers/bamtools:2.5.2--hdcf5f25_2' }"
+        'quay.io/biocontainers/bamtools:2.5.2--hdcf5f25_2' }"
 
     input:
     tuple val(meta), path(bam)
