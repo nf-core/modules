@@ -110,12 +110,11 @@ def main() -> None:
     logger.info("Starting fasta to GTF conversion.")
 
     # Add fasta lines to GTF
-    add_name = "$prefix2"
+    add_name = os.path.splitext(os.path.basename("$add_fasta"))[0]
     fasta_to_gtf("$add_fasta", f"{add_name}.gtf", "$biotype")
 
     # Concatenate new fasta to existing fasta, and the GTF we just generated to the GTF
     output_prefix = "$prefix"
-
     os.mkdir("out")
     os.system(f"cat $fasta $add_fasta > out/{output_prefix}.fasta")
     os.system(f"cat $gtf {add_name}.gtf > out/{output_prefix}.gtf")

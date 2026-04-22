@@ -12,27 +12,20 @@ process CUSTOM_CATADDITIONALFASTA {
     val(biotype)
 
     output:
-    tuple val(meta), path("*/*.fasta"), emit: fasta
-    tuple val(meta), path("*/*.gtf")  , emit: gtf
-    path "versions.yml"               , emit: versions, topic: versions
+    tuple val(meta), path("out/${prefix}.fasta"), emit: fasta
+    tuple val(meta), path("out/${prefix}.gtf")  , emit: gtf
+    path "versions.yml"                         , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    prefix2 = task.ext.prefix2 ?: "${meta2.id}"
-    prefix = task.ext.prefix ?: "${meta.id}_${prefix2}"
-
-    """
-    echo $prefix2
-    echo $prefix
-    """
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     template 'fasta2gtf.py'
 
     stub:
-    prefix2 = task.ext.prefix2 ?: "${meta2.id}"
-    prefix = task.ext.prefix ?: "${meta.id}_${prefix2}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir out
     touch out/${prefix}.fasta
