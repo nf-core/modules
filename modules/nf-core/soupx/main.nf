@@ -19,10 +19,16 @@ process SOUPX {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}_soupx"
+    if ("${h5ad_filtered}" == "${prefix}.h5ad" || "${h5ad_raw}" == "${prefix}.h5ad") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     template 'soupx.R'
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_soupx"
+    if ("${h5ad_filtered}" == "${prefix}.h5ad" || "${h5ad_raw}" == "${prefix}.h5ad") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     touch ${prefix}.h5ad
 
