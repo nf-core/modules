@@ -128,7 +128,6 @@ nextflow_process {
             params {
                 filter_bam_args    = ""
             }
-
             process {
                 """
                 input[0] = Channel.of(
