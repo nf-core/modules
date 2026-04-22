@@ -22,6 +22,8 @@ process SOUPX {
     if ("${h5ad_filtered}" == "${prefix}.h5ad" || "${h5ad_raw}" == "${prefix}.h5ad") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
+    npcs              = task.ext.npcs ?: 50
+    cluster_algorithm = [ louvain: 1, louvain_multilevel: 2, slm: 3, leiden: 4 ][task.ext.cluster_algorithm ?: 'leiden'] ?: error("Unknown cluster_algorithm '${task.ext.cluster_algorithm}'. Must be one of: louvain, louvain_multilevel, slm, leiden.")
     template 'soupx.R'
 
     stub:

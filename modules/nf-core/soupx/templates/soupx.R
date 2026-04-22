@@ -9,10 +9,12 @@ suppressPackageStartupMessages({
 
 set.seed(0)
 
-# Inputs (Groovy-interpolated by the Nextflow template directive)
-h5ad_filtered <- "${h5ad_filtered}"
-h5ad_raw      <- "${h5ad_raw}"
-prefix        <- "${prefix}"
+# Template-interpolated by main.nf
+h5ad_filtered     <- "${h5ad_filtered}"
+h5ad_raw          <- "${h5ad_raw}"
+prefix            <- "${prefix}"
+npcs              <- ${npcs}
+cluster_algorithm <- ${cluster_algorithm}
 
 adata     <- read_h5ad(h5ad_filtered)
 adata_raw <- read_h5ad(h5ad_raw)
@@ -25,9 +27,9 @@ srt <- CreateSeuratObject(counts = counts_filt)
 srt <- NormalizeData(srt, normalization.method = "LogNormalize", verbose = FALSE)
 srt <- FindVariableFeatures(srt, verbose = FALSE)
 srt <- ScaleData(srt, verbose = FALSE)
-srt <- RunPCA(srt, npcs = 50, verbose = FALSE)
-srt <- FindNeighbors(srt, dims = 1:50, verbose = FALSE)
-srt <- FindClusters(srt, algorithm = 4, verbose = FALSE)  # 4 = Leiden
+srt <- RunPCA(srt, npcs = npcs, verbose = FALSE)
+srt <- FindNeighbors(srt, dims = 1:npcs, verbose = FALSE)
+srt <- FindClusters(srt, algorithm = cluster_algorithm, verbose = FALSE)
 
 soupx_groups <- setNames(as.character(Idents(srt)), colnames(srt))
 rm(srt); gc()

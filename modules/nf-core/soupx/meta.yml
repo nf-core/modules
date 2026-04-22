@@ -1,5 +1,14 @@
 name: "soupx"
-description: Estimation and removal of cell free mRNA contamination in droplet based single cell RNA-seq data
+description: |
+  Estimation and removal of cell free mRNA contamination in droplet based single cell RNA-seq data.
+
+  The filtered counts are preprocessed with Seurat (LogNormalize, PCA, kNN graph, clustering) to
+  provide cluster assignments to SoupX, which then estimates per-cluster contamination and adjusts
+  counts. The adjusted counts are written to the output H5AD as an `ambient` layer.
+
+  Process-scope parameters (override via `ext.*` in a config block):
+    - `ext.npcs`              Number of principal components (also controls FindNeighbors dims = 1:npcs). Default: 50.
+    - `ext.cluster_algorithm` Seurat FindClusters algorithm: louvain | louvain_multilevel | slm | leiden. Default: leiden.
 keywords:
   - single-cell
   - transcriptomics
