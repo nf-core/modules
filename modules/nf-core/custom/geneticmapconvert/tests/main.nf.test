@@ -14,9 +14,6 @@ nextflow_process {
 
     test("Convert map with pos\\tchr\\tcm - with header - meta.chr (glimpse format)") {
         when {
-            params {
-                geneticmapconvert_args = ""
-            }
             process {
                 """
                 input[0] = [
@@ -57,9 +54,6 @@ nextflow_process {
             }
         }
         when {
-            params {
-                geneticmapconvert_args = ""
-            }
             process {
                 """
                 input[0] = TABIX_BGZIP.out.output
@@ -84,9 +78,6 @@ nextflow_process {
 
     test("Convert map with chr\\tpos\\tcm - with header - meta.chr (minimac format)") {
         when {
-            params {
-                geneticmapconvert_args = ""
-            }
             process {
                 """
                 input[0] = [
@@ -115,7 +106,7 @@ nextflow_process {
     test("Convert map with pos rate cm - with header - meta.chr (stitch format)") {
         when {
             params {
-                geneticmapconvert_args = "--tolerance 10e-4"
+                module_args = "--tolerance 10e-4"
             }
             process {
                 """
@@ -145,7 +136,7 @@ nextflow_process {
     test("Convert map with pos rate cm - with header - no meta.chr (stitch format)") {
         when {
             params {
-                geneticmapconvert_args = "--tolerance 10e-4"
+                module_args = "--tolerance 10e-4"
             }
             process {
                 """
@@ -168,7 +159,7 @@ nextflow_process {
     test("Convert map with pos rate cm - with header - meta.chr (stitch format) -- error rate") {
         when {
             params {
-                geneticmapconvert_args = "--tolerance 10e-6"
+                module_args = "--tolerance 10e-6"
             }
             process {
                 """
@@ -191,7 +182,7 @@ nextflow_process {
     test("Convert map with pos rate cm - with header - meta.chr (stitch format) -- error tolerance not numeric") {
         when {
             params {
-                geneticmapconvert_args = "--tolerance ABC"
+                module_args = "--tolerance ABC"
             }
             process {
                 """
@@ -213,9 +204,6 @@ nextflow_process {
 
     test("Convert map with chr id cm pos - no header - meta.chr (plink format)") {
         when {
-            params {
-                geneticmapconvert_args = ""
-            }
             process {
                 """
                 input[0] = [
@@ -243,9 +231,6 @@ nextflow_process {
 
     test("Test error - chr not corresponding") {
         when {
-            params {
-                geneticmapconvert_args = ""
-            }
             process {
                 """
                 input[0] = [
@@ -266,9 +251,6 @@ nextflow_process {
 
     test("Test error - badly recognize") {
         when {
-            params {
-                geneticmapconvert_args = ""
-            }
             process {
                 """
                 def mapFile = file("${launchDir}/genetic_map")
@@ -295,9 +277,6 @@ nextflow_process {
 
     test("Test error - unsorted file, duplicate position") {
         when {
-            params {
-                geneticmapconvert_args = ""
-            }
             process {
                 """
                 def mapFile = file("${launchDir}/genetic_map")
@@ -325,9 +304,6 @@ nextflow_process {
 
     test("Test error - multiple chromosomes") {
         when {
-            params {
-                geneticmapconvert_args = ""
-            }
             process {
                 """
                 def mapFile = file("${launchDir}/genetic_map")
@@ -362,9 +338,6 @@ nextflow_process {
 
     test("Test with comma separator and keep id") {
         when {
-            params {
-                geneticmapconvert_args = ""
-            }
             process {
                 """
                 def mapFile = file("${launchDir}/genetic_map")
@@ -400,9 +373,6 @@ nextflow_process {
 
     test("Test start with blank line") {
         when {
-            params {
-                geneticmapconvert_args = ""
-            }
             process {
                 """
                 def mapFile = file("${launchDir}/genetic_map")
@@ -430,9 +400,6 @@ nextflow_process {
     test("Test stub") {
         options "-stub"
         when {
-            params {
-                geneticmapconvert_args = ""
-            }
             process {
                 """
                 input[0] = [
