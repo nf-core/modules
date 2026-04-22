@@ -24,16 +24,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.summary_plot },
+                { assert process.out.classification_landscape_plot },
+                { assert process.out.split_class_landscape_plot },
                 { assert snapshot(
-                    process.out.output_directory,
                     process.out.gff,
                     process.out.summary_family_kable,
                     process.out.summary_family_txt,
                     process.out.summary_highLevel_kable,
                     process.out.summary_highLevel_txt,
-                    process.out.summary_plot,
-                    process.out.classification_landscape_plot,
-                    process.out.split_class_landscape_plot,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -58,7 +57,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.out.summary_plot },
+                { assert process.out.classification_landscape_plot },
+                { assert process.out.split_class_landscape_plot },
+                { assert snapshot(
+                    process.out.gff,
+                    process.out.summary_family_kable,
+                    process.out.summary_family_txt,
+                    process.out.summary_highLevel_kable,
+                    process.out.summary_highLevel_txt,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }

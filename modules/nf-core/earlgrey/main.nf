@@ -48,9 +48,6 @@ process EARLGREY {
     # Change directory to the famdb library location
     cd ${localdb}
 
-    # download the required partitions from Dfam 3.9
-    # curl -o 'dfam39_full.#1.h5.gz' 'https://dfam.org/releases/current/families/FamDB/dfam39_full.[0].h5.gz'
-
     # Decompress partitions
     ${decompress_h5}
 
@@ -81,7 +78,7 @@ process EARLGREY {
     EXIT_STATUS=\$?
     set -e
 
-    # Check for specific message in the log and run again (necessary for 0 partition)
+    # Check for specific message in the log and run again (necessary for testing with 0 partition)
     if [ \$EXIT_STATUS -eq 2 ] && grep -q "If you only want partition 0" earlgrey.log; then
         echo "Message found in first run, executing second run..."
         earlGrey \\
