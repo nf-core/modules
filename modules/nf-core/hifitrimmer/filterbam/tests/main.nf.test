@@ -125,7 +125,9 @@ nextflow_process {
         options "-stub"
 
         when {
-
+            params {
+                filter_bam_args    = ""
+            }
             process {
                 """
                 input[0] = Channel.of(
