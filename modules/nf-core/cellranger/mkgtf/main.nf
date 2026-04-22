@@ -2,7 +2,7 @@ process CELLRANGER_MKGTF {
     tag "$gtf"
     label 'process_low'
 
-    container "nf-core/cellranger:10.0.0"
+    container "quay.io/nf-core/cellranger:10.0.0"
 
     input:
     path gtf

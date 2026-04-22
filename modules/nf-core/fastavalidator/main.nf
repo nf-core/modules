@@ -5,7 +5,7 @@ process FASTAVALIDATOR {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/py_fasta_validator:0.6--py37h595c7a6_0':
-        'biocontainers/py_fasta_validator:0.6--py37h595c7a6_0' }"
+        'quay.io/biocontainers/py_fasta_validator:0.6--py37h595c7a6_0' }"
 
     input:
     tuple val(meta), path(fasta)

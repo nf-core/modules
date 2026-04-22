@@ -5,7 +5,7 @@ process CONIFER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/conifer%3A1.0.2--he4a0461_0':
-        'biocontainers/conifer:1.0.2--he4a0461_0' }"
+        'quay.io/biocontainers/conifer:1.0.2--he4a0461_0' }"
 
     input:
     tuple val(meta), path(kraken_result)

@@ -6,7 +6,7 @@ process VSEARCH_FASTQFILTER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vsearch:2.28.1--h6a68c12_1':
-        'biocontainers/vsearch:2.28.1--h6a68c12_1' }"
+        'quay.io/biocontainers/vsearch:2.28.1--h6a68c12_1' }"
 
     input:
     tuple val(meta), path(fastq)

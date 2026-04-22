@@ -5,7 +5,7 @@ process SVIM_ALIGNMENT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svim:2.0.0--pyhdfd78af_0':
-        'biocontainers/svim:2.0.0--pyhdfd78af_0' }"
+        'quay.io/biocontainers/svim:2.0.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

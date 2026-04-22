@@ -5,7 +5,7 @@ process GEM3_GEM3MAPPER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-240a9c1936dd6a68f46aa198b2629b6734a18428:543223d3cc2f69d86af72f7e9a3200812ae25327-0':
-        'biocontainers/mulled-v2-240a9c1936dd6a68f46aa198b2629b6734a18428:543223d3cc2f69d86af72f7e9a3200812ae25327-0' }"
+        'quay.io/biocontainers/mulled-v2-240a9c1936dd6a68f46aa198b2629b6734a18428:543223d3cc2f69d86af72f7e9a3200812ae25327-0' }"
 
     input:
     tuple val(meta), path(gem)

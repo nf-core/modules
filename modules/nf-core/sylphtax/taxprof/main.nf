@@ -6,7 +6,7 @@ process SYLPHTAX_TAXPROF {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sylph-tax:1.2.0--pyhdfd78af_0':
-        'biocontainers/sylph-tax:1.2.0--pyhdfd78af_0' }"
+        'quay.io/biocontainers/sylph-tax:1.2.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(sylph_results)
