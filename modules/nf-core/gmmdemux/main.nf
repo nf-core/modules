@@ -6,7 +6,7 @@ process GMMDEMUX {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gmm-demux:0.2.2.3--pyh7cba7a3_0':
-        'biocontainers/gmm-demux:0.2.2.3--pyh7cba7a3_0' }"
+        'quay.io/biocontainers/gmm-demux:0.2.2.3--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(hto_matrix), val(hto_names)

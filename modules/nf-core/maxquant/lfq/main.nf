@@ -4,7 +4,7 @@ process MAXQUANT_LFQ {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/maxquant:2.0.3.0--py310hdfd78af_1' :
-        'biocontainers/maxquant:2.0.3.0--py310hdfd78af_1' }"
+        'quay.io/biocontainers/maxquant:2.0.3.0--py310hdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta), path(paramfile)

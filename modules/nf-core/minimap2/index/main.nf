@@ -5,7 +5,7 @@ process MINIMAP2_INDEX {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/minimap2:2.29--h577a1d6_0' :
-        'biocontainers/minimap2:2.29--h577a1d6_0' }"
+        'quay.io/biocontainers/minimap2:2.29--h577a1d6_0' }"
 
     input:
     tuple val(meta), path(fasta)

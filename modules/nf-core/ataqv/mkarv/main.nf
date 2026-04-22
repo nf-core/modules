@@ -4,7 +4,7 @@ process ATAQV_MKARV {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ataqv:1.3.1--py310ha155cf9_1':
-        'biocontainers/ataqv:1.3.1--py310ha155cf9_1' }"
+        'quay.io/biocontainers/ataqv:1.3.1--py310ha155cf9_1' }"
 
     input:
     path "jsons/*"

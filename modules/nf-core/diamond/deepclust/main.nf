@@ -5,7 +5,7 @@ process DIAMOND_DEEPCLUST {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.24--hf93d47f_0'
-        : 'biocontainers/diamond:2.1.24--hf93d47f_0'}"
+        : 'quay.io/biocontainers/diamond:2.1.24--hf93d47f_0'}"
 
     input:
     tuple val(meta), path(fasta)

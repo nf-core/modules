@@ -2,7 +2,7 @@ process CELLRANGERARC_MKREF {
     tag "$meta.id"
     label 'process_medium'
 
-    container "nf-core/cellranger-arc:2.0.2"
+    container "quay.io/nf-core/cellranger-arc:2.0.2"
 
     input:
     tuple val(meta), path(fasta), path(gtf), path(motifs), path(reference_config)

@@ -4,8 +4,8 @@ process RIBODETECTOR {
 
 	conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
 	container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/ebcccef2cd8b4c10d4bbd8fce542b46502b7817115cb144b9566792b0aac9bc0/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/463b8ad941e7f1f2decef20844d666c1c8ac233e166d2bc766164c4a93905a3c/data') :
-        (task.accelerator ? 'community.wave.seqera.io/library/ribodetector_pytorch-gpu:f2d45093d4093307' : 'community.wave.seqera.io/library/ribodetector:0.3.3--ad3d7071e408b502') }"
+        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/51/51100097fc2e31d7b78074bc954774f77726099220e820382e939278817a66da/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/463b8ad941e7f1f2decef20844d666c1c8ac233e166d2bc766164c4a93905a3c/data') :
+        (task.accelerator ? 'community.wave.seqera.io/library/ribodetector_pytorch-gpu_cuda-version:fa9183da731515ea' : 'community.wave.seqera.io/library/ribodetector:0.3.3--ad3d7071e408b502') }"
 
 	input:
 	tuple val(meta), path(fastq)
@@ -15,6 +15,7 @@ process RIBODETECTOR {
 	tuple val(meta), path("*.nonrna*.fastq.gz"), emit: fastq
 	tuple val(meta), path("*.log")             , emit: log
 	tuple val("${task.process}"), val('ribodetector'), eval('ribodetector --version | sed "s/ribodetector //"'), emit: versions_ribodetector, topic: versions
+	tuple val("${task.process}"), val('cuda'), eval('python -c "import torch; print(torch.version.cuda or \'no CUDA available\')"'), emit: versions_cuda, topic: versions
 
 	when:
 	task.ext.when == null || task.ext.when

@@ -5,7 +5,7 @@ process VELOCYTO {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/velocyto.py:0.17.17--py38h24c8ff8_6'
-        : 'biocontainers/velocyto.py:0.17.17--py38h24c8ff8_6'}"
+        : 'quay.io/biocontainers/velocyto.py:0.17.17--py38h24c8ff8_6'}"
 
     stageInMode 'copy'
 

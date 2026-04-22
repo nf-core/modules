@@ -5,7 +5,7 @@ process DSHBIO_SPLITGFF3 {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dsh-bio:3.0--hdfd78af_0' :
-        'biocontainers/dsh-bio:3.0--hdfd78af_0' }"
+        'quay.io/biocontainers/dsh-bio:3.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gff3)

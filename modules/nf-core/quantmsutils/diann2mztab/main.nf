@@ -5,7 +5,7 @@ process QUANTMSUTILS_DIANN2MZTAB {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/quantms-utils:0.0.23--pyh7e72e81_0' :
-        'biocontainers/quantms-utils:0.0.23--pyh7e72e81_0' }"
+        'quay.io/biocontainers/quantms-utils:0.0.23--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), path(report), path(report_pg), path(report_pr), val(diann_version), path(exp_design), path(ms_information), path(fasta)

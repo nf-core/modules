@@ -5,7 +5,7 @@ process SEQKIT_SANA {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqkit:2.10.1--he881be0_0':
-        'biocontainers/seqkit:2.10.1--he881be0_0' }"
+        'quay.io/biocontainers/seqkit:2.10.1--he881be0_0' }"
 
     input:
     tuple val(meta), path(reads)
