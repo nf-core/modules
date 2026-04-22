@@ -33,19 +33,22 @@ input:
         type: file
         description: Sorted BAM file of aligned WGS reads.
         pattern: "*.bam"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
     - bai:
         type: file
         description: BAM index file.
         pattern: "*.bai"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
   - germline_snv_vcf:
       type: file
       description: |
         VCF (or gzipped VCF) containing germline SNV b-allele sites (PASS filter only).
         Typically produced by a variant caller such as DNAscope or DeepVariant.
       pattern: "*.{vcf,vcf.gz}"
-      ontologies: []
+      ontologies:
+        - edam: "http://edamontology.org/format_3016"
   - - sex:
         type: string
         description: |
@@ -71,7 +74,8 @@ input:
           chrY    0        .   N    <CNV>  .     PASS    END=57227415      CN      1
           ```
         pattern: "*.vcf"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
     - female_ploidy_vcf:
         type: file
         description: |
@@ -89,7 +93,8 @@ input:
           chrY    0    .   N    <CNV>  .     PASS    END=57227415  CN      0
           ```
         pattern: "*.vcf"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
   - genomedir:
       type: directory
       description: |
@@ -101,7 +106,8 @@ input:
         Canvas-ready kmer reference file (kmer.fa).
         Available from s3://canvas-cnv-public.
       pattern: "*.fa"
-      ontologies: []
+      ontologies:
+        - edam: "http://edamontology.org/format_1929"
   - filter13:
       type: file
       description: |
@@ -109,7 +115,8 @@ input:
         Named filter13 following Canvas reference package conventions.
         Available from s3://canvas-cnv-public.
       pattern: "*.bed"
-      ontologies: []
+      ontologies:
+        - edam: "http://edamontology.org/format_3003"
 output:
   vcf:
     - - meta:
@@ -124,7 +131,8 @@ output:
             Bgzipped VCF file containing germline CNV calls. Canvas:REF entries (non-variant regions)
             are excluded. Requires further annotation for standard SV ALT notation.
           pattern: "*.vcf.gz"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
   covandvarfreq:
     - - meta:
           type: map
@@ -138,7 +146,8 @@ output:
             Tab-separated file with per-bin coverage and variant allele frequency values.
             Used as input for CANVAS_CREATESEG to generate segmentation files.
           pattern: "*.CoverageAndVariantFrequency.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
   versions_canvas:
     - - ${task.process}:
           type: string
