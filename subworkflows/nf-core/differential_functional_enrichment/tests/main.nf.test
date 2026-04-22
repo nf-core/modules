@@ -264,7 +264,6 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.gsea_report_tsv,
-                    path(workflow.out.versions.get(0)).yaml,
                     workflow.out.versions
                 ).match()}
             )
