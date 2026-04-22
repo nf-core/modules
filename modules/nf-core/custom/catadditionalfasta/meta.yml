@@ -46,7 +46,7 @@ output:
           type: map
           description: |
             Groovy Map containing fasta information
-      - "*/*.fasta":
+      - out/${prefix}.fasta:
           type: file
           description: FASTA-format combined sequence file
           pattern: "*.{fasta,fa}"
@@ -56,7 +56,7 @@ output:
           type: map
           description: |
             Groovy Map containing fasta information
-      - "*/*.gtf":
+      - out/${prefix}.gtf:
           type: file
           description: GTF-format combined annotation file
           pattern: "*.gtf"
