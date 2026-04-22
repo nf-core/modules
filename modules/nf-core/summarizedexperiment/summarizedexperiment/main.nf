@@ -5,7 +5,7 @@ process SUMMARIZEDEXPERIMENT_SUMMARIZEDEXPERIMENT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-summarizedexperiment:1.32.0--r43hdfd78af_0' :
-        'biocontainers/bioconductor-summarizedexperiment:1.32.0--r43hdfd78af_0' }"
+        'quay.io/biocontainers/bioconductor-summarizedexperiment:1.32.0--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(matrix_files)

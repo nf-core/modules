@@ -5,7 +5,7 @@ process YAHS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/yahs:1.2.2--h577a1d6_1':
-        'biocontainers/yahs:1.2.2--h577a1d6_1' }"
+        'quay.io/biocontainers/yahs:1.2.2--h577a1d6_1' }"
 
     input:
     tuple val(meta), path(fasta), path(fai), path(hic_map), path(agp)

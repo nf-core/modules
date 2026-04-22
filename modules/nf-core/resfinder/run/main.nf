@@ -5,7 +5,7 @@ process RESFINDER_RUN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/resfinder:4.1.11--hdfd78af_0':
-        'biocontainers/resfinder:4.1.11--hdfd78af_0' }"
+        'quay.io/biocontainers/resfinder:4.1.11--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastq), path(fasta)

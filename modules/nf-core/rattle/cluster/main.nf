@@ -5,7 +5,7 @@ process RATTLE_CLUSTER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rattle:1.0--h5ca1c30_0' :
-        'biocontainers/rattle:1.0--h5ca1c30_0' }"
+        'quay.io/biocontainers/rattle:1.0--h5ca1c30_0' }"
 
     input:
     tuple val(meta), path(reads)

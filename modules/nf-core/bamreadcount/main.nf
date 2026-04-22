@@ -5,7 +5,7 @@ process BAMREADCOUNT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bam-readcount:1.0.1--h9aeec6d_3':
-        'biocontainers/bam-readcount:1.0.1--h9aeec6d_3' }"
+        'quay.io/biocontainers/bam-readcount:1.0.1--h9aeec6d_3' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
