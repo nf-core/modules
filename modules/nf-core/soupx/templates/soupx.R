@@ -23,6 +23,8 @@ adata_raw <- read_h5ad(h5ad_raw)
 counts_filt <- t(adata\$X)
 counts_raw  <- t(adata_raw\$X)
 
+if (sum(counts_filt) == 0) stop("Filtered counts matrix is empty - cannot run SoupX.")
+
 srt <- CreateSeuratObject(counts = counts_filt)
 srt <- NormalizeData(srt, normalization.method = "LogNormalize", verbose = FALSE)
 srt <- FindVariableFeatures(srt, verbose = FALSE)
