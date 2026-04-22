@@ -12,7 +12,7 @@ process CUSTOM_TABULARTOGSEACLS {
 
     output:
     tuple val(meta), path("*.cls"), emit: cls
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('mawk'), eval("mawk --version | sed '1!d;s/mawk //;s/ .*//'"), emit: versions_mawk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,21 +37,12 @@ process CUSTOM_TABULARTOGSEACLS {
     echo -e "#\$(echo -e \"\$unique_classes\" | tr '\\n' ' ')" | sed "s/ \$//" >> \$cls_file
     echo -e "\$classes" | tr '\\n' ' ' | sed "s/ \$//" >> \$cls_file
     echo -e "\\n" >> \$cls_file
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        awk: \$(mawk -W version | head -n 1 | awk '{print  \$2}')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.cls
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        awk: \$(mawk -W version | head -n 1 | awk '{print  \$2}')
-    END_VERSIONS
     """
 
 }
