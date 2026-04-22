@@ -79,7 +79,6 @@ nextflow_process {
                     process.out.session_info.collect{ meta,session_info -> file(session_info).name }, //assert unstable file
                     process.out.plot_html.collect{ meta,html -> file(html).name }, //assert unstable file
                     process.out.rds.collect{ meta,rds -> file(rds).name }, //assert unstable file
-                    process.out.versions,
                     path(process.out.versions[0]).yaml
                 ).match()}
             )
