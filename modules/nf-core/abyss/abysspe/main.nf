@@ -5,7 +5,7 @@ process ABYSS_ABYSSPE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/abyss:2.3.10--hf316886_1':
-        'biocontainers/abyss:2.3.10--hf316886_1' }"
+        'quay.io/biocontainers/abyss:2.3.10--hf316886_1' }"
 
     input:
     tuple val(meta), path(reads), path(merged)

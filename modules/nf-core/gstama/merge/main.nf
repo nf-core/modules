@@ -5,7 +5,7 @@ process GSTAMA_MERGE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0' :
-        'biocontainers/gs-tama:1.0.3--hdfd78af_0' }"
+        'quay.io/biocontainers/gs-tama:1.0.3--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bed)

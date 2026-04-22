@@ -44,14 +44,14 @@ output:
             https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats
           pattern: "*.chip"
           ontologies: []
-  versions_custom_tabulartogseachip:
+  versions_gawk:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - CUSTOM_TABULARTOGSEACHIP:
+      - gawk:
           type: string
           description: The name of the tool
-      - awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//':
+      - gawk --version 2>&1 | sed '1!d;s/^.*GNU Awk //; s/, .*//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -59,10 +59,10 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - CUSTOM_TABULARTOGSEACHIP:
+      - gawk:
           type: string
           description: The name of the tool
-      - awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//':
+      - gawk --version 2>&1 | sed '1!d;s/^.*GNU Awk //; s/, .*//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

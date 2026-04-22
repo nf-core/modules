@@ -6,7 +6,7 @@ process CATPACK_DOWNLOAD {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
+        : 'quay.io/biocontainers/cat:6.0.1--hdfd78af_1'}"
 
     input:
     tuple val(meta), val(db)

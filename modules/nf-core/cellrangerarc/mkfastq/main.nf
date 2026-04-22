@@ -4,7 +4,7 @@ process CELLRANGERARC_MKFASTQ {
 
     // WARNING !! Cell Ranger ARC mkfastq results are not deterministic, so the number of threads used in the process might affect the results.
 
-    container "nf-core/cellranger-arc-mkfastq:2.0.2"
+    container "quay.io/nf-core/cellranger-arc-mkfastq:2.0.2"
 
     input:
     tuple val(meta), path(bcl)

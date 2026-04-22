@@ -5,7 +5,7 @@ process MAFFT_GUIDETREE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mafft:7.525--h031d066_1':
-        'biocontainers/mafft:7.525--h031d066_1' }"
+        'quay.io/biocontainers/mafft:7.525--h031d066_1' }"
 
     input:
     tuple val(meta) , path(fasta)

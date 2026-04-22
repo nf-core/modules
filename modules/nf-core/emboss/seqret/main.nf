@@ -5,7 +5,7 @@ process EMBOSS_SEQRET {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/emboss:6.6.0--hf657eab_5':
-        'biocontainers/emboss:6.6.0--h440b012_4' }"
+        'quay.io/biocontainers/emboss:6.6.0--h440b012_4' }"
 
     input:
     tuple val(meta), path(sequence)

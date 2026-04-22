@@ -5,7 +5,7 @@ process MLST {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mlst:2.25.0--hdfd78af_0' :
-        'biocontainers/mlst:2.25.0--hdfd78af_0' }"
+        'quay.io/biocontainers/mlst:2.25.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)

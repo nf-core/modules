@@ -5,7 +5,7 @@ process TRIMAL {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trimal:1.5.0--h9948957_2':
-        'biocontainers/trimal:1.5.0--h9948957_2' }"
+        'quay.io/biocontainers/trimal:1.5.0--h9948957_2' }"
 
     input:
     tuple val(meta), path(aln)

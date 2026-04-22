@@ -5,7 +5,7 @@ process FCSGX_RUNGX {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-fcs-gx:0.5.5--h9948957_0':
-        'biocontainers/ncbi-fcs-gx:0.5.5--h9948957_0' }"
+        'quay.io/biocontainers/ncbi-fcs-gx:0.5.5--h9948957_0' }"
 
     input:
     tuple val(meta), val(taxid), path(fasta)

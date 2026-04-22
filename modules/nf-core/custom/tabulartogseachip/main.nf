@@ -13,7 +13,7 @@ process CUSTOM_TABULARTOGSEACHIP {
 
     output:
     tuple val(meta), path("*.chip"), emit: chip
-    tuple val("${task.process}"), val('CUSTOM_TABULARTOGSEACHIP'), eval("awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//'"), emit: versions_custom_tabulartogseachip, topic: versions
+    tuple val("${task.process}"), val('gawk'), eval("gawk --version 2>&1 | sed '1!d;s/^.*GNU Awk //; s/, .*//'"), emit: versions_gawk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,15 +35,11 @@ process CUSTOM_TABULARTOGSEACHIP {
     echo -e "Probe Set ID\\tGene Symbol\\tGene Title" > \${outfile}.tmp
     tail -n +2 $tabular | awk -F'\\t' -v id=\$id_col -v symbol=\$symbol_col '{print \$id"\\t"\$symbol"\\tNA"}' >> \${outfile}.tmp
     mv \${outfile}.tmp \${outfile}
-
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    outfile=${prefix}.chip
-    touch \$outfile
-
-
+    touch ${prefix}.chip
     """
 }
