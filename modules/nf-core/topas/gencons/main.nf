@@ -5,7 +5,7 @@ process TOPAS_GENCONS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/topas:1.0.1--hdfd78af_1':
-        'biocontainers/topas:1.0.1--hdfd78af_1' }"
+        'quay.io/biocontainers/topas:1.0.1--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(vcf)

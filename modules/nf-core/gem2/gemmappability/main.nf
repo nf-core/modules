@@ -6,7 +6,7 @@ process GEM2_GEMMAPPABILITY {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gem2:20200110--h9ee0642_1':
-        'biocontainers/gem2:20200110--h9ee0642_1' }"
+        'quay.io/biocontainers/gem2:20200110--h9ee0642_1' }"
 
     input:
     tuple val(meta), path(index)

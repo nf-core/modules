@@ -6,7 +6,7 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h4a94de4_1':
-        'biocontainers/circularmapper:1.93.5--h4a94de4_1' }"
+        'quay.io/biocontainers/circularmapper:1.93.5--h4a94de4_1' }"
 
     input:
     tuple val(meta), path(bam)

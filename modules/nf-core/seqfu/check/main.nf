@@ -5,7 +5,7 @@ process SEQFU_CHECK {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/seqfu:1.22.3--hc29b5fc_1'
-        : 'biocontainers/seqfu:1.22.3--hc29b5fc_1'}"
+        : 'quay.io/biocontainers/seqfu:1.22.3--hc29b5fc_1'}"
 
     input:
     tuple val(meta), path(reads)

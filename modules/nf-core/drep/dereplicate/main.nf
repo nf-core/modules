@@ -5,7 +5,7 @@ process DREP_DEREPLICATE {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/drep:3.6.2--pyhdfd78af_0'
-        : 'biocontainers/drep:3.6.2--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/drep:3.6.2--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fastas, stageAs: 'input_fastas/*')

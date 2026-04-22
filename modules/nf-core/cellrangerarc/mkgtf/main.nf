@@ -2,7 +2,7 @@ process CELLRANGERARC_MKGTF {
     tag "$meta.id"
     label 'process_low'
 
-    container "nf-core/cellranger-arc:2.0.2"
+    container "quay.io/nf-core/cellranger-arc:2.0.2"
 
     input:
     tuple val(meta), path(gtf)

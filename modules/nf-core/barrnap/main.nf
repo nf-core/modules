@@ -5,7 +5,7 @@ process BARRNAP {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/barrnap:0.9--hdfd78af_4':
-        'biocontainers/barrnap:0.9--hdfd78af_4' }"
+        'quay.io/biocontainers/barrnap:0.9--hdfd78af_4' }"
 
     input:
     tuple val(meta), path(fasta), val(dbname)

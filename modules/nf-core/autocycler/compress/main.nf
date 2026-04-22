@@ -6,7 +6,7 @@ process AUTOCYCLER_COMPRESS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/autocycler:0.5.2--h3ab6199_0':
-        'biocontainers/autocycler:0.5.2--h3ab6199_0' }"
+        'quay.io/biocontainers/autocycler:0.5.2--h3ab6199_0' }"
 
     input:
     tuple val(meta), path(assemblies)

@@ -5,7 +5,7 @@ process VRHYME_VRHYME {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vrhyme:1.1.0--pyhdfd78af_1':
-        'biocontainers/vrhyme:1.1.0--pyhdfd78af_1' }"
+        'quay.io/biocontainers/vrhyme:1.1.0--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(reads)

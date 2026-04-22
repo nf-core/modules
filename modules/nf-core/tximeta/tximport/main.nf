@@ -5,7 +5,7 @@ process TXIMETA_TXIMPORT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-tximeta%3A1.20.1--r43hdfd78af_0' :
-        'biocontainers/bioconductor-tximeta:1.20.1--r43hdfd78af_0' }"
+        'quay.io/biocontainers/bioconductor-tximeta:1.20.1--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path("quants/*")

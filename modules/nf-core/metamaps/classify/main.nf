@@ -5,7 +5,7 @@ process METAMAPS_CLASSIFY {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metamaps:0.1.633d2e0--h21ec9f0_0':
-        'biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0' }"
+        'quay.io/biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0' }"
 
     input:
     tuple val(meta), path(classification_res), path(meta_file), path(meta_unmappedreadsLengths), path(para_file)
