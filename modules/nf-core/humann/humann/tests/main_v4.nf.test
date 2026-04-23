@@ -1,8 +1,8 @@
 nextflow_process {
 
     name "Test Process HUMANN_HUMANN v4"
-    script "../main.nf"
-    process "HUMANN_HUMANN"
+    script "./main_v4_wrapper.nf"
+    process "HUMANN4_HUMANN"
     config "./nextflow_v4.config"
     tag "modules"
     tag "modules_nfcore"
