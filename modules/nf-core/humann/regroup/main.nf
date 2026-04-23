@@ -4,8 +4,10 @@ process HUMANN_REGROUP {
     tag "$meta.id"
     label 'process_low'
 
-    conda { getConda(task.ext.version ?: getHumannVersion(task.process)) }
-    container { getContainer(task.ext.version ?: getHumannVersion(task.process)) }
+    conda { getConda(getHumannVersion(task.process)) }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/humann:3.6.1--pyh7cba7a3_0' :
+        'quay.io/biocontainers/humann:3.6.1--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(input)
