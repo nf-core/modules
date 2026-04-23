@@ -52,26 +52,45 @@ output:
           pattern: "*.{tif, tiff}"
           ontologies:
             - edam: http://edamontology.org/format_3591 # TIFF
-  versions_mesmer:
+  versions_deepcell:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - deepcell_mesmer:
+      - deepcell:
           type: string
           description: The name of the tool
-      - 0.4.1:
+      - "pip show 'DeepCell' | sed '2!d;s/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
           type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed 's/Python //':
+          type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - deepcell_mesmer:
+      - deepcell:
           type: string
           description: The name of the tool
-      - 0.4.1:
+      - "pip show 'DeepCell' | sed '2!d;s/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
           type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed 's/Python //':
+          type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@migueLib"
