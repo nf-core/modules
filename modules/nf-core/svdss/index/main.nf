@@ -8,11 +8,12 @@ process SVDSS_INDEX {
         'quay.io/biocontainers/svdss:2.1.1--he17396a_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta), path(existing_index)
+    val output_format
 
     output:
-    tuple val(meta), path("${prefix}.fmd"), emit: fmd
-    tuple val("${task.process}"), val('svdss'), eval("SVDSS --version 2>&1 | sed 's/SVDSS, //'"), emit: versions_svdss, topic: versions
+    tuple val(meta), path("${prefix}.${output_format}"), emit: index
+    tuple val("${task.process}"), val('svdss'), eval("SVDSS --version 2>&1 | sed 's/SVDSS, v//'"), emit: versions_svdss, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,17 +21,23 @@ process SVDSS_INDEX {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def format_flag = output_format == 'fmd' ? '-d' : '-b'
+    def existing_index_arg = existing_index ? "-i ${existing_index}" : ''
     """
     SVDSS index \\
         -t ${task.cpus} \\
-        -d ${fasta} \\
+        ${existing_index_arg} \\
+        ${format_flag} ${fasta} \\
         ${args} \\
-        > ${prefix}.fmd
+        > ${prefix}.${output_format}
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fmd
+    echo ${args}
+
+    touch ${prefix}.${output_format}
     """
 }

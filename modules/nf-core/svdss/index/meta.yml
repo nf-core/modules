@@ -1,5 +1,5 @@
 name: svdss_index
-description: Index a reference genome FASTA file using SVDSS, producing an FMD index for use with SVDSS smooth and search subcommands
+description: Index a reference genome FASTA file using SVDSS (via ropebwt3), producing either an FMD or FMR index for use with SVDSS smooth and search subcommands
 keywords:
   - structural variants
   - sv calling
@@ -30,17 +30,30 @@ input:
         pattern: "*.{fasta,fa,fna}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
+    - existing_index:
+        type: file
+        description: |
+          Optional path to an existing index file to read and extend (passed via -i).
+          Set to [] when not used.
+        pattern: "*.{fmd,fmr}"
+        ontologies: []
+  - output_format:
+      type: string
+      description: |
+        Output index format. Use 'fmd' for the fermi-delta format (adds -d flag)
+        or 'fmr' for the ropebwt format (adds -b flag).
+      pattern: "fmd|fmr"
 output:
-  fmd:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}.fmd:
+      - ${prefix}.${output_format}:
           type: file
-          description: FMD index file produced by SVDSS index, used as input for SVDSS smooth and search
-          pattern: "*.fmd"
+          description: FM-index file produced by SVDSS index, used as input for SVDSS smooth and search
+          pattern: "*.{fmd,fmr}"
           ontologies: []
   versions_svdss:
     - - ${task.process}:
@@ -49,7 +62,7 @@ output:
       - svdss:
           type: string
           description: The name of the tool
-      - SVDSS --version 2>&1 | sed 's/SVDSS, //':
+      - SVDSS --version 2>&1 | sed 's/SVDSS, v//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -60,7 +73,7 @@ topics:
       - svdss:
           type: string
           description: The name of the tool
-      - SVDSS --version 2>&1 | sed 's/SVDSS, //':
+      - SVDSS --version 2>&1 | sed 's/SVDSS, v//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
