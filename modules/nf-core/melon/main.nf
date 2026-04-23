@@ -5,7 +5,7 @@ process MELON {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/melon:0.2.5--pyhdfd78af_0':
-        'biocontainers/melon:0.2.5--pyhdfd78af_0' }"
+        'quay.io/biocontainers/melon:0.2.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)

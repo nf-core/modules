@@ -5,7 +5,7 @@ process POOLSNP {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/poolsnp:1.0.1--py312h7e72e81_0':
-        'biocontainers/poolsnp:1.0.1--py312h7e72e81_0' }"
+        'quay.io/biocontainers/poolsnp:1.0.1--py312h7e72e81_0' }"
 
     input:
     tuple val(meta) , path(mpileup)

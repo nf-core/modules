@@ -5,7 +5,7 @@ process TRGT_PLOT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trgt:5.0.0--h9ee0642_0':
-        'biocontainers/trgt:5.0.0--h9ee0642_0' }"
+        'quay.io/biocontainers/trgt:5.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta) , path(bam), path(bai), path(vcf), path(tbi), val(repeat_id)

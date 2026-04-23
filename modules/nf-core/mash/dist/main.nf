@@ -5,7 +5,7 @@ process MASH_DIST {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1' :
-        'biocontainers/mash:2.3--he348c14_1' }"
+        'quay.io/biocontainers/mash:2.3--he348c14_1' }"
 
     input:
     tuple val(meta), path(query)

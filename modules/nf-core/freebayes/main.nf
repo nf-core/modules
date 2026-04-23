@@ -5,7 +5,7 @@ process FREEBAYES {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/freebayes:1.3.10--hbefcdb2_0'
-        : 'biocontainers/freebayes:1.3.10--hbefcdb2_0'}"
+        : 'quay.io/biocontainers/freebayes:1.3.10--hbefcdb2_0'}"
 
     input:
     tuple val(meta), path(input_1), path(input_1_index), path(input_2), path(input_2_index), path(target_bed)

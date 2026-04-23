@@ -5,7 +5,7 @@ process REPEATMODELER_REPEATMODELER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/repeatmodeler:2.0.5--pl5321hdfd78af_0':
-        'biocontainers/repeatmodeler:2.0.5--pl5321hdfd78af_0' }"
+        'quay.io/biocontainers/repeatmodeler:2.0.5--pl5321hdfd78af_0' }"
 
     input:
     tuple val(meta), path(db)

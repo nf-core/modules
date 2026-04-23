@@ -5,7 +5,7 @@ process MEGAN_DAA2INFO {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/megan:6.24.20--h9ee0642_0':
-        'biocontainers/megan:6.24.20--h9ee0642_0' }"
+        'quay.io/biocontainers/megan:6.24.20--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(daa)

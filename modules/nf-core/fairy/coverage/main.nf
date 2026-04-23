@@ -5,7 +5,7 @@ process FAIRY_COVERAGE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fairy:0.5.8--hc1c3326_0':
-        'biocontainers/fairy:0.5.8--hc1c3326_0' }"
+        'quay.io/biocontainers/fairy:0.5.8--hc1c3326_0' }"
 
     input:
     tuple val(meta), path(sketches), path(contigs)

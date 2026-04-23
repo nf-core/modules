@@ -5,7 +5,7 @@ process EMBOSS_REVSEQ {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/emboss:6.6.0--h86d058a_5':
-        'biocontainers/emboss:6.6.0--h86d058a_5' }"
+        'quay.io/biocontainers/emboss:6.6.0--h86d058a_5' }"
 
     input:
     tuple val(meta), path(sequences)

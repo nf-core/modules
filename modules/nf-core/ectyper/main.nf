@@ -5,7 +5,7 @@ process ECTYPER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ectyper:1.0.0--pyhdfd78af_1' :
-        'biocontainers/ectyper:1.0.0--pyhdfd78af_1' }"
+        'quay.io/biocontainers/ectyper:1.0.0--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta)

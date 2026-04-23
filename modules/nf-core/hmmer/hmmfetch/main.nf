@@ -5,7 +5,7 @@ process HMMER_HMMFETCH {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h87f3376_2':
-        'biocontainers/hmmer:3.3.2--h87f3376_2' }"
+        'quay.io/biocontainers/hmmer:3.3.2--h87f3376_2' }"
 
     // The module can be called with either a key, a file containing keys or neither.
     // In the latter case, the hmm database will be indexed and an index but no output

@@ -5,7 +5,7 @@ process YAK_COUNT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/yak:0.1--h577a1d6_6':
-        'biocontainers/yak:0.1--h577a1d6_6' }"
+        'quay.io/biocontainers/yak:0.1--h577a1d6_6' }"
 
     input:
     tuple val(meta), path(fastq)

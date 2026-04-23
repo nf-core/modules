@@ -4,7 +4,7 @@ process SNPSITES {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snp-sites:2.5.1--hed695b0_0' :
-        'biocontainers/snp-sites:2.5.1--hed695b0_0' }"
+        'quay.io/biocontainers/snp-sites:2.5.1--hed695b0_0' }"
 
     input:
     path alignment

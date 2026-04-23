@@ -5,7 +5,7 @@ process BUSCO_PHYLOGENOMICS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/busco_phylogenomics:20240919--pyhdfd78af_0':
-        'biocontainers/busco_phylogenomics:20240919--pyhdfd78af_0' }"
+        'quay.io/biocontainers/busco_phylogenomics:20240919--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(busco)

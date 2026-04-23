@@ -6,7 +6,7 @@ process VARIANTBAM {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/variantbam:1.4.4a--h7d7f7ad_5' :
-        'biocontainers/variantbam:1.4.4a--h7d7f7ad_5' }"
+        'quay.io/biocontainers/variantbam:1.4.4a--h7d7f7ad_5' }"
 
     input:
     tuple val(meta), path(bam)

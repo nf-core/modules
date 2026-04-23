@@ -5,7 +5,7 @@ process BEDGOVCF {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedgovcf:0.1.1--h9ee0642_1':
-        'biocontainers/bedgovcf:0.1.1--h9ee0642_1' }"
+        'quay.io/biocontainers/bedgovcf:0.1.1--h9ee0642_1' }"
 
     input:
     tuple val(meta), path(bed), path(config)

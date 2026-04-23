@@ -4,7 +4,7 @@ process SEQFU_DEREP {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/seqfu:1.20.3--h1eb128b_2'
-        : 'biocontainers/seqfu:1.20.3--h1eb128b_2'}"
+        : 'quay.io/biocontainers/seqfu:1.20.3--h1eb128b_2'}"
 
     input:
     tuple val(meta), path(fastas)

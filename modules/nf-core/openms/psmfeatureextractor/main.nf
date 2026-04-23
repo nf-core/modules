@@ -5,7 +5,7 @@ process OPENMS_PSMFEATUREEXTRACTOR {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0'
-        : 'biocontainers/openms:3.5.0--h78fb946_0'}"
+        : 'quay.io/biocontainers/openms:3.5.0--h78fb946_0'}"
 
     input:
     tuple val(meta), path(id_file)

@@ -5,7 +5,7 @@ process FLASH {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/flash:1.2.11--h5bf99c6_6' :
-        'biocontainers/flash:1.2.11--h5bf99c6_6' }"
+        'quay.io/biocontainers/flash:1.2.11--h5bf99c6_6' }"
 
     input:
     tuple val(meta), path(reads)

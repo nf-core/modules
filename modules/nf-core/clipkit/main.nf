@@ -5,7 +5,7 @@ process CLIPKIT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/clipkit:2.11.4--pyhdfd78af_0':
-        'biocontainers/clipkit:2.11.4--pyhdfd78af_0' }"
+        'quay.io/biocontainers/clipkit:2.11.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(aln)

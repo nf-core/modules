@@ -5,7 +5,7 @@ process PINDEL_PINDEL {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pindel:0.2.5b9--h06e5f0a_6':
-        'biocontainers/pindel:0.2.5b9--h06e5f0a_6' }"
+        'quay.io/biocontainers/pindel:0.2.5b9--h06e5f0a_6' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

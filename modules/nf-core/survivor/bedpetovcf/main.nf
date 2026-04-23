@@ -6,7 +6,7 @@ process SURVIVOR_BEDPETOVCF {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/survivor:1.0.7--h9a82719_1':
-        'biocontainers/survivor:1.0.7--h9a82719_1' }"
+        'quay.io/biocontainers/survivor:1.0.7--h9a82719_1' }"
 
     input:
     tuple val(meta), path(bedpe)

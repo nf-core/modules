@@ -4,7 +4,7 @@ process GANON_BUILDCUSTOM {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/ganon:2.1.0--py310hab1bfa5_1'
-        : 'biocontainers/ganon:2.1.0--py310hab1bfa5_1'}"
+        : 'quay.io/biocontainers/ganon:2.1.0--py310hab1bfa5_1'}"
 
     input:
     tuple val(meta), path(input)

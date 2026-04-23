@@ -5,7 +5,7 @@ process TRIMGALORE {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trim-galore:0.6.10--hdfd78af_2' :
-        'biocontainers/trim-galore:0.6.10--hdfd78af_2'}"
+        'quay.io/biocontainers/trim-galore:0.6.10--hdfd78af_2'}"
 
     input:
     tuple val(meta), path(reads)

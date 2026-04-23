@@ -6,7 +6,7 @@ process TRINITY {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trinity:2.15.2--pl5321hdcf5f25_1':
-        'biocontainers/trinity:2.15.2--pl5321hdcf5f25_1' }"
+        'quay.io/biocontainers/trinity:2.15.2--pl5321hdcf5f25_1' }"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*", arity: '1..*')

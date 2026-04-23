@@ -4,7 +4,7 @@ process PHAROKKA_INSTALLDATABASES {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pharokka:1.9.1--pyhdfd78af_0':
-        'biocontainers/pharokka:1.9.1--pyhdfd78af_0' }"
+        'quay.io/biocontainers/pharokka:1.9.1--pyhdfd78af_0' }"
 
     output:
     path("${prefix}/")      , emit: pharokka_db

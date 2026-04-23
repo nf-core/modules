@@ -5,7 +5,7 @@ process CRISPRESSO2 {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/crispresso2:2.3.3--py39hff726c5_0' :
-        'biocontainers/crispresso2:2.3.3--py39hff726c5_0' }"
+        'quay.io/biocontainers/crispresso2:2.3.3--py39hff726c5_0' }"
 
     input:
     tuple val(meta), path(reads)

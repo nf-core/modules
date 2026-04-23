@@ -5,7 +5,7 @@ process HAPLOGREP3_CLASSIFY {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/haplogrep3:3.2.2--hdfd78af_0':
-        'biocontainers/haplogrep3:3.2.2--hdfd78af_0' }"
+        'quay.io/biocontainers/haplogrep3:3.2.2--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(inputfile)

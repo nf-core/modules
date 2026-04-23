@@ -5,7 +5,7 @@ process POPSCLE_FREEMUXLET {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/popscle:0.1beta--h2c78cec_0' :
-        'biocontainers/popscle:0.1beta--h2c78cec_0' }"
+        'quay.io/biocontainers/popscle:0.1beta--h2c78cec_0' }"
 
     input:
     tuple val(meta), path(plp), val(n_sample)

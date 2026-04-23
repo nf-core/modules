@@ -4,7 +4,7 @@ process RGI_CARDANNOTATION {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/rgi:6.0.5--pyh05cac1d_0'
-        : 'biocontainers/rgi:6.0.5--pyh05cac1d_0'}"
+        : 'quay.io/biocontainers/rgi:6.0.5--pyh05cac1d_0'}"
 
     input:
     path card

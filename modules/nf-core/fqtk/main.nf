@@ -5,7 +5,7 @@ process FQTK {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fqtk:0.3.1--ha6fb395_2' :
-        'biocontainers/fqtk:0.3.1--ha6fb395_2' }"
+        'quay.io/biocontainers/fqtk:0.3.1--ha6fb395_2' }"
 
     input:
     tuple val(meta), path(sample_sheet), path(fastq_folder, stageAs: "input"), val(fastq_readstructure_pairs)

@@ -4,7 +4,7 @@ process BAMSTATS_GENERALSTATS {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/bamstats:0.3.5--he881be0_0'
-        : 'biocontainers/bamstats:0.3.5--he881be0_0'}"
+        : 'quay.io/biocontainers/bamstats:0.3.5--he881be0_0'}"
 
     input:
     tuple val(meta), path(bam)

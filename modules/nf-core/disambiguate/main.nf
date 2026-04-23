@@ -5,7 +5,7 @@ process DISAMBIGUATE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngs-disambiguate:2018.05.03--h06902ac_10':
-        'biocontainers/ngs-disambiguate:2018.05.03--h06902ac_10' }"
+        'quay.io/biocontainers/ngs-disambiguate:2018.05.03--h06902ac_10' }"
 
     input:
     tuple val(meta), path(bam_a), path(bam_b)

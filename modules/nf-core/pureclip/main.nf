@@ -5,7 +5,7 @@ process PURECLIP {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pureclip:1.3.1--0':
-        'biocontainers/pureclip:1.3.1--0' }"
+        'quay.io/biocontainers/pureclip:1.3.1--0' }"
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)

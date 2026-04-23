@@ -9,7 +9,7 @@ process INTEGRONFINDER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/integron_finder:2.0.5--pyhdfd78af_0':
-        'biocontainers/integron_finder:2.0.5--pyhdfd78af_0' }"
+        'quay.io/biocontainers/integron_finder:2.0.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)

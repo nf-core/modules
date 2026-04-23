@@ -5,7 +5,7 @@ process LONGSTITCH {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/longstitch:1.0.5--hdfd78af_0':
-        'biocontainers/longstitch:1.0.5--hdfd78af_0' }"
+        'quay.io/biocontainers/longstitch:1.0.5--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(assembly)

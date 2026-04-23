@@ -5,7 +5,7 @@ process METAEUK_EASYPREDICT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaeuk:6.a5d39d9--pl5321hf1761c0_2':
-        'biocontainers/metaeuk:6.a5d39d9--pl5321hf1761c0_2' }"
+        'quay.io/biocontainers/metaeuk:6.a5d39d9--pl5321hf1761c0_2' }"
 
     input:
     tuple val(meta), path(fasta)

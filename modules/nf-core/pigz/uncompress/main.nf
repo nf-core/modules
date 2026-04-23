@@ -6,7 +6,7 @@ process PIGZ_UNCOMPRESS {
     conda "conda-forge::pigz"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pigz:2.8':
-        'biocontainers/pigz:2.8' }"
+        'quay.io/biocontainers/pigz:2.8' }"
 
     input:
     tuple val(meta), path(zip)

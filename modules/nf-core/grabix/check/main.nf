@@ -4,7 +4,7 @@ process GRABIX_CHECK {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/grabix:0.1.8--hdcf5f25_9':
-        'biocontainers/grabix:0.1.8--hdcf5f25_9' }"
+        'quay.io/biocontainers/grabix:0.1.8--hdcf5f25_9' }"
 
     input:
     tuple val(meta), path(input)

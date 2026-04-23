@@ -6,7 +6,7 @@ process VT_NORMALIZE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vt:2015.11.10--h5ef6573_4':
-        'biocontainers/vt:2015.11.10--h5ef6573_4' }"
+        'quay.io/biocontainers/vt:2015.11.10--h5ef6573_4' }"
 
     input:
     tuple val(meta) , path(vcf), path(tbi), path(intervals)

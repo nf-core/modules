@@ -5,7 +5,7 @@ process STACKS_REFMAP {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/stacks:2.68--h077b44d_0':
-        'biocontainers/stacks:2.68--h077b44d_0' }"
+        'quay.io/biocontainers/stacks:2.68--h077b44d_0' }"
 
     input:
     tuple val(meta), path(bams)

@@ -5,7 +5,7 @@ process ANOTA2SEQ_ANOTA2SEQRUN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-anota2seq:1.24.0--r43hdfd78af_0' :
-        'biocontainers/bioconductor-anota2seq:1.24.0--r43hdfd78af_0' }"
+        'quay.io/biocontainers/bioconductor-anota2seq:1.24.0--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), val(sample_treatment_col), val(reference), val(target)

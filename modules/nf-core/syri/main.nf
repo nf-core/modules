@@ -5,7 +5,7 @@ process SYRI {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/syri:1.7.1--py310ha6711e0_0':
-        'biocontainers/syri:1.7.1--py310ha6711e0_0' }"
+        'quay.io/biocontainers/syri:1.7.1--py310ha6711e0_0' }"
 
     input:
     tuple val(meta), path(infile)

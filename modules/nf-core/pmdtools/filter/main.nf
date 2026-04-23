@@ -5,7 +5,7 @@ process PMDTOOLS_FILTER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pmdtools:0.60--hdfd78af_5' :
-        'biocontainers/pmdtools:0.60--hdfd78af_5' }"
+        'quay.io/biocontainers/pmdtools:0.60--hdfd78af_5' }"
 
     input:
     tuple val(meta), path(bam), path (bai)

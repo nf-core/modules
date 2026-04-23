@@ -5,7 +5,7 @@ process PLINK2_REMOVE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0':
-        'biocontainers/plink2:2.00a5.10--h4ac6f70_0' }"
+        'quay.io/biocontainers/plink2:2.00a5.10--h4ac6f70_0' }"
 
     input:
     tuple val(meta), path(plink_genotype_file), path(plink_variant_file), path(plink_sample_file)

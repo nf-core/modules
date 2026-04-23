@@ -6,7 +6,7 @@ process PRESEQ_CCURVE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/preseq:3.2.0--hdcf5f25_6':
-        'biocontainers/preseq:3.2.0--hdcf5f25_6' }"
+        'quay.io/biocontainers/preseq:3.2.0--hdcf5f25_6' }"
 
     input:
     tuple val(meta), path(bam)

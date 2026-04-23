@@ -5,7 +5,7 @@ process DSHBIO_SPLITBED {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dsh-bio:3.0--hdfd78af_0' :
-        'biocontainers/dsh-bio:3.0--hdfd78af_0' }"
+        'quay.io/biocontainers/dsh-bio:3.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bed)

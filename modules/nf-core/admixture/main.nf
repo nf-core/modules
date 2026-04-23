@@ -5,7 +5,7 @@ process ADMIXTURE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/admixture:1.3.0--0':
-        'biocontainers/admixture:1.3.0--0' }"
+        'quay.io/biocontainers/admixture:1.3.0--0' }"
 
     input:
     tuple val(meta), path (bed_ped_geno), path(bim_map), path(fam)

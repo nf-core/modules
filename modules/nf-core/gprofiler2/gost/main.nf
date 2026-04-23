@@ -21,7 +21,7 @@ process GPROFILER2_GOST {
     tuple val(meta), path("*.gprofiler2.*.sub_enriched_pathways.png")   , emit: sub_plot    , optional: true
     tuple val(meta), path("*ENSG_filtered.gmt")                         , emit: filtered_gmt, optional: true
     tuple val(meta), path("*R_sessionInfo.log")                         , emit: session_info
-    path "versions.yml"                                                 , emit: versions
+    path "versions.yml"                                                 , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,9 +43,10 @@ process GPROFILER2_GOST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
-        r-gprofiler2: \$(Rscript -e "library(gprofiler2); cat(as.character(packageVersion('gprofiler2')))")
-        gprofiler-data: \$(Rscript -e "library(gprofiler2); library(yaml); cat(as.yaml(get_version_info()))")
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        r-ggplot2: \$(Rscript -e "cat(as.character(packageVersion('ggplot2')))")
+        r-gprofiler2: \$(Rscript -e "cat(as.character(packageVersion('gprofiler2')))")
+        gprofiler-data: \$(Rscript -e "cat(gprofiler2::get_version_info()[['gprofiler_version']])")
     END_VERSIONS
     """
 }

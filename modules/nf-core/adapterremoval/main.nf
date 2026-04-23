@@ -5,7 +5,7 @@ process ADAPTERREMOVAL {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/adapterremoval:2.3.4--pl5321haf24da9_2' :
-        'biocontainers/adapterremoval:2.3.4--pl5321haf24da9_2' }"
+        'quay.io/biocontainers/adapterremoval:2.3.4--pl5321haf24da9_2' }"
 
     input:
     tuple val(meta), path(reads)

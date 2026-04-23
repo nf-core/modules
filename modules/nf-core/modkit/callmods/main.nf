@@ -5,7 +5,7 @@ process MODKIT_CALLMODS {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.1--hcdda2d0_0'
-        : 'biocontainers/ont-modkit:0.6.1--hcdda2d0_0'}"
+        : 'quay.io/biocontainers/ont-modkit:0.6.1--hcdda2d0_0'}"
 
     input:
     tuple val(meta), path(bam)

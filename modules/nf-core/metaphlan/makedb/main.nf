@@ -4,7 +4,7 @@ process METAPHLAN_MAKEDB {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaphlan:4.1.1--pyhdfd78af_0' :
-        'biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
+        'quay.io/biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
 
     output:
     path "metaphlan_db_latest"      , emit: db

@@ -5,7 +5,7 @@ process MINIPROT_ALIGN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/miniprot:0.11--he4a0461_2':
-        'biocontainers/miniprot:0.11--he4a0461_2' }"
+        'quay.io/biocontainers/miniprot:0.11--he4a0461_2' }"
 
     input:
     tuple val(meta), path(pep)

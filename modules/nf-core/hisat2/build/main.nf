@@ -5,7 +5,7 @@ process HISAT2_BUILD {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hisat2:2.2.2--h503566f_0' :
-        'biocontainers/hisat2:2.2.2--h503566f_0'}"
+        'quay.io/biocontainers/hisat2:2.2.2--h503566f_0'}"
 
     input:
     tuple val(meta), path(fasta)

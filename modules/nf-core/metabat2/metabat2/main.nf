@@ -5,7 +5,7 @@ process METABAT2_METABAT2 {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/metabat2:2.17--hd498684_0'
-        : 'biocontainers/metabat2:2.17--hd498684_0'}"
+        : 'quay.io/biocontainers/metabat2:2.17--hd498684_0'}"
 
     input:
     tuple val(meta), path(fasta, stageAs: 'input_bins/'), path(depth)

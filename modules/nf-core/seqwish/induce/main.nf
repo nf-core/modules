@@ -5,7 +5,7 @@ process SEQWISH_INDUCE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqwish:0.7.11--h5ca1c30_1' :
-        'biocontainers/seqwish:0.7.11--h5ca1c30_1' }"
+        'quay.io/biocontainers/seqwish:0.7.11--h5ca1c30_1' }"
 
     input:
     tuple val(meta), path(paf), path(fasta)

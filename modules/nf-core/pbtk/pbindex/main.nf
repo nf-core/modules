@@ -5,7 +5,7 @@ process PBTK_PBINDEX {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbtk:3.1.1--h9ee0642_0':
-        'biocontainers/pbtk:3.1.1--h9ee0642_0' }"
+        'quay.io/biocontainers/pbtk:3.1.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam)

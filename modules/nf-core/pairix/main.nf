@@ -5,7 +5,7 @@ process PAIRIX {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pairix:0.3.7--py36h30a8e3e_3' :
-        'biocontainers/pairix:0.3.7--py36h30a8e3e_3' }"
+        'quay.io/biocontainers/pairix:0.3.7--py36h30a8e3e_3' }"
 
     input:
     tuple val(meta), path(pair)

@@ -5,7 +5,7 @@ process EAGLE2 {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/eagle2:2.4.1--h6a68c12_0':
-        'biocontainers/eagle2:2.4.1--h6a68c12_0' }"
+        'quay.io/biocontainers/eagle2:2.4.1--h6a68c12_0' }"
 
     input:
     tuple val(meta), path(input), path(index), path(ref_vcf), path(ref_index), path(map)

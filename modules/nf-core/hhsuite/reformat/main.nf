@@ -5,7 +5,7 @@ process HHSUITE_REFORMAT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hhsuite:3.3.0--py39pl5321h0dd7abe_13':
-        'biocontainers/hhsuite:3.3.0--py39pl5321h0dd7abe_13' }"
+        'quay.io/biocontainers/hhsuite:3.3.0--py39pl5321h0dd7abe_13' }"
 
     input:
     tuple val(meta), path(aln)

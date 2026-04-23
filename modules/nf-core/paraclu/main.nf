@@ -6,7 +6,7 @@ process PARACLU {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paraclu:10--h9a82719_1' :
-        'biocontainers/paraclu:10--h9a82719_1' }"
+        'quay.io/biocontainers/paraclu:10--h9a82719_1' }"
 
     input:
     tuple val(meta), path(bed)

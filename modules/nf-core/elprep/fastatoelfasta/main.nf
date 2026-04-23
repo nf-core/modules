@@ -5,7 +5,7 @@ process ELPREP_FASTATOELFASTA {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/elprep:5.1.3--he881be0_1':
-        'biocontainers/elprep:5.1.3--he881be0_1' }"
+        'quay.io/biocontainers/elprep:5.1.3--he881be0_1' }"
 
     input:
     tuple val(meta), path(fasta)

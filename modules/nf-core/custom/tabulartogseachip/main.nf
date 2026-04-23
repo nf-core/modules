@@ -5,7 +5,7 @@ process CUSTOM_TABULARTOGSEACHIP {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gawk:5.1.0' :
-        'biocontainers/gawk:5.1.0' }"
+        'quay.io/biocontainers/gawk:5.1.0' }"
 
     input:
     tuple val(meta), path(tabular)

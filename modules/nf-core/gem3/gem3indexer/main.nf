@@ -5,7 +5,7 @@ process GEM3_GEM3INDEXER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gem3-mapper:3.6.1--h9d449c0_12':
-        'biocontainers/gem3-mapper:3.6.1--h9d449c0_12' }"
+        'quay.io/biocontainers/gem3-mapper:3.6.1--h9d449c0_12' }"
 
     input:
     tuple val(meta), path(fasta)

@@ -5,7 +5,7 @@ process CMAPLE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cmaple:1.1.0--h503566f_1':
-        'biocontainers/cmaple:1.1.0--h503566f_1' }"
+        'quay.io/biocontainers/cmaple:1.1.0--h503566f_1' }"
 
     input:
     tuple val(meta), path(aln), path(newick)

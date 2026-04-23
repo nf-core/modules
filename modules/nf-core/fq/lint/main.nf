@@ -5,7 +5,7 @@ process FQ_LINT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fq:0.12.0--h9ee0642_0':
-        'biocontainers/fq:0.12.0--h9ee0642_0' }"
+        'quay.io/biocontainers/fq:0.12.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fastq, arity: '1..2')

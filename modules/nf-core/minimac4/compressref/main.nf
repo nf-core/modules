@@ -5,7 +5,7 @@ process MINIMAC4_COMPRESSREF {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/minimac4:4.1.6--hcb620b3_1'
-        : 'biocontainers/minimac4:4.1.6--hcb620b3_1'}"
+        : 'quay.io/biocontainers/minimac4:4.1.6--hcb620b3_1'}"
 
     input:
     tuple val(meta), path(ref), path(ref_index) // Reference index is autodetected from reference file name

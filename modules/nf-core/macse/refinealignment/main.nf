@@ -5,7 +5,7 @@ process MACSE_REFINEALIGNMENT {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/macse:2.07--hdfd78af_0'
-        : 'biocontainers/macse:2.07--hdfd78af_0'}"
+        : 'quay.io/biocontainers/macse:2.07--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)

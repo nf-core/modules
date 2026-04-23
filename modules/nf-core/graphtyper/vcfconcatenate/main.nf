@@ -5,7 +5,7 @@ process GRAPHTYPER_VCFCONCATENATE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/graphtyper:2.7.7--h7594796_1':
-        'biocontainers/graphtyper:2.7.7--h7594796_1' }"
+        'quay.io/biocontainers/graphtyper:2.7.7--h7594796_1' }"
 
     input:
     tuple val(meta), path(vcf)

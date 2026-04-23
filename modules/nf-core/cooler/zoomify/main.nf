@@ -5,7 +5,7 @@ process COOLER_ZOOMIFY {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cooler:0.10.4--pyhdfd78af_0' :
-        'biocontainers/cooler:0.10.4--pyhdfd78af_0' }"
+        'quay.io/biocontainers/cooler:0.10.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(cool)

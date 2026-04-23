@@ -5,7 +5,7 @@ process AMRFINDERPLUS_UPDATE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:4.2.7--hf69ffd2_0':
-        'biocontainers/ncbi-amrfinderplus:4.2.7--hf69ffd2_0' }"
+        'quay.io/biocontainers/ncbi-amrfinderplus:4.2.7--hf69ffd2_0' }"
 
     output:
     path "amrfinderdb.tar.gz", emit: db

@@ -5,7 +5,7 @@ process CLUSTALO_ALIGN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-4cefc38542f86c17596c29b35a059de10387c6a7:adbe4fbad680f9beb083956d79128039a727e7b3-0':
-        'biocontainers/mulled-v2-4cefc38542f86c17596c29b35a059de10387c6a7:adbe4fbad680f9beb083956d79128039a727e7b3-0' }"
+        'quay.io/biocontainers/mulled-v2-4cefc38542f86c17596c29b35a059de10387c6a7:adbe4fbad680f9beb083956d79128039a727e7b3-0' }"
 
     input:
     tuple val(meta) , path(fasta)

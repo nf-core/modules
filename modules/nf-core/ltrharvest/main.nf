@@ -5,7 +5,7 @@ process LTRHARVEST {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ltr_harvest_parallel:1.1--hdfd78af_0':
-        'biocontainers/ltr_harvest_parallel:1.1--hdfd78af_0' }"
+        'quay.io/biocontainers/ltr_harvest_parallel:1.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)

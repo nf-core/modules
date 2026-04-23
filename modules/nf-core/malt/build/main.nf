@@ -3,7 +3,7 @@ process MALT_BUILD {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/malt:0.62--hdfd78af_0'
-        : 'biocontainers/malt:0.62--hdfd78af_0'}"
+        : 'quay.io/biocontainers/malt:0.62--hdfd78af_0'}"
 
     input:
     path fastas, stageAs: 'fa_folder/'

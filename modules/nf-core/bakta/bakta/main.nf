@@ -5,7 +5,7 @@ process BAKTA_BAKTA {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/bakta:1.11.4--pyhdfd78af_0'
-        : 'biocontainers/bakta:1.11.4--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/bakta:1.11.4--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)

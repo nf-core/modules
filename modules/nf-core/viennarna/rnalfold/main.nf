@@ -5,7 +5,7 @@ process VIENNARNA_RNALFOLD {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1':
-        'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
+        'quay.io/biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
 
     input:
     path fasta

@@ -5,7 +5,7 @@ process LEVIOSAM2_INDEX {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/leviosam2:0.4.2--h4ac6f70_0':
-        'biocontainers/leviosam2:0.4.2--h4ac6f70_0' }"
+        'quay.io/biocontainers/leviosam2:0.4.2--h4ac6f70_0' }"
 
     input:
     tuple val(meta), path(fai)

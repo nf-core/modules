@@ -5,7 +5,7 @@ process HMMCOPY_GENERATEMAP {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/hmmcopy:0.1.1--h2e03b76_7'
-        : 'biocontainers/hmmcopy:0.1.1--h2e03b76_7'}"
+        : 'quay.io/biocontainers/hmmcopy:0.1.1--h2e03b76_7'}"
 
     input:
     tuple val(meta), path(fasta)

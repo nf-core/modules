@@ -5,7 +5,7 @@ process KALLISTOBUSTOOLS_REF {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kb-python:0.28.2--pyhdfd78af_2' :
-        'biocontainers/kb-python:0.28.2--pyhdfd78af_2' }"
+        'quay.io/biocontainers/kb-python:0.28.2--pyhdfd78af_2' }"
 
     input:
     path fasta

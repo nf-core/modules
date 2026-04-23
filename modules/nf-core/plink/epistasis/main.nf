@@ -6,7 +6,7 @@ process PLINK_EPISTASIS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h031d066_5':
-        'biocontainers/plink:1.90b6.21--h031d066_5' }"
+        'quay.io/biocontainers/plink:1.90b6.21--h031d066_5' }"
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam)

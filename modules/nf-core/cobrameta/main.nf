@@ -25,7 +25,7 @@ process COBRAMETA {
     tuple val(meta), path("${prefix}/COBRA_all_assemblies.fasta.gz")                            , emit: all_cobra_assemblies, optional: true
     tuple val(meta), path("${prefix}/COBRA_joining_summary.txt")                                , emit: joining_summary
     tuple val(meta), path("${prefix}/log")                                                      , emit: log
-    path "versions.yml"                                                                         , emit: versions
+    tuple val("${task.process}"), val('cobra'), eval("cobra-meta --version 2>&1 | sed 's/^.*cobra v//'"), emit: versions_cobra, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,11 +48,6 @@ process COBRAMETA {
 
     gzip ${prefix}/*.fasta
     cat ${prefix}/*fasta.gz > ${prefix}/COBRA_all_assemblies.fasta.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cobra: \$(echo \$(cobra-meta --version 2>&1) | sed 's/^.*cobra v//' ))
-    END_VERSIONS
     """
 
     stub:
@@ -67,10 +62,5 @@ process COBRAMETA {
     echo "" | gzip > ${prefix}/COBRA_category_iii_orphan_end.fasta.gz
     touch ${prefix}/COBRA_joining_summary.txt
     touch ${prefix}/log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cobra: \$(echo \$(cobra-meta --version 2>&1) | sed 's/^.*cobra v//' ))
-    END_VERSIONS
     """
 }

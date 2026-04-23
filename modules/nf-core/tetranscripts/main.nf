@@ -5,7 +5,7 @@ process TETRANSCRIPTS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tetranscripts:2.2.3--pyh7cba7a3_0':
-        'biocontainers/tetranscripts:2.2.3--pyh7cba7a3_0' }"
+        'quay.io/biocontainers/tetranscripts:2.2.3--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta_t), path(bam_t)

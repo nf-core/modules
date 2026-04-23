@@ -5,7 +5,7 @@ process MALTEXTRACT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1' :
-        'biocontainers/hops:0.35--hdfd78af_1' }"
+        'quay.io/biocontainers/hops:0.35--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(rma6)

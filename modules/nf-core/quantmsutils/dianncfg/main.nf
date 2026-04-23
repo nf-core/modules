@@ -5,7 +5,7 @@ process QUANTMSUTILS_DIANNCFG {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/quantms-utils:0.0.23--pyh7e72e81_0' :
-        'biocontainers/quantms-utils:0.0.23--pyh7e72e81_0' }"
+        'quay.io/biocontainers/quantms-utils:0.0.23--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), val(enzyme), val(fixed_modifications), val(variable_modifications)

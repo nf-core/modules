@@ -5,7 +5,7 @@ process NANOLYSE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nanolyse:1.2.0--py_0' :
-        'biocontainers/nanolyse:1.2.0--py_0' }"
+        'quay.io/biocontainers/nanolyse:1.2.0--py_0' }"
 
     input:
     tuple val(meta), path(fastq)

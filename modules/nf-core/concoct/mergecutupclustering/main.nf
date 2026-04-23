@@ -5,7 +5,7 @@ process CONCOCT_MERGECUTUPCLUSTERING {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py39h8907335_8'
-        : 'biocontainers/concoct:1.1.0--py39h8907335_8'}"
+        : 'quay.io/biocontainers/concoct:1.1.0--py39h8907335_8'}"
 
     input:
     tuple val(meta), path(clustering_csv)

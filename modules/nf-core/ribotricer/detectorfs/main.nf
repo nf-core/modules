@@ -5,7 +5,7 @@ process RIBOTRICER_DETECTORFS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ribotricer:1.3.3--pyhdfd78af_0':
-        'biocontainers/ribotricer:1.3.3--pyhdfd78af_0' }"
+        'quay.io/biocontainers/ribotricer:1.3.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

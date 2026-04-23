@@ -5,7 +5,7 @@ process PYPGX_RUNNGSPIPELINE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pypgx:0.25.0--pyh7e72e81_0':
-        'biocontainers/pypgx:0.25.0--pyh7e72e81_0' }"
+        'quay.io/biocontainers/pypgx:0.25.0--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(coverage), path(control_stats), val(pgx_gene)

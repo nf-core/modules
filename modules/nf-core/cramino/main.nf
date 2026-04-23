@@ -5,7 +5,7 @@ process CRAMINO {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cramino:1.1.0--h3dc2dae_0' :
-        'biocontainers/cramino:1.1.0--h3dc2dae_0' }"
+        'quay.io/biocontainers/cramino:1.1.0--h3dc2dae_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

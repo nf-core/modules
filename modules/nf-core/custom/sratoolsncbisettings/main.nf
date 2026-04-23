@@ -5,7 +5,7 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sra-tools:3.2.1--h4304569_1' :
-        'biocontainers/sra-tools:3.2.1--h4304569_1' }"
+        'quay.io/biocontainers/sra-tools:3.2.1--h4304569_1' }"
 
     input:
     val ids

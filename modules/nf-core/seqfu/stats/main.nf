@@ -5,7 +5,7 @@ process SEQFU_STATS {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/seqfu:1.22.3--hfd12232_2'
-        : 'biocontainers/seqfu:1.22.3--hfd12232_2'}"
+        : 'quay.io/biocontainers/seqfu:1.22.3--hfd12232_2'}"
 
     input:
     // stats can get one or more fasta or fastq files

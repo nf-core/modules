@@ -5,7 +5,7 @@ process SEGEMEHL_INDEX {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/segemehl:0.3.4--hc2ea5fd_5':
-        'biocontainers/segemehl:0.3.4--hc2ea5fd_5' }"
+        'quay.io/biocontainers/segemehl:0.3.4--hc2ea5fd_5' }"
 
     input:
     path fasta

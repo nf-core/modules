@@ -7,7 +7,7 @@ process TINC {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-tinc%3A0.1.0--r44hdfd78af_0':
-        'biocontainers/r-tinc:0.1.0--r44hdfd78af_0' }"
+        'quay.io/biocontainers/r-tinc:0.1.0--r44hdfd78af_0' }"
 
     input:
     tuple val(meta), path(cna_rds), path(vcf_rds)

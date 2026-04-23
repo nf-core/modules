@@ -5,7 +5,7 @@ process FASTX_COLLAPSER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fastx_toolkit:0.0.14--hdbdd923_11':
-        'biocontainers/fastx_toolkit:0.0.14--hdbdd923_11' }"
+        'quay.io/biocontainers/fastx_toolkit:0.0.14--hdbdd923_11' }"
 
     input:
     tuple val(meta), path(fastx)

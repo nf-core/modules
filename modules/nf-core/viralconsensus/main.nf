@@ -5,7 +5,7 @@ process VIRALCONSENSUS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/viral_consensus:1.0.0--hcf1f8c1_0':
-        'biocontainers/viral_consensus:1.0.0--hcf1f8c1_0' }"
+        'quay.io/biocontainers/viral_consensus:1.0.0--hcf1f8c1_0' }"
 
     input:
     tuple val(meta), path(bam)

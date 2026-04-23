@@ -5,7 +5,7 @@ process CLAME {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/clame:1.0--he1b5a44_1':
-        'biocontainers/clame:1.0--he1b5a44_1' }"
+        'quay.io/biocontainers/clame:1.0--he1b5a44_1' }"
 
     input:
     tuple val(meta), path(fasta)

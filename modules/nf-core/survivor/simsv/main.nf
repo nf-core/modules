@@ -5,7 +5,7 @@ process SURVIVOR_SIMSV {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/survivor:1.0.7--hd03093a_2':
-        'biocontainers/survivor:1.0.7--hd03093a_2' }"
+        'quay.io/biocontainers/survivor:1.0.7--hd03093a_2' }"
 
     input:
     tuple val(meta) , path(fasta)

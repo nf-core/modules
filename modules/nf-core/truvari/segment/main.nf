@@ -5,7 +5,7 @@ process TRUVARI_SEGMENT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/truvari:5.4.0--pyhdfd78af_0':
-        'biocontainers/truvari:5.4.0--pyhdfd78af_0' }"
+        'quay.io/biocontainers/truvari:5.4.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf)

@@ -5,7 +5,7 @@ process BEDTOOLS_SHUFFLE {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--h13024bc_3'
-        : 'biocontainers/bedtools:2.31.1--h13024bc_3'}"
+        : 'quay.io/biocontainers/bedtools:2.31.1--h13024bc_3'}"
 
     input:
     tuple val(meta), path(intervals)

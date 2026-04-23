@@ -5,7 +5,7 @@ process SVTYPER_SVTYPERSSO {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svtyper:0.7.1--py_0':
-        'biocontainers/svtyper:0.7.1--py_0' }"
+        'quay.io/biocontainers/svtyper:0.7.1--py_0' }"
 
     input:
     tuple val(meta), path(bam), path(bam_index), path(vcf)

@@ -5,7 +5,7 @@ process BWAMETH_INDEX {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/bwameth:0.2.9--pyh7e72e81_0'
-        : 'biocontainers/bwameth:0.2.9--pyh7e72e81_0'}"
+        : 'quay.io/biocontainers/bwameth:0.2.9--pyh7e72e81_0'}"
 
     input:
     tuple val(meta), path(fasta, name: "BwamethIndex/")

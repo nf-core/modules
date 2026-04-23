@@ -6,7 +6,7 @@ process CLUSTY {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/clusty:1.2.2--h9ee0642_0':
-        'biocontainers/clusty:1.2.2--h9ee0642_0' }"
+        'quay.io/biocontainers/clusty:1.2.2--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(distances)

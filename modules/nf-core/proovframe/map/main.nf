@@ -5,7 +5,7 @@ process PROOVFRAME_MAP {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/proovframe:0.9.7--hdfd78af_1':
-        'biocontainers/proovframe:0.9.7--hdfd78af_1' }"
+        'quay.io/biocontainers/proovframe:0.9.7--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta)
