@@ -24,6 +24,9 @@ process KMCP_PROFILE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def taxid = level == 'species' ? "-T \$(find -L . -name '*map' -type f)" : ""
     def taxdmp = level == 'species' ? "-X \$(find -L . -name 'nodes.dmp' -type f | sed 's#nodes.dmp\$##g')" : ""
+    if (!['species', 'strain', 'assembly'].contains(level)) {
+        error("[KMCP_PROFILE] ERROR: --level must be one of 'species', 'strain' or 'assembly'")
+    }
     """
     ## Input validation checks, as require files come via a directory in an input channel (can't come through separate files)
     if [[ "${level}" == "species" && \$(find -L . -name '*map' -type f) == "" ]]; then
@@ -47,6 +50,9 @@ process KMCP_PROFILE {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    if (!['species', 'strain', 'assembly'].contains(level)) {
+        error("[KMCP_PROFILE] ERROR: --level must be one of 'species', 'strain' or 'assembly'")
+    }
     """
     touch ${prefix}.profile
     """

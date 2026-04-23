@@ -264,6 +264,66 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - fasta - wrong level - stub") {
+
+        options "-stub"
+
+        setup {
+            run("KMCP_COMPUTE") {
+                script "../../../kmcp/compute/main.nf"
+                process {
+                    """
+                    input[0] = [
+                                    [id: 'test'],
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                                ]
+                    """
+                }
+            }
+
+            run("KMCP_INDEX") {
+                script "../../../kmcp/index/main.nf"
+                process {
+                    """
+                    input[0] = KMCP_COMPUTE.out.outdir
+                    input[1] = [[],[]]
+                    input[2] = [[],[]]
+                    """
+                }
+            }
+
+            run("KMCP_SEARCH") {
+                script "../../../kmcp/search/main.nf"
+                process {
+                    """
+                    input[0] = [
+                                    [id:'test', single_end:true ], // meta map
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                                ]
+                    input[1] = KMCP_INDEX.out.kmcp.map{it[1]}
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = KMCP_SEARCH.out.result
+                input[1] = KMCP_INDEX.out.kmcp.map{it[1]}
+                input[2] = 'broken' 
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("[KMCP_PROFILE] ERROR: --level must be one of 'species', 'strain' or 'assembly") }
+            )
+        }
+
+    }
 
     test("sarscov2 - fasta - species - with taxonomy - stub") {
 
