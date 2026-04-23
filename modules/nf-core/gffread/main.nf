@@ -3,9 +3,9 @@ process GFFREAD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gffread:0.12.7--hdcf5f25_4' :
-        'biocontainers/gffread:0.12.7--hdcf5f25_4' }"
+        'quay.io/biocontainers/gffread:0.12.7--hdcf5f25_4' }"
 
     input:
     tuple val(meta), path(gff)

@@ -1,5 +1,4 @@
 name: "decoupler_decoupler"
-
 description: |
   decoupler is a package containing different statistical methods
   to extract biological activities from omics data within a unified framework.
@@ -9,14 +8,12 @@ description: |
   biological process based on prior knowledge. For example, in transcriptomics
   gene sets regulated by a transcription factor, or in phospho-proteomics
   phosphosites that are targeted by a kinase.
-
 keywords:
   - enrichment
   - omics
   - biological activity
   - functional analysis
   - prior knowledge
-
 tools:
   - "decoupler":
       description: "Ensemble of methods to infer biological activities from omics data"
@@ -24,9 +21,9 @@ tools:
       documentation: "https://decoupler-py.readthedocs.io/en/latest/api.html"
       tool_dev_url: "https://decoupler-py.readthedocs.io"
       doi: "10.1093/bioadv/vbac016"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:decoupler
-
 input:
   - - meta:
         type: map
@@ -111,8 +108,14 @@ output:
   versions:
     - versions.yml:
         type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+        description: YAML file containing versions of tools used in the module
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:

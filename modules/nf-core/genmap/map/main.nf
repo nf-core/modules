@@ -3,9 +3,9 @@ process GENMAP_MAP {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmap:1.3.0--h1b792b2_1' :
-        'biocontainers/genmap:1.3.0--h1b792b2_1' }"
+        'quay.io/biocontainers/genmap:1.3.0--h1b792b2_1' }"
 
     input:
     tuple val(meta), path(index)

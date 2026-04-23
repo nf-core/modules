@@ -3,9 +3,9 @@ process EMMTYPER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/emmtyper:0.2.0--py_0' :
-        'biocontainers/emmtyper:0.2.0--py_0' }"
+        'quay.io/biocontainers/emmtyper:0.2.0--py_0' }"
 
     input:
     tuple val(meta), path(fasta)
