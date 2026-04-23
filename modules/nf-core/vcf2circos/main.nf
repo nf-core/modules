@@ -12,7 +12,7 @@ process VCF2CIRCOS {
     tuple val(meta2), path(vcf2circos_config)
 
     output:
-    tuple val(meta), path("*.{html,png,jpg,jpeg,webp,svg,pdf,eps,json}"), emit: circos, optional: true
+    tuple val(meta), path("*.{html,png,jpg,jpeg,webp,svg,pdf,eps,json}"), emit: circos
     tuple val("${task.process}"), val('vcf2circos'), eval("vcf2circos --help | sed -n 's/^Version: //p'"), topic: versions, emit: versions_vcf2circos
 
     when:
