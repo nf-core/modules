@@ -3,14 +3,14 @@ process BOWTIE2_ALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b41b403e81883126c3227fc45840015538e8e2212f13abc9ae84e4b98891d51c/data' :
         'community.wave.seqera.io/library/bowtie2_htslib_samtools_pigz:edeb13799090a2a6' }"
 
     input:
     tuple val(meta) , path(reads)
     tuple val(meta2), path(index)
-    tuple val(meta3), path(fasta)
+    tuple val(meta3), path(fasta), path(fai)
     val   save_unaligned
     val   sort_bam
 
@@ -22,7 +22,7 @@ process BOWTIE2_ALIGN {
     tuple val(meta), path("*.crai")     , emit: crai    , optional:true
     tuple val(meta), path("*.log")      , emit: log
     tuple val(meta), path("*fastq.gz")  , emit: fastq   , optional:true
-    tuple val("${task.process}"), val('bowtie2'), eval("bowtie2 --version 2>&1 | sed -n '1s/.*bowtie2-align-s version //p'"), emit: versions_bowtie2, topic: versions
+    tuple val("${task.process}"), val('bowtie2'), eval("bowtie2 --version 2>&1 | sed -n 's/.*bowtie2-align-s version //p'"), emit: versions_bowtie2, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
     tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //'"), emit: versions_pigz, topic: versions
 

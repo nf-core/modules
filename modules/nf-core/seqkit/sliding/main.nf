@@ -3,16 +3,16 @@ process SEQKIT_SLIDING {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqkit:2.9.0--h9ee0642_0':
-        'biocontainers/seqkit:2.9.0--h9ee0642_0' }"
+        'quay.io/biocontainers/seqkit:2.9.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fastx)
 
     output:
     tuple val(meta), path("*.fast*"), emit: fastx
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process SEQKIT_SLIDING {
         ${args} \\
         --threads ${task.cpus} \\
         -o ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +40,5 @@ process SEQKIT_SLIDING {
     }
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
-    END_VERSIONS
     """
 }

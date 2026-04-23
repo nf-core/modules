@@ -3,16 +3,16 @@ process AGAT_CONVERTBED2GFF {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agat:1.6.1--pl5321hdfd78af_1' :
-        'biocontainers/agat:1.6.1--pl5321hdfd78af_1' }"
+        'quay.io/biocontainers/agat:1.6.1--pl5321hdfd78af_1' }"
 
     input:
     tuple val(meta), path(bed)
 
     output:
     tuple val(meta), path("*.gff"), emit: gff
-    tuple val("${task.process}"), val('agat'), eval('agat_convert_bed2gff.pl --help | grep Version | cut -d" " -f11'), emit: versions_agat, topic: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,13 +25,11 @@ process AGAT_CONVERTBED2GFF {
         --bed ${bed} \\
         --output ${prefix}.gff \\
         ${args}
-
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gff
-
     """
 }

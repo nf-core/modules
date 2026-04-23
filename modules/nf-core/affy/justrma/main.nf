@@ -3,19 +3,19 @@ process AFFY_JUSTRMA {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-affy:1.78.0--r43ha9d7317_1':
-        'biocontainers/bioconductor-affy:1.78.0--r43ha9d7317_1' }"
+        'quay.io/biocontainers/bioconductor-affy:1.78.0--r43ha9d7317_1' }"
 
     input:
     tuple val(meta), path(samplesheet), path(celfiles_dir)
     tuple val(meta2), path(description)
 
     output:
-    tuple val(meta), path("*.rds")           , emit: rds
-    tuple val(meta), path("*matrix.tsv")     , emit: expression
-    tuple val(meta), path("*.annotation.tsv"), emit: annotation, optional: true
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("*.rds")            , emit: rds
+    tuple val(meta), path("*matrix.tsv")      , emit: expression
+    tuple val(meta), path("*.annotation.tsv") , emit: annotation, optional: true
+    path "versions.yml", emit: versions_affy, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,6 +30,11 @@ process AFFY_JUSTRMA {
     touch ${prefix}_eset.rds
     touch ${prefix}_matrix.tsv
     touch R_sessionInfo.log
-    touch versions.yml
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        bioconductor-affy: \$(Rscript -e "cat(as.character(packageVersion('affy')))")
+    END_VERSIONS
     """
 }

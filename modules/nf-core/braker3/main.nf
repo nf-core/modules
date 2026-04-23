@@ -23,7 +23,10 @@ process BRAKER3 {
     tuple val(meta), path("$prefix/hintsfile.gff")      , emit: hintsfile   , optional: true
     tuple val(meta), path("$prefix/braker.gff3")        , emit: gff3        , optional: true
     tuple val(meta), path("$prefix/what-to-cite.txt")   , emit: citations
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('braker3'), eval("braker.pl --version 2>/dev/null | sed 's/braker.pl version //'"), emit: versions_braker3, topic: versions
+    tuple val("${task.process}"), val('augustus'), eval("augustus --version |& sed -n 's/AUGUSTUS (\\(.*\\)) is a gene .*/\\1/p'"), emit: versions_augustus, topic: versions
+    tuple val("${task.process}"), val('genemark-etp'), eval("gmetp.pl |& sed -n 's/ETP version \\(.*\\)/\\1/p'"), emit: versions_genemarketp, topic: versions
+    tuple val("${task.process}"), val('prothint'), eval("prothint.py --version |& sed 's/prothint.py //1'"), emit: versions_prothint, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -60,14 +63,6 @@ process BRAKER3 {
         $prot_arg \\
         $hints \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        braker3: \$(braker.pl --version 2>/dev/null | sed 's/braker.pl version //')
-        augustus: \$(augustus --version |& sed -n 's/AUGUSTUS (\\(.*\\)) is a gene .*/\\1/p')
-        genemark-etp: \$(echo "\$(gmetp.pl || echo '')" | sed -n 's/ETP version \\(.*\\)/\\1/p')
-        prothint: \$(prothint.py --version | sed 's/prothint.py //1')
-    END_VERSIONS
     """
 
     stub:
@@ -87,13 +82,5 @@ process BRAKER3 {
     touch "$prefix/braker.log"
     touch "$prefix/what-to-cite.txt"
     $touch_gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        braker3: \$(braker.pl --version 2>/dev/null | sed 's/braker.pl version //')
-        augustus: \$(augustus --version |& sed -n 's/AUGUSTUS (\\(.*\\)) is a gene .*/\\1/p')
-        genemark-etp: \$(echo "\$(gmetp.pl || echo '')" | sed -n 's/ETP version \\(.*\\)/\\1/p')
-        prothint: \$(prothint.py --version | sed 's/prothint.py //1')
-    END_VERSIONS
     """
 }

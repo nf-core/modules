@@ -1,0 +1,96 @@
+name: "numorph_intensity"
+description: performs shading correction and intensity normalization between tile
+  stacks
+keywords:
+  - intensity correction
+  - light-sheet microscopy
+  - numorph
+  - lsmquant
+tools:
+  - "numorph":
+      description: "A toolkit for processing and analysis of light-sheet microscopy
+        images"
+      homepage: "https://github.com/qbic-pipelines/Numorph-toolkit"
+      documentation: "https://github.com/qbic-pipelines/Numorph-toolkit"
+      tool_dev_url: "https://github.com/qbic-pipelines/Numorph-toolkit"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - img_directory:
+        type: directory
+        description: Directory containing image files
+        pattern: "*.{tif,tiff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3591"
+          - edam: "http://edamontology.org/format_3727"
+    - parameter_file:
+        type: file
+        description: File containing parameters for numorph tools
+        pattern: "*.{csv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+output:
+  variables:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - results/variables/:
+          type: directory
+          description: Directory containing tile normalization factors and intensity
+            thresholds
+          pattern: "/{results}/variables/*"
+  samples:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - results/samples/:
+          type: directory
+          description: Directory containing QC images for tile normalization and intensity adjusted example images
+          pattern: "/{results}/samples/*"
+  NM_variable:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - results/NM_variables.mat:
+          type: file
+          description: File containing processing parameters and varaiables in .mat format
+          pattern: "/{results}/NM_variables.mat"
+          ontologies:
+            - edam: "http://edamontology.org/format_3626"
+  versions_numorph_intensity:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - numorph_intensity:
+          type: string
+          description: The name of the tool
+      - 1.0.0:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - numorph_intensity:
+          type: string
+          description: The name of the tool
+      - 1.0.0:
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@CaroAMN"
+maintainers:
+  - "@CaroAMN"

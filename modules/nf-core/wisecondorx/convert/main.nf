@@ -3,9 +3,9 @@ process WISECONDORX_CONVERT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wisecondorx:1.2.9--pyhdfd78af_0':
-        'biocontainers/wisecondorx:1.2.9--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/13af39819608398807612090d4b8af7dedb8db403967e71af22dbbeeb502ead1/data':
+        'community.wave.seqera.io/library/wisecondorx:1.3.0--835c946afbce9082' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

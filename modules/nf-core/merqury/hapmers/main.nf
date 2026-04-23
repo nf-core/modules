@@ -3,9 +3,9 @@ process MERQURY_HAPMERS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/merqury:1.3--hdfd78af_1':
-        'biocontainers/merqury:1.3--hdfd78af_1' }"
+        'quay.io/biocontainers/merqury:1.3--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(child_meryl, stageAs: 'child.meryl')

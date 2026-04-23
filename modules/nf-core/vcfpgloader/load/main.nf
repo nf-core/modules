@@ -15,9 +15,9 @@ process VCFPGLOADER_LOAD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcf-pg-loader:0.5.4--pyhdfd78af_0' :
-        'biocontainers/vcf-pg-loader:0.5.4--pyhdfd78af_0' }"
+        'quay.io/biocontainers/vcf-pg-loader:0.5.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), val(db_host), val(db_port), val(db_name), val(db_user), val(db_schema)
@@ -34,8 +34,9 @@ process VCFPGLOADER_LOAD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // NOTE: batch_size exposed via task.ext for pipeline-level tuning of memory/performance tradeoffs
-    def batch_size = task.ext.batch_size ?: '10000'
+    if (!args.contains('--batch ')) {
+        args += " --batch 10000"
+    }
     """
     vcf-pg-loader load \\
         --host ${db_host} \\
@@ -43,7 +44,6 @@ process VCFPGLOADER_LOAD {
         --database ${db_name} \\
         --user ${db_user} \\
         --schema ${db_schema} \\
-        --batch ${batch_size} \\
         --workers ${task.cpus} \\
         --sample-id ${meta.id} \\
         --report ${prefix}.load_report.json \\
