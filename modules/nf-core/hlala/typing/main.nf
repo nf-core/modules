@@ -5,7 +5,7 @@ process HLALA_TYPING {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hla-la:1.0.4--h077b44d_1':
-        'quay.io/biocontainers/hla-la:1.0.4--h077b44d_1' }"
+        'biocontainers/hla-la:1.0.4--h077b44d_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(graph)
@@ -21,7 +21,7 @@ process HLALA_TYPING {
     tuple val(meta), path("results/reads_per_level.txt")         , emit: reads_per_level
     tuple val(meta), path("results/remapped_with_a.bam")         , emit: remapped
     tuple val(meta), path("results/remapped_with_a.bam.bai")     , emit: remapped_index
-    path "versions.yml"                                          , emit: versions
+    tuple val("${task.process}"), val('hla-la'), eval('echo 1.0.4'), emit: versions_hlala, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,7 +29,6 @@ process HLALA_TYPING {
     script:
     def args    = task.ext.args   ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     def bin = ""
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -47,17 +46,10 @@ process HLALA_TYPING {
         --maxThreads $task.cpus \\
         $args
 
-    mkdir -p results
-    mv ${prefix}/ results/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hla-la: ${VERSION}
-    END_VERSIONS
+    mv ${prefix} results
     """
 
     stub:
-    def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p results
 
@@ -146,10 +138,5 @@ process HLALA_TYPING {
     touch results/hla/R1_readIDs_K.txt
     touch results/hla/R1_readIDs_V.txt
     touch results/hla/summaryStatistics.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hla-la: ${VERSION}
-    END_VERSIONS
     """
 }
