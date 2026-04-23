@@ -48,6 +48,6 @@ process CARVEME_CARVE {
     """
     echo "${args}"
     touch ${prefix}.xml
-    [[ "${args}" == *"--debug"* ]] && touch ${prefix}.log || true
+    [[ "${args}" == *"--debug"* ]] && touch ${prefix}_gene_scores.tsv ${prefix}_milp_problem.lp ${prefix}_milp_solution.tsv ${prefix}_protein_scores.tsv ${prefix}_reaction_scores.tsv || true
     """
 }
