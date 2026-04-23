@@ -10,6 +10,8 @@ process DEEPCELL_MESMER {
 
     output:
     tuple val(meta), path("*.tif"), emit: mask
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('deepcell-applications'), val("0.4.1"), emit: versions_deepcellapplications, topic: versions
     tuple val("${task.process}"), val('deepcell'), eval("pip show 'DeepCell' | sed '2!d;s/Version: //'"), emit: versions_deepcell, topic: versions
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), emit: versions_python, topic: versions
 
