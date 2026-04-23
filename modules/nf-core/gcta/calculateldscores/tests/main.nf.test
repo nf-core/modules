@@ -1,0 +1,171 @@
+nextflow_process {
+
+    name "Test Process GCTA_CALCULATELDSCORES"
+    script "../main.nf"
+    process "GCTA_CALCULATELDSCORES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/calculateldscores"
+    tag "plink"
+
+    test("homo_sapiens gsmr - plink1") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'bfile' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                ]
+                input[1] = 50
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.ld_scores.size() == 1 },
+                { assert process.out.snp_group_files.size() == 1 },
+                { assert process.out.ld_scores.get(0).get(0).id == 'bfile' },
+                {
+                    def ldScoreTuple = process.out.ld_scores.get(0)
+                    def ldScoreFile = path(ldScoreTuple.get(1))
+                    def ldScoreLines = ldScoreFile.readLines().findAll { it?.trim() }
+                    assert ldScoreLines.size() > 1
+
+                    def ldScoreHeader = ldScoreLines.get(0).trim().split(/\s+/) as List
+                    assert ldScoreHeader.contains('SNP')
+                    assert ldScoreHeader.contains('ldscore_SNP')
+
+                    def snpColIdx = ldScoreHeader.indexOf('SNP')
+                    def ldScoreSnps = ldScoreLines.drop(1).collect { row -> row.trim().split(/\s+/)[snpColIdx] }
+                    def ldScoreSnpsSet = ldScoreSnps as Set
+
+                    def snpGroups = process.out.snp_group_files.get(0)
+                    assert snpGroups.get(0).id == 'bfile'
+                    assert snpGroups.size() == 5
+
+                    def snpGroupFiles = (1..4).collect { idx -> path(snpGroups.get(idx)) }
+                    assert snpGroupFiles.every { file -> file.exists() }
+                    assert snpGroupFiles.collect { file -> file.fileName.toString() } == [
+                        'bfile_snp_group1.txt',
+                        'bfile_snp_group2.txt',
+                        'bfile_snp_group3.txt',
+                        'bfile_snp_group4.txt'
+                    ]
+
+                    def groupedSnps = snpGroupFiles.collectMany { file ->
+                        file.readLines().findAll { it?.trim() }
+                    }
+                    assert groupedSnps.every { snp -> snp in ldScoreSnpsSet }
+                    assert groupedSnps.size() == groupedSnps.toSet().size()
+                    assert groupedSnps.toSet() == ldScoreSnpsSet
+                },
+                {
+                    assert snapshot(
+                        process.out.ld_scores,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - plink1 - stub") {
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'bfile' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                ]
+                input[1] = 200
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.ld_scores.size() == 1 },
+                { assert process.out.snp_group_files.size() == 1 },
+                {
+                    def ldScoreTuple = process.out.ld_scores.get(0)
+                    def ldScoreFile = path(ldScoreTuple.get(1))
+                    def ldScoreLines = ldScoreFile.readLines().findAll { it?.trim() }
+                    assert ldScoreLines.size() > 1
+
+                    def ldScoreHeader = ldScoreLines.get(0).trim().split(/\s+/) as List
+                    assert ldScoreHeader.contains('SNP')
+                    assert ldScoreHeader.contains('ldscore_SNP')
+
+                    def snpColIdx = ldScoreHeader.indexOf('SNP')
+                    def ldScoreSnps = ldScoreLines.drop(1).collect { row -> row.trim().split(/\s+/)[snpColIdx] }
+                    def ldScoreSnpsSet = ldScoreSnps as Set
+
+                    def snpGroups = process.out.snp_group_files.get(0)
+                    assert snpGroups.get(0).id == 'bfile'
+                    assert snpGroups.size() == 5
+
+                    def snpGroupFiles = (1..4).collect { idx -> path(snpGroups.get(idx)) }
+                    assert snpGroupFiles.every { file -> file.exists() }
+                    assert snpGroupFiles.collect { file -> file.fileName.toString() } == [
+                        'bfile_snp_group1.txt',
+                        'bfile_snp_group2.txt',
+                        'bfile_snp_group3.txt',
+                        'bfile_snp_group4.txt'
+                    ]
+
+                    def groupedSnps = snpGroupFiles.collectMany { file ->
+                        file.readLines().findAll { it?.trim() }
+                    }
+                    assert groupedSnps.every { snp -> snp in ldScoreSnpsSet }
+                    assert groupedSnps.size() == groupedSnps.toSet().size()
+                    assert groupedSnps.toSet() == ldScoreSnpsSet
+                },
+                {
+                    assert snapshot(
+                        process.out.ld_scores,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - invalid ld score region fails") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'bfile' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                ]
+                input[1] = 'not_an_integer'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+}
