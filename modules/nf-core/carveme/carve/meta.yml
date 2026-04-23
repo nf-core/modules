@@ -25,8 +25,10 @@ input:
           e.g. `[ id:'sample1' ]`
     - fasta:
         type: file
-        description: Protein FASTA file
-        pattern: "*.{fa,faa,fasta}"
+        description: |
+          Protein FASTA file
+          or DNA fasta file if the --dna flag is provided
+        pattern: "*.{fa,faa,fasta,fna}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
     - universe_file:
@@ -37,7 +39,9 @@ input:
           - edam: "http://edamontology.org/format_2332" # XML
     - mediadb:
         type: file
-        description: Optional. Media database file, passed to --mediadb.
+        description: |
+          Optional. Media database file, passed to --mediadb.
+          --gapfill X,Y,Z with medium names from the database must also be provided
         pattern: "*.{tsv,csv,txt}"
         ontologies:
           - edam: "http://edamontology.org/format_3475" # TSV
@@ -78,18 +82,80 @@ output:
           pattern: "*.xml"
           ontologies:
             - edam: "http://edamontology.org/format_2332" # XML
-  debug:
+  gene_scores:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}.log:
+      - ${prefix}_gene_scores.tsv:
           type: file
-          description: Optional debug files produced when --debug is passed. Contains the LP formulation (.lp) and solution (.sol) from the MILP solver.
-          pattern: "*.log"
+          description: |
+            Optional. Tab-separated file produced when --debug is passed. Maps each query gene to its
+            corresponding BiGG gene identifier, protein group, reaction, source model, and BLAST
+            bit-score used during model reconstruction.
+          pattern: "*_gene_scores.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_2330" # Textual format
+            - edam: "http://edamontology.org/format_3475" # TSV
+  milp_problem:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_milp_problem.lp:
+          type: file
+          description: |
+            Optional. Linear programming problem file in LP format produced when --debug is passed.
+            Contains the MILP formulation (variables, constraints, and objective function) passed to
+            the SCIP solver during gap-filling or reaction selection.
+          pattern: "*_milp_problem.lp"
+          ontologies: []
+  milp_solution:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_milp_solution.tsv:
+          type: file
+          description: |
+            Optional. Tab-separated file produced when --debug is passed. Contains the MILP solver
+            solution, listing each reaction identifier and its corresponding flux value selected
+            during model gap-filling.
+          pattern: "*_milp_solution.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  protein_scores:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_protein_scores.tsv:
+          type: file
+          description: |
+            Optional. Tab-separated file produced when --debug is passed. Lists the BLAST alignment
+            scores for each query protein against the template model database, including the matched
+            protein group, reaction, source model, and GPR rule used for scoring.
+          pattern: "*_protein_scores.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  reaction_scores:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_reaction_scores.tsv:
+          type: file
+          description: |
+            Optional. Tab-separated file produced when --debug is passed. Lists each candidate
+            reaction with its GPR rule, raw BLAST bit-score, and normalised score used to weight
+            the MILP objective during model reconstruction.
+          pattern: "*_reaction_scores.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   versions_carveme:
     - - ${task.process}:
           type: string

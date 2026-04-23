@@ -1,6 +1,6 @@
 process CARVEME_CARVE {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
@@ -11,8 +11,12 @@ process CARVEME_CARVE {
     tuple val(meta), path(fasta), path(universe_file), path(mediadb), path(soft), path(hard), path(reference)
 
     output:
-    tuple val(meta), path("${prefix}.xml"), emit: model
-    tuple val(meta), path("${prefix}.log"), optional: true, emit: debug
+    tuple val(meta), path("${prefix}.xml")                                , emit: model
+    tuple val(meta), path("${prefix}_gene_scores.tsv")    , optional: true, emit: gene_scores
+    tuple val(meta), path("${prefix}_milp_problem.lp")    , optional: true, emit: milp_problem
+    tuple val(meta), path("${prefix}_milp_solution.tsv")  , optional: true, emit: milp_solution
+    tuple val(meta), path("${prefix}_protein_scores.tsv") , optional: true, emit: protein_scores
+    tuple val(meta), path("${prefix}_reaction_scores.tsv"), optional: true, emit: reaction_scores
     tuple val("${task.process}"), val('carveme'), eval("pip show carveme | sed -n 's/^Version: //p'"), topic: versions, emit: versions_carveme
 
     when:

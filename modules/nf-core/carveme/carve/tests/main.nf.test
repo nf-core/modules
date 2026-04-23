@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process CARVEME_CARVE"
     script "../main.nf"
     process "CARVEME_CARVE"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -12,6 +13,9 @@ nextflow_process {
     test("candidatus_portiera_aleyrodidarum - proteome fasta - xml") {
 
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] = [
@@ -34,11 +38,66 @@ nextflow_process {
         }
     }
 
+    test("cazymes - faa - mediadb - debug - xml") {
+
+        when {
+            params {
+                module_args = "--debug --gapfill LB,M9"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true),
+                    [],
+                    file("/home/vangelis/Desktop/Projects/modules/modules/nf-core/carveme/carve/tests/fixtures/media_db.tsv"),
+                    [], [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("cazymes - faa - debug - xml") {
+
+        when {
+            params {
+                module_args = "--debug"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true),
+                    [], [], [], [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
     test("candidatus_portiera_aleyrodidarum - proteome fasta - xml - stub") {
 
         options "-stub"
 
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] = [
