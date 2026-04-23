@@ -1,0 +1,300 @@
+nextflow_process {
+
+    name "Test Process GCTA_REMLLDMS"
+    script "../main.nf"
+    process "GCTA_REMLLDMS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/remlldms"
+    tag "gcta/makegrmpart"
+    tag "gawk"
+
+    setup {
+        run("GAWK", alias: "GAWK_QUANTITATIVE_PHENOTYPE") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTrait' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, \$3 }').collectFile(name:'quantitative_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_MULTI_PHENOTYPES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTraitMpheno' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, \$3, (\$3 * 0.5) + ((NR % 7) / 10.0) }').collectFile(name:'multi_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_QUANTITATIVE_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_quant' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$4, \$5 }').collectFile(name:'quantitative_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_CATEGORICAL_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_cat' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'categorical_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRM_LDMS1") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_ldms1', part_gcta_job:1, nparts_gcta:1 ],
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'all_variants' ], []]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens gsmr - ldms mgrm with mpheno selection") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'QuantitativeTraitMpheno2' ], pheno] }
+                input[1] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
+                    }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                input[4] = 2
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTraitMpheno2" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - quantitative phenotype with ldms mgrm and covariates") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = GAWK_QUANTITATIVE_PHENOTYPE.out.output
+                input[1] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
+                    }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                input[4] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTrait" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - quantitative phenotype with ldms mgrm and no covariates") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = GAWK_QUANTITATIVE_PHENOTYPE.out.output
+                input[1] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
+                    }
+                input[2] = [[ id:'covariates_quant' ], []]
+                input[3] = [[ id:'covariates_cat' ], []]
+                input[4] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTrait" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - ldms mgrm mpheno defaults to first phenotype when empty") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'QuantitativeTraitMphenoDefault' ], pheno] }
+                input[1] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
+                    }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTraitMphenoDefault" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - fails when mgrm references missing GRM basename") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = GAWK_QUANTITATIVE_PHENOTYPE.out.output.map { meta, pheno -> [[ id:'QuantitativeTraitInvalidLdms' ], pheno] }
+                input[1] = Channel
+                    .of('plink_simulated_ldms_missing.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms_broken.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
+                    }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                input[4] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - quantitative phenotype with ldms mgrm - stub") {
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = GAWK_QUANTITATIVE_PHENOTYPE.out.output
+                input[1] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
+                    }
+                input[2] = [[ id:'covariates_quant' ], []]
+                input[3] = [[ id:'covariates_cat' ], []]
+                input[4] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTrait" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+}

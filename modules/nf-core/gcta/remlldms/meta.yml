@@ -1,0 +1,107 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_remlldms"
+description: Run REML-LDMS heritability estimation with an MGRM manifest
+keywords:
+  - gcta
+  - reml
+  - ldms
+  - genetics
+tools:
+  - "gcta":
+      description: "Genome-wide Complex Trait Analysis (GCTA) estimates genetic relationships, variance components, and association statistics from genome-wide data."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://yanglab.westlake.edu.cn/software/gcta/"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing phenotype metadata
+          e.g. `[ id:'QuantitativeTrait' ]`
+    - phenotypes_file:
+        type: file
+        description: Phenotype file passed to `--pheno`
+        pattern: "*.{phe,pheno,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing MGRM metadata
+          e.g. `[ id:'plink_simulated_ldms' ]`
+    - mgrm_file:
+        type: file
+        description: MGRM manifest file
+        pattern: "*.mgrm"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+    - grm_files:
+        type: file
+        description: GRM sidecar files referenced by `mgrm_file`
+        pattern: "*"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy map containing quantitative covariate metadata
+          e.g. `[ id:'covariates_quant' ]`
+    - quant_covariates_file:
+        type: file
+        description: Quantitative covariates file, pass `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta4:
+        type: map
+        description: |
+          Groovy map containing categorical covariate metadata
+          e.g. `[ id:'covariates_cat' ]`
+    - cat_covariates_file:
+        type: file
+        description: Categorical covariates file, pass `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - mpheno:
+      type: integer
+      description: |
+        Phenotype column selector passed to `--mpheno`.
+        Pass `1` explicitly for the default first phenotype column.
+output:
+  reml_results:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing phenotype metadata
+            e.g. `[ id:'QuantitativeTrait' ]`
+      - "*.hsq":
+          type: file
+          description: REML-LDMS result file
+          pattern: "*.{hsq}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the version was collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//':
+          type: eval
+          description: The command used to retrieve the GCTA version
+authors:
+  - "@andongni"
+maintainers:
+  - "@andongni"
