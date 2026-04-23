@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_makebksparse"
+description: Create a sparse GRM from a dense GRM for downstream fastGWA analyses
+keywords:
+  - gcta
+  - grm
+  - sparse
+  - genetics
+tools:
+  - "gcta":
+      description: "Genome-wide Complex Trait Analysis (GCTA) estimates genetic relationships, variance components, and association statistics from genome-wide data."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://yanglab.westlake.edu.cn/software/gcta/"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing dense GRM metadata
+          e.g. `[ id:'plink_simulated' ]`
+          `meta.id` is required and is the dense GRM basename contract used by `gcta --grm`.
+          Input files must therefore be staged as `<meta.id>.grm.id`, `<meta.id>.grm.bin`, and `<meta.id>.grm.N.bin`.
+    - grm_id:
+        type: file
+        description: Dense GRM sample identifier file
+        pattern: "*.grm.id"
+        ontologies: []
+    - grm_bin:
+        type: file
+        description: Dense GRM binary matrix file
+        pattern: "*.grm.bin"
+        ontologies: []
+    - grm_n_bin:
+        type: file
+        description: Dense GRM sample-count matrix file
+        pattern: "*.grm.N.bin"
+        ontologies: []
+  - cutoff:
+      type: float
+      description: Sparse GRM cutoff passed to `--make-bK-sparse`
+
+output:
+  sparse_grm_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing dense GRM metadata
+            e.g. `[ id:'plink_simulated' ]`
+            `meta.id` is preserved from the input dense GRM basename contract.
+      - "*_sp.grm.id":
+          type: file
+          description: Sparse GRM sample identifier file
+          pattern: "*_sp.grm.id"
+          ontologies: []
+      - "*_sp.grm.sp":
+          type: file
+          description: Sparse GRM matrix file
+          pattern: "*_sp.grm.sp"
+          ontologies: []
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the version was collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//':
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+authors:
+  - "@andongni"
+maintainers:
+  - "@andongni"
