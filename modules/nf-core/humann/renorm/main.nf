@@ -1,12 +1,11 @@
+include { getConda; getContainer; getHumannVersion } from '../utils'
 
 process HUMANN_RENORM {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::humann=3.0.0"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/humann:3.0.0--pyh5e36f6f_1'
-        : 'biocontainers/humann:3.0.0--pyh5e36f6f_1'}"
+    conda { getConda(task.ext.version ?: getHumannVersion(task.process)) }
+    container { getContainer(task.ext.version ?: getHumannVersion(task.process)) }
 
     input:
     tuple val(meta), path(input)

@@ -23,7 +23,7 @@ def getContainer(name)  {
 def getConda(name) {
     return [
 	'HUMANN3': 'bioconda::humann=3.6.1',
-	'HUMANN4': 'bioconda::humann=4.0.0.alpha.1-final'
+	'HUMANN4': 'bioconda::humann=4.0.0a1'
     ][name]
 }
 def getExt(name) {
