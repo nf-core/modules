@@ -5,7 +5,7 @@ process PERCOLATOR {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/percolator:3.7.1--h6351f2a_0'
-        : 'biocontainers/percolator:3.7.1--h6351f2a_0'}"
+        : 'quay.io/biocontainers/percolator:3.7.1--h6351f2a_0'}"
 
     input:
     tuple val(meta), path(peptide_identification)
