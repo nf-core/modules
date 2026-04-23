@@ -4,7 +4,7 @@ process TRAITAR_PFAMGET {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'community.wave.seqera.io/library/hmmer_prodigal_pandas_parallel_pruned:ccae2eabc2a54ac8' :
+        'oras://community.wave.seqera.io/library/hmmer_prodigal_pandas_parallel_pruned:9b929a08d061b63d' :
         'community.wave.seqera.io/library/hmmer_prodigal_pandas_parallel_pruned:ccae2eabc2a54ac8' }"
 
     output:
