@@ -5,7 +5,7 @@ process CARVEME_CARVE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/carveme:1.6.6--pyhdfd78af_1'
-        : 'biocontainers/carveme:1.6.6--pyhdfd78af_1'}"
+        : 'quay.io/biocontainers/carveme:1.6.6--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(fasta)
