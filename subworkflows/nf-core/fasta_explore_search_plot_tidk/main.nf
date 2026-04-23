@@ -37,7 +37,8 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
                             | map { meta, fasta -> [ meta.id, meta, fasta ] }
                             | join(
                                 ( ch_apriori_sequence ?: channel.empty() )
-                                | map { meta, seq -> [ meta.id, seq ] }
+                                | map { meta, seq -> [ meta.id, seq ] },
+                                failOnMismatch: false
                             )
                             | map { _id, meta, fasta, seq -> [ meta, fasta, seq ] }
 
@@ -50,7 +51,7 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
 
     // TIDK_SEARCH as TIDK_SEARCH_APOSTERIORI
     ch_aposteriori_inputs   = ch_sorted_fasta
-                            | join(ch_top_sequence)
+                            | join(ch_top_sequence, failOnMismatch: false)
                             | map { meta, fasta, txt ->
                                 [ meta, fasta, txt.getText().strip() ]
                             }
