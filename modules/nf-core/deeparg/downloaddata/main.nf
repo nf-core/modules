@@ -4,7 +4,7 @@ process DEEPARG_DOWNLOADDATA {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/deeparg:1.0.4--pyhdfd78af_0'
-        : 'biocontainers/deeparg:1.0.4--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/deeparg:1.0.4--pyhdfd78af_0'}"
 
     /*
     We have to force docker/singularity to mount a fake file to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).

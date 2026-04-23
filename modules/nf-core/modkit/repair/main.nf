@@ -5,7 +5,7 @@ process MODKIT_REPAIR {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.1--hcdda2d0_0':
-        'biocontainers/ont-modkit:0.6.1--hcdda2d0_0' }"
+        'quay.io/biocontainers/ont-modkit:0.6.1--hcdda2d0_0' }"
 
     input:
     tuple val(meta), path(before_trim), path(after_trim)

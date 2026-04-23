@@ -6,7 +6,7 @@ process GRAPHMAP2_ALIGN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/graphmap:0.6.3--he513fc3_0' :
-        'biocontainers/graphmap:0.6.3--he513fc3_0' }"
+        'quay.io/biocontainers/graphmap:0.6.3--he513fc3_0' }"
 
     input:
     tuple val(meta), path(reads)

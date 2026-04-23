@@ -5,7 +5,7 @@ process CUSTOM_TABULARTOGSEACHIP {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gawk:5.1.0' :
-        'biocontainers/gawk:5.1.0' }"
+        'quay.io/biocontainers/gawk:5.1.0' }"
 
     input:
     tuple val(meta), path(tabular)
@@ -13,7 +13,7 @@ process CUSTOM_TABULARTOGSEACHIP {
 
     output:
     tuple val(meta), path("*.chip"), emit: chip
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('gawk'), eval("gawk --version 2>&1 | sed '1!d;s/^.*GNU Awk //; s/, .*//'"), emit: versions_gawk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,22 +35,11 @@ process CUSTOM_TABULARTOGSEACHIP {
     echo -e "Probe Set ID\\tGene Symbol\\tGene Title" > \${outfile}.tmp
     tail -n +2 $tabular | awk -F'\\t' -v id=\$id_col -v symbol=\$symbol_col '{print \$id"\\t"\$symbol"\\tNA"}' >> \${outfile}.tmp
     mv \${outfile}.tmp \${outfile}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    outfile=${prefix}.chip
-    touch \$outfile
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
-    END_VERSIONS
+    touch ${prefix}.chip
     """
 }

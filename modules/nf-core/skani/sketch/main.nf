@@ -5,7 +5,7 @@ process SKANI_SKETCH {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/skani:0.2.2--ha6fb395_2':
-        'biocontainers/skani:0.2.2--ha6fb395_2' }"
+        'quay.io/biocontainers/skani:0.2.2--ha6fb395_2' }"
 
     input:
     tuple val(meta), path(fasta)

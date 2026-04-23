@@ -5,7 +5,7 @@ process CALDER2 {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-calder2:0.7--r43hdfd78af_1' :
-        'biocontainers/r-calder2:0.7--r43hdfd78af_1' }"
+        'quay.io/biocontainers/r-calder2:0.7--r43hdfd78af_1' }"
 
     input:
     tuple val(meta), path(cool)

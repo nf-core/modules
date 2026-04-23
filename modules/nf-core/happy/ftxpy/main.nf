@@ -6,7 +6,7 @@ process HAPPY_FTXPY {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap.py:0.3.14--py27h5c5a3ab_0':
-        'biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
+        'quay.io/biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
 
     input:
     tuple val(meta), path(vcf), path(regions_bed), path(targets_bed), path(bam)

@@ -5,7 +5,7 @@ process TAXONKIT_NAME2TAXID {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/taxonkit:0.15.1--h9ee0642_0':
-        'biocontainers/taxonkit:0.15.1--h9ee0642_0' }"
+        'quay.io/biocontainers/taxonkit:0.15.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), val(name), path(names_txt)
