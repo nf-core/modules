@@ -5,7 +5,7 @@ process NAIL_SEARCH {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nail:0.4.0--h4349ce8_0':
-        'biocontainers/nail:0.4.0--h4349ce8_0' }"
+        'quay.io/biocontainers/nail:0.4.0--h4349ce8_0' }"
 
     input:
     tuple val(meta) , path(query)

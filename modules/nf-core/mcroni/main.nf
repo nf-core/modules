@@ -6,7 +6,7 @@ process MCRONI {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mcroni%3A1.0.4--pyh5e36f6f_0':
-        'biocontainers/mcroni:1.0.4--pyh5e36f6f_0' }"
+        'quay.io/biocontainers/mcroni:1.0.4--pyh5e36f6f_0' }"
 
     input:
     tuple val(meta), path(fasta)

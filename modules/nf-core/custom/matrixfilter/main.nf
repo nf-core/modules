@@ -11,11 +11,11 @@ process CUSTOM_MATRIXFILTER {
     tuple val(samplesheet_meta), path(samplesheet)
 
     output:
-    tuple val(meta), path("*.filtered.tsv")             , emit: filtered
-    tuple val(meta), path("*.tests.tsv")                , emit: tests
-    tuple val(meta), path("*.thresholds.tsv")           , emit: thresholds
-    tuple val(meta), path("*R_sessionInfo.log")         , emit: session_info
-    path "versions.yml"                                 , emit: versions
+    tuple val(meta), path("*.filtered.tsv")    , emit: filtered
+    tuple val(meta), path("*.tests.tsv")       , emit: tests
+    tuple val(meta), path("*.thresholds.tsv")  , emit: thresholds
+    tuple val(meta), path("*R_sessionInfo.log"), emit: session_info
+    path "versions.yml"                        , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

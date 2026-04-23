@@ -5,7 +5,7 @@ process TRNASCANSE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trnascan-se:2.0.12--pl5321h7b50bb2_2':
-        'biocontainers/trnascan-se:2.0.12--pl5321h7b50bb2_2' }"
+        'quay.io/biocontainers/trnascan-se:2.0.12--pl5321h7b50bb2_2' }"
 
     input:
     tuple val(meta), path(fasta)

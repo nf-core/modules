@@ -5,7 +5,7 @@ process COBS_COMPACTCONSTRUCT {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cobs:0.3.0--hdcf5f25_1' :
-        'biocontainers/cobs:0.3.0--hdcf5f25_1'}"
+        'quay.io/biocontainers/cobs:0.3.0--hdcf5f25_1'}"
 
     input:
     tuple val(meta), path(input)

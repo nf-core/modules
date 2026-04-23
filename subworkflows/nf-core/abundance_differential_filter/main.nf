@@ -73,9 +73,13 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // simply use the first output from DIFFERENTIAL modules is that depending
     // on the contrast setting etc, these modules may subset matrices, hence
     // not returning the full normalized matrix as NORM modules would do.
+    ch_first_contrast = ch_contrasts
+        .map { meta, contrasts, variables, references, targets, formulas, comparisons ->
+            tuple(meta, contrasts[0], variables[0], references[0], targets[0], formulas[0], comparisons[0])
+        }
     norm_inputs = ch_input
         .combine(ch_samplesheet_with_control, by:0)
-        .join(ch_contrasts.transpose()) // by using join instead of combine, it only returns the inner join with the first contrast
+        .combine(ch_first_contrast, by:0)
         .multiMap(criteria)
 
     // ----------------------------------------------------
@@ -251,7 +255,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         ch_diff_filter_params.fc_input,
         ch_diff_filter_params.stat_input
     )
-    ch_versions = ch_versions.mix(CUSTOM_FILTERDIFFERENTIALTABLE.out.versions.first())
 
     emit:
 

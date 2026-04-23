@@ -5,7 +5,7 @@ process UCSC_BEDCLIP {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-bedclip:482--h0b57e2e_0' :
-        'biocontainers/ucsc-bedclip:482--h0b57e2e_0' }"
+        'quay.io/biocontainers/ucsc-bedclip:482--h0b57e2e_0' }"
 
     input:
     tuple val(meta), path(bedgraph)

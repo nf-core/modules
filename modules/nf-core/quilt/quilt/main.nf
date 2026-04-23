@@ -5,7 +5,7 @@ process QUILT_QUILT {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/r-quilt:1.0.5--r43h06b5641_0'
-        : 'biocontainers/r-quilt:1.0.5--r43h06b5641_0'}"
+        : 'quay.io/biocontainers/r-quilt:1.0.5--r43h06b5641_0'}"
 
     input:
     tuple val(meta), path(bams), path(bais), path(bamlist), path(samplename), path(reference_haplotype_file), path(reference_legend_file), path(posfile), path(phasefile), path(genfile), val(chr), val(regions_start), val(regions_end), val(ngen), val(buffer), path(genetic_map)

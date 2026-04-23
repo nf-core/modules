@@ -6,7 +6,7 @@ process STRINGTIE_MERGE {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/stringtie:2.2.1--hecb563c_2'
-        : 'biocontainers/stringtie:2.2.1--hecb563c_2'}"
+        : 'quay.io/biocontainers/stringtie:2.2.1--hecb563c_2'}"
 
     input:
     tuple val(meta), path(gtf)

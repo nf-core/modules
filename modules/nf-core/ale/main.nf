@@ -6,7 +6,7 @@ process ALE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ale:20180904--py27ha92aebf_0':
-        'biocontainers/ale:20180904--py27ha92aebf_0' }"
+        'quay.io/biocontainers/ale:20180904--py27ha92aebf_0' }"
 
     input:
     tuple val(meta), path(asm), path(bam)

@@ -5,7 +5,7 @@ process PICARD_COLLECTVARIANTCALLINGMETRICS {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/picard:3.4.0--hdfd78af_0'
-        : 'biocontainers/picard:3.4.0--hdfd78af_0'}"
+        : 'quay.io/biocontainers/picard:3.4.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(vcf), path(index), path(intervals_file), path(fasta), path(dict), path(dbsnp), path(dbsnp_index)

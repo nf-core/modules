@@ -6,7 +6,7 @@ process HAPPY_HAPPY {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap.py:0.3.15--py27hcb73b3d_0':
-        'biocontainers/hap.py:0.3.15--py27hcb73b3d_0' }"
+        'quay.io/biocontainers/hap.py:0.3.15--py27hcb73b3d_0' }"
 
     input:
     tuple val(meta), path(query_vcf), path(truth_vcf), path(regions_bed), path(targets_bed)

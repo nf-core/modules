@@ -5,7 +5,7 @@ process HMMER_HMMSEARCH {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.4--hdbdd923_1' :
-        'biocontainers/hmmer:3.4--hdbdd923_1' }"
+        'quay.io/biocontainers/hmmer:3.4--hdbdd923_1' }"
 
     input:
     tuple val(meta), path(hmmfile), path(seqdb), val(write_align), val(write_target), val(write_domain)
