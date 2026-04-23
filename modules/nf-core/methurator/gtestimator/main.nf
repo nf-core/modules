@@ -5,7 +5,7 @@ process METHURATOR_GTESTIMATOR {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/methurator:2.1.1--pyhdfd78af_0'
-        : 'biocontainers/methurator:2.1.1--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/methurator:2.1.1--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(fasta)
