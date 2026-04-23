@@ -59,7 +59,7 @@ nextflow_process {
                 """
                 input[0] = KMCP_SEARCH.out.result
                 input[1] = KMCP_INDEX.out.kmcp.map{it[1]}
-                input[2] = 'strain' 
+                input[2] = 'strain'
                 """
             }
         }
@@ -121,7 +121,7 @@ nextflow_process {
                 """
                 input[0] = KMCP_SEARCH.out.result
                 input[1] = KMCP_INDEX.out.kmcp.map{it[1]}
-                input[2] = 'species' 
+                input[2] = 'species'
                 """
             }
         }
@@ -156,7 +156,7 @@ nextflow_process {
                     """
                     input[0] = KMCP_COMPUTE.out.outdir
                     input[1] = [
-                        [id: 'taxdmp'], 
+                        [id: 'taxdmp'],
                         [
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/nodes.dmp', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/names.dmp', checkIfExists: true)
@@ -250,7 +250,7 @@ nextflow_process {
                 """
                 input[0] = KMCP_SEARCH.out.result
                 input[1] = KMCP_INDEX.out.kmcp.map{it[1]}
-                input[2] = 'strain' 
+                input[2] = 'strain'
                 """
             }
         }
@@ -311,7 +311,7 @@ nextflow_process {
                 """
                 input[0] = KMCP_SEARCH.out.result
                 input[1] = KMCP_INDEX.out.kmcp.map{it[1]}
-                input[2] = 'broken' 
+                input[2] = 'broken'
                 """
             }
         }
@@ -348,7 +348,7 @@ nextflow_process {
                     """
                     input[0] = KMCP_COMPUTE.out.outdir
                     input[1] = [
-                        [id: 'taxdmp'], 
+                        [id: 'taxdmp'],
                         [
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/nodes.dmp', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/names.dmp', checkIfExists: true)
@@ -378,7 +378,7 @@ nextflow_process {
                 """
                 input[0] = KMCP_SEARCH.out.result
                 input[1] = KMCP_INDEX.out.kmcp.map{it[1]}
-                input[2] = 'species' 
+                input[2] = 'species'
                 """
             }
         }

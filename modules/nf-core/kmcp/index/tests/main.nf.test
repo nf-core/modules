@@ -53,7 +53,7 @@ nextflow_process {
                 """
                 input[0] = KMCP_COMPUTE.out.outdir
                 input[1] = [
-                    [id: 'taxdmp'], 
+                    [id: 'taxdmp'],
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/nodes.dmp', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/names.dmp', checkIfExists: true)
@@ -110,7 +110,7 @@ nextflow_process {
                 """
                 input[0] = KMCP_COMPUTE.out.outdir
                 input[1] = [
-                    [id: 'taxdmp'], 
+                    [id: 'taxdmp'],
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/nodes.dmp', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/names.dmp', checkIfExists: true)

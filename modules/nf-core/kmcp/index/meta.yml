@@ -37,7 +37,7 @@ input:
     - taxdmp:
         type: directory
         description: |
-          List or directory containing NCBI-like taxdmp files 
+          List or directory containing NCBI-like taxdmp files
           (nodes.dmp, names.dmp, and optionally, merged.dmp, delnodes.dmp)
         pattern: "*/"
   - - meta3:
@@ -48,7 +48,7 @@ input:
     - seq2taxidmap:
         type: file
         description: |
-          Kraken2 style sequence to taxid mapping file, with two columns: 
+          Kraken2 style sequence to taxid mapping file, with two columns:
           sequence ID and taxid
           (e.g. "accession1\t12345")
         pattern: "*.map"
