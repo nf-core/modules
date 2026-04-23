@@ -29,6 +29,44 @@ input:
         pattern: "*.{fa,faa,fasta}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
+    - universe_file:
+        type: file
+        description: Optional. Reaction universe file in SBML format, passed to --universe-file.
+        pattern: "*.{xml,sbml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2332" # XML
+          - edam: "http://edamontology.org/format_2585" # SBML
+    - mediadb:
+        type: file
+        description: Optional. Media database file, passed to --mediadb.
+        pattern: "*.{tsv,csv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_2330" # Textual format
+    - soft:
+        type: file
+        description: Optional. Soft constraints file, passed to --soft.
+        pattern: "*.{tsv,csv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_2330" # Textual format
+    - hard:
+        type: file
+        description: Optional. Hard constraints file, passed to --hard.
+        pattern: "*.{tsv,csv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_2330" # Textual format
+    - reference:
+        type: file
+        description: Optional. Manually curated model of a close reference species, passed to --reference.
+        pattern: "*.{xml,sbml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2332" # XML
+          - edam: "http://edamontology.org/format_2585" # SBML
 output:
   model:
     - - meta:

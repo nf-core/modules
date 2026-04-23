@@ -8,7 +8,7 @@ process CARVEME_CARVE {
         : 'quay.io/biocontainers/carveme:1.6.6--pyhdfd78af_1'}"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta), path(universe_file), path(mediadb), path(soft), path(hard), path(reference)
 
     output:
     tuple val(meta), path("${prefix}.xml"), emit: model
@@ -20,10 +20,20 @@ process CARVEME_CARVE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def universe_file_arg = universe_file ? "--universe-file ${universe_file}" : ''
+    def mediadb_arg       = mediadb       ? "--mediadb ${mediadb}"             : ''
+    def soft_arg          = soft          ? "--soft ${soft}"                   : ''
+    def hard_arg          = hard          ? "--hard ${hard}"                   : ''
+    def reference_arg     = reference     ? "--reference ${reference}"         : ''
     """
     carve \\
         ${fasta} \\
         --output ${prefix}.xml \\
+        ${universe_file_arg} \\
+        ${mediadb_arg} \\
+        ${soft_arg} \\
+        ${hard_arg} \\
+        ${reference_arg} \\
         ${args}
     """
 
