@@ -111,13 +111,6 @@ output:
           description: HUMAnN run log file
           pattern: "*.{log}"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
   versions_humann:
     - - ${task.process}:
           type: string

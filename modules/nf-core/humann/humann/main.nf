@@ -5,8 +5,10 @@ process HUMANN_HUMANN {
     tag "$meta.id"
     label 'process_high'
 
-    conda { getConda(task.ext.version ?: getHumannVersion(task.process)) }
-    container { getContainer(task.ext.version ?: getHumannVersion(task.process)) }
+    conda { getConda(getHumannVersion(task.process)) }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/humann:3.6.1--pyh7cba7a3_0' :
+        'quay.io/biocontainers/humann:3.6.1--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -21,7 +23,6 @@ process HUMANN_HUMANN {
     tuple val(meta), path("*_pathcoverage.tsv.gz") , emit: pathcoverage, optional: true
     tuple val(meta), path("*_reactions.tsv.gz")    , emit: reactions, optional: true
     tuple val(meta), path("*.log")                 , emit: log
-    path "versions.yml"                            , emit: versions
     tuple val("${task.process}"), val('HUMAnN'),    eval("humann --version 2>&1 | sed 's/humann v//'"),       emit: versions_humann,    topic: versions
     tuple val("${task.process}"), val('MetaPhlAn'), eval("metaphlan --version 2>&1 | sed 's/metaphlan v//'"), emit: versions_metaphlan, topic: versions
 
@@ -31,7 +32,7 @@ process HUMANN_HUMANN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def processName = task.ext.version ?: getHumannVersion(task.process)
+    def processName = getHumannVersion(task.process)
     def nuc_ext = getExt(processName)
     def pangenome_string = "--taxonomic-profile ${profile}"
     """
@@ -56,12 +57,6 @@ process HUMANN_HUMANN {
         --output .
 
     gzip -n *.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        humann: \$(humann --version 2>&1 | sed 's/humann v//')
-        metaphlan: \$(metaphlan --version 2>&1 | sed 's/metaphlan v//')
-    END_VERSIONS
     """
 
     stub:
@@ -72,11 +67,5 @@ process HUMANN_HUMANN {
     echo "" | gzip > ${prefix}_pathcoverage.tsv.gz
     echo "" | gzip > ${prefix}_reactions.tsv.gz
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        humann: \$(humann --version 2>&1 | sed 's/humann v//')
-        metaphlan: \$(metaphlan --version 2>&1 | sed 's/metaphlan v//')
-    END_VERSIONS
     """
 }
