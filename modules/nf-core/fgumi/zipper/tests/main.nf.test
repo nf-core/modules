@@ -1,0 +1,103 @@
+nextflow_process {
+
+    name "Test Process FGUMI_ZIPPER"
+    script "../main.nf"
+    process "FGUMI_ZIPPER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgumi"
+    tag "fgumi/sort"
+    tag "fgumi/zipper"
+
+    setup {
+        run("FGUMI_SORT", alias: "FGUMI_SORT_MAPPED") {
+            script "../../sort/main.nf"
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_mapped.bam', checkIfExists: true)
+                        ]
+                """
+            }
+        }
+        run("FGUMI_SORT", alias: "FGUMI_SORT_UNMAPPED") {
+            script "../../sort/main.nf"
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_unmapped.bam', checkIfExists: true)
+                        ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - bam") {
+        when {
+            params {
+                fgumi_args = '--tags-to-reverse Consensus --tags-to-revcomp Consensus'
+            }
+            process {
+                """
+                input[0] = FGUMI_SORT_MAPPED.out.bam.join(FGUMI_SORT_UNMAPPED.out.bam)
+                input[1] = [
+                            [ id:'genome'],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - stub") {
+        options "-stub"
+        when {
+            params {
+                fgumi_args = '--tags-to-reverse Consensus --tags-to-revcomp Consensus'
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_mapped.bam', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_unmapped.bam', checkIfExists: true)
+                        ]
+                input[1] = [
+                            [ id:'genome'],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+}
