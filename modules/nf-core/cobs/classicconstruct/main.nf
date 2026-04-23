@@ -3,7 +3,7 @@ process COBS_CLASSICCONSTRUCT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cobs:0.3.0--hdcf5f25_1' :
         'quay.io/biocontainers/cobs:0.3.0--hdcf5f25_1'}"
 

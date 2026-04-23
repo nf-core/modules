@@ -3,7 +3,7 @@ process RIPGREP {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/deecf2e0aab3f4ba7c04eb24724f5c80550e39bec80760b18c7b52f8efa8e6b3/data':
         'community.wave.seqera.io/library/pigz_ripgrep:94e5407412b666ab' }"
 

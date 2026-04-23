@@ -3,7 +3,7 @@ process GENOMESCOPE2 {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe5ecaf5a34b7345080a9b54be83711b9a9732fdcbfd1809338da6b277bb9dca/data':
         'community.wave.seqera.io/library/genomescope2:2.1.0--a4c756d0a4552c53' }"
 

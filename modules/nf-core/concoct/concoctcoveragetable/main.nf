@@ -3,7 +3,7 @@ process CONCOCT_CONCOCTCOVERAGETABLE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py39h8907335_8'
         : 'quay.io/biocontainers/concoct:1.1.0--py39h8907335_8'}"
 

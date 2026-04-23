@@ -3,7 +3,7 @@ process DSSP_MKDSSP {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e4/e45865baee2b1563b471eb47b62f04ad6e49a862bcb815f8944b5bdba8cc33e1/data':
         'community.wave.seqera.io/library/dssp:4.5.8--9dc7af262c1d3dd7' }"
 
