@@ -97,6 +97,16 @@ output:
       - biolib --version 2>&1 | sed 's/.*version //':
           type: eval
           description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -106,6 +116,15 @@ topics:
           type: string
           description: The name of the tool
       - biolib --version 2>&1 | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed 's/Python //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

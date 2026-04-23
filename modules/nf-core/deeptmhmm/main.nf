@@ -17,6 +17,7 @@ process DEEPTMHMM {
     tuple val(meta), path("biolib_results/*_probs.csv")               , optional: true, emit: csv
     tuple val(meta), path("biolib_results/plot.png")                  , optional: true, emit: png
     tuple val("${task.process}"), val("biolib"), eval("biolib --version 2>&1 | sed 's/.*version //'"), emit: versions_biolib, topic: versions
+    tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
 
     when:
     task.ext.when == null || task.ext.when
