@@ -3,9 +3,9 @@ process HLALA_TYPING {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hla-la:1.0.4--h077b44d_1':
-        'biocontainers/hla-la:1.0.4--h077b44d_1' }"
+        'quay.io/biocontainers/hla-la:1.0.4--h077b44d_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(graph)

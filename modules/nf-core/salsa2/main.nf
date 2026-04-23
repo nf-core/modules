@@ -4,9 +4,9 @@ process SALSA2 {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/salsa2:2.3--py27hee3b9ab_0':
-        'biocontainers/salsa2:2.3--py27hee3b9ab_0' }"
+        'quay.io/biocontainers/salsa2:2.3--py27hee3b9ab_0' }"
 
     input:
     tuple val(meta), path(fasta), path(index)
