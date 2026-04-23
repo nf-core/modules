@@ -2,9 +2,9 @@ process CHECKV_DOWNLOADDATABASE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/checkv:1.0.3--pyhdfd78af_0':
-        'biocontainers/checkv:1.0.3--pyhdfd78af_0' }"
+        'quay.io/biocontainers/checkv:1.0.3--pyhdfd78af_0' }"
 
     output:
     path "${prefix}/*", emit: checkv_db

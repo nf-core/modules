@@ -3,9 +3,9 @@ process BIOAWK {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioawk:1.0--h5bf99c6_6' :
-        'biocontainers/bioawk:1.0--h5bf99c6_6' }"
+        'quay.io/biocontainers/bioawk:1.0--h5bf99c6_6' }"
 
     input:
     tuple val(meta), path(input)

@@ -3,7 +3,7 @@ process HIFITRIMMER_FILTERBAM {
    label 'process_medium'
 
    conda "${moduleDir}/environment.yml"
-   container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+   container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
       'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d413393b4194a57d7508e03614d1f4b1ba64b7294a817fd9547613421bc9343/data' :
       'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:3a74b5c5520eaff2' }"
 
