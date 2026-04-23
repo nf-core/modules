@@ -1,0 +1,294 @@
+nextflow_process {
+
+    name "Test Process GCTA_REML"
+    script "../main.nf"
+    process "GCTA_REML"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/reml"
+    tag "gcta/makegrmpart"
+    tag "gawk"
+
+    setup {
+        run("GAWK", alias: "GAWK_QUANTITATIVE_PHENOTYPE") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTrait' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, \$3 }').collectFile(name:'quantitative_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_MULTI_PHENOTYPES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTraitMpheno' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, \$3, (\$3 * 0.5) + ((NR % 7) / 10.0) }').collectFile(name:'multi_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_QUANTITATIVE_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_quant' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$4, \$5 }').collectFile(name:'quantitative_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_CATEGORICAL_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_cat' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'categorical_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_DENSE") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_dense', part_gcta_job:1, nparts_gcta:1 ],
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'all_variants' ], []]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - dense GRM with mpheno selection") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'QuantitativeTraitMpheno2' ], pheno] }
+                input[1] = dense_grm
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                input[4] = 2
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTraitMpheno2" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - quantitative phenotype with dense GRM and covariates") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = GAWK_QUANTITATIVE_PHENOTYPE.out.output
+                input[1] = dense_grm
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                input[4] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTrait" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - quantitative phenotype with dense GRM and no covariates") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = GAWK_QUANTITATIVE_PHENOTYPE.out.output
+                input[1] = dense_grm
+                input[2] = [[ id:'covariates_quant' ], []]
+                input[3] = [[ id:'covariates_cat' ], []]
+                input[4] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTrait" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - dense GRM mpheno defaults to first phenotype when empty") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'QuantitativeTraitMphenoDefault' ], pheno] }
+                input[1] = dense_grm
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTraitMphenoDefault" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - fails when mpheno index is out of range") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'QuantitativeTraitInvalidMpheno' ], pheno] }
+                input[1] = dense_grm
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                input[4] = 3
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - quantitative phenotype with dense GRM - stub") {
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = GAWK_QUANTITATIVE_PHENOTYPE.out.output
+                input[1] = dense_grm
+                input[2] = [[ id:'covariates_quant' ], []]
+                input[3] = [[ id:'covariates_cat' ], []]
+                input[4] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTrait" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+}
