@@ -3,7 +3,7 @@ process FUSIONINSPECTOR {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/139b94a1f10c6e23a8c27eaed1e5a689db978a513d0ee155e74d35f0970814fe/data' :
         'community.wave.seqera.io/library/fusion-inspector_igv-reports_perl-json-xs_pysam_pruned:c6147971d107ab11'}"
 

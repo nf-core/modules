@@ -3,9 +3,9 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.4--pl5321h6dccd9a_2'
-        : 'biocontainers/krakenuniq:1.0.4--pl5321h6dccd9a_2'}"
+        : 'quay.io/biocontainers/krakenuniq:1.0.4--pl5321h6dccd9a_2'}"
 
     input:
     // We stage sequencing files in a sub-directory so we don't accidentally gzip them later.
