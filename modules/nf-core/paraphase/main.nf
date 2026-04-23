@@ -4,7 +4,7 @@ process PARAPHASE {
 
     conda "${moduleDir}/environment.yml"
 
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2f7e7ef6dd6def56bef5252c28a65f279d5fcef09a832510d0de1d6dab09194/data'
         : 'community.wave.seqera.io/library/minimap2_paraphase_samtools:2c52f03fe994efa6'}"
 

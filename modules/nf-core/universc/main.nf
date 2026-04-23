@@ -2,7 +2,7 @@ process UNIVERSC {
     tag "$meta.id"
     label 'process_medium'
 
-    container "nf-core/universc:1.2.5.1"
+    container "quay.io/nf-core/universc:1.2.5.1"
     containerOptions "${ ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
         "-B /var/tmp --writable-tmpfs" : workflow.containerEngine == 'docker' ?
         "--privileged" : workflow.containerEngine == 'podman' ?

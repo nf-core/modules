@@ -3,9 +3,9 @@ process GENRICH {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genrich:0.6.1--h5bf99c6_1' :
-        'biocontainers/genrich:0.6.1--h5bf99c6_1' }"
+        'quay.io/biocontainers/genrich:0.6.1--h5bf99c6_1' }"
 
     input:
     tuple val(meta), path(treatment_bam), path(control_bam)

@@ -449,15 +449,16 @@ r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 gprofiler2.version <- as.character(packageVersion('gprofiler2'))
 ggplot2.version <- as.character(packageVersion('ggplot2'))
 if (is.null(opt\$token) & !is.null(opt\$organism)) {
-    gprofiler_data.version <- as.yaml(get_version_info(opt\$organism))
+    gprofiler_data.version <- gprofiler2::get_version_info(opt[["organism"]])[["gprofiler_version"]]
 } else {
-    gprofiler_data.version <- as.yaml(get_version_info())
+    gprofiler_data.version <- gprofiler2::get_version_info()[["gprofiler_version"]]
 }
 # The YAML comes out a bit messy for the gprofiler data, not nested correctly
 # when we use writeLines and gprofiler_data, so I write it via yaml
 write_yaml(
     list(
     '"$task.process"'=list(
+        "r-base"=r.version,
         "r-ggplot2"=ggplot2.version,
         "r-gprofiler2"=gprofiler2.version,
         "gprofiler-data"=gprofiler_data.version
