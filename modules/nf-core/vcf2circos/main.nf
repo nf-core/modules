@@ -9,7 +9,7 @@ process VCF2CIRCOS {
 
     input:
     tuple val(meta), path(vcf), path(vcf_index), val(output_extension)
-    tuple val(meta2), path(vcf2circos_config)
+    tuple val(meta2), path(vcf2circos_options)
 
     output:
     tuple val(meta), path("*.{html,png,jpg,jpeg,webp,svg,pdf,eps,json}"), emit: circos
@@ -24,7 +24,7 @@ process VCF2CIRCOS {
     """
     vcf2circos \\
         ${args} \\
-        --options ${vcf2circos_config} \\
+        --options ${vcf2circos_options} \\
         --input ${vcf} \\
         -o ${prefix}.${output_extension}
     """
