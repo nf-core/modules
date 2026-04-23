@@ -3,7 +3,7 @@ process IMMUNEDECONV {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
     'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/22/22cb85f1b69ceff45b83e0fdb7b96d9ae29c8aafeaa0707d64cc4628982977ab/data' :
     'community.wave.seqera.io/library/r-immunedeconv:2.1.2--e1bb1ea1cf505cb3' }"
 

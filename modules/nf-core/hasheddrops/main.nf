@@ -3,7 +3,7 @@ process HASHEDDROPS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/43/431b27926fac88d6334ee3e8f63479f69a1a69340b305a05b70bc84083d301aa/data':
         'community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:e1dff3a0fb7c5920' }"
 

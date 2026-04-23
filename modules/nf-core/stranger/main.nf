@@ -3,7 +3,7 @@ process STRANGER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/90/90f7f35b37e9e31c8680c18ef59c76e74500f44664887b3c1131daf07ff3043f/data':
         'community.wave.seqera.io/library/htslib_pip_stranger:de13e0cf88d77b50' }"
 
