@@ -62,9 +62,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.model[0][1]).exists(),
-                    process.out.gene_scores,
+                    path(process.out.gene_scores[0][1]).exists(),
                     process.out.milp_problem,
-                    process.out.milp_solution,
+                    path(process.out.milp_solution[0][1]).exists(),
                     process.out.protein_scores,
                     process.out.reaction_scores,
                     process.out.findAll { key, val -> key.startsWith("versions") }
