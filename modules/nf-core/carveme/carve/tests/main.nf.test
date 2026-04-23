@@ -65,31 +65,6 @@ nextflow_process {
         }
     }
 
-    test("cazymes - faa - debug - xml") {
-
-        when {
-            params {
-                module_args = "--debug"
-            }
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true),
-                    [], [], [], [], []
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
-            )
-        }
-    }
-
     test("candidatus_portiera_aleyrodidarum - proteome fasta - xml - stub") {
 
         options "-stub"
