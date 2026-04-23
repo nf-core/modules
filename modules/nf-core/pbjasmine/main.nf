@@ -3,9 +3,9 @@ process PBJASMINE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbjasmine:2.4.0--h9948957_1':
-        'biocontainers/pbjasmine:2.4.0--h9948957_1' }"
+        'quay.io/biocontainers/pbjasmine:2.4.0--h9948957_1' }"
 
     input:
     tuple val(meta), path(bam)

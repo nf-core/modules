@@ -3,9 +3,9 @@ process PROTEUS_READPROTEINGROUPS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-503e259d7d34ce533ce66c4c8871af4ab409db6d:1e504ef71c83943061a39b6260d826b988bfa56f-0':
-        'biocontainers/mulled-v2-503e259d7d34ce533ce66c4c8871af4ab409db6d:1e504ef71c83943061a39b6260d826b988bfa56f-0' }"
+        'quay.io/biocontainers/mulled-v2-503e259d7d34ce533ce66c4c8871af4ab409db6d:1e504ef71c83943061a39b6260d826b988bfa56f-0' }"
 
     input:
     tuple val(meta), path(samplesheet), path(intensities)

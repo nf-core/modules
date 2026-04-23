@@ -3,9 +3,9 @@ process PROPR_LOGRATIO {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-propr:4.2.6':
-        'biocontainers/r-propr:4.2.6' }"
+        'quay.io/biocontainers/r-propr:4.2.6' }"
 
     input:
     tuple val(meta), path(count)

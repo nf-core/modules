@@ -3,9 +3,9 @@ process RUNDBCAN_EASYSUBSTRATE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/dbcan:5.2.8--pyhdfd78af_0'
-        : 'biocontainers/dbcan:5.2.8--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/dbcan:5.2.6--pyhdfd78af_0' :
+        'quay.io/biocontainers/dbcan:5.2.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input_raw_data)

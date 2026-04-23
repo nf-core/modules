@@ -3,9 +3,9 @@ process MALT_RUN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/malt:0.61--hdfd78af_0' :
-        'biocontainers/malt:0.61--hdfd78af_0' }"
+        'quay.io/biocontainers/malt:0.61--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastqs)
