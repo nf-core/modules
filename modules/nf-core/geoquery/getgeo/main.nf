@@ -3,7 +3,7 @@ process GEOQUERY_GETGEO {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-geoquery:2.70.0--r43hdfd78af_0' :
         'quay.io/biocontainers/bioconductor-geoquery:2.70.0--r43hdfd78af_0' }"
 

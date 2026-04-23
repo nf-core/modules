@@ -3,7 +3,7 @@ process NUCMER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mummer:3.23--pl5262h1b792b2_12' :
         'quay.io/biocontainers/mummer:3.23--pl5262h1b792b2_12' }"
 

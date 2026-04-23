@@ -3,7 +3,7 @@ process SEQUENCETOOLS_PILEUPCALLER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sequencetools:1.6.0.0--hebebf5b_0':
         'quay.io/biocontainers/sequencetools:1.6.0.0--hebebf5b_0' }"
 

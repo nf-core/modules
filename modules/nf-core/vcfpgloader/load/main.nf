@@ -15,7 +15,7 @@ process VCFPGLOADER_LOAD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcf-pg-loader:0.5.4--pyhdfd78af_0' :
         'quay.io/biocontainers/vcf-pg-loader:0.5.4--pyhdfd78af_0' }"
 
