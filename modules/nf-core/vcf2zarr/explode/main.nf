@@ -26,4 +26,14 @@ The module was incorrectly named. The installed package is bio2zarr, not vcf2zar
 Per nf-core naming conventions, the module has been moved to bio2zarr/vcf2zarrexplode.
 """
     assert false: deprecation_message
+
+    stub:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/bio2zarr/vcf2zarrconvert
+
+Reason:
+The module was incorrectly named. The installed package is bio2zarr, not vcf2zarr.
+Per nf-core naming conventions, the module has been moved to bio2zarr/vcf2zarrconvert.
+"""
+    assert false: deprecation_message
 }
