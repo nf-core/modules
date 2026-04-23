@@ -5,7 +5,7 @@ process SVDSS_INDEX {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svdss:2.1.1--he17396a_0' :
-        'biocontainers/svdss:2.1.1--he17396a_0' }"
+        'quay.io/biocontainers/svdss:2.1.1--he17396a_0' }"
 
     input:
     tuple val(meta), path(fasta)
