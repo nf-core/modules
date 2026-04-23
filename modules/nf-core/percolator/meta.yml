@@ -22,7 +22,7 @@ tools:
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g. `[ 
+        description: Groovy Map containing sample information. e.g. `[
           id:'sample1' ]`
     - peptide_identification:
         type: file
@@ -33,7 +33,7 @@ output:
   target_pout:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[ 
+          description: Groovy Map containing sample information. e.g. `[
             id:'sample1' ]`
       - ${prefix}.psm.target.pout:
           type: file
@@ -43,7 +43,7 @@ output:
   decoy_pout:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[ 
+          description: Groovy Map containing sample information. e.g. `[
             id:'sample1' ]`
       - ${prefix}.psm.decoy.pout:
           type: file
