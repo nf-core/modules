@@ -2,7 +2,7 @@ process DEEPCELL_MESMER {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/deepcell_mesmer:0.4.1_noentry"
+    container "quay.io/nf-core/deepcell_mesmer:0.4.1_noentry"
 
     input:
     tuple val(meta) , path(img)
@@ -17,6 +17,10 @@ process DEEPCELL_MESMER {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "DEEPCELL_MESMER module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args             = task.ext.args ?: ''
     def prefix           = task.ext.prefix ?: "${meta.id}"
     def membrane_command = membrane_img ? "--membrane-image $membrane_img" : ""
@@ -32,6 +36,10 @@ process DEEPCELL_MESMER {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "DEEPCELL_MESMER module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     prefix      = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tif
