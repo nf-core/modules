@@ -26,8 +26,8 @@ input:
           id:'sample1' ]`
     - peptide_identification:
         type: file
-        description: peptide identifications as PIN file
-        pattern: "*.{pin}"
+        description: peptide identifications as PIN (Percolator input) file
+        pattern: "*.pin"
         ontologies: []
 
 output:
@@ -36,10 +36,10 @@ output:
           type: map
           description: Groovy Map containing sample information. e.g. `[
             id:'sample1' ]`
-      - "*.target.pout":
+      - "${prefix}.psm.target.pout":
           type: file
           description: percolator output file containing the target PSMs
-          pattern: "*.{target.pout}"
+          pattern: "*.pout"
           ontologies: []
 
   decoy_pout:
@@ -47,10 +47,10 @@ output:
           type: map
           description: Groovy Map containing sample information. e.g. `[
             id:'sample1' ]`
-      - "*.decoy.pout":
+      - "${prefix}.psm.decoy.pout":
           type: file
           description: percolator output file containing the decoys PSMs
-          pattern: "*.{decoy.pout}"
+          pattern: "*.pout"
           ontologies: []
 
   versions_percolator:
@@ -60,9 +60,10 @@ output:
       - percolator:
           type: string
           description: The name of the tool
-      - percolator --help 2>&1 | head -1 | sed "s;Percolator version \([^,]*\),.*;\1;":
+      - "percolator --help 2>&1 | head -1 | sed 's;Percolator version \\([^,]*\\),.*;\\1;'":
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:

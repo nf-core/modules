@@ -1,5 +1,5 @@
 process PERCOLATOR {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -11,9 +11,8 @@ process PERCOLATOR {
     tuple val(meta), path(peptide_identification)
 
     output:
-    tuple val(meta), path("*.target.pout"), emit: target_pout
-    tuple val(meta), path("*.decoy.pout"), emit: decoy_pout
-
+    tuple val(meta), path("${prefix}.psm.target.pout"), emit: target_pout
+    tuple val(meta), path("${prefix}.psm.decoy.pout"), emit: decoy_pout
     tuple val("${task.process}"), val('percolator'), eval('percolator --help 2>&1 | head -1 | sed "s;Percolator version \\([^,]*\\),.*;\\1;"'), topic: versions, emit: versions_percolator
 
     when:
@@ -21,7 +20,7 @@ process PERCOLATOR {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     percolator \\
         ${args} \\
@@ -35,11 +34,8 @@ process PERCOLATOR {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo ${args}
-
     touch ${prefix}.psm.target.pout
     touch ${prefix}.psm.decoy.pout
     """

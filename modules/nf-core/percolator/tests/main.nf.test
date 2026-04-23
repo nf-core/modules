@@ -7,15 +7,52 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "percolator"
+    tag "comet"
+    tag "openms/decoydatabase"
+
+    setup {
+        run("OPENMS_DECOYDATABASE") {
+            script "../../openms/decoydatabase/main.nf"
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test_db' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true),
+                ])
+                """
+            }
+        }
+
+        run("COMET") {
+            script "../../comet/main.nf"
+
+            process {
+                """
+                def originalParams = file(params.modules_testdata_base_path + 'proteomics/parameter/OVEMB150205.comet.params', checkIfExists: true)
+                def modifiedParams = new File('./modified.comet.params')
+                modifiedParams.text = originalParams.text
+                    .replaceAll('(?m)^output_percolatorfile =.*', 'output_percolatorfile = 1')
+                    .replaceAll('(?m)^output_txtfile =.*', 'output_txtfile = 0')
+                    .replaceAll('(?m)^output_mzidentmlfile =.*', 'output_mzidentmlfile = 0')
+
+                input[0] = OPENMS_DECOYDATABASE.out.decoy_fasta.map { meta, fasta ->
+                    [
+                        [ id:'test'],
+                        file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.mzML', checkIfExists: true),
+                        fasta,
+                        file(modifiedParams),
+                    ]
+                }
+                """
+            }
+        }
+    }
 
     test("percolator - OVEMB150205_12.pin") {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-                    file('https://raw.githubusercontent.com/medbioinf/test-datasets/refs/heads/percolator_tests/data/proteomics/percolator/OVEMB150205_12.pin', checkIfExists: true),
-                ]
+                input[0] = COMET.out.pin
                 """
             }
         }
@@ -27,7 +64,6 @@ nextflow_process {
             )
         }
     }
-
     
     test("percolator - OVEMB150205_12.pin - stub") {
 
@@ -36,10 +72,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-                    file('https://raw.githubusercontent.com/medbioinf/test-datasets/refs/heads/percolator_tests/data/proteomics/percolator/OVEMB150205_12.pin', checkIfExists: true),
-                ]
+                input[0] = COMET.out.pin
                 """
             }
         }
