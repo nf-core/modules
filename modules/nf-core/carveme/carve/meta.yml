@@ -32,10 +32,9 @@ input:
     - universe_file:
         type: file
         description: Optional. Reaction universe file in SBML format, passed to --universe-file.
-        pattern: "*.{xml,sbml}"
+        pattern: "*.xml"
         ontologies:
           - edam: "http://edamontology.org/format_2332" # XML
-          - edam: "http://edamontology.org/format_2585" # SBML
     - mediadb:
         type: file
         description: Optional. Media database file, passed to --mediadb.
@@ -63,10 +62,9 @@ input:
     - reference:
         type: file
         description: Optional. Manually curated model of a close reference species, passed to --reference.
-        pattern: "*.{xml,sbml}"
+        pattern: "*.xml"
         ontologies:
           - edam: "http://edamontology.org/format_2332" # XML
-          - edam: "http://edamontology.org/format_2585" # SBML
 output:
   model:
     - - meta:
@@ -80,6 +78,18 @@ output:
           pattern: "*.xml"
           ontologies:
             - edam: "http://edamontology.org/format_2332" # XML
+  debug:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.log:
+          type: file
+          description: Optional debug files produced when --debug is passed. Contains the LP formulation (.lp) and solution (.sol) from the MILP solver.
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
   versions_carveme:
     - - ${task.process}:
           type: string

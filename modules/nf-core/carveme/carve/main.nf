@@ -12,6 +12,7 @@ process CARVEME_CARVE {
 
     output:
     tuple val(meta), path("${prefix}.xml"), emit: model
+    tuple val(meta), path("${prefix}.log"), optional: true, emit: debug
     tuple val("${task.process}"), val('carveme'), eval("pip show carveme | sed -n 's/^Version: //p'"), topic: versions, emit: versions_carveme
 
     when:
@@ -43,5 +44,6 @@ process CARVEME_CARVE {
     """
     echo "${args}"
     touch ${prefix}.xml
+    [[ "${args}" == *"--debug"* ]] && touch ${prefix}.log || true
     """
 }
