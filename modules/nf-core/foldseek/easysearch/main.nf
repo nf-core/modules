@@ -5,7 +5,7 @@ process FOLDSEEK_EASYSEARCH {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/foldseek:9.427df8a--pl5321hb365157_0':
-        'biocontainers/foldseek:9.427df8a--pl5321hb365157_0' }"
+        'quay.io/biocontainers/foldseek:9.427df8a--pl5321hb365157_0' }"
 
     input:
     tuple val(meta)   , path(pdb)

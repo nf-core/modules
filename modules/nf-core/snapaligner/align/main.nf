@@ -5,7 +5,7 @@ process SNAPALIGNER_ALIGN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.5--h077b44d_2':
-        'biocontainers/snap-aligner:2.0.5--h077b44d_2' }"
+        'quay.io/biocontainers/snap-aligner:2.0.5--h077b44d_2' }"
 
     input:
     tuple val(meta) , path(reads, stageAs: "?/*")

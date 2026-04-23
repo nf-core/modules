@@ -5,7 +5,7 @@ process NARFMAP_HASHTABLE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/narfmap:1.4.2--h43eeafb_0':
-        'biocontainers/narfmap:1.4.2--h43eeafb_0' }"
+        'quay.io/biocontainers/narfmap:1.4.2--h43eeafb_0' }"
 
     input:
     tuple val(meta), path(fasta)

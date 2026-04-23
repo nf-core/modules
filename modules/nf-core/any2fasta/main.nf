@@ -5,7 +5,7 @@ process ANY2FASTA {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/any2fasta:0.8.1--hdfd78af_0'
-        : 'biocontainers/any2fasta:0.8.1--hdfd78af_0'}"
+        : 'quay.io/biocontainers/any2fasta:0.8.1--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(sequence)

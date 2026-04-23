@@ -5,7 +5,7 @@ process HTSNIMTOOLS_VCFCHECK {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hts-nim-tools:0.3.11--hbeb723e_0':
-        'biocontainers/hts-nim-tools:0.3.11--hbeb723e_0' }"
+        'quay.io/biocontainers/hts-nim-tools:0.3.11--hbeb723e_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)

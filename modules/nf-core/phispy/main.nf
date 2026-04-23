@@ -5,7 +5,7 @@ process PHISPY {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/phispy:4.2.21--py310h30d9df9_1':
-        'biocontainers/phispy:4.2.21--py310h30d9df9_1' }"
+        'quay.io/biocontainers/phispy:4.2.21--py310h30d9df9_1' }"
 
     input:
     tuple val(meta), path(gbk)

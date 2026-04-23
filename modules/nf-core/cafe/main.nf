@@ -4,7 +4,7 @@ process CAFE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cafe:5.1.0--h43eeafb_0':
-        'biocontainers/cafe:5.1.0--h43eeafb_0' }"
+        'quay.io/biocontainers/cafe:5.1.0--h43eeafb_0' }"
 
     input:
     tuple val(meta), path(infile)

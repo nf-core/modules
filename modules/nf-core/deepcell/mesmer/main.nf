@@ -2,7 +2,7 @@ process DEEPCELL_MESMER {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/deepcell_mesmer:0.4.1_noentry"
+    container "quay.io/nf-core/deepcell_mesmer:0.4.1_noentry"
 
     input:
     tuple val(meta) , path(img)

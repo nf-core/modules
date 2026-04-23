@@ -4,7 +4,7 @@ process MUSCLE5_SUPER5 {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-8eb01a3c2755c935d070dd03ff2dee698eeb4466:ceb6e65e00346ed20d0d8078dddf9858a7af0fe2-0':
-        'biocontainers/mulled-v2-8eb01a3c2755c935d070dd03ff2dee698eeb4466:ceb6e65e00346ed20d0d8078dddf9858a7af0fe2-0' }"
+        'quay.io/biocontainers/mulled-v2-8eb01a3c2755c935d070dd03ff2dee698eeb4466:ceb6e65e00346ed20d0d8078dddf9858a7af0fe2-0' }"
 
     input:
     tuple val(meta), path(fasta)

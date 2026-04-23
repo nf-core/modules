@@ -5,7 +5,7 @@ process GFATOOLS_GFA2FA {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gfatools:0.5--h577a1d6_5':
-        'biocontainers/gfatools:0.5--h577a1d6_5' }"
+        'quay.io/biocontainers/gfatools:0.5--h577a1d6_5' }"
 
     input:
     tuple val(meta), path(gfa)
