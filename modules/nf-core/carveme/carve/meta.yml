@@ -40,7 +40,8 @@ output:
           type: file
           description: SBML genome-scale metabolic model file
           pattern: "*.xml"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_2332" # XML
   versions_carveme:
     - - ${task.process}:
           type: string
