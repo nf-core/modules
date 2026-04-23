@@ -3,15 +3,9 @@ process TIDK_EXPLORE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-<<<<<<< tidk_topics
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tidk:0.2.7--h6872113_0':
         'biocontainers/tidk:0.2.7--h6872113_0' }"
-=======
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tidk:0.2.41--hdbdd923_0':
-        'quay.io/biocontainers/tidk:0.2.41--hdbdd923_0' }"
->>>>>>> master
 
     input:
     tuple val(meta), path(fasta)
