@@ -1,101 +1,128 @@
 {
-    "percolator - OVEMB150205_12.pin - stub": {
+    "percolator - OVEMB150205_12": {
         "content": [
             {
-                "0": [
+                "decoy_psms": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.psm.target.pout:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.psm.decoy.pout:md5,7c9909537ccb675680e02504f07f2a74"
                     ]
                 ],
-                "1": [
+                "features_pin": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.psm.decoy.pout:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.features.pin:md5,4f49bdcb40d891c8bfb61f794465d1be"
                     ]
                 ],
-                "2": [
-                    [
-                        "PERCOLATOR",
-                        "percolator",
-                        "3.07.1"
-                    ]
-                ],
-                "decoy_pout": [
+                "pout_xml": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.psm.decoy.pout:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.pout.xml:md5,6a6be470f5961d54f2ee6c9c8596a476"
                     ]
                 ],
-                "target_pout": [
+                "target_psms": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.psm.target.pout:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.psm.target.pout:md5,61d48fdb8597aa5b5dde5c41b0cf1721"
                     ]
                 ],
-                "versions_percolator": [
+                "weights": [
                     [
-                        "PERCOLATOR",
-                        "percolator",
-                        "3.07.1"
+                        {
+                            "id": "test"
+                        },
+                        "test.weights.tsv:md5,359b4a49c53892bef1738ae693520f69"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-04-23T10:35:47.104947826",
+        "timestamp": "2026-04-23T18:13:39.425266156",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
         }
     },
-    "percolator - OVEMB150205_12.pin": {
+    "percolator - OVEMB150205_12 - stub": {
         "content": [
             {
-                "0": [
+                "decoy_peptides": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.psm.target.pout:md5,61d48fdb8597aa5b5dde5c41b0cf1721"
+                        "test.pep.decoy.pout:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "1": [
+                "decoy_proteins": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.psm.decoy.pout:md5,7c9909537ccb675680e02504f07f2a74"
+                        "test.protein.decoy.pout:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "2": [
-                    [
-                        "PERCOLATOR",
-                        "percolator",
-                        "3.07.1"
-                    ]
-                ],
-                "decoy_pout": [
+                "decoy_psms": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.psm.decoy.pout:md5,7c9909537ccb675680e02504f07f2a74"
+                        "test.psm.decoy.pout:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "target_pout": [
+                "features_pin": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.psm.target.pout:md5,61d48fdb8597aa5b5dde5c41b0cf1721"
+                        "test.features.pin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "pout_pepxml": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.pep.xml:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "pout_xml": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.pout.xml:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "target_peptides": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.pep.target.pout:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "target_proteins": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.protein.target.pout:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "target_psms": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.psm.target.pout:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions_percolator": [
@@ -104,10 +131,18 @@
                         "percolator",
                         "3.07.1"
                     ]
+                ],
+                "weights": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.weights.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-04-23T10:35:41.387430243",
+        "timestamp": "2026-04-23T18:13:45.966539564",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"

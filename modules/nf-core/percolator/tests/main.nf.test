@@ -48,7 +48,7 @@ nextflow_process {
         }
     }
 
-    test("percolator - OVEMB150205_12.pin") {
+    test("percolator - OVEMB150205_12") {
         when {
             process {
                 """
@@ -58,14 +58,24 @@ nextflow_process {
         }
 
         then {
+            def outputs = sanitizeOutput(process.out).findAll { key, val ->
+                ['pout_xml', 'features_pin', 'weights', 'target_psms', 'decoy_psms'].contains(key)
+            }
+
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                // all but pepXML can be matched as whole, pepXML has a timestamp and must be treated separately
+                { assert snapshot(outputs).match() },
+                // in pepXML: check some lines for existence
+                { assert path(process.out.pout_pepxml.get(0).get(1)).readLines().any { it.contains('<spectrum_query spectrum="test_98_3_1"') }},
+                { assert path(process.out.pout_pepxml.get(0).get(1)).readLines().any { it.contains('</msms_pipeline_analysis>') }}
+
             )
+
         }
     }
 
-    test("percolator - OVEMB150205_12.pin - stub") {
+    test("percolator - OVEMB150205_12 - stub") {
 
         options "-stub"
 
