@@ -16,7 +16,7 @@ process DEEPTMHMM {
     tuple val(meta), path("biolib_results/deeptmhmm_results.md")      , emit: md
     tuple val(meta), path("biolib_results/*_probs.csv")               , optional: true, emit: csv
     tuple val(meta), path("biolib_results/plot.png")                  , optional: true, emit: png
-    path "versions.yml"                                               , emit: versions
+    tuple val("${task.process}"), val("biolib"), eval("biolib --version 2>&1 | sed 's/.*version //'"), emit: versions_biolib, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +37,6 @@ process DEEPTMHMM {
         DTU/DeepTMHMM \\
         --fasta ${fasta_name} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biolib: \$(echo \$(biolib --version) | sed -n 's/.*version \\([0-9.]*\\).*/\\1/p' )
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +47,5 @@ process DEEPTMHMM {
     touch biolib_results/deeptmhmm_results.md
     touch biolib_results/MX_probs.csv
     touch biolib_results/plot.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biolib: \$(echo \$(biolib --version) | sed -n 's/.*version \\([0-9.]*\\).*/\\1/p' )
-    END_VERSIONS
     """
 }
