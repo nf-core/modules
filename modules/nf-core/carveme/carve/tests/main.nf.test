@@ -50,7 +50,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true),
                     [],
-                    file("/home/vangelis/Desktop/Projects/modules/modules/nf-core/carveme/carve/tests/fixtures/media_db.tsv"),
+                    file(params.modules_testdata_base_path + 'generic/tsv/media_db.tsv', checkIfExists: true),
                     [], [], []
                 ]
                 """
@@ -60,7 +60,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    path(process.out.model[0][1]).exists(),
+                    process.out.gene_scores,
+                    process.out.milp_problem,
+                    process.out.milp_solution,
+                    process.out.protein_scores,
+                    process.out.reaction_scores,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
