@@ -48,7 +48,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GATK_UNIFIEDGENOTYPER.out.vcf.collect{ meta, vcf -> vcf }.map{ vcf -> [[ id: 'testVCF'], vcf]}
-                input[1] =  [ [] ,
+                input[1] =  [ [id:'sarscov2'], //meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 input[2] = [[],[]]
@@ -126,7 +126,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GATK_UNIFIEDGENOTYPER_STUB.out.vcf.collect{ meta, vcf -> vcf }.map{ vcf -> [[ id: 'testVCF'], vcf]}
-                input[1] =  [ [] ,
+                input[1] =  [ [id:'sarscov2'], //meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 input[2] = [[],[]]

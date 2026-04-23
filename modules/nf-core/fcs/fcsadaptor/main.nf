@@ -16,7 +16,8 @@ process FCS_FCSADAPTOR {
     tuple val(meta), path("*.fcs_adaptor.log")        , emit: log
     tuple val(meta), path("*.pipeline_args.yaml")     , emit: pipeline_args
     tuple val(meta), path("*.skipped_trims.jsonl")    , emit: skipped_trims
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('fcsadaptor'), val("0.5.0"), emit: versions_fcsadaptor, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     // Downstream handling of optional cleaned_assembly
     //
@@ -41,7 +42,6 @@ process FCS_FCSADAPTOR {
     }
     def args = task.ext.args ?: '--prok' // --prok || --euk
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def FCSADAPTOR_VERSION = '0.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     # To avoid permanentFail: See https://github.com/ncbi/fcs/issues/42
     sed -E 's/^(>[^[:space:]]+).*/\\1/'  \\
@@ -63,11 +63,6 @@ process FCS_FCSADAPTOR {
     cp "output/fcs_adaptor.log"           "${prefix}.fcs_adaptor.log"
     cp "output/pipeline_args.yaml"        "${prefix}.pipeline_args.yaml"
     cp "output/skipped_trims.jsonl"       "${prefix}.skipped_trims.jsonl"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        FCS-adaptor: $FCSADAPTOR_VERSION
-    END_VERSIONS
     """
 
     stub:
@@ -76,17 +71,11 @@ process FCS_FCSADAPTOR {
         error "FCS_FCSADAPTOR module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def FCSADAPTOR_VERSION = '0.5.0'
 
     """
     touch ${prefix}.fcs_adaptor_report.txt
     touch ${prefix}.fcs_adaptor.log
     touch ${prefix}.pipeline_args.yaml
     touch ${prefix}.skipped_trims.jsonl
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        FCS-adaptor: $FCSADAPTOR_VERSION
-    END_VERSIONS
     """
 }

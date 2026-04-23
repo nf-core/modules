@@ -2,6 +2,7 @@ process CANU {
     tag "$meta.id"
     label 'process_high'
 
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/canu:2.3--h3fb4750_1':
@@ -21,7 +22,10 @@ process CANU {
     tuple val(meta), path("*.contigs.layout")           , emit: metadata                , optional: true
     tuple val(meta), path("*.contigs.layout.readToTig") , emit: contig_position         , optional: true
     tuple val(meta), path("*.contigs.layout.tigInfo")   , emit: contig_info             , optional: true
-    path "versions.yml"                                 , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('canu'), val("2.3"), emit: versions_canu, topic: versions
+    tuple val("${task.process}"), val("minimap2"), eval("minimap2 --version"), emit: versions_minimap2, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +44,6 @@ process CANU {
         $mode $reads
 
     gzip *.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        canu: \$(echo \$(canu --version 2>&1) | sed 's/^.*canu //; s/Using.*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -66,10 +65,5 @@ process CANU {
     touch ${prefix}.contigs.layout.readToTig
     touch ${prefix}.contigs.layout.tigInfo
     touch ${prefix}.report
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        canu: \$(echo \$(canu --version 2>&1) | sed 's/^.*canu //; s/Using.*\$//' )
-    END_VERSIONS
     """
 }
