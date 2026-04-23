@@ -4,7 +4,7 @@ process CSVTK_JOIN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/csvtk:0.31.0--h9ee0642_0':
+        'https://depot.galaxyproject.org/singularity/csvtk:0.31.0--h9ee0642_0' :
         'quay.io/biocontainers/csvtk:0.31.0--h9ee0642_0' }"
 
     input:
@@ -12,7 +12,7 @@ process CSVTK_JOIN {
 
     output:
     tuple val(meta), path("${prefix}.${out_extension}"), emit: csv
-    tuple val("${task.process}"), val('csvtk'), eval('csvtk version | sed -e "s/csvtk v//g"'), emit: versions_csvtk, topic: versions
+    tuple val("${task.process}"), val('csvtk'), eval("csvtk version | sed -e 's/csvtk v//g'"), emit: versions_csvtk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

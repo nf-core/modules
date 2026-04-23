@@ -14,7 +14,7 @@ process CSVTK_MUTATE2 {
 
     output:
     tuple val(meta), path("${prefix}.${out_extension}"), emit: output
-    tuple val("${task.process}"), val('csvtk'), eval("csvtk version | sed 's/.*v//g'"), topic: versions, emit: versions_csvtk
+    tuple val("${task.process}"), val('csvtk'), eval("csvtk version | sed -e 's/csvtk v//g'"), emit: versions_csvtk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
