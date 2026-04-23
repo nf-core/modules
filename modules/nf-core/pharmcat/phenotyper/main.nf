@@ -3,7 +3,7 @@ process PHARMCAT_PHENOTYPER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e7dd711a2b130b55d33e119a346ef8040191bf7834a3c393ed6e29d7d9026d5e/data'
         : 'community.wave.seqera.io/library/pharmcat3:3.2.0--5126bb296d1e59ac'}"
 

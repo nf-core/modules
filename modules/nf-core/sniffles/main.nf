@@ -3,7 +3,7 @@ process SNIFFLES {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73397171642c8f96d79b94a16d5142eee4b389473aba7a04ca4493e62aa6e4ac/data' :
         'community.wave.seqera.io/library/sniffles:2.7.3--4d6ef29e260d91be' }"
 
