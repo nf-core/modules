@@ -44,18 +44,17 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.cazyme_annotation,
+                    path(process.out.cazyme_annotation[0][1]).text.contains('QYO62262.1|GH13'),
                     process.out.dbcanhmm_results,
                     process.out.dbcansub_results,
-                    process.out.dbcandiamond_results,
+                    path(process.out.dbcandiamond_results[0][1]).text.contains('GH13'),
                     process.out.cgc_gff,
                     process.out.cgc_standard_out,
                     process.out.diamond_out_tc,
                     process.out.tf_hmm_results,
                     process.out.stp_hmm_results,
                     process.out.total_cgc_info,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -79,10 +78,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()
+                { assert snapshot(process.out).match()
                 }
             )
         }

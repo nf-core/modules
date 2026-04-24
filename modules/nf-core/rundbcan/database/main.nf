@@ -3,12 +3,12 @@ process RUNDBCAN_DATABASE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.2.6--pyhdfd78af_0' :
-        'quay.io/biocontainers/dbcan:5.2.6--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dbcan:5.2.8--pyhdfd78af_0' :
+        'quay.io/biocontainers/dbcan:5.2.8--pyhdfd78af_0' }"
 
     output:
-    path "dbcan_db"    , emit: dbcan_db
-    path "versions.yml", emit: versions
+    path "dbcan_db", emit: dbcan_db
+    tuple val("${task.process}"), val('rundbcan'), eval("run_dbcan version | sed 's/dbCAN version: //g'"), emit: versions_rundbcan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -18,20 +18,10 @@ process RUNDBCAN_DATABASE {
     run_dbcan database \\
         --db_dir dbcan_db \\
         --aws_s3
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir -p dbcan_db
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
-    END_VERSIONS
     """
 }
