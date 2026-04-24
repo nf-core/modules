@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process MODKIT_ENTROPY"
+    script "../main.nf"
+    process "MODKIT_ENTROPY"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "modkit"
+    tag "modkit/entropy"
+
+    test("homo sapiens - nanopore modbam - cpg - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true) ]
+                ]
+                input[1] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - nanopore modbam - cpg") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true) ]
+                ]
+                input[1] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bed },
+                { assert path(process.out.bed[0][1]).exists() },
+                { assert path(process.out.bed[0][1]).size() > 0 },
+                // modkit entropy's BED output isn't byte-deterministic across CPU
+                // counts / architectures (float precision differs). Assert structure
+                // only and snapshot just the versions topic.
+                { assert snapshot(process.out.versions_modkit).match() }
+            )
+        }
+    }
+}
