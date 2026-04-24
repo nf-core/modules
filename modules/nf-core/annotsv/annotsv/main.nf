@@ -3,12 +3,12 @@ process ANNOTSV_ANNOTSV {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/363f212881f1b2f5c3395a6c7d1270694392e3a6f886e46e091e83527fed9b6b/data' :
         'community.wave.seqera.io/library/annotsv:3.5.3--71a461cb86d570b7' }"
 
     // Container options are needed to allow AnnotSV to overwrite a file in a dependency directory in Singularity
-    containerOptions "${ workflow.containerEngine == 'singularity' ? '--writable-tmpfs' : ''}"
+    containerOptions "${ workflow.containerEngine in ['singularity', 'apptainer'] ? '--writable-tmpfs' : ''}"
 
     input:
     tuple val(meta), path(sv_vcf), path(sv_vcf_index), path(candidate_small_variants)

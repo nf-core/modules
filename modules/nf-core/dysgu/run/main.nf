@@ -3,7 +3,7 @@ process DYSGU_RUN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a8c4c95342498790fe752b702051dc40eb71114d4c0b36e844daad1fea7b593/data':
         'community.wave.seqera.io/library/dysgu:1.8.7--a06ec137d500dc83' }"
 

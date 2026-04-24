@@ -3,9 +3,9 @@ process AFFY_JUSTRMA {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-affy:1.78.0--r43ha9d7317_1':
-        'biocontainers/bioconductor-affy:1.78.0--r43ha9d7317_1' }"
+        'quay.io/biocontainers/bioconductor-affy:1.78.0--r43ha9d7317_1' }"
 
     input:
     tuple val(meta), path(samplesheet), path(celfiles_dir)
