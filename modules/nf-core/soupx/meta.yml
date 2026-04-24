@@ -1,0 +1,80 @@
+name: "soupx"
+description: |
+  Estimation and removal of cell free mRNA contamination in droplet based single cell RNA-seq data.
+
+  The filtered counts are preprocessed with Seurat (LogNormalize, PCA, kNN graph, clustering) to
+  provide cluster assignments to SoupX, which then estimates per-cluster contamination and adjusts
+  counts. The adjusted counts are written to the output H5AD as an `ambient` layer.
+
+  Tunable flags via `ext.args` (space-separated `--key value` pairs):
+    --npcs               Number of principal components (also controls FindNeighbors dims = 1:npcs). Default: 50.
+    --cluster_algorithm  Seurat FindClusters algorithm: louvain | louvain_multilevel | slm | leiden. Default: leiden.
+keywords:
+  - single-cell
+  - transcriptomics
+  - ambient
+tools:
+  - "soupx":
+      description: "Estimation and removal of cell free mRNA contamination in droplet based single cell RNA-seq data"
+      documentation: "https://rawcdn.githack.com/constantAmateur/SoupX/204b602418df12e9fdb4b68775a8b486c6504fe4/inst/doc/pbmcTutorial.html"
+      tool_dev_url: "https://github.com/constantAmateur/SoupX"
+      doi: "10.1093/gigascience/giaa151"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - h5ad_filtered:
+        type: file
+        description: filtered H5AD file (after CellRanger filtering)
+        pattern: "*.h5ad"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5
+
+    - h5ad_raw:
+        type: file
+        description: raw H5AD file (before CellRanger filtering)
+        pattern: "*.h5ad"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5
+
+output:
+  h5ad:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.h5ad":
+          type: file
+          description: H5AD anndata object with ambient RNA removed
+          pattern: "*.h5ad"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5
+
+  versions_soupx:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@LeonHafner"
+maintainers:
+  - "@LeonHafner"
