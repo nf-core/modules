@@ -6,7 +6,7 @@ keywords:
   - Centrifuger
 tools:
   - "centrifuger":
-      description: " Centruger is An efficient taxonomic classification method that
+      description: "Centrifuger is an efficient taxonomic classification method that
         compares sequencing reads against a microbial genome database."
       homepage: "https://github.com/mourisl/centrifuger"
       documentation: "https://github.com/mourisl/centrifuger"
@@ -23,9 +23,26 @@ input:
     - classification_file:
         type: file
         description: Path to file containing classification results
-  - db:
-      type: directory
-      description: Path to directory containing Centrfuger db files
+  - - meta2:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1', single_end:false ]`
+    - db:
+        type: directory
+        description: Path to directory containing Centrifuger database files (that end in `.cfr`).
+  - taxonomy_nodes:
+      type: file
+      description: File describing parent-child relationships of a taxonomic tree in NCBI nodes.dmp format
+      ontologies:
+        - edam: http://edamontology.org/format_1964
+  - taxonomy_names:
+      type: file
+      description: File describing individual members of a taxonomic tree in NCBI names.dmp format
+      ontologies:
+        - edam: http://edamontology.org/format_1964
+  - size_table:
+      type: file
+      description: Optional - Table of contig (or genome) sizes.
 output:
   report_file:
     - - meta:
