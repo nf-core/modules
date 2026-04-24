@@ -1,0 +1,110 @@
+name: modkit_validate
+description: |
+  Validate base modification calls in one or more mod-BAMs against a matched
+  ground-truth BED file containing the expected modification state at
+  reference positions. Reports per-sample and combined confusion-matrix style
+  statistics (accuracy, filtered calls, probability distribution) as a
+  tab-separated machine-parseable table.
+keywords:
+  - modkit
+  - methylation
+  - validate
+  - nanopore
+  - ont
+  - modbam
+  - ground-truth
+  - benchmark
+tools:
+  - "modkit":
+      description: A bioinformatics tool for working with modified bases in Oxford Nanopore
+        sequencing data.
+      homepage: https://github.com/nanoporetech/modkit
+      documentation: https://nanoporetech.github.io/modkit/
+      tool_dev_url: https://github.com/nanoporetech/modkit
+      licence:
+        - "Oxford Nanopore Technologies PLC. Public License Version 1.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample (or cohort) information
+          e.g. `[ id:'test_run' ]`. The output inherits this meta.
+    - bams:
+        type: list
+        description: |
+          One or more modBAM files. BAMs are paired 1:1 with `truth_beds`
+          by list index and passed as repeated `--bam-and-bed <BAM> <BED>`
+          arguments to `modkit validate`.
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+    - bais:
+        type: list
+        description: |
+          BAM indices (`.bai` or `.csi`) matching each input BAM.
+        pattern: "*.{bai,csi}"
+        ontologies: []
+    - truth_beds:
+        type: list
+        description: |
+          Ground-truth BED files (one per BAM). The name field must be the
+          short modified base code (single letter or ChEBI ID) or `-` to
+          mark a canonical reference position. Paired 1:1 with `bams`.
+        pattern: "*.{bed,bed.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3003
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test_run' ]`.
+      - "*.tsv":
+          type: file
+          description: |
+            Machine-parseable validation summary produced by
+            `modkit validate --out-filepath`. Columns include counts of
+            correct / incorrect / filtered calls per class.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test_run' ]`.
+      - "*.log":
+          type: file
+          description: |
+            Optional modkit debug log (only emitted when `--log-filepath
+            <name>.log` is passed via `ext.args`).
+          pattern: "*.log"
+          ontologies: []
+  versions_modkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sahuno"
+maintainers:
+  - "@sahuno"
