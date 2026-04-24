@@ -1,6 +1,6 @@
 name: "gatk4_cleansam"
-description: Cleans the provided BAM, soft-clipping beyond-end-of-reference alignments
-  and setting MAPQ to 0 for unmapped reads
+description: Cleans the provided BAM, soft-clipping beyond-end-of-reference
+  alignments and setting MAPQ to 0 for unmapped reads
 keywords:
   - clean
   - bam
@@ -16,7 +16,8 @@ tools:
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
 input:
   - - meta:
@@ -29,7 +30,7 @@ input:
         description: BAM file
         pattern: "*.{bam}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2572"
   - - meta2:
         type: map
         description: |
@@ -40,7 +41,7 @@ input:
         description: Reference FASTA file
         pattern: "*.{fasta}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1929"
   - - meta3:
         type: map
         description: |
@@ -51,7 +52,7 @@ input:
         description: Index file for the reference FASTA
         pattern: "*.{fai}"
         ontologies:
-          - edam: "http://edamontology.org/format_3703" # FAI
+          - edam: "http://edamontology.org/format_3703"
   - create_index:
       type: boolean
       description: Whether to create an index file for the output BAM
@@ -70,7 +71,7 @@ output:
           description: Cleaned BAM file
           pattern: "*.{bam}"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2572"
   bai:
     - - meta:
           type: map
@@ -82,7 +83,7 @@ output:
           description: Index file for the cleaned BAM file
           pattern: "*.{bai}"
           ontologies:
-            - edam: "http://edamontology.org/format_3327" # BAI
+            - edam: "http://edamontology.org/format_3327"
   md5:
     - - meta:
           type: map
@@ -94,7 +95,7 @@ output:
           description: MD5 checksum for the cleaned BAM file
           pattern: "*.{md5}"
           ontologies:
-            - edam: "http://edamontology.org/format_3823" # MD5
+            - edam: "http://edamontology.org/format_3823"
   versions_gatk:
     - - ${task.process}:
           type: string
@@ -103,18 +104,18 @@ output:
           type: string
           description: The tool name
       - "gatk CleanSam --version | grep GATK | sed 's/.*(GATK) v//'":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - picard:
+      - gatk:
           type: string
           description: The tool name
       - "gatk CleanSam --version | grep GATK | sed 's/.*(GATK) v//'":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@sofiademmou"
