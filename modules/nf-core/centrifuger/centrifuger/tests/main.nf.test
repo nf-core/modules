@@ -21,17 +21,17 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - fastq_single_end") {
+    test("sarscov2 - fastq - single_end") {
         when {
             process {
                 """
                 input[0] = [[ id:'test', single_end: true ],
                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
                 input[2] = true
                 input[3] = true
-                    input[4] = []
+                input[4] = []
                 input[5] = []
                 """
             }
@@ -40,7 +40,7 @@ nextflow_process {
             assertAll(
                 {assert process.success },
                 { assert snapshot(
-                    file(process.out.classification_file[0][1]).name,
+                    process.out.classification_file,
                     file(process.out.fastq_classified[0][1]).name,
                     file(process.out.fastq_unclassified[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -48,7 +48,7 @@ nextflow_process {
             )
         }
     }
-    test("sarscov2 - fastq_paired_end") {
+    test("sarscov2 - fastq - paired_end") {
         when {
             process {
                 """
@@ -59,7 +59,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
                 input[2] = true
                 input[3] = true
                 input[4] = []
@@ -71,7 +71,7 @@ nextflow_process {
             assertAll(
                 {assert process.success },
                 { assert snapshot(
-                    file(process.out.classification_file[0][1]).name,
+                    process.out.classification_file,
                     process.out.fastq_classified[0][1].collect { file(it).name },
                     process.out.fastq_unclassified[0][1].collect {file (it).name },
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -80,7 +80,7 @@ nextflow_process {
         }
 
     }
-    test("sarscov2 - fastq_single_end_stub") {
+    test("sarscov2 - fastq - single_end - stub") {
         options "-stub"
 
         when {
@@ -89,7 +89,7 @@ nextflow_process {
                 input[0] = [[ id:'test', single_end: true ],
                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
                 input[2] = true
                 input[3] = true
                 input[4] = []
@@ -100,12 +100,7 @@ nextflow_process {
         then {
             assertAll(
                 {assert process.success },
-                { assert snapshot(
-                    file(process.out.classification_file[0][1]).name,
-                    file(process.out.fastq_classified[0][1]).name,
-                    file(process.out.fastq_unclassified[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() } // strips paths and empty MD5s automatically
             )
         }
 

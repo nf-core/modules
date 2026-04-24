@@ -5,11 +5,14 @@ process CENTRIFUGER_QUANTIFICATION {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/centrifuger:1.1.0--hf426362_0':
-        'biocontainers/centrifuger:1.1.0--hf426362_0' }"
+        'quay.io/biocontainers/centrifuger:1.1.0--hf426362_0' }"
 
     input:
     tuple val(meta), path(classification_file)
-    path db
+    tuple val(meta2), path(db)
+    path taxonomy_nodes
+    path taxonomy_names
+    path size_table
 
     output:
     tuple val(meta), path("${meta.id}.tsv"), emit: report_file
@@ -21,12 +24,21 @@ process CENTRIFUGER_QUANTIFICATION {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // include -x option with index prrefix or use specified files
+    def db_arg = ""
+    if (db) {
+        db_arg= " -x `find -L ${db} -name '*.1.cfr' -not -name '._*'  | sed 's/\\.1.cfr\$//'`"
+        }
+    else {
+        def tax_arg = taxonomy_nodes ? "--taxonomy-tree ${taxonomy_nodes}" : ""
+        def name_arg = taxonomy_names ? "--name-table ${taxonomy_names}" : ""
+        def size_arg = size_table ? "--size-table ${size_table}" : ""
+        db_arg = "${tax_arg} ${name_arg} ${size_arg}"
+        }
 
     """
-    db_name=`find -L ${db} -name "*.1.cfr" -not -name "._*"  | sed 's/\\.1.cfr\$//'`
-
     centrifuger-quant \\
-        -x \$db_name \\
+        ${db_arg} \\
         -c ${classification_file} \\
         ${args} > ${prefix}.tsv
     """
@@ -39,13 +51,6 @@ process CENTRIFUGER_QUANTIFICATION {
     echo $args
 
     #output
-    touch ${prefix}.tsv
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        centrifuger -v 2>&1 | sed 's/Centrifuger v//')
-    END_VERSIONS
+    echo "" > ${prefix}.tsv
     """
-
 }

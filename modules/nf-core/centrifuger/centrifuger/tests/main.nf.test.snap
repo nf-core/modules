@@ -1,7 +1,89 @@
 {
-    "sarscov2 - fastq_paired_end": {
+    "sarscov2 - fastq - single_end - stub": {
         "content": [
-            "test.tsv",
+            {
+                "classification_file": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "fastq_classified": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.classified.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "fastq_unclassified": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.unclassified.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_centrifuger": [
+                    [
+                        "CENTRIFUGER_CENTRIFUGER",
+                        "centrifuger",
+                        "1.1.0-r299"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-24T13:19:03.877144",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - fastq - single_end": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.tsv:md5,8bf335423fdcda3b81c9382efbcf79b2"
+                ]
+            ],
+            "test.classified.fq.gz",
+            "test.unclassified.fq.gz",
+            {
+                "versions_centrifuger": [
+                    [
+                        "CENTRIFUGER_CENTRIFUGER",
+                        "centrifuger",
+                        "1.1.0-r299"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-24T13:18:50.796221",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - fastq - paired_end": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.tsv:md5,976bdf6f4eefe1b422a6ce84be1aa7e8"
+                ]
+            ],
             [
                 "test.classified_1.fq.gz",
                 "test.classified_2.fq.gz"
@@ -20,49 +102,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-20T10:50:42.284983",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
-    "sarscov2 - fastq_single_end": {
-        "content": [
-            "test.tsv",
-            "test.classified.fq.gz",
-            "test.unclassified.fq.gz",
-            {
-                "versions_centrifuger": [
-                    [
-                        "CENTRIFUGER_CENTRIFUGER",
-                        "centrifuger",
-                        "1.1.0-r299"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-04-20T10:50:36.957143",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
-    "sarscov2 - fastq_single_end_stub": {
-        "content": [
-            "test.tsv",
-            "test.classified.fq.gz",
-            "test.unclassified.fq.gz",
-            {
-                "versions_centrifuger": [
-                    [
-                        "CENTRIFUGER_CENTRIFUGER",
-                        "centrifuger",
-                        "1.1.0-r299"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-04-20T10:50:46.78207",
+        "timestamp": "2026-04-24T13:18:57.595009",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
