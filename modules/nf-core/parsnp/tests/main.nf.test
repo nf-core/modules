@@ -11,25 +11,21 @@ nextflow_process {
     test("candidatus_portiera_aleyrodidarum - fasta") {
         when {
             process {
-                def dir = file("${outputDir}/genomes")
-                dir.mkdirs()
-                def genomeText = new URL('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta').text
-                new File(dir, "portiera_1.fa").text = genomeText
-                new File(dir, "portiera_2.fa").text = genomeText
                 """
-                input[0] = [[ id:'test' ], file("${outputDir}/genomes")]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                def genome = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                def genome2 = genome.copyTo('portiera_2.fa')
+
+                input[0] = [[ id:'test' ], [genome, genome2]]
+                input[1] = genome
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("candidatus_portiera_aleyrodidarum - fasta - stub") {
@@ -38,14 +34,11 @@ nextflow_process {
 
         when {
             process {
-                def dir = file("${outputDir}/genomes")
-                dir.mkdirs()
-                def genomeText = new URL('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta').text
-                new File(dir, "portiera_1.fa").text = genomeText
-                new File(dir, "portiera_2.fa").text = genomeText
                 """
-                input[0] = [[ id:'test' ], file("${outputDir}/genomes")]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                def genome = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                def genome2 = genome.copyTo('portiera_2.fa')
+                input[0] = [[ id:'test' ], [genome, genome2]]
+                input[1] = genome
                 """
             }
         }

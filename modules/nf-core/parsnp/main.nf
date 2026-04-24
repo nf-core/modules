@@ -28,7 +28,7 @@ process PARSNP {
     """
     parsnp \\
         -r "${reference}" \\
-        -d "${genomes}" \\
+        -d genomes/ \\
         -o parsnp_out \\
         -p ${task.cpus} \\
         ${args}
