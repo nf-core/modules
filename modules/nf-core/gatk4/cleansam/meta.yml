@@ -50,7 +50,8 @@ input:
         type: file
         description: Index file for the reference FASTA
         pattern: "*.{fai}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3703" # FAI
   - create_index:
       type: boolean
       description: Whether to create an index file for the output BAM
@@ -80,7 +81,20 @@ output:
           type: file
           description: Index file for the cleaned BAM file
           pattern: "*.{bai}"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3327" # BAI
+  md5:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.md5":
+          type: file
+          description: MD5 checksum for the cleaned BAM file
+          pattern: "*.{md5}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3823" # MD5
   versions_gatk:
     - - ${task.process}:
           type: string
