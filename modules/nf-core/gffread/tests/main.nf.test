@@ -192,6 +192,69 @@ nextflow_process {
 
     }
 
+    test("sarscov2-gff3-bed") {
+
+        config "./nextflow-bed.config"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.gff3", checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.gtf == [] },
+                { assert process.out.gffread_gff == [] },
+                { assert process.out.gffread_fasta == [] }
+            )
+        }
+
+    }
+
+    test("sarscov2-gff3-bed-stub") {
+
+        options '-stub'
+        config "./nextflow-bed.config"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.gff3", checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.gtf == [] },
+                { assert process.out.gffread_gff == [] },
+                { assert process.out.gffread_fasta == [] }
+            )
+        }
+
+    }
+
     test("sarscov2-gff3-fasta-fail-catch") {
 
         options '-stub'
