@@ -1,0 +1,108 @@
+name: "gatk4_cleansam"
+description: Cleans the provided BAM, soft-clipping beyond-end-of-reference alignments
+  and setting MAPQ to 0 for unmapped reads
+keywords:
+  - clean
+  - bam
+  - gatk
+  - sam
+  - clipping
+tools:
+  - "gatk":
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Reference FASTA file
+        pattern: "*.{fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta_index:
+        type: file
+        description: Index file for the reference FASTA
+        pattern: "*.{fai}"
+        ontologies: []
+  - create_index:
+      type: boolean
+      description: Whether to create an index file for the output BAM
+  - create_md5:
+      type: boolean
+      description: Whether to create an MD5 checksum for the output BAM
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Cleaned BAM file
+          pattern: "*.{bam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bai":
+          type: file
+          description: Index file for the cleaned BAM file
+          pattern: "*.{bai}"
+          ontologies: []
+  versions_gatk:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gatk:
+          type: string
+          description: The tool name
+      - "gatk CleanSam --version | grep GATK | sed 's/.*(GATK) v//'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "gatk CleanSam --version | grep GATK | sed 's/.*(GATK) v//'":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@sofiademmou"
+maintainers:
+  - "@sofiademmou"
