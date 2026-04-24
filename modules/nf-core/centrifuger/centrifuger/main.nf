@@ -1,15 +1,15 @@
 process CENTRIFUGER_CENTRIFUGER {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/centrifuger:1.1.0--hf426362_0':
-        'biocontainers/centrifuger:1.1.0--hf426362_0' }"
+        'quay.io/biocontainers/centrifuger:1.1.0--hf426362_0' }"
 
     input:
     tuple val(meta), path(reads)
-    path db
+    tuple val(meta2), path(db)
     val save_unclassified
     val save_classified
     path barcode
@@ -46,18 +46,16 @@ process CENTRIFUGER_CENTRIFUGER {
         ${umi_arg} \\
         -t ${task.cpus} \\
         ${args} > ${prefix}.tsv
-
     """
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     echo ${args}
-    #main output
+    ## main output
     touch ${prefix}.tsv
 
-    #Optional outputs
+    ## Optional outputs
     if ${save_unclassified}; then
         if ${meta.single_end}; then
             echo "" | gzip >  ${prefix}.unclassified.fq.gz
@@ -75,10 +73,5 @@ process CENTRIFUGER_CENTRIFUGER {
            echo "" | gzip > ${prefix}.classified_2.fq.gz
         fi
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        centrifuger: \$(centrifuger -v 2>&1 | sed 's/Centrifuger v//')
-    END_VERSIONS
     """
 }

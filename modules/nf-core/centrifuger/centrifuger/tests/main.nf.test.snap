@@ -1,69 +1,5 @@
 {
-    "sarscov2 - fastq_paired_end": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.tsv:md5,976bdf6f4eefe1b422a6ce84be1aa7e8"
-                ]
-            ],
-            [
-                "test.classified_1.fq.gz",
-                "test.classified_2.fq.gz"
-            ],
-            [
-                "test.unclassified_1.fq.gz",
-                "test.unclassified_2.fq.gz"
-            ],
-            {
-                "versions_centrifuger": [
-                    [
-                        "CENTRIFUGER_CENTRIFUGER",
-                        "centrifuger",
-                        "1.1.0-r299"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-04-22T11:30:36.426997",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
-    "sarscov2 - fastq_single_end": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.tsv:md5,8bf335423fdcda3b81c9382efbcf79b2"
-                ]
-            ],
-            "test.classified.fq.gz",
-            "test.unclassified.fq.gz",
-            {
-                "versions_centrifuger": [
-                    [
-                        "CENTRIFUGER_CENTRIFUGER",
-                        "centrifuger",
-                        "1.1.0-r299"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-04-22T11:30:31.309605",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
-    "sarscov2 - fastq_single_end_stub": {
+    "sarscov2 - fastq - single_end - stub": {
         "content": [
             {
                 "classification_file": [
@@ -102,7 +38,71 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-22T11:20:40.855425",
+        "timestamp": "2026-04-24T13:19:03.877144",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - fastq - single_end": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.tsv:md5,8bf335423fdcda3b81c9382efbcf79b2"
+                ]
+            ],
+            "test.classified.fq.gz",
+            "test.unclassified.fq.gz",
+            {
+                "versions_centrifuger": [
+                    [
+                        "CENTRIFUGER_CENTRIFUGER",
+                        "centrifuger",
+                        "1.1.0-r299"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-24T13:18:50.796221",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - fastq - paired_end": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.tsv:md5,976bdf6f4eefe1b422a6ce84be1aa7e8"
+                ]
+            ],
+            [
+                "test.classified_1.fq.gz",
+                "test.classified_2.fq.gz"
+            ],
+            [
+                "test.unclassified_1.fq.gz",
+                "test.unclassified_2.fq.gz"
+            ],
+            {
+                "versions_centrifuger": [
+                    [
+                        "CENTRIFUGER_CENTRIFUGER",
+                        "centrifuger",
+                        "1.1.0-r299"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-24T13:18:57.595009",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"

@@ -27,9 +27,13 @@ input:
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 #FASTQ
-  - db:
-      type: directory
-      description: Path to directory containing Centrifuger database files.
+  - - meta2:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1', single_end:false ]`
+    - db:
+        type: directory
+        description: Path to directory containing Centrifuger database files (that end in `.cfr`).
   - save_unclassified:
       type: boolean
       description: |
@@ -55,7 +59,7 @@ output:
       - ${meta.id}.tsv:
           type: file
           description: |
-            File contαining classification results
+            File containing classification results
           pattern: "${prefix}.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 #TSV
