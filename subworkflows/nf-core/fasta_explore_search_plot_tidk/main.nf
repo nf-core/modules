@@ -41,7 +41,7 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
                                 by:0
                             )
                             | map { _id, meta, fasta, seq -> [ meta, fasta, seq ] }
-    
+
     ch_apriori_inputs.view()
 
     TIDK_SEARCH_APRIORI (
