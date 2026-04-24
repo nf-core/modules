@@ -211,10 +211,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() },
-                { assert process.out.gtf == [] },
-                { assert process.out.gffread_gff == [] },
-                { assert process.out.gffread_fasta == [] }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -240,10 +237,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() },
-                { assert process.out.gtf == [] },
-                { assert process.out.gffread_gff == [] },
-                { assert process.out.gffread_fasta == [] }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
