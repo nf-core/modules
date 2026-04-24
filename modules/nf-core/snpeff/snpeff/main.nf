@@ -3,7 +3,7 @@ process SNPEFF_SNPEFF {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cbd585b788eeafff9b9a018e8775de24eeb6b380d95bb22629a5f14ee3fff519/data'
         : 'community.wave.seqera.io/library/snpeff:5.4.0c--e08ddc54579e82bd'}"
 

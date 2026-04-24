@@ -23,8 +23,8 @@ input:
           compulsory here).
     - samples:
         type: file
-        description: Tabular (e.g. TSV/CSV) samples file with sample IDs by row and
-          variables by column.
+        description: Tabular (e.g. TSV/CSV) samples file with sample IDs by row
+          and variables by column.
         pattern: "*.{csv,tsv}"
         ontologies:
           - edam: http://edamontology.org/format_3752 # CSV
@@ -43,13 +43,27 @@ output:
             documentation at
             https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats
           ontologies: []
+  versions_mawk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mawk:
+          type: string
+          description: The name of the tool
+      - mawk --version | sed '1!d;s/mawk //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mawk:
+          type: string
+          description: The name of the tool
+      - mawk --version | sed '1!d;s/mawk //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
 maintainers:
