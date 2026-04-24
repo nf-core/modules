@@ -9,7 +9,7 @@ process VCF2CIRCOS {
 
     input:
     tuple val(meta), path(vcf), path(vcf_index), val(output_extension)
-    tuple val(meta2), path(vcf2circos_options)
+    tuple val(meta2), path(annotations_dir)
 
     output:
     tuple val(meta), path("*.{html,png,jpg,jpeg,webp,svg,pdf,eps,json}"), emit: circos
@@ -22,9 +22,12 @@ process VCF2CIRCOS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # Have to set "Static" key to "./Static" in "options.json"
+    sed 's/"Static":.*/"Static": "Static",/' ${annotations_dir}/options.json > options_replaced.json
+
     vcf2circos \\
         ${args} \\
-        --options ${vcf2circos_options} \\
+        --options options_replaced.json \\
         --input ${vcf} \\
         -o ${prefix}.${output_extension}
     """
