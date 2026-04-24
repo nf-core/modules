@@ -19,7 +19,7 @@ process MULTIQC {
 
     when:
     task.ext.when == null || task.ext.when
-
+//trigger test
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ? "--filename ${task.ext.prefix}.html" : ''
