@@ -134,7 +134,7 @@ nextflow_process {
         }
     }
     test("sarscov2 - bam + fasta - stub") {
-
+        options "-stub"
         when {
             process {
                 """
@@ -165,7 +165,7 @@ nextflow_process {
     }
 
     test("sarscov2 - bam + fasta - bai + md5 - stub") {
-
+        options "-stub"
         when {
             process {
                 """
