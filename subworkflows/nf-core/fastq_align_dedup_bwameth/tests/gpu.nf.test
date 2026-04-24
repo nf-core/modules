@@ -45,15 +45,12 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
-                ])
-                input[2] = Channel.of([
-                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[3] = UNTAR.out.untar
-                input[4] = false // skip_deduplication
-                input[5] = true // use_gpu
+                input[2] = UNTAR.out.untar
+                input[3] = false // skip_deduplication
+                input[4] = true // use_gpu
                 """
             }
         }
@@ -67,9 +64,8 @@ nextflow_workflow {
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
-                    ).match() }
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }
+                ).match() }
             )
         }
     }
@@ -90,15 +86,12 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
-                ])
-                input[2] = Channel.of([
-                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[3] = UNTAR.out.untar
-                input[4] = true // skip_deduplication
-                input[5] = true // use_gpu
+                input[2] = UNTAR.out.untar
+                input[3] = true // skip_deduplication
+                input[4] = true // use_gpu
                 """
             }
         }
@@ -112,9 +105,8 @@ nextflow_workflow {
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
-                    ).match() }
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }
+                ).match() }
             )
         }
     }

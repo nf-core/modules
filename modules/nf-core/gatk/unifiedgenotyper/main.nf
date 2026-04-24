@@ -3,7 +3,7 @@ process GATK_UNIFIEDGENOTYPER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/194eeac04775f5e88453dcc831c6de7b36839fe17d0bbd8e1bca6d9ab41cdba2/data'
         : 'community.wave.seqera.io/library/gatk_tabix:efe73d760b0a026c'}"
 
@@ -19,7 +19,7 @@ process GATK_UNIFIEDGENOTYPER {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('gatk'), eval('gatk3 --version'), emit: versions_gatk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -56,10 +56,6 @@ process GATK_UNIFIEDGENOTYPER {
 
     bgzip ${prefix}.vcf
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk: \$(echo \$(gatk3 --version))
-    END_VERSIONS
     """
 
     stub:
@@ -67,9 +63,5 @@ process GATK_UNIFIEDGENOTYPER {
     """
     echo "" | bgzip -c > ${prefix}.vcf.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk: \$(echo \$(gatk3 --version))
-    END_VERSIONS
     """
 }

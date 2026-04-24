@@ -3,9 +3,9 @@ process ANGSD_GL {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/angsd:0.940--hce60e53_2':
-        'biocontainers/angsd:0.940--hce60e53_2' }"
+        'quay.io/biocontainers/angsd:0.940--hce60e53_2' }"
 
     input:
     tuple val(meta),  path(bam)
@@ -14,7 +14,7 @@ process ANGSD_GL {
 
     output:
     tuple val(meta), path("*.{glf,beagle}.gz"), emit: genotype_likelihood
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('angsd'), eval("angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'"), emit: versions_angsd, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,11 +41,6 @@ process ANGSD_GL {
             ${ref} \\
             ${output_mode} \\
             -out ${prefix}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-        END_VERSIONS
         """
     } else if (GL_model == 3) {
         // No args for this part.
@@ -71,11 +66,6 @@ process ANGSD_GL {
             ${ref} \\
             ${output_mode} \\
             -out ${prefix}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-        END_VERSIONS
         """
     } else if (GL_model == 4) {
         """
@@ -91,23 +81,12 @@ process ANGSD_GL {
             ${errors} \\
             -doCounts 1 \\
             -out ${prefix}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-        END_VERSIONS
         """
     }
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.glf
-    gzip ${prefix}.glf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.glf.gz
     """
 }
