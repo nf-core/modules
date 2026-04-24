@@ -1534,7 +1534,10 @@ output:
           type: file
           description: Sorted BAM, CRAM or SAM file containing evidence reads
           pattern: "*_evidence.{b,cr,s}am"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+            - edam: http://edamontology.org/format_3462 # CRAM
+            - edam: http://edamontology.org/format_2573 # SAM
   fine_hist_csv:
     - - meta:
           type: map
@@ -1546,7 +1549,7 @@ output:
           description: Contains fine histogram data
           pattern: "*_fine_hist.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   full_res_bed:
     - - meta:
           type: map
@@ -1557,7 +1560,8 @@ output:
           type: file
           description: BED file containing full resolution data
           pattern: "*_full_res.bed"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
   hist_csv:
     - - meta:
           type: map
@@ -1569,7 +1573,7 @@ output:
           description: Contains histogram data
           pattern: "*_hist.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   overall_mean_cov_csv:
     - - meta:
           type: map
@@ -1581,7 +1585,7 @@ output:
           description: Contains overall mean coverage metrics
           pattern: "*_overall_mean_cov.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   read_cov_report_bed:
     - - meta:
           type: map
@@ -1592,7 +1596,8 @@ output:
           type: file
           description: BED file containing read coverage report
           pattern: "*_read_cov_report.bed"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
   partitions_txt:
     - ./sort_spill/partitions.txt:
         type: file
@@ -1611,28 +1616,28 @@ output:
         description: Candidate metrics
         pattern: "./sv/results/stats/candidate_metrics.csv"
         ontologies:
-          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3752 # CSV
   diploidSV_sv_metrics_csv:
     - ./sv/results/stats/diploidSV.sv_metrics.csv:
         type: file
         description: Diploid SV metrics
         pattern: "./sv/results/stats/diploidSV.sv_metrics.csv"
         ontologies:
-          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3752 # CSV
   graph_metrics_csv:
     - ./sv/results/stats/graph_metrics.csv:
         type: file
         description: Graph metrics
         pattern: "./sv/results/stats/graph_metrics.csv"
         ontologies:
-          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3752 # CSV
   svCandidateGenerationStats_tsv:
     - ./sv/results/stats/svCandidateGenerationStats.tsv:
         type: file
         description: Structural variant candidate generation statistics
         pattern: "./sv/results/stats/svCandidateGenerationStats.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3475 # TSV
   svCandidateGenerationStats_xml:
     - ./sv/results/stats/svCandidateGenerationStats.xml:
         type: file
@@ -1680,7 +1685,7 @@ output:
         description: Alignment statistics in XML format
         pattern: "./sv/workspace/alignmentStats.xml"
         ontologies:
-          - edam: http://edamontology.org/format_2332 #XML
+          - edam: http://edamontology.org/format_2332 # XML
   chromDepth_txt:
     - ./sv/workspace/chromDepth.txt:
         type: file
