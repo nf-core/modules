@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process HIFIADAPTERFILT"
+    script "../main.nf"
+    process "HIFIADAPTERFILT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hifiadapterfilt"
+
+    test("homo_sapiens - pacbio ccs bam - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq,
+                    path(process.out.blastout[0][1]).exists(),
+                    path(process.out.blocklist[0][1]).exists(),
+                    path(process.out.stats[0][1]).exists(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pacbio ccs bam - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
