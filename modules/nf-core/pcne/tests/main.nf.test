@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process PCNE"
+    script "../main.nf"
+    process "PCNE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pcne"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[2] = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out.results).match("results") },
+                { assert snapshot(process.out.versions_pcne).match("versions") }
+            )
+            assert process.out.log.get(0).get(1) ==~ ".*.log"
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[2] = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out.results).match("results_stub") },
+                { assert snapshot(process.out.versions_pcne).match("versions_stub") }
+            )
+        }
+
+    }
+
+}
