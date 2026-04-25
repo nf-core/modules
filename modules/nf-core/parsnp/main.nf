@@ -4,7 +4,7 @@ process PARSNP {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community.wave.seqera.io/library/parsnp:2.1.5--0605933fc69e7b20'
+        ? 'oras://community.wave.seqera.io/library/parsnp:2.1.5--0605933fc69e7b20'
         : 'community.wave.seqera.io/library/parsnp:2.1.5--2c7f64ad14a79523'}"
 
     input:
