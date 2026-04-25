@@ -1,0 +1,107 @@
+name: hifiadapterfilt
+description: Remove remnant PacBio adapter sequences from HiFi reads and convert BAM input to compressed FASTQ
+keywords:
+  - PacBio
+  - HiFi
+  - adapter filtering
+  - long reads
+  - FASTQ
+tools:
+  - hifiadapterfilt:
+      description: HiFiAdapterFilt removes CCS reads with remnant PacBio adapter sequences and converts outputs to compressed FASTQ.
+      homepage: https://github.com/sheinasim-USDA/HiFiAdapterFilt
+      documentation: https://github.com/sheinasim-USDA/HiFiAdapterFilt
+      tool_dev_url: https://github.com/sheinasim-USDA/HiFiAdapterFilt
+      doi: "10.1186/s12864-022-08375-1"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: biotools:hifiadapterfilt
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:true ]
+    - reads:
+        type: file
+        description: PacBio HiFi reads in BAM, FASTQ, or gzip-compressed FASTQ format
+        pattern: "*.{bam,fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_3989 # GZIP format
+output:
+  blastout:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:true ]
+      - ${prefix}.contaminant.blastout:
+          type: file
+          description: Tabular BLAST output containing reads aligned to PacBio adapter sequences
+          pattern: "*.contaminant.blastout"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  blocklist:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:true ]
+      - ${prefix}.blocklist:
+          type: file
+          description: List of read headers identified as PacBio adapter-contaminated and removed
+          pattern: "*.blocklist"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:true ]
+      - ${prefix}.filt.fastq.gz:
+          type: file
+          description: Gzipped FASTQ file containing reads without detected PacBio adapter contamination
+          pattern: "*.filt.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:true ]
+      - ${prefix}.stats:
+          type: file
+          description: Text summary of read counts and adapter-contaminated reads removed
+          pattern: "*.stats"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  versions_hifiadapterfilt:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hifiadapterfilt:
+          type: string
+          description: The tool name
+      - echo 3.0.0:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hifiadapterfilt:
+          type: string
+          description: The tool name
+      - echo 3.0.0:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
