@@ -8,7 +8,7 @@ process KRAKENUNIQ_BUILD {
         : 'quay.io/biocontainers/krakenuniq:1.0.4--pl5321h6dccd9a_2'}"
 
     input:
-    tuple val(meta), path(custom_library_dir, stageAs: "library/*"), path(custom_taxonomy_dir, stageAs: "taxonomy"), path(custom_seqid2taxid)
+    tuple val(meta), path(custom_library_dir, stageAs: "library/*"), path(custom_taxonomy_dir, stageAs: "taxonomy/*"), path(custom_seqid2taxid, stageAs: 'seqid2taxid.map')
     val keep_intermediate
 
     output:
