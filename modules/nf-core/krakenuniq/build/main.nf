@@ -13,7 +13,7 @@ process KRAKENUNIQ_BUILD {
 
     output:
     tuple val(meta), path("${prefix}/"), emit: db
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('krakenuniq'), eval("krakenuniq --version | sed '1!d;s/KrakenUniq version //'"), emit: versions_krakenuniq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +33,6 @@ process KRAKENUNIQ_BUILD {
         --db ${prefix}
 
     ${run_cleanup}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +47,5 @@ process KRAKENUNIQ_BUILD {
     touch ${prefix}/database.kdb.counts
     touch ${prefix}/database.kraken.tsv
     touch ${prefix}/database.report.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
-    END_VERSIONS
     """
 }
