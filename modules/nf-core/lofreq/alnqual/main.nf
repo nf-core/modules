@@ -3,9 +3,9 @@ process LOFREQ_ALNQUAL {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py310h47ef89e_10' :
-        'biocontainers/lofreq:2.1.5--py310h47ef89e_10' }"
+        'quay.io/biocontainers/lofreq:2.1.5--py310h47ef89e_10' }"
 
     input:
     tuple val(meta), path(bam)

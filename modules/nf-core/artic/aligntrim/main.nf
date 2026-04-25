@@ -3,7 +3,7 @@ process ARTIC_ALIGNTRIM {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'oras://community.wave.seqera.io/library/align_trim_samtools:1752280b4d1f6d15'
         : 'community.wave.seqera.io/library/align_trim_samtools:8522ef905ed24d0d'}"
 

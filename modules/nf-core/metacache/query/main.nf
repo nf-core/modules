@@ -4,9 +4,9 @@ process METACACHE_QUERY {
 
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/metacache:2.5.0--h077b44d_0'
-        : 'biocontainers/metacache:2.5.0--h077b44d_0'}"
+        : 'quay.io/biocontainers/metacache:2.5.0--h077b44d_0'}"
 
     input:
     tuple val(meta), path(reads)
