@@ -42,6 +42,10 @@ process TCOFFEE_CONSENSUS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     export TEMP='./'
-    touch ${prefix}.aln${compress ? '.gz':''}
+    if [ "${compress}" = "true" ]; then
+        echo '' | gzip > ${prefix}.aln.gz
+    else
+        touch ${prefix}.aln
+    fi
     """
 }

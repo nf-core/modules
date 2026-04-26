@@ -30,7 +30,7 @@ process BCFTOOLS_SPLIT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch "${prefix}.chr1.vcf.gz"
-    touch "${prefix}.chr2.vcf.gz"
+    echo '' | gzip > "${prefix}.chr1.vcf.gz"
+    echo '' | gzip > "${prefix}.chr2.vcf.gz"
     """
 }

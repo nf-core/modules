@@ -54,6 +54,10 @@ process CLUSTALO_ALIGN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.aln${compress ? '.gz' : ''}
+    if [ "${compress}" = "true" ]; then
+        echo '' | gzip > ${prefix}.aln.gz
+    else
+        touch ${prefix}.aln
+    fi
     """
 }

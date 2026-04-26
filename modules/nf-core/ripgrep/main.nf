@@ -42,7 +42,7 @@ process RIPGREP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def write_output = compress ? "touch ${prefix}.txt.gz" : "touch ${prefix}.txt"
+    def write_output = compress ? "echo '' | gzip > ${prefix}.txt.gz" : "touch ${prefix}.txt"
     """
     $write_output
 

@@ -53,6 +53,10 @@ process TCOFFEE_ALIGN {
     export TEMP='./'
     export TMP_4_TCOFFEE="./"
     export HOME="./"
-    touch ${prefix}.aln${compress ? '.gz':''}
+    if [ "${compress}" = "true" ]; then
+        echo '' | gzip > ${prefix}.aln.gz
+    else
+        touch ${prefix}.aln
+    fi
     """
 }

@@ -52,7 +52,12 @@ process MTMALIGN_ALIGN {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.aln${compress ? '.gz' : ''}
-    touch ${prefix}.pdb${compress ? '.gz' : ''}
+    if [ "${compress}" = "true" ]; then
+        echo '' | gzip > ${prefix}.aln.gz
+        echo '' | gzip > ${prefix}.pdb.gz
+    else
+        touch ${prefix}.aln
+        touch ${prefix}.pdb
+    fi
     """
 }

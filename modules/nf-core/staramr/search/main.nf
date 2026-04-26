@@ -52,8 +52,13 @@ process STARAMR_SEARCH {
     """
     mkdir ${prefix}_results
     touch ${prefix}_results/results.xlsx
-    touch ${prefix}_results/{summary,detailed_summary,resfinder,pointfinder,plasmidfinder,mlst}.tsv.gz
-    touch ${prefix}_results/settings.txt.gz
+    echo '' | gzip > ${prefix}_results/summary.tsv.gz
+    echo '' | gzip > ${prefix}_results/detailed_summary.tsv.gz
+    echo '' | gzip > ${prefix}_results/resfinder.tsv.gz
+    echo '' | gzip > ${prefix}_results/pointfinder.tsv.gz
+    echo '' | gzip > ${prefix}_results/plasmidfinder.tsv.gz
+    echo '' | gzip > ${prefix}_results/mlst.tsv.gz
+    echo '' | gzip > ${prefix}_results/settings.txt.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
