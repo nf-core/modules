@@ -58,7 +58,7 @@ process TRNASCANSE {
     touch ${prefix}.tsv
     touch ${prefix}.log
     touch ${prefix}.stats
-    echo '' | gzip > ${prefix}.fasta.gz
+    echo "" | gzip > ${prefix}.fasta.gz
     touch ${prefix}.gff
     touch ${prefix}.bed
     """
