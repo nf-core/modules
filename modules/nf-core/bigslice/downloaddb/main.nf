@@ -20,7 +20,7 @@ process BIGSLICE_DOWNLOADDB {
     # Copy the script to the work directory so it writes bigslice-models/ here
     # (download_bigslice_hmmdb uses __file__ to determine the output path;
     # copying it here ensures bigslice-models/ is created in the work directory)
-    
+
     cp \$(which download_bigslice_hmmdb) ./download_bigslice_hmmdb_local
 
     python \\
