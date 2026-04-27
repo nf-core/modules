@@ -11,10 +11,10 @@ process PERCOLATOR {
     tuple val(meta), path(peptide_identification)
 
     output:
-    tuple val(meta), path("${prefix}.pout.xml"), emit: pout_xml
-    tuple val(meta), path("${prefix}.pep.xml"), emit: pout_pepxml
-    tuple val(meta), path("${prefix}.features.pin"), emit: features_pin
-    tuple val(meta), path("${prefix}.weights.tsv"), emit: weights
+    tuple val(meta), path("${prefix}.pout.xml"), emit: pout_xml, optional: true
+    tuple val(meta), path("${prefix}.pep.xml"), emit: pout_pepxml, optional: true
+    tuple val(meta), path("${prefix}.features.pin"), emit: features_pin, optional: true
+    tuple val(meta), path("${prefix}.weights.tsv"), emit: weights, optional: true
     tuple val(meta), path("${prefix}.pep.target.pout"), emit: target_peptides, optional: true
     tuple val(meta), path("${prefix}.pep.decoy.pout"), emit: decoy_peptides, optional: true
     tuple val(meta), path("${prefix}.psm.target.pout"), emit: target_psms
@@ -29,20 +29,23 @@ process PERCOLATOR {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    // enhance the helper-flags
+    def write_xml = args.contains("--write_xml") ? "--xmloutput ${prefix}.pout.xml" : ""
+    def write_pepxml = args.contains("--write_pepxml") ? "--pepxml-output ${prefix}.pep.xml" : ""
+    def write_tabout = args.contains("--write_tabout") ? "--tab-out ${prefix}.features.pin" : ""
+    def write_weights = args.contains("--write_weights") ? "--weights ${prefix}.weights.tsv" : ""
+    def write_peptide_results = args.contains("--write_peptide_results") ? "--results-peptides ${prefix}.pep.target.pout --decoy-results-peptides ${prefix}.pep.decoy.pout" : ""
+    def write_protein_results = args.contains("--write_protein_results") ? "--results-proteins ${prefix}.protein.target.pout --decoy-results-proteins ${prefix}.protein.decoy.pout" : ""
+    // --write_.* are not flags used by the tool but are just here for easier module usage
+    def args_corrected = args.replace('--write_xml', '').replace('--write_pepxml', '').replace('--write_tabout', '').replace('--write_weights', '').replace('--write_peptide_results', '').replace('--write_protein_results', '').trim()
     """
     percolator \\
-        ${args} \\
+        ${args_corrected} \\
         --num-threads ${task.cpus} \\
-        --xmloutput ${prefix}.pout.xml \\
-        --pepxml-output ${prefix}.pep.xml \\
-        --tab-out ${prefix}.features.pin \\
-        --weights ${prefix}.weights.tsv \\
-        --results-peptides ${prefix}.pep.target.pout \\
-        --decoy-results-peptides ${prefix}.pep.decoy.pout \\
+        ${write_xml} ${write_pepxml} ${write_tabout} ${write_weights} \\
         --results-psms ${prefix}.psm.target.pout \\
         --decoy-results-psms ${prefix}.psm.decoy.pout \\
-        --results-proteins ${prefix}.protein.target.pout \\
-        --decoy-results-proteins ${prefix}.protein.decoy.pout \\
+        ${write_peptide_results} ${write_protein_results} \\
         ${peptide_identification}
     """
 
