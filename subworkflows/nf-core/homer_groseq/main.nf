@@ -26,7 +26,6 @@ workflow HOMER_GROSEQ {
     }
     else if (uniqmap.endsWith('.zip')) {
         ch_uniqmap = UNZIP([[:], uniqmap]).unzipped_archive.map { index -> index[1] }
-        ch_versions = ch_versions.mix(UNZIP.out.versions)
     }
     else {
         ch_uniqmap = uniqmap

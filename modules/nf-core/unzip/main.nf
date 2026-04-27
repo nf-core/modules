@@ -12,7 +12,7 @@ process UNZIP {
 
     output:
     tuple val(meta), path("${prefix}/"), emit: unzipped_archive
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('7za'), eval('7za --help | sed -n "s/.*p7zip Version //p" | sed "s/ .*//"'), topic: versions, emit: versions_7za
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process UNZIP {
         -o"${prefix}"/ \\
         $args \\
         $archive
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        7za: \$(echo \$(7za --help) | sed 's/.*p7zip Version //; s/(.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process UNZIP {
     prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
     """
     mkdir "${prefix}"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        7za: \$(echo \$(7za --help) | sed 's/.*p7zip Version //; s/(.*//')
-    END_VERSIONS
     """
 }
