@@ -8,6 +8,37 @@ nextflow_process {
     tag "modules_nfcore"
     tag "rp3net"
     tag "rp3net/rp3"
+    tag "rp3net/downloadcheckpoint"
+
+    test("sarscov2 - proteome - predict") {
+
+        setup {
+            run("RP3NET_DOWNLOADCHECKPOINT") {
+                script "../../downloadcheckpoint/main.nf"
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = RP3NET_DOWNLOADCHECKPOINT.out.checkpoint.map { ckpt ->
+                    [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
+                        ckpt
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
 
     test("sarscov2 - fasta - stub") {
 
