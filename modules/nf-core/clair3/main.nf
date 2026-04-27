@@ -3,7 +3,9 @@ process CLAIR3 {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "docker.io/hkubal/clair3:v2.0.0"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+    'docker.io/hkubal/clair3:v2.0.0' :
+    'docker.io/hkubal/clair3:v2.0.0' }"
 
     input:
     tuple val(meta), path(bam), path(bai), val(packaged_model), path(user_model), val(platform)
