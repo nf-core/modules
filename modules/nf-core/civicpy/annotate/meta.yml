@@ -1,0 +1,78 @@
+name: "civicpy_annotate"
+description: A python client and analysis toolkit to annotate variants with
+  information from the Clinical Interpretations of Variants in Cancer (CIViC)
+  knowledgebase
+keywords:
+  - clinical interpretation
+  - variant annotation
+  - genetic variation analysis
+  - genomics
+tools:
+  - "civicpy":
+      description: "CIViC variant knowledgebase analysis toolkit."
+      homepage: "https://docs.civicpy.org/en/latest/"
+      documentation: "https://docs.civicpy.org/en/latest/"
+      tool_dev_url: "https://github.com/griffithlab/civicpy"
+      doi: "10.1200/CCI.19.00127"
+      licence:
+        - "MIT"
+      identifier: biotools:CIViCpy
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcf:
+        type: file
+        description: Sorted and indexed VCF file
+        pattern: "*.{vcf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - tbi:
+        type: file
+        description: Tabix index for the input VCF
+        pattern: "*.tbi"
+        ontologies: []
+  - annotation_genome_version:
+      type: string
+      description: Reference genome version passed to civicpy (e.g. GRCh38)
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: Annotated bgzipped VCF file
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989
+  versions_civicpy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - civicpy:
+          type: string
+          description: The name of the tool
+      - civicpy --version | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - civicpy:
+          type: string
+          description: The name of the tool
+      - civicpy --version | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@emmcauley"
+maintainers:
+  - "@emmcauley"
