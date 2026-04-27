@@ -1,0 +1,77 @@
+name: rp3net_rp3
+description: |
+  Predicts recombinant protein production success in Escherichia coli from DNA or
+  protein sequences using the RP3Net deep learning model
+keywords:
+  - protein expression
+  - machine learning
+  - recombinant protein
+  - e. coli
+  - prediction
+tools:
+  - rp3net:
+      description: |
+        RP3Net is a deep learning model that predicts whether a given DNA or protein
+        sequence will successfully produce a recombinant protein when expressed in
+        Escherichia coli
+      homepage: https://github.com/RP3Net/RP3Net
+      documentation: https://github.com/RP3Net/RP3Net
+      tool_dev_url: https://github.com/RP3Net/RP3Net
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: FASTA file containing DNA or protein sequences to predict
+        pattern: "*.{fa,fasta,faa,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - checkpoint:
+        type: file
+        description: Pre-trained RP3Net model checkpoint file
+        pattern: "*.ckpt"
+        ontologies: []
+output:
+  scores:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.csv:
+          type: file
+          description: CSV file containing sequence IDs and predicted recombinant protein production success probabilities
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions_rp3net:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rp3net:
+          type: string
+          description: The name of the tool
+      - pip show RP3Net 2>&1 | awk '/^Version/{print \$2}':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rp3net:
+          type: string
+          description: The name of the tool
+      - pip show RP3Net 2>&1 | awk '/^Version/{print \$2}':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

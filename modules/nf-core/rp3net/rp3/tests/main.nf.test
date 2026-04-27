@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process RP3NET_RP3"
+    script "../main.nf"
+    process "RP3NET_RP3"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rp3net"
+    tag "rp3net/rp3"
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
