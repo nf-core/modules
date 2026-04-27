@@ -23,13 +23,12 @@ tools:
 input: []
 output:
   db:
-    - path: "bigslice-models"
-      type: directory
-      description: |
-        Downloaded and extracted BiG-SLiCE HMM database directory containing
-        biosynthetic Pfam HMMs (`biosyn_pfam/`) and sub-Pfam profiles
-        (`sub_pfams/`). Pass this directly as `hmmdb` to the `BIGSLICE` module.
-      pattern: "bigslice-models"
+    - bigslice-models:
+        type: directory
+        description: Downloaded and extracted BiG-SLiCE HMM database directory
+          containing biosynthetic Pfam HMMs and sub-Pfam profiles. Pass this
+          directly as `hmmdb` to the `BIGSLICE` module.
+        pattern: "bigslice-models"
   versions_bigslice:
     - - ${task.process}:
           type: string
