@@ -46,8 +46,6 @@ process TRIMGALORE {
         def args_list = args.split("\\s(?=--)").toList()
         args_list.removeAll { arg -> arg.toLowerCase().contains('_r2 ') }
         """
-        # Drop any trim_galore output left over from an interrupted previous attempt.
-        rm -f ${prefix}_trimmed.fq.gz
         [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
         trim_galore \\
             ${args_list.join(' ')} \\
@@ -58,19 +56,19 @@ process TRIMGALORE {
     }
     else {
         """
-        # Drop the per-mate intermediates --paired writes before validate_paired_end_files
-        # unlinks them. An attempt interrupted between cutadapt and validation leaves these
-        # behind and the output glob then matches 3 fastqs instead of 2.
-        rm -f ${prefix}_1_trimmed.fq.gz ${prefix}_2_trimmed.fq.gz
+        # Run --paired in a subdir so per-mate intermediates can't leak into the workdir glob.
         [ ! -f  ${prefix}_1.fastq.gz ] && ln -s ${reads[0]} ${prefix}_1.fastq.gz
         [ ! -f  ${prefix}_2.fastq.gz ] && ln -s ${reads[1]} ${prefix}_2.fastq.gz
+        mkdir tg_work
         trim_galore \\
             ${args} \\
             --cores ${cores} \\
             --paired \\
             --gzip \\
+            --output_dir tg_work \\
             ${prefix}_1.fastq.gz \\
             ${prefix}_2.fastq.gz
+        mv tg_work/{*_val_*.fq.gz,*_unpaired_*.fq.gz,*_3prime*.fq.gz,*_5prime*.fq.gz,*_trimming_report.txt,*.html,*.zip} ./ 2>/dev/null || true
         """
     }
 
