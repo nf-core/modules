@@ -26,7 +26,8 @@ input:
         description: |
           Fasta file for tRNA annotation. Can be gzipped.
         ontologies:
-          - edam: "http://edamontology.org/format_1929"
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
   tsv:
     - - meta:
@@ -39,7 +40,7 @@ output:
           description: TSV summary output of tRNA annotations
           pattern: "*.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475"
+            - edam: http://edamontology.org/format_3475 # TSV
   log:
     - - meta:
           type: map
@@ -51,7 +52,7 @@ output:
           description: tRNAScan-SE log file
           pattern: "*.log"
           ontologies:
-            - edam: "http://edamontology.org/data_3671"
+            - edam: http://edamontology.org/data_3671 # Text
   stats:
     - - meta:
           type: map
@@ -63,7 +64,7 @@ output:
           description: Unstructured results file describing tRNA annotations
           pattern: "*.stats"
           ontologies:
-            - edam: "http://edamontology.org/data_3671"
+            - edam: http://edamontology.org/data_3671 # Text
   fasta:
     - - meta:
           type: map
@@ -76,8 +77,8 @@ output:
             (optional) FASTA output of annotated tRNA sequences
           pattern: "*.fasta.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_1929"
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP format
   gff:
     - - meta:
           type: map
@@ -101,7 +102,7 @@ output:
           description: |
             (optional) BED annotation of tRNA sequences in input fasta
           ontologies:
-            - edam: "http://edamontology.org/format_3003"
+            - edam: http://edamontology.org/format_3003 # BED
   versions_trnascanse:
     - - ${task.process}:
           type: string
