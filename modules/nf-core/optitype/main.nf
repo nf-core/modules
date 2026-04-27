@@ -47,4 +47,14 @@ process OPTITYPE {
         optitype: \$(cat \$(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g")
     END_VERSIONS
     """
+    stub:
+    """
+    touch ${prefix}/optitype_stub.pdf
+    touch ${prefix}/optitype_stub.tsv
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            optitype: \$(cat \$(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g")
+        END_VERSIONS
+    """
+
 }

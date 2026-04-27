@@ -49,4 +49,15 @@ process SALSA2 {
         SALSA2: $VERSION
     END_VERSIONS
     """
+    stub:
+    """
+    touch salsa2_stub_scaffolds_FINAL.fasta
+    touch salsa2_stub/salsa2_stubscaffolds_FINAL.original-coordinates.agp
+    touch salsa2_stub_scaffolds_FINAL.agp
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            SALSA2: $VERSION
+        END_VERSIONS
+    """
+
 }

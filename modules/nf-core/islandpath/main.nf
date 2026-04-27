@@ -34,4 +34,14 @@ process ISLANDPATH {
         islandpath: $VERSION
     END_VERSIONS
     """
+    stub:
+    """
+    touch islandpath_stub.gff
+    touch Dimob.log
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            islandpath: $VERSION
+        END_VERSIONS
+    """
+
 }

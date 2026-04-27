@@ -61,4 +61,16 @@ process SICKLE {
     END_VERSIONS
     """
     }
+    stub:
+    """
+    echo | gzip > ${prefix}.se.trimmed.fastq.gz
+    echo | gzip > ${prefix}.singleton.trimmed.fastq.gz
+    touch sickle_stub.log
+    echo | gzip > ${prefix}.pe{1,2}.trimmed.fastq.gz
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            sickle: \$(sickle --version|awk 'NR==1{print \$3}')
+        END_VERSIONS
+    """
+
 }

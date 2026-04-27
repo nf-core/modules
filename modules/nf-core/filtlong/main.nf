@@ -31,4 +31,14 @@ process FILTLONG {
         2>| >(tee ${prefix}.log >&2) \\
         | gzip -n > ${prefix}.fastq.gz
     """
+    stub:
+    """
+    echo | gzip > filtlong_stub.fastq.gz
+    touch filtlong_stub.log
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            filtlong: \$(echo "stub")
+        END_VERSIONS
+    """
+
 }

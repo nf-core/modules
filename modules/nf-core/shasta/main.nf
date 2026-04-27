@@ -46,4 +46,15 @@ process SHASTA {
         shasta: \$(shasta --version | head -n 1 | cut -f 3 -d " ")
     END_VERSIONS
     """
+    stub:
+    """
+    echo | gzip > shasta_stub_Assembly.gfa.gz
+    echo | gzip > shasta_stub_Assembly.fasta.gz
+    touch ShastaRun/
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            shasta: \$(shasta --version | head -n 1 | cut -f 3 -d " ")
+        END_VERSIONS
+    """
+
 }

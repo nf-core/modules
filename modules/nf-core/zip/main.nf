@@ -28,4 +28,13 @@ process ZIP {
         $args \\
         "${prefix}.zip" ./inputs/*
     """
+    stub:
+    """
+    touch ${prefix}.zip
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            zip: \$(echo "stub")
+        END_VERSIONS
+    """
+
 }

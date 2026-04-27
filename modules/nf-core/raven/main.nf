@@ -33,4 +33,14 @@ process RAVEN {
     # compress assembly graph
     gzip -c ${prefix}.gfa > ${prefix}.gfa.gz
     """
+    stub:
+    """
+    echo | gzip > raven_stub.gfa.gz
+    echo | gzip > raven_stub.fasta.gz
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            raven: \$(echo "stub")
+        END_VERSIONS
+    """
+
 }

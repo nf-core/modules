@@ -35,4 +35,15 @@ process SEQSERO2 {
         seqsero2: \$( echo \$( SeqSero2_package.py --version 2>&1) | sed 's/^.*SeqSero2_package.py //' )
     END_VERSIONS
     """
+    stub:
+    """
+    touch results/seqsero2_stub_log.txt
+    touch results/seqsero2_stub_result.txt
+    touch results/seqsero2_stub_result.tsv
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            seqsero2: \$( echo \$( SeqSero2_package.py --version 2>&1) | sed 's/^.*SeqSero2_package.py //' )
+        END_VERSIONS
+    """
+
 }

@@ -37,4 +37,13 @@ process MEDAKA {
         medaka: \$( medaka --version 2>&1 | sed 's/medaka //g' )
     END_VERSIONS
     """
+    stub:
+    """
+    echo | gzip > medaka_stub.fa.gz
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            medaka: \$( medaka --version 2>&1 | sed 's/medaka //g' )
+        END_VERSIONS
+    """
+
 }

@@ -36,5 +36,16 @@ The processing stages used by the subworkflow are implemented as module subcomma
 """
     prefix = task.ext.prefix ?: "${meta.id}"
     assert false: deprecation_message
+    stub:
+    """
+    echo | gzip > ${prefix}.g.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
+    echo | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.g.vcf.gz.tbi
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            deepvariant: \$(echo "stub")
+        END_VERSIONS
+    """
 
 }

@@ -35,4 +35,13 @@ process RACON {
         racon: \$( racon --version 2>&1 | sed 's/^.*v//' )
     END_VERSIONS
     """
+    stub:
+    """
+    echo | gzip > racon_stub_assembly_consensus.fasta.gz
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            racon: \$( racon --version 2>&1 | sed 's/^.*v//' )
+        END_VERSIONS
+    """
+
 }

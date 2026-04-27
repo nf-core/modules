@@ -40,4 +40,13 @@ process SSUISSERO {
         ssuissero: $VERSION
     END_VERSIONS
     """
+    stub:
+    """
+    touch ssuissero_stub.tsv
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            ssuissero: $VERSION
+        END_VERSIONS
+    """
+
 }

@@ -39,4 +39,14 @@ process KOFAMSCAN {
         kofamscan: \$(echo \$(exec_annotation --version 2>&1) | sed 's/^.*exec_annotation //;')
     END_VERSIONS
     """
+    stub:
+    """
+    touch kofamscan_stub.tsv
+    touch kofamscan_stub.txt
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            kofamscan: \$(echo \$(exec_annotation --version 2>&1) | sed 's/^.*exec_annotation //;')
+        END_VERSIONS
+    """
+
 }

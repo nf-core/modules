@@ -35,4 +35,13 @@ process SCOARY {
         scoary: \$( scoary --version 2>&1 )
     END_VERSIONS
     """
+    stub:
+    """
+    touch scoary_stub.csv
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            scoary: \$( scoary --version 2>&1 )
+        END_VERSIONS
+    """
+
 }
