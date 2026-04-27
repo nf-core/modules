@@ -62,7 +62,7 @@ process GATK4_HAPLOTYPECALLER {
     def stub_realigned_bam = bamout_command ? "touch ${prefix.replaceAll('.g\\s*$', '')}.realigned.bam" : ""
     """
     echo "" | gzip > ${prefix}.vcf.gz
-    echo "" | gzip > ${prefix}.vcf.gz.tbi
+    touch > ${prefix}.vcf.gz.tbi
     ${stub_realigned_bam}
     """
 }
