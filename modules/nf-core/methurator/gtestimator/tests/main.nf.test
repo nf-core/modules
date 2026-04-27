@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process METHURATOR_GTESTIMATOR"
+    script "../main.nf"
+    process "METHURATOR_GTESTIMATOR"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "methurator"
+    tag "methurator/gtestimator"
+
+    test("Run methurator gt-estimator on paired-end methylated [bam] | sarscov2 genome [fasta]") {
+
+        when {
+            params {
+                module_args = '--t-max 10 --minimum-coverage 1 --compute_ci'
+            }
+
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    // Avoid first 3 lines of the summary report as they contain the date and time of the run
+                    file(process.out.summary_report[0][1]).readLines()[3..10].join('\n').md5(),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match()}
+            )
+        }
+    }
+    test("Run methurator gt-estimator on paired-end methylated [bam] | sarscov2 genome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--t-max 10 --minimum-coverage 1 --compute_ci'
+            }
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

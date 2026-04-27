@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process METHURATOR_PLOT"
+    script "../main.nf"
+    process "METHURATOR_PLOT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "methurator"
+    tag "methurator/plot"
+    tag "methurator/gtestimator"
+
+    setup {
+            run("METHURATOR_GTESTIMATOR") {
+                script "../../gtestimator/main.nf"
+                params {
+                    t_max = 10
+                    minimum_coverage = 1
+                    rrbs = false
+                }
+                process {
+                """
+                input[0] = [ [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+                }
+            }
+        }
+
+    test("Run methurator plot on the output of methurator gt-estimator") {
+
+        when {
+            process {
+                """
+                input[0] = METHURATOR_GTESTIMATOR.out.summary_report
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.plots.collect { it.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.findAll { key, val -> key.startsWith('versions') }).match()
+                }
+            )
+        }
+    }
+
+    test("Run methurator plot on the output of methurator gt-estimator - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = METHURATOR_GTESTIMATOR.out.summary_report
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
