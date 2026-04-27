@@ -31,6 +31,6 @@ process DSHBIO_FILTERBED {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.bed.gz
+    echo "" | gzip > ${prefix}.bed.gz
     """
 }
