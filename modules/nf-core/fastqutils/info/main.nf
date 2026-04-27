@@ -3,7 +3,7 @@ process FASTQUTILS_INFO {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/fastq_utils:0.25.3--ha9dfd29_0'
         : 'quay.io/biocontainers/fastq_utils:0.25.3--ha9dfd29_0'}"
 

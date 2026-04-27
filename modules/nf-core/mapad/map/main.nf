@@ -3,7 +3,7 @@ process MAPAD_MAP {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mapad:0.45.0--ha96b9cd_0':
         'quay.io/biocontainers/mapad:0.45.0--ha96b9cd_0' }"
 

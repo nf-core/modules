@@ -3,7 +3,7 @@ process SCOARY {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/scoary:1.6.16--py_2' :
         'quay.io/biocontainers/scoary:1.6.16--py_2' }"
 

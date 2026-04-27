@@ -3,9 +3,9 @@ process COBRAMETA {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cobra-meta:1.2.3--pyhdfd78af_0':
-        'biocontainers/cobra-meta:1.2.3--pyhdfd78af_0' }"
+        'quay.io/biocontainers/cobra-meta:1.2.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta) , path(fasta)
