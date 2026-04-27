@@ -11,8 +11,8 @@ process TRIMGALORE {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path(reads_glob)                            , emit: reads
-    tuple val(meta), path(report_glob)                           , emit: log     , optional: true
+    tuple val(meta), path("${reads_glob}")                       , emit: reads
+    tuple val(meta), path("${report_glob}")                      , emit: log     , optional: true
     tuple val(meta), path("${prefix}_{1,2}_unpaired_{1,2}.fq.gz"), emit: unpaired, optional: true
     tuple val(meta), path("${prefix}*_fastqc.html")              , emit: html    , optional: true
     tuple val(meta), path("${prefix}*_fastqc.zip")               , emit: zip     , optional: true
