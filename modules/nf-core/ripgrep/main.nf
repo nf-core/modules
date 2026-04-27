@@ -8,7 +8,7 @@ process RIPGREP {
         'community.wave.seqera.io/library/pigz_ripgrep:94e5407412b666ab' }"
 
     input:
-    tuple val(meta), path(files, arity: '1..*'),
+    tuple val(meta), path(files, arity: '1..*')
     val pattern
     path pattern_file
     val compress
