@@ -50,11 +50,6 @@ process TRNASCANSE {
     find . -name "*.fasta" -exec gzip {} \\;
 
     ${cleanup}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tRNAscan-SE: \$(tRNAscan-SE 2>&1 >/dev/null | awk 'NR==2 {print \$2}')
-    END_VERSIONS
     """
 
     stub:
@@ -66,10 +61,5 @@ process TRNASCANSE {
     echo '' | gzip > ${prefix}.fasta.gz
     touch ${prefix}.gff
     touch ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tRNAscan-SE: \$(tRNAscan-SE 2>&1 >/dev/null | awk 'NR==2 {print \$2}')
-    END_VERSIONS
     """
 }
