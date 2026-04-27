@@ -1,0 +1,218 @@
+nextflow_process {
+    name "Test Process GCTA_BIVARIATEREML"
+    script "../main.nf"
+    process "GCTA_BIVARIATEREML"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/bivariatereml"
+    tag "gcta/makegrmpart"
+    tag "gawk"
+
+    setup {
+        run("GAWK", alias: "GAWK_BIVARIATE_PHENO") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'Trait1__Trait2' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                    ]
+                ]
+                input[1] = Channel.of('FNR == NR { if (FNR == 1) next; trait1[\$2] = \$3; next } FNR == 1 { next } { print \$1, \$2, trait1[\$2], \$4 }').collectFile(name:'bivariate_phenotype.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_QUANTITATIVE_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_quant' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$5, \$6 }').collectFile(name:'quantitative_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_CATEGORICAL_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_cat' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'categorical_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_DENSE") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_dense', part_gcta_job:1, nparts_gcta:1 ],
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'all_variants' ], []]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - bivariate phenotype with dense GRM and covariates") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = GAWK_BIVARIATE_PHENO.out.output
+                input[1] = dense_grm
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bivariate_results.size() == 1 },
+                { assert process.out.log_file.size() == 1 },
+                { assert process.out.bivariate_results.get(0).get(0).id == "Trait1__Trait2" },
+                { assert file(process.out.bivariate_results.get(0).get(1)).name == "Trait1__Trait2.hsq" },
+                { assert file(process.out.log_file.get(0).get(1)).name == "Trait1__Trait2.log" },
+                { assert file(process.out.log_file.get(0).get(1)).exists() },
+                {
+                    assert snapshot(
+                        process.out.bivariate_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - bivariate phenotype with dense GRM and no covariates") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = GAWK_BIVARIATE_PHENO.out.output
+                input[1] = dense_grm
+                input[2] = [[ id:'covariates_quant' ], []]
+                input[3] = [[ id:'covariates_cat' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bivariate_results.size() == 1 },
+                { assert process.out.log_file.size() == 1 },
+                { assert file(process.out.bivariate_results.get(0).get(1)).name == "Trait1__Trait2.hsq" },
+                { assert file(process.out.log_file.get(0).get(1)).name == "Trait1__Trait2.log" },
+                {
+                    assert snapshot(
+                        process.out.bivariate_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - bivariate phenotype fails when meta2.id is not GRM basename") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                mismatched_dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix + '_mismatched' ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = GAWK_BIVARIATE_PHENO.out.output
+                input[1] = mismatched_dense_grm
+                input[2] = [[ id:'covariates_quant' ], []]
+                input[3] = [[ id:'covariates_cat' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - bivariate phenotype with dense GRM - stub") {
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = GAWK_BIVARIATE_PHENO.out.output
+                input[1] = dense_grm
+                input[2] = [[ id:'covariates_quant' ], []]
+                input[3] = [[ id:'covariates_cat' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bivariate_results.get(0).get(0).id == "Trait1__Trait2" },
+                { assert file(process.out.bivariate_results.get(0).get(1)).name == "Trait1__Trait2.hsq" },
+                { assert file(process.out.log_file.get(0).get(1)).name == "Trait1__Trait2.log" },
+                {
+                    assert snapshot(
+                        process.out.bivariate_results,
+                        process.out.log_file,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+}
