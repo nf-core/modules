@@ -5,7 +5,7 @@ process PCNE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pcne%3A3.3.0--hdfd78af_0' :
-        'biocontainers/pcne:3.3.0--hdfd78af_0' }" 
+        'biocontainers/pcne:3.3.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -24,10 +24,10 @@ process PCNE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     def is_bam    = reads.toString().endsWith('.bam')
     def input_cmd = is_bam ? "-b ${reads}" : "-r ${reads[0]} -R ${reads[1]}"
-    
+
     def plasmid_cmd = plasmids instanceof List ? plasmids.join(' ') : plasmids
 
     """
