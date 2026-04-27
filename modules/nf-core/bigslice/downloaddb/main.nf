@@ -1,4 +1,5 @@
 process BIGSLICE_DOWNLOADDB {
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -6,10 +7,14 @@ process BIGSLICE_DOWNLOADDB {
         ? 'https://depot.galaxyproject.org/singularity/bigslice:2.0.2--pyh8ed023e_0'
         : 'quay.io/biocontainers/bigslice:2.0.2--pyh8ed023e_0'}"
 
+    input:
+    val meta
+
     output:
-    path "bigslice-models"              , emit: db
+    tuple val(meta), path ("bigslice-models")              , emit: db
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('bigslice'), val("2.0.2"), topic: versions, emit: versions_bigslice
+    tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
 
     when:
     task.ext.when == null || task.ext.when

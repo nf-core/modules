@@ -14,12 +14,16 @@ nextflow_process {
     test("bigslice - downloaddb") {
 
         when {
-            process {}
+            process {
+                """
+                input[0] = [ id: 'test' ]
+                """
+            }
         }
 
         then {
             assert process.success
-            def dbDir = file(process.out.db[0])
+            def dbDir = file(process.out.db[0][1])
             def topDirs = []
             dbDir.eachDir { topDirs << it.name }
             assertAll(
@@ -38,16 +42,17 @@ nextflow_process {
         options "-stub"
 
         when {
-            process {}
+            process {
+                """
+                input[0] = [ id: 'test' ]
+                """
+            }
         }
 
         then {
             assert process.success
             assertAll(
-                { assert file(process.out.db[0]).isDirectory() },
-                { assert snapshot(
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
