@@ -3,7 +3,7 @@ process QCATCH {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/6233ebf32d1ce85d41398121c4b8c1449779fa13b1529e702e067bfca6f835b7/data':
         'community.wave.seqera.io/library/pip_qcatch:05d150ed59c3ae84' }"
     input:

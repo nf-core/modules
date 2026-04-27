@@ -410,6 +410,21 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         .mix(ch_strand_fastq.known_strand)
         .set { ch_strand_inferred_fastq }
 
+    // `remainder: true` needed because every contributor is gated behind
+    // a `skip_*` / `filter_*` option.
+    ch_per_sample_mqc_bundle = ch_fastqc_raw_zip
+        .join(ch_fastqc_trim_zip,      remainder: true)
+        .join(ch_trim_log,             remainder: true)
+        .join(ch_trim_json,            remainder: true)
+        .join(ch_umi_log,              remainder: true)
+        .join(ch_bbsplit_stats,        remainder: true)
+        .join(ch_sortmerna_log,        remainder: true)
+        .join(ch_ribodetector_log,     remainder: true)
+        .join(ch_seqkit_stats,         remainder: true)
+        .join(ch_bowtie2_log,          remainder: true)
+        .join(ch_fastqc_filtered_zip,  remainder: true)
+        .map { row -> [row[0], row.drop(1).findAll { it != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }
+
     emit:
     reads            = ch_strand_inferred_fastq
     trim_read_count  = ch_trim_read_count
@@ -441,4 +456,5 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     fastqc_filtered_zip  = ch_fastqc_filtered_zip
     seqkit_prefixed  = ch_seqkit_prefixed
     seqkit_converted = ch_seqkit_converted
+    per_sample_mqc_bundle = ch_per_sample_mqc_bundle // channel: [ val(meta), list(files) ]
 }
