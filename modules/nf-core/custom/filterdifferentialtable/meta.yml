@@ -1,6 +1,6 @@
 name: "custom_filterdifferentialtable"
-description: Filters a differential expression table based on logFC and adjusted p-value
-  thresholds
+description: Filters a differential expression table based on logFC and adjusted
+  p-value thresholds
 keywords:
   - filter
   - differential expression
@@ -14,7 +14,8 @@ tools:
       documentation: "https://pandas.pydata.org/docs/"
       tool_dev_url: "https://github.com/pandas-dev/pandas"
       doi: "10.5281/zenodo.3509134"
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifiers:
         - "biotools:pandas"
         - "conda:pandas"
@@ -30,8 +31,8 @@ input:
         description: Input differential expression table (CSV, TSV, or TXT format)
         pattern: "*.{csv,tsv,txt}"
         ontologies:
-          - edam: http://edamontology.org/format_3752 # CSV
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3475
   - - logfc_column:
         type: string
         description: Name of the column containing log fold change values
@@ -68,7 +69,7 @@ output:
           description: Filtered differential expression table
           pattern: "*_filtered.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   filtered_up:
     - - meta:
           type: map
@@ -77,10 +78,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_filtered_up.tsv":
           type: file
-          description: Filtered differential expression table for overexpressed genes
+          description: Filtered differential expression table for overexpressed
+            genes
           pattern: "*_filtered_up.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   filtered_down:
     - - meta:
           type: map
@@ -89,17 +91,18 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_filtered_down.tsv":
           type: file
-          description: Filtered differential expression table for underexpressed genes
+          description: Filtered differential expression table for underexpressed
+            genes
           pattern: "*_filtered_down.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 topics:
   versions:
     - versions.yml:
@@ -107,7 +110,7 @@ topics:
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@pinin4fjords"
   - "@WackerO"
