@@ -19,9 +19,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     []
-                    ]
+                ]
                 """
             }
         }
@@ -30,9 +30,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.output,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -48,16 +47,16 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     []
-                    ]
+                ]
                 """
             }
         }
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -71,9 +70,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     []
-                    ]
+                ]
                 """
             }
         }
@@ -82,9 +81,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.output,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -98,7 +96,7 @@ nextflow_process {
     //         process {
     //             """
     //             input[0] = [
-    //                 [id:'test'],// meta map
+    //                 [id:'test'],
     //                 []
     //                 ]
     //             """
@@ -122,7 +120,7 @@ nextflow_process {
     //         process {
     //             """
     //             input[0] = [
-    //                 [id:'test'],// meta map
+    //                 [id:'test'],
     //                 []
     //                 ]
     //             """
@@ -148,9 +146,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     []
-                    ]
+                ]
                 """
             }
         }
@@ -159,9 +157,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.output,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -175,9 +172,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     []
-                    ]
+                ]
                 """
             }
         }
@@ -186,9 +183,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.output,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -202,9 +198,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     []
-                    ]
+                ]
                 """
             }
         }
@@ -213,9 +209,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.output,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -229,9 +224,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     []
-                    ]
+                ]
                 """
             }
         }
@@ -240,9 +235,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.output,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -259,7 +253,7 @@ nextflow_process {
     //        process {
     //            """
     //            input[0] = [
-    //                [id:'test'],// meta map
+    //                [id:'test'],
     //                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta',checkIfExists:true)
     //                ]
     //            """
@@ -286,9 +280,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     []
-                    ]
+                ]
                 """
             }
         }
@@ -297,9 +291,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.output,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -313,9 +306,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     []
-                    ]
+                ]
                 """
             }
         }
@@ -324,9 +317,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.output,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -340,9 +332,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     []
-                    ]
+                ]
                 """
             }
         }
@@ -351,9 +343,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.output,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -369,9 +360,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     []
-                    ]
+                ]
                 """
             }
         }
@@ -380,9 +371,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.output,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
