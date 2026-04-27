@@ -1,0 +1,86 @@
+name: "bamutil_squeeze"
+description: Reduce BAM/SAM file size by dropping OQ fields, duplicates, and
+  specified tags, using '=' when bases match the reference, binning quality
+  scores, and optionally replacing read names with unique integers
+keywords:
+  - bam
+  - sam
+  - compression
+  - quality
+  - binning
+  - squeeze
+tools:
+  - "bamutil":
+      description: "Programs that perform operations on SAM/BAM files, all built into
+        a single executable, bam."
+      homepage: "https://genome.sph.umich.edu/wiki/BamUtil"
+      documentation: "https://genome.sph.umich.edu/wiki/BamUtil:_squeeze"
+      tool_dev_url: "https://github.com/statgen/bamUtil"
+      licence:
+        - "GPL v3"
+        - "GPL v3-or-later"
+      identifier: biotools:bamutil
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Input BAM/SAM file to be squeezed for compression
+        pattern: "*.{bam,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_3462"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information (optional)
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: |
+          Optional reference FASTA file for converting matching bases to '='
+          when using --refFile parameter
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Compressed/squeezed BAM file with reduced size
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  versions_bamutil:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamutil:
+          type: string
+          description: The name of the tool
+      - "bam help 2>&1 | sed -n 's/.*Version: \\([^;]*\\).*/\x01/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamutil:
+          type: string
+          description: The name of the tool
+      - "bam help 2>&1 | sed -n 's/.*Version: \\([^;]*\\).*/\x01/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sppearce"
+maintainers:
+  - "@sppearce"

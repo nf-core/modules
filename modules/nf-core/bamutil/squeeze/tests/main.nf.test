@@ -1,0 +1,132 @@
+// Test Process BAMUTIL_SQUEEZE
+nextflow_process {
+
+    name "Test Process BAMUTIL_SQUEEZE"
+    script "../main.nf"
+    process "BAMUTIL_SQUEEZE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bamutil"
+    tag "bamutil/squeeze"
+
+    test("sarscov2 - bam - default") {
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - binQualS") {
+
+        when {
+            params {
+                module_args = "--binQualS 1,17,20,30,40"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam with fasta") {
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
