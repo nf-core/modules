@@ -14,7 +14,8 @@ tools:
       documentation: https://github.com/fbreitwieser/krakenuniq
       tool_dev_url: https://github.com/fbreitwieser/krakenuniq
       doi: 10.1186/s13059-018-1568-0
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:KrakenUniq
 input:
   - - meta:
@@ -24,12 +25,13 @@ input:
           e.g. [ id:'test', single_end:false ]
     - custom_library_dir:
         type: directory
-        description: Optional directory containing custom fasta files for database build
+        description: Optional directory containing custom fasta files for database
+          build
         pattern: "*"
     - custom_taxonomy_dir:
         type: directory
-        description: Optional directory containing custom taxonomy files for database
-          build
+        description: Optional directory containing custom taxonomy files for
+          database build
         pattern: "*"
     - custom_seqid2taxid:
         type: file
@@ -39,7 +41,6 @@ input:
       type: boolean
       description: "Keep intermediate files that are not used by the database itself"
       pattern: true|false
-
 output:
   db:
     - - meta:
@@ -51,13 +52,27 @@ output:
           type: directory
           description: Directory containing KrakenUniq database
           pattern: "*/"
+  versions_krakenuniq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krakenuniq:
+          type: string
+          description: The name of the tool
+      - krakenuniq --version | sed '1!d;s/KrakenUniq version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krakenuniq:
+          type: string
+          description: The name of the tool
+      - krakenuniq --version | sed '1!d;s/KrakenUniq version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:
