@@ -150,7 +150,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     ch_session_info = GPROFILER2_GOST.out.session_info
 
     ch_versions = ch_versions
-        .mix(GPROFILER2_GOST.out.versions)
         .mix(PROPR_GREA.out.versions)
 
     emit:

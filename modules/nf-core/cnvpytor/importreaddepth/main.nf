@@ -3,9 +3,9 @@ process CNVPYTOR_IMPORTREADDEPTH {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cnvpytor:1.3.1--pyhdfd78af_1':
-        'biocontainers/cnvpytor:1.3.1--pyhdfd78af_1' }"
+        'quay.io/biocontainers/cnvpytor:1.3.1--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(input_file), path(index)

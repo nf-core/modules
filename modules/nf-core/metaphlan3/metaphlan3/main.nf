@@ -3,9 +3,9 @@ process METAPHLAN3_METAPHLAN3 {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaphlan:3.0.12--pyhb7b1952_0' :
-        'biocontainers/metaphlan:3.0.12--pyhb7b1952_0' }"
+        'quay.io/biocontainers/metaphlan:3.0.12--pyhb7b1952_0' }"
 
     input:
     tuple val(meta), path(input)

@@ -4,9 +4,9 @@ process SIMPLEAF_INDEX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/simpleaf:0.19.5--ha6fb395_0':
-        'biocontainers/simpleaf:0.19.5--ha6fb395_0' }"
+        'quay.io/biocontainers/simpleaf:0.19.5--ha6fb395_0' }"
 
     input:
     tuple val(meta),  path(genome_fasta), path(genome_gtf)
