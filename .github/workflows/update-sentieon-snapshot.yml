@@ -77,7 +77,7 @@ jobs:
         uses: nf-core/setup-nf-test@4069fbbaabe94c08faba4ad261bfa88225ba133f # v2
         with:
           version: "${{ env.NFT_VER }}"
-          install-pdiff: true
+          install-fast-diff: true
 
       # Set up secrets
       - name: Set up Nextflow secrets
