@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process RP3NET_DOWNLOADCHECKPOINT"
+    script "../main.nf"
+    process "RP3NET_DOWNLOADCHECKPOINT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rp3net"
+    tag "rp3net/downloadcheckpoint"
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
