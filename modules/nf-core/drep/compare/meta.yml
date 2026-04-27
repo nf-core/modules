@@ -33,7 +33,7 @@ input:
         description: List of FASTA files to compare
         pattern: "*.{fasta,fa,fna,fas}"
         ontologies:
-          - edam: http://edamontology.org/format_1929
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
   directory:
     - - meta:
@@ -47,7 +47,7 @@ output:
             tables for use in dRep dereplicate
           pattern: "${prefix}/"
           ontologies:
-            - edam: "http://edamontology.org/data_1049"
+            - edam: http://edamontology.org/data_1049 # Directory
   versions_drep:
     - - ${task.process}:
           type: string
@@ -55,7 +55,7 @@ output:
       - drep:
           type: string
           description: The name of the tool
-      - dRep | head -n 2 | sed 's/.*v//g;s/ .*//g' | tail -n 1:
+      - dRep | sed '2!d;s/.*v//g;s/ .*//g':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -66,7 +66,7 @@ topics:
       - drep:
           type: string
           description: The name of the tool
-      - dRep | head -n 2 | sed 's/.*v//g;s/ .*//g' | tail -n 1:
+      - dRep | sed '2!d;s/.*v//g;s/ .*//g':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
