@@ -110,7 +110,7 @@ output:
       - tRNAscan-SE:
           type: string
           description: The name of the tool
-      - tRNAscan-SE |& sed -n '2s/^[^ ]* \([^ ]*\).*/\1/p':
+      - tRNAscan-SE |&  sed -n 's/^tRNAscan-SE \([0-9.]*\).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -121,7 +121,7 @@ topics:
       - tRNAscan-SE:
           type: string
           description: The name of the tool
-      - tRNAscan-SE |& sed -n '2s/^[^ ]* \([^ ]*\).*/\1/p':
+      - tRNAscan-SE |&  sed -n 's/^tRNAscan-SE \([0-9.]*\).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
