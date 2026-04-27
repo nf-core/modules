@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "infernal_cmsearch"
 description: Search covariance models against a sequence database
 keywords:
@@ -13,9 +12,9 @@ tools:
       documentation: "http://eddylab.org/infernal/Userguide.pdf"
       tool_dev_url: "https://github.com/EddyRivasLab/infernal"
       doi: "10.1093/bioinformatics/btt509"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:infernal
-
 input:
   - - meta:
         type: map
@@ -45,7 +44,6 @@ input:
       description: |
         Flag to save optional per target summary in a tabular
         format. Specify with 'true' to save.
-
 output:
   output:
     - - meta:
@@ -67,7 +65,8 @@ output:
             e.g. [ id:'test' ]
       - "*.sto.gz":
           type: file
-          description: Optional multiple sequence alignment (MSA) in Stockholm format
+          description: Optional multiple sequence alignment (MSA) in Stockholm
+            format
           pattern: "*.{sto.gz}"
           ontologies:
             - edam: "http://edamontology.org/format_1961"
@@ -79,18 +78,32 @@ output:
             e.g. [ id:'test' ]
       - "*.tbl.gz":
           type: file
-          description: Optional tabular (space-delimited) summary of per-target output
+          description: Optional tabular (space-delimited) summary of per-target
+            output
           pattern: "*.{tbl.gz}"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
+  versions_infernal:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - infernal:
+          type: string
+          description: The name of the tool
+      - cmsearch -h | sed -n 's/^# INFERNAL \([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750"
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - infernal:
+          type: string
+          description: The name of the tool
+      - cmsearch -h | sed -n 's/^# INFERNAL \([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@prototaxites"
 maintainers:

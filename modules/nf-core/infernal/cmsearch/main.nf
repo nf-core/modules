@@ -16,7 +16,7 @@ process INFERNAL_CMSEARCH {
     tuple val(meta), path('*.txt.gz'), emit: output
     tuple val(meta), path('*.sto.gz'), emit: alignments    , optional: true
     tuple val(meta), path('*.tbl.gz'), emit: target_summary, optional: true
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('infernal'), eval("cmsearch -h | sed -n 's/^# INFERNAL \\([0-9.]*\\).*/\\1/p'"), emit: versions_infernal, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,11 +47,6 @@ process INFERNAL_CMSEARCH {
         ${write_target ? '*.tbl' : ''}
 
     ${cleanup}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        infernal: \$(cmsearch -h | grep -o '^# INFERNAL [0-9.]*' | sed 's/^# INFERNAL *//')
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +55,5 @@ process INFERNAL_CMSEARCH {
     echo "" | gzip > ${prefix}.txt.gz
     ${write_align  ? "echo '' | gzip > ${prefix}.sto.gz" : ''}
     ${write_target ? "echo '' | gzip > ${prefix}.tbl.gz" : ''}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        infernal: \$(cmsearch -h | grep -o '^# INFERNAL [0-9.]*' | sed 's/^# INFERNAL *//')
-    END_VERSIONS
     """
 }
