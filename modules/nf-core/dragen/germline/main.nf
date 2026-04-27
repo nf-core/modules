@@ -2,7 +2,8 @@ process DRAGEN {
     tag "$meta.id"
     label 'process_dragen'
 
-    // ATTENTION: No conda env or container image as Dragen requires specialized hardware to run
+    // WARNING: No conda env or container image as Dragen requires specialized hardware to run
+    // Only the stub test has been executed.
 
     input:
     tuple val(meta), path(input), val(sex)
