@@ -4,7 +4,7 @@ process BIGSLICE_DOWNLOADDB {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/bigslice:2.0.2--pyh8ed023e_0'
-        : 'biocontainers/bigslice:2.0.2--pyh8ed023e_0'}"
+        : 'quay.io/biocontainers/bigslice:2.0.2--pyh8ed023e_0'}"
 
     output:
     path "bigslice-models"              , emit: db
