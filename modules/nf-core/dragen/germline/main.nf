@@ -5,7 +5,7 @@ process DRAGEN {
     // ATTENTION: No conda env or container image as Dragen requires specialized hardware to run
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input), val(sex)
     path checkfingerprint_expected_vcf
     path cnv_combined_counts
     path cnv_exclude_bed
@@ -306,8 +306,8 @@ process DRAGEN {
     }
 
     // sample-sex
-    if (meta.sex && !args.contains("--repeat-genotype-enable true")) {
-        args = args + " --sample-sex " + meta.sex.toLowerCase()
+    if (sex && !args.contains("--repeat-genotype-enable true")) {
+        args = args + " --sample-sex " + sex.toLowerCase()
     }
 
     // structural variation

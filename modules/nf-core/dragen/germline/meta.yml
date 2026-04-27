@@ -35,14 +35,18 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false , sex:'female']`;
-          options for sex: male, female, none, auto
+          e.g. `[ id:'sample1', single_end:false]`
     - input:
         type: file
         description: FASTQ (may be gzipped), ora, BAM or CRAM files
         pattern: "*.{fastq,fq,ora,bam,cram}{,.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
+    - sex:
+        type: string
+        description: |
+          Sample's sex.
+          Recognize options: male, female, none, auto
   - checkfingerprint_expected_vcf:
       type: file
       description: Input expected genotypes (VCF) for checkfingerprint comparison
