@@ -188,7 +188,7 @@ process DRAGEN {
     path "streaming_log_*.csv"                                               , optional: true, emit: streaming_log_csv
     path "*_usage.txt"                                                       , emit: usage_txt
     path "**"                                                                , emit: all
-    tuple val("${task.process}"), val('dragen'), eval("dragen --version 2>&1 | sed 's/^dragen Version //;q"), emit: versions_dragen, topic: versions
+    tuple val("${task.process}"), val('dragen'), eval("dragen --version 2>&1 | sed 's/^dragen Version //;q'"), emit: versions_dragen, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
