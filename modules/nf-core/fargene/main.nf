@@ -31,7 +31,7 @@ process FARGENE {
     tuple val(meta), path("${prefix}/tmpdir/*.out")                                              , optional: true, emit: tmp
     // the CLI does not provide any information about version
     // make sure to update the line below when there is a new version
-    tuple val("${task.process}"), val('fargene'), eval('echo 0.1')                                               , emit: versions_fargene, topic: versions
+    tuple val("${task.process}"), val('fargene'), val("0.1").                                               , emit: versions_fargene, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
