@@ -32,16 +32,36 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_1930" # FASTQ
 output:
-  reads:
+  reads_se:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:true ]
+      - "${prefix}{_trimmed,.*bp_3prime,.*bp_5prime}.fq.gz":
+          type: file
+          description: |
+            Single-end trimmed reads. Brace alternatives cover trim_galore's
+            output modes: `_trimmed` (default), `.<N>bp_3prime` (--hardtrim3),
+            `.<N>bp_5prime` (--hardtrim5).
+          pattern: "${prefix}{_trimmed,.*bp_3prime,.*bp_5prime}.fq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930" # FASTQ
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  reads_pe:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*{3prime,5prime,trimmed,val}{,_1,_2}.fq.gz":
+      - "${prefix}_*{_val_1,_val_2,bp_3prime,bp_5prime}.fq.gz":
           type: file
-          description: The trimmed/modified fastq reads
-          pattern: "*{3prime,5prime,trimmed,val}{,_1,_2}.fq.gz"
+          description: |
+            Paired-end trimmed reads. Brace alternatives cover trim_galore's
+            output modes: `_val_<N>` (default), `bp_3prime` (--hardtrim3),
+            `bp_5prime` (--hardtrim5). PE per-mate intermediates
+            (`${prefix}_<N>_trimmed.fq.gz`) deliberately do not match this glob.
+          pattern: "${prefix}_*{_val_1,_val_2,bp_3prime,bp_5prime}.fq.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930" # FASTQ
             - edam: http://edamontology.org/format_3989 # GZIP format

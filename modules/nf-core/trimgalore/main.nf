@@ -11,11 +11,16 @@ process TRIMGALORE {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*{3prime,5prime,trimmed,val}{,_1,_2}.fq.gz"), emit: reads
-    tuple val(meta), path("*report.txt")                               , emit: log     , optional: true
-    tuple val(meta), path("*unpaired{,_1,_2}.fq.gz")                   , emit: unpaired, optional: true
-    tuple val(meta), path("*.html")                                    , emit: html    , optional: true
-    tuple val(meta), path("*.zip")                                     , emit: zip     , optional: true
+    // Two `reads_*` emits with positive-only patterns covering every trim_galore
+    // output mode (default trim, --hardtrim5, --hardtrim3). PE per-mate intermediates
+    // (`${prefix}_<N>_trimmed.fq.gz`) deliberately match neither pattern, so an
+    // incomplete unlink of those files on retry can't leak into either channel.
+    tuple val(meta), path("${prefix}{_trimmed,.*bp_3prime,.*bp_5prime}.fq.gz")    , emit: reads_se, optional: true
+    tuple val(meta), path("${prefix}_*{_val_1,_val_2,bp_3prime,bp_5prime}.fq.gz") , emit: reads_pe, optional: true
+    tuple val(meta), path("*report.txt")                                          , emit: log     , optional: true
+    tuple val(meta), path("*unpaired{,_1,_2}.fq.gz")                              , emit: unpaired, optional: true
+    tuple val(meta), path("*.html")                                               , emit: html    , optional: true
+    tuple val(meta), path("*.zip")                                                , emit: zip     , optional: true
     tuple val("${task.process}"), val("trimgalore"), eval('trim_galore --version | grep -Eo "[0-9]+(\\.[0-9]+)+"'), topic: versions, emit: versions_trimgalore
 
     when:
@@ -41,13 +46,11 @@ process TRIMGALORE {
     }
 
     // Added soft-links to original fastqs for consistent naming in MultiQC
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         def args_list = args.split("\\s(?=--)").toList()
         args_list.removeAll { arg -> arg.toLowerCase().contains('_r2 ') }
         """
-        # Drop any trim_galore output left over from an interrupted previous attempt.
-        rm -f ${prefix}_trimmed.fq.gz
         [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
         trim_galore \\
             ${args_list.join(' ')} \\
@@ -58,10 +61,6 @@ process TRIMGALORE {
     }
     else {
         """
-        # Drop the per-mate intermediates --paired writes before validate_paired_end_files
-        # unlinks them. An attempt interrupted between cutadapt and validation leaves these
-        # behind and the output glob then matches 3 fastqs instead of 2.
-        rm -f ${prefix}_1_trimmed.fq.gz ${prefix}_2_trimmed.fq.gz
         [ ! -f  ${prefix}_1.fastq.gz ] && ln -s ${reads[0]} ${prefix}_1.fastq.gz
         [ ! -f  ${prefix}_2.fastq.gz ] && ln -s ${reads[1]} ${prefix}_2.fastq.gz
         trim_galore \\
@@ -75,15 +74,15 @@ process TRIMGALORE {
     }
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         output_command = "echo '' | gzip > ${prefix}_trimmed.fq.gz ;"
         output_command += "touch ${prefix}.fastq.gz_trimming_report.txt"
     }
     else {
-        output_command = "echo '' | gzip > ${prefix}_1_trimmed.fq.gz ;"
+        output_command = "echo '' | gzip > ${prefix}_1_val_1.fq.gz ;"
         output_command += "touch ${prefix}_1.fastq.gz_trimming_report.txt ;"
-        output_command += "echo '' | gzip > ${prefix}_2_trimmed.fq.gz ;"
+        output_command += "echo '' | gzip > ${prefix}_2_val_2.fq.gz ;"
         output_command += "touch ${prefix}_2.fastq.gz_trimming_report.txt"
     }
     """
