@@ -29,7 +29,7 @@ process EAGLE2 {
         --geneticMapFile $map \\
         $args \\
         --numThreads $task.cpus \\
-        --outPrefix ${prefix} 
+        --outPrefix ${prefix}
     """
 
     stub:
