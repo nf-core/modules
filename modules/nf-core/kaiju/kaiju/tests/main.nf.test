@@ -10,18 +10,19 @@ nextflow_process {
     tag "kaiju/kaiju"
     tag "untar"
 
-    test("sarscov2 - fastq - single-end") {
 
-        setup {
-            run ("UNTAR"){
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [ [], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kaiju.tar.gz', checkIfExists: true) ]
-                    """
-                }
+    setup {
+        run ("UNTAR"){
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [ [id: 'db'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kaiju.tar.gz', checkIfExists: true) ]
+                """
             }
         }
+    }
+
+    test("sarscov2 - fastq - single-end") {
 
         when {
             process {
@@ -30,7 +31,18 @@ nextflow_process {
                         [ id:'test', single_end:true ], // meta map
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                         ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+
+                input[1] = UNTAR.out.untar
+                    .map {
+                        meta, untar ->
+                            db = [
+                                untar,
+                                file(params.modules_testdata_base_path + "delete_me/kaiju/nodes.dmp", checkIfExists: true),
+                                file(params.modules_testdata_base_path + "delete_me/kaiju/names.dmp", checkIfExists: true)
+                            ]
+                        [meta, db ]
+                    }
+                    .map{ it[1] }
                 """
             }
         }
@@ -41,7 +53,7 @@ nextflow_process {
                 { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") },
                 { assert snapshot(
                     file(process.out.results[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -50,26 +62,25 @@ nextflow_process {
 
     test("sarscov2 - fastq - paired-end") {
 
-        setup {
-            run ("UNTAR"){
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [ [], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kaiju.tar.gz', checkIfExists: true) ]
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ],
-                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
-                ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[0] =  [
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        ]
+
+                input[1] = UNTAR.out.untar
+                    .map {
+                        meta, untar ->
+                            db = [
+                                untar,
+                                file(params.modules_testdata_base_path + "delete_me/kaiju/nodes.dmp", checkIfExists: true),
+                                file(params.modules_testdata_base_path + "delete_me/kaiju/names.dmp", checkIfExists: true)
+                            ]
+                        [meta, db ]
+                    }
+                    .map{ it[1] }
                 """
             }
         }
@@ -80,7 +91,7 @@ nextflow_process {
                 { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") },
                 { assert snapshot(
                     file(process.out.results[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -90,26 +101,25 @@ nextflow_process {
 
         options '-stub'
 
-        setup {
-            run ("UNTAR"){
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [ [], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kaiju.tar.gz', checkIfExists: true) ]
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ],
-                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
-                ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[0] =  [
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        ]
+
+                input[1] = UNTAR.out.untar
+                    .map {
+                        meta, untar ->
+                            db = [
+                                untar,
+                                file(params.modules_testdata_base_path + "delete_me/kaiju/nodes.dmp", checkIfExists: true),
+                                file(params.modules_testdata_base_path + "delete_me/kaiju/names.dmp", checkIfExists: true)
+                            ]
+                        [meta, db ]
+                    }
+                    .map{ it[1] }
                 """
             }
         }

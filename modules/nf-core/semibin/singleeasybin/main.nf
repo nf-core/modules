@@ -3,7 +3,7 @@ process SEMIBIN_SINGLEEASYBIN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2aa21f74001110a50915b90b72aca51c1e2c804ce45d686e6f4085efa69f8a5b/data'
         : 'community.wave.seqera.io/library/semibin:2.2.1--3214db8e39e5117b'}"
 

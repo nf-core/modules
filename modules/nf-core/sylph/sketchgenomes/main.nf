@@ -3,9 +3,9 @@ process SYLPH_SKETCHGENOMES {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/sylph:0.9.0--ha6fb395_0'
-        : 'biocontainers/sylph:0.9.0--ha6fb395_0'}"
+        : 'quay.io/biocontainers/sylph:0.9.0--ha6fb395_0'}"
 
     input:
     tuple val(meta), path(fasta, stageAs: 'genomes/')
@@ -21,7 +21,7 @@ process SYLPH_SKETCHGENOMES {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ls -1 genomes/* > genomes.txt
+    find -L genomes/ -type f > genomes.txt
 
     sylph sketch \\
         -t ${task.cpus} \\

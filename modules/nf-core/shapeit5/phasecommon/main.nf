@@ -3,9 +3,9 @@ process SHAPEIT5_PHASECOMMON {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/shapeit5:5.1.1--hb60d31d_0'
-        : 'biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
+        : 'quay.io/biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(pedigree), val(region), path(reference), path(reference_index), path(scaffold), path(scaffold_index), path(map)

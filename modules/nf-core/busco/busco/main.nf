@@ -3,7 +3,7 @@ process BUSCO_BUSCO {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c6684133dafc676a4087ca5615907bfdaaba29210f1c8eb2082c4096a009b2cd/data'
         : 'community.wave.seqera.io/library/busco_numpy:1877b1d6022fa08d'}"
     // Note: one test had to be disabled when switching to Busco 6.0.0, cf https://github.com/nf-core/modules/pull/8781/files
@@ -58,8 +58,10 @@ process BUSCO_BUSCO {
         './*-busco/*/prodigal_output/predicted_genes/tmp/',
     ]
     def clean_cmd = clean_intermediates ? "rm -fr ${intermediate_files.join(' ')}" : ''
-    def bbtools_max_memory = (task.memory * 0.25).toGiga()
-    def bbtools_memory = bbtools_max_memory > 120.Mb ? "${bbtools_max_memory}g" : "120m"
+
+    def bbtools_memory_preferred = task.memory * 0.25
+    def bbtools_memory_minimum = 120.Mb
+    def bbtools_memory = bbtools_memory_preferred > bbtools_memory_minimum ? "${bbtools_memory_preferred.toGiga()}g" : "${bbtools_memory_minimum.toMega()}m"
     """
     export BUSCO_BBTOOLS_MEMORY=${bbtools_memory}
 

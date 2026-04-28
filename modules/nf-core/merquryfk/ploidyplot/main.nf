@@ -3,7 +3,7 @@ process MERQURYFK_PLOIDYPLOT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d113fd30596756ca41c1651aecff1dfde15d2f08dc34996e5b89c7eabd50ab1/data' :
         'community.wave.seqera.io/library/fastk_merquryfk_r-argparse_r-cowplot_pruned:985041255d013130' }"
 
