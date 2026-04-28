@@ -44,13 +44,13 @@ process POPSCLE_FREEMUXLET {
     def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     """
-    touch ${prefix}.clust1.samples.gz
-    touch ${prefix}.clust1.vcf.gz
+    echo | gzip > ${prefix}.clust1.samples.gz
+    echo | gzip > ${prefix}.clust1.vcf.gz
     touch ${prefix}.lmix
 
     if [[ "$args" == *"--aux-files"* ]]; then
-        touch ${prefix}.clust0.samples.gz
-        touch ${prefix}.clust0.vcf.gz
+        echo | gzip > ${prefix}.clust0.samples.gz
+        echo | gzip > ${prefix}.clust0.vcf.gz
     fi
 
     cat <<-END_VERSIONS > versions.yml
