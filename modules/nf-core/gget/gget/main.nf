@@ -11,9 +11,9 @@ process GGET_GGET {
     tuple val(meta), path(files)
 
     output:
-    tuple val(meta), path("*[!versions.yml][!${prefix}.${extension}]*"), emit: files , optional: true
-    tuple val(meta), path("${prefix}.${extension}")                    , emit: output, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*[!${prefix}.${extension}]*"), emit: files , optional: true
+    tuple val(meta), path("${prefix}.${extension}")     , emit: output, optional: true
+    tuple val("${task.process}"), val('gget'), eval("gget --version |& sed 's/gget version: //'"), topic: versions, emit: versions_gget
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process GGET_GGET {
         $args \\
         -o ${prefix}.${extension} \\
         $inputs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gget: \$(echo \$(gget --version 2>&1 | sed 's/gget version: //g'))
-    END_VERSIONS
     """
 
     stub:
@@ -47,10 +42,5 @@ process GGET_GGET {
     """
     export MPLCONFIGDIR=\$PWD/.tmp    #included in stub to stop errors in the version string
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gget: \$(echo \$(gget --version 2>&1 | sed 's/gget version: //g'))
-    END_VERSIONS
     """
 }
