@@ -398,7 +398,6 @@ process DRAGEN {
     """
 
     stub:
-    def VERSION = "stub"
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch 20251120_usage.txt
