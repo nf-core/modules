@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process HUMANN_REGROUP"
+    name "Test Process HUMANN3_REGROUP"
     script "../main.nf"
-    process "HUMANN_REGROUP"
+    process "HUMANN3_REGROUP"
     config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
-    tag "humann"
-    tag "humann/regroup"
+    tag "humann3"
+    tag "humann3/regroup"
     tag "untar"
     setup {
         run("UNTAR", alias: "UNTAR_v3_util") {
@@ -22,7 +22,7 @@ nextflow_process {
             }
         }
     }
-    test("humann_regroup sarscov2 - tsv - stub") {
+    test("humann3_regroup sarscov2 - tsv - stub") {
 
         options "-stub"
 

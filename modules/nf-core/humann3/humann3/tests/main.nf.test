@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process HUMANN_HUMANN"
+    name "Test Process HUMANN3_HUMANN"
     script "../main.nf"
-    process "HUMANN_HUMANN"
+    process "HUMANN3_HUMANN"
     config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
-    tag "humann"
-    tag "humann/humann"
+    tag "humann3"
+    tag "humann3/humann3"
     tag "metaphlan/metaphlan"
     tag "untar"
     setup{
@@ -69,7 +69,7 @@ nextflow_process {
             }
         }
     }
-    test("humann_v3 sarscov2 - fastq") {
+    test("humann3 sarscov2 - fastq") {
         when {
             process {
                 """
