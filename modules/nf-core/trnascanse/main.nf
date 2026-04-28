@@ -17,7 +17,7 @@ process TRNASCANSE {
     tuple val(meta), path("*.fasta") , emit: fasta , optional: true
     tuple val(meta), path("*.gff")   , emit: gff   , optional: true
     tuple val(meta), path("*.bed")   , emit: bed   , optional: true
-    path("versions.yml")             , emit: versions
+    tuple val("${task.process}"), val('tRNAscan-SE'), eval("tRNAscan-SE |& sed '2!d;s/tRNAscan-SE //;s/ .*//'"), topic: versions, emit: versions_trnascanse
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,11 +50,6 @@ process TRNASCANSE {
     find . -name "*.fasta" -exec gzip {} \\;
 
     ${cleanup}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tRNAscan-SE: \$(tRNAscan-SE 2>&1 >/dev/null | awk 'NR==2 {print \$2}')
-    END_VERSIONS
     """
 
     stub:
@@ -63,13 +58,8 @@ process TRNASCANSE {
     touch ${prefix}.tsv
     touch ${prefix}.log
     touch ${prefix}.stats
-    echo '' | gzip > ${prefix}.fasta.gz
+    echo "" | gzip > ${prefix}.fasta.gz
     touch ${prefix}.gff
     touch ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tRNAscan-SE: \$(tRNAscan-SE 2>&1 >/dev/null | awk 'NR==2 {print \$2}')
-    END_VERSIONS
     """
 }
