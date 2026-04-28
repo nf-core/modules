@@ -29,7 +29,8 @@ nextflow_process {
                 { assert dbDir.isDirectory() },
                 { assert snapshot(
                     topDirs.sort(),
-                    process.out.versions_bigslice
+                    ["versions_bigslice": process.out.versions_bigslice,
+                     "versions_python"  : process.out.versions_python]
                 ).match() }
             )
         }
@@ -53,7 +54,8 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.db[0][1],
-                    process.out.versions_bigslice
+                    ["versions_bigslice": process.out.versions_bigslice,
+                     "versions_python"  : process.out.versions_python]
                 ).match() }
             )
         }
