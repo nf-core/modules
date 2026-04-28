@@ -1,4 +1,4 @@
-process HUMANN_RENORM {
+process HUMANN3_RENORM {
     tag "$meta.id"
     label 'process_low'
 
