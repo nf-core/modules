@@ -36,4 +36,34 @@ nextflow_process {
 
     }
 
+
+    test("wfmash - stub") {
+
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz', checkIfExists: true),
+                    [], // empty paf input
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz.gzi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz.fai', checkIfExists: true)
+                ]
+                input[1] = true
+                input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }

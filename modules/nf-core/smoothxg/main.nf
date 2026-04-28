@@ -33,4 +33,15 @@ process SMOOTHXG {
         smoothxg: \$(smoothxg --version 2>&1 | cut -f 1 -d '-' | cut -f 2 -d 'v')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.smoothxg.gfa
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        smoothxg: \$(smoothxg --version 2>&1 | cut -f 1 -d '-' | cut -f 2 -d 'v')
+    END_VERSIONS
+    """
 }
