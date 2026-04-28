@@ -3,9 +3,9 @@ process CSVTK_JOIN {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/csvtk:0.31.0--h9ee0642_0' :
-        'quay.io/biocontainers/csvtk:0.31.0--h9ee0642_0' }"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c8/c818804e2e954ab8bc52c8bdc961539d2aa0a6b0f9517c3a6118d5a6c6a38669/data':
+        'community.wave.seqera.io/library/csvtk:0.31.0--483af3c969467fe4' }"
 
     input:
     tuple val(meta), path(csv)

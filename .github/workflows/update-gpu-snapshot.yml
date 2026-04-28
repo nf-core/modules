@@ -71,10 +71,10 @@ jobs:
           python-version: "3.14"
 
       - name: Set up nf-test
-        uses: nf-core/setup-nf-test@ce65500579e8587607aab289ecb3a9c343c32e79 # v2
+        uses: nf-core/setup-nf-test@4069fbbaabe94c08faba4ad261bfa88225ba133f # v2
         with:
           version: "${{ env.NFT_VER }}"
-          install-pdiff: true
+          install-fast-diff: true
 
       - name: Update gpu snapshot
         id: update-gpu-snapshot
