@@ -29,7 +29,7 @@ nextflow_process {
                 { assert dbDir.isDirectory() },
                 { assert snapshot(
                     topDirs.sort(),
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.versions_bigslice
                 ).match() }
             )
         }
@@ -51,7 +51,10 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.db[0][1],
+                    process.out.versions_bigslice
+                ).match() }
             )
         }
 
