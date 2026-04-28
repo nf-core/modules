@@ -13,7 +13,7 @@ process DSSP_MKDSSP {
 
     output:
     tuple val(meta), path("*.{dssp,mmcif}"), emit: dssp
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val("dssp"), eval("mkdssp --version | sed -n 's/^mkdssp version //p'"), emit:versions_dssp, topic:versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,11 @@ process DSSP_MKDSSP {
         --output-format=${format} \\
         ${pdb} \\
         ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dssp: \$(mkdssp --version | sed -n 's/^mkdssp version //p')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dssp: \$(mkdssp --version | sed -n 's/^mkdssp version //p')
-    END_VERSIONS
     """
 }
