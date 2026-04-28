@@ -1,0 +1,133 @@
+name: dorado_basecaller
+description: |
+  Basecall Oxford Nanopore pod5 files with automatic model selection, optional
+  modified base calling (e.g. 5mCG_5hmCG, 5mC, m6A), and optional alignment
+  to a reference genome using the dorado basecaller.
+keywords:
+  - basecalling
+  - ont
+  - long-read
+  - methylation
+  - modified-bases
+  - pod5
+  - nanopore
+tools:
+  - "dorado":
+      description: Oxford Nanopore's basecaller supporting automatic model selection,
+        modified base calling, and integrated alignment.
+      homepage: https://github.com/nanoporetech/dorado
+      documentation: https://software-docs.nanoporetech.com/dorado/latest/
+      tool_dev_url: https://github.com/nanoporetech/dorado
+      licence:
+        - "Oxford Nanopore Technologies PLC. Public License Version 1.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - pod5:
+        type: file
+        description: |
+          A single pod5 file or a directory of pod5 files to basecall.
+          Use --recursive in task.ext.args to scan directories recursively.
+        pattern: "*.pod5"
+        ontologies: []
+  - model:
+      type: string
+      description: |
+        Combined model string for automatic model resolution. Use the format
+        "{speed},{mod}@{version}" to basecall with modification calling in a
+        single argument, e.g. "sup,5mCG_5hmCG@latest", "hac,5mCG_5hmCG@v5.0.0".
+        For basecalling only (no mod calls) use "{speed}@{version}" e.g.
+        "sup@latest", "hac@v5.0.0". Can also be a path to an existing model
+        directory. Models are auto-downloaded if not found in models_dir.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing models directory information
+          e.g. `[ id:'dorado_models' ]`
+    - models_dir:
+        type: directory
+        description: |
+          Optional directory containing pre-downloaded dorado models.
+          If not provided (pass [[],[]]), models are downloaded automatically
+          into the task work directory. Pre-downloading is strongly recommended
+          for HPC environments without internet access on compute nodes.
+        pattern: "*/"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference genome information
+          e.g. `[ id:'hg38' ]`
+    - reference:
+        type: file
+        description: |
+          Optional reference FASTA for integrated alignment. If provided, dorado
+          aligns basecalled reads and outputs a mapped BAM. Pass [[],[],[]] to
+          produce an unmapped BAM.
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
+    - fai:
+        type: file
+        description: |
+          FASTA index (.fai) for the reference. Required when reference is provided.
+        pattern: "*.fai"
+        ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: |
+            BAM file containing basecalled reads with base quality scores and
+            modification tags (MM/ML) when modified base calling is enabled.
+            Output sort order is SO:unknown (dorado does not sort).
+            Pipe to SAMTOOLS_SORT + SAMTOOLS_INDEX for coordinate-sorted, indexed BAMs.
+            Unmapped if no reference provided; mapped (unsorted) if reference provided.
+          pattern: "*.bam"
+          ontologies: []
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*_summary.tsv":
+          type: file
+          description: Per-read summary TSV with alignment statistics. Present when
+            --emit-summary is set in task.ext.args.
+          pattern: "*_summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_dorado:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dorado:
+          type: string
+          description: The name of the tool
+      - dorado --version 2>&1 | head -1 | sed 's/^//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dorado:
+          type: string
+          description: The name of the tool
+      - dorado --version 2>&1 | head -1 | sed 's/^//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sahuno"
+maintainers:
+  - "@sahuno"
