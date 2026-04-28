@@ -1,11 +1,10 @@
-include { getConda; getContainer; getExt; getHumannVersion } from '../utils'
 // Taken 98% from https://github.com/nf-core/modules/pull/1089/files
 
 process HUMANN_HUMANN {
     tag "$meta.id"
     label 'process_high'
 
-    conda { getConda(getHumannVersion(task.process)) }
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/humann:3.6.1--pyh7cba7a3_0' :
         'quay.io/biocontainers/humann:3.6.1--pyh7cba7a3_0' }"
@@ -32,8 +31,7 @@ process HUMANN_HUMANN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def processName = getHumannVersion(task.process)
-    def nuc_ext = getExt(processName)
+    def nuc_ext = '*.ffn.gz'
     def pangenome_string = "--taxonomic-profile ${profile}"
     """
     PROTS_DB=`find -L "${protein_db}" -name "*.dmnd" -exec dirname {} \\;`
