@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process HIFIADAPTERFILT"
+    script "../main.nf"
+    process "HIFIADAPTERFILT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hifiadapterfilt"
+
+    test("homo_sapiens - pacbio fastq.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/alz.ccs.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.stats.get(0).get(1)).exists() },
+                { assert snapshot(
+                    process.out.blastout,
+                    process.out.blocklist,
+                    process.out.fastq,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pacbio fastq.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/alz.ccs.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
