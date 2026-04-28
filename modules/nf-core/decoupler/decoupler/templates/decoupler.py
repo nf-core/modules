@@ -11,8 +11,10 @@ import shlex
 import sys
 
 import decoupler as dc  # noqa: E402
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd  # noqa: E402
+import scanpy as sc
 
 mat = pd.read_csv("${mat}", sep="\t", index_col=0)
 net = pd.read_csv("${net}", sep="\t")
@@ -93,7 +95,10 @@ for result in results:
     plt.savefig("${task.ext.prefix}" + "_" + result + "_decoupler_plot.png", dpi=300, bbox_inches="tight")
     plt.close()
 
-## VERSIONS FILE
 with open("versions.yml", "a") as version_file:
-    version_file.write('"${task.process}":' + "\\n")
-    version_file.write("decoupler-py: " + dc.__version__ + "\\n")
+    version_file.write('"${task.process}":\\n')
+    version_file.write(f"    decoupler-py: {dc.__version__}\\n")
+    version_file.write(f"    matplotlib: {mpl.__version__}\\n")
+    version_file.write(f"    pandas: {pd.__version__}\\n")
+    version_file.write(f"    python: {sys.version.split()[0]}\\n")
+    version_file.write(f"    scanpy: {sc.__version__}\\n")
