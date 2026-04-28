@@ -1,5 +1,7 @@
 nextflow_process {
 
+    config "./nextflow.config"
+
     name "Test Process WHATSHAP_PHASE"
     script "../main.nf"
     process "WHATSHAP_PHASE"
@@ -18,6 +20,19 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = false
+                """
+            }
+        }
+        run("SAMTOOLS_FAIDX", alias: "SAMTOOLS_FAIDX2") {
+            script "../../../samtools/faidx/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'genome' ],
+                    file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/reference/reference.fasta', checkIfExists: true),
                     []
                 ]
                 input[1] = false
@@ -59,6 +74,98 @@ nextflow_process {
             )
         }
 
+    }
+
+    test("whatshap - phase - trio vcf, corresponding bams, pedigree") {
+
+        when {
+            params {
+                module_args = "--chromosome 21"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz.tbi', checkIfExists: true),
+                    [
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/earlycasualcaiman_sorted_md.bam', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/hugelymodelbat_sorted_md.bam', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/slowlycivilbuck_sorted_md.bam', checkIfExists: true)
+                    ],
+                    [
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/earlycasualcaiman_sorted_md.bam.bai', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/hugelymodelbat_sorted_md.bam.bai', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/slowlycivilbuck_sorted_md.bam.bai', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true),
+                ]
+
+                input[1] = Channel.of([
+                    [ id:'genome' ],
+                    file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/reference/reference.fasta', checkIfExists: true)
+                ]).join(SAMTOOLS_FAIDX2.out.fai)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith("versions")},
+                    ).match() }
+            )
+        }
+    }
+
+    test("whatshap - phase - trio vcf, corresponding bams, no pedigree") {
+
+        when {
+            params {
+                module_args = "--chromosome 21"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz.tbi', checkIfExists: true),
+                    [
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/earlycasualcaiman_sorted_md.bam', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/hugelymodelbat_sorted_md.bam', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/slowlycivilbuck_sorted_md.bam', checkIfExists: true)
+                    ],
+                    [
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/earlycasualcaiman_sorted_md.bam.bai', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/hugelymodelbat_sorted_md.bam.bai', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/slowlycivilbuck_sorted_md.bam.bai', checkIfExists: true)
+                    ],
+                    [],
+                ]
+
+                input[1] = Channel.of([
+                    [ id:'genome' ],
+                    file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/reference/reference.fasta', checkIfExists: true)
+                ]).join(SAMTOOLS_FAIDX2.out.fai)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith("versions")},
+                    ).match() }
+            )
+        }
     }
 
     test("whatshap - phase - vcf - stub") {
