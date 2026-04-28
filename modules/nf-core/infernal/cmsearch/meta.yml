@@ -27,14 +27,14 @@ input:
         description: |
           A calibrated Infernal covariance model file
         ontologies:
-          - edam: "http://edamontology.org/data_1364"
+          - edam: http://edamontology.org/data_1364 # HMM
     - seqdb:
         type: file
         description: |
           A FASTA file of sequences to search the covariance models
           against. Can be gzipped.
         ontologies:
-          - edam: "http://edamontology.org/format_1929"
+          - edam: http://edamontology.org/format_1929 # FASTA
   - write_align:
       type: boolean
       description: |
@@ -57,7 +57,7 @@ output:
           description: Human readable output summarizing hmmsearch results
           pattern: "*.{txt.gz}"
           ontologies:
-            - edam: "http://edamontology.org/data_3671"
+            - edam: http://edamontology.org/data_3671 # Text
   alignments:
     - - meta:
           type: map
@@ -70,7 +70,7 @@ output:
             format
           pattern: "*.{sto.gz}"
           ontologies:
-            - edam: "http://edamontology.org/format_1961"
+            - edam: http://edamontology.org/format_1961 # Stockholm
   target_summary:
     - - meta:
           type: map
@@ -83,7 +83,7 @@ output:
             output
           pattern: "*.{tbl.gz}"
           ontologies:
-            - edam: "http://edamontology.org/format_3475"
+            - edam: http://edamontology.org/format_3475 # TSV
   versions_infernal:
     - - ${task.process}:
           type: string
@@ -91,7 +91,17 @@ output:
       - infernal:
           type: string
           description: The name of the tool
-      - cmsearch -h | sed -n 's/^# INFERNAL \([0-9.]*\).*/\1/p':
+      - cmsearch -h | sed '2!d;s/.*INFERNAL //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_gzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip --version |& sed '1!d;s/gzip //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -102,7 +112,16 @@ topics:
       - infernal:
           type: string
           description: The name of the tool
-      - cmsearch -h | sed -n 's/^# INFERNAL \([0-9.]*\).*/\1/p':
+      - cmsearch -h | sed '2!d;s/.*INFERNAL //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip --version |& sed '1!d;s/gzip //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
