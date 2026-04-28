@@ -1,6 +1,5 @@
 nextflow_process {
 
-    config "./nextflow.config"
 
     name "Test Process WHATSHAP_PHASE"
     script "../main.nf"
@@ -78,6 +77,8 @@ nextflow_process {
 
     test("whatshap - phase - trio vcf, corresponding bams, pedigree") {
 
+        config "./nextflow.config"
+
         when {
             params {
                 module_args = "--chromosome 21"
@@ -123,6 +124,8 @@ nextflow_process {
     }
 
     test("whatshap - phase - trio vcf, corresponding bams, no pedigree") {
+
+        config "./nextflow.config"
 
         when {
             params {
