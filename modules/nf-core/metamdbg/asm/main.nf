@@ -44,6 +44,6 @@ process METAMDBG_ASM {
     """
     echo ${args}
     touch ${prefix}.metaMDBG.log
-    touch ${prefix}.contigs.fasta.gz
+    echo | gzip > ${prefix}.contigs.fasta.gz
     """
 }

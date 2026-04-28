@@ -31,7 +31,7 @@ process RASTAIR_METHYLKIT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.methylkit.txt.gz
+    echo | gzip > ${prefix}.methylkit.txt.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
