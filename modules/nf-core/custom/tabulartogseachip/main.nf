@@ -4,8 +4,8 @@ process CUSTOM_TABULARTOGSEACHIP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gawk:5.1.0' :
-        'biocontainers/gawk:5.1.0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/cae75dbf13aabe63298c0acce8ccfa9bd65fe4b73dc5578da5a2e30867f7169f/data' :
+        'community.wave.seqera.io/library/gawk:5.1.0--fa97c4ccf4cfbc4b' }"
 
     input:
     tuple val(meta), path(tabular)

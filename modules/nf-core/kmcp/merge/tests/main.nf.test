@@ -33,6 +33,8 @@ nextflow_process {
             process {
                 """
                 input[0] = KMCP_COMPUTE.out.outdir
+                input[1] = [[],[]]
+                input[2] = [[],[]]
                 """
             }
         }

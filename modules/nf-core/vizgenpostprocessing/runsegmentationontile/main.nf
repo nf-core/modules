@@ -3,7 +3,7 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container 'nf-core/vizgen-postprocessing_container:v0.1.1'
+    container 'quay.io/nf-core/vizgen-postprocessing_container:v0.1.1'
 
     input:
     tuple val(meta), path(input_images), path(segmentation_params), val(tile_index)

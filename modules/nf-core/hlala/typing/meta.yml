@@ -41,17 +41,16 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results:
-          type: file
-          description: Results file
-          ontologies: []
+      - ${prefix}:
+          type: directory
+          description: Per-sample HLA-LA output directory
   extraction:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results/extraction.bam:
+      - ${prefix}/extraction.bam:
           type: file
           description: Extraction BAM file
           pattern: "*.bam"
@@ -62,7 +61,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results/extraction.bam.bai:
+      - ${prefix}/extraction.bam.bai:
           type: file
           description: Extraction BAM index file
           pattern: "*.bam.bai"
@@ -73,7 +72,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results/extraction_mapped.bam:
+      - ${prefix}/extraction_mapped.bam:
           type: file
           description: Extraction mapped BAM file
           pattern: "*.bam"
@@ -84,7 +83,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results/extraction_unmapped.bam:
+      - ${prefix}/extraction_unmapped.bam:
           type: file
           description: Extraction unmapped BAM file
           pattern: "*.bam"
@@ -95,7 +94,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results/hla/*:
+      - ${prefix}/hla/*:
           type: file
           description: HLA results
           ontologies: []
@@ -105,7 +104,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results/*.fastq:
+      - ${prefix}/*.fastq:
           type: file
           description: Fastq file
           pattern: "*.fastq"
@@ -117,7 +116,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results/reads_per_level.txt:
+      - ${prefix}/reads_per_level.txt:
           type: file
           description: Reads per level
           pattern: "*.txt"
@@ -128,7 +127,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results/remapped_with_a.bam:
+      - ${prefix}/remapped_with_a.bam:
           type: file
           description: Remapped BAM file
           pattern: "*.bam"
@@ -139,18 +138,32 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results/remapped_with_a.bam.bai:
+      - ${prefix}/remapped_with_a.bam.bai:
           type: file
           description: Remapped BAM index file
           pattern: "*.bam.bai"
           ontologies: []
+  versions_hlala:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hla-la:
+          type: string
+          description: The name of the tool
+      - echo 1.0.4:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hla-la:
+          type: string
+          description: The name of the tool
+      - echo 1.0.4:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mapo9"
 maintainers:

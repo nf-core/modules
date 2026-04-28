@@ -3,9 +3,9 @@ process MAPDAMAGE2 {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mapdamage2:2.2.1--pyr40_0' :
-        'biocontainers/mapdamage2:2.2.1--pyr40_0' }"
+        'quay.io/biocontainers/mapdamage2:2.2.1--pyr40_0' }"
 
     input:
     tuple val(meta), path(bam)
