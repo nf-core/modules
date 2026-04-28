@@ -18,14 +18,10 @@ input:
       description: |
         Sequence reads in BAM/CRAM/SAM format
         Structure: [ val(meta), path(reads) ]
-  - ch_fasta:
+  - ch_fasta_fai:
       description: |
         Reference genome fasta file required for CRAM input
-        Structure: [ path(fasta) ]
-  - ch_fasta:
-      description: |
-        Index of the reference genome fasta file
-        Structure: [ path(fai) ]
+        Structure: [ path(fasta), path(fai) ]
 output:
   - bam:
       description: |
@@ -59,6 +55,10 @@ output:
       description: |
         File containing samtools idxstats output
         Structure: [ val(meta), path(idxstats) ]
+  - per_sample_mqc_bundle:
+      description: |
+        Per-sample MultiQC-feeding outputs (stats, flagstat, idxstats, metrics) joined on meta.
+        Structure: [ val(meta), list(files) ]
   - versions:
       description: |
         Files containing software versions

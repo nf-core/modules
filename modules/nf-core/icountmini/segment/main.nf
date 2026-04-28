@@ -3,9 +3,9 @@ process ICOUNTMINI_SEGMENT {
     label "process_single"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/icount-mini:2.0.3--pyh5e36f6f_0' :
-        'biocontainers/icount-mini:2.0.3--pyh5e36f6f_0' }"
+        'quay.io/biocontainers/icount-mini:2.0.3--pyh5e36f6f_0' }"
 
     input:
     tuple val(meta), path(gtf)
@@ -20,15 +20,16 @@ process ICOUNTMINI_SEGMENT {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${gtf.simpleName}_seg"
-    def regions_prefix = task.ext.regions_prefix ?: "${gtf.simpleName}"
+    def args   = task.ext.args ?: ""
+    def prefix = task.ext.prefix ?: "${gtf.simpleName}"
     """
     iCount-Mini segment \\
+        $args \\
         $gtf \\
-        ${prefix}.gtf \\
+        ${prefix}_seg.gtf \\
         $fai
 
-    mv regions.gtf.gz ${regions_prefix}_regions.gtf.gz
+    mv regions.gtf.gz ${prefix}_regions.gtf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -37,11 +38,10 @@ process ICOUNTMINI_SEGMENT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${gtf.simpleName}_seg"
-    def regions_prefix = task.ext.regions_prefix ?: "${gtf.simpleName}"
+    def prefix = task.ext.prefix ?: "${gtf.simpleName}"
     """
-    touch ${prefix}.gtf
-    echo | gzip > ${regions_prefix}_regions.gtf.gz
+    touch ${prefix}_seg.gtf
+    echo | gzip > ${prefix}_regions.gtf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

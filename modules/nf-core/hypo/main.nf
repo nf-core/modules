@@ -3,9 +3,9 @@ process HYPO {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hypo:1.0.3--h9a82719_1':
-        'biocontainers/hypo:1.0.3--h9a82719_1' }"
+        'quay.io/biocontainers/hypo:1.0.3--h9a82719_1' }"
 
     input:
     tuple val(meta), path(sr_bam)

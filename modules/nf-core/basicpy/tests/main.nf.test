@@ -25,9 +25,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    file(process.out.profiles.get(0).get(1)).exists(),
-                    file(process.out.profiles.get(0).get(2)).exists(),
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    file(process.out.profiles.get(0).get(1)).name,
+                    file(process.out.profiles.get(0).get(2)).name,
                     file(process.out.profiles.get(0).get(1)).size(),
                     Math.round(file(process.out.profiles.get(0).get(2)).size() / 1000) * 1000
                     ).match()

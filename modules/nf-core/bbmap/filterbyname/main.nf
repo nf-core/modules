@@ -3,7 +3,7 @@ process BBMAP_FILTERBYNAME {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5aae5977ff9de3e01ff962dc495bfa23f4304c676446b5fdf2de5c7edfa2dc4e/data' :
         'community.wave.seqera.io/library/bbmap_pigz:07416fe99b090fa9' }"
 
@@ -16,7 +16,7 @@ process BBMAP_FILTERBYNAME {
     output:
     tuple val(meta), path("*.${output_format}"), emit: reads
     tuple val(meta), path('*.log')             , emit: log
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,11 +45,6 @@ process BBMAP_FILTERBYNAME {
         $names_command \\
         $args \\
         | tee ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 
     stub:
@@ -61,11 +56,6 @@ process BBMAP_FILTERBYNAME {
     """
     $filtered
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 
 }

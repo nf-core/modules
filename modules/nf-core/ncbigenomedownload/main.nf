@@ -3,9 +3,9 @@ process NCBIGENOMEDOWNLOAD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-genome-download:0.3.3--pyh7cba7a3_0' :
-        'biocontainers/ncbi-genome-download:0.3.3--pyh7cba7a3_0' }"
+        'quay.io/biocontainers/ncbi-genome-download:0.3.3--pyh7cba7a3_0' }"
 
     input:
     val meta
@@ -27,7 +27,7 @@ process NCBIGENOMEDOWNLOAD {
     tuple val(meta), path("*_rna_from_genomic.fna.gz"), emit: rna_fna , optional: true
     tuple val(meta), path("*_assembly_report.txt")    , emit: report  , optional: true
     tuple val(meta), path("*_assembly_stats.txt")     , emit: stats   , optional: true
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('ncbigenomedownload'), eval('ncbi-genome-download --version'), topic: versions, emit: versions_ncbigenomedownload
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,9 +46,5 @@ process NCBIGENOMEDOWNLOAD {
         --parallel $task.cpus \\
         $groups
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ncbigenomedownload: \$( ncbi-genome-download --version )
-    END_VERSIONS
     """
 }

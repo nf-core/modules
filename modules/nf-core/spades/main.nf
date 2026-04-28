@@ -3,7 +3,7 @@ process SPADES {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b7b68c7f8471d9111841dbe594c00a41cdd3b713015c838c4b22705cfbbdfb2/data' :
         'community.wave.seqera.io/library/spades:4.1.0--77799c52e1d1054a' }"
 
@@ -20,7 +20,7 @@ process SPADES {
     tuple val(meta), path('*.assembly.gfa.gz')    , optional:true, emit: gfa
     tuple val(meta), path('*.warnings.log')         , optional:true, emit: warnings
     tuple val(meta), path('*.spades.log')         , emit: log
-    path  "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('spades'), eval("spades.py --version 2>&1 | sed -n 's/^.*SPAdes genome assembler v//p'"), topic: versions, emit: versions_spades
 
     when:
     task.ext.when == null || task.ext.when
@@ -69,11 +69,6 @@ process SPADES {
     if [ -f warnings.log ]; then
         mv warnings.log ${prefix}.warnings.log
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spades: \$(spades.py --version 2>&1 | sed -n 's/^.*SPAdes genome assembler v//p')
-    END_VERSIONS
     """
 
     stub:
@@ -86,10 +81,5 @@ process SPADES {
     echo "" | gzip > ${prefix}.assembly.gfa.gz
     touch ${prefix}.spades.log
     touch ${prefix}.warnings.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spades: \$(spades.py --version 2>&1 | sed -n 's/^.*SPAdes genome assembler v//p')
-    END_VERSIONS
     """
 }

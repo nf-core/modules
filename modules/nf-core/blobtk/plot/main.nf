@@ -12,18 +12,26 @@ process BLOBTK_PLOT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
+<<<<<<< HEAD
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2a04d3e2b8c1b50d6e26463114970a68afeddb5a0f302177cf1ed6b8b1f82b1c/data' :
         'community.wave.seqera.io/library/pip_blobtk:2fbb8045b9880daf' }"
+=======
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/243d043f1c9e152e75dbb0ef8c64022df50efbcaa4e1bbaea36bebd751e84e93/data' :
+        'community.wave.seqera.io/library/blobtk:0.7.1--e3f63bb2cdc8fb96' }"
+>>>>>>> master
 
     input:
     tuple val(meta), path(fasta)
     path(local_path)                // Genuine path location must be a path.
     val(online_path)                // HTTPS location needs to remain a value
     val extra_args                  // In format [name: "", args: ""]
+    val format                      // Output format, e.g. png or svg
 
     output:
-    tuple val(meta), path("*.png"), emit: png
+    tuple val(meta), path("*.png"), optional: true, emit: png
+    tuple val(meta), path("*.svg"), optional: true, emit: svg
     tuple val("${task.process}"), val("blobtk"), eval("blobtk --version | cut -d' ' -f2"), topic: versions, emit: versions_blobtk
 
     when:
@@ -37,23 +45,21 @@ process BLOBTK_PLOT {
     }
 
     def resource = online_path ?: local_path
+    def legend   = extra_args.args.contains("-v snail") ? "" : "--legend full"
+
     prefix       = task.ext.prefix ?: "${meta.id}"
 
     """
     blobtk plot \\
-        -d $resource \\
-        $args \\
-        -o ${prefix}.png
+        -d ${resource} \\
+        -o ${prefix}.${format} \\
+        ${legend} \\
+        $args
     """
 
     stub:
     prefix      = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blobtk: \$(blobtk --version | cut -d' ' -f2)
-    END_VERSIONS
+    touch ${prefix}.${format}
     """
 }

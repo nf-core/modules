@@ -3,9 +3,9 @@ process CENTRIFUGE_CENTRIFUGE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4.2--hdcf5f25_0'
-        : 'biocontainers/centrifuge:1.0.4.2--hdcf5f25_0'}"
+        : 'quay.io/biocontainers/centrifuge:1.0.4.2--hdcf5f25_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -19,7 +19,7 @@ process CENTRIFUGE_CENTRIFUGE {
     tuple val(meta), path('*.{sam,tab}'), optional: true, emit: sam
     tuple val(meta), path('*.mapped.fastq{,.1,.2}.gz'), optional: true, emit: fastq_mapped
     tuple val(meta), path('*.unmapped.fastq{,.1,.2}.gz'), optional: true, emit: fastq_unmapped
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val("centrifuge"), eval("centrifuge --version 2>&1 | sed '1!d;s/.* version //'"), emit: versions_centrifuge, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -57,17 +57,10 @@ process CENTRIFUGE_CENTRIFUGE {
         ${unaligned} \\
         ${aligned} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        centrifuge: \$( centrifuge --version  | sed -n 1p | sed 's/^.*centrifuge-class version //')
-    END_VERSIONS
     """
 
     stub:
-    def _args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def _paired = meta.single_end ? "-U ${reads}" : "-1 ${reads[0]} -2 ${reads[1]}"
     def unaligned = ''
     def aligned = ''
     if (meta.single_end) {
@@ -82,12 +75,7 @@ process CENTRIFUGE_CENTRIFUGE {
     touch ${prefix}.report.txt
     touch ${prefix}.results.txt
     touch ${prefix}.sam
-    echo | gzip -n > ${prefix}.unmapped.fastq.gz
-    echo | gzip -n > ${prefix}.mapped.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        centrifuge: \$( centrifuge --version  | sed -n 1p | sed 's/^.*centrifuge-class version //')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.unmapped.fastq.gz
+    echo "" | gzip > ${prefix}.mapped.fastq.gz
     """
 }

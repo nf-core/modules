@@ -3,13 +3,12 @@ process GENMOD_SCORE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/31/31b331bee43c7ff070bdde5460a4102ba31c3bfb0ee0d70197001ff011036555/data' :
         'community.wave.seqera.io/library/genmod_python:31b2fba4d3b7ba6f' }"
 
     input:
-    tuple val(meta), path(input_vcf), path (fam)
-    path (score_config)
+    tuple val(meta), path(input_vcf), path (fam), path (score_config)
 
     output:
     tuple val(meta), path("*_score.vcf"), emit: vcf

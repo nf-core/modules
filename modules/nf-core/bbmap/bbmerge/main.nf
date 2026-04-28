@@ -2,7 +2,7 @@ process BBMAP_BBMERGE {
     tag "$meta.id"
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5aae5977ff9de3e01ff962dc495bfa23f4304c676446b5fdf2de5c7edfa2dc4e/data' :
         'community.wave.seqera.io/library/bbmap_pigz:07416fe99b090fa9' }"
 
@@ -14,8 +14,8 @@ process BBMAP_BBMERGE {
     tuple val(meta), path("*_merged.fastq.gz")  , emit: merged
     tuple val(meta), path("*_unmerged.fastq.gz"), emit: unmerged
     tuple val(meta), path("*_ihist.txt")        , emit: ihist
-    path  "versions.yml"                        , emit: versions
     path  "*.log"                               , emit: log
+    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process BBMAP_BBMERGE {
         ihist=${prefix}_ihist.txt \\
         $args \\
         &> ${prefix}.bbmerge.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 
     stub:
@@ -51,10 +46,5 @@ process BBMAP_BBMERGE {
     echo "" | gzip | tee $out_files
     touch ${prefix}_ihist.txt
     touch ${prefix}.bbmerge.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 }

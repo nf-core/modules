@@ -1,26 +1,31 @@
 process DEEPCELL_MESMER {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_high'
 
-    container "nf-core/deepcell_mesmer:0.4.1_noentry"
+    container "quay.io/nf-core/deepcell_mesmer:0.4.1_noentry"
 
     input:
     tuple val(meta) , path(img)
     tuple val(meta2), path(membrane_img)
 
-    // Output a .tif image, don't touch versions
     output:
     tuple val(meta), path("*.tif"), emit: mask
-    path "versions.yml"           , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('deepcell-applications'), val("0.4.1"), emit: versions_deepcellapplications, topic: versions
+    tuple val("${task.process}"), val('deepcell'), eval("pip show 'DeepCell' | sed '2!d;s/Version: //'"), emit: versions_deepcell, topic: versions
+    tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), emit: versions_python, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "DEEPCELL_MESMER module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args             = task.ext.args ?: ''
     def prefix           = task.ext.prefix ?: "${meta.id}"
     def membrane_command = membrane_img ? "--membrane-image $membrane_img" : ""
-    def VERSION          = "0.4.1"
 
     """
     python /usr/src/app/run_app.py mesmer \\
@@ -30,22 +35,15 @@ process DEEPCELL_MESMER {
         --output-name ${prefix}.tif \\
         $membrane_command \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepcell_mesmer: $VERSION
-    END_VERSIONS
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "DEEPCELL_MESMER module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     prefix      = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "0.4.1"
     """
     touch ${prefix}.tif
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepcell_mesmer: $VERSION
-    END_VERSIONS
     """
 }

@@ -13,12 +13,10 @@ workflow FASTQ_PREPROCESS_SEQKIT {
     skip_seqkit_rmdup      // boolean
 
     main:
-    ch_versions = channel.empty()
 
     if (!skip_seqkit_sana_pair) {
         FASTQ_SANITISE_SEQKIT( ch_reads )
         ch_reads    = FASTQ_SANITISE_SEQKIT.out.reads
-        ch_versions = ch_versions.mix(FASTQ_SANITISE_SEQKIT.out.versions)
     }
 
     // Split paired-end reads and add strandedness to meta
@@ -43,7 +41,6 @@ workflow FASTQ_PREPROCESS_SEQKIT {
     if (!skip_seqkit_seq) {
         SEQKIT_SEQ( ch_reads_split )
         ch_reads_split = SEQKIT_SEQ.out.fastx
-        ch_versions    = ch_versions.mix(SEQKIT_SEQ.out.versions.first())
     }
 
     if (!skip_seqkit_replace) {
@@ -54,7 +51,6 @@ workflow FASTQ_PREPROCESS_SEQKIT {
     if (!skip_seqkit_rmdup) {
         SEQKIT_RMDUP( ch_reads_split )
         ch_reads_split = SEQKIT_RMDUP.out.fastx
-        ch_versions    = ch_versions.mix(SEQKIT_RMDUP.out.versions.first())
     }
 
     ch_reads = ch_reads_split
@@ -75,5 +71,4 @@ workflow FASTQ_PREPROCESS_SEQKIT {
 
     emit:
     reads    = ch_reads     // channel: [ val(meta), [ fastq ] ]
-    versions = ch_versions  // channel: [ versions.yml ]
 }

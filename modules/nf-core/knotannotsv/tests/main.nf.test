@@ -1,0 +1,126 @@
+nextflow_process {
+
+    config "./nextflow.config"
+
+    name "Test Process KNOTANNOTSV"
+    script "../main.nf"
+    process "KNOTANNOTSV"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "knotannotsv"
+
+    test("homo_sapiens - annotsv_tsv, knot_out_xl - HTML output") {
+
+        when {
+            params {
+                module_args = "--genomeBuild hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tsv/sv_query.tsv", checkIfExists: true),
+                    false
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    "test_HTML_output_lines_count: ${path(process.out.html[0][1]).readLines().size()}"
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - annotsv_tsv, knot_out_xl - XLSM output") {
+
+        when {
+            params {
+                module_args = "--genomeBuild hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tsv/sv_query.tsv", checkIfExists: true),
+                    true
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    "test_Excel_output_min_size: ${file(process.out.xl[0][1]).length() >= 89000}"
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - annotsv_tsv, knot_out_xl - stub - HTML output") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--genomeBuild hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tsv/sv_query.tsv", checkIfExists: true),
+                    false
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - annotsv_tsv, knot_out_xl - stub - XLSM output") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--genomeBuild hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tsv/sv_query.tsv", checkIfExists: true),
+                    true
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

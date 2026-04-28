@@ -3,16 +3,16 @@ process BAMTOFASTQ10X {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/10x_bamtofastq:1.4.1--hdbdd923_2':
-        'biocontainers/10x_bamtofastq:1.4.1--hdbdd923_2' }"
+        'quay.io/biocontainers/10x_bamtofastq:1.4.1--hdbdd923_2' }"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("**/*.fastq.gz"), emit: fastq
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('bamtofastq10x'), eval('bamtofastq --version |& sed "1!d ; s/bamtofastq //"'), emit: versions_bamtofastq10x, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +25,6 @@ process BAMTOFASTQ10X {
         $args \\
         $bam \\
         $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamtofastq10x: \$(bamtofastq --version |& sed '1!d ; s/bamtofastq //')
-    END_VERSIONS
     """
 
     stub:
@@ -37,10 +32,5 @@ process BAMTOFASTQ10X {
     """
     mkdir -p ${prefix}/bamtofastq10x
     echo "" | gzip > ${prefix}/bamtofastq10x/bamtofastq.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamtofastq10x: \$(bamtofastq --version |& sed '1!d ; s/bamtofastq //')
-    END_VERSIONS
     """
 }
