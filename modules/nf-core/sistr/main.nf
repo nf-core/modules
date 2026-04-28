@@ -46,4 +46,18 @@ process SISTR {
         sistr: \$(echo \$(sistr --version 2>&1) | sed 's/^.*sistr_cmd //; s/ .*\$//' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tab
+    touch ${prefix}-allele.fasta
+    touch ${prefix}-allele.json
+    touch ${prefix}-cgmlst.csv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sistr: \$(echo \$(sistr --version 2>&1) | sed 's/^.*sistr_cmd //; s/ .*\$//' )
+    END_VERSIONS
+    """
 }

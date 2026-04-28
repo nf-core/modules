@@ -47,4 +47,17 @@ process OPTITYPE {
         optitype: \$(cat \$(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g")
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p ${prefix}
+    touch ${prefix}/${prefix}_result.tsv
+    touch ${prefix}/${prefix}_coverage_plot.pdf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        optitype: \$(cat \$(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g")
+    END_VERSIONS
+    """
 }
