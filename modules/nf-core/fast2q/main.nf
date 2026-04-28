@@ -18,7 +18,7 @@ process FAST2Q {
     tuple val(meta), path("${prefix}_distribution_plot.png")    , emit: distribution_plot
     tuple val(meta), path("${prefix}_reads_plot.png")           , emit: reads_plot
     tuple val(meta), path("${prefix}_reads_plot_percentage.png"), emit: reads_plot_percentage
-    tuple val("${task.process}"), val('2FAST2Q'), eval('2fast2q -v | grep "Version:" | sed "s/Version: //g"'), emit: versions_2fast2q, topic: versions
+    tuple val("${task.process}"), val('fast2q'), eval('2fast2q -v | sed -n "s/Version: //p"'), emit: versions_fast2q, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
