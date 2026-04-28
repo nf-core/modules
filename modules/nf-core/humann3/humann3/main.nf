@@ -1,6 +1,6 @@
 // Taken 98% from https://github.com/nf-core/modules/pull/1089/files
 
-process HUMANN_HUMANN {
+process HUMANN3_HUMANN {
     tag "$meta.id"
     label 'process_high'
 
