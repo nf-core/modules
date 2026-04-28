@@ -1,4 +1,37 @@
 {
+    "test-prinseqplusplus-paired-end - stub": {
+        "content": [
+            [
+                "test_good_out_R1.fastq.gz",
+                "test_good_out_R2.fastq.gz"
+            ],
+            [
+                "test_single_out_R1.fastq.gz",
+                "test_single_out_R2.fastq.gz"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_bad_out_R1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "test_bad_out_R2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ]
+            ],
+            "test.log",
+            [
+                "versions.yml:md5,a1d60840785a5de3106716ead5634fe7"
+            ]
+        ],
+        "timestamp": "2026-04-28T14:43:28.878716",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
     "test-prinseqplusplus-single-end": {
         "content": [
             "test_good_out.fastq.gz",
@@ -19,11 +52,11 @@
                 "versions.yml:md5,366e108ac2695a852af440e61fecad5e"
             ]
         ],
+        "timestamp": "2024-08-27T14:55:34.731661",
         "meta": {
             "nf-test": "0.8.4",
             "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-27T14:55:34.731661"
+        }
     },
     "test-prinseqplusplus-paired-end": {
         "content": [
@@ -52,10 +85,36 @@
                 "versions.yml:md5,366e108ac2695a852af440e61fecad5e"
             ]
         ],
+        "timestamp": "2024-08-27T14:57:53.505032",
         "meta": {
             "nf-test": "0.8.4",
             "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-27T14:57:53.505032"
+        }
+    },
+    "test-prinseqplusplus-single-end - stub": {
+        "content": [
+            "test_good_out.fastq.gz",
+            [
+                
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test_bad_out.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
+            ],
+            "test.log",
+            [
+                "versions.yml:md5,a1d60840785a5de3106716ead5634fe7"
+            ]
+        ],
+        "timestamp": "2026-04-28T14:43:25.633562",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }

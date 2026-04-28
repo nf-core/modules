@@ -30,4 +30,15 @@ process FASTQSCAN {
         fastqscan: \$( echo \$(fastq-scan -v 2>&1) | sed 's/^.*fastq-scan //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.json
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fastqscan: \$( echo \$(fastq-scan -v 2>&1) | sed 's/^.*fastq-scan //' )
+    END_VERSIONS
+    """
 }

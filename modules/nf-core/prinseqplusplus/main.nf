@@ -58,4 +58,34 @@ process PRINSEQPLUSPLUS {
         END_VERSIONS
         """
     }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if (meta.single_end) {
+        """
+        echo | gzip > ${prefix}_good_out.fastq.gz
+        echo | gzip > ${prefix}_bad_out.fastq.gz
+        touch ${prefix}.log
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            prinseqplusplus: \$(echo \$(prinseq++ --version | cut -f 2 -d ' ' ))
+        END_VERSIONS
+        """
+    } else {
+        """
+        echo | gzip > ${prefix}_good_out_R1.fastq.gz
+        echo | gzip > ${prefix}_good_out_R2.fastq.gz
+        echo | gzip > ${prefix}_single_out_R1.fastq.gz
+        echo | gzip > ${prefix}_single_out_R2.fastq.gz
+        echo | gzip > ${prefix}_bad_out_R1.fastq.gz
+        echo | gzip > ${prefix}_bad_out_R2.fastq.gz
+        touch ${prefix}.log
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            prinseqplusplus: \$(echo \$(prinseq++ --version | cut -f 2 -d ' ' ))
+        END_VERSIONS
+        """
+    }
 }

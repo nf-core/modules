@@ -31,4 +31,12 @@ process FILTLONG {
         2>| >(tee ${prefix}.log >&2) \\
         | gzip -n > ${prefix}.fastq.gz
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$longreads" == "${prefix}.fastq.gz") error "Longread FASTQ input and output names are the same, set prefix in module configuration to disambiguate!"
+    """
+    echo | gzip > ${prefix}.fastq.gz
+    touch ${prefix}.log
+    """
 }
