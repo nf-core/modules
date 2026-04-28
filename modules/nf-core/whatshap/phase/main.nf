@@ -5,14 +5,14 @@ process WHATSHAP_PHASE {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d8/d837709891c2d98fc0956f6fd0dba18b0f67d96c4db74ccbae7db98fd00afe42/data'
-        : 'community.wave.seqera.io/library/whatshap:2.8--7fe530bc624a3e5a' }"
+        : 'community.wave.seqera.io/library/whatshap:2.8--7fe530bc624a3e5a'}"
 
     input:
-    tuple val(meta),  path(vcf),   path(tbi), path(bam), path(bai), path(pedigree)
+    tuple val(meta), path(vcf), path(tbi), path(bam), path(bai), path(pedigree)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("*.vcf.gz"),     emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
     tuple val("${task.process}"), val('whatshap'), eval("whatshap --version"), emit: versions_whatshap, topic: versions
 
@@ -20,7 +20,7 @@ process WHATSHAP_PHASE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_ped = pedigree ? "--ped ${pedigree}" : ""
 
