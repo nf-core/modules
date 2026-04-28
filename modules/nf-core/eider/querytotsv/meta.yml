@@ -43,7 +43,7 @@ output:
       - eider:
           type: string
           description: The tool name
-      - "eider: \\$(eider --version 2>&1 | grep -o 'eider .*' | cut -f2 -d ' ')":
+      - "eider --version 2>&1 | grep -o 'eider .*' | cut -f2 -d ' '":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -54,7 +54,7 @@ topics:
       - eider:
           type: string
           description: The tool name
-      - "eider: \\$(eider --version 2>&1 | grep -o 'eider .*' | cut -f2 -d ' ')":
+      - "eider --version 2>&1 | grep -o 'eider .*' | cut -f2 -d ' '":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
