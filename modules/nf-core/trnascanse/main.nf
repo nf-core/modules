@@ -17,7 +17,8 @@ process TRNASCANSE {
     tuple val(meta), path("*.fasta") , emit: fasta , optional: true
     tuple val(meta), path("*.gff")   , emit: gff   , optional: true
     tuple val(meta), path("*.bed")   , emit: bed   , optional: true
-    tuple val("${task.process}"), val('tRNAscan-SE'), eval("tRNAscan-SE |&  sed -n 's/^tRNAscan-SE \\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_trnascanse
+    tuple val("${task.process}"), val('tRNAscan-SE'), eval("tRNAscan-SE |& sed '2!d;s/tRNAscan-SE //;s/ .*//'"), topic: versions, emit: versions_trnascanse
+
     when:
     task.ext.when == null || task.ext.when
 
