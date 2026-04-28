@@ -15,20 +15,23 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                 ]
-                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                input[2] = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                input[1] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]    
+                input[2] = [
+                    [ id: 'transcriptome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                ]    
                 """
             }
         }
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
-            )
-            assert process.out.log.get(0).get(1) ==~ ".*.log"
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -42,19 +45,23 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                 ]
-                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                input[2] = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                input[1] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]    
+                input[2] = [
+                    [ id: 'transcriptome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                ]   
                 """
             }
         }
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
