@@ -49,4 +49,16 @@ process SLIMFASTQ {
         END_VERSIONS
         """
     }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.04'
+    """
+    touch ${prefix}.sfq
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        slimfastq: ${VERSION}
+    END_VERSIONS
+    """
 }

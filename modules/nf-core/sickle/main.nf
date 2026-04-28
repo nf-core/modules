@@ -61,4 +61,15 @@ process SICKLE {
     END_VERSIONS
     """
     }
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.sickle.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sickle: \$(sickle --version|awk 'NR==1{print \$3}')
+    END_VERSIONS
+    """
 }
