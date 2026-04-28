@@ -12,7 +12,7 @@ process DSHBIO_EXPORTSEGMENTS {
 
     output:
     tuple val(meta), path("*.fa.gz"), emit: fasta
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('dsh-bio'), eval("dsh-bio --version | sed '1!d;s/dsh-bio-tools //'"), emit: versions_dshbio, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,10 +26,12 @@ process DSHBIO_EXPORTSEGMENTS {
         $args \\
         -i $gfa \\
         -o ${prefix}.fa.gz
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo "" | gzip > ${prefix}.fa.gz
     """
 }
