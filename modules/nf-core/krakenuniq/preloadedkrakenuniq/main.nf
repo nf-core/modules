@@ -3,7 +3,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.4--pl5321h6dccd9a_2'
         : 'quay.io/biocontainers/krakenuniq:1.0.4--pl5321h6dccd9a_2'}"
 
@@ -21,7 +21,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tuple val(meta), path("*.unclassified.${sequence_type}.gz"), optional: true, emit: unclassified_reads
     tuple val(meta), path('*.krakenuniq.classified.txt'), optional: true, emit: classified_assignment
     tuple val(meta), path('*.krakenuniq.report.txt'), emit: report
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('krakenuniq'), eval("krakenuniq --version | sed '1!d;s/KrakenUniq version //'"), emit: versions_krakenuniq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -71,11 +71,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         done < ${command_inputs_file}
 
         ${compress_reads_command}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
-        END_VERSIONS
         """
     }
     else {
@@ -105,11 +100,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         done < ${command_inputs_file}
 
         ${compress_reads_command}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
-        END_VERSIONS
         """
     }
 
@@ -170,11 +160,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         done < ${command_inputs_file}
 
         echo "${compress_reads_command}"
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
-        END_VERSIONS
         """
     }
     else {
@@ -217,11 +202,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         done < ${command_inputs_file}
 
         echo "${compress_reads_command}"
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
-        END_VERSIONS
         """
     }
 }

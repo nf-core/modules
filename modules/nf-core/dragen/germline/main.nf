@@ -2,10 +2,11 @@ process DRAGEN {
     tag "$meta.id"
     label 'process_dragen'
 
-    // ATTENTION: No conda env or container image as Dragen requires specialized hardware to run
+    // WARNING: No conda env or container image as Dragen requires specialized hardware to run
+    // Only the stub test has been executed.
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input), val(sex)
     path checkfingerprint_expected_vcf
     path cnv_combined_counts
     path cnv_exclude_bed
@@ -188,7 +189,7 @@ process DRAGEN {
     path "streaming_log_*.csv"                                               , optional: true, emit: streaming_log_csv
     path "*_usage.txt"                                                       , emit: usage_txt
     path "**"                                                                , emit: all
-    path "versions.yml"                                                      , emit: versions
+    tuple val("${task.process}"), val('dragen'), eval("dragen --version 2>&1 | sed 's/^dragen Version //;q'"), emit: versions_dragen, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -306,8 +307,8 @@ process DRAGEN {
     }
 
     // sample-sex
-    if (meta.sex && !args.contains("--repeat-genotype-enable true")) {
-        args = args + " --sample-sex " + meta.sex.toLowerCase()
+    if (sex && !args.contains("--repeat-genotype-enable true")) {
+        args = args + " --sample-sex " + sex.toLowerCase()
     }
 
     // structural variation
@@ -394,11 +395,6 @@ process DRAGEN {
         $format_input \\
         --output-file-prefix $prefix \\
         --output-directory \$(pwd)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dragen: \$(echo \$(dragen --version 2>&1) | sed 's/^dragen Version //;s/ Hash.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -406,10 +402,5 @@ process DRAGEN {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch 20251120_usage.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dragen: ${VERSION}
-    END_VERSIONS
     """
 }

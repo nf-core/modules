@@ -4,7 +4,7 @@ process PAFTOOLS_SAM2PAF {
 
     // Note: the versions here need to match the versions used in the mulled container below and minimap2/index
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/37/37671219cfd244eb9b33db9345d3543ffd83037419a1c57f4648aace493ec2c2/data' :
         'community.wave.seqera.io/library/minimap2_samtools:b09096fc890429ce' }"
 

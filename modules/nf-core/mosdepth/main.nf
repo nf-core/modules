@@ -3,13 +3,14 @@ process MOSDEPTH {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00d32b53160c26794959da7303ee6e2107afd4d292060c9f287b0af1fddbd847/data' :
         'community.wave.seqera.io/library/mosdepth_htslib:0f58993cb6d93294'}"
 
     input:
     tuple val(meta),  path(bam), path(bai), path(bed)
     tuple val(meta2), path(fasta)
+    val(quantize_labels)
 
     output:
     tuple val(meta), path('*.global.dist.txt')      , emit: global_txt
@@ -34,6 +35,12 @@ process MOSDEPTH {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--fasta ${fasta}" : ""
     def interval = bed ? "--by ${bed}" : ""
+    def quantize_env_vars = []
+    if (quantize_labels instanceof List && quantize_labels.size() > 0) {
+        quantize_labels.eachWithIndex { label, index ->
+            quantize_env_vars << "MOSDEPTH_Q${index}=${label}"
+        }
+    }
     if (bed && (args.contains("--by") || args.contains("-b "))) {
         error "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
     }
@@ -42,7 +49,7 @@ process MOSDEPTH {
     }
 
     """
-    mosdepth \\
+    ${quantize_env_vars.join(" ")} mosdepth \\
         --threads $task.cpus \\
         $interval \\
         $reference \\

@@ -3,7 +3,7 @@ process SAMBAMBA_FLAGSTAT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sambamba:1.0.1--h6f6fda4_0':
         'quay.io/biocontainers/sambamba:1.0.1--h6f6fda4_0' }"
 

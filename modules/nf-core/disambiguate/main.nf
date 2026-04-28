@@ -3,7 +3,7 @@ process DISAMBIGUATE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngs-disambiguate:2018.05.03--h06902ac_10':
         'quay.io/biocontainers/ngs-disambiguate:2018.05.03--h06902ac_10' }"
 

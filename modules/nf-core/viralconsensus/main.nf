@@ -3,7 +3,7 @@ process VIRALCONSENSUS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/viral_consensus:1.0.0--hcf1f8c1_0':
         'quay.io/biocontainers/viral_consensus:1.0.0--hcf1f8c1_0' }"
 
