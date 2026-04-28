@@ -3,9 +3,9 @@ process SLAMDUNK_ALL {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/slamdunk:0.4.3--py_0':
-        'biocontainers/slamdunk:0.4.3--py_0' }"
+        'quay.io/biocontainers/slamdunk:0.4.3--py_0' }"
 
     input:
     tuple val(meta), path(input)

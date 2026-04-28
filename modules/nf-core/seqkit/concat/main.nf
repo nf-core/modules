@@ -3,9 +3,9 @@ process SEQKIT_CONCAT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/seqkit:2.9.0--h9ee0642_0'
-        : 'biocontainers/seqkit:2.9.0--h9ee0642_0'}"
+        : 'quay.io/biocontainers/seqkit:2.9.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(input, stageAs: 'in/*')

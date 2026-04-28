@@ -3,9 +3,9 @@ process GLIMPSE_CONCORDANCE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--h0303221_3'
-        : 'biocontainers/glimpse-bio:1.1.1--h0303221_3'}"
+        : 'quay.io/biocontainers/glimpse-bio:1.1.1--h0303221_3'}"
 
     input:
     tuple val(meta), path(estimate), path(estimate_index), path(freq), path(freq_index), path(truth), path(truth_index), val(region)

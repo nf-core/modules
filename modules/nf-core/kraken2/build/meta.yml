@@ -14,7 +14,8 @@ tools:
       documentation: https://github.com/DerrickWood/kraken2/wiki/Manual
       tool_dev_url: "https://github.com/DerrickWood/kraken2"
       doi: 10.1186/s13059-019-1891-0
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       args_id: "$args"
       identifier: biotools:kraken2
 input:
@@ -87,25 +88,59 @@ output:
           type: file
           description: Kraken2 k2d binary database files
           pattern: "*.k2d"
+          ontologies: []
       - kraken2-database/*map:
           type: file
           description: Kraken2 k2d binary database taxonomy to sequencing mapping file
           pattern: "*.map"
+          ontologies: []
       - kraken2-database/library/added/*:
           type: file
           description: Kraken2 masked FASTA files used to build the database
           pattern: "*.fasta"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
       - kraken2-database/taxonomy/*:
           type: file
           description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
           pattern: "*.{dmp,accession2taxid}"
+          ontologies:
+            - edam: http://edamontology.org/data_3028 # Taxonomy
+  versions_kraken2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kraken2:
+          type: string
+          description: The name of the tool
+      - kraken2 --version 2>&1 | head -1 | sed "s/^.*Kraken version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+  unmapped:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - kraken2-database/unmapped*.txt:
+          type: file
+          description: |
+            List of unmapped sequence files, i.e. accessions that did not map to any taxonomy ID
+            and were excluded
+          pattern: "unmapped*.txt"
+          ontologies:
+            - edam: http://edamontology.org/data_2526 # Text data
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kraken2:
+          type: string
+          description: The name of the tool
+      - kraken2 --version 2>&1 | head -1 | sed "s/^.*Kraken version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@alxndrdiaz"
 maintainers:

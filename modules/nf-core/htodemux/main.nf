@@ -3,7 +3,7 @@ process HTODEMUX {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f9/f96b7927142847485eff858170a4cfd2d3924fb4f09de7043dd6677ac6acd09e/data':
         'community.wave.seqera.io/library/r-seurat_r-seuratobject:b11306d1bdc82827' }"
 
