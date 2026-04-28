@@ -4,7 +4,7 @@ process HAPPY_PREPY {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap.py:0.3.15--py27hcb73b3d_0':
         'quay.io/biocontainers/hap.py:0.3.15--py27hcb73b3d_0' }"
 

@@ -2,7 +2,7 @@ process MAXQUANT_LFQ {
     tag "$meta.id"
     label 'process_long'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/maxquant:2.0.3.0--py310hdfd78af_1' :
         'quay.io/biocontainers/maxquant:2.0.3.0--py310hdfd78af_1' }"
 

@@ -3,7 +3,7 @@ process ODGI_VIZ {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1':
         'quay.io/biocontainers/odgi:0.9.0--py312h5e9d817_1' }"
 

@@ -3,7 +3,7 @@ process METAMDBG_ASM {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7e10bfc69865d73b7a65a096fcf054edd5655b6b5825a03e42fe0f4f59ff4562/data':
         'community.wave.seqera.io/library/metamdbg:1.3.1--315551ec5b8df99a' }"
 
@@ -44,6 +44,6 @@ process METAMDBG_ASM {
     """
     echo ${args}
     touch ${prefix}.metaMDBG.log
-    touch ${prefix}.contigs.fasta.gz
+    echo | gzip > ${prefix}.contigs.fasta.gz
     """
 }

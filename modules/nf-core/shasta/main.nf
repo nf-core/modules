@@ -3,7 +3,7 @@ process SHASTA {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shasta:0.8.0--h7d875b9_0':
         'quay.io/biocontainers/shasta:0.8.0--h7d875b9_0' }"
 

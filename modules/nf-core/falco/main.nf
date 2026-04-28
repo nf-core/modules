@@ -3,7 +3,7 @@ process FALCO {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/falco:1.2.5--h077b44d_0'
         : 'quay.io/biocontainers/falco:1.2.5--h077b44d_0'}"
 

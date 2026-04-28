@@ -2,7 +2,7 @@ process DEEPARG_DOWNLOADDATA {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/deeparg:1.0.4--pyhdfd78af_0'
         : 'quay.io/biocontainers/deeparg:1.0.4--pyhdfd78af_0'}"
 
