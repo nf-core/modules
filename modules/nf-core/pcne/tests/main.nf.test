@@ -26,8 +26,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out.results).match("results") },
-                { assert snapshot(process.out.versions_pcne).match("versions") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
             assert process.out.log.get(0).get(1) ==~ ".*.log"
         }
@@ -54,8 +53,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out.results).match("results_stub") },
-                { assert snapshot(process.out.versions_pcne).match("versions_stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
