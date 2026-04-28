@@ -1,0 +1,1024 @@
+          ___     __   __   __   ___     /,-._.--~\ 
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
+
+    nf-core/tools version 4.0.0 - https://nf-co.re
+
+
+DEBUG    sys.platform='linux', git_executable='git'                                                                             util.py:494
+Pulling from 'nf-core/modules' (https://github.com/nf-core/modules.git) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Waiting for responseDEBUG    Popen(['git', 'version'], cwd=/home/pipeline-user/.config/nfcore/nf-core/modules, stdin=None, shell=False,             cmd.py:1286
+         universal_newlines=False)                                                                                                         
+DEBUG    Popen(['git', 'fetch', '-v', '--progress', '--', 'origin'], cwd=/home/pipeline-user/.config/nfcore/nf-core/modules,    cmd.py:1286
+         stdin=None, shell=False, universal_newlines=True)                                                                                 
+DEBUG    Popen(['git', 'checkout', 'master'], cwd=/home/pipeline-user/.config/nfcore/nf-core/modules, stdin=None, shell=False,  cmd.py:1286
+         universal_newlines=False)                                                                                                         
+DEBUG    Popen(['git', 'merge', 'origin/master'], cwd=/home/pipeline-user/.config/nfcore/nf-core/modules, stdin=None,           cmd.py:1286
+         shell=False, universal_newlines=False)                                                                                            
+DEBUG    Got '/home/pipeline-user/.config/nfcore/nf-core/modules' as path                                                      utils.py:384
+DEBUG    Found a config cache, loading: /home/pipeline-user/.nextflow/nf-core/wf-config-cache-9f4bce35ba6f9f759cbf54fa7.json   utils.py:418
+DEBUG    Using config file: /home/pipeline-user/.config/nfcore/nf-core/modules/.nf-core.yml                                   utils.py:1515
+DEBUG    Got '.' as path                                                                                                       utils.py:384
+DEBUG    Found a config cache, loading: /home/pipeline-user/.nextflow/nf-core/wf-config-cache-9f4bce35ba6f9f759cbf54fa7.json   utils.py:418
+DEBUG    Using config file: .nf-core.yml                                                                                      utils.py:1515
+INFO     Setting environment variable '$PROFILE' to Docker as not set otherwise.                                     components_test.py:138
+         To use Singularity set 'export PROFILE=singularity' in your shell before running this command.                                    
+INFO     Generating nf-test snapshot                                                                                 components_test.py:239
+DEBUG    Running nf-test test                                                                                        components_test.py:200
+DEBUG    Running command: nf-test test --tag clair3 --profile docker --verbose --debug                                         utils.py:480
+DEBUG    Command 'nf-test test --tag clair3 --profile docker --verbose --debug ' returned non-zero error code '1':             utils.py:492
+         > Assertion failed:                                                                                                               
+                                                                                                                                           
+         assert process.success                                                                                                            
+                |       |                                                                                                                  
+                CLAIR3  false                                                                                                              
+                                                                                                                                           
+                 at org.codehaus.groovy.runtime.InvokerHelper.assertFailed(InvokerHelper.java:432)                                         
+                 at org.codehaus.groovy.runtime.ScriptBytecodeAdapter.assertFailed(ScriptBytecodeAdapter.java:670)                         
+                 at main_nf$_run_closure1$_closure4$_closure24.doCall(main.nf.test:108)                                                    
+                 at main_nf$_run_closure1$_closure4$_closure24.doCall(main.nf.test)                                                        
+                 at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)                  
+                 at java.base/java.lang.reflect.Method.invoke(Method.java:580)                                                             
+                 at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)                                              
+                 at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)                                                             
+                 at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:274)                         
+                 at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1030)                                                        
+                 at groovy.lang.Closure.call(Closure.java:427)                                                                             
+                 at groovy.lang.Closure.call(Closure.java:406)                                                                             
+                 at com.askimed.nf.test.lang.TestCode.execute(TestCode.java:16)                                                            
+                 at com.askimed.nf.test.lang.process.ProcessTest.execute(ProcessTest.java:171)                                             
+                 at com.askimed.nf.test.core.TestExecutionEngine.execute(TestExecutionEngine.java:172)                                     
+                 at com.askimed.nf.test.commands.RunTestsCommand.execute(RunTestsCommand.java:322)                                         
+                 at com.askimed.nf.test.commands.AbstractCommand.call(AbstractCommand.java:43)                                             
+                 at com.askimed.nf.test.commands.AbstractCommand.call(AbstractCommand.java:18)                                             
+                 at picocli.CommandLine.executeUserObject(CommandLine.java:1953)                                                           
+                 at picocli.CommandLine.access$1300(CommandLine.java:145)                                                                  
+                 at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2352)                     
+                 at picocli.CommandLine$RunLast.handle(CommandLine.java:2346)                                                              
+                 at picocli.CommandLine$RunLast.handle(CommandLine.java:2311)                                                              
+                 at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2179)                                          
+                 at picocli.CommandLine.execute(CommandLine.java:2078)                                                                     
+                 at com.askimed.nf.test.App.run(App.java:39)                                                                               
+                 at com.askimed.nf.test.App.main(App.java:46)                                                                              
+                                                                                                                                           
+DEBUG    nf-test output:                                                                                             components_test.py:157
+                                                                                                                                           
+         🚀[1m nf-test 0.9.3[0m                                                                                                            
+         https://www.nf-test.com                                                                                                           
+         (c) 2021 - 2024 Lukas Forer and Sebastian Schoenherr                                                                              
+                                                                                                                                           
+         Load .nf-test/plugins/nft-anndata/0.4.1/nft-anndata-0.4.1.jar                                                                     
+         Load .nf-test/plugins/nft-bam/0.6.1/nft-bam-0.6.1.jar                                                                             
+         Load .nf-test/plugins/nft-csv/0.1.0/nft-csv-0.1.0.jar                                                                             
+         Load .nf-test/plugins/nft-compress/0.1.0/nft-compress-0.1.0.jar                                                                   
+         Load .nf-test/plugins/nft-fastq/0.1.0/nft-fastq-0.1.0.jar                                                                         
+         Load .nf-test/plugins/nft-utils/0.0.9/nft-utils-0.0.9.jar                                                                         
+         Load .nf-test/plugins/nft-vcf/1.0.7/nft-vcf-1.0.7.jar                                                                             
+                                                                                                                                           
+         [1mTest Process CLAIR3[0m                                                                                                         
+                                                                                                                                           
+           [1mTest[0m [662f7c2e] 'sarscov2 - bam - user_model'                                                                             
+                                                                                                                                           
+             Profiles:                                                                                                                     
+             Configs:                                                                                                                      
+             Command: /home/pipeline-user/.local/bin/nextflow -log                                                                         
+         /data/simon/modules/.nf-test/tests/662f7c2e0265c3d6c5adc014d18b1091/meta/nextflow.log run                                         
+         /data/simon/modules/.nf-test-662f7c2e0265c3d6c5adc014d18b1091.nf -c                                                               
+         /data/simon/modules/tests/config/nf-test.config -c                                                                                
+         /data/simon/modules/modules/nf-core/clair3/tests/./nextflow.config -params-file                                                   
+         /data/simon/modules/.nf-test/tests/662f7c2e0265c3d6c5adc014d18b1091/meta/params.json -ansi-log false                              
+         -profile docker -with-trace                                                                                                       
+         /data/simon/modules/.nf-test/tests/662f7c2e0265c3d6c5adc014d18b1091/meta/trace.csv -w                                             
+         /data/simon/modules/.nf-test/tests/662f7c2e0265c3d6c5adc014d18b1091/work                                                          
+             > N E X T F L O W  ~  version 25.10.4                                                                                         
+             > Launching `/data/simon/modules/.nf-test-662f7c2e0265c3d6c5adc014d18b1091.nf`  DSL2 - revision:                              
+         0b7c193671                                                                                                                        
+             >  Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                                          
+             > [05/652838] Submitted process > CLAIR3 (test)                                                                               
+                                                                                                                                           
+             Stdout:                                                                                                                       
+               N E X T F L O W  ~  version 25.10.4                                                                                         
+               Launching `/data/simon/modules/.nf-test-662f7c2e0265c3d6c5adc014d18b1091.nf`  DSL2 - revision:                              
+         0b7c193671                                                                                                                        
+                Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                                          
+               [05/652838] Submitted process > CLAIR3 (test)                                                                               
+                                                                                                                                           
+             Stderr:                                                                                                                       
+                                                                                                                                           
+             Nextflow Output:                                                                                                              
+               N E X T F L O W  ~  version 25.10.4                                                                                         
+               Enabled plugins: []                                                                                                         
+               Disabled plugins: []                                                                                                        
+               PF4J version 3.12.0 in 'deployment' mode                                                                                    
+               No plugins                                                                                                                  
+               Plugin 'nf-amazon@3.4.4' resolved                                                                                           
+               Start plugin 'nf-amazon@3.4.4'                                                                                              
+               Plugin 'nf-wave@1.16.1' resolved                                                                                            
+               Start plugin 'nf-wave@1.16.1'                                                                                               
+               revision: 0b7c193671                                                                                                        
+                Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                                          
+               [05/652838] Submitted process > CLAIR3 (test)                                                                               
+               Stop plugin 'nf-wave@1.16.1'                                                                                                
+               Stop plugin 'nf-amazon@3.4.4'                                                                                               
+                                                                                                                                           
+                 Output Channels:                                                                                                          
+             {                                                                                                                             
+                 "0": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/662f7c2e0265c3d6c5adc014d18b1091/work/05/652838cd3190ef                       
+         4ede14ad74e8ea40/testmerge_output.vcf.gz"                                                                                         
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "1": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/662f7c2e0265c3d6c5adc014d18b1091/work/05/652838cd3190ef                       
+         4ede14ad74e8ea40/testmerge_output.vcf.gz.tbi"                                                                                     
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "2": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "3": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "4": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "5": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "6": [                                                                                                                    
+                     [                                                                                                                     
+                         "CLAIR3",                                                                                                         
+                         "clair3",                                                                                                         
+                         "2.0.1"                                                                                                           
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "gtbi": [                                                                                                                 
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "gvcf": [                                                                                                                 
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "phased_tbi": [                                                                                                           
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "phased_vcf": [                                                                                                           
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "tbi": [                                                                                                                  
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/662f7c2e0265c3d6c5adc014d18b1091/work/05/652838cd3190ef                       
+         4ede14ad74e8ea40/testmerge_output.vcf.gz.tbi"                                                                                     
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "vcf": [                                                                                                                  
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/662f7c2e0265c3d6c5adc014d18b1091/work/05/652838cd3190ef                       
+         4ede14ad74e8ea40/testmerge_output.vcf.gz"                                                                                         
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "versions_clair3": [                                                                                                      
+                     [                                                                                                                     
+                         "CLAIR3",                                                                                                         
+                         "clair3",                                                                                                         
+                         "2.0.1"                                                                                                           
+                     ]                                                                                                                     
+                 ]                                                                                                                         
+             }                                                                                                                             
+         [32mPASSED[0m (21.695s)                                                                                                           
+           [1mTest[0m [12022bfd] 'sarscov2 - bam - packaged_model'                                                                         
+                                                                                                                                           
+             Profiles:                                                                                                                     
+             Configs:                                                                                                                      
+             Command: /home/pipeline-user/.local/bin/nextflow -log                                                                         
+         /data/simon/modules/.nf-test/tests/12022bfd0ce53fba23b4a8585b1b06fd/meta/nextflow.log run                                         
+         /data/simon/modules/.nf-test-12022bfd0ce53fba23b4a8585b1b06fd.nf -c                                                               
+         /data/simon/modules/tests/config/nf-test.config -c                                                                                
+         /data/simon/modules/modules/nf-core/clair3/tests/./nextflow.config -params-file                                                   
+         /data/simon/modules/.nf-test/tests/12022bfd0ce53fba23b4a8585b1b06fd/meta/params.json -ansi-log false                              
+         -profile docker -with-trace                                                                                                       
+         /data/simon/modules/.nf-test/tests/12022bfd0ce53fba23b4a8585b1b06fd/meta/trace.csv -w                                             
+         /data/simon/modules/.nf-test/tests/12022bfd0ce53fba23b4a8585b1b06fd/work                                                          
+             > N E X T F L O W  ~  version 25.10.4                                                                                         
+             > Launching `/data/simon/modules/.nf-test-12022bfd0ce53fba23b4a8585b1b06fd.nf`  DSL2 - revision:                              
+         d32edb4ed8                                                                                                                        
+             >  Submitted process > CLAIR3 (test)                                                                                          
+             > ERROR ~ Error executing process > 'CLAIR3 (test)'                                                                           
+             >                                                                                                                             
+             > Caused by:                                                                                                                  
+             >   Process `CLAIR3 (test)` terminated with an error exit status (1)                                                          
+             >                                                                                                                             
+             >                                                                                                                             
+             > Command executed:                                                                                                           
+             >                                                                                                                             
+             >   run_clair3.sh \                                                                                                           
+             >       --bam_fn=${PWD}/test.paired_end.sorted.bam \                                                                          
+             >       --ref_fn=${PWD}/genome.fasta \                                                                                        
+             >       --threads=16 \                                                                                                        
+             >       --output=. \                                                                                                          
+             >       --platform=hifi \                                                                                                     
+             >       --model_path=/opt/models/hifi_revio \                                                                                 
+             >       --include_all_ctgs                                                                                                    
+             >                                                                                                                             
+             >   # Rename to add prefix                                                                                                    
+             >   for file in merge_output.vcf.gz             merge_output.vcf.gz.tbi                                                       
+         phased_merge_output.vcf.gz             phased_merge_output.vcf.gz.tbi             merge_output.gvcf.gz                            
+         merge_output.gvcf.gz.tbi; do                                                                                                      
+             >   if [ -e "$file" ]; then                                                                                                   
+             >       mv "$file" "test$file"                                                                                                
+             >   fi                                                                                                                        
+             >   done                                                                                                                      
+             >                                                                                                                             
+             > Command exit status:                                                                                                        
+             >   1                                                                                                                         
+             >                                                                                                                             
+             > Command output:                                                                                                             
+             >   [33m[WARNING][0m No absolute output path provided, using current directory as prefix                                      
+             >   [31m[ERROR][0m Model path not found                                                                                       
+             >                                                                                                                             
+             > Command error:                                                                                                              
+             >   [33m[WARNING][0m No absolute output path provided, using current directory as prefix                                      
+             >   [31m[ERROR][0m Model path not found                                                                                       
+             >                                                                                                                             
+             > Work dir:                                                                                                                   
+             >                                                                                                                             
+         /data/simon/modules/.nf-test/tests/12022bfd0ce53fba23b4a8585b1b06fd/work/ff/ce51174466bcdc7de806965c9d11b9                        
+             >                                                                                                                             
+             > Container:                                                                                                                  
+             >                                                                                                                             
+         00000000000.dkr.ecr.eu-west-1.amazonaws.com/redacted-path:a                       
+         94e2e9a9e2df190                                                                                                                   
+             >                                                                                                                             
+             > Tip: you can try to figure out what's wrong by changing to the process work dir and showing the                             
+         script file named `.command.sh`                                                                                                   
+             >                                                                                                                             
+             >  -- Check '/data/simon/modules/.nf-test/tests/12022bfd0ce53fba23b4a8585b1b06fd/meta/nextflow.log'                           
+         file for details                                                                                                                  
+             > [28/2d50f5] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+             > WARN: Killing running tasks (1)                                                                                             
+                                                                                                                                           
+             Stdout:                                                                                                                       
+               N E X T F L O W  ~  version 25.10.4                                                                                         
+               Launching `/data/simon/modules/.nf-test-12022bfd0ce53fba23b4a8585b1b06fd.nf`  DSL2 - revision:                              
+         d32edb4ed8                                                                                                                        
+                Submitted process > CLAIR3 (test)                                                                                          
+               ERROR ~ Error executing process > 'CLAIR3 (test)'                                                                           
+                                                                                                                                           
+               Caused by:                                                                                                                  
+                 Process `CLAIR3 (test)` terminated with an error exit status (1)                                                          
+                                                                                                                                           
+                                                                                                                                           
+               Command executed:                                                                                                           
+                                                                                                                                           
+                 run_clair3.sh \                                                                                                           
+                     --bam_fn=${PWD}/test.paired_end.sorted.bam \                                                                          
+                     --ref_fn=${PWD}/genome.fasta \                                                                                        
+                     --threads=16 \                                                                                                        
+                     --output=. \                                                                                                          
+                     --platform=hifi \                                                                                                     
+                     --model_path=/opt/models/hifi_revio \                                                                                 
+                     --include_all_ctgs                                                                                                    
+                                                                                                                                           
+                 # Rename to add prefix                                                                                                    
+                 for file in merge_output.vcf.gz             merge_output.vcf.gz.tbi                                                       
+         phased_merge_output.vcf.gz             phased_merge_output.vcf.gz.tbi             merge_output.gvcf.gz                            
+         merge_output.gvcf.gz.tbi; do                                                                                                      
+                 if [ -e "$file" ]; then                                                                                                   
+                     mv "$file" "test$file"                                                                                                
+                 fi                                                                                                                        
+                 done                                                                                                                      
+                                                                                                                                           
+               Command exit status:                                                                                                        
+                 1                                                                                                                         
+                                                                                                                                           
+               Command output:                                                                                                             
+                 [33m[WARNING][0m No absolute output path provided, using current directory as prefix                                      
+                 [31m[ERROR][0m Model path not found                                                                                       
+                                                                                                                                           
+               Command error:                                                                                                              
+                 [33m[WARNING][0m No absolute output path provided, using current directory as prefix                                      
+                 [31m[ERROR][0m Model path not found                                                                                       
+                                                                                                                                           
+               Work dir:                                                                                                                   
+                 /data/simon/modules/.nf-test/tests/12022bfd0ce53fba23b4a8585b1b06fd/work/ff/ce51174466bcdc7de806965                       
+         c9d11b9                                                                                                                           
+                                                                                                                                           
+               Container:                                                                                                                  
+                 00000000000.dkr.ecr.eu-west-1.amazonaws.com/euw1-shared-services-tech-dev-radar1d1v-seqera-platfor                       
+         m-wave:a94e2e9a9e2df190                                                                                                           
+                                                                                                                                           
+               Tip: you can try to figure out what's wrong by changing to the process work dir and showing the                             
+         script file named `.command.sh`                                                                                                   
+                                                                                                                                           
+                -- Check '/data/simon/modules/.nf-test/tests/12022bfd0ce53fba23b4a8585b1b06fd/meta/nextflow.log'                           
+         file for details                                                                                                                  
+               [28/2d50f5] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+               WARN: Killing running tasks (1)                                                                                             
+                                                                                                                                           
+             Stderr:                                                                                                                       
+                                                                                                                                           
+             Nextflow Output:                                                                                                              
+               N E X T F L O W  ~  version 25.10.4                                                                                         
+               Enabled plugins: []                                                                                                         
+               Disabled plugins: []                                                                                                        
+               PF4J version 3.12.0 in 'deployment' mode                                                                                    
+               No plugins                                                                                                                  
+               Plugin 'nf-amazon@3.4.4' resolved                                                                                           
+               Start plugin 'nf-amazon@3.4.4'                                                                                              
+               Plugin 'nf-wave@1.16.1' resolved                                                                                            
+               Start plugin 'nf-wave@1.16.1'                                                                                               
+               revision: d32edb4ed8                                                                                                        
+                Submitted process > CLAIR3 (test)                                                                                          
+               [28/2d50f5] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+               Stop plugin 'nf-wave@1.16.1'                                                                                                
+               Stop plugin 'nf-amazon@3.4.4'                                                                                               
+                                                                                                                                           
+                 Output Channels:                                                                                                          
+             {                                                                                                                             
+                 "0": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "1": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "2": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "3": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "4": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "5": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "6": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "gtbi": [                                                                                                                 
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "gvcf": [                                                                                                                 
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "phased_tbi": [                                                                                                           
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "phased_vcf": [                                                                                                           
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "tbi": [                                                                                                                  
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "vcf": [                                                                                                                  
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "versions_clair3": [                                                                                                      
+                                                                                                                                           
+                 ]                                                                                                                         
+             }                                                                                                                             
+         [31mFAILED[0m (7.688s)                                                                                                            
+                                                                                                                                           
+           [31mAssertion failed:                                                                                                           
+                                                                                                                                           
+           assert process.success                                                                                                          
+                  |       |                                                                                                                
+                  CLAIR3  false                                                                                                            
+           [0m                                                                                                                             
+           [31mNextflow stdout:                                                                                                            
+                                                                                                                                           
+           N E X T F L O W  ~  version 25.10.4                                                                                             
+           Launching `/data/simon/modules/.nf-test-12022bfd0ce53fba23b4a8585b1b06fd.nf`  DSL2 - revision: d32edb4ed8                       
+            Submitted process > CLAIR3 (test)                                                                                              
+           ERROR ~ Error executing process > 'CLAIR3 (test)'                                                                               
+                                                                                                                                           
+           Caused by:                                                                                                                      
+             Process `CLAIR3 (test)` terminated with an error exit status (1)                                                              
+                                                                                                                                           
+                                                                                                                                           
+           Command executed:                                                                                                               
+                                                                                                                                           
+             run_clair3.sh \                                                                                                               
+                 --bam_fn=${PWD}/test.paired_end.sorted.bam \                                                                              
+                 --ref_fn=${PWD}/genome.fasta \                                                                                            
+                 --threads=16 \                                                                                                            
+                 --output=. \                                                                                                              
+                 --platform=hifi \                                                                                                         
+                 --model_path=/opt/models/hifi_revio \                                                                                     
+                 --include_all_ctgs                                                                                                        
+                                                                                                                                           
+             # Rename to add prefix                                                                                                        
+             for file in merge_output.vcf.gz             merge_output.vcf.gz.tbi                                                           
+         phased_merge_output.vcf.gz             phased_merge_output.vcf.gz.tbi             merge_output.gvcf.gz                            
+         merge_output.gvcf.gz.tbi; do                                                                                                      
+             if [ -e "$file" ]; then                                                                                                       
+                 mv "$file" "test$file"                                                                                                    
+             fi                                                                                                                            
+             done                                                                                                                          
+                                                                                                                                           
+           Command exit status:                                                                                                            
+             1                                                                                                                             
+                                                                                                                                           
+           Command output:                                                                                                                 
+             [33m[WARNING][0m No absolute output path provided, using current directory as prefix                                          
+             [31m[ERROR][0m Model path not found                                                                                           
+                                                                                                                                           
+           Command error:                                                                                                                  
+             [33m[WARNING][0m No absolute output path provided, using current directory as prefix                                          
+             [31m[ERROR][0m Model path not found                                                                                           
+                                                                                                                                           
+           Work dir:                                                                                                                       
+             /data/simon/modules/.nf-test/tests/12022bfd0ce53fba23b4a8585b1b06fd/work/ff/ce51174466bcdc7de806965c9d1                       
+         1b9                                                                                                                               
+                                                                                                                                           
+           Container:                                                                                                                      
+             00000000000.dkr.ecr.eu-west-1.amazonaws.com/redacted-path-wa                       
+         ve:a94e2e9a9e2df190                                                                                                               
+                                                                                                                                           
+           Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script                          
+         file named `.command.sh`                                                                                                          
+                                                                                                                                           
+            -- Check '/data/simon/modules/.nf-test/tests/12022bfd0ce53fba23b4a8585b1b06fd/meta/nextflow.log' file                          
+         for details                                                                                                                       
+           [28/2d50f5] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                                   
+           WARN: Killing running tasks (1)                                                                                                 
+           Nextflow stderr:                                                                                                                
+                                                                                                                                           
+           [0m                                                                                                                             
+                                                                                                                                           
+           [1mTest[0m [9d0fd47c] 'sarscov2 - bam - both'                                                                                   
+                                                                                                                                           
+             Profiles:                                                                                                                     
+             Configs:                                                                                                                      
+             Command: /home/pipeline-user/.local/bin/nextflow -log                                                                         
+         /data/simon/modules/.nf-test/tests/9d0fd47c0e8a46ad077e75e16a9ead0d/meta/nextflow.log run                                         
+         /data/simon/modules/.nf-test-9d0fd47c0e8a46ad077e75e16a9ead0d.nf -c                                                               
+         /data/simon/modules/tests/config/nf-test.config -c                                                                                
+         /data/simon/modules/modules/nf-core/clair3/tests/./nextflow.config -params-file                                                   
+         /data/simon/modules/.nf-test/tests/9d0fd47c0e8a46ad077e75e16a9ead0d/meta/params.json -ansi-log false                              
+         -profile docker -with-trace                                                                                                       
+         /data/simon/modules/.nf-test/tests/9d0fd47c0e8a46ad077e75e16a9ead0d/meta/trace.csv -w                                             
+         /data/simon/modules/.nf-test/tests/9d0fd47c0e8a46ad077e75e16a9ead0d/work                                                          
+             > N E X T F L O W  ~  version 25.10.4                                                                                         
+             > Launching `/data/simon/modules/.nf-test-9d0fd47c0e8a46ad077e75e16a9ead0d.nf`  DSL2 - revision:                              
+         b6ac8acbd4                                                                                                                        
+             > [96/bc6b30] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+             > ERROR ~ Error executing process > 'CLAIR3 (1)'                                                                              
+             >                                                                                                                             
+             > Caused by:                                                                                                                  
+             >   Two models specified test and , specify one of them. -- Check script                                                      
+         '/data/simon/modules/modules/nf-core/clair3/main.nf' at line: 41                                                                  
+             >                                                                                                                             
+             >                                                                                                                             
+             > Source block:                                                                                                               
+             >   def model = ""                                                                                                            
+             >   if (!user_model) {                                                                                                        
+             >       if (workflow.containerEngine in ['singularity', 'docker', 'podman']) {                                                
+             >           model = "/opt/models/${packaged_model}"                                                                           
+             >       } else {                                                                                                              
+             >           error "Clair3 packaged models are only available in Docker/Singularity/Podman containers.                         
+         Please use one of these profiles or provide a user_model instead."                                                                
+             >       }                                                                                                                     
+             >   }                                                                                                                         
+             >   if (!packaged_model) {                                                                                                    
+             >       model = "${user_model}"                                                                                               
+             >   }                                                                                                                         
+             >   if (packaged_model && user_model) {                                                                                       
+             >       error("Two models specified ${user_model} and ${packaged_model}, specify one of them.")                               
+             >   }                                                                                                                         
+             >   def args = task.ext.args ?: ''                                                                                            
+             >   prefix = task.ext.prefix ?: "${meta.id}"                                                                                  
+             >   """                                                                                                                       
+             >   run_clair3.sh \\                                                                                                          
+             >       --bam_fn=\${PWD}/${bam} \\                                                                                            
+             >       --ref_fn=\${PWD}/${reference} \\                                                                                      
+             >       --threads=${task.cpus} \\                                                                                             
+             >       --output=. \\                                                                                                         
+             >       --platform=${platform} \\                                                                                             
+             >       --model_path=${model} \\                                                                                              
+             >       ${args}                                                                                                               
+             >                                                                                                                             
+             >   # Rename to add prefix                                                                                                    
+             >   for file in merge_output.vcf.gz \                                                                                         
+             >           merge_output.vcf.gz.tbi \                                                                                         
+             >           phased_merge_output.vcf.gz \                                                                                      
+             >           phased_merge_output.vcf.gz.tbi \                                                                                  
+             >           merge_output.gvcf.gz \                                                                                            
+             >           merge_output.gvcf.gz.tbi; do                                                                                      
+             >   if [ -e "\$file" ]; then                                                                                                  
+             >       mv "\$file" "${prefix}\$file"                                                                                         
+             >   fi                                                                                                                        
+             >   done                                                                                                                      
+             >   """                                                                                                                       
+             >                                                                                                                             
+             > Container:                                                                                                                  
+             >                                                                                                                             
+         00000000000.dkr.ecr.eu-west-1.amazonaws.com/redacted-path:a                       
+         94e2e9a9e2df190                                                                                                                   
+             >                                                                                                                             
+             > Tip: view the complete command output by changing to the process work dir and entering the command                          
+         `cat .command.out`                                                                                                                
+             >                                                                                                                             
+             >  -- Check '/data/simon/modules/.nf-test/tests/9d0fd47c0e8a46ad077e75e16a9ead0d/meta/nextflow.log'                           
+         file for details                                                                                                                  
+                                                                                                                                           
+             Stdout:                                                                                                                       
+               N E X T F L O W  ~  version 25.10.4                                                                                         
+               Launching `/data/simon/modules/.nf-test-9d0fd47c0e8a46ad077e75e16a9ead0d.nf`  DSL2 - revision:                              
+         b6ac8acbd4                                                                                                                        
+               [96/bc6b30] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+               ERROR ~ Error executing process > 'CLAIR3 (1)'                                                                              
+                                                                                                                                           
+               Caused by:                                                                                                                  
+                 Two models specified test and , specify one of them. -- Check script                                                      
+         '/data/simon/modules/modules/nf-core/clair3/main.nf' at line: 41                                                                  
+                                                                                                                                           
+                                                                                                                                           
+               Source block:                                                                                                               
+                 def model = ""                                                                                                            
+                 if (!user_model) {                                                                                                        
+                     if (workflow.containerEngine in ['singularity', 'docker', 'podman']) {                                                
+                         model = "/opt/models/${packaged_model}"                                                                           
+                     } else {                                                                                                              
+                         error "Clair3 packaged models are only available in Docker/Singularity/Podman containers.                         
+         Please use one of these profiles or provide a user_model instead."                                                                
+                     }                                                                                                                     
+                 }                                                                                                                         
+                 if (!packaged_model) {                                                                                                    
+                     model = "${user_model}"                                                                                               
+                 }                                                                                                                         
+                 if (packaged_model && user_model) {                                                                                       
+                     error("Two models specified ${user_model} and ${packaged_model}, specify one of them.")                               
+                 }                                                                                                                         
+                 def args = task.ext.args ?: ''                                                                                            
+                 prefix = task.ext.prefix ?: "${meta.id}"                                                                                  
+                 """                                                                                                                       
+                 run_clair3.sh \\                                                                                                          
+                     --bam_fn=\${PWD}/${bam} \\                                                                                            
+                     --ref_fn=\${PWD}/${reference} \\                                                                                      
+                     --threads=${task.cpus} \\                                                                                             
+                     --output=. \\                                                                                                         
+                     --platform=${platform} \\                                                                                             
+                     --model_path=${model} \\                                                                                              
+                     ${args}                                                                                                               
+                                                                                                                                           
+                 # Rename to add prefix                                                                                                    
+                 for file in merge_output.vcf.gz \                                                                                         
+                         merge_output.vcf.gz.tbi \                                                                                         
+                         phased_merge_output.vcf.gz \                                                                                      
+                         phased_merge_output.vcf.gz.tbi \                                                                                  
+                         merge_output.gvcf.gz \                                                                                            
+                         merge_output.gvcf.gz.tbi; do                                                                                      
+                 if [ -e "\$file" ]; then                                                                                                  
+                     mv "\$file" "${prefix}\$file"                                                                                         
+                 fi                                                                                                                        
+                 done                                                                                                                      
+                 """                                                                                                                       
+                                                                                                                                           
+               Container:                                                                                                                  
+                 00000000000.dkr.ecr.eu-west-1.amazonaws.com/redacted-path:a94e2e9a9e2df190                                                                                                           
+                                                                                                                                           
+               Tip: view the complete command output by changing to the process work dir and entering the command                          
+         `cat .command.out`                                                                                                                
+                                                                                                                                           
+                -- Check '/data/simon/modules/.nf-test/tests/9d0fd47c0e8a46ad077e75e16a9ead0d/meta/nextflow.log'                           
+         file for details                                                                                                                  
+                                                                                                                                           
+             Stderr:                                                                                                                       
+                                                                                                                                           
+             Nextflow Output:                                                                                                              
+               N E X T F L O W  ~  version 25.10.4                                                                                         
+               Enabled plugins: []                                                                                                         
+               Disabled plugins: []                                                                                                        
+               PF4J version 3.12.0 in 'deployment' mode                                                                                    
+               No plugins                                                                                                                  
+               Plugin 'nf-amazon@3.4.4' resolved                                                                                           
+               Start plugin 'nf-amazon@3.4.4'                                                                                              
+               Plugin 'nf-wave@1.16.1' resolved                                                                                            
+               Start plugin 'nf-wave@1.16.1'                                                                                               
+               revision: b6ac8acbd4                                                                                                        
+               [96/bc6b30] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+               Stop plugin 'nf-wave@1.16.1'                                                                                                
+               Stop plugin 'nf-amazon@3.4.4'                                                                                               
+                                                                                                                                           
+                 Output Channels:                                                                                                          
+             {                                                                                                                             
+                 "0": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "1": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "2": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "3": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "4": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "5": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "6": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "gtbi": [                                                                                                                 
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "gvcf": [                                                                                                                 
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "phased_tbi": [                                                                                                           
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "phased_vcf": [                                                                                                           
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "tbi": [                                                                                                                  
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "vcf": [                                                                                                                  
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "versions_clair3": [                                                                                                      
+                                                                                                                                           
+                 ]                                                                                                                         
+             }                                                                                                                             
+         [32mPASSED[0m (8.892s)                                                                                                            
+           [1mTest[0m [592328f8] 'sarscov2 - bam - user_model - gvcf'                                                                      
+                                                                                                                                           
+             Profiles:                                                                                                                     
+             Configs:                                                                                                                      
+             Command: /home/pipeline-user/.local/bin/nextflow -log                                                                         
+         /data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/meta/nextflow.log run                                         
+         /data/simon/modules/.nf-test-592328f8f324049563573eb3ca79b022.nf -c                                                               
+         /data/simon/modules/tests/config/nf-test.config -c                                                                                
+         /data/simon/modules/modules/nf-core/clair3/tests/./nextflow.config -params-file                                                   
+         /data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/meta/params.json -ansi-log false                              
+         -profile docker -with-trace                                                                                                       
+         /data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/meta/trace.csv -w                                             
+         /data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/work                                                          
+             > N E X T F L O W  ~  version 25.10.4                                                                                         
+             > Launching `/data/simon/modules/.nf-test-592328f8f324049563573eb3ca79b022.nf`  DSL2 - revision:                              
+         0b7c193671                                                                                                                        
+             > [09/352d3c] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+             > [9c/3e29b0] Submitted process > CLAIR3 (test)                                                                               
+                                                                                                                                           
+             Stdout:                                                                                                                       
+               N E X T F L O W  ~  version 25.10.4                                                                                         
+               Launching `/data/simon/modules/.nf-test-592328f8f324049563573eb3ca79b022.nf`  DSL2 - revision:                              
+         0b7c193671                                                                                                                        
+               [09/352d3c] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+               [9c/3e29b0] Submitted process > CLAIR3 (test)                                                                               
+                                                                                                                                           
+             Stderr:                                                                                                                       
+                                                                                                                                           
+             Nextflow Output:                                                                                                              
+               N E X T F L O W  ~  version 25.10.4                                                                                         
+               Enabled plugins: []                                                                                                         
+               Disabled plugins: []                                                                                                        
+               PF4J version 3.12.0 in 'deployment' mode                                                                                    
+               No plugins                                                                                                                  
+               Plugin 'nf-amazon@3.4.4' resolved                                                                                           
+               Start plugin 'nf-amazon@3.4.4'                                                                                              
+               Plugin 'nf-wave@1.16.1' resolved                                                                                            
+               Start plugin 'nf-wave@1.16.1'                                                                                               
+               revision: 0b7c193671                                                                                                        
+               [09/352d3c] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+               [9c/3e29b0] Submitted process > CLAIR3 (test)                                                                               
+               Stop plugin 'nf-wave@1.16.1'                                                                                                
+               Stop plugin 'nf-amazon@3.4.4'                                                                                               
+                                                                                                                                           
+                 Output Channels:                                                                                                          
+             {                                                                                                                             
+                 "0": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/work/9c/3e29b0519ce844                       
+         df04929a6014fa9e/testmerge_output.vcf.gz"                                                                                         
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "1": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/work/9c/3e29b0519ce844                       
+         df04929a6014fa9e/testmerge_output.vcf.gz.tbi"                                                                                     
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "2": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "3": [                                                                                                                    
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "4": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/work/9c/3e29b0519ce844                       
+         df04929a6014fa9e/testmerge_output.gvcf.gz"                                                                                        
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "5": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/work/9c/3e29b0519ce844                       
+         df04929a6014fa9e/testmerge_output.gvcf.gz.tbi"                                                                                    
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "6": [                                                                                                                    
+                     [                                                                                                                     
+                         "CLAIR3",                                                                                                         
+                         "clair3",                                                                                                         
+                         "2.0.1"                                                                                                           
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "gtbi": [                                                                                                                 
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/work/9c/3e29b0519ce844                       
+         df04929a6014fa9e/testmerge_output.gvcf.gz.tbi"                                                                                    
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "gvcf": [                                                                                                                 
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/work/9c/3e29b0519ce844                       
+         df04929a6014fa9e/testmerge_output.gvcf.gz"                                                                                        
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "phased_tbi": [                                                                                                           
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "phased_vcf": [                                                                                                           
+                                                                                                                                           
+                 ],                                                                                                                        
+                 "tbi": [                                                                                                                  
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/work/9c/3e29b0519ce844                       
+         df04929a6014fa9e/testmerge_output.vcf.gz.tbi"                                                                                     
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "vcf": [                                                                                                                  
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/592328f8f324049563573eb3ca79b022/work/9c/3e29b0519ce844                       
+         df04929a6014fa9e/testmerge_output.vcf.gz"                                                                                         
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "versions_clair3": [                                                                                                      
+                     [                                                                                                                     
+                         "CLAIR3",                                                                                                         
+                         "clair3",                                                                                                         
+                         "2.0.1"                                                                                                           
+                     ]                                                                                                                     
+                 ]                                                                                                                         
+             }                                                                                                                             
+         [32mPASSED[0m (22.914s)                                                                                                           
+           [1mTest[0m [2bd2a6e3] 'sarscov2 - bam - stub'                                                                                   
+                                                                                                                                           
+             Profiles:                                                                                                                     
+             Configs:                                                                                                                      
+             Command: /home/pipeline-user/.local/bin/nextflow -log                                                                         
+         /data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/meta/nextflow.log run                                         
+         /data/simon/modules/.nf-test-2bd2a6e3a00781c8ce20815fd7ff4e04.nf -c                                                               
+         /data/simon/modules/tests/config/nf-test.config -c                                                                                
+         /data/simon/modules/modules/nf-core/clair3/tests/./nextflow.config -params-file                                                   
+         /data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/meta/params.json -ansi-log false                              
+         -profile docker -with-trace                                                                                                       
+         /data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/meta/trace.csv -w                                             
+         /data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work -stub                                                    
+             > N E X T F L O W  ~  version 25.10.4                                                                                         
+             > Launching `/data/simon/modules/.nf-test-2bd2a6e3a00781c8ce20815fd7ff4e04.nf`  DSL2 - revision:                              
+         f3de067395                                                                                                                        
+             > [93/e2caf4] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+             >  Submitted process > CLAIR3 (test)                                                                                          
+                                                                                                                                           
+             Stdout:                                                                                                                       
+               N E X T F L O W  ~  version 25.10.4                                                                                         
+               Launching `/data/simon/modules/.nf-test-2bd2a6e3a00781c8ce20815fd7ff4e04.nf`  DSL2 - revision:                              
+         f3de067395                                                                                                                        
+               [93/e2caf4] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+                Submitted process > CLAIR3 (test)                                                                                          
+                                                                                                                                           
+             Stderr:                                                                                                                       
+                                                                                                                                           
+             Nextflow Output:                                                                                                              
+               N E X T F L O W  ~  version 25.10.4                                                                                         
+               Enabled plugins: []                                                                                                         
+               Disabled plugins: []                                                                                                        
+               PF4J version 3.12.0 in 'deployment' mode                                                                                    
+               No plugins                                                                                                                  
+               Plugin 'nf-amazon@3.4.4' resolved                                                                                           
+               Start plugin 'nf-amazon@3.4.4'                                                                                              
+               Plugin 'nf-wave@1.16.1' resolved                                                                                            
+               Start plugin 'nf-wave@1.16.1'                                                                                               
+               revision: f3de067395                                                                                                        
+               [93/e2caf4] Submitted process > UNTAR (clair3_v2.hifi.tar.gz)                                                               
+                Submitted process > CLAIR3 (test)                                                                                          
+               Stop plugin 'nf-wave@1.16.1'                                                                                                
+               Stop plugin 'nf-amazon@3.4.4'                                                                                               
+                                                                                                                                           
+                 Output Channels:                                                                                                          
+             {                                                                                                                             
+                 "0": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testmerge_output.vcf.gz"                                                                                         
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "1": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testmerge_output.vcf.gz.tbi"                                                                                     
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "2": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testphased_merge_output.vcf.gz"                                                                                  
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "3": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testphased_merge_output.vcf.gz.tbi"                                                                              
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "4": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testmerge_output.gvcf.gz"                                                                                        
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "5": [                                                                                                                    
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testmerge_output.gvcf.gz.tbi"                                                                                    
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "6": [                                                                                                                    
+                     [                                                                                                                     
+                         "CLAIR3",                                                                                                         
+                         "clair3",                                                                                                         
+                         "2.0.1"                                                                                                           
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "gtbi": [                                                                                                                 
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testmerge_output.gvcf.gz.tbi"                                                                                    
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "gvcf": [                                                                                                                 
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testmerge_output.gvcf.gz"                                                                                        
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "phased_tbi": [                                                                                                           
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testphased_merge_output.vcf.gz.tbi"                                                                              
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "phased_vcf": [                                                                                                           
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testphased_merge_output.vcf.gz"                                                                                  
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "tbi": [                                                                                                                  
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testmerge_output.vcf.gz.tbi"                                                                                     
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "vcf": [                                                                                                                  
+                     [                                                                                                                     
+                         {                                                                                                                 
+                             "id": "test"                                                                                                  
+                         },                                                                                                                
+                         "/data/simon/modules/.nf-test/tests/2bd2a6e3a00781c8ce20815fd7ff4e04/work/b0/2de5b405f0370d                       
+         accab91c400cdb23/testmerge_output.vcf.gz"                                                                                         
+                     ]                                                                                                                     
+                 ],                                                                                                                        
+                 "versions_clair3": [                                                                                                      
+                     [                                                                                                                     
+                         "CLAIR3",                                                                                                         
+                         "clair3",                                                                                                         
+                         "2.0.1"                                                                                                           
+                     ]                                                                                                                     
+                 ]                                                                                                                         
+             }                                                                                                                             
+         [32mPASSED[0m (10.86s)                                                                                                            
+           Snapshots:                                                                                                                      
+             Obsolete snapshots can only be checked if all tests of a file are executed successful.                                        
+                                                                                                                                           
+                                                                                                                                           
+         [1m[31mFAILURE: [0m[0mExecuted 5 tests in 72.074s (1 failed)                                                                      
+                                                                                                                                           
+                                                                                                                                           
+DEBUG    nf-test error:                                                                                              components_test.py:159
+         Assertion failed:                                                                                                                 
+                                                                                                                                           
+         assert process.success                                                                                                            
+                |       |                                                                                                                  
+                CLAIR3  false                                                                                                              
+                                                                                                                                           
+                 at org.codehaus.groovy.runtime.InvokerHelper.assertFailed(InvokerHelper.java:432)                                         
+                 at org.codehaus.groovy.runtime.ScriptBytecodeAdapter.assertFailed(ScriptBytecodeAdapter.java:670)                         
+                 at main_nf$_run_closure1$_closure4$_closure24.doCall(main.nf.test:108)                                                    
+                 at main_nf$_run_closure1$_closure4$_closure24.doCall(main.nf.test)                                                        
+                 at                                                                                                                        
+         java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)                             
+                 at java.base/java.lang.reflect.Method.invoke(Method.java:580)                                                             
+                 at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)                                              
+                 at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)                                                             
+                 at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:274)                         
+                 at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1030)                                                        
+                 at groovy.lang.Closure.call(Closure.java:427)                                                                             
+                 at groovy.lang.Closure.call(Closure.java:406)                                                                             
+                 at com.askimed.nf.test.lang.TestCode.execute(TestCode.java:16)                                                            
+                 at com.askimed.nf.test.lang.process.ProcessTest.execute(ProcessTest.java:171)                                             
+                 at com.askimed.nf.test.core.TestExecutionEngine.execute(TestExecutionEngine.java:172)                                     
+                 at com.askimed.nf.test.commands.RunTestsCommand.execute(RunTestsCommand.java:322)                                         
+                 at com.askimed.nf.test.commands.AbstractCommand.call(AbstractCommand.java:43)                                             
+                 at com.askimed.nf.test.commands.AbstractCommand.call(AbstractCommand.java:18)                                             
+                 at picocli.CommandLine.executeUserObject(CommandLine.java:1953)                                                           
+                 at picocli.CommandLine.access$1300(CommandLine.java:145)                                                                  
+                 at                                                                                                                        
+         picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2352)                                
+                 at picocli.CommandLine$RunLast.handle(CommandLine.java:2346)                                                              
+                 at picocli.CommandLine$RunLast.handle(CommandLine.java:2311)                                                              
+                 at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2179)                                          
+                 at picocli.CommandLine.execute(CommandLine.java:2078)                                                                     
+                 at com.askimed.nf.test.App.run(App.java:39)                                                                               
+                 at com.askimed.nf.test.App.main(App.java:46)                                                                              
+                                                                                                                                           
+INFO     All tests passed!     
