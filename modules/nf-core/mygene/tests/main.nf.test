@@ -103,4 +103,103 @@ nextflow_process {
             )
         }
     }
+    test("mygene - default options - stub") {
+
+        tag "default"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id : 'test'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.gene_meta.tsv")
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.gmt).match("mygene - default options - stub - gmt") },
+                { assert snapshot(process.out.versions).match("mygene - default options - stub - versions") }
+            )
+        }
+    }
+
+    test("mygene - default with tsv file - stub") {
+
+        tag "default_with_tsv"
+        config "./default_tsv.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id : 'test'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.gene_meta.tsv")
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.gmt).match("mygene - default with tsv file - stub - gmt") },
+                { assert snapshot(process.out.tsv).match("mygene - default with tsv file - stub - tsv") },
+                { assert snapshot(process.out.versions).match("mygene - default with tsv file - stub - versions") }
+            )
+        }
+    }
+
+    test("mygene - filter by go category - stub") {
+
+        tag "filter_by_go_category"
+        config "./go_category.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id : 'test'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.gene_meta.tsv")
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.gmt).match("mygene - filter by go category - stub - gmt") },
+                { assert snapshot(process.out.versions).match("mygene - filter by go category - stub - versions") }
+            )
+        }
+    }
+
+    test("mygene - filter by go evidence - stub") {
+
+        tag "filter_by_go_evidence"
+        config "./go_evidence.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id : 'test'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.gene_meta.tsv")
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.gmt).match("mygene - filter by go evidence - stub - gmt") },
+                { assert snapshot(process.out.versions).match("mygene - filter by go evidence - stub - versions") }
+            )
+        }
+    }
 }

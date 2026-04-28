@@ -34,4 +34,17 @@ process ISLANDPATH {
         islandpath: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.0.6'
+    """
+    touch ${prefix}.gff
+    touch Dimob.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        islandpath: $VERSION
+    END_VERSIONS
+    """
 }

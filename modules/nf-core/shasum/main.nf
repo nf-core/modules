@@ -30,4 +30,14 @@ process SHASUM {
         sha256sum: \$(echo \$(sha256sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch ${file}.sha256
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sha256sum: \$(echo \$(sha256sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
+    END_VERSIONS
+    """
 }

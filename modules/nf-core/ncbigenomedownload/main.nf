@@ -47,4 +47,21 @@ process NCBIGENOMEDOWNLOAD {
         $groups
 
     """
+
+    stub:
+    """
+    touch ${meta.id}_genomic.gbff.gz
+    touch ${meta.id}_genomic.fna.gz
+    touch ${meta.id}_rm.out.gz
+    touch ${meta.id}_feature_table.txt.gz
+    touch ${meta.id}_genomic.gff.gz
+    touch ${meta.id}_protein.faa.gz
+    touch ${meta.id}_protein.gpff.gz
+    touch ${meta.id}_wgsmaster.gbff.gz
+    touch ${meta.id}_cds_from_genomic.fna.gz
+    touch ${meta.id}_rna.fna.gz
+    touch ${meta.id}_rna_from_genomic.fna.gz
+    touch ${meta.id}_assembly_report.txt
+    touch ${meta.id}_assembly_stats.txt
+    """
 }

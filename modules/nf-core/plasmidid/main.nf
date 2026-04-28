@@ -42,4 +42,17 @@ process PLASMIDID {
         plasmidid: \$(echo \$(plasmidID --version 2>&1))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p ${prefix}/images ${prefix}/logs ${prefix}/data ${prefix}/database ${prefix}/fasta_files ${prefix}/kmer
+    touch ${prefix}/${prefix}_final_results.html
+    touch ${prefix}/${prefix}_final_results.tab
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        plasmidid: \$(echo \$(plasmidID --version 2>&1))
+    END_VERSIONS
+    """
 }

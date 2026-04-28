@@ -37,4 +37,17 @@ process FFQ {
     """
     touch ${prefix}.json
     """
+
+    stub:
+    def id_list = ids.sort()
+    def name = id_list.size() == 1 ? ids[0] : 'metadata'
+    def prefix = task.ext.prefix ?: "${name}"
+    """
+    touch ${prefix}.json
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ffq: \$(echo \$(ffq --help 2>&1) | sed 's/^.*ffq //; s/: A command.*\$//' )
+    END_VERSIONS
+    """
 }

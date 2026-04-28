@@ -20,4 +20,16 @@ process MYGENE {
 
     script:
     template "mygene.py"
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gmt
+    touch ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mygene: \$(python -c "import mygene; print(mygene.__version__)")
+    END_VERSIONS
+    """
 }
