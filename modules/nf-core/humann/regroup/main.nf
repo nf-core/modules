@@ -1,10 +1,8 @@
-include { getConda; getContainer; getHumannVersion } from '../utils'
-
 process HUMANN_REGROUP {
     tag "$meta.id"
     label 'process_low'
 
-    conda { getConda(getHumannVersion(task.process)) }
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/humann:3.6.1--pyh7cba7a3_0' :
         'quay.io/biocontainers/humann:3.6.1--pyh7cba7a3_0' }"
