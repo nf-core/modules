@@ -1,0 +1,216 @@
+nextflow_process {
+
+    name "Test Process GCTA_ADJUSTGRM"
+    script "../main.nf"
+    process "GCTA_ADJUSTGRM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/adjustgrm"
+    tag "gcta/makegrmpart"
+
+    setup {
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_DENSE") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'tiny_dense', part_gcta_job:1, nparts_gcta:1 ],
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'all_variants' ], []]
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_DENSE_STUB") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'stub_dense', part_gcta_job:1, nparts_gcta:1 ],
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'all_variants' ], []]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - adjust dense GRM") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+                input[1] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.size() == 1 },
+                { assert process.out.grm_files.get(0).get(0).id == "tiny_dense.part_1_1" },
+                {
+                    def grm_row = process.out.grm_files.get(0)
+                    def expected_prefix = "${grm_row.get(0).id}_adj"
+                    assert file(grm_row.get(1)).name == "${expected_prefix}.grm.id"
+                    assert file(grm_row.get(2)).name == "${expected_prefix}.grm.bin"
+                    assert file(grm_row.get(3)).name == "${expected_prefix}.grm.N.bin"
+                },
+                {
+                    assert snapshot(
+                        process.out.grm_files,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - adjust dense GRM with 0 fallback value") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+                input[1] = 0
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.size() == 1 },
+                { assert process.out.grm_files.get(0).get(0).id == "tiny_dense.part_1_1" },
+                {
+                    def grm_row = process.out.grm_files.get(0)
+                    def expected_prefix = "${grm_row.get(0).id}_adj"
+                    assert file(grm_row.get(1)).name == "${expected_prefix}.grm.id"
+                    assert file(grm_row.get(2)).name == "${expected_prefix}.grm.bin"
+                    assert file(grm_row.get(3)).name == "${expected_prefix}.grm.N.bin"
+                },
+                {
+                    assert snapshot(
+                        process.out.grm_files,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - adjust dense GRM fails when meta.id is not GRM basename") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix + '_mismatched' ], grm_id, grm_bin, grm_n_bin]
+                }
+                input[1] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - adjust dense GRM fails for malformed GRM tuple") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin]
+                }
+                input[1] = 1
+                """
+            }
+        }
+
+        then {
+            assert !process.success
+        }
+    }
+
+    test("homo_sapiens popgen - adjust dense GRM - stub") {
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRMPART_DENSE_STUB.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+                input[1] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.get(0).get(0).id == "stub_dense.part_1_1" },
+                {
+                    def grm_row = process.out.grm_files.get(0)
+                    def expected_prefix = "${grm_row.get(0).id}_adj"
+                    assert file(grm_row.get(1)).name == "${expected_prefix}.grm.id"
+                    assert file(grm_row.get(2)).name == "${expected_prefix}.grm.bin"
+                    assert file(grm_row.get(3)).name == "${expected_prefix}.grm.N.bin"
+                },
+                {
+                    assert snapshot(
+                        process.out.grm_files,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+}
