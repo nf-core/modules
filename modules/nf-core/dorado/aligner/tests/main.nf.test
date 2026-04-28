@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process DORADO_ALIGNER"
+    script "../main.nf"
+    process "DORADO_ALIGNER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dorado"
+    tag "dorado/aligner"
+
+    // -------------------------------------------------------------------------
+    // Stub tests — run in CI without the dorado container or real alignment
+    // -------------------------------------------------------------------------
+
+    test("homo sapiens - GIAB HG002 unaligned BAM, hg38 reference - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_PAW70337_giab_10reads.unaligned.bam',
+                         checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',
+                         checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Real test — exercises minimap2 via dorado aligner (CPU-only, no GPU needed)
+    // Snapshots reads-only MD5 to avoid header paths (@SQ UR:, @PG CL:) that
+    // vary between test environments.
+    // -------------------------------------------------------------------------
+
+    test("homo sapiens - GIAB HG002 unaligned BAM, hg38 reference") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_PAW70337_giab_10reads.unaligned.bam',
+                         checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',
+                         checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.bam[0][1]).exists() },
+                { assert path(process.out.bam[0][1]).size() > 0 },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.versions_dorado
+                ).match() }
+            )
+        }
+    }
+}
