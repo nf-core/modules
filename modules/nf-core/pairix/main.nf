@@ -29,4 +29,14 @@ process PAIRIX {
         pairix: \$(echo \$(pairix --help 2>&1) | sed 's/^.*Version: //; s/Usage.*\$//')
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch ${pair}.px2
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pairix: \$(echo \$(pairix --help 2>&1) | sed 's/^.*Version: //; s/Usage.*\$//')
+    END_VERSIONS
+    """
 }
