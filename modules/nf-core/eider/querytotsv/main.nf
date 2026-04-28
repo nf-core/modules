@@ -12,7 +12,7 @@ process EIDER_QUERYTOTSV {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    tuple val("${task.process}"), val('eider'), eval("eider: \$(eider --version 2>&1 | grep -o 'eider .*' | cut -f2 -d ' ')"), topic: versions, emit: versions_eider
+    tuple val("${task.process}"), val('eider'), eval("eider --version 2>&1 | grep -o 'eider .*' | cut -f2 -d ' '"), topic: versions, emit: versions_eider
 
     when:
     task.ext.when == null || task.ext.when
