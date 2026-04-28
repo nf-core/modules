@@ -4,8 +4,8 @@ process MOSDEPTH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/167a8e2913700403615f5f6d0e4c215c17d0590375f74e05821802153545382d/data' :
-        'community.wave.seqera.io/library/htslib_mosdepth:3f7eda5b7d75a18f'}"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a61c7c22f3c92b38befbf872f07e32540804e874e9df41593a7158e36280961b/data' :
+        'community.wave.seqera.io/library/mosdepth_gzip:e51d2330d6cdd31f'}"
 
     input:
     tuple val(meta),  path(bam), path(bai), path(bed)
@@ -26,7 +26,7 @@ process MOSDEPTH {
     tuple val(meta), path('*.thresholds.bed.gz')    , optional:true, emit: thresholds_bed
     tuple val(meta), path('*.thresholds.bed.gz.csi'), optional:true, emit: thresholds_csi
     tuple val("${task.process}"), val('mosdepth'), eval("mosdepth --version | sed 's/mosdepth //g'"), topic: versions, emit: versions_mosdepth
-
+    tuple val("${task.process}"), val('gzip'), eval("gzip -V 2>&1 | sed 's/gzip \\([0-9.]*\\).*/\\1/;q'"), topic: versions, emit: versions_gzip
     when:
     task.ext.when == null || task.ext.when
 
