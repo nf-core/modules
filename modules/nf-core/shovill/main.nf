@@ -34,4 +34,14 @@ process SHOVILL {
         --outdir ./ \\
         --force
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch contigs.fa
+    touch shovill.corrections
+    touch shovill.log
+    touch spades.fasta
+    touch contigs.fastg
+    """
 }

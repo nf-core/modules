@@ -49,4 +49,20 @@ process SALSA2 {
         SALSA2: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}_scaffolds_FINAL.fasta
+    touch ${prefix}_scaffolds_FINAL.agp
+    
+    mkdir -p salsa2_output
+    touch salsa2_output/${prefix}_scaffolds_FINAL.original-coordinates.agp
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        SALSA2: $VERSION
+    END_VERSIONS
+    """
 }
