@@ -5,4 +5,3 @@ COPY
 )
 TO
 '${prefix}.csv'
-
