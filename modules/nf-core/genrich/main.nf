@@ -51,4 +51,15 @@ process GENRICH {
         genrich: \$(echo \$(Genrich --version 2>&1) | sed 's/^Genrich, version //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.narrowPeak
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        genrich: \$(echo \$(Genrich --version 2>&1) | sed 's/^Genrich, version //; s/ .*\$//')
+    END_VERSIONS
+    """
 }
