@@ -38,4 +38,17 @@ process RAPIDNJ {
         biopython: \$(python -c "import Bio; print(Bio.__version__)")
     END_VERSIONS
     """
+
+    stub:
+    def VERSION = '2.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch alignment.sth
+    touch rapidnj_phylogeny.tre
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        rapidnj: $VERSION
+        biopython: \$(python -c "import Bio; print(Bio.__version__)")
+    END_VERSIONS
+    """
 }

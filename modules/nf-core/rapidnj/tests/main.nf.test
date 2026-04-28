@@ -33,4 +33,30 @@ nextflow_process {
         }
     }
 
+    test("sarscov2-fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true) ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.phylogeny },
+                { assert snapshot(
+					process.out.stockholm_alignment,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
 }
