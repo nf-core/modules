@@ -87,54 +87,6 @@ nextflow_process {
         }
     }
 
-    // test("search_json_human") {
-
-    //     when {
-    //         params {
-    //             module_args = 'search -s human gaba gamma-aminobutyric'
-    //         }
-    //         process {
-    //             """
-    //             input[0] = [
-    //                 [id:'test'],
-    //                 []
-    //                 ]
-    //             """
-    //         }
-    //     }
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(process.out.output,
-    //             path(process.out.versions[0]).yaml).match() }
-    //         )
-    //     }
-    // }
-
-    // test("search_csv_human") {
-
-    //     when {
-    //         params {
-    //             module_args = 'search --csv -s human gaba gamma-aminobutyric'
-    //         }
-    //         process {
-    //             """
-    //             input[0] = [
-    //                 [id:'test'],
-    //                 []
-    //                 ]
-    //             """
-    //         }
-    //     }
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(process.out.output,
-    //             path(process.out.versions[0]).yaml).match() }
-    //         )
-    //     }
-    // }
-
     test("search_csv_human - stub") {
 
         options "-stub"
@@ -240,36 +192,6 @@ nextflow_process {
             )
         }
     }
-
-    //test("muscle_proteome") { // weirdly gives no output on docker/singularity, but does on conda?
-    // silently gives
-    // chmod: changing permissions of '/opt/conda/lib/python3.13/site-packages/gget/bins/Linux/muscle': Operation not permitted
-    // in the .command.err but returns successful exit code.
-    //
-    //    when {
-    //        params {
-    //            module_args = 'muscle'
-    //        }
-    //        process {
-    //            """
-    //            input[0] = [
-    //                [id:'test'],
-    //                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta',checkIfExists:true)
-    //                ]
-    //            """
-    //        }
-    //    }
-    //    then {
-    //        assertAll(
-    //            { assert process.success },
-    //            { assert snapshot(
-    //                process.out.output,
-    //                process.out.versions,
-    //                path(process.out.versions[0]).yaml
-    //                ).match() }
-    //        )
-    //    }
-    //}
 
     test("enrichr_json_ontology") {
 
