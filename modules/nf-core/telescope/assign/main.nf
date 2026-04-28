@@ -23,10 +23,8 @@ process TELESCOPE_ASSIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta_bam.id}"
 
     """
-
     echo -n "" > telescope.log
 
     telescope \\
@@ -35,7 +33,6 @@ process TELESCOPE_ASSIGN {
         $gtf \\
         $args \\
         > telescope.log 2>&1
-
     """
 
     stub:
@@ -50,6 +47,5 @@ process TELESCOPE_ASSIGN {
     touch ${prefix}-updated.sam
     touch ${prefix}-other.sam
     touch ${prefix}-telescope_report.tsv
-
     """
 }
