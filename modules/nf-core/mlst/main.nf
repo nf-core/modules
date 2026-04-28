@@ -33,4 +33,15 @@ process MLST {
     END_VERSIONS
     """
 
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mlst: \$( echo \$(mlst --version 2>&1) | sed 's/mlst //' )
+    END_VERSIONS
+    """
+
 }

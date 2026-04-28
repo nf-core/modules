@@ -39,4 +39,18 @@ process KOFAMSCAN {
         kofamscan: \$(echo \$(exec_annotation --version 2>&1) | sed 's/^.*exec_annotation //;')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--format detail-tsv") ? "tsv" :
+                    "txt"
+    """
+    touch ${prefix}.${extension}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        kofamscan: \$(echo \$(exec_annotation --version 2>&1) | sed 's/^.*exec_annotation //;')
+    END_VERSIONS
+    """
 }

@@ -35,4 +35,16 @@ process SCOARY {
         scoary: \$( scoary --version 2>&1 )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.csv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        scoary: \$( scoary --version 2>&1 )
+    END_VERSIONS
+    """
 }

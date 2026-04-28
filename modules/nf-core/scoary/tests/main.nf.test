@@ -31,5 +31,33 @@ nextflow_process {
             )
         }
     }
+    
+    test("test-scoary - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				    file("https://github.com/AdmiralenOla/Scoary/raw/master/scoary/exampledata/Gene_presence_absence.csv", checkIfExists: true),
+				    file("https://github.com/AdmiralenOla/Scoary/raw/master/scoary/exampledata/Tetracycline_resistance.csv", checkIfExists: true)
+                ]
+				input[1] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.csv[0][1]).name,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
 
 }
