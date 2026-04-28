@@ -2,7 +2,6 @@ process GEM3_GEM3MAPPER {
     tag "$meta.id"
     label 'process_high'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-240a9c1936dd6a68f46aa198b2629b6734a18428:543223d3cc2f69d86af72f7e9a3200812ae25327-0':
@@ -15,7 +14,7 @@ process GEM3_GEM3MAPPER {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    tuple val("${task.process}"), val('gem3-mapper'), val("3.6.1"), emit: versions_gem3mapper, topic: versions
+    tuple val("${task.process}"), val('gem3-mapper'), eval("gem-mapper --version 2>&1 | sed 's/v//'"), emit: versions_gem3, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,7 +31,11 @@ process GEM3_GEM3MAPPER {
         -i ${fastq} \\
         -t ${task.cpus} \\
         ${args} \\
-        | samtools ${samtools_command} ${args2} -@ ${task.cpus} -o ${prefix}.bam -
+        | samtools ${samtools_command} \\
+        ${args2} \\
+        -@ ${task.cpus} \\
+        -o ${prefix}.bam \\
+        -
     """
 
     stub:

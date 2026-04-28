@@ -45,15 +45,15 @@ output:
           description: The execution log
           pattern: "*.info"
           ontologies: []
-  versions_gem3indexer:
+  versions_gem3:
     - - ${task.process}:
           type: string
           description: The name of the process
       - gem3-indexer:
           type: string
           description: The name of the tool
-      - 3.6.1:
-          type: string
+      - gem-indexer --version 2>&1 | sed 's/v//':
+          type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
@@ -63,8 +63,8 @@ topics:
       - gem3-indexer:
           type: string
           description: The name of the tool
-      - 3.6.1:
-          type: string
+      - gem-indexer --version 2>&1 | sed 's/v//':
+          type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@miqalvarez"
