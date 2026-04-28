@@ -95,14 +95,14 @@ output:
           description: |
             Bar plot with the distribution of reads, in percentage, binned to the different quality metrics indicated in the statistics.csv
           ontologies: []
-  versions_2fast2q:
+  versions_fast2q:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - 2FAST2Q:
+      - fast2q:
           type: string
           description: The name of the tool
-      - '2fast2q -v | grep "Version:" | sed "s/Version: //g"':
+      - '2fast2q -v | sed -n "s/Version: //p"':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -110,10 +110,10 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - 2FAST2Q:
+      - fast2q:
           type: string
           description: The name of the tool
-      - '2fast2q -v | grep "Version:" | sed "s/Version: //g"':
+      - '2fast2q -v | sed -n "s/Version: //p"':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
