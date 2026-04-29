@@ -33,7 +33,8 @@ nextflow_process {
                     with (process.out.json.get(0)) {
                         assert snapshot(path(get(1)).json['All Reads']).match("all_reads")
                     }
-                }
+                },
+                { assert snapshot(process.out.versions_pycoqc).match("versions") }
             )
         }
 
