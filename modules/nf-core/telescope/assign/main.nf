@@ -1,5 +1,5 @@
 process TELESCOPE_ASSIGN {
-    tag "$meta_bam.id"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -8,14 +8,14 @@ process TELESCOPE_ASSIGN {
         'community.wave.seqera.io/library/telescope:1.0.3_fix--d176f12022b914cf' }"
 
     input:
-    tuple val(meta_bam), path(bam)
-    tuple val(meta_gtf), path(gtf)
+    tuple val(meta), path(bam)
+    tuple val(meta2), path(gtf)
 
     output:
-    tuple val(meta_bam), path("*{updated,other}.bam"), emit: bam, optional: true // only for --updated_sam
-    tuple val(meta_bam), path("*{updated,other}.sam"), emit: sam, optional: true // only for --updated_sam
-    tuple val(meta_bam), path("*.tsv"), emit: tsv, optional: true // for when there's no alignments
-    tuple val(meta_bam), path("*.log"), emit: log, optional: true
+    tuple val(meta), path("*{updated,other}.bam"), emit: bam, optional: true // only for --updated_sam
+    tuple val(meta), path("*{updated,other}.sam"), emit: sam, optional: true // only for --updated_sam
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true // for when there's no alignments
+    tuple val(meta), path("*.log"), emit: log, optional: true
     tuple val("${task.process}"), val('telescope'), eval("telescope --version | sed '1!d;s/.* //'"), emit: versions_telescope, topic: versions
 
     when:
@@ -23,10 +23,8 @@ process TELESCOPE_ASSIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta_bam.id}"
 
     """
-
     echo -n "" > telescope.log
 
     telescope \\
@@ -35,12 +33,11 @@ process TELESCOPE_ASSIGN {
         $gtf \\
         $args \\
         > telescope.log 2>&1
-
     """
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta_bam.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     echo $args
@@ -50,6 +47,5 @@ process TELESCOPE_ASSIGN {
     touch ${prefix}-updated.sam
     touch ${prefix}-other.sam
     touch ${prefix}-telescope_report.tsv
-
     """
 }
