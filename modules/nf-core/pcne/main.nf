@@ -16,7 +16,7 @@ process PCNE {
     tuple val(meta), path("*_results.tsv"), emit: results
     tuple val(meta), path("*.log"), emit: log
     tuple val(meta), path("*.png"), emit: plots, optional: true
-    tuple val("${task.process}"), val('pcne'), eval("pcne -v | sed 's/.*version //'"), topic: versions, emit: versions_pcne
+    tuple val("${task.process}"), val('pcne'), eval("pcne -v | grep 'version' | tail -n 1 | sed 's/.*version //'"), topic: versions, emit: versions_pcne
 
     when:
     task.ext.when == null || task.ext.when
