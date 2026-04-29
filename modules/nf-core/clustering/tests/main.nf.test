@@ -1,0 +1,49 @@
+nextflow_process {
+    name "Test Process CLUSTERING"
+    script "../main.nf"
+    process "CLUSTERING"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "clustering"
+
+    test("clustering - eigenvec") {
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/clustering/tests/data/test.eigenvec", checkIfExists: true) ]
+                input[1] = 'kmeans'
+                input[2] = 3
+                input[3] = 0.5
+                input[4] = 5
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.clusters,
+                process.out.info,
+                process.out.versions
+            ).match()
+        }
+    }
+
+    test("clustering - eigenvec - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/clustering/tests/data/test.eigenvec", checkIfExists: true) ]
+                input[1] = 'kmeans'
+                input[2] = 3
+                input[3] = 0.5
+                input[4] = 5
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+    }
+}

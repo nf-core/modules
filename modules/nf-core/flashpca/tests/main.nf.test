@@ -1,0 +1,36 @@
+nextflow_process {
+    name "Test Process FLASHPCA"
+    script "../main.nf"
+    process "FLASHPCA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "flashpca"
+
+    test("flashpca - test") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'data/genomics/homo_sapiens/gsm/flashpca/test.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'data/genomics/homo_sapiens/gsm/flashpca/test.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'data/genomics/homo_sapiens/gsm/flashpca/test.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.pcs,
+                    process.out.eigenvectors,
+                    process.out.eigenvalues,
+                    process.out.pve,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+}
