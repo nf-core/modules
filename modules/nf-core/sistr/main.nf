@@ -15,7 +15,7 @@ process SISTR {
     tuple val(meta), path("*-allele.fasta"), emit: allele_fasta
     tuple val(meta), path("*-allele.json") , emit: allele_json
     tuple val(meta), path("*-cgmlst.csv")  , emit: cgmlst_csv
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('sistr'), eval('echo $(sistr --version 2>&1) | sed "s/^.*sistr_cmd //; s/ .*\$//"'), emit: versions_sistr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,10 +40,14 @@ process SISTR {
         --output-prediction ${prefix} \\
         --output-format tab \\
         $fasta_name
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sistr: \$(echo \$(sistr --version 2>&1) | sed 's/^.*sistr_cmd //; s/ .*\$//' )
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tab
+    touch ${prefix}-allele.fasta
+    touch ${prefix}-allele.json
+    touch ${prefix}-cgmlst.csv
     """
 }
