@@ -3,9 +3,9 @@ process DIAMOND_MAKEDB {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.16--h13889ed_0'
-        : 'biocontainers/diamond:2.1.16--h13889ed_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.24--hf93d47f_0'
+        : 'quay.io/biocontainers/diamond:2.1.24--hf93d47f_0'}"
 
     input:
     tuple val(meta), path(fasta)

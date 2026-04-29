@@ -1,48 +1,58 @@
 {
     "test-ffq-single-id": {
         "content": [
-            {
-                "0": [
-                    "SRR9990627.json:md5,8a80554c91d9fca8acb82f023de02f11"
-                ],
-                "1": [
-                    "versions.yml:md5,78e01cd050653cccecf26315418ad801"
-                ],
-                "json": [
-                    "SRR9990627.json:md5,8a80554c91d9fca8acb82f023de02f11"
-                ],
-                "versions": [
-                    "versions.yml:md5,78e01cd050653cccecf26315418ad801"
-                ]
-            }
+            [
+                "SRR9990627.json:md5,8a80554c91d9fca8acb82f023de02f11"
+            ]
         ],
+        "timestamp": "2026-04-28T12:30:40.933289",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-28T13:43:00.041342"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "test-ffq-single-id_versions": {
+        "content": [
+            [
+                [
+                    "FFQ",
+                    "ffq",
+                    "[-h] [-o OUT] [-l LEVEL] [--ftp] [--aws] [--gcp] [--ncbi] [--split]\n           [--verbose]\n           IDs [IDs ...]\n\n0.2.1\n/ ENA / EBI-EMBL / DDBJ / Biosample.\n\npositional arguments:\n  IDs         One or multiple SRA / GEO / ENCODE / ENA / EBI-EMBL / DDBJ /\n              Biosample accessions, DOIs, or paper titles\n\noptions:\n  -h, --help  Show this help message and exit\n  -o OUT      Path to write metadata (default: standard out)\n  -l LEVEL    Max depth to fetch data within accession tree\n  --ftp       Return FTP links\n  --aws       Return AWS links\n  --gcp       Return GCP links\n  --ncbi      Return NCBI links\n  --split     Split output into separate files by accession (`-o` is a\n              directory)\n  --verbose   Print debugging information"
+                ]
+            ]
+        ],
+        "timestamp": "2026-04-28T12:24:44.170215",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.0"
+        }
     },
     "test-ffq-multiple-ids": {
         "content": [
-            {
-                "0": [
-                    "metadata.json:md5,8a80554c91d9fca8acb82f023de02f11"
-                ],
-                "1": [
-                    "versions.yml:md5,78e01cd050653cccecf26315418ad801"
-                ],
-                "json": [
-                    "metadata.json:md5,8a80554c91d9fca8acb82f023de02f11"
-                ],
-                "versions": [
-                    "versions.yml:md5,78e01cd050653cccecf26315418ad801"
-                ]
-            }
+            [
+                "metadata.json:md5,8a80554c91d9fca8acb82f023de02f11"
+            ]
         ],
+        "timestamp": "2026-04-28T12:30:46.586034",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-28T13:43:06.684248"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "test-ffq-multiple-ids_versions": {
+        "content": [
+            [
+                [
+                    "FFQ",
+                    "ffq",
+                    "[-h] [-o OUT] [-l LEVEL] [--ftp] [--aws] [--gcp] [--ncbi] [--split]\n           [--verbose]\n           IDs [IDs ...]\n\n0.2.1\n/ ENA / EBI-EMBL / DDBJ / Biosample.\n\npositional arguments:\n  IDs         One or multiple SRA / GEO / ENCODE / ENA / EBI-EMBL / DDBJ /\n              Biosample accessions, DOIs, or paper titles\n\noptions:\n  -h, --help  Show this help message and exit\n  -o OUT      Path to write metadata (default: standard out)\n  -l LEVEL    Max depth to fetch data within accession tree\n  --ftp       Return FTP links\n  --aws       Return AWS links\n  --gcp       Return GCP links\n  --ncbi      Return NCBI links\n  --split     Split output into separate files by accession (`-o` is a\n              directory)\n  --verbose   Print debugging information"
+                ]
+            ]
+        ],
+        "timestamp": "2026-04-28T12:24:51.292657",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.0"
+        }
     }
 }
