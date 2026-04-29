@@ -90,7 +90,7 @@ output:
       - "pcne":
           type: string
           description: The name of the tool
-      - "pcne -v | sed 's/.*version //'":
+      - "pcne -v | grep 'version' | tail -n 1 | sed 's/.*version //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
