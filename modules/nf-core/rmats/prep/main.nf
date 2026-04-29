@@ -5,7 +5,7 @@ process RMATS_PREP {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/rmats:4.3.0--py311hf2f0b74_5'
-        : 'biocontainers/rmats:4.3.0--py311hf2f0b74_5'}"
+        : 'quay.io/biocontainers/rmats:4.3.0--py311hf2f0b74_5'}"
 
     input:
     tuple val(meta), path(genome_bam)
