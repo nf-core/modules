@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process BIO2ZARR_VCF2ZARREXPLODE"
+    script "../main.nf"
+    process "BIO2ZARR_VCF2ZARREXPLODE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bio2zarr"
+    tag "bio2zarr/vcf2zarrexplode"
+
+    test("sarscov2 - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
