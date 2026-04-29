@@ -14,8 +14,7 @@ process FASTCOV {
     output:
     tuple val(meta), path("${prefix}.${file_ext}")                                                                           , emit: coverage_plot
     tuple val(meta), path("log.txt")                                                                                         , emit: log
-    // the CLI does not provide any information about version
-    // make sure to update the line below when there is a new version
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('fastcov'), val('0.1.3')                                                               , emit: versions_fastcov, topic: versions
 
     when:
