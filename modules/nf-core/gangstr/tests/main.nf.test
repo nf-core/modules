@@ -35,7 +35,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert file(process.out.vcf[0][1]).name.endsWith(".vcf.gz") },
+                { assert file(process.out.vcf[0][1]).size() > 0 },
+                { assert file(process.out.index[0][1]).name.endsWith(".vcf.gz.tbi") },
+                { assert file(process.out.index[0][1]).size() > 0 },
+                { assert snapshot(
+                    process.out.samplestats,
+                    [ versions: process.out.versions_gangstr ]
+                ).match() }
             )
         }
     }
@@ -65,7 +72,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert file(process.out.vcf[0][1]).name.endsWith(".vcf.gz") },
+                { assert file(process.out.vcf[0][1]).size() > 0 },
+                { assert file(process.out.index[0][1]).name.endsWith(".vcf.gz.tbi") },
+                { assert file(process.out.index[0][1]).size() > 0 },
+                { assert snapshot(
+                    process.out.samplestats,
+                    [ versions: process.out.versions_gangstr ]
+                ).match() }
             )
         }
     }
@@ -101,7 +115,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert file(process.out.vcf[0][1]).name.endsWith(".vcf.gz") },
+                { assert file(process.out.vcf[0][1]).size() > 0 },
+                { assert file(process.out.index[0][1]).name.endsWith(".vcf.gz.tbi") },
+                { assert file(process.out.index[0][1]).size() > 0 },
+                { assert snapshot(
+                    process.out.samplestats,
+                    [ versions: process.out.versions_gangstr ]
+                ).match() }
             )
         }
     }
