@@ -1,6 +1,6 @@
 name: "tailfindr"
-description: Estimating poly(A)-tail lengths from basecalled fast5 files produced
-  by Nanopore sequencing of RNA and DNA
+description: Estimating poly(A)-tail lengths from basecalled fast5 files
+  produced by Nanopore sequencing of RNA and DNA
 keywords:
   - polya tail
   - fast5
@@ -13,7 +13,8 @@ tools:
       documentation: "https://github.com/adnaniazi/tailfindr/blob/master/README.md"
       tool_dev_url: "https://github.com/adnaniazi/tailfindr"
       doi: "10.1261/rna.071332.119"
-      licence: ["AGPL v3"]
+      licence:
+        - "AGPL v3"
       identifier: biotools:tailfindr
 input:
   - - meta:
@@ -38,14 +39,28 @@ output:
           description: Compressed csv file
           pattern: "*.csv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_tailfindr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tailfindr:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tailfindr:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lucacozzuto"
 maintainers:
