@@ -52,13 +52,7 @@ output:
           description: OptiType coverage plot
           pattern: "${prefix}/*.pdf"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+
   versions_optitype:
     - - ${task.process}:
           type: string
