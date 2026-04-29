@@ -82,8 +82,13 @@ nextflow_process {
         }
         then {
             assertAll(
-                { assert process.failed },
-                { assert process.stdout.toString().contains("All files provided to this module must be gzipped (and have the .gz extension).") }
+                { assert !process.success },
+                { assert process.stdout.toString().contains("All files provided to this module must be gzipped (and have the .gz extension).") },
+                { assert snapshot(
+                        process.out,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }
@@ -106,7 +111,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                        process.out,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }

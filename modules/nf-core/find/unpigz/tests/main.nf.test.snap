@@ -1,4 +1,41 @@
 {
+    "test_non_gzipped_files": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    
+                ],
+                "file_out": [
+                    
+                ],
+                "versions_find": [
+                    
+                ],
+                "versions_pigz": [
+                    
+                ]
+            },
+            {
+                "versions_find": [
+                    
+                ],
+                "versions_pigz": [
+                    
+                ]
+            }
+        ],
+        "timestamp": "2026-04-28T15:20:20.571954",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
     "test_unpigz_success": {
         "content": [
             {
@@ -113,6 +150,22 @@
                         "test_file.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "versions_find": [
+                    [
+                        "FIND_UNPIGZ",
+                        "find",
+                        "4.6.0"
+                    ]
+                ],
+                "versions_pigz": [
+                    [
+                        "FIND_UNPIGZ",
+                        "pigz",
+                        "2.8"
+                    ]
+                ]
+            },
+            {
                 "versions_find": [
                     [
                         "FIND_UNPIGZ",
