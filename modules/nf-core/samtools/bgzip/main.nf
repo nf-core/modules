@@ -21,7 +21,7 @@ process SAMTOOLS_BGZIP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: 'fasta'
+    def suffix = task.ext.prefix2 ?: 'fasta'
     outfile = "${prefix}.${suffix}.gz"
     """
     FILE_TYPE=\$(htsfile ${infile})
@@ -43,7 +43,7 @@ process SAMTOOLS_BGZIP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: 'fasta'
+    def suffix = task.ext.prefix2 ?: 'fasta'
     outfile = "${prefix}.${suffix}.gz"
     """
     [ "\$(basename ${infile})" == "\$(basename ${outfile})" ] && echo "Filename collision \$(basename ${infile})" && exit 1
