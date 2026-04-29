@@ -9,6 +9,7 @@ process SAMTOOLS_BGZIP {
 
     input:
     tuple val(meta), path(infile)
+    val suffix
 
     output:
     tuple val(meta), path("${outfile}"), emit: output
@@ -21,8 +22,8 @@ process SAMTOOLS_BGZIP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: 'fasta'
     outfile = "${prefix}.${suffix}.gz"
+    suffix = suffix ?: "fasta"
     """
     FILE_TYPE=\$(htsfile ${infile})
     case "\$FILE_TYPE" in
@@ -43,8 +44,8 @@ process SAMTOOLS_BGZIP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: 'fasta'
     outfile = "${prefix}.${suffix}.gz"
+    suffix = suffix ?: "fasta"
     """
     [ "\$(basename ${infile})" == "\$(basename ${outfile})" ] && echo "Filename collision \$(basename ${infile})" && exit 1
     echo '' | bgzip > ${outfile}
