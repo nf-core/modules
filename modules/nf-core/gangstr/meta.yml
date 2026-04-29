@@ -89,13 +89,16 @@ output:
           pattern: "*.tab"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_gangstr:
+    - - ${task.process}:
+          type: string
+          description: Task process name
+      - gangstr:
+          type: string
+          description: Software name
+      - version:
+          type: string
+          description: GangSTR version string
 authors:
   - "@nvnieuwk"
 maintainers:
