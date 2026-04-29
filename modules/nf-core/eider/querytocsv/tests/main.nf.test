@@ -19,7 +19,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
 				    [
                         file('${moduleDir}/tests/assets/template.sql', checkIfExists: true)
-                    ]
+            ], []
 				]
 
                 """

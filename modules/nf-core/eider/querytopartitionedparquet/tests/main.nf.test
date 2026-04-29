@@ -19,7 +19,34 @@ nextflow_process {
                     [ id:'test' ], // meta map
 				    [
                         file('${moduleDir}/tests/assets/template.sql', checkIfExists: true)
-                    ]
+            ], []
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-eider-querytopartitionedparquet-input-files") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    [
+                        file('${moduleDir}/tests/assets/template_with_input_file.sql', checkIfExists: true)
+            ],
+				    [
+                        file('${moduleDir}/tests/assets/input.csv', checkIfExists: true)
+            ]
 				]
 
                 """
