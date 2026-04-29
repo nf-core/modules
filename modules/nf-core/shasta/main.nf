@@ -21,8 +21,8 @@ process SHASTA {
 
     script:
     def args   = task.ext.args   ?: ''
+    def args2  = task.ext.args2  ?: '--config Nanopore-Oct2021'
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def model  = "${meta.model}" ?: 'Nanopore-Oct2021'
     """
     # shasta requires uncompressed
     zcat -f $reads > reads.fq
@@ -30,7 +30,7 @@ process SHASTA {
     # run shasta
     shasta \\
         --input reads.fq \\
-        --config $model \\
+        $args2 \\
         $args \\
         --threads $task.cpus
 
