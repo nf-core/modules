@@ -43,7 +43,7 @@ process GANGSTR {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.samplestats.tab
     """
