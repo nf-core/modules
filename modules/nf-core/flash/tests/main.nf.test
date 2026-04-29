@@ -30,7 +30,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert process.out.merged[0][1].endsWith(".extendedFrags.fastq.gz") },
+                { assert process.out.notcombined[0][1][0].endsWith(".notCombined_1.fastq.gz") },
+                { assert process.out.notcombined[0][1][1].endsWith(".notCombined_2.fastq.gz") },
+                { assert snapshot(
+                    process.out.histogram,
+                    process.out.versions_flash
+                ).match() },
+                { assert snapshot(process.out.versions_flash).match("versions") }
             )
         }
 
