@@ -1,6 +1,7 @@
 name: "prinseqplusplus"
-description: PRINSEQ++ is a C++ implementation of the prinseq-lite.pl program. It
-  can be used to filter, reformat or trim genomic and metagenomic sequence data
+description: PRINSEQ++ is a C++ implementation of the prinseq-lite.pl program.
+  It can be used to filter, reformat or trim genomic and metagenomic sequence
+  data
 keywords:
   - fastq
   - fasta
@@ -13,7 +14,8 @@ tools:
       documentation: "https://github.com/Adrian-Cantu/PRINSEQ-plus-plus"
       tool_dev_url: "https://github.com/Adrian-Cantu/PRINSEQ-plus-plus"
       doi: "10.7287/peerj.preprints.27553v1"
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: ""
 input:
   - - meta:
@@ -75,13 +77,27 @@ output:
             Verbose level 2 STDOUT information in a log file
           pattern: "*.log"
           ontologies: []
+  versions_prinseqplusplus:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prinseqplusplus:
+          type: string
+          description: The name of the tool
+      - echo $(prinseq++ --version | cut -f 2 -d " " ):
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prinseqplusplus:
+          type: string
+          description: The name of the tool
+      - echo $(prinseq++ --version | cut -f 2 -d " " ):
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

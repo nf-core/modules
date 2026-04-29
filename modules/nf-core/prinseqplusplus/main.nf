@@ -15,7 +15,7 @@ process PRINSEQPLUSPLUS {
     tuple val(meta), path("*_single_out*.fastq.gz"), optional: true, emit: single_reads
     tuple val(meta), path("*_bad_out*.fastq.gz")   , optional: true, emit: bad_reads
     tuple val(meta), path("*.log")                                 , emit: log
-    path "versions.yml"                                            , emit: versions
+    tuple val("${task.process}"), val('prinseqplusplus'), eval('echo $(prinseq++ --version | cut -f 2 -d " " )'), emit: versions_prinseqplusplus, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process PRINSEQPLUSPLUS {
             -VERBOSE 1 \\
             $args \\
             | tee ${prefix}.log
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            prinseqplusplus: \$(echo \$(prinseq++ --version | cut -f 2 -d ' ' ))
-        END_VERSIONS
         """
     } else {
         """
@@ -51,11 +46,13 @@ process PRINSEQPLUSPLUS {
             -VERBOSE 1 \\
             $args \\
             | tee ${prefix}.log
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            prinseqplusplus: \$(echo \$(prinseq++ --version | cut -f 2 -d ' ' ))
-        END_VERSIONS
         """
     }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}_good_out_R1.fastq.gz
+    touch ${prefix}.log
+    """
 }
