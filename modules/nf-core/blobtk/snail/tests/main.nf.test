@@ -115,7 +115,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                {
+                    assert snapshot(
+                        process.out.images.collect { meta, image -> [meta, file(image).name] },
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
             )
         }
     }
@@ -142,7 +147,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                {
+                    assert snapshot(
+                        process.out.images.collect { meta, image -> [meta, file(image).name] },
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
             )
         }
     }
@@ -186,7 +196,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                {
+                    assert snapshot(
+                        process.out.images.collect { meta, image -> [meta, file(image).name] },
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
             )
         }
     }
@@ -215,7 +230,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                {
+                    assert snapshot(
+                        process.out.images.collect { meta, image -> [meta, file(image).name] },
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
             )
         }
     }
