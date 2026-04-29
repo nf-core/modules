@@ -22,8 +22,7 @@ process GMMDEMUX {
     tuple val(meta), path("GMM_*.csv"           ), emit: classification_report
     tuple val(meta), path("GMM_*.config"        ), emit: config_report
     tuple val(meta), path("summary_report_*.txt")                                                                                     , emit: summary_report, optional: true
-    // the CLI does not provide any information about version
-    // make sure to update the line below when there is a new version
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('GMM-Demux'), val("0.2.2.3")                                                                 , emit: versions_gmmdemux, topic: versions
 
     when:

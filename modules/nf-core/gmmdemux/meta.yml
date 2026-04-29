@@ -75,7 +75,7 @@ output:
             matrix mtx.tsv file with removed cell-hashing-identifiable multiplets
           pattern: "matrix.mtx.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP
   features:
     - - meta:
           type: map
@@ -101,7 +101,7 @@ output:
             full or simplified classification report
           pattern: "GMM_*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   config_report:
     - - meta:
           type: map
@@ -114,7 +114,7 @@ output:
             Configuration report mapping the results obtained by the tool to the respective names of the HTOs in the classification report.
           pattern: "GMM_*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   summary_report:
     - - meta:
           type: map
