@@ -26,9 +26,34 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.assembly[0][1]).linesGzip.join()[0..99],
-                    process.out.versions
+                    sanitizeOutput(process.out)
                     ).match()
                 }
+            )
+        }
+
+    }
+
+    test("Medaka - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
