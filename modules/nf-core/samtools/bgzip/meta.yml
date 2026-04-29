@@ -32,10 +32,10 @@ input:
         description: Input file, compressed or not.
         pattern: "*.*"
         ontologies: []
-  - - suffix:
-        type: string
-        description: |
-          Suffix of the input file. Only used for naming the output file.
+  - out_ext:
+      type: string
+      description: |
+        Extension of the output file. Only used for naming, does not affect the compression.
 output:
   output:
     - - meta:
