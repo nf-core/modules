@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "flash"
 
-    test("sarscov2 - bam") {
+    test("sarscov2 - paired-end") {
 
         when {
             params{
@@ -30,13 +30,37 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.merged[0][1]).name,
-                    process.out.notcombined[0][1].collect { file(it).name },
-                    process.out.histogram,
-                    process.out.versions,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: "test", single_end:false], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

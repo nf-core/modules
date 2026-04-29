@@ -14,7 +14,7 @@ process FLASH {
     tuple val(meta), path("${prefix}.extendedFrags.fastq.gz"), emit: merged
     tuple val(meta), path("${prefix}.notCombined_*.fastq.gz"), emit: notcombined
     tuple val(meta), path("${prefix}.hist")                  , emit: histogram
-    path "versions.yml"                                      , emit: versions
+    tuple val("${task.process}"), val('flash'), eval('flash --version 2>&1 | head -1 | sed \'s/^.*FLASH v//; s/ .*$//\''), emit: versions_flash, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,23 +33,14 @@ process FLASH {
         -z \\
         ${reads[0]} \\
         ${reads[1]}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        flash: \$(echo \$(flash --version 2>&1) | sed 's/^.*FLASH v//; s/ .*\$//')
-    END_VERSIONS
     """
-
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-
-    echo "" | gzip > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        flash: \$(echo \$(flash --version 2>&1) | sed 's/^.*FLASH v//; s/ .*\$//')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.extendedFrags.fastq.gz
+    echo "" | gzip > ${prefix}.notCombined_1.fastq.gz
+    echo "" | gzip > ${prefix}.notCombined_2.fastq.gz
+    touch ${prefix}.hist
     """
 }
