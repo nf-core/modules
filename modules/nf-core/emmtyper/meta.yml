@@ -44,7 +44,7 @@ output:
       - emmtyper:
           type: string
           description: The name of the tool
-      - "emmtyper --version 2>&1 | sed \"s/^.*emmtyper v//\"":
+      - python -c "import emmtyper; print(emmtyper.__version__)":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -55,7 +55,7 @@ topics:
       - emmtyper:
           type: string
           description: The name of the tool
-      - "emmtyper --version 2>&1 | sed \"s/^.*emmtyper v//\"":
+      - python -c "import emmtyper; print(emmtyper.__version__)":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

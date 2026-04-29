@@ -12,7 +12,7 @@ process EMMTYPER {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    tuple val("${task.process}"), val('emmtyper'), eval('emmtyper --version 2>&1 | sed "s/^.*emmtyper v//"'), topic: versions, emit: versions_emmtyper
+    tuple val("${task.process}"), val('emmtyper'), eval('python -c "import emmtyper; print(emmtyper.__version__)"'), topic: versions, emit: versions_emmtyper
 
     when:
     task.ext.when == null || task.ext.when
