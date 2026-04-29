@@ -19,8 +19,14 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing sample information - tumor_id and normal_id must match read groups for the respective samples.
-          [ id:'test', tumor_id:'tumor', normal_id:'normal' ]
+          Groovy Map containing sample information.
+          e.g. [ id:'test' ]
+    - tumor_name:
+        type: string
+        description: Sample name for the tumor BAM. Must match the read group sample name in the tumor BAM.
+    - normal_name:
+        type: string
+        description: (Optional) Sample name for the normal BAM. Must match the read group sample name in the normal BAM. Required only when a normal BAM is provided.
     - tumor_bam:
         type: file
         description: bam file for tumor sample.
