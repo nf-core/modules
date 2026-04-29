@@ -14,7 +14,8 @@ process ECTYPER {
     tuple val(meta), path("*.log"), emit: log
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val(meta), path("*.txt"), emit: txt
-    tuple val("${task.process}"), val('ectyper'), eval('echo $(ectyper --version 2>&1) | sed \'s/.*ectyper //; s/ .*$//\''), emit: versions_ectyper, topic: versions
+    tuple val("${task.process}"), val('ectyper'), eval('ectyper --version 2>&1 | sed \'s/.*ectyper //; s/ .*$//\''), emit: versions_ectyper, topic: versions
+
     when:
     task.ext.when == null || task.ext.when
 
@@ -35,5 +36,13 @@ process ECTYPER {
         --input $fasta_name
 
     mv output.tsv ${prefix}.tsv
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.log
+    touch ${prefix}.tsv
+    touch ${prefix}.txt
     """
 }
