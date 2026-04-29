@@ -26,6 +26,12 @@ input:
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAM file index
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
 output:
   tsv:
     - - meta:
