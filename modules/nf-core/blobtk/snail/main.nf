@@ -25,7 +25,7 @@ process BLOBTK_SNAIL {
     def args            = task.ext.args     ?: ""
     def blob_dir_args   = blob_dir          ? "--blobdir ${blob_dir}" : ""
     def full_table_args = full_table        ? "--busco ${full_table}"  : ""
-    def output_image    = "${prefix}_snail.${image_format}"
+    def output_image    = "${prefix}_snail.${format}"
 
     """
     blobtk snail \\
