@@ -30,7 +30,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'genome' ],
-                    file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/reference/reference.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_no_chr.fasta', checkIfExists: true),
                     []
                 ]
                 input[1] = false
@@ -104,7 +104,7 @@ nextflow_process {
 
                 input[1] = Channel.of([
                     [ id:'genome' ],
-                    file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/reference/reference.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_no_chr.fasta', checkIfExists: true)
                 ]).join(SAMTOOLS_FAIDX2.out.fai)
                 """
             }
@@ -152,7 +152,7 @@ nextflow_process {
 
                 input[1] = Channel.of([
                     [ id:'genome' ],
-                    file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/reference/reference.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_no_chr.fasta', checkIfExists: true)
                 ]).join(SAMTOOLS_FAIDX2.out.fai)
                 """
             }
