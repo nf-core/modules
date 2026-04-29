@@ -28,18 +28,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-					file(process.out.gbk[0][1]).readLines()[3..7],
-					file(process.out.svg[0][1]).readLines()[3..7],
-					process.out.tsv,
-					process.out.versions
-					).match()
-				}
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test("test-hicap-stub") {
+    test("test-hicap - stub") {
         options '-stub'
 
         when {
@@ -59,7 +53,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

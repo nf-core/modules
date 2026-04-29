@@ -16,7 +16,7 @@ process HICAP {
     tuple val(meta), path("*.gbk"), emit: gbk, optional: true
     tuple val(meta), path("*.svg"), emit: svg, optional: true
     tuple val(meta), path("*.tsv"), emit: tsv, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('hicap'), eval('echo $(hicap --version 2>&1) | sed \'s/^.*hicap //\''), emit: versions_hicap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,23 +38,13 @@ process HICAP {
         $args \\
         --threads $task.cpus \\
         -o ./
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hicap: \$( echo \$( hicap --version 2>&1 ) | sed 's/^.*hicap //' )
-    END_VERSIONS
     """
 
     stub:
-    def fasta_name = fasta.getName().split('\\.')[0] // Get the base name without extension
+    def fasta_name = fasta.getName().split('\\.')[0]
     """
     touch ${fasta_name}.gbk
     touch ${fasta_name}.svg
     touch ${fasta_name}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hicap: \$( echo \$( hicap --version 2>&1 ) | sed 's/^.*hicap //' )
-    END_VERSIONS
     """
 }
