@@ -37,9 +37,33 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    path("${process.out.results.get(0).get(1)}/ScanSummary.txt")
+                    path("${process.out.results.get(0).get(1)}/ScanSummary.txt"),
+                    sanitizeOutput(process.out)
                 ).match() },
+            )
+        }
+    }
+
+    test("test_maltextract - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/malt/test.rma6')
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/maltextract/taxon_list.txt')
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

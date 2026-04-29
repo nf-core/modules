@@ -14,7 +14,7 @@ process MALTEXTRACT {
 
     output:
     tuple val(meta), path("results")      , emit: results
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('maltextract'), eval('MaltExtract --help | head -n 2 | tail -n 1 | sed \'s/MaltExtract version//\''), emit: versions_maltextract, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,10 +30,10 @@ process MALTEXTRACT {
         -r $ncbi_dir \\
         -o results/ \\
         $args
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        maltextract: \$(MaltExtract --help | head -n 2 | tail -n 1 | sed 's/MaltExtract version//')
-    END_VERSIONS
+    stub:
+    """
+    mkdir -p results
     """
 }
