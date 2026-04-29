@@ -1,0 +1,52 @@
+nextflow_process {
+    name "Test Process CLUSTER_VIZ"
+    script "../main.nf"
+    process "CLUSTER_VIZ"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cluster_viz"
+
+    test("cluster_viz - features clusters pca") {
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], 
+                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_features.tsv", checkIfExists: true),
+                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_clusters.csv", checkIfExists: true),
+                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_pca.eigenvec", checkIfExists: true) ]
+                input[1] = 'test'
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.umap,
+                process.out.tsne,
+                process.out.umap_png,
+                process.out.tsne_png,
+                process.out.pca_png,
+                process.out.versions
+            ).match()
+        }
+    }
+
+    test("cluster_viz - features clusters pca - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], 
+                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_features.tsv", checkIfExists: true),
+                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_clusters.csv", checkIfExists: true),
+                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_pca.eigenvec", checkIfExists: true) ]
+                input[1] = 'test'
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+    }
+}

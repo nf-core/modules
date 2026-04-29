@@ -1,0 +1,105 @@
+name: "cluster_viz"
+description: "Generates PCA, UMAP and t-SNE visualizations colored by cluster assignment"
+keywords:
+  - clustering
+  - visualization
+  - umap
+  - tsne
+  - pca
+
+tools:
+  - "scikit-learn":
+      description: "Machine learning library"
+      homepage: "https://scikit-learn.org/"
+      documentation: "https://scikit-learn.org/stable/"
+      licence: ["BSD-3-Clause"]
+  - "umap-learn":
+      description: "Uniform Manifold Approximation and Projection"
+      homepage: "https://umap-learn.readthedocs.io/"
+      documentation: "https://umap-learn.readthedocs.io/"
+      licence: ["BSD-3-Clause"]
+
+authors:
+  - "@dbaku42"
+maintainers:
+  - "@dbaku42"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - features:
+        type: file
+        description: TSV with features used for clustering
+        pattern: "*.tsv"
+    - clusters:
+        type: file
+        description: Cluster assignment file
+        pattern: "*_clusters.*"
+    - pca_scores:
+        type: file
+        description: Original PCA scores file
+        pattern: "*.eigenvec"
+
+  - out_prefix:
+      type: string
+      description: Prefix for output files
+
+output:
+  umap:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "_umap.tsv":
+          type: file
+          description: UMAP coordinates TSV
+          pattern: "_umap.tsv"
+
+  tsne:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "_tsne.tsv":
+          type: file
+          description: t-SNE coordinates TSV
+          pattern: "_tsne.tsv"
+
+  umap_png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "_umap.png":
+          type: file
+          description: UMAP plot PNG
+          pattern: "_umap.png"
+
+  tsne_png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "_tsne.png":
+          type: file
+          description: t-SNE plot PNG
+          pattern: "_tsne.png"
+
+  pca_png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*_pca.png":
+          type: file
+          description: PCA plot colored by cluster
+          pattern: "*_pca.png"
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
