@@ -11,7 +11,7 @@ process GEOFETCH {
 
     output:
     tuple val("${geo_accession}"), path("${geo_accession}/*.CEL.gz"), emit: samples
-    path "versions.yml"                                             , emit: versions
+    tuple val("${task.process}"), val('geofetch'), eval("geofetch --version 2>&1 | sed '1!d; s/^geofetch //'"), topic: versions, emit: versions_geofetch
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +25,6 @@ process GEOFETCH {
         --processed \\
         -g . \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        geofetch: \$(geofetch --version|& sed '1!d ; s/geofetch //')
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process GEOFETCH {
     touch foo.CEL
     gzip foo.CEL
     cd ..
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        geofetch: \$(geofetch --version|& sed '1!d ; s/geofetch //')
-    END_VERSIONS
     """
 }
