@@ -29,7 +29,9 @@ process FARGENE {
     tuple val(meta), path("${prefix}/spades_assembly/*")                                         , optional: true, emit: spades
     tuple val(meta), path("${prefix}/tmpdir/*.fasta")                                            , optional: true, emit: metagenome
     tuple val(meta), path("${prefix}/tmpdir/*.out")                                              , optional: true, emit: tmp
-    path "versions.yml"                                                                          , emit: versions
+    // the CLI does not provide any information about version
+    // make sure to update the line below when there is a new version
+    tuple val("${task.process}"), val('fargene'), val("0.1")                                                     , emit: versions_fargene, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,7 +39,6 @@ process FARGENE {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     fargene \\
         $args \\
@@ -45,16 +46,10 @@ process FARGENE {
         -i $input \\
         --hmm-model $hmm_model \\
         -o $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fargene: $VERSION
-    END_VERSIONS
     """
 
     stub:
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.log
     mkdir -p ${prefix}/{hmmsearchresults,predictedGenes,retrievedFragments}
@@ -71,12 +66,6 @@ process FARGENE {
     touch ${prefix}/predictedGenes/${prefix}-filtered-peptides.fasta
     touch ${prefix}/retrievedFragments/all_retrieved_${prefix}.fastq
     touch ${prefix}/retrievedFragments/trimmedReads/${prefix}.fasta
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fargene: $VERSION
-    END_VERSIONS
     """
 
 }
