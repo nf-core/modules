@@ -4,7 +4,7 @@ process RTN_TNI {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/96979cd0715edeb5d68ebbd19a353760298ebf53bf729d3b68764b2bb00683f7/data':
         'community.wave.seqera.io/library/bioconductor-rtn:2.30.0--71b797cd8b2d56b3' }"
 

@@ -8,7 +8,7 @@ nextflow_process {
     tag "genmod"
     tag "genmod/models"
 
-    test("genmod_models") {
+    test("genmod_models without reduced_penetrance") {
 
         when {
             process {
@@ -35,7 +35,34 @@ nextflow_process {
 
     }
 
-    test("genmod_models - stub") {
+    test("genmod_models with reduced_penetrance") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test_annotate.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/genmod/genmod_reduced_penetrance.tsv', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                ).match() }
+            )
+        }
+
+    }
+
+    test("genmod_models without reduced_penetrance - stub") {
 
         options "-stub"
 
