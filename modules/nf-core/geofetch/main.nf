@@ -31,9 +31,6 @@ process GEOFETCH {
 
     """
     mkdir -p ${geo_accession}
-    cd ${geo_accession}
-    touch foo.CEL
-    gzip foo.CEL
-    cd ..
+    echo "" | gzip > ${geo_accession}/foo.CEL.gz
     """
 }
