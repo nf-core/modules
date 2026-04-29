@@ -3,7 +3,7 @@ process METAMAPS_MAPDIRECTLY {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metamaps:0.1.633d2e0--h21ec9f0_0':
         'quay.io/biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0' }"
 

@@ -1,0 +1,151 @@
+name: "percolator"
+description: Rescore peptide-spectrum matches and estimate false discovery rates
+  using the Percolator semi-supervised learning algorithm.
+keywords:
+  - proteomics
+  - spectrum identification
+  - psm
+  - peptide
+  - protein
+  - rescoring
+  - false discovery rate
+  - features
+tools:
+  - "percolator":
+      description: "Semi-supervised learning for peptide identification from shotgun
+        proteomics datasets."
+      homepage: "http://percolator.ms"
+      documentation: "http://percolator.ms"
+      tool_dev_url: "https://github.com/percolator/percolator"
+      doi: "10.1038/nmeth1113"
+      licence: ["Apache-2.0"]
+      identifier: biotools:percolator
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - peptide_identification:
+        type: file
+        description: peptide identifications as PIN (Percolator input) file
+        pattern: "*.pin"
+        ontologies: []
+output:
+  pout_xml:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}.pout.xml:
+          type: file
+          description: Percolator output in XML format containing all PSM-level results
+          pattern: "*.pout.xml"
+          ontologies:
+            - edam: "http://edamontology.org/format_2332" # XML
+  pout_pepxml:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}.pep.xml:
+          type: file
+          description: Percolator output in pepXML format
+          pattern: "*.pep.xml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3655" # pepXML
+  features_pin:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}.features.pin:
+          type: file
+          description: Tab-separated file with rescored features (PIN format)
+          pattern: "*.features.pin"
+          ontologies: []
+  weights:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}.weights.tsv:
+          type: file
+          description: TSV file containing the final feature weights
+          pattern: "*.weights.tsv"
+          ontologies: []
+  target_peptides:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}.pep.target.pout:
+          type: file
+          description: Target peptide-level results in tab separated format (pout)
+          pattern: "*.pep.target.pout"
+          ontologies: []
+  decoy_peptides:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}.pep.decoy.pout:
+          type: file
+          description: Decoy peptide-level results in tab separated format (pout)
+          pattern: "*.pep.decoy.pout"
+          ontologies: []
+  target_psms:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}.psm.target.pout:
+          type: file
+          description: Target PSM-level results in tab separated format (pout)
+          pattern: "*.psm.target.pout"
+          ontologies: []
+  decoy_psms:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}.psm.decoy.pout:
+          type: file
+          description: Decoy PSM-level results in tab separated format (pout)
+          pattern: "*.psm.decoy.pout"
+          ontologies: []
+  target_proteins:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}.protein.target.pout:
+          type: file
+          description: Target protein-level results in tab separated format (pout)
+          pattern: "*.protein.target.pout"
+          ontologies: []
+  decoy_proteins:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}.protein.decoy.pout:
+          type: file
+          description: Decoy protein-level results in tab separated format (pout)
+          pattern: "*.protein.decoy.pout"
+          ontologies: []
+  versions_percolator:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - percolator:
+          type: string
+          description: The name of the tool
+      - percolator --help 2>&1 | head -1 | sed "s;Percolator version \([^,]*\),.*;\1;":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - percolator:
+          type: string
+          description: The name of the tool
+      - percolator --help 2>&1 | head -1 | sed "s;Percolator version \([^,]*\),.*;\1;":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@julianu"
+maintainers:
+  - "@julianu"

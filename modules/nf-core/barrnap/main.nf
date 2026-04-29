@@ -3,7 +3,7 @@ process BARRNAP {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/barrnap:0.9--hdfd78af_4':
         'quay.io/biocontainers/barrnap:0.9--hdfd78af_4' }"
 

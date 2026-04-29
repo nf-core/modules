@@ -4,7 +4,7 @@ process VT_DECOMPOSEBLOCKSUB {
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vt:2015.11.10--h5ef6573_4':
         'quay.io/biocontainers/vt:2015.11.10--h5ef6573_4' }"
 
@@ -48,7 +48,7 @@ process VT_DECOMPOSEBLOCKSUB {
     }
 
     """
-    touch ${prefix}.vcf.gz
+    echo | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

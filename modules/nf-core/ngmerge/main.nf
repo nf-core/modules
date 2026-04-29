@@ -3,7 +3,7 @@ process NGMERGE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngmerge:0.3--ha92aebf_1':
         'quay.io/biocontainers/ngmerge:0.3--ha92aebf_1' }"
 
