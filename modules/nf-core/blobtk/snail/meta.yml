@@ -1,0 +1,89 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "blobtk_snail"
+description: |
+  Creates blobtk snail plots.
+keywords:
+  - svg
+  - bkt
+  - blobtoolkit
+  - snailplot
+tools:
+  - btk:
+      description: |
+        BlobTk contains a set of core functions used by BlobToolKit tools.
+        Implemented in Rust, these functions are intended to be accessible
+        from the command line, as python modules and will include web assembly
+        code for use in javascript.
+      homepage: https://github.com/genomehubs/blobtk/
+      documentation: https://github.com/genomehubs/blobtk/wiki/
+      licence: ["MIT"]
+      identifier: biotools:btk
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information and blobtk arguments
+          e.g. `[ id:'sample1']`
+    - fasta:
+        type: file
+        description: |
+          Input assembly FASTA.
+        pattern: "*.fasta"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - local_path:
+        type: directory
+        description: |
+          A path to a Blob Dir generated as part of a greater pipeline.
+        pattern: "*/"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information and blobtk arguments
+          e.g. `[ id:'sample1']`
+    - full_table:
+        type: file
+        description: |
+          Full table TSV from blast.
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_1915 # TSV
+
+output:
+  svg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.svg":
+          type: file
+          description: |
+            Blobplot SVG results of input arguments.
+          ontologies:
+            - edam: http://edamontology.org/format_3604
+  versions_blobtk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blobtk:
+          type: string
+          description: The name of the tool
+      - "blobtk --version | cut -d' ' -f2":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blobtk:
+          type: string
+          description: The name of the tool
+      - "blobtk --version | cut -d' ' -f2":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@DLBPointon"
+maintainers:
+  - "@DLBPointon"

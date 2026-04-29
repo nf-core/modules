@@ -1,0 +1,167 @@
+nextflow_process {
+
+    name "Test Process BLOBTK_SNAIL"
+    script "../main.nf"
+    process "BLOBTK_SNAIL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blobtk"
+    tag "blobtk/SNAIL"
+
+
+    test("bacteroides fragilis - fasta - svg") {
+
+        when {
+
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true),
+                        []
+                    ]
+                )
+                input[1] = Channel.of([[:],[]])
+                input[2] = Channel.of("svg")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+    test("bacteroides fragilis - fasta") {
+
+        when {
+
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true),
+                        []
+                    ]
+                )
+                input[1] = Channel.of([[:],[]])
+                input[2] = Channel.of("png")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("bacteroides fragilis - fasta and full_table") {
+
+        when {
+
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/busco/bacteria_odb10/full_table.tsv", checkIfExists: true)
+                    ]
+                )
+                input[1] = Channel.of([[:],[]])
+                input[2] = Channel.of("png")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("bacteroides fragilis - fasta and full_table and blobdir") {
+
+        setup {
+            run("BLOBTK_CREATE") {
+                script "../../../blobtk/create/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of(
+                        [
+                            [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/busco/bacteria_odb10/full_table.tsv", checkIfExists: true)
+                        ]
+                    )
+                    """
+                }
+            }
+        }
+
+        when {
+
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/busco/bacteria_odb10/full_table.tsv", checkIfExists: true)
+                    ]
+                )
+                input[1] = BLOBTK_CREATE.out.blobdir
+                input[2] = Channel.of("png")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("bacteroides fragilis - fasta - stub") {
+
+        options "-stub"
+
+        when {
+
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true),
+                        []
+                    ]
+                )
+                input[1] = Channel.of([[:],[]])
+                input[2] = Channel.of("png")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
