@@ -12,8 +12,8 @@ process GENRICH {
     path  blacklist_bed
 
     output:
-    tuple val(meta), path("*.narrowPeak")                     , emit: peak
-    path "versions.yml"                                       , emit: versions
+    tuple val(meta), path("*.narrowPeak")                                                                                                       , emit: peak
+    tuple val("${task.process}"), val('genrich'), eval("Genrich --version 2>&1 | head -n1 | sed 's/Genrich, version //'"), emit: versions_genrich, topic: versions
 
     tuple val(meta), path("*.pvalues.bedGraph"), optional:true, emit: bedgraph_pvalues
     tuple val(meta), path("*.pileup.bedGraph") , optional:true, emit: bedgraph_pileup
@@ -45,10 +45,11 @@ process GENRICH {
         $control \\
         $blacklist \\
         -o ${prefix}.narrowPeak
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genrich: \$(echo \$(Genrich --version 2>&1) | sed 's/^Genrich, version //; s/ .*\$//')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.narrowPeak
     """
 }
