@@ -31,6 +31,9 @@ input:
         pattern: "*.{mzML,mzXML,mgf,mzData,dta,dta2d,edta,featureXML,consensusXML,idXML,traML,fid,raw}"
         ontologies:
           - edam: http://edamontology.org/data_2536 # Mass spectrometry data
+    - out_type:
+        type: string
+        description: Target output file extension/format (e.g. `mzML`, `mgf`, `featureXML`)
 
 output:
   converted:
@@ -39,9 +42,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - "${prefix}.${suffix}":
+      - "${prefix}.${out_type}":
           type: file
-          description: Converted mass spectrometry file in the format specified via `task.ext.suffix` (default `mzML`)
+          description: Converted mass spectrometry file in the format specified via `out_type`
           pattern: "*.{mzML,mzXML,mgf,mzData,dta,dta2d,edta,featureXML,consensusXML,idXML,traML}"
           ontologies:
             - edam: http://edamontology.org/data_2536 # Mass spectrometry data

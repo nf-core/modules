@@ -8,10 +8,10 @@ process OPENMS_FILECONVERTER {
         'quay.io/biocontainers/openms:3.5.0--h78fb946_0' }"
 
     input:
-    tuple val(meta), path(input_file)
+    tuple val(meta), path(input_file), val(out_type)
 
     output:
-    tuple val(meta), path("${prefix}.${suffix}"), emit: converted
+    tuple val(meta), path("${prefix}.${out_type}"), emit: converted
     tuple val("${task.process}"), val('openms'), eval("FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'"), emit: versions_openms, topic: versions
 
     when:
@@ -20,19 +20,17 @@ process OPENMS_FILECONVERTER {
     script:
     def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    suffix   = task.ext.suffix ?: 'mzML'
     """
     FileConverter \\
         -in $input_file \\
-        -out ${prefix}.${suffix} \\
+        -out ${prefix}.${out_type} \\
         -threads $task.cpus \\
         $args
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: 'mzML'
     """
-    touch ${prefix}.${suffix}
+    touch ${prefix}.${out_type}
     """
 }

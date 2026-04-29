@@ -11,14 +11,13 @@ nextflow_process {
 
     test("proteomics - mzML - to mgf") {
 
-        config "./nextflow.config"
-
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true),
+                    'mgf'
                 ]
                 """
             }
@@ -35,14 +34,14 @@ nextflow_process {
     test("proteomics - mzML - to mgf - stub") {
 
         options "-stub"
-        config "./nextflow.config"
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test_stub' ],
-                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true),
+                    'mgf'
                 ]
                 """
             }
