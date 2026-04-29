@@ -25,4 +25,9 @@ process FASTTREE {
         -nt $alignment \\
         > fasttree_phylogeny.tre
     """
+
+    stub:
+    """
+    touch fasttree_phylogeny.tre
+    """
 }
