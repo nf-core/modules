@@ -5,10 +5,10 @@ process PARABRICKS_MUTECTCALLER {
     // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
     stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.7.0-1"
 
     input:
-    tuple val(meta), path(tumor_bam), path(tumor_bam_index), path(normal_bam), path(normal_bam_index), path(intervals)
+    tuple val(meta), val(tumor_name), val(normal_name), path(tumor_bam), path(tumor_bam_index), path(normal_bam), path(normal_bam_index), path(intervals)
     tuple val(ref_meta), path(fasta)
     path panel_of_normals
     path panel_of_normals_index
@@ -34,6 +34,7 @@ process PARABRICKS_MUTECTCALLER {
     def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
     def prepon_command = panel_of_normals ? "cp -L ${panel_of_normals_index} `readlink -f ${panel_of_normals}`.tbi && pbrun prepon --in-pon-file ${panel_of_normals}" : ""
     def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf.gz --in-pon-file ${panel_of_normals} --out-vcf ${prefix}_annotated.vcf.gz" : ""
+    def normal_comand    = normal_bam       ? "--in-normal-bam ${normal_bam} --normal-name ${normal_name}" : ""
 
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ""
     """
@@ -44,7 +45,8 @@ process PARABRICKS_MUTECTCALLER {
         mutectcaller \\
         --ref ${fasta} \\
         --in-tumor-bam ${tumor_bam} \\
-        --tumor-name ${meta.tumor_id} \\
+        --tumor-name ${tumor_name} \\
+        ${normal_comand} \\
         --out-vcf ${prefix}.vcf.gz \\
         ${intervals_command} \\
         ${num_gpus} \\
