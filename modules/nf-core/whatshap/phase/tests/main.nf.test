@@ -90,14 +90,14 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz.tbi', checkIfExists: true),
                     [
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/earlycasualcaiman_sorted_md.bam', checkIfExists: true),
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/hugelymodelbat_sorted_md.bam', checkIfExists: true),
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/slowlycivilbuck_sorted_md.bam', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/earlycasualcaiman_sorted_md.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/hugelymodelbat_sorted_md.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/slowlycivilbuck_sorted_md.bam', checkIfExists: true)
                     ],
                     [
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/earlycasualcaiman_sorted_md.bam.bai', checkIfExists: true),
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/hugelymodelbat_sorted_md.bam.bai', checkIfExists: true),
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/slowlycivilbuck_sorted_md.bam.bai', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/earlycasualcaiman_sorted_md.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/hugelymodelbat_sorted_md.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/slowlycivilbuck_sorted_md.bam.bai', checkIfExists: true)
                     ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true),
                 ]
@@ -138,14 +138,14 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz.tbi', checkIfExists: true),
                     [
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/earlycasualcaiman_sorted_md.bam', checkIfExists: true),
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/hugelymodelbat_sorted_md.bam', checkIfExists: true),
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/slowlycivilbuck_sorted_md.bam', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/earlycasualcaiman_sorted_md.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/hugelymodelbat_sorted_md.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/slowlycivilbuck_sorted_md.bam', checkIfExists: true)
                     ],
                     [
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/earlycasualcaiman_sorted_md.bam.bai', checkIfExists: true),
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/hugelymodelbat_sorted_md.bam.bai', checkIfExists: true),
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/raredisease/testdata/slowlycivilbuck_sorted_md.bam.bai', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/earlycasualcaiman_sorted_md.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/hugelymodelbat_sorted_md.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/slowlycivilbuck_sorted_md.bam.bai', checkIfExists: true)
                     ],
                     [],
                 ]
