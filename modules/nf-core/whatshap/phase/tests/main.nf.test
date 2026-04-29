@@ -24,19 +24,6 @@ nextflow_process {
                 """
             }
         }
-        run("SAMTOOLS_FAIDX", alias: "SAMTOOLS_FAIDX2") {
-            script "../../../samtools/faidx/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'genome' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_no_chr.fasta', checkIfExists: true),
-                    []
-                ]
-                input[1] = false
-                """
-            }
-        }
     }
 
     test("whatshap - phase - vcf") {
@@ -78,9 +65,34 @@ nextflow_process {
 
         config "./nextflow.config"
 
+        setup {
+            run("SEQKIT_REPLACE") {
+                script "../../../seqkit/replace/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'no_chr_genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("SAMTOOLS_FAIDX", alias: "SAMTOOLS_FAIDX2") {
+                script "../../../samtools/faidx/main.nf"
+                process {
+                    """
+                    input[0] = SEQKIT_REPLACE.out.fastx
+                                .map { meta, fastx -> [ meta, fastx, [] ] }
+                    input[1] = false
+                    """
+                }
+            }
+        }
+
         when {
             params {
                 module_args = "--chromosome 21"
+                module_args2 = "--pattern 'chr' --replacement ''"
             }
 
             process {
@@ -102,10 +114,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true),
                 ]
 
-                input[1] = Channel.of([
-                    [ id:'genome' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_no_chr.fasta', checkIfExists: true)
-                ]).join(SAMTOOLS_FAIDX2.out.fai)
+                input[1] = SEQKIT_REPLACE.out.fastx
+                            .join(SAMTOOLS_FAIDX2.out.fai)
                 """
             }
         }
@@ -126,9 +136,34 @@ nextflow_process {
 
         config "./nextflow.config"
 
+        setup {
+            run("SEQKIT_REPLACE") {
+                script "../../../seqkit/replace/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'no_chr_genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("SAMTOOLS_FAIDX", alias: "SAMTOOLS_FAIDX2") {
+                script "../../../samtools/faidx/main.nf"
+                process {
+                    """
+                    input[0] = SEQKIT_REPLACE.out.fastx
+                                .map { meta, fastx -> [ meta, fastx, [] ] }
+                    input[1] = false
+                    """
+                }
+            }
+        }
+
         when {
             params {
                 module_args = "--chromosome 21"
+                module_args2 = "--pattern 'chr' --replacement ''"
             }
 
             process {
@@ -150,10 +185,8 @@ nextflow_process {
                     [],
                 ]
 
-                input[1] = Channel.of([
-                    [ id:'genome' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_no_chr.fasta', checkIfExists: true)
-                ]).join(SAMTOOLS_FAIDX2.out.fai)
+                input[1] = SEQKIT_REPLACE.out.fastx
+                            .join(SAMTOOLS_FAIDX2.out.fai)
                 """
             }
         }
