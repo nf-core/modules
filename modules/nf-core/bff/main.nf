@@ -3,7 +3,7 @@ process BFF {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/21/21d3acad5fd1818f00b1c267fcc8c8be88c930cf31e74fb6b5ce444f96827604/data':
         'community.wave.seqera.io/library/bioconductor-cellhashr_r-seurat:25c4bc76749af5ac' }"
 

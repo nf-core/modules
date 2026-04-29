@@ -3,7 +3,7 @@ process CHROMAP_CHROMAP {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5d/5d39e0b3f00c5469ffc2ceef4bd76959fba6313064ed2408dd4ccac498022ad6/data' :
         'community.wave.seqera.io/library/chromap_samtools:b975c17adf0096ba' }"
 
