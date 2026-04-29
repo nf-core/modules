@@ -21,7 +21,10 @@ input:
           e.g. [ id:'test', single_end:false ]
     - sql:
         type: file
-        description: SQL query template
+        description: |
+          SQL query template; at least one SQL statement
+          should copy to an output file in CSV text format,
+          e.g. COPY table_name TO 'file.csv' (HEADER, DELIMITER ',');
         pattern: "*.{sql|sql.bgz|sql.gz|sql.zst}"
         ontologies: []
     - files:
@@ -41,7 +44,8 @@ output:
           description: |
             Query results in comma separated values (CSV) text format
           pattern: "*.{csv}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   versions_eider:
     - - ${task.process}:
           type: string
