@@ -1,21 +1,21 @@
 name: "pcne"
 description: "Estimates plasmid copy number from assembled genome"
 keywords:
-- plasmid
-- copy number
-- genomics
-- alignment
-- coverage
+  - plasmid
+  - copy number
+  - genomics
+  - alignment
+  - coverage
 tools:
-- "pcne":
-    description: "Estimates plasmid copy number from assembled genome."
-    homepage: "https://github.com/riccabolla/PCNE"
-    documentation: "https://github.com/riccabolla/PCNE"
-    tool_dev_url: "https://github.com/riccabolla/PCNE"
-    doi: "10.1177/11779322251410037"
-    licence:
-    - 'MIT'
-    identifier: ""
+  - "pcne":
+      description: "Estimates plasmid copy number from assembled genome."
+      homepage: "https://github.com/riccabolla/PCNE"
+      documentation: "https://github.com/riccabolla/PCNE"
+      tool_dev_url: "https://github.com/riccabolla/PCNE"
+      doi: "10.1177/11779322251410037"
+      licence:
+        - "MIT"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -53,58 +53,58 @@ input:
           - edam: "http://edamontology.org/format_1929" # FASTA
 output:
   results:
-  - - meta:
-        type: map
-        description: Groovy Map containing sample information
-    - "*_results.tsv":
-        type: file
-        description: TSV file containing the estimated plasmid copy numbers
-        pattern: "*_results.tsv"
-        ontologies:
-        - edam: "http://edamontology.org/format_3475"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_results.tsv":
+          type: file
+          description: TSV file containing the estimated plasmid copy numbers
+          pattern: "*_results.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
   log:
-  - - meta:
-        type: map
-        description: Groovy Map containing sample information
-    - "*.log":
-        type: file
-        description: PCNE run log file
-        pattern: "*.log"
-        ontologies:
-        - edam: "http://edamontology.org/format_2330"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.log":
+          type: file
+          description: PCNE run log file
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
   plots:
-  - - meta:
-        type: map
-        description: Groovy Map containing sample information
-    - "*.png":
-        type: file
-        description: Bar plot of plasmid copy numbers or GC vs Depth diagnostic
-          plots
-        pattern: "*.png"
-        ontologies:
-        - edam: "http://edamontology.org/format_3603"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.png":
+          type: file
+          description: Bar plot of plasmid copy numbers or GC vs Depth diagnostic
+            plots
+          pattern: "*.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603"
   versions_pcne:
-  - - "${task.process}":
-        type: string
-        description: The name of the process
-    - "pcne":
-        type: string
-        description: The name of the tool
-    - "pcne -v | sed 's/.*version //'":
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "pcne":
+          type: string
+          description: The name of the tool
+      - "pcne -v | sed 's/.*version //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-  - - "${task.process}":
-        type: string
-        description: The name of the process
-    - "pcne":
-        type: string
-        description: The name of the tool
-    - "pcne -v | sed 's/.*version //'":
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "pcne":
+          type: string
+          description: The name of the tool
+      - "pcne -v | sed 's/.*version //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
-- "@riccabolla"
+  - "@riccabolla"
 maintainers:
-- "@riccabolla"
+  - "@riccabolla"
