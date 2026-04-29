@@ -4,8 +4,8 @@ process METATOR_PIPELINE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/metator:1.3.10--py39h2de1943_0'
-        : 'biocontainers/metator:1.3.10--py39h2de1943_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46a2ce37dac94fcc2920f7b4d42c60455fe26b00945ff5e51624cba61373e8f9/data'
+        : 'community.wave.seqera.io/library/metator_pysam_python:eaa4c24c77402ae1'}"
 
     input:
     tuple val(meta), path(contigs), path(hic_input, arity: '1..2'), path(depths)
