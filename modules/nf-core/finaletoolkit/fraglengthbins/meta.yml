@@ -38,6 +38,8 @@ output:
           pattern: "*.frag_len.tsv"
           description: |
             Binned fragment length counts for the sample
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   png:
     - - meta:
           type: map
@@ -48,6 +50,8 @@ output:
           type: file
           pattern: "*_hist.png"
           description: Histogram of fragment length distributions
+          ontologies:
+            - edam: "http://edamontology.org/format_3603" # PNG
   versions_finaletoolkit:
     - - ${task.process}:
           type: string
