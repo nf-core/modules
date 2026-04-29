@@ -2,7 +2,7 @@ process PHAROKKA_INSTALLDATABASES {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pharokka:1.9.1--pyhdfd78af_0':
         'quay.io/biocontainers/pharokka:1.9.1--pyhdfd78af_0' }"
 
@@ -41,7 +41,7 @@ process PHAROKKA_INSTALLDATABASES {
     touch $prefix/CARD_h
     touch $prefix/CARD_h.dbtype
     touch $prefix/CARD_h.index
-    touch $prefix/VFDB_setB_pro.fas.gz
+    echo | gzip > $prefix/VFDB_setB_pro.fas.gz
     touch $prefix/VFDBclusterRes_cluster.tsv
     touch $prefix/VFDBclusterRes_rep_seq.fasta
     touch $prefix/all_phrogs.h3m

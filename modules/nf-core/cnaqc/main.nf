@@ -3,7 +3,7 @@ process CNAQC {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-cnaqc%3A1.1.3--r44hdfd78af_0':
         'quay.io/biocontainers/r-cnaqc:1.1.3--r44hdfd78af_0' }"
 

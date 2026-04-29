@@ -2,12 +2,12 @@ process INTEGRONFINDER {
     tag "$meta.id"
     label 'process_low'
 
-    containerOptions workflow.containerEngine == 'singularity' ?
+    containerOptions workflow.containerEngine in ['singularity', 'apptainer'] ?
         '--env MPLCONFIGDIR=/tmp/mplconfigdir' :
         '-e MPLCONFIGDIR=/tmp/mplconfigdir'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/integron_finder:2.0.5--pyhdfd78af_0':
         'quay.io/biocontainers/integron_finder:2.0.5--pyhdfd78af_0' }"
 

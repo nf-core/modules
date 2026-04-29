@@ -3,7 +3,7 @@ process FIBERTOOLSRS_EXTRACT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fibertools-rs:0.7.1--h3b373d1_0':
         'quay.io/biocontainers/fibertools-rs:0.7.1--h3b373d1_0' }"
 
