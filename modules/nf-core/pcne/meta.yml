@@ -27,8 +27,8 @@ input:
         description: FASTQ reads (paired or single) or a pre-aligned BAM file
         pattern: "*.{fastq.gz,fq.gz,fastq,fq,bam}"
         ontologies:
-          - edam: "http://edamontology.org/format_1930" # FASTQ
-          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_1930"
+          - edam: "http://edamontology.org/format_2572"
   - - meta2:
         type: map
         description: |
@@ -39,7 +39,7 @@ input:
         description: Chromosome contigs FASTA file
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1929"
   - - meta3:
         type: map
         description: |
@@ -50,7 +50,7 @@ input:
         description: One or more plasmid FASTA files
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1929"
 output:
   results:
     - - meta:
@@ -101,7 +101,7 @@ topics:
       - "pcne":
           type: string
           description: The name of the tool
-      - "pcne -v | sed 's/.*version //'":
+      - "pcne -v | grep 'version' | tail -n 1 | sed 's/.*version //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
