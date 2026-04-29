@@ -15,37 +15,24 @@ process GEM2_GEM2BEDMAPPABILITY {
     output:
     tuple val(meta), path("*.bg")   , emit: bedgraph
     tuple val(meta), path("*.sizes"), emit: sizes
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('gem2'), val("20200110"), emit: versions_gem2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '20200110' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gem-2-bed mappability \\
         --input ${map} \\
         --index ${index} \\
         --output ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gem2: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '20200110' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     touch ${prefix}.bg
     touch ${prefix}.sizes
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gem2: $VERSION
-    END_VERSIONS
     """
 }
