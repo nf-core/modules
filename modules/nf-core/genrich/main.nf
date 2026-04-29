@@ -13,7 +13,7 @@ process GENRICH {
 
     output:
     tuple val(meta), path("*.narrowPeak")                                                                                                       , emit: peak
-    tuple val("${task.process}"), val('genrich'), eval("Genrich --version 2>&1 | awk 'NR==1 {print $3}'"), emit: versions_genrich, topic: versions
+    tuple val("${task.process}"), val('genrich'), eval("Genrich --version 2>&1 | awk 'NR==1 {print \$3}'"), emit: versions_genrich, topic: versions
 
     tuple val(meta), path("*.pvalues.bedGraph"), optional:true, emit: bedgraph_pvalues
     tuple val(meta), path("*.pileup.bedGraph") , optional:true, emit: bedgraph_pileup
