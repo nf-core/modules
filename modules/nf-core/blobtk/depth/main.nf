@@ -4,8 +4,8 @@ process BLOBTK_DEPTH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/243d043f1c9e152e75dbb0ef8c64022df50efbcaa4e1bbaea36bebd751e84e93/data' :
-        'community.wave.seqera.io/library/blobtk:0.7.1--e3f63bb2cdc8fb96' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/08833d1b91f41024e06e2cb5a982598531199c04e6544885d42ef2cb0480de18/data' :
+        'community.wave.seqera.io/library/blobtk:0.8.0--2fe0d833a26e0cd9' }"
 
     input:
     tuple val(meta), path(bam), path(index)
