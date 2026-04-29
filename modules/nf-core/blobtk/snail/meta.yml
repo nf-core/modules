@@ -31,16 +31,6 @@ input:
         pattern: "*.fasta"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-    - local_path:
-        type: directory
-        description: |
-          A path to a Blob Dir generated as part of a greater pipeline.
-        pattern: "*/"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information and blobtk arguments
-          e.g. `[ id:'sample1']`
     - full_table:
         type: file
         description: |
@@ -48,20 +38,49 @@ input:
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_1915 # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information and blobtk arguments
+          e.g. `[ id:'sample1']`
+    - blob_dir:
+        type: directory
+        description: |
+          A local path to a BlobDir.
+        pattern: "*/"
+  - format:
+      type: string
+      description: |
+        Output format for the snail plot.
+      pattern: "{png,svg,json,yaml}"
 
 output:
-  svg:
+  images:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.svg":
+      - "*.{svg,png}":
           type: file
           description: |
-            Blobplot SVG results of input arguments.
+            BlobTK image results of input arguments.
           ontologies:
-            - edam: http://edamontology.org/format_3604
+            - edam: http://edamontology.org/format_3604 # SVG
+            - edam: http://edamontology.org/format_3603 # PNG
+  descriptions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.{json,yaml}":
+          type: file
+          description: |
+            BlobTK files describing the snail plot.
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3750 # YAML
   versions_blobtk:
     - - ${task.process}:
           type: string

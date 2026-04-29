@@ -10,10 +10,11 @@ process BLOBTK_SNAIL {
     input:
     tuple val(meta), path(fasta), path(full_table)
     tuple val(meta2), path(blob_dir)
-    val(image_format)
+    val(format)
 
     output:
-    tuple val(meta), path("*.{svg,png}"), emit: images
+    tuple val(meta), path("*.{svg,png}"),   emit: images,       optional: true
+    tuple val(meta), path("*.{json,yaml}"), emit: descriptions, optional: true
     tuple val("${task.process}"), val("blobtk"), eval("blobtk --version | cut -d' ' -f2"), topic: versions, emit: versions_blobtk
 
     when:
