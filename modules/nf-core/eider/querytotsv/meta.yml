@@ -21,7 +21,10 @@ input:
           e.g. [ id:'test', single_end:false ]
     - sql:
         type: file
-        description: SQL query template
+        description: |
+          SQL query template; at least one SQL statement
+          should copy to an output file in TSV text format,
+          e.g. COPY table_name TO 'file.tsv' (HEADER);
         pattern: "*.{sql|sql.bgz|sql.gz|sql.zst}"
     - files:
         type: file
@@ -40,7 +43,8 @@ output:
           description: |
             Query results in tab separated values (TSV) text format
           pattern: "*.{tsv}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   versions_eider:
     - - ${task.process}:
           type: string
