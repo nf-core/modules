@@ -24,6 +24,11 @@ input:
         description: SQL query template
         pattern: "*.{sql|sql.bgz|sql.gz|sql.zst}"
         ontologies: []
+    - files:
+        type: file
+        description: List of additional files to stage
+        pattern: "*"
+        ontologies: []
 output:
   csv:
     - - meta:

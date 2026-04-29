@@ -8,7 +8,7 @@ process EIDER_QUERYTOPARTITIONEDPARQUET {
         'quay.io/biocontainers/eider:0.3--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(sql)
+    tuple val(meta), path(sql), path(files)
 
     output:
     tuple val(meta), path("*.parquet"), emit: parquet
