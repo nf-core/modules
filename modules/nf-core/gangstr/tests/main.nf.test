@@ -35,12 +35,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.vcf,
-                    file(process.out.index[0][1]).name,
-                    process.out.samplestats,
-                    process.out.versions_gangstr
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -70,12 +65,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.vcf,
-                    file(process.out.index[0][1]).name,
-                    process.out.samplestats,
-                    process.out.versions_gangstr
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -111,12 +101,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.vcf,
-                    file(process.out.index[0][1]).name,
-                    process.out.samplestats,
-                    process.out.versions_gangstr
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -139,12 +124,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.vcf,
-                    process.out.index,
-                    process.out.samplestats,
-                    process.out.versions_gangstr
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
