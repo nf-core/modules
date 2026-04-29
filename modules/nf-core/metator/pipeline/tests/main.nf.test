@@ -44,6 +44,7 @@ nextflow_process {
                     file(process.out.contig2bin.get(0).get(1)).name,
                     file(process.out.network.get(0).get(1)).name,
                     file(process.out.contig_data.get(0).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -82,6 +83,7 @@ nextflow_process {
                     file(process.out.contig2bin.get(0).get(1)).name,
                     file(process.out.network.get(0).get(1)).name,
                     file(process.out.contig_data.get(0).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -116,6 +118,7 @@ nextflow_process {
                     file(process.out.contig2bin.get(0).get(1)).name,
                     file(process.out.network.get(0).get(1)).name,
                     file(process.out.contig_data.get(0).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
