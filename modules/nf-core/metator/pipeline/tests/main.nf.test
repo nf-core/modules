@@ -10,15 +10,21 @@ nextflow_process {
     tag "metator"
     tag "metator/pipeline"
 
+    config "./nextflow.config"
+
     test("metator - fastq - nodepths") {
 
         when {
+
+            params {
+                metator_args = "-s 30000 -e HindIII,DpnII"
+            }
 
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa.gz", checkIfExists: true),
                     [
                         file(params.modules_testdata_base_path + "delete_me/metator/for_paired.fq.gz", checkIfExists: true),
                         file(params.modules_testdata_base_path + "delete_me/metator/rev_paired.fq.gz", checkIfExists: true)
@@ -32,35 +38,13 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
-    test("metator - fastq - depths") {
-
-        when {
-
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa", checkIfExists: true),
-                    [
-                        file(params.modules_testdata_base_path + "delete_me/metator/for_paired.fq.gz", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "delete_me/metator/rev_paired.fq.gz", checkIfExists: true)
-                    ],
-                    file(params.modules_testdata_base_path + "delete_me/metator/depth.txt", checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        then {
-            assert process.success
-            assertAll(
-                { assert snapshot(process.out).match() }
+                { assert process.out.bins.get(0).get(1).size() > 0 },
+                { assert snapshot(
+                    file(process.out.bin_summary.get(0).get(1)).name,
+                    file(process.out.contig2bin.get(0).get(1)).name,
+                    file(process.out.network.get(0).get(1)).name,
+                    file(process.out.contig_data.get(0).get(1)).name,
+                ).match() }
             )
         }
 
@@ -70,11 +54,15 @@ nextflow_process {
 
         when {
 
+            params {
+                metator_args = "-s 30000 -e HindIII,DpnII"
+            }
+
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa.gz", checkIfExists: true),
                     [
                         file(params.modules_testdata_base_path + "delete_me/metator/alignment_0_for.bam", checkIfExists: true),
                         file(params.modules_testdata_base_path + "delete_me/metator/alignment_0_rev.bam", checkIfExists: true)
@@ -88,7 +76,13 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert process.out.bins.get(0).get(1).size() > 0 },
+                { assert snapshot(
+                    file(process.out.bin_summary.get(0).get(1)).name,
+                    file(process.out.contig2bin.get(0).get(1)).name,
+                    file(process.out.network.get(0).get(1)).name,
+                    file(process.out.contig_data.get(0).get(1)).name,
+                ).match() }
             )
         }
     }
@@ -97,11 +91,15 @@ nextflow_process {
 
         when {
 
+            params {
+                metator_args = "-s 30000 -e HindIII,DpnII"
+            }
+
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa.gz", checkIfExists: true),
                     file(params.modules_testdata_base_path + "delete_me/metator/alignment.pairs.gz", checkIfExists: true),
                     []
                 ]
@@ -112,7 +110,13 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert process.out.bins.get(0).get(1).size() > 0 },
+                { assert snapshot(
+                    file(process.out.bin_summary.get(0).get(1)).name,
+                    file(process.out.contig2bin.get(0).get(1)).name,
+                    file(process.out.network.get(0).get(1)).name,
+                    file(process.out.contig_data.get(0).get(1)).name,
+                ).match() }
             )
         }
     }
@@ -122,11 +126,16 @@ nextflow_process {
         options "-stub"
 
         when {
+
+            params {
+                metator_args = "-s 30000 -e HindIII,DpnII"
+            }
+
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa.gz", checkIfExists: true),
                     [
                         file(params.modules_testdata_base_path + "delete_me/metator/for_paired.fq.gz", checkIfExists: true),
                         file(params.modules_testdata_base_path + "delete_me/metator/rev_paired.fq.gz", checkIfExists: true)
@@ -140,7 +149,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

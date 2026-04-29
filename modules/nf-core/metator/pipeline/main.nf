@@ -16,7 +16,7 @@ process METATOR_PIPELINE {
     tuple val(meta), path("binning.txt")                 , emit: contig2bin
     tuple val(meta), path("network.txt")                 , emit: network
     tuple val(meta), path("contig_data_final.txt")       , emit: contig_data
-    tuple val(meta), path("plots/*.png")                 , emit: plots
+    tuple val(meta), path("plots/*.png")                 , emit: plots, optional: true
     tuple val("${task.process}"), val('metator'), eval("metator -v"), topic: versions, emit: versions_metator
 
     when:
@@ -33,7 +33,7 @@ process METATOR_PIPELINE {
     def input_type_arg = "-S fastq"
     if (hic_input[0].getExtension() == "bam") {
         input_type_arg = "-S bam"
-    } else if (hic_input[0].getName() ==~ /\.pairs(\.gz)?$/) {
+    } else if (hic_input[0].getName().endsWith(".pairs.gz") || hic_input[0].getName().endsWith(".pairs")) {
         input_type_arg = "-S pair"
         if (hic_input.size() > 1) {
             error("Error: Pairs file supplied to Metator but a second Hi-C file also supplied. Please only supply a pairs file.")
@@ -54,7 +54,6 @@ process METATOR_PIPELINE {
         -t ${task.cpus} \\
         --prefix ${prefix} \\
         ${args}
-
 
     find final_bin_unscaffold/ -name "*.fa" -exec gzip {} \\;
     """
