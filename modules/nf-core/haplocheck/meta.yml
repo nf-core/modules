@@ -60,7 +60,7 @@ output:
       - haplocheck:
           type: string
           description: The name of the tool
-      - echo $(haplocheck --version 2>&1) | sed 's/.*\([0-9].[0-9].[0-9]\).*/\1/':
+      - haplocheck --version 2>&1 | head -1 | awk '{print \$2}':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -71,7 +71,7 @@ topics:
       - haplocheck:
           type: string
           description: The name of the tool
-      - echo $(haplocheck --version 2>&1) | sed 's/.*\([0-9].[0-9].[0-9]\).*/\1/':
+      - haplocheck --version 2>&1 | head -1 | awk '{print \$2}':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
