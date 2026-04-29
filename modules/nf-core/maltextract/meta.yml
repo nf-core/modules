@@ -55,13 +55,7 @@ output:
           type: directory
           description: Directory containing MaltExtract text results files
           pattern: "results/"
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+
   versions_maltextract:
     - - ${task.process}:
           type: string

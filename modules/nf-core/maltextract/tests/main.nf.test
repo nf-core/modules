@@ -38,8 +38,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path("${process.out.results.get(0).get(1)}/ScanSummary.txt"),
-                    sanitizeOutput(process.out)
+                    path("${process.out.results.get(0).get(1)}/error.txt").text == "",
+                    path("${process.out.results.get(0).get(1)}/log.txt"),
+                    process.out.versions_maltextract
                 ).match() },
+                { assert snapshot(process.out.versions_maltextract).match("versions") }
             )
         }
     }
