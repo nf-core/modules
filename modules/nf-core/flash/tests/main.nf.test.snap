@@ -1,63 +1,70 @@
 {
-    "sarscov2 - stub": {
+    "stub_outputs": {
         "content": [
-            {
-                "histogram": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.hist:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "merged": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.extendedFrags.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "notcombined": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test.notCombined_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                            "test.notCombined_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                        ]
-                    ]
-                ],
-                "versions_flash": [
-                    [
-                        "FLASH",
-                        "flash",
-                        "1.2.11"
-                    ]
+            "test.extendedFrags.fastq.gz",
+            [
+                "test.notCombined_1.fastq.gz",
+                "test.notCombined_2.fastq.gz"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.hist:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ]
-            },
-            {
-                "versions": [
-                    [
-                        "FLASH",
-                        "flash",
-                        "1.2.11"
-                    ]
-                ]
-            }
+            ]
         ],
-        "timestamp": "2026-04-30T06:13:30.816775",
+        "timestamp": "2026-04-30T07:20:10.380664",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
     },
-    "sarscov2 - paired-end": {
+    "versions_stub": {
         "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "versions.yml:md5,324e2f6592d7c6aa86f624076a88a10f"
+                ]
+            ]
+        ],
+        "timestamp": "2026-04-30T07:20:10.386406",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "versions": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "versions.yml:md5,324e2f6592d7c6aa86f624076a88a10f"
+                ]
+            ]
+        ],
+        "timestamp": "2026-04-30T07:20:05.956193",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - bam": {
+        "content": [
+            "test.extendedFrags.fastq.gz",
+            [
+                "test.notCombined_1.fastq.gz",
+                "test.notCombined_2.fastq.gz"
+            ],
             [
                 [
                     {
@@ -66,21 +73,12 @@
                     },
                     "test.hist:md5,6aa28c9bcb430ba16c0fd0115dacda5f"
                 ]
-            ],
-            {
-                "versions": [
-                    [
-                        "FLASH",
-                        "flash",
-                        "1.2.11"
-                    ]
-                ]
-            }
+            ]
         ],
-        "timestamp": "2026-04-30T05:38:09.59031",
+        "timestamp": "2026-04-30T07:20:05.951974",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "25.10.4"
         }
     }
 }
