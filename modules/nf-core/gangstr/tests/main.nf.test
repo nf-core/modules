@@ -115,7 +115,7 @@ nextflow_process {
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     file(process.out.index[0][1]).name,
                     process.out.samplestats,
-                    [ versions: process.out.versions_gangstr ]
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -143,7 +143,7 @@ nextflow_process {
                     file(process.out.vcf[0][1]).name,
                     file(process.out.index[0][1]).name,
                     file(process.out.samplestats[0][1]).name,
-                    [ versions: process.out.versions_gangstr ]
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
