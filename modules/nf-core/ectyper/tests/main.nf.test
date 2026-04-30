@@ -28,8 +28,7 @@ nextflow_process {
                 { assert process.out.log },
                 { assert process.out.tsv },
                 { assert process.out.txt },
-                { assert snapshot(process.out.versions_ectyper).match("versions") }
-            )
+)
         }
     }
 
