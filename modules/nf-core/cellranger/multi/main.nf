@@ -6,12 +6,12 @@ process CELLRANGER_MULTI {
 
     input:
     val meta
-    tuple val(meta_gex)        , path (gex_fastqs   , stageAs: "fastqs/gex/fastq_???/*")
-    tuple val(meta_vdj)        , path (vdj_fastqs   , stageAs: "fastqs/vdj/fastq_???/*")
-    tuple val(meta_ab)         , path (ab_fastqs    , stageAs: "fastqs/ab/fastq_???/*")
-    tuple val(meta_beam)       , path (beam_fastqs  , stageAs: "fastqs/beam/fastq_???/*")
-    tuple val(meta_cmo)        , path (cmo_fastqs   , stageAs: "fastqs/cmo/fastq_???/*")
-    tuple val(meta_crispr)     , path (crispr_fastqs, stageAs: "fastqs/crispr/fastq_???/*")
+    tuple val(meta2)           , path (gex_fastqs   , stageAs: "fastqs/gex/fastq_???/*")
+    tuple val(meta3)           , path (vdj_fastqs   , stageAs: "fastqs/vdj/fastq_???/*")
+    tuple val(meta4)           , path (ab_fastqs    , stageAs: "fastqs/ab/fastq_???/*")
+    tuple val(meta5)           , path (beam_fastqs  , stageAs: "fastqs/beam/fastq_???/*")
+    tuple val(meta6)           , path (cmo_fastqs   , stageAs: "fastqs/cmo/fastq_???/*")
+    tuple val(meta7)           , path (crispr_fastqs, stageAs: "fastqs/crispr/fastq_???/*")
     path gex_reference         , stageAs: "references/gex/*"
     path gex_frna_probeset     , stageAs: "references/gex/probeset/*"
     path gex_targetpanel       , stageAs: "references/gex/targetpanel/*"
@@ -30,7 +30,7 @@ process CELLRANGER_MULTI {
     output:
     tuple val(meta), path("cellranger_multi_config.csv"), emit: config
     tuple val(meta), path("**/outs/**")                 , emit: outs
-    path "versions.yml"                                 , emit: versions_cellranger, topic: versions
+    tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.* //"'), emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,124 +40,137 @@ process CELLRANGER_MULTI {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    // add mutually exclusive input checker
-    if ([ocm_barcodes, cmo_barcodes, frna_sampleinfo].count { input -> input } >= 2) {
-        error "The ocm barcodes; cmo barcodes and frna probes are mutually exclusive features. Please use only one per sample, or reach out in slack in case it is really intended."
+    
+    // Validate mutually exclusive barcode types
+    if ([ocm_barcodes, cmo_barcodes, frna_sampleinfo].findAll().size() >= 2) {
+        error "The ocm barcodes, cmo barcodes, and frna probes are mutually exclusive features. Please use only one per sample."
     }
-    args               = task.ext.args               ?: ''
-    prefix             = task.ext.prefix             ?: "${meta.id}"
-    force_include_frna = task.ext.force_include_frna ?: ''
+    
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: meta.id
 
-    // if references + FASTQ are empty, then don't run corresponding analyses
-    // get names of references, if they exist
-    // empty reference channels (all under references/) can stage as "[]" when skipped by the workflow
-    // empty FASTQ channels stage as "fastqs"
-    gex_reference_name      = gex_reference          ? gex_reference.getName()          : ''
-    gex_frna_probeset_name  = gex_frna_probeset      ? gex_frna_probeset.getName()      : ''
-    gex_targetpanel_name    = gex_targetpanel        ? gex_targetpanel.getName()        : ''
-    fb_reference_name       = fb_reference           ? fb_reference.getName()           : ''
-    vdj_reference_name      = vdj_reference          ? vdj_reference.getName()          : ''
-    cmo_reference_name      = cmo_reference          ? cmo_reference.getName()          : ''
-    cmo_sample_assignment   = cmo_barcode_assignment ? cmo_barcode_assignment.getName() : ''
-    beam_antigen_panel_name = beam_antigen_panel     ? beam_antigen_panel.getName()     : ''
+    // Determine which library types are present based on FASTQs and references
+    def has_gex    = meta2 && gex_reference
+    def has_vdj    = meta3 && vdj_reference
+    def has_ab     = meta4 && fb_reference
+    def has_beam   = meta5 && beam_control_panel
+    def has_cmo    = meta6 && cmo_barcodes
+    def has_crispr = meta7 && fb_reference
+    def has_frna   = gex_frna_probeset && frna_sampleinfo
+    def has_ocm    = ocm_barcodes
 
-    include_gex  = gex_fastqs.first().getName() != 'fastqs' && gex_reference           ? '[gene-expression]'     : ''
-    include_vdj  = vdj_fastqs.first().getName() != 'fastqs' && vdj_reference           ? '[vdj]'                 : ''
-    include_beam = beam_fastqs.first().getName() != 'fastqs' && beam_control_panel     ? '[antigen-specificity]' : ''
-    include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes            ? '[samples]'             : ''
-    include_fb = (ab_fastqs.first().getName() != 'fastqs' || crispr_fastqs.first().getName() != 'fastqs') && fb_reference ? '[feature]' : ''
-    include_frna = gex_frna_probeset_name && frna_sampleinfo                           ? '[samples]'             : ''
-    include_ocm  = ocm_barcodes                                                        ? '[samples]'             : ''
+    // Build [gene-expression] section
+    def gex_section = []
+    if (has_gex) {
+        gex_section << '[gene-expression]'
+        gex_section << "reference,\$PWD/${gex_reference.name}"
+        if (gex_frna_probeset) gex_section << "probe-set,\$PWD/${gex_frna_probeset.name}"
+        
+        // GEX options from meta
+        def gex_has_opts = meta2?.options
+        def chemistry = gex_has_opts?.containsKey("chemistry") ? meta2.options["chemistry"] : "auto"
+        gex_section << "chemistry,${chemistry}"
+        
+        if (gex_has_opts?.containsKey("expect-cells")) {
+            gex_section << "expect-cells,${meta2.options["expect-cells"]}"
+        }
+        
+        def create_bam = gex_has_opts?.containsKey("create-bam") ? meta2.options["create-bam"] : "true"
+        gex_section << "create-bam,${create_bam}"
+        
+        if (gex_targetpanel) {
+            gex_section << "target-panel,\$PWD/${gex_targetpanel.name}"
+        }
+    }
 
-    gex_reference_path = include_gex ? "reference,./${gex_reference_name}" : ''
-    fb_reference_path  = include_fb  ? "reference,./${fb_reference_name}"  : ''
-    vdj_reference_path = include_vdj ? "reference,./${vdj_reference_name}" : ''
+    // Build [feature] section
+    def fb_section = []
+    if (has_ab || has_crispr) {
+        fb_section << '[feature]'
+        fb_section << 'reference,\$PWD/fb_reference_copy.csv'
+    }
 
-    // targeted GEX panel goes under GEX section, not its own
-    target_panel = gex_targetpanel_name != '' ? "target-panel,./$gex_targetpanel_name" : ''
+    // Build [vdj] section
+    def vdj_section = []
+    if (has_vdj) {
+        vdj_section << '[vdj]'
+        vdj_section << "reference,\$PWD/${vdj_reference.name}"
+        if (vdj_primer_index) {
+            vdj_section << "inner-enrichment-primers,\$PWD/${vdj_primer_index.name}"
+        }
+    }
 
-    // fixed RNA reference (not sample info!) also goes under GEX section
-    frna_probeset = ( include_frna || force_include_frna ) && gex_frna_probeset_name != '' ? "probe-set,./$gex_frna_probeset_name" : ''
+    // Build [libraries] section
+    def lib_section = ['[libraries]', 'fastq_id,fastqs,lanes,feature_types']
+    if (has_gex) lib_section << "${meta2.id},\$PWD/fastq_all/gex,,Gene Expression"
+    if (has_vdj) lib_section << "${meta3.id},\$PWD/fastq_all/vdj,,VDJ"
+    if (has_ab) lib_section << "${meta4.id},\$PWD/fastq_all/ab,,Antibody Capture"
+    if (has_beam) lib_section << "${meta5.id},\$PWD/fastq_all/beam,,Antigen Capture"
+    if (has_crispr) lib_section << "${meta7.id},\$PWD/fastq_all/crispr,,CRISPR Guide Capture"
+    if (has_cmo) lib_section << "${meta6.id},\$PWD/fastq_all/cmo,,Multiplexing Capture"
 
-    // VDJ inner primer set
-    primer_index = vdj_primer_index ? "inner-enrichment-primers,./references/primers/${vdj_primer_index.getName()}" : ''
-
-    // BEAM antigen list, remember that this is a Feature Barcode file
-    beam_antigen_csv = include_beam && beam_antigen_panel_name != '' ? "reference,./$beam_antigen_panel_name" : ''
-
-    // pull CSV text from these reference panels
-    // these references get appended directly to config file
-    beam_csv_text  = include_beam && beam_control_panel.size() > 0 ? beam_control_panel : ''
-    cmo_csv_text   = include_cmo  && cmo_barcodes.size() > 0       ? cmo_barcodes       : ''
-    ocm_csv_text   = include_ocm  && ocm_barcodes.size() > 0       ? ocm_barcodes       : ''
-    frna_csv_text  = include_frna && frna_sampleinfo.size() > 0    ? frna_sampleinfo    : ''
-
-    // the feature barcodes section get options for either CRISPR or antibody capture assays
-    fb_options     = ab_fastqs.first().getName() != 'fastqs' && meta_ab?.options ? meta_ab :
-        (crispr_fastqs.first().getName() != 'fastqs' && meta_crispr?.options ? meta_crispr : [:])
-
-    // collect options for each section
-    // these are pulled from the meta maps
-    gex_options_use    = include_gex && meta_gex?.options   ? 'true' : null
-    vdj_options_use    = include_vdj && meta_vdj?.options   ? 'true' : null
-    ab_options_use     = include_fb && meta_ab?.options     ? 'true' : null
-    beam_options_use   = include_beam && meta_beam?.options ? 'true' : null
-    cmo_options_use    = include_cmo && meta_cmo?.options   ? 'true' : null
-    crispr_options_use = include_fb && meta_crispr?.options ? 'true' : null
-    fb_options_use     = include_fb && fb_options?.options  ? 'true' : null
-
-    gex_options_filter_probes = gex_options_use && meta_gex.options.containsKey("filter-probes") ? "filter-probes,${meta_gex.options["filter-probes"]}" : ''
-    gex_options_r1_length     = gex_options_use && meta_gex.options.containsKey("r1-length")     ? "r1-length,${meta_gex.options["r1-length"]}"         : ''
-    gex_options_r2_length     = gex_options_use && meta_gex.options.containsKey("r2-length")     ? "r2-length,${meta_gex.options["r2-length"]}"         : ''
-    gex_options_chemistry     = gex_options_use && meta_gex.options.containsKey("chemistry")     ? "chemistry,${meta_gex.options["chemistry"]}"         : ''
-    gex_options_expect_cells  = gex_options_use && meta_gex.options.containsKey("expect-cells")  ? "expect-cells,${meta_gex.options["expect-cells"]}"   : ''
-    gex_options_force_cells   = gex_options_use && meta_gex.options.containsKey("force-cells")   ? "force-cells,${meta_gex.options["force-cells"]}"     : ''
-    gex_options_no_secondary  = gex_options_use && meta_gex.options.containsKey("no-secondary")  ? "no-secondary,${meta_gex.options["no-secondary"]}"   : ''
-    gex_options_no_bam        = gex_options_use && meta_gex.options.containsKey("create-bam")    ? "create-bam,${meta_gex.options["create-bam"]}"           : ''
-    gex_options_no_target_umi_filter = gex_options_use && meta_gex.options.containsKey("no-target-umi-filter") ? "no-target-umi-filter,${meta_gex.options["no-target-umi-filter"]}" : ''
-    gex_options_include_introns      = gex_options_use && meta_gex.options.containsKey("include-introns")      ? "include-introns,${meta_gex.options["include-introns"]}"           : ''
-    gex_options_check_library_compatibility = gex_options_use && meta_gex.options.containsKey("check-library-compatibility") ? "check-library-compatibility,${meta_gex.options["check-library-compatibility"]}" : ''
-
-    cmo_reference_path = cmo_options_use && cmo_reference_name    ? "cmo-set,./${cmo_reference_name}"                      : ''
-    cmo_barcode_path   = cmo_options_use && cmo_sample_assignment ? "barcode-sample-assignment,./${cmo_sample_assignment}" : ''
-    cmo_options_min_assignment_confidence = cmo_options_use && meta_cmo.options.containsKey("min-assignment-confidence") ? "min-assignment-confidence,${meta_cmo.options["min-assignment-confidence"]}" : ''
-
-    vdj_options_r1_length = vdj_options_use && meta_vdj.options.containsKey("r1-length") ? "r1-length,${meta_vdj.options["r1-length"]}" : ''
-    vdj_options_r2_length = vdj_options_use && meta_vdj.options.containsKey("r2-length") ? "r2-length,${meta_vdj.options["r2-length"]}" : ''
-
-    fb_options_r1_length = fb_options_use && fb_options.options.containsKey("r1-length") ? "r1-length,${fb_options.options["r1-length"]}" : ''
-    fb_options_r2_length = fb_options_use && fb_options.options.containsKey("r2-length") ? "r2-length,${fb_options.options["r2-length"]}" : ''
-
-    // point config to FASTQs
-    // After renaming it gets in 'fastq_all' folder
-    fastq_gex      = include_gex                      ? "${meta_gex.id},./fastq_all/gex,,Gene Expression"            : ''
-    fastq_vdj      = include_vdj                      ? "${meta_vdj.id},./fastq_all/vdj,,VDJ"                        : ''
-    fastq_antibody = include_fb && ab_options_use     ? "${meta_ab.id},./fastq_all/ab,,Antibody Capture"             : ''
-    fastq_beam     = include_beam                     ? "${meta_beam.id},./fastq_all/beam,,Antigen Capture"         : ''
-    fastq_crispr   = include_fb && crispr_options_use ? "${meta_crispr.id},./fastq_all/crispr,,CRISPR Guide Capture" : ''
-    fastq_cmo      = include_cmo                      ? "${meta_cmo.id},./fastq_all/cmo,,Multiplexing Capture"       : ''
-
-    // name the config file
-    config = "cellranger_multi_config.csv"
-
+    // Build config content by combining all sections
+    def config_lines = []
+    config_lines.addAll(gex_section)
+    config_lines.addAll(fb_section)
+    config_lines.addAll(vdj_section)
+    config_lines.addAll(lib_section)
+    
+    // Append sample sections if present
+    if (has_cmo) {
+        config_lines << '[samples]'
+        config_lines << cmo_barcodes.text.trim()
+    }
+    if (has_frna) {
+        config_lines << '[samples]'
+        config_lines << frna_sampleinfo.text.trim()
+    }
+    if (has_ocm) {
+        config_lines << '[samples]'
+        config_lines << ocm_barcodes.text.trim()
+    }
+    def config_content = config_lines.findAll { line -> line }.join('\n    ')
     """
-    echo ${args}
-    echo ${gex_reference_path} ${fb_reference_path} ${vdj_reference_path}
-    echo ${target_panel} ${frna_probeset} ${primer_index}
-    echo ${beam_antigen_csv} ${beam_csv_text} ${cmo_csv_text} ${ocm_csv_text} ${frna_csv_text}
-    echo ${beam_options_use} ${gex_options_filter_probes}
-    echo ${gex_options_r1_length} ${gex_options_r2_length}
-    echo ${gex_options_chemistry} ${gex_options_expect_cells} ${gex_options_force_cells}
-    echo ${gex_options_no_secondary} ${gex_options_no_bam} ${gex_options_no_target_umi_filter}
-    echo ${gex_options_include_introns} ${gex_options_check_library_compatibility}
-    echo ${cmo_reference_path} ${cmo_barcode_path} ${cmo_options_min_assignment_confidence}
-    echo ${vdj_options_r1_length} ${vdj_options_r2_length}
-    echo ${fb_options_r1_length} ${fb_options_r2_length}
-    echo ${fastq_gex} ${fastq_vdj} ${fastq_antibody} ${fastq_beam} ${fastq_crispr} ${fastq_cmo}
-    echo ${config}
-    """
+    #
+    # Rename FASTQs to Cell Ranger naming convention
+    # Maintains R1/R2 pairing order by processing directories sequentially
+    # Output pattern: \${prefix}_S1_L001_R1_001.fastq.gz, L002_R1_001.fastq.gz, etc.
+    #
+    mkdir -p fastq_all/{gex,vdj,ab,beam,cmo,crispr}
 
-    template "cellranger_multi.py"
+    for modality in gex vdj ab beam cmo crispr; do
+        lane=1
+        while IFS= read -r -d '' r1_dir && IFS= read -r -d '' r2_dir; do
+            r1=\$(find "\${r1_dir}" -maxdepth 1 -name "*_R1_*.fastq.gz" | head -1)
+            r2=\$(find "\${r2_dir}" -maxdepth 1 -name "*_R2_*.fastq.gz" | head -1)
+            
+            [ -z "\${r1}" ] || [ -z "\${r2}" ] && continue
+            
+            ln -sf "\$(readlink -f "\${r1}")" "fastq_all/\${modality}/${prefix}_S1_L\$(printf %03d \${lane})_R1_001.fastq.gz"
+            ln -sf "\$(readlink -f "\${r2}")" "fastq_all/\${modality}/${prefix}_S1_L\$(printf %03d \${lane})_R2_001.fastq.gz"
+            lane=\$((lane + 1))
+        done < <(find fastqs/\${modality} -maxdepth 1 -type d -name "fastq_*" | sort | xargs -n1 printf '%s\\0')
+    done
+
+    #
+    # Copy fb_reference to avoid symlink corruption
+    # Cell Ranger writes to this file during validation, which corrupts the symlinked original
+    #
+    if [ -n "${fb_reference}" ] && [ -f "${fb_reference}" ]; then
+        cp "${fb_reference}" "fb_reference_copy.csv"
+    fi
+
+    cat > cellranger_multi_config.csv <<-CONFIG_EOF
+    ${config_content}
+    CONFIG_EOF
+
+    cellranger multi \\
+        --id=${prefix} \\
+        --csv=cellranger_multi_config.csv \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()} \\
+        ${args}
+    """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -167,10 +180,5 @@ process CELLRANGER_MULTI {
     echo -n "" >> ${prefix}/outs/fake_file.txt
     touch cellranger_multi_config.csv
     echo -n "" >> cellranger_multi_config.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 }

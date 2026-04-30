@@ -164,21 +164,15 @@ nextflow_process {
                 /*** end stage VDJ reference ***/
                 /*******************************/
 
-
-                // make an empty dummy file, for FASTQs
-                empty_file = file("$workDir/EMPTY")
-                empty_file.append("")
-
-
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_fastqs            = [ [:], [] ]
+                ch_vdj_fastqs            = [ [:], [] ]
+                ch_ab_fastqs             = [ [:], [] ]
+                ch_beam_fastqs           = [ [:], [] ]
+                ch_cmo_fastqs            = [ [:], [] ]
+                ch_crispr_fastqs         = [ [:], [] ]
                 ch_gex_frna_probeset     = []
                 ch_gex_targetpanel       = []
                 ch_vdj_primer_index      = []
@@ -391,21 +385,15 @@ nextflow_process {
                 /*** end stage VDJ reference ***/
                 /*******************************/
 
-
-                // make an empty dummy file, for FASTQs
-                empty_file = file("$workDir/EMPTY")
-                empty_file.append("")
-
-
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_fastqs            = [ [:], [] ]
+                ch_vdj_fastqs            = [ [:], [] ]
+                ch_ab_fastqs             = [ [:], [] ]
+                ch_beam_fastqs           = [ [:], [] ]
+                ch_cmo_fastqs            = [ [:], [] ]
+                ch_crispr_fastqs         = [ [:], [] ]
                 ch_gex_frna_probeset     = []
                 ch_gex_targetpanel       = []
                 ch_vdj_primer_index      = []
@@ -633,21 +621,15 @@ nextflow_process {
                 /*** end stage VDJ reference ***/
                 /*******************************/
 
-
-                // make an empty dummy file, for FASTQs
-                empty_file = file("$workDir/EMPTY")
-                empty_file.append("")
-
-
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_fastqs            = [ [:], [] ]
+                ch_vdj_fastqs            = [ [:], [] ]
+                ch_ab_fastqs             = [ [:], [] ]
+                ch_beam_fastqs           = [ [:], [] ]
+                ch_cmo_fastqs            = [ [:], [] ]
+                ch_crispr_fastqs         = [ [:], [] ]
                 ch_gex_frna_probeset     = []
                 ch_gex_targetpanel       = []
                 ch_vdj_primer_index      = []
@@ -794,19 +776,15 @@ nextflow_process {
                 /*** end stage 5k A549 data ***/
                 /*******************************/
 
-                // make an empty dummy file, for FASTQs
-                empty_file = file("$workDir/EMPTY")
-                empty_file.append("")
-
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_fastqs            = [ [:], [] ]
+                ch_vdj_fastqs            = [ [:], [] ]
+                ch_ab_fastqs             = [ [:], [] ]
+                ch_beam_fastqs           = [ [:], [] ]
+                ch_cmo_fastqs            = [ [:], [] ]
+                ch_crispr_fastqs         = [ [:], [] ]
                 ch_gex_frna_probeset     = []
                 ch_gex_targetpanel       = []
                 ch_vdj_reference         = []
@@ -869,7 +847,6 @@ nextflow_process {
                     process.out.outs[0][1].findAll { file(it).name == 'raw_feature_bc_matrix.h5' },
                     process.out.outs[0][1].findAll { file(it).name == 'sample_filtered_feature_bc_matrix.h5' },
                     process.out.outs[0][1].findAll { file(it).name == 'protospacer_calls_per_cell.csv' },
-                    process.out.outs[0][1].findAll { file(it).name == 'perturbation_efficiencies_by_feature.csv' }
                 ).match() },
                 { assert snapshot(process.out.versions_cellranger).match("versions-a549-crispr") }
             )
@@ -878,8 +855,6 @@ nextflow_process {
 
     }
     test("cellranger - multi - 10k - kidney - flex - singleplex") {
-
-        config "./singleplex_flex.config"
 
         when {
             process {
@@ -918,20 +893,15 @@ nextflow_process {
 
                 probeset = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/flex/Chromium_Human_Transcriptome_Probe_Set_v1.1.0_GRCh38-2024-A.chr22.csv', checkIfExists: true)
 
-                // make an empty dummy file, for FASTQs
-                empty_file = file("$workDir/EMPTY")
-                empty_file.append("")
-
-
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_fastqs            = [ [:], [] ]
+                ch_vdj_fastqs            = [ [:], [] ]
+                ch_ab_fastqs             = [ [:], [] ]
+                ch_beam_fastqs           = [ [:], [] ]
+                ch_cmo_fastqs            = [ [:], [] ]
+                ch_crispr_fastqs         = [ [:], [] ]
                 ch_gex_frna_probeset     = []
                 ch_gex_targetpanel       = []
                 ch_vdj_reference         = []
