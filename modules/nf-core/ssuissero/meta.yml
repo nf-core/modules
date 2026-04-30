@@ -10,7 +10,8 @@ tools:
       homepage: https://github.com/jimmyliu1326/SsuisSero
       documentation: https://github.com/jimmyliu1326/SsuisSero
       tool_dev_url: https://github.com/jimmyliu1326/SsuisSero
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -36,13 +37,27 @@ output:
           pattern: "*.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_ssuissero:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ssuissero:
+          type: string
+          description: The name of the tool
+      - echo 1.0.1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ssuissero:
+          type: string
+          description: The name of the tool
+      - echo 1.0.1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:
