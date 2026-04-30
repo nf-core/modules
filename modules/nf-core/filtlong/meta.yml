@@ -30,13 +30,13 @@ input:
         description: fastq file
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
     - longreads:
         type: file
         description: fastq file
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
 output:
   reads:
     - - meta:
@@ -49,7 +49,7 @@ output:
           description: Filtered (compressed) fastq file
           pattern: "*.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   log:
     - - meta:
           type: map
