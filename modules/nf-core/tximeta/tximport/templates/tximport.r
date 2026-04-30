@@ -81,10 +81,11 @@ write_se_table <- function(params, prefix) {
 #' @param gene_id_col Column name for gene IDs.
 #' @param gene_name_col Column name for gene names.
 #'
-#' @return A list containing three elements:
+#' @return A list containing four elements:
 #' - `transcript`: A data frame with transcript IDs, gene IDs, and gene names, indexed by transcript IDs.
 #' - `gene`: A data frame with unique gene IDs and gene names.
 #' - `tx2gene`: A data frame mapping transcript IDs to gene IDs.
+#' - `extra`: A character vector of transcript IDs found in quantification output but missing from the tx2gene file.
 
 read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col){
     info <- file.info(tinfo_path)
@@ -104,13 +105,23 @@ read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col)
     )
 
     extra <- setdiff(rownames(txi[[1]]), as.character(transcript_info[["tx"]]))
+    if (length(extra) > 0) {
+        warning(
+            length(extra), " transcripts found in quantification output but missing from ",
+            "the tx2gene mapping (GTF). These will be included in transcript-level outputs ",
+            "but excluded from gene-level summaries. This usually means the transcript FASTA ",
+            "and GTF are from different sources or versions. First 5: ",
+            paste(head(extra, 5), collapse = ", ")
+        )
+    }
     transcript_info <- rbind(transcript_info, data.frame(tx=extra, gene_id=extra, gene_name=extra, check.names = FALSE))
     transcript_info <- transcript_info[match(rownames(txi[[1]]), transcript_info[["tx"]]), ]
     rownames(transcript_info) <- transcript_info[["tx"]]
 
     list(transcript = transcript_info,
         gene = unique(transcript_info[,2:3]),
-        tx2gene = transcript_info[,1:2])
+        tx2gene = transcript_info[,1:2],
+        extra = extra)
 }
 
 #' Create a SummarizedExperiment Object
@@ -205,6 +216,21 @@ if ("tx2gene" %in% names(transcript_info) && !is.null(transcript_info\$tx2gene))
     gi <- summarizeToGene(txi, tx2gene = tx2gene)
     gi.ls <- summarizeToGene(txi, tx2gene = tx2gene, countsFromAbundance = "lengthScaledTPM")
     gi.s <- summarizeToGene(txi, tx2gene = tx2gene, countsFromAbundance = "scaledTPM")
+
+    # Remove fake gene entries created by unmapped transcripts (where gene_id
+    # was set to the transcript ID). These would break downstream processes
+    # like SummarizedExperiment that try to match gene IDs against the tx2gene.
+    if (length(transcript_info\$extra) > 0) {
+        real_genes <- setdiff(rownames(gi[[1]]), transcript_info\$extra)
+        filter_rows <- function(txi_list, genes) {
+            lapply(txi_list, function(x) {
+                if (is.matrix(x)) x[genes, , drop = FALSE] else x
+            })
+        }
+        gi    <- filter_rows(gi, real_genes)
+        gi.ls <- filter_rows(gi.ls, real_genes)
+        gi.s  <- filter_rows(gi.s, real_genes)
+    }
 
     gene_info <- transcript_info\$gene[match(rownames(gi[[1]]), transcript_info\$gene[["gene_id"]]),]
     rownames(gene_info) <- NULL

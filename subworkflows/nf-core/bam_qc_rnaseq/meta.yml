@@ -118,6 +118,14 @@ output:
       type: file
       description: RSeQC TIN results summary
       pattern: "*.txt"
+  - per_sample_mqc_bundle:
+      type: tuple
+      description: |
+        Per-sample MultiQC-feeding outputs (Preseq, biotype TSV, Qualimap,
+        dupRadar, and RSeQC bamstat/inferexperiment/innerdistance_freq/
+        junctionannotation_log/junctionsaturation_rscript/readdistribution/
+        readduplication_pos/tin) joined on meta.
+        Structure: [ val(meta), list(files) ]
 authors:
   - "@pinin4fjords"
 maintainers:

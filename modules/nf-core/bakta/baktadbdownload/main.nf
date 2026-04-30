@@ -2,9 +2,9 @@ process BAKTA_BAKTADBDOWNLOAD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/bakta:1.11.4--pyhdfd78af_0'
-        : 'biocontainers/bakta:1.11.4--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/bakta:1.11.4--pyhdfd78af_0'}"
 
     output:
     path "db*", emit: db

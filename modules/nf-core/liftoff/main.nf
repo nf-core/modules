@@ -3,9 +3,9 @@ process LIFTOFF {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/liftoff:1.6.3--pyhdfd78af_0':
-        'biocontainers/liftoff:1.6.3--pyhdfd78af_0' }"
+        'quay.io/biocontainers/liftoff:1.6.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(target_fa)

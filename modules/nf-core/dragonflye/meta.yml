@@ -9,7 +9,8 @@ tools:
       description: Microbial assembly pipeline for Nanopore reads
       homepage: https://github.com/rpetit3/dragonflye
       documentation: https://github.com/rpetit3/dragonflye/blob/main/README.md
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: ""
 input:
   - - meta:
@@ -23,13 +24,13 @@ input:
           Optional. List of FastQ files of short reads (paired-end data) that will be used to polish the draft genome.
         pattern: "*.fastq.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
     - longreads:
         type: file
         description: Input Nanopore FASTQ file
         pattern: "*.fastq.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
 output:
   contigs:
     - - meta:
@@ -61,7 +62,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "{flye,miniasm,raven}.fasta":
           type: file
-          description: Raw assembly produced by the assembler (Flye, Miniasm, or Raven)
+          description: Raw assembly produced by the assembler (Flye, Miniasm, or
+            Raven)
           pattern: "{flye,miniasm,raven}.fasta"
           ontologies: []
   gfa:
@@ -86,13 +88,27 @@ output:
           description: Assembly information output by Flye
           pattern: "flye-info.txt"
           ontologies: []
+  versions_dragonflye:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dragonflye:
+          type: string
+          description: The name of the tool
+      - dragonflye --version 2>&1 | sed 's/^.*dragonflye //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dragonflye:
+          type: string
+          description: The name of the tool
+      - dragonflye --version 2>&1 | sed 's/^.*dragonflye //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:

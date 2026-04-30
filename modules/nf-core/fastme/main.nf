@@ -3,9 +3,9 @@ process FASTME {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fastme:2.1.6.1--hec16e2b_1':
-        'biocontainers/fastme:2.1.6.1--hec16e2b_1' }"
+        'quay.io/biocontainers/fastme:2.1.6.1--hec16e2b_1' }"
 
     input:
     tuple val(meta), path(infile), path(initial_tree)

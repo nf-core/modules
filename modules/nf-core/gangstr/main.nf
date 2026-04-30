@@ -3,9 +3,9 @@ process GANGSTR {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gangstr:2.5.0--h48cf4b7_4':
-        'biocontainers/gangstr:2.5.0--h48cf4b7_4' }"
+        'quay.io/biocontainers/gangstr:2.5.0--h48cf4b7_4' }"
 
     input:
     tuple val(meta), path(alignment_files), path(alignment_indices), path(ref_regions)

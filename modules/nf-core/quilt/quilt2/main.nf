@@ -3,9 +3,9 @@ process QUILT_QUILT2 {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/r-quilt:2.0.4--r44h503566f_0'
-        : 'biocontainers/r-quilt:2.0.4--r44h503566f_0'}"
+        : 'quay.io/biocontainers/r-quilt:2.0.4--r44h503566f_0'}"
 
     input:
     tuple val(meta), path(bams), path(bais), path(bamlist), path(samplename), path(reference_vcf_file), path(reference_vcf_index), path(posfile), path(phasefile), path(genfile), val(chr), val(regions_start), val(regions_end), val(ngen), val(buffer), path(genetic_map)
