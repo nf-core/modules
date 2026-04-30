@@ -43,28 +43,22 @@ output:
           description: Polished genome assembly
           pattern: "*.fa.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  versions_medaka:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - medaka:
-          type: string
-          description: The name of the tool
-      - medaka --version 2>&1 | sed "s/medaka //g":
-          type: eval
-          description: The expression to obtain the version of the tool
+            - edam: http://edamontology.org/format_3989 # GZIP
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - medaka:
-          type: string
-          description: The name of the tool
-      - medaka --version 2>&1 | sed "s/medaka //g":
-          type: eval
-          description: The expression to obtain the version of the tool
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@avantonder"
 maintainers:
