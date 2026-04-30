@@ -1,7 +1,8 @@
 name: "whamg"
-description: The wham suite consists of two programs, wham and whamg. wham, the original
-  tool, is a very sensitive method with a high false discovery rate. The second program,
-  whamg, is more accurate and better suited for general structural variant (SV) discovery.
+description: The wham suite consists of two programs, wham and whamg. wham, the
+  original tool, is a very sensitive method with a high false discovery rate.
+  The second program, whamg, is more accurate and better suited for general
+  structural variant (SV) discovery.
 keywords:
   - whamg
   - wham
@@ -15,7 +16,8 @@ tools:
       documentation: "https://github.com/zeeev/wham"
       tool_dev_url: "https://github.com/zeeev/wham"
       doi: "10.1371/journal.pcbi.1004572"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -55,7 +57,7 @@ output:
           description: Compressed VCF file
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   tbi:
     - - meta:
           type: map
@@ -78,13 +80,27 @@ output:
           description: Graph file
           pattern: "*.txt"
           ontologies: []
+  versions_whamg:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - whamg:
+          type: string
+          description: The name of the tool
+      - "whamg 2>&1 | grep Version | sed 's/^Version: v//; s/-.*$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - whamg:
+          type: string
+          description: The name of the tool
+      - "whamg 2>&1 | grep Version | sed 's/^Version: v//; s/-.*$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:
