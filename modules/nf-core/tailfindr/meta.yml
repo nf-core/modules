@@ -41,14 +41,20 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3989
   versions_tailfindr:
-    - - versions.yml:
-          type: file
-          description: YAML file containing versions of tools used in the module
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 topics:
   versions:
-    - - versions.yml:
-          type: file
-          description: YAML file containing versions of tools used in the module
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@lucacozzuto"
 maintainers:
