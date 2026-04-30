@@ -47,7 +47,7 @@ output:
       - foldcomp:
           type: string
           description: Software name
-      - "foldcomp --version foldcomp --version | cut -d' ' -f2":
+      - "foldcomp --version | cut -d' ' -f2":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -58,7 +58,7 @@ topics:
       - foldcomp:
           type: string
           description: Software name
-      - "foldcomp --version foldcomp --version | cut -d' ' -f2":
+      - "foldcomp --version | cut -d' ' -f2":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
