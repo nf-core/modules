@@ -9,7 +9,8 @@ tools:
   - mlst:
       description: Scan contig files against PubMLST typing schemes
       homepage: https://github.com/tseemann/mlst
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: biotools:mlst
 input:
   - - meta:
@@ -35,13 +36,27 @@ output:
           pattern: "*.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_mlst:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mlst:
+          type: string
+          description: The name of the tool
+      - echo $(mlst --version 2>&1) | sed "s/mlst //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mlst:
+          type: string
+          description: The name of the tool
+      - echo $(mlst --version 2>&1) | sed "s/mlst //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lskatz"
   - "@tseemann"
