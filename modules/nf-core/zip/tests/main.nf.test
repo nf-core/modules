@@ -24,7 +24,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.zipped_archive.get(0).get(1)).exists() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    ).match("versions") }
             )
         }
     }

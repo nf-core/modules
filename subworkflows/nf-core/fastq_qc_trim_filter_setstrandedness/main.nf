@@ -423,7 +423,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         .join(ch_seqkit_stats,         remainder: true)
         .join(ch_bowtie2_log,          remainder: true)
         .join(ch_fastqc_filtered_zip,  remainder: true)
-        .map { row -> [row[0], row.drop(1).findAll { it != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }
+        .map { row -> [row[0], row.drop(1).findAll { f -> f != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }
 
     emit:
     reads            = ch_strand_inferred_fastq

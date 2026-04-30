@@ -3,7 +3,7 @@ process SAMSHEE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4a/4acdaccdf86f5cedadbb91fba6e818c8cec006c874a19b84e60b8e2660b19f4c/data' :
         'community.wave.seqera.io/library/samshee_python:38088c103ef2751a' }"
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.

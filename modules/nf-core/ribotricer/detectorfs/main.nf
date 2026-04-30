@@ -3,7 +3,7 @@ process RIBOTRICER_DETECTORFS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ribotricer:1.3.3--pyhdfd78af_0':
         'quay.io/biocontainers/ribotricer:1.3.3--pyhdfd78af_0' }"
 

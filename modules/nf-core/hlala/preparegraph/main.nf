@@ -4,7 +4,7 @@ process HLALA_PREPAREGRAPH {
     stageInMode 'copy'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hla-la:1.0.4--h077b44d_1':
         'quay.io/biocontainers/hla-la:1.0.4--h077b44d_1' }"
 
@@ -13,7 +13,7 @@ process HLALA_PREPAREGRAPH {
 
     output:
     tuple val(meta), path("${graph}")        , emit: graph
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('hla-la'), eval('echo 1.0.4'), emit: versions_hlala, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +30,6 @@ process HLALA_PREPAREGRAPH {
     ${bin} \\
         --action prepareGraph \\
         --PRG_graph_dir $graph
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hlala: 1.0.3
-    END_VERSIONS
     """
 
     stub:
@@ -76,10 +71,5 @@ process HLALA_PREPAREGRAPH {
     touch ${graph}/PRG/graph.txt
     touch ${graph}/PRG/segments.txt
     touch ${graph}/PRG/positions.txt
-
-    cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            hlala: 1.0.3
-    END_VERSIONS
     """
 }

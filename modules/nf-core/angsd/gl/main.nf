@@ -3,7 +3,7 @@ process ANGSD_GL {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/angsd:0.940--hce60e53_2':
         'quay.io/biocontainers/angsd:0.940--hce60e53_2' }"
 

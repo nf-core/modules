@@ -4,7 +4,7 @@ process ESTSFS {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/est-sfs:2.04--h245ed52_0':
         'quay.io/biocontainers/est-sfs:2.04--h245ed52_0' }"
 

@@ -3,7 +3,7 @@ process SAGEPROTEOMICS_SAGE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sage-proteomics:0.14.7--h031d066_0' :
         'quay.io/biocontainers/sage-proteomics:0.14.7--h031d066_0' }"
 

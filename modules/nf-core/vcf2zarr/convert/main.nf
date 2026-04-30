@@ -3,7 +3,7 @@ process VCF2ZARR_CONVERT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-        container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9e0bf4a8a21faa7319626812bc557404bb37b440df1af2bbc89a80771aca1f94/data':
         'community.wave.seqera.io/library/bio2zarr:0.1.7--a742d2d9b8ee4347' }"
 

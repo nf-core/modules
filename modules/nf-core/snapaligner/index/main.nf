@@ -3,7 +3,7 @@ process SNAPALIGNER_INDEX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.5--h077b44d_2':
         'quay.io/biocontainers/snap-aligner:2.0.5--h077b44d_2' }"
 

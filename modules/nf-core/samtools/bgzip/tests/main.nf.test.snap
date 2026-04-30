@@ -18,7 +18,7 @@
                         "1.23.1"
                     ]
                 ],
-                "fasta": [
+                "output": [
                     [
                         {
                             "id": "genome",
@@ -36,11 +36,54 @@
                 ]
             }
         ],
+        "timestamp": "2026-04-29T09:57:27.161012159",
         "meta": {
-            "nf-test": "0.9.3",
+            "nf-test": "0.9.5",
             "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-19T08:53:42.607346"
+        }
+    },
+    "test_samtools_bgzip - vcf gzipped": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
+                    ]
+                ],
+                "1": [
+                    [
+                        "SAMTOOLS_BGZIP",
+                        "samtools",
+                        "1.23.1"
+                    ]
+                ],
+                "output": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_BGZIP",
+                        "samtools",
+                        "1.23.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-29T13:47:16.828997253",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     },
     "test_samtools_bgzip - fasta": {
         "content": [
@@ -61,7 +104,7 @@
                         "1.23.1"
                     ]
                 ],
-                "fasta": [
+                "output": [
                     [
                         {
                             "id": "test",
@@ -79,11 +122,11 @@
                 ]
             }
         ],
+        "timestamp": "2026-04-29T09:57:12.194187176",
         "meta": {
-            "nf-test": "0.9.3",
+            "nf-test": "0.9.5",
             "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-19T08:53:30.694534"
+        }
     },
     "test_samtools_bgzip - fasta bgzipped": {
         "content": [
@@ -104,7 +147,7 @@
                         "1.23.1"
                     ]
                 ],
-                "fasta": [
+                "output": [
                     [
                         {
                             "id": "test",
@@ -122,11 +165,11 @@
                 ]
             }
         ],
+        "timestamp": "2026-04-29T09:57:19.706096489",
         "meta": {
-            "nf-test": "0.9.3",
+            "nf-test": "0.9.5",
             "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-19T08:53:37.755427"
+        }
     },
     "test_samtools_bgzip - fasta stub": {
         "content": [
@@ -137,7 +180,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
@@ -147,13 +190,13 @@
                         "1.23.1"
                     ]
                 ],
-                "fasta": [
+                "output": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
-                        "test.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "versions_samtools": [
@@ -165,11 +208,11 @@
                 ]
             }
         ],
+        "timestamp": "2026-04-29T09:57:49.895660714",
         "meta": {
-            "nf-test": "0.9.3",
+            "nf-test": "0.9.5",
             "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-19T08:53:52.410173"
+        }
     },
     "test_samtools_bgzip - proteome gzipped": {
         "content": [
@@ -190,7 +233,7 @@
                         "1.23.1"
                     ]
                 ],
-                "fasta": [
+                "output": [
                     [
                         {
                             "id": "test",
@@ -208,10 +251,10 @@
                 ]
             }
         ],
+        "timestamp": "2026-04-29T09:57:34.630615063",
         "meta": {
-            "nf-test": "0.9.3",
+            "nf-test": "0.9.5",
             "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-19T08:53:47.582581"
+        }
     }
 }

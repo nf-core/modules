@@ -3,7 +3,7 @@ process POOLSNP {
     label 'process_medium'
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/poolsnp:1.0.1--py312h7e72e81_0':
         'quay.io/biocontainers/poolsnp:1.0.1--py312h7e72e81_0' }"
 

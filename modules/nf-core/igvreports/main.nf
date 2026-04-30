@@ -3,7 +3,7 @@ process IGVREPORTS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/igv-reports:1.12.0--pyh7cba7a3_0':
         'quay.io/biocontainers/igv-reports:1.12.0--pyh7cba7a3_0' }"
 

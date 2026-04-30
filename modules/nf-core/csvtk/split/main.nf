@@ -3,7 +3,7 @@ process CSVTK_SPLIT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/csvtk:0.31.0--h9ee0642_0' :
         'quay.io/biocontainers/csvtk:0.31.0--h9ee0642_0' }"
 
@@ -14,7 +14,7 @@ process CSVTK_SPLIT {
 
     output:
     tuple val(meta), path("*.${out_extension}"), emit: split_csv
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('csvtk'), eval("csvtk version | sed -e 's/csvtk v//g'"), emit: versions_csvtk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process CSVTK_SPLIT {
         ${delimiter} \\
         ${out_delimiter} \\
         ${csv}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        csvtk: \$(echo \$( csvtk version | sed -e 's/csvtk v//g' ))
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process CSVTK_SPLIT {
     out_extension = args.contains('--out-delimiter "\t"') || args.contains('-D "\t"') || args.contains("-D \$'\t'") ? "tsv" : "csv"
     """
     touch ${prefix}.${out_extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        csvtk: \$(echo \$( csvtk version | sed -e "s/csvtk v//g" ))
-    END_VERSIONS
     """
 }

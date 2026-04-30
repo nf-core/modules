@@ -3,7 +3,7 @@ process BIOBAMBAM_BAMMARKDUPLICATES2 {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/biobambam:2.0.185--h85de650_1'
         : 'quay.io/biocontainers/biobambam:2.0.185--h85de650_1'}"
 
