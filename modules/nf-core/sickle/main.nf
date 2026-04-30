@@ -15,7 +15,7 @@ process SICKLE {
     tuple val(meta), path("${prefix}.pe{1,2}.trimmed.fastq.gz"),   optional:true, emit: paired_trimmed
     tuple val(meta), path("${prefix}.singleton.trimmed.fastq.gz"), optional:true, emit: singleton_trimmed
     tuple val(meta), path("*.log"), emit: log
-    tuple val("${task.process}"), val('sickle'), eval('sickle --version | awk "NR==1{print \\$3}"'), emit: versions_sickle, topic: versions
+    tuple val(meta), path("versions.yml"), emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,6 +34,11 @@ process SICKLE {
         -o ${prefix}.se.trimmed.fastq.gz \\
         -g \\
     >${prefix}.sickle.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sickle: \$(sickle --version | awk 'NR==1{print \$3}')
+    END_VERSIONS
     """
     }
     else{
@@ -49,13 +54,38 @@ process SICKLE {
         -s ${prefix}.singleton.trimmed.fastq.gz \\
         -g \\
     >${prefix}.sickle.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sickle: \$(sickle --version | awk 'NR==1{print \$3}')
+    END_VERSIONS
     """
     }
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    if (meta.single_end){
     """
     echo "" | gzip > ${prefix}.se.trimmed.fastq.gz
     touch ${prefix}.sickle.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sickle: \$(sickle --version | awk 'NR==1{print \$3}')
+    END_VERSIONS
     """
+    }
+    else {
+    """
+    echo "" | gzip > ${prefix}.pe1.trimmed.fastq.gz
+    echo "" | gzip > ${prefix}.pe2.trimmed.fastq.gz
+    echo "" | gzip > ${prefix}.singleton.trimmed.fastq.gz
+    touch ${prefix}.sickle.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sickle: \$(sickle --version | awk 'NR==1{print \$3}')
+    END_VERSIONS
+    """
+    }
 }

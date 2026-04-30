@@ -27,7 +27,7 @@ input:
           ["read.1.fastq.gz","read.2.fastq.gz"]
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
     - qual_type:
         type: string
         description: sickle needs a base quality values, which could be either
@@ -46,7 +46,7 @@ output:
             file
           pattern: "*.se.trimmed.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   paired_trimmed:
     - - meta:
           type: map
@@ -71,7 +71,7 @@ output:
             file
           pattern: "*.singleton.trimmed.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   log:
     - - meta:
           type: map
@@ -83,27 +83,26 @@ output:
           description: log file
           pattern: "*.log"
           ontologies: []
-  versions_sickle:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - sickle:
-          type: string
-          description: The name of the tool
-      - sickle --version | awk "NR==1{print \$3}":
-          type: eval
-          description: The expression to obtain the version of the tool
+  versions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750
 topics:
   versions:
-    - - ${task.process}:
+    - - meta:
           type: string
           description: The name of the process
-      - sickle:
+      - versions.yml:
           type: string
           description: The name of the tool
-      - sickle --version | awk "NR==1{print \$3}":
-          type: eval
-          description: The expression to obtain the version of the tool
 authors:
   - "@BioInf2305"
 maintainers:

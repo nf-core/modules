@@ -30,9 +30,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					file(process.out.log[0][1]).name,
-					sanitizeOutput(process.out).findAll { it.key != 'log' }
+					sanitizeOutput(process.out).findAll { it.key != 'log' && it.key != 'versions' }
 					).match()
-				}
+				},
+                { assert process.out.versions },
+                { assert snapshot(process.out.versions).match("versions_single_end") }
             )
         }
     }
@@ -60,9 +62,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					file(process.out.log[0][1]).name,
-					sanitizeOutput(process.out).findAll { it.key != 'log' }
+					sanitizeOutput(process.out).findAll { it.key != 'log' && it.key != 'versions' }
 					).match()
-				}
+				},
+                { assert process.out.versions },
+                { assert snapshot(process.out.versions).match("versions_paired_end") }
             )
         }
     }
@@ -89,9 +93,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					file(process.out.log[0][1]).name,
-					sanitizeOutput(process.out).findAll { it.key != 'log' }
+					sanitizeOutput(process.out).findAll { it.key != 'log' && it.key != 'versions' }
 					).match()
-				}
+				},
+                { assert process.out.versions },
+                { assert snapshot(process.out.versions).match("versions_stub") }
             )
         }
     }
