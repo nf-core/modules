@@ -33,4 +33,11 @@ process RAVEN {
     # compress assembly graph
     gzip -c ${prefix}.gfa > ${prefix}.gfa.gz
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.fasta.gz
+    echo "" | gzip > ${prefix}.gfa.gz
+    """
 }
