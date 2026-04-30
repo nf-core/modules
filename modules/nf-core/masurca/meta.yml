@@ -1,0 +1,167 @@
+name: "masurca"
+description: The MaSuRCA (Maryland Super Read Cabog Assembler) genome assembly
+  and analysis toolkit
+keywords:
+  - denovo
+  - assembly
+  - debruijn
+  - genomics
+tools:
+  - "masurca":
+      description: "MaSuRCA (Maryland Super-Read Celera Assembler) genome assembly software."
+      homepage: "https://github.com/alekseyzimin/masurca/blob/v4.1.4/README.md"
+      documentation: "https://github.com/alekseyzimin/masurca/blob/v4.1.4/README.md"
+      tool_dev_url: "https://github.com/alekseyzimin/masurca"
+      doi: "10.1101/gr.213405.116"
+      licence:
+        - "GPL v3"
+      identifier: biotools:masurca
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - illumina:
+        type: file
+        description: |
+          Input paired-end FastQ files (R1 and R2).
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+    - jump:
+        type: file
+        description: |
+          Jump/mate-pair FastQ files.
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+    - pacbio:
+        type: file
+        description: |
+          PacBio FastQ files.
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+    - nanopore:
+        type: file
+        description: |
+          Nanopore FastQ files.
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+  - fragment_mean:
+      type: integer
+      description: Mean fragment size for Illumina paired-end reads
+  - fragment_stdev:
+      type: integer
+      description: Standard deviation of fragment size for Illumina paired-end
+        reads
+  - jump_mean:
+      type: integer
+      description: Mean fragment size for jump/mate-pair reads
+  - jump_stdev:
+      type: integer
+      description: Standard deviation of fragment size for jump/mate-pair reads
+  - extend_jump_reads:
+      type: boolean
+      description: "Whether to extend jump reads (default: 0 - false; use 1 for true)"
+  - graph_kmer_size:
+      type: string
+      description: "K-mer size for the de Bruijn graph (default: 'auto', it can be an
+        integer or 'auto')"
+  - use_linking_mates:
+      type: boolean
+      description: "Whether to use linking mates (default: 0 - false; use 1 for true)"
+  - lhe_coverage:
+      type: integer
+      description: "LHE coverage (default: 25)"
+  - mega_reads_one_pass:
+      type: boolean
+      description: "Whether to perform one pass of mega-reads (default: 0 - false; use
+        1 for true)"
+  - limit_jump_coverage:
+      type: integer
+      description: "Limit for jump read coverage (default: 300)"
+  - ca_parameters:
+      type: string
+      description: "Parameters for the Celera Assembler (default: 'cgwErrorRate=0.15')"
+  - close_gaps:
+      type: boolean
+      description: "Whether to close gaps (default: 0 - false; use 1 for true)"
+  - jf_size:
+      type: integer
+      description: "Jellyfish hash size (default: 200000000)"
+output:
+  script:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "assemble.sh":
+          type: file
+          description: MaSuRCA assembly script
+          pattern: "assemble.sh"
+          ontologies: []
+  scaffolds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*scaffolds.fa.gz":
+          type: file
+          description: Assembled scaffolds in FASTA format
+          pattern: "*-scaffolds.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/data_0925
+            - edam: http://edamontology.org/format_1929
+            - edam: http://edamontology.org/format_3989
+  config:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_masurca_config.txt":
+          type: file
+          description: MaSuRCA configuration file
+          pattern: "*_masurca_config.txt"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-masurca.log":
+          type: file
+          description: MaSuRCA assembly log file
+          pattern: "*-masurca.log"
+          ontologies: []
+  versions_masurca:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - masurca:
+          type: string
+          description: The name of the tool
+      - masurca --version | sed 's/version //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - masurca:
+          type: string
+          description: The name of the tool
+      - masurca --version | sed 's/version //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@LiaOb21"
+maintainers:
+  - "@LiaOb21"
