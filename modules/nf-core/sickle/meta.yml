@@ -44,6 +44,8 @@ output:
           type: file
           description: Single end trimmed reads
           pattern: "*.se.trimmed.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   paired_trimmed:
     - - meta:
           type: map
@@ -54,6 +56,7 @@ output:
           type: file
           description: Paired end trimmed reads
           pattern: "*.pe{1,2}.trimmed.fastq.gz"
+          ontologies: []
   singleton_trimmed:
     - - meta:
           type: map
@@ -64,6 +67,8 @@ output:
           type: file
           description: Singleton trimmed reads
           pattern: "*.singleton.trimmed.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   log:
     - - meta:
           type: map
@@ -82,7 +87,7 @@ output:
       - sickle:
           type: string
           description: The tool name
-      - sickle --version | sed -e "s/sickle version //":
+      - sickle --version 2>&1 | head -1 | sed "s/sickle version //":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -93,7 +98,7 @@ topics:
       - sickle:
           type: string
           description: The tool name
-      - sickle --version | sed -e "s/sickle version //":
+      - sickle --version 2>&1 | head -1 | sed "s/sickle version //":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

@@ -15,7 +15,7 @@ process SICKLE {
     tuple val(meta), path("*.pe{1,2}.trimmed.fastq.gz"),   optional:true, emit: paired_trimmed
     tuple val(meta), path("*.singleton.trimmed.fastq.gz"), optional:true, emit: singleton_trimmed
     tuple val(meta), path("*.log"), emit: log
-    tuple val("${task.process}"), val('sickle'), eval('sickle --version | sed -e "s/sickle version //"'), topic: versions, emit: versions_sickle
+    tuple val("${task.process}"), val('sickle'), eval('sickle --version 2>&1 | head -1 | sed "s/sickle version //"'), topic: versions, emit: versions_sickle
 
     when:
     task.ext.when == null || task.ext.when

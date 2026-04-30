@@ -28,13 +28,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-					file(process.out.log[0][1]).name,
-					sanitizeOutput(process.out).findAll { !it.key.startsWith('versions') && it.key != 'log' }
-					).match()
-				},
-                { assert process.out.versions_sickle },
-                { assert snapshot(process.out.versions_sickle).match("versions_single_end") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
             )
         }
     }
@@ -60,13 +54,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-					file(process.out.log[0][1]).name,
-					sanitizeOutput(process.out).findAll { !it.key.startsWith('versions') && it.key != 'log' }
-					).match()
-				},
-                { assert process.out.versions_sickle },
-                { assert snapshot(process.out.versions_sickle).match("versions_paired_end") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
             )
         }
     }
@@ -91,13 +79,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-					file(process.out.log[0][1]).name,
-					sanitizeOutput(process.out).findAll { !it.key.startsWith('versions') && it.key != 'log' }
-					).match()
-				},
-                { assert process.out.versions_sickle },
-                { assert snapshot(process.out.versions_sickle).match("versions_stub") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
             )
         }
     }
