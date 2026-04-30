@@ -42,7 +42,7 @@ output:
       - sha256sum:
           type: string
           description: The name of the tool
-      - echo $(sha256sum --version 2>&1 | head -n 1| sed "s/^.*) //;"):
+      - sha256sum --version 2>&1 | head -n 1 | awk '{print $NF}':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -53,7 +53,7 @@ topics:
       - sha256sum:
           type: string
           description: The name of the tool
-      - echo $(sha256sum --version 2>&1 | head -n 1| sed "s/^.*) //;"):
+      - sha256sum --version 2>&1 | head -n 1 | awk '{print $NF}':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
