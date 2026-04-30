@@ -28,8 +28,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.good_reads },
                 { assert process.out.log },
-                { assert snapshot(process.out.versions_prinseqplusplus).match("versions") }
-            )
+)
         }
     }
 
@@ -55,6 +54,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.good_reads },
                 { assert process.out.log }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
