@@ -26,7 +26,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+				    process.out.csv_gz,
+				    process.out.versions_tailfindr
+				    ).match() },
+                { assert snapshot(process.out.versions_tailfindr).match("versions") }
             )
         }
     }

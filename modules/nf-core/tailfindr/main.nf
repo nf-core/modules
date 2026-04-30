@@ -12,7 +12,7 @@ process TAILFINDR {
 
     output:
     tuple val(meta), path("*.csv.gz"), emit: csv_gz
-    tuple val("${task.process}"), val('tailfindr'), eval('Rscript -e "cat(paste(packageVersion(\'tailfindr\'), collapse=\'.\'))"'), emit: versions_tailfindr, topic: versions
+    tuple val("${task.process}"), val('tailfindr'), eval('Rscript -e "library(tailfindr); cat(as.character(packageVersion(\'tailfindr\')))"'), emit: versions_tailfindr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
