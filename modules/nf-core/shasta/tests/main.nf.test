@@ -30,9 +30,11 @@ nextflow_process {
                 { assert snapshot(
 					path(process.out.assembly[0][1]).linesGzip[0][0..10],
 					path(process.out.gfa[0][1]).linesGzip[0],
-					file(process.out.results[0][1]).name
+					file(process.out.results[0][1]).name,
+					process.out.versions_shasta
 					).match()
-				}
+				},
+                { assert snapshot(process.out.versions_shasta).match("versions") }
             )
         }
     }
