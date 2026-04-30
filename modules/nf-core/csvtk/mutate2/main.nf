@@ -3,9 +3,9 @@ process CSVTK_MUTATE2 {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/csvtk:0.31.0--h9ee0642_0' :
-        'quay.io/biocontainers/csvtk:0.31.0--h9ee0642_0' }"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/917edb71b915f07fa2838c20e3c731181d3d315cbf8a9bfead41412d2b4ae062/data' :
+        'community.wave.seqera.io/library/csvtk:0.37.0--113625988dd3285d' }"
 
     input:
     tuple val(meta), path(input, name: 'inputs/csv*/*')
