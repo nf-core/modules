@@ -11,7 +11,7 @@ process FOLDCOMP_DECOMPRESS {
     tuple val(meta), path(fcz)
 
     output:
-    tuple val(meta), path("{*pdb,*.cif}")                                    , emit: pdb
+    tuple val(meta), path("{*pdb,*.cif}")                                                    , emit: pdb
     tuple val("${task.process}"), val('foldcomp'), eval("foldcomp --version | cut -d' ' -f2"), emit: versions_foldcomp, topic: versions
 
     when:
