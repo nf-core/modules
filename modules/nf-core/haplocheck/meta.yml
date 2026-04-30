@@ -16,7 +16,8 @@ tools:
       documentation: "https://github.com/genepi/haplocheck"
       tool_dev_url: "https://github.com/genepi/haplocheck"
       doi: 10.1101/gr.256545.119
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:haplocheck
 input:
   - - meta:
@@ -52,13 +53,27 @@ output:
           description: Haplocheck HTML report
           pattern: "*.{html}"
           ontologies: []
+  versions_haplocheck:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - haplocheck:
+          type: string
+          description: The name of the tool
+      - haplocheck --version 2>&1 | head -1 | awk '{print \$2}':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - haplocheck:
+          type: string
+          description: The name of the tool
+      - haplocheck --version 2>&1 | head -1 | awk '{print \$2}':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lmtani"
 maintainers:
