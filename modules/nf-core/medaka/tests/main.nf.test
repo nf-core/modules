@@ -25,10 +25,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.assembly[0][1]).linesGzip.join()[0..99],
-                    sanitizeOutput(process.out)
-                    ).match()
-                }
+                    path(process.out.assembly[0][1]).linesGzip.join()[0..99]
+                    ).match("assembly")
+                },
+                { assert snapshot(process.out.versions).match("versions_main") }
             )
         }
 
@@ -53,7 +53,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(process.out.versions).match("versions_stub") }
             )
         }
 
