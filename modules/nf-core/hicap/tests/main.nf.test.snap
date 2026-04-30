@@ -1,72 +1,52 @@
 {
     "test-hicap": {
         "content": [
-            [
-                "VERSION     <unknown",
-                "KEYWORDS    .",
-                "SOURCE      .",
-                "  ORGANISM  .",
-                "            ."
-            ],
-            [
-                "\t<ns0:clipPath id=\"clip\">",
-                "\t\t<ns0:rect height=\"150\" width=\"1800\" x=\"0\" y=\"0\" />",
-                "\t</ns0:clipPath>",
-                "\t<ns0:g id=\"group\" style=\"clip-path: url(#clip)\" transform=\"scale(1,-1) translate(0,-150)\">",
-                "\t\t<ns0:g transform=\"\">"
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "genome.tsv:md5,cd148cbec8c707e9c732c417a0e93d3b"
+            {
+                "gbk": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "genome.gbk:md5,562d026956903354ac80721f501335d4"
+                    ]
+                ],
+                "svg": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "genome.svg:md5,4fb94871dd0fdd8b4496049668176631"
+                    ]
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "genome.tsv:md5,cd148cbec8c707e9c732c417a0e93d3b"
+                    ]
+                ],
+                "versions_hicap": [
+                    [
+                        "HICAP",
+                        "hicap",
+                        "1.0.3"
+                    ]
                 ]
-            ],
-            [
-                "versions.yml:md5,8f155331d348220ce0f7d6467340608a"
-            ]
+            }
         ],
+        "timestamp": "2026-04-29T17:49:57.116266",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-30T19:27:59.051626"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     },
-    "test-hicap-stub": {
+    "test-hicap - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "genome.gbk:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "genome.svg:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "genome.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    "versions.yml:md5,8f155331d348220ce0f7d6467340608a"
-                ],
                 "gbk": [
                     [
                         {
@@ -94,15 +74,19 @@
                         "genome.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,8f155331d348220ce0f7d6467340608a"
+                "versions_hicap": [
+                    [
+                        "HICAP",
+                        "hicap",
+                        "1.0.3"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-04-29T17:50:03.099839",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-30T19:25:16.144267"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }

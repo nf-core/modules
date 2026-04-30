@@ -1,6 +1,6 @@
 name: hicap
-description: Identify cap locus serotype and structure in your Haemophilus influenzae
-  assemblies
+description: Identify cap locus serotype and structure in your Haemophilus
+  influenzae assemblies
 keywords:
   - fasta
   - serotype
@@ -12,7 +12,8 @@ tools:
       documentation: https://github.com/scwatts/hicap
       tool_dev_url: https://github.com/scwatts/hicap
       doi: "10.1128/JCM.00190-19"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -68,14 +69,28 @@ output:
           description: Detailed summary of cap locus annotations
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_hicap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hicap:
+          type: string
+          description: The name of the tool
+      - echo $(hicap --version 2>&1) | sed 's/^.*hicap //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hicap:
+          type: string
+          description: The name of the tool
+      - echo $(hicap --version 2>&1) | sed 's/^.*hicap //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:
