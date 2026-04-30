@@ -1,0 +1,159 @@
+name: humann3_humann
+description: Functional analysis of metagenome or metatranscriptome data
+keywords:
+  - function
+  - metagenomics
+  - metatranscriptomics
+  - profiling
+  - community
+tools:
+  - humann:
+      description: "HUMAnN: The HMP Unified Metabolic Analysis Network"
+      homepage: http://huttenhower.sph.harvard.edu/humann
+      documentation: https://github.com/biobakery/biobakery/wiki/humann3
+      tool_dev_url: https://github.com/biobakery/humann
+      doi: "10.7554/eLife.65088"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - input:
+        type: file
+        description: |
+          A metagenome (DNA reads) or metatranscriptome (RNA reads) [fastq,fastq.gz,fasta,fasta.gz]
+          OR pre-computed mappings [sam,bam,blastm8]
+          OR pre-computed abundance tables [tsv,biom]
+        pattern: "*.{fastq,fastq.gz,fasta,fasta.gz,sam,bam,blastm8,tsv,biom}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3746
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - profile:
+        type: file
+        description: Pre-computed MetaPhlAn taxonomic profile
+        pattern: "*.{txt}"
+        ontologies: []
+  - nucleotide_db:
+      type: directory
+      description: |
+        ChocoPhlAn nucleotide database directory (v3: *.ffn.gz, v4: *.fna.gz)
+  - protein_db:
+      type: directory
+      description: |
+        UniRef protein database directory containing *.dmnd files
+  - utility_db:
+      type: directory
+      description: |
+        HUMAnN utility mapping database directory
+output:
+  genefamilies:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_genefamilies.tsv.gz":
+          type: file
+          description: Compressed gene families abundance table
+          pattern: "*.{tsv.gz}"
+          ontologies: []
+  pathabundance:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_pathabundance.tsv.gz":
+          type: file
+          description: Compressed pathway abundance table
+          pattern: "*.{tsv.gz}"
+          ontologies: []
+  pathcoverage:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_pathcoverage.tsv.gz":
+          type: file
+          description: Compressed pathway coverage table
+          pattern: "*.{tsv.gz}"
+          ontologies: []
+  reactions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_reactions.tsv.gz":
+          type: file
+          description: Compressed reactions abundance table
+          pattern: "*.{tsv.gz}"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.log":
+          type: file
+          description: HUMAnN run log file
+          pattern: "*.{log}"
+          ontologies: []
+  versions_humann:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - HUMAnN:
+          type: string
+          description: The name of the tool
+      - humann --version 2>&1 | sed 's/humann v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_metaphlan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - MetaPhlAn:
+          type: string
+          description: The name of the tool
+      - metaphlan --version 2>&1 | sed 's/metaphlan v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - HUMAnN:
+          type: string
+          description: The name of the tool
+      - humann --version 2>&1 | sed 's/humann v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - MetaPhlAn:
+          type: string
+          description: The name of the tool
+      - metaphlan --version 2>&1 | sed 's/metaphlan v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nickp60"
+  - "@d4straub"
+maintainers:
+  - "@nickp60"
+  - "@vinisalazar"

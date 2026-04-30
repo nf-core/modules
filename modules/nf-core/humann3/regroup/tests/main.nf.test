@@ -1,0 +1,50 @@
+nextflow_process {
+
+    name "Test Process HUMANN3_REGROUP"
+    script "../main.nf"
+    process "HUMANN3_REGROUP"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "humann3"
+    tag "humann3/regroup"
+    tag "untar"
+    setup {
+        run("UNTAR", alias: "UNTAR_v3_util") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file( params.pipelines_testdata_base_path + 'data/database/humann/v3/utility_nfDEMO.tar.gz', checkIfExists: true )
+                ])
+                """
+            }
+        }
+    }
+    test("humann3_regroup sarscov2 - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = "uniref90_rxn"
+		input[2] = UNTAR_v3_util.out.untar.map{ it[1] }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
