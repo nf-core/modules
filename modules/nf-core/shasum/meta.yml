@@ -36,20 +36,26 @@ output:
           pattern: "*.sha256"
           ontologies: []
   versions_sha256sum:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - sha256sum:
+          type: string
+          description: Tool name
+      - "sha256sum --version 2>&1 | head -n 1 | awk '{print $NF}'":
+          type: eval
+          description: Software version
 topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - sha256sum:
+          type: string
+          description: Tool name
+      - "sha256sum --version 2>&1 | head -n 1 | awk '{print $NF}'":
+          type: eval
+          description: Software version
 authors:
   - "@matthdsm"
 maintainers:
