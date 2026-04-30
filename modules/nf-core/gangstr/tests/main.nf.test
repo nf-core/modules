@@ -35,11 +35,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.vcf[0][1]).name.endsWith(".vcf.gz") },
-                { assert file(process.out.vcf[0][1]).size() > 0 },
-                { assert file(process.out.index[0][1]).name.endsWith(".vcf.gz.tbi") },
-                { assert file(process.out.index[0][1]).size() > 0 },
                 { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    file(process.out.index[0][1]).name,
                     process.out.samplestats,
                     [ versions: process.out.versions_gangstr ]
                 ).match() }
@@ -72,11 +70,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.vcf[0][1]).name.endsWith(".vcf.gz") },
-                { assert file(process.out.vcf[0][1]).size() > 0 },
-                { assert file(process.out.index[0][1]).name.endsWith(".vcf.gz.tbi") },
-                { assert file(process.out.index[0][1]).size() > 0 },
                 { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    file(process.out.index[0][1]).name,
                     process.out.samplestats,
                     [ versions: process.out.versions_gangstr ]
                 ).match() }
@@ -115,13 +111,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.vcf[0][1]).name.endsWith(".vcf.gz") },
-                { assert file(process.out.vcf[0][1]).size() > 0 },
-                { assert file(process.out.index[0][1]).name.endsWith(".vcf.gz.tbi") },
-                { assert file(process.out.index[0][1]).size() > 0 },
                 { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    file(process.out.index[0][1]).name,
                     process.out.samplestats,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    [ versions: process.out.versions_gangstr ]
                 ).match() }
             )
         }
@@ -145,7 +139,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    file(process.out.index[0][1]).name,
+                    file(process.out.samplestats[0][1]).name,
+                    [ versions: process.out.versions_gangstr ]
+                ).match() }
             )
         }
     }
