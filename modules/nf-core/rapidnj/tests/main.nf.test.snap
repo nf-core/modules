@@ -1,17 +1,64 @@
 {
-    "test-rapidnj": {
+    "sarscov2-fasta": {
         "content": [
-            [
-                "alignment.sth:md5,d2e995c5dd3e3a8212a98414ae5b5de7"
-            ],
-            [
-                "versions.yml:md5,6949732c2fc12b8a5a3e478f197e7fe7"
-            ]
+            {
+                "phylogeny": [
+                    "rapidnj_phylogeny.tre:md5,775909ea40138101976592cfa1814a1d"
+                ],
+                "stockholm_alignment": [
+                    "alignment.sth:md5,d2e995c5dd3e3a8212a98414ae5b5de7"
+                ],
+                "versions_biopython": [
+                    [
+                        "RAPIDNJ",
+                        "biopython",
+                        "1.78"
+                    ]
+                ],
+                "versions_rapidnj": [
+                    [
+                        "RAPIDNJ",
+                        "rapidnj",
+                        "2.3.2"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-04-29T16:04:21.689431",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-23T11:53:44.324999"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2-fasta - stub": {
+        "content": [
+            {
+                "phylogeny": [
+                    "rapidnj_phylogeny.tre:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "stockholm_alignment": [
+                    "alignment.sth:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "versions_biopython": [
+                    [
+                        "RAPIDNJ",
+                        "biopython",
+                        "1.78"
+                    ]
+                ],
+                "versions_rapidnj": [
+                    [
+                        "RAPIDNJ",
+                        "rapidnj",
+                        "2.3.2"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-29T16:04:26.633818",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }
