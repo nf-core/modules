@@ -28,8 +28,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.csv_gz[0][1] ==~ ".*.csv.gz" ? true : false,
-                    process.out.versions_tailfindr,
-                    process.out.versions_ont_fast5_api
+                    [versions: [process.out.versions_tailfindr, process.out.versions_ont_fast5_api]]
                 ).match() }
             )
         }
@@ -54,8 +53,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.csv_gz[0][1] ==~ ".*.csv.gz" ? true : false,
-                    process.out.versions_tailfindr,
-                    process.out.versions_ont_fast5_api
+                    [versions: [process.out.versions_tailfindr, process.out.versions_ont_fast5_api]]
                 ).match() }
             )
         }
