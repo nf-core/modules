@@ -12,7 +12,7 @@ process TAILFINDR {
 
     output:
     tuple val(meta), path("*.csv.gz"), emit: csv_gz
-    tuple val("${task.process}"), val('tailfindr'), eval('Rscript -e "library(tailfindr); cat(as.character(packageVersion(\'tailfindr\')))"'), emit: versions_tailfindr, topic: versions
+    path "versions.yml"             , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,22 @@ process TAILFINDR {
     csv_filename = \\'${prefix}.csv\\',
     num_cores = ${task.cpus})";
     gzip ${prefix}.csv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        tailfindr: \$(Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))")
+        ont-fast5-api: \$(pip show ont-fast5-api | grep Version | awk '{print \$2}')
+    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.csv.gz
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        tailfindr: 1.3
+        ont-fast5-api: 3.3.0
+    END_VERSIONS
     """
 }

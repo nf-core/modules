@@ -50,6 +50,8 @@ output:
       - Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))":
           type: eval
           description: The expression to obtain the version of the tool
+  versions:
+    - versions.yml: {}
 topics:
   versions:
     - - ${task.process}:
