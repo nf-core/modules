@@ -31,11 +31,10 @@ process HUMANN3_HUMANN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def nuc_ext = '*.ffn.gz'
     def pangenome_string = "--taxonomic-profile ${profile}"
     """
     PROTS_DB=`find -L "${protein_db}" -name "*.dmnd" -exec dirname {} \\;`
-    nuclist=`find -L "${nucleotide_db}" -name "${nuc_ext}" -print -quit `
+    nuclist=`find -L "${nucleotide_db}" -name "*.ffn.gz" -print -quit `
     NUCS_DB=\$(dirname \$nuclist)
 
     STATIC_CONFIG=`python -c "import humann; print(humann.__file__.replace('__init__.py', 'humann.cfg'))"`
