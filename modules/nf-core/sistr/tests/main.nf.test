@@ -15,9 +15,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
-				]
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
+                ]
 
                 """
             }
@@ -30,10 +30,33 @@ nextflow_process {
                     file(process.out.tsv[0][1]).readLines()[0],
                     process.out.allele_fasta[0][1],
                     process.out.allele_json[0][1],
-                    process.out.cgmlst_csv[0][1],
-                    process.out.versions
+                    process.out.cgmlst_csv[0][1]
                     ).match()
                 }
+            )
+        }
+    }
+
+    test("test-sistr - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
