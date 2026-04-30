@@ -12,7 +12,7 @@ process FOLDCOMP_DECOMPRESS {
 
     output:
     tuple val(meta), path("{*pdb,*.cif}")                                    , emit: pdb
-    tuple val("${task.process}"), val('foldcomp'), eval('foldcomp --version'), emit: versions_foldcomp, topic: versions
+    tuple val("${task.process}"), val('foldcomp'), eval("foldcomp --version | cut -d' ' -f2"), emit: versions_foldcomp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
