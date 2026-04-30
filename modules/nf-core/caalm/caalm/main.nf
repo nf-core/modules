@@ -3,7 +3,7 @@ process CAALM_CAALM {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/840046fbd06b709533c0f9443a9ab04663012feb074ebca60067c0adb76baa21/data':
         'community.wave.seqera.io/library/faiss-cpu_python_pip_caalm_torch:c3008a34cb7c94b7' }"
 

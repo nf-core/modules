@@ -2,9 +2,9 @@ process GUBBINS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gubbins:3.3.5--py39pl5321he4a0461_0' :
-        'biocontainers/gubbins:3.3.5--py39pl5321he4a0461_0' }"
+        'quay.io/biocontainers/gubbins:3.3.5--py39pl5321he4a0461_0' }"
 
     input:
     path alignment
