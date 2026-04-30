@@ -24,14 +24,15 @@ input:
           e.g. `[ id:'test', single_end:false ]`
     - reads:
         type: file
-        description: Input fastq files
+        description: Input FASTQ files
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - reference:
       type: file
       description: Reference genome file in FASTA format
-      ontologies: []
+      ontologies:
+        - edam: http://edamontology.org/format_1929 # FASTA
 output:
   sketch_fastq_genome:
     - - meta:
