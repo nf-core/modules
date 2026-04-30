@@ -13,14 +13,15 @@ process RAPIDNJ {
     output:
     path "*.sth"       , emit: stockholm_alignment
     path "*.tre"       , emit: phylogeny
-    path "versions.yml", emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('rapidnj'), eval('echo 2.3.2'), emit: versions_rapidnj, topic: versions
+    tuple val("${task.process}"), val('biopython'), eval('python -c "import Bio; print(Bio.__version__)"'), emit: versions_biopython, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION = '2.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     python \\
         -c 'from Bio import SeqIO; SeqIO.convert("$alignment", "fasta", "alignment.sth", "stockholm")'
@@ -31,11 +32,11 @@ process RAPIDNJ {
         -i sth \\
         -c $task.cpus \\
         -x rapidnj_phylogeny.tre
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rapidnj: $VERSION
-        biopython: \$(python -c "import Bio; print(Bio.__version__)")
-    END_VERSIONS
+    stub:
+    """
+    touch alignment.sth
+    touch rapidnj_phylogeny.tre
     """
 }

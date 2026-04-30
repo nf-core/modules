@@ -11,7 +11,8 @@ tools:
       documentation: https://github.com/AdmiralenOla/Scoary
       tool_dev_url: https://github.com/AdmiralenOla/Scoary
       doi: "10.1186/s13059-016-1108-8"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:scoary
 input:
   - - meta:
@@ -49,13 +50,27 @@ output:
           pattern: "*.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_scoary:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - scoary:
+          type: string
+          description: The name of the tool
+      - scoary --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - scoary:
+          type: string
+          description: The name of the tool
+      - scoary --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:
