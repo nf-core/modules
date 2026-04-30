@@ -12,7 +12,7 @@ process ENDORSPY {
 
     output:
     tuple val(meta), path("*_mqc.json"), emit: json
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('endorspy'), eval("endorspy --version 2>&1 | sed 's/^endorS.py //'"), emit: versions_endorspy, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,20 +34,11 @@ process ENDORSPY {
         $args \\
         -o json \\
         -n $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        endorspy: \$(echo \$(endorspy --version 2>&1) | sed 's/^endorS.py //' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_mqc.json
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        endorspy: \$(echo \$(endorspy --version 2>&1) | sed 's/^endorS.py //' )
-    END_VERSIONS
     """
 }
