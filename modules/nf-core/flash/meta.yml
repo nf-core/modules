@@ -10,7 +10,8 @@ tools:
         Merge mates from fragments that are shorter than twice the read length
       homepage: https://ccb.jhu.edu/software/FLASH/
       doi: 10.1093/bioinformatics/btr507
-      licence: ["GPL v3+"]
+      licence:
+        - "GPL v3+"
       identifier: ""
 input:
   - - meta:
@@ -24,7 +25,7 @@ input:
           List of input FastQ files of size 2; i.e., paired-end data.
         pattern: "*fastq.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
 output:
   merged:
     - - meta:
@@ -37,7 +38,7 @@ output:
           description: The merged fastq reads
           pattern: ".extendedFrags.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   notcombined:
     - - meta:
           type: map
@@ -49,7 +50,7 @@ output:
           description: Not combined reads from flash
           pattern: ".notCombined_*.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   histogram:
     - - meta:
           type: map
@@ -61,13 +62,27 @@ output:
           description: HistogramNumeric histogram of merged read lengths.
           pattern: ".hist"
           ontologies: []
+  versions_flash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flash:
+          type: string
+          description: The name of the tool
+      - flash --version 2>&1 | head -1 | sed 's/^.*FLASH v//; s/ .*$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flash:
+          type: string
+          description: The name of the tool
+      - flash --version 2>&1 | head -1 | sed 's/^.*FLASH v//; s/ .*$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Erkison"
 maintainers:
