@@ -44,21 +44,27 @@ output:
           pattern: "*.fa.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+  versions_medaka:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - medaka:
+          type: string
+          description: The tool name
+      - "medaka --version 2>&1 | sed 's/medaka //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - medaka:
+          type: string
+          description: The tool name
+      - "medaka --version 2>&1 | sed 's/medaka //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@avantonder"
 maintainers:
