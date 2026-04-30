@@ -11,7 +11,6 @@ nextflow_process {
 
     test("homo_sapiens - bam") {
 
-
         when {
             process {
                 """
@@ -26,11 +25,9 @@ nextflow_process {
 
         then {
             assert process.success
+
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match()  }
             )
         }
 
@@ -55,10 +52,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

@@ -65,7 +65,7 @@ output:
       - finaletoolkit:
           type: string
           description: The name of the tool
-      - finaletoolkit --version:
+      - "finaletoolkit --version | sed 's/FinaleToolkit //g'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -76,7 +76,7 @@ topics:
       - finaletoolkit:
           type: string
           description: The name of the tool
-      - finaletoolkit --version:
+      - "finaletoolkit --version | sed 's/FinaleToolkit //g'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

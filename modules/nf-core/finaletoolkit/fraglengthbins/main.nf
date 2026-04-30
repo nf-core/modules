@@ -13,7 +13,7 @@ process FINALETOOLKIT_FRAGLENGTHBINS {
     output:
     tuple val(meta), path("*.frag_len.tsv"), emit: tsv
     tuple val(meta), path("*_hist.png"), emit: png
-    tuple val("${task.process}"), val('finaletoolkit'), eval("finaletoolkit --version"), topic: versions, emit: versions_finaletoolkit
+    tuple val("${task.process}"), val('finaletoolkit'), eval("finaletoolkit --version | sed 's/FinaleToolkit //g'"), topic: versions, emit: versions_finaletoolkit
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,8 +24,8 @@ process FINALETOOLKIT_FRAGLENGTHBINS {
     """
     finaletoolkit \\
         frag-length-bins \\
-        $bam \\
-        $args \\
+        ${bam} \\
+        ${args} \\
         --histogram-path ${prefix}_hist.png \\
         -o "${prefix}.frag_len.tsv"
     """
