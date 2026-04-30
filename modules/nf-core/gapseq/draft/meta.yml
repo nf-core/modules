@@ -1,0 +1,68 @@
+name: gapseq_draft
+description: Create draft metabolic model from pathway and transporter predictions
+keywords:
+  - metabolic model
+  - draft reconstruction
+  - bacteria
+  - genome-scale model
+tools:
+  - gapseq:
+      description: |
+        gapseq is designed to combine metabolic pathway analysis with metabolic network reconstruction and curation.
+        The draft command constructs a draft metabolic model from pathway and transporter predictions.
+      homepage: https://github.com/jotech/gapseq
+      documentation: https://gapseq.readthedocs.io/
+      tool_dev_url: https://github.com/jotech/gapseq
+      doi: "10.1186/s13059-021-02295-1"
+      licence: ["AGPL-3.0-only"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - pathways:
+        type: file
+        description: Pathways CSV file from gapseq find
+        pattern: "*-all-Pathways.tbl"
+        ontologies: []
+    - transporters:
+        type: file
+        description: Transporters CSV file from gapseq find-transport
+        pattern: "*-Transporter.tbl"
+        ontologies: []
+output:
+  draft:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.RDS":
+          type: file
+          description: Draft metabolic model in RDS format
+          pattern: "*.RDS"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log files from gapseq draft
+          pattern: "*.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@copilot"
+maintainers:
+  - "@copilot"
