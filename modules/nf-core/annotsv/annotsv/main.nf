@@ -51,6 +51,7 @@ process ANNOTSV_ANNOTSV {
 
     stub:
     def args   = task.ext.args   ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     def create_vcf = args.contains("-vcf 1") ? "touch ${prefix}.vcf" : ""
 
