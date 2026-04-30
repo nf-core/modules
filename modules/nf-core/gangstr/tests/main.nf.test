@@ -121,7 +121,7 @@ nextflow_process {
                 { assert file(process.out.index[0][1]).size() > 0 },
                 { assert snapshot(
                     process.out.samplestats,
-                    [ versions: process.out.versions_gangstr ]
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
