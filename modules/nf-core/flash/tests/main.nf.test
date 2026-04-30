@@ -36,7 +36,7 @@ nextflow_process {
                     process.out.histogram
                     ).match()
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions_flash).match("versions") }
             )
         }
 
@@ -72,7 +72,7 @@ nextflow_process {
                     process.out.histogram
                     ).match("stub_outputs")
                 },
-                { assert snapshot(process.out.versions).match("versions_stub") }
+                { assert snapshot(process.out.versions_flash).match("versions_stub") }
             )
         }
     }
