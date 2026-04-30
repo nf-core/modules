@@ -1,0 +1,326 @@
+nextflow_process {
+
+    name "Test Process REGENIE_STEP1"
+    script "../main.nf"
+    process "REGENIE_STEP1"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "regenie"
+    tag "regenie/step1"
+
+    test("homo_sapiens popgen - quantitative plink1 with covariates") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    'QuantitativeTrait',
+                    false
+                ]
+
+                input[2] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.predictions.size() == 1 },
+                { assert process.out.loco.size() == 1 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.loco.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
+                { assert path(process.out.log.get(0).get(1)).exists() },
+                {
+                    def predList = path(process.out.predictions.get(0).get(1))
+                    def locoFile = path(process.out.loco.get(0).get(1))
+                    def predListLines = predList.text.readLines().findAll { it }
+                    assert predList.exists()
+                    assert predListLines.size() == 1
+                    def predListFields = predListLines[0].split(/\s+/)
+                    assert predListFields.size() == 2
+                    assert predListFields[0] == 'QuantitativeTrait'
+                    assert predListFields[1] == locoFile.toString()
+                },
+                {
+                    def stablePredictions = process.out.predictions.collect { prediction ->
+                        [prediction[0], path(prediction[1]).getFileName().toString()]
+                    }
+                    def stableLoco = process.out.loco.collect { loco ->
+                        [loco[0], path(loco[1]).getFileName().toString()]
+                    }
+                    assert snapshot(
+                        stablePredictions,
+                        stableLoco,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens popgen - binary plink1 with covariates") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true),
+                    'BinaryTrait',
+                    true
+                ]
+
+                input[2] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.predictions.size() == 1 },
+                { assert process.out.loco.size() == 1 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.loco.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
+                { assert path(process.out.log.get(0).get(1)).exists() },
+                {
+                    def predList = path(process.out.predictions.get(0).get(1))
+                    def locoFile = path(process.out.loco.get(0).get(1))
+                    def predListLines = predList.text.readLines().findAll { it }
+                    assert predList.exists()
+                    assert predListLines.size() == 1
+                    def predListFields = predListLines[0].split(/\s+/)
+                    assert predListFields.size() == 2
+                    assert predListFields[0] == 'BinaryTrait'
+                    assert predListFields[1] == locoFile.toString()
+                },
+                {
+                    def stablePredictions = process.out.predictions.collect { prediction ->
+                        [prediction[0], path(prediction[1]).getFileName().toString()]
+                    }
+                    def stableLoco = process.out.loco.collect { loco ->
+                        [loco[0], path(loco[1]).getFileName().toString()]
+                    }
+                    assert snapshot(
+                        stablePredictions,
+                        stableLoco,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens popgen - quantitative plink1 without covariates") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    'QuantitativeTrait',
+                    false
+                ]
+
+                input[2] = [[:], []]
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.predictions.size() == 1 },
+                { assert process.out.loco.size() == 1 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.loco.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
+                { assert path(process.out.log.get(0).get(1)).exists() },
+                {
+                    def predList = path(process.out.predictions.get(0).get(1))
+                    def locoFile = path(process.out.loco.get(0).get(1))
+                    def predListLines = predList.text.readLines().findAll { it }
+                    assert predList.exists()
+                    assert predListLines.size() == 1
+                    def predListFields = predListLines[0].split(/\s+/)
+                    assert predListFields.size() == 2
+                    assert predListFields[0] == 'QuantitativeTrait'
+                    assert predListFields[1] == locoFile.toString()
+                },
+                {
+                    def stablePredictions = process.out.predictions.collect { prediction ->
+                        [prediction[0], path(prediction[1]).getFileName().toString()]
+                    }
+                    def stableLoco = process.out.loco.collect { loco ->
+                        [loco[0], path(loco[1]).getFileName().toString()]
+                    }
+                    assert snapshot(
+                        stablePredictions,
+                        stableLoco,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens popgen - quantitative plink2 with covariates and custom bsize") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    'QuantitativeTrait',
+                    false
+                ]
+
+                input[2] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+
+                input[3] = 256
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.predictions.size() == 1 },
+                { assert process.out.loco.size() == 1 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.predictions.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.loco.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
+                { assert path(process.out.log.get(0).get(1)).exists() },
+                {
+                    def predList = path(process.out.predictions.get(0).get(1))
+                    def locoFile = path(process.out.loco.get(0).get(1))
+                    def predListLines = predList.text.readLines().findAll { it }
+                    assert predList.exists()
+                    assert predListLines.size() == 1
+                    def predListFields = predListLines[0].split(/\s+/)
+                    assert predListFields.size() == 2
+                    assert predListFields[0] == 'QuantitativeTrait'
+                    assert predListFields[1] == locoFile.toString()
+                },
+                { assert path(process.out.loco.get(0).get(1)).exists() },
+                {
+                    def versionInfo = process.out.versions_regenie.get(0)
+                    assert versionInfo[0] == 'REGENIE_STEP1'
+                    assert versionInfo[1] == 'regenie'
+                    assert versionInfo[2] == '4.1.2'
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens popgen - plink2 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    'QuantitativeTrait',
+                    false
+                ]
+
+                input[2] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+
+                input[3] = 256
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def stablePredictions = process.out.predictions.collect { prediction ->
+                        [prediction[0], path(prediction[1]).getFileName().toString()]
+                    }
+                    def stableLoco = process.out.loco.collect { loco ->
+                        [loco[0], path(loco[1]).getFileName().toString()]
+                    }
+                    def stableLogs = process.out.log.collect { logTuple ->
+                        [logTuple[0], path(logTuple[1]).getFileName().toString()]
+                    }
+                    assert snapshot(
+                        stablePredictions,
+                        stableLoco,
+                        stableLogs,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}
