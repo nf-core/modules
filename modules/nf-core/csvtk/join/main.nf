@@ -4,8 +4,8 @@ process CSVTK_JOIN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c8/c818804e2e954ab8bc52c8bdc961539d2aa0a6b0f9517c3a6118d5a6c6a38669/data':
-        'community.wave.seqera.io/library/csvtk:0.31.0--483af3c969467fe4' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/917edb71b915f07fa2838c20e3c731181d3d315cbf8a9bfead41412d2b4ae062/data':
+        'community.wave.seqera.io/library/csvtk:0.37.0--113625988dd3285d' }"
 
     input:
     tuple val(meta), path(csv)

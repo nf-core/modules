@@ -54,7 +54,7 @@ workflow VCF_GATHER_BCFTOOLS {
         ch_tabix_input = ch_vcf_concat
     }
 
-    TABIX_TABIX(ch_tabix_input)
+    TABIX_TABIX(ch_tabix_input.map { meta, vcf -> [meta, vcf, [], []] })
 
     ch_vcf_index = ch_tabix_input
         .join(TABIX_TABIX.out.index)
