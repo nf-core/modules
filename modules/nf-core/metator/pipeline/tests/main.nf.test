@@ -37,13 +37,21 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def bin_summary = file(process.out.bin_summary.get(0).get(1))
+            def contig2bin = file(process.out.contig2bin.get(0).get(1))
+            def network = file(process.out.network.get(0).get(1))
+            def contig_data = file(process.out.contig_data.get(0).get(1))
+
             assertAll(
                 { assert process.out.bins.get(0).get(1).size() > 0 },
+                { assert process.out.bins.get(0).get(1).collect { f -> file(f).size() > 0 }.every() },
+                { assert([bin_summary, contig2bin, network, contig_data].collect { f -> f.size() > 0 }.every()) },
                 { assert snapshot(
-                    file(process.out.bin_summary.get(0).get(1)).name,
-                    file(process.out.contig2bin.get(0).get(1)).name,
-                    file(process.out.network.get(0).get(1)).name,
-                    file(process.out.contig_data.get(0).get(1)).name,
+                    bin_summary.name,
+                    contig2bin.name,
+                    network.name,
+                    contig_data.name,
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -76,13 +84,21 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def bin_summary = file(process.out.bin_summary.get(0).get(1))
+            def contig2bin = file(process.out.contig2bin.get(0).get(1))
+            def network = file(process.out.network.get(0).get(1))
+            def contig_data = file(process.out.contig_data.get(0).get(1))
+
             assertAll(
                 { assert process.out.bins.get(0).get(1).size() > 0 },
+                { assert process.out.bins.get(0).get(1).collect { f -> file(f).size() > 0 }.every() },
+                { assert([bin_summary, contig2bin, network, contig_data].collect { f -> f.size() > 0 }.every()) },
                 { assert snapshot(
-                    file(process.out.bin_summary.get(0).get(1)).name,
-                    file(process.out.contig2bin.get(0).get(1)).name,
-                    file(process.out.network.get(0).get(1)).name,
-                    file(process.out.contig_data.get(0).get(1)).name,
+                    bin_summary.name,
+                    contig2bin.name,
+                    network.name,
+                    contig_data.name,
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -111,13 +127,21 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def bin_summary = file(process.out.bin_summary.get(0).get(1))
+            def contig2bin = file(process.out.contig2bin.get(0).get(1))
+            def network = file(process.out.network.get(0).get(1))
+            def contig_data = file(process.out.contig_data.get(0).get(1))
+
             assertAll(
                 { assert process.out.bins.get(0).get(1).size() > 0 },
+                { assert process.out.bins.get(0).get(1).collect { f -> file(f).size() > 0 }.every() },
+                { assert([bin_summary, contig2bin, network, contig_data].collect { f -> f.size() > 0 }.every()) },
                 { assert snapshot(
-                    file(process.out.bin_summary.get(0).get(1)).name,
-                    file(process.out.contig2bin.get(0).get(1)).name,
-                    file(process.out.network.get(0).get(1)).name,
-                    file(process.out.contig_data.get(0).get(1)).name,
+                    bin_summary.name,
+                    contig2bin.name,
+                    network.name,
+                    contig_data.name,
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )

@@ -18,16 +18,20 @@ process METATOR_PIPELINE {
     tuple val(meta), path("contig_data_final.txt")       , emit: contig_data
     tuple val(meta), path("plot/*.png")                  , emit: plots, optional: true
     tuple val("${task.process}"), val('metator'), eval("metator -v"), topic: versions, emit: versions_metator
+    tuple val("${task.process}"), val('gunzip'), eval('gunzip --version |& sed "1!d;s/^.*(gzip) //;s/ Copyright.*//"'), topic: versions, emit: versions_gunzip
+    tuple val("${task.process}"), val("find"), eval("find --version | sed '1!d; s/.* //'"), topic: versions, emit: versions_find
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args  = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def depth_input = depths ? "--depth ${depths}" : ""
     def assembly_input = contigs =~ /\.gz$/ ? "${contigs.getBaseName()}" : contigs
-    def gunzip = contigs =~ /\.gz$/ ? "gunzip -c ${contigs} > ${assembly_input}" : ""
+    def gunzip = contigs =~ /\.gz$/ ? "gunzip ${args2} -c ${contigs} > ${assembly_input}" : ""
 
     // Set up type input
     def input_type_arg = "-S fastq"
@@ -55,7 +59,11 @@ process METATOR_PIPELINE {
         --prefix ${prefix} \\
         ${args}
 
-    find final_bin_unscaffold/ -name "*.fa" -exec gzip {} \\;
+    find \\
+        final_bin_unscaffold/ \\
+        ${args3} \\
+        -name "*.fa" \\
+        -exec gzip {} \\;
     """
 
     stub:
@@ -73,6 +81,6 @@ process METATOR_PIPELINE {
     touch plot/MAGs-HiC_cov_distribution.png
 
     mkdir final_bin_unscaffold
-    echo "" | gzip > final_bin_unscaffold/${prefix}_metator_1.fa.gz
+    echo "" | gzip > final_bin_unscaffold/${prefix}_metator_00001_00000.fa.gz
     """
 }
