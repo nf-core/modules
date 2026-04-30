@@ -30,8 +30,7 @@ nextflow_process {
                     // the calls seem not to be stable for locus A for this input data, therefore skip the results for HLA locus A
                     .split('\t')[3..7])
                     .match("bam_hla_type") },
-                { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_coverage_plot") },
-                { assert snapshot(process.out.versions_optitype).match("bam_versions") }
+                { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_coverage_plot") }
             )
         }
     }
@@ -58,8 +57,7 @@ nextflow_process {
                     // the calls seem not to be stable for locus A for this input data, therefore skip the results for HLA locus A
                     .split('\t')[3..7])
                     .match("bam_cbc_hla_type") },
-                { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_cbc_coverage_plot") },
-                { assert snapshot(process.out.versions_optitype).match("bam_cbc_versions") }
+                { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_cbc_coverage_plot") }
             )
         }
     }
