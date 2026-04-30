@@ -12,35 +12,24 @@ process ESTSFS {
     tuple val(meta), path(e_config), path(data), path(seed)
 
     output:
-    tuple val(meta), path("${prefix}_sfs.txt")   , emit: sfs_out
-    tuple val(meta), path("${prefix}_pvalues.txt"), emit: pvalues_out
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${prefix}_sfs.txt")               , emit: sfs_out
+    tuple val(meta), path("${prefix}_pvalues.txt")           , emit: pvalues_out
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('est-sfs'), val('2.04'), emit: versions_estsfs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def VERSION = '2.04' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     est-sfs ${e_config} ${data} ${seed} ${prefix}_sfs.txt ${prefix}_pvalues.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        est-sfs: $VERSION
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.04' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}_sfs.txt
     touch ${prefix}_pvalues.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        est-sfs: $VERSION
-    END_VERSIONS
     """
 }

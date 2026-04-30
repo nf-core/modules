@@ -40,9 +40,9 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test' ], // meta map
-				    file(params.modules_testdata_base_path + 'delete_me/estsfs/config-JC.txt', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'delete_me/estsfs/TEST-DATA.TXT', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'delete_me/estsfs/seedfile.txt', checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'delete_me/estsfs/config-JC.txt'),
+                    file(params.modules_testdata_base_path + 'delete_me/estsfs/TEST-DATA.TXT'),
+                    file(params.modules_testdata_base_path + 'delete_me/estsfs/seedfile.txt')
 				]
 
                 """
