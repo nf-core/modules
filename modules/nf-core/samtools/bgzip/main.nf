@@ -1,5 +1,5 @@
 process SAMTOOLS_BGZIP {
-    tag "${fasta}"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -8,11 +8,11 @@ process SAMTOOLS_BGZIP {
         : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(infile)
+    val out_ext
 
     output:
-    tuple val(meta), path("${output}"), emit: fasta
-    // samtools-bgzip has no --version option so let's use lastal from the same suite
+    tuple val(meta), path("${outfile}"), emit: output
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
@@ -21,30 +21,32 @@ process SAMTOOLS_BGZIP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    output = "${prefix}.fasta.gz"
+    out_ext = out_ext ?: "fasta"
+    outfile = "${prefix}.${out_ext}.gz"
     """
-    FILE_TYPE=\$(htsfile ${fasta})
+    FILE_TYPE=\$(htsfile ${infile})
     case "\$FILE_TYPE" in
         *BGZF-compressed*)
             # Do nothing or just rename if the file was already compressed
-            [ "\$(basename ${fasta})" != "\$(basename ${output})" ] && ln -s ${fasta} ${output} ;;
+            [ "\$(basename ${infile})" != "\$(basename ${outfile})" ] && ln -s ${infile} ${outfile} ;;
         *gzip-compressed*)
-            [ "\$(basename ${fasta})" == "\$(basename ${output})" ] && echo "Filename collision (\$basename ${fasta})" && exit 1
-            zcat  ${fasta} | bgzip -c ${args} -@${task.cpus} > ${output} ;;
+            [ "\$(basename ${infile})" == "\$(basename ${outfile})" ] && echo "Filename collision (\$basename ${infile})" && exit 1
+            zcat  ${infile} | bgzip -c ${args} -@${task.cpus} > ${outfile} ;;
         *bzip2-compressed*)
-            bzcat ${fasta} | bgzip -c ${args} -@${task.cpus} > ${output} ;;
+            bzcat ${infile} | bgzip -c ${args} -@${task.cpus} > ${outfile} ;;
         *XZ-compressed*)
-            xzcat ${fasta} | bgzip -c ${args} -@${task.cpus} > ${output} ;;
+            xzcat ${infile} | bgzip -c ${args} -@${task.cpus} > ${outfile} ;;
         *)
-            bgzip -c ${args} -@${task.cpus} ${fasta} > ${output} ;;
+            bgzip -c ${args} -@${task.cpus} ${infile} > ${outfile} ;;
     esac
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    output = "${prefix}.gz"
+    out_ext = out_ext ?: "fasta"
+    outfile = "${prefix}.${out_ext}.gz"
     """
-    [ "\$(basename ${fasta})" == "\$(basename ${output})" ] && echo "Filename collision \$(basename ${fasta})" && exit 1
-    echo '' | bgzip > ${output}
+    [ "\$(basename ${infile})" == "\$(basename ${outfile})" ] && echo "Filename collision \$(basename ${infile})" && exit 1
+    echo '' | bgzip > ${outfile}
     """
 }
