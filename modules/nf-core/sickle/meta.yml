@@ -10,7 +10,8 @@ tools:
         on base quality "
       homepage: "https://github.com/najoshi/sickle"
       tool_dev_url: "https://github.com/najoshi/sickle"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: biotools:sickle
 input:
   - - meta:
@@ -20,16 +21,17 @@ input:
           e.g. [ id:'test', single_end:false]
     - reads:
         type: file
-        description: List of input FastQ files of size 1 and 2 for single-end and paired-end
-          data, respectively. File of forward reads must be supplied first and reverse
-          reads as the second e.g. ["read.1.fastq.gz","read.2.fastq.gz"]
+        description: List of input FastQ files of size 1 and 2 for single-end and
+          paired-end data, respectively. File of forward reads must be supplied
+          first and reverse reads as the second e.g.
+          ["read.1.fastq.gz","read.2.fastq.gz"]
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
     - qual_type:
         type: string
-        description: sickle needs a base quality values, which could be either illumina,
-          solexa or sanger
+        description: sickle needs a base quality values, which could be either
+          illumina, solexa or sanger
         pattern: "illumina or solexa or sanger"
 output:
   single_trimmed:
@@ -40,7 +42,8 @@ output:
             e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
       - ${prefix}.se.trimmed.fastq.gz:
           type: file
-          description: 5' or 3' trimmed (based on base quality) single-end fastq file
+          description: 5' or 3' trimmed (based on base quality) single-end fastq
+            file
           pattern: "*.se.trimmed.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -52,7 +55,8 @@ output:
             e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
       - ${prefix}.pe{1,2}.trimmed.fastq.gz:
           type: file
-          description: 5' or 3' trimmed (based on base quality) paired-end fastq files
+          description: 5' or 3' trimmed (based on base quality) paired-end fastq
+            files
           pattern: "*.pe{1,2}.trimmed.fastq.gz"
           ontologies: []
   singleton_trimmed:
@@ -63,7 +67,8 @@ output:
             e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
       - ${prefix}.singleton.trimmed.fastq.gz:
           type: file
-          description: 5' or 3' trimmed (based on base quality) singleton fastq file
+          description: 5' or 3' trimmed (based on base quality) singleton fastq
+            file
           pattern: "*.singleton.trimmed.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -78,13 +83,27 @@ output:
           description: log file
           pattern: "*.log"
           ontologies: []
+  versions_sickle:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sickle:
+          type: string
+          description: The name of the tool
+      - sickle --version | awk "NR==1{print \$3}":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sickle:
+          type: string
+          description: The name of the tool
+      - sickle --version | awk "NR==1{print \$3}":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@BioInf2305"
 maintainers:
