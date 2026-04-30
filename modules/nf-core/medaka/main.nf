@@ -12,7 +12,7 @@ process MEDAKA {
 
     output:
     tuple val(meta), path("*.fa.gz"), emit: assembly
-    path "versions.yml"             , emit: versions
+    path "versions.yml"             , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
