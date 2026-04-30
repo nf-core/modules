@@ -46,4 +46,16 @@ process SISTR {
         sistr: \$(echo \$(sistr --version 2>&1) | sed 's/^.*sistr_cmd //; s/ .*\$//' )
     END_VERSIONS
     """
+    stub:
+    """
+    touch sistr_stub.tab
+    touch sistr_stub-allele.json
+    touch sistr_stub-cgmlst.csv
+    touch sistr_stub-allele.fasta
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            sistr: \$(echo \$(sistr --version 2>&1) | sed 's/^.*sistr_cmd //; s/ .*\$//' )
+        END_VERSIONS
+    """
+
 }

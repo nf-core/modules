@@ -58,4 +58,16 @@ process PRINSEQPLUSPLUS {
         END_VERSIONS
         """
     }
+    stub:
+    """
+    echo | gzip > prinseqplusplus_stub_bad_outprinseqplusplus_stub.fastq.gz
+    echo | gzip > prinseqplusplus_stub_good_outprinseqplusplus_stub.fastq.gz
+    echo | gzip > prinseqplusplus_stub_single_outprinseqplusplus_stub.fastq.gz
+    touch prinseqplusplus_stub.log
+    cat <<-END_VERSIONS > versions.yml
+            "${task.process}":
+                prinseqplusplus: \$(echo \$(prinseq++ --version | cut -f 2 -d ' ' ))
+            END_VERSIONS
+    """
+
 }

@@ -45,4 +45,15 @@ process ECTYPER {
     touch ${prefix}.tsv
     touch ${prefix}.txt
     """
+    stub:
+    """
+    touch ectyper_stub.tsv
+    touch ectyper_stub.log
+    touch ectyper_stub.txt
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            ectyper: \$(echo \$(ectyper --version 2>&1)  | sed 's/.*ectyper //; s/ .*\$//')
+        END_VERSIONS
+    """
+
 }

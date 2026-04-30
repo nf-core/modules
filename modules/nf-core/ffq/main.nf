@@ -37,4 +37,13 @@ process FFQ {
     """
     touch ${prefix}.json
     """
+    stub:
+    """
+    touch ffq_stub.json
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            ffq: \$(echo \$(ffq --help 2>&1) | sed 's/^.*ffq //; s/: A command.*\$//' )
+        END_VERSIONS
+    """
+
 }

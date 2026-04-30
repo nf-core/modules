@@ -33,4 +33,14 @@ process PYCOQC {
         pycoqc: \$(pycoQC --version 2>&1 | sed 's/^.*pycoQC v//; s/ .*\$//')
     END_VERSIONS
     """
+    stub:
+    """
+    touch pycoqc_stub.html
+    touch pycoqc_stub.json
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            pycoqc: \$(pycoQC --version 2>&1 | sed 's/^.*pycoQC v//; s/ .*\$//')
+        END_VERSIONS
+    """
+
 }

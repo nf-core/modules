@@ -20,4 +20,14 @@ process MYGENE {
 
     script:
     template "mygene.py"
+    stub:
+    """
+    touch mygene_stub.gmt
+    touch mygene_stub.tsv
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            mygene: \$(echo "stub")
+        END_VERSIONS
+    """
+
 }

@@ -47,4 +47,25 @@ process NCBIGENOMEDOWNLOAD {
         $groups
 
     """
+    stub:
+    """
+    echo | gzip > ncbigenomedownload_stub_genomic.fna.gz
+    echo | gzip > ncbigenomedownload_stub_cds_from_genomic.fna.gz
+    echo | gzip > ncbigenomedownload_stub_protein.faa.gz
+    echo | gzip > ncbigenomedownload_stub_rna_from_genomic.fna.gz
+    touch ncbigenomedownload_stub_assembly_report.txt
+    echo | gzip > ncbigenomedownload_stub_rna.fna.gz
+    echo | gzip > ncbigenomedownload_stub_wgsmaster.gbff.gz
+    echo | gzip > ncbigenomedownload_stub_feature_table.txt.gz
+    echo | gzip > ncbigenomedownload_stub_protein.gpff.gz
+    echo | gzip > ncbigenomedownload_stub_genomic.gff.gz
+    touch ncbigenomedownload_stub_assembly_stats.txt
+    echo | gzip > ncbigenomedownload_stub_rm.out.gz
+    echo | gzip > ncbigenomedownload_stub_genomic.gbff.gz
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            ncbigenomedownload: \$(echo "stub")
+        END_VERSIONS
+    """
+
 }

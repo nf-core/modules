@@ -34,4 +34,17 @@ process SHOVILL {
         --outdir ./ \\
         --force
     """
+    stub:
+    """
+    touch shovill.corrections
+    touch shovill.log
+    touch {skesa,spades,megahit,velvet}.fasta
+    touch contigs.{fastg,gfa,LastGraph}
+    touch contigs.fa
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            shovill: \$(echo "stub")
+        END_VERSIONS
+    """
+
 }

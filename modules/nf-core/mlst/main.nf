@@ -32,5 +32,13 @@ process MLST {
         mlst: \$( echo \$(mlst --version 2>&1) | sed 's/mlst //' )
     END_VERSIONS
     """
+    stub:
+    """
+    touch mlst_stub.tsv
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            mlst: \$( echo \$(mlst --version 2>&1) | sed 's/mlst //' )
+        END_VERSIONS
+    """
 
 }

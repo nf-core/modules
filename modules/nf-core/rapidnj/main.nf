@@ -38,4 +38,15 @@ process RAPIDNJ {
         biopython: \$(python -c "import Bio; print(Bio.__version__)")
     END_VERSIONS
     """
+    stub:
+    """
+    touch rapidnj_stub.tre
+    touch rapidnj_stub.sth
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            rapidnj: $VERSION
+            biopython: \$(python -c "import Bio; print(Bio.__version__)")
+        END_VERSIONS
+    """
+
 }

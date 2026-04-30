@@ -42,4 +42,15 @@ process WHAMG {
         whamg: \$(echo \$(whamg 2>&1 | grep Version | sed 's/^Version: v//; s/-.*\$//' ))
     END_VERSIONS
     """
+    stub:
+    """
+    touch whamg_stub.txt
+    echo | gzip > whamg_stub.vcf.gz
+    touch whamg_stub.vcf.gz.tbi
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            whamg: \$(echo \$(whamg 2>&1 | grep Version | sed 's/^Version: v//; s/-.*\$//' ))
+        END_VERSIONS
+    """
+
 }

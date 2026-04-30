@@ -42,4 +42,20 @@ process PLASMIDID {
         plasmidid: \$(echo \$(plasmidID --version 2>&1))
     END_VERSIONS
     """
+    stub:
+    """
+    touch ${prefix}/data/
+    touch ${prefix}/database/
+    touch ${prefix}/plasmidid_stubfinal_results.tab
+    touch ${prefix}/images/
+    touch ${prefix}/logs/
+    touch ${prefix}/fasta_files/
+    touch ${prefix}/plasmidid_stubfinal_results.html
+    touch ${prefix}/kmer/
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            plasmidid: \$(echo \$(plasmidID --version 2>&1))
+        END_VERSIONS
+    """
+
 }

@@ -30,4 +30,13 @@ process RASUSA {
         --input $reads \\
         $output
     """
+    stub:
+    """
+    echo | gzip > rasusa_stub.fastq.gz
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            rasusa: \$(echo "stub")
+        END_VERSIONS
+    """
+
 }

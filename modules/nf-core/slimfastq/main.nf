@@ -49,4 +49,13 @@ process SLIMFASTQ {
         END_VERSIONS
         """
     }
+    stub:
+    """
+    touch slimfastq_stub.sfq
+    cat <<-END_VERSIONS > versions.yml
+            "${task.process}":
+                slimfastq: ${VERSION}
+            END_VERSIONS
+    """
+
 }

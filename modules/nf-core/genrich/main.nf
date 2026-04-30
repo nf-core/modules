@@ -52,4 +52,17 @@ process GENRICH {
     """
     touch ${prefix}.narrowPeak
     """
+    stub:
+    """
+    touch genrich_stub.pvalues.bedGraph
+    touch genrich_stub.duplicates.txt
+    touch genrich_stub.pileup.bedGraph
+    touch genrich_stub.intervals.bed
+    touch genrich_stub.narrowPeak
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            genrich: \$(echo \$(Genrich --version 2>&1) | sed 's/^Genrich, version //; s/ .*\$//')
+        END_VERSIONS
+    """
+
 }
