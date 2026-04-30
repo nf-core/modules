@@ -131,6 +131,26 @@ output:
       - metator -v:
           type: eval
           description: The expression to obtain the version of the tool
+  versions_gunzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gunzip:
+          type: string
+          description: The name of the tool
+      - gunzip --version |& sed "1!d;s/^.*(gzip) //;s/ Copyright.*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_find:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - find:
+          type: string
+          description: The name of the tool
+      - find --version | sed '1!d; s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -140,6 +160,24 @@ topics:
           type: string
           description: The name of the tool
       - metator -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gunzip:
+          type: string
+          description: The name of the tool
+      - gunzip --version |& sed "1!d;s/^.*(gzip) //;s/ Copyright.*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - find:
+          type: string
+          description: The name of the tool
+      - find --version | sed '1!d; s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
