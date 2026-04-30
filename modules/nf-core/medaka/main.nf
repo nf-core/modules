@@ -12,7 +12,7 @@ process MEDAKA {
 
     output:
     tuple val(meta), path("*.fa.gz"), emit: assembly
-    tuple val(meta), path("versions.yml"), emit: versions, topic: versions
+    tuple val("${task.process}"), val('medaka'), eval('medaka --version 2>&1 | sed "s/medaka //g"'), topic: versions, emit: versions_medaka
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,10 +32,6 @@ process MEDAKA {
 
     gzip -n ${prefix}.fa
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        medaka: \$( medaka --version 2>&1 | sed 's/medaka //g' )
-    END_VERSIONS
     """
 
     stub:
@@ -43,9 +39,5 @@ process MEDAKA {
     """
     echo "" | gzip > ${prefix}.fa.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        medaka: \$( medaka --version 2>&1 | sed 's/medaka //g' )
-    END_VERSIONS
     """
 }
