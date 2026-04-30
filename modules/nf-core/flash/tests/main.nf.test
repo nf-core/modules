@@ -35,7 +35,7 @@ nextflow_process {
                 { assert process.out.notcombined[0][1][1].endsWith(".notCombined_2.fastq.gz") },
                 { assert snapshot(
                     process.out.histogram,
-                    process.out.versions_flash
+                    [versions: process.out.versions_flash]
                 ).match() },
 )
         }
