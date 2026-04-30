@@ -3,9 +3,9 @@ process SKA_DISTANCE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ska:1.0--h077b44d_6':
-        'biocontainers/ska:1.0--h077b44d_6' }"
+        'quay.io/biocontainers/ska:1.0--h077b44d_6' }"
 
     input:
     tuple val(meta), path(sketch_files, arity: '0..*'), path(sketch_list)

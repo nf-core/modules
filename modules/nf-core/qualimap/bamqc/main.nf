@@ -3,7 +3,7 @@ process QUALIMAP_BAMQC {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b795495fdae4cb3319d19ed4a694302366aa574ba15a0613b85c602f0de4911/data' :
         'community.wave.seqera.io/library/qualimap:2.3--c1797c2253925b3a' }"
 

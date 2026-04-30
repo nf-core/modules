@@ -1,22 +1,22 @@
 process METACACHE_QUERY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metacache:2.5.0--h077b44d_0':
-        'biocontainers/metacache:2.5.0--h077b44d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/metacache:2.5.0--h077b44d_0'
+        : 'quay.io/biocontainers/metacache:2.5.0--h077b44d_0'}"
 
     input:
     tuple val(meta), path(reads)
     path db, stageAs: 'db/*'
-    val(do_abundances)
+    val do_abundances
 
     output:
-    tuple val(meta), path("*mapping.txt")   , emit: mapping_results
+    tuple val(meta), path("*mapping.txt"), emit: mapping_results
     tuple val(meta), path("*abundances.txt"), emit: abundances, optional: true
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('metacache'), eval("metacache info |& sed -n 's/^MetaCache version \\+\\([0-9.]\\+\\).*\$/\\1/p'"), emit: versions_metacache, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process METACACHE_QUERY {
         ${abundance_opt} \\
         ${args} \\
         -out ${prefix}.mapping.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metacache: \$(metacache info |& sed -n 's/^MetaCache version \\+\\([0-9.]\\+\\).*\$/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -48,11 +43,6 @@ process METACACHE_QUERY {
     def abundance_opt = do_abundances ? "-abundances ${prefix}.abundances.txt" : ''
     """
     touch ${prefix}.mapping.txt
-    [ -n "$abundance_opt" ] && touch ${prefix}.abundances.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-         metacache: \$(metacache info |& sed -n 's/^MetaCache version \\+\\([0-9.]\\+\\).*\$/\\1/p')
-    END_VERSIONS
+    [ -n "${abundance_opt}" ] && touch ${prefix}.abundances.txt
     """
 }
