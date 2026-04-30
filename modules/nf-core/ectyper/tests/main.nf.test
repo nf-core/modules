@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process ECTYPER"
@@ -26,7 +25,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert process.out.log },
+                { assert process.out.tsv },
+                { assert process.out.txt },
+                { assert snapshot(process.out.versions_ectyper).match("versions") }
             )
         }
     }
