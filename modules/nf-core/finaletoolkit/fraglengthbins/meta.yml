@@ -1,0 +1,85 @@
+name: "finaletoolkit_fraglengthbins"
+description: Generate a binned fragment profile and a fragment distribution histogram
+keywords:
+  - sort
+  - genomics
+  - fragmentomics
+tools:
+  - "finaletoolkit":
+      description: "Extract cfDNA fragmentation features from sequencing data."
+      homepage: "https://epifluidlab.github.io/FinaleToolkit/"
+      documentation: "https://epifluidlab.github.io/FinaleToolkit/documentation/index.html"
+      tool_dev_url: "https://github.com/epifluidlab/FinaleToolkit"
+      doi: "10.1093/bioadv/vbaf236"
+      licence:
+        - "MIT"
+      identifier: biotools:finaletoolkit
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAM file index
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.frag_len.tsv":
+          type: file
+          pattern: "*.frag_len.tsv"
+          description: |
+            Binned fragment length counts for the sample
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_hist.png":
+          type: file
+          pattern: "*_hist.png"
+          description: Histogram of fragment length distributions
+          ontologies:
+            - edam: "http://edamontology.org/format_3603" # PNG
+  versions_finaletoolkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - finaletoolkit:
+          type: string
+          description: The name of the tool
+      - "finaletoolkit --version | sed 's/FinaleToolkit //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - finaletoolkit:
+          type: string
+          description: The name of the tool
+      - "finaletoolkit --version | sed 's/FinaleToolkit //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lbeltrame"
+maintainers:
+  - "@lbeltrame"
