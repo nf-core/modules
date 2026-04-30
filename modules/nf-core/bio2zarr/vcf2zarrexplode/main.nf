@@ -11,7 +11,7 @@ process BIO2ZARR_VCF2ZARREXPLODE {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.icf")                                                                                  , emit: icf
+    tuple val(meta), path("*.icf"), emit: icf
     tuple val("${task.process}"), val('vcf2zarr'), eval('vcf2zarr --version |& sed -n "s/.* //p"'), topic: versions , emit: versions_vcf2zarr
 
     when:
