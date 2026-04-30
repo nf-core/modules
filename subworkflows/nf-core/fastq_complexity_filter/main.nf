@@ -20,7 +20,7 @@ workflow FASTQ_COMPLEXITY_FILTER {
 
         ch_filtered_reads = PRINSEQPLUSPLUS.out.good_reads
         ch_log            = PRINSEQPLUSPLUS.out.log
-        ch_versions       = ch_versions.mix(PRINSEQPLUSPLUS.out.versions.first())
+        ch_versions       = ch_versions.mix(PRINSEQPLUSPLUS.out.versions_prinseqplusplus.first())
     } else if (val_complexity_filter_tool == "bbduk") {
         BBMAP_BBDUK( ch_reads, [] )
 

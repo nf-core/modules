@@ -26,9 +26,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.good_reads },
-                { assert process.out.log },
-)
+                { assert snapshot(
+                    file(process.out.good_reads[0][1]).name, // unstable
+                    process.out.single_reads,
+                    process.out.bad_reads,
+                    file(process.out.log[0][1]).name,
+                    process.out.versions_prinseqplusplus
+                ).match() }
+            )
         }
     }
 
@@ -52,9 +57,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.good_reads },
-                { assert process.out.log }
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.good_reads[0][1].collect { file(it).name }, // unstable
+                    process.out.single_reads[0][1].collect { file(it).name }, // empty: d41d8cd98f00b204e9800998ecf8427e
+                    process.out.bad_reads,
+                    file(process.out.log[0][1]).name,
+                    process.out.versions_prinseqplusplus
+                ).match() }
             )
         }
     }
