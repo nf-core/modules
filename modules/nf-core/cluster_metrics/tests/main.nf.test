@@ -1,0 +1,44 @@
+nextflow_process {
+    name "Test Process CLUSTER_METRICS"
+    script "../main.nf"
+    process "CLUSTER_METRICS"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cluster_metrics"
+
+    test("cluster_metrics - features and clusters") {
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/cluster_metrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/cluster_metrics/tests/data/test_clusters.csv", checkIfExists: true) ]
+                input[1] = 'test'
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.metrics,
+                process.out.k_sweep,
+                process.out.selected,
+                process.out.versions
+            ).match()
+        }
+    }
+
+    test("cluster_metrics - features and clusters - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/cluster_metrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/cluster_metrics/tests/data/test_clusters.csv", checkIfExists: true) ]
+                input[1] = 'test'
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+    }
+}

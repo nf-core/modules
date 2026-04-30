@@ -1,0 +1,62 @@
+name: "cluster_metrics"
+description: "Computes clustering quality metrics (silhouette, Calinski-Harabasz, Davies-Bouldin) and performs k-sweep analysis"
+keywords:
+  - clustering
+  - metrics
+  - silhouette
+  - calinski-harabasz
+  - davies-bouldin
+  - evaluation
+
+tools:
+  - "scikit-learn":
+      description: "Machine learning library for clustering metrics"
+      homepage: "https://scikit-learn.org/"
+      documentation: "https://scikit-learn.org/stable/modules/clustering.html"
+      licence: ["BSD-3-Clause"]
+
+authors:
+  - "@dbaku42"
+maintainers:
+  - "@dbaku42"
+
+input:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information
+  - features:
+      type: file
+      description: TSV file with sample_id and numeric features (e.g. PCA scores)
+      pattern: "*.tsv"
+  - clusters:
+      type: file
+      description: CSV/TSV file with sample_id and cluster assignment
+      pattern: "*_clusters.*"
+  - out_prefix:
+      type: string
+      description: Prefix for output files
+
+output:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information
+  - metrics:
+      type: file
+      description: TSV with selected cluster quality metrics
+      pattern: "*_metrics.tsv"
+  - k_sweep:
+      type: file
+      description: CSV with metrics for different values of k
+      pattern: "*_k_sweep.csv"
+  - selected:
+      type: file
+      description: JSON with the selected/best metrics
+      pattern: "*_selected.json"
+  - plots:
+      type: file
+      description: Optional PNG plots (elbow, silhouette, etc.)
+      pattern: "*.png"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
