@@ -166,7 +166,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         return [meta, vcf, []]
     }
 
-    TABIX_TABIX(ch_tabix_input.bgzip)
+    TABIX_TABIX(ch_tabix_input.bgzip.map { meta, vcf -> [meta, vcf, [], []] })
 
     def ch_vcf_tbi = ch_tabix_input.bgzip
         .join(TABIX_TABIX.out.index, failOnDuplicate: true, failOnMismatch: true)
