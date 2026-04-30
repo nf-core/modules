@@ -4,9 +4,9 @@ process FAST2Q {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fast2q:2.7.2--pyh7e72e81_0' :
-        'biocontainers/fast2q:2.7.2--pyh7e72e81_0' }"
+        'quay.io/biocontainers/fast2q:2.7.2--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), path(fastq)
@@ -18,7 +18,7 @@ process FAST2Q {
     tuple val(meta), path("${prefix}_distribution_plot.png")    , emit: distribution_plot
     tuple val(meta), path("${prefix}_reads_plot.png")           , emit: reads_plot
     tuple val(meta), path("${prefix}_reads_plot_percentage.png"), emit: reads_plot_percentage
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('fast2q'), eval('2fast2q -v | sed -n "s/Version: //p"'), emit: versions_fast2q, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,11 +41,6 @@ process FAST2Q {
         $args
 
     mv **/${prefix}* .
-
-    cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
-        2FAST2Q version: \$(2fast2q -v | grep 'Version:' | sed 's/Version: //g')
-    END_VERSIONS
     """
 
     stub:
@@ -57,11 +52,6 @@ process FAST2Q {
     touch ${prefix}_distribution_plot.png
     touch ${prefix}_reads_plot.png
     touch ${prefix}_reads_plot_percentage.png
-
-    cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
-        2FAST2Q version: \$(2fast2q -v | grep 'Version:' | sed 's/Version: //g')
-    END_VERSIONS
     """
 
 }

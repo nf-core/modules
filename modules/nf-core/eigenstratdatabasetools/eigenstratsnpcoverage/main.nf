@@ -3,17 +3,17 @@ process EIGENSTRATDATABASETOOLS_EIGENSTRATSNPCOVERAGE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/eigenstratdatabasetools:1.1.0--hdfd78af_0':
-        'biocontainers/eigenstratdatabasetools:1.1.0--hdfd78af_0' }"
+        'quay.io/biocontainers/eigenstratdatabasetools:1.1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(geno), path(snp), path(ind)
 
     output:
-    tuple val(meta), path("*.tsv") , emit: tsv
-    tuple val(meta), path("*.json"), emit: json, optional:true
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.tsv")                                                                                                                                , emit: tsv
+    tuple val(meta), path("*.json")                                                                                                                               , emit: json, optional:true
+    tuple val("${task.process}"), val('eigenstratdatabasetools'), eval("eigenstrat_snp_coverage --version 2>&1 | sed 's/^.*eigenstrat_snp_coverage //'"), emit: versions_eigenstratdatabasetools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process EIGENSTRATDATABASETOOLS_EIGENSTRATSNPCOVERAGE {
         -s ${snp} \\
         -i ${ind} \\
         -o ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        eigenstratdatabasetools: \$(echo \$(eigenstrat_snp_coverage --version 2>&1) | sed 's/^.*eigenstrat_snp_coverage //' ))
-    END_VERSIONS
     """
 
     stub:
@@ -47,9 +42,5 @@ process EIGENSTRATDATABASETOOLS_EIGENSTRATSNPCOVERAGE {
     """
     touch ${prefix}.tsv
     $json_cmd
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        eigenstratdatabasetools: \$(echo \$(eigenstrat_snp_coverage --version 2>&1) | sed 's/^.*eigenstrat_snp_coverage //' ))
-    END_VERSIONS
     """
 }

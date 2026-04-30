@@ -3,7 +3,7 @@ process BAMCMP {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6e5ee3676abe7e65f65eca55e8dbc76f4dd195a44679cd1a785943d7a0d598f1/data' :
         'community.wave.seqera.io/library/bamcmp_samtools:2f211ea999bb54f5' }"
 

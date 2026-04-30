@@ -3,7 +3,7 @@ process QSV_CAT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2df331cae7b5792b31a2c8d72221809b452e84ac380c6d2718a84d473a21759b/data'
         : 'community.wave.seqera.io/library/qsv:14.0.0--9f7fc928b4bd192e'}"
 
