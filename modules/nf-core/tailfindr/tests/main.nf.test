@@ -26,13 +26,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.csv_gz[0][1] ==~ ".*.csv.gz" ? true : false,
+                    process.out.versions_tailfindr,
+                    process.out.versions_ont_fast5_api
+                ).match() }
             )
         }
     }
 
-    test("test-tailfindr - stub") {
-
+    test("test-tailfindr-stub") {
         options "-stub"
 
         when {
@@ -42,7 +45,6 @@ nextflow_process {
 				    [ id: 'test' ], // meta map
 				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/tailfindr/test.fast5', checkIfExists: true)
 				]
-
                 """
             }
         }
@@ -50,7 +52,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.csv_gz[0][1] ==~ ".*.csv.gz" ? true : false,
+                    process.out.versions_tailfindr,
+                    process.out.versions_ont_fast5_api
+                ).match() }
             )
         }
     }

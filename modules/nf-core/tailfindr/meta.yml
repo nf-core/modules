@@ -41,20 +41,45 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3989
   versions_tailfindr:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tailfindr:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_ont_fast5_api:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ont-fast5-api:
+          type: string
+          description: The name of the tool
+      - pip show ont-fast5-api | grep Version | awk '{print $2}':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tailfindr:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ont-fast5-api:
+          type: string
+          description: The name of the tool
+      - pip show ont-fast5-api | grep Version | awk '{print $2}':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lucacozzuto"
 maintainers:
