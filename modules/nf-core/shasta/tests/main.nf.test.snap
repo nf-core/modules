@@ -1,17 +1,66 @@
 {
     "test-shasta": {
         "content": [
-            ">0 length 5",
+            ">0 length 3",
             "H\tVN:Z:1.0",
             "ShastaRun",
             [
-                "versions.yml:md5,3f3a83ea89a73591b255e54f03067e4d"
+                [
+                    "SHASTA",
+                    "shasta",
+                    "0.8.0"
+                ]
             ]
         ],
+        "timestamp": "2026-04-29T20:35:19.183417",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-23T11:50:23.581975"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "test-shasta - stub": {
+        "content": [
+            {
+                "assembly": [
+                    [
+                        {
+                            "id": "test",
+                            "model": "Nanopore-Dec2019"
+                        },
+                        "test_Assembly.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "gfa": [
+                    [
+                        {
+                            "id": "test",
+                            "model": "Nanopore-Dec2019"
+                        },
+                        "test_Assembly.gfa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "results": [
+                    [
+                        {
+                            "id": "test",
+                            "model": "Nanopore-Dec2019"
+                        },
+                        []
+                    ]
+                ],
+                "versions_shasta": [
+                    [
+                        "SHASTA",
+                        "shasta",
+                        "0.8.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-29T17:10:39.575223",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }

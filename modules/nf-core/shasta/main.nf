@@ -14,15 +14,15 @@ process SHASTA {
     tuple val(meta), path("*_Assembly.fasta.gz"), emit: assembly
     tuple val(meta), path("*_Assembly.gfa.gz")  , emit: gfa
     tuple val(meta), path("ShastaRun/")                 , emit: results
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('shasta'), eval('shasta --version | head -n 1 | cut -f 3 -d " "'), emit: versions_shasta, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''
+    def args2  = task.ext.args2  ?: '--config Nanopore-Oct2021'
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def model  = "${meta.model}" ?: 'Nanopore-Oct2021'
     """
     # shasta requires uncompressed
     zcat -f $reads > reads.fq
@@ -30,7 +30,7 @@ process SHASTA {
     # run shasta
     shasta \\
         --input reads.fq \\
-        --config $model \\
+        $args2 \\
         $args \\
         --threads $task.cpus
 
@@ -40,10 +40,13 @@ process SHASTA {
 
     # cleanup temp files
     rm reads.fq
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shasta: \$(shasta --version | head -n 1 | cut -f 3 -d " ")
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}_Assembly.fasta.gz
+    echo "" | gzip > ${prefix}_Assembly.gfa.gz
+    mkdir -p ShastaRun
     """
 }
