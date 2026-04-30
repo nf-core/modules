@@ -66,7 +66,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    [versions: process.out.versions_flash]
+                ).match() }
             )
         }
 
