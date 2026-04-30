@@ -36,26 +36,14 @@ output:
           pattern: "*.sha256"
           ontologies: []
   versions_sha256sum:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - sha256sum:
-          type: string
-          description: The name of the tool
-      - sha256sum --version 2>&1 | head -n 1 | awk '{print $NF}':
-          type: eval
-          description: The expression to obtain the version of the tool
+    - - versions.yml:
+          type: file
+          description: YAML file containing versions of tools used in the module
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - sha256sum:
-          type: string
-          description: The name of the tool
-      - sha256sum --version 2>&1 | head -n 1 | awk '{print $NF}':
-          type: eval
-          description: The expression to obtain the version of the tool
+    - - versions.yml:
+          type: file
+          description: YAML file containing versions of tools used in the module
 authors:
   - "@matthdsm"
 maintainers:
