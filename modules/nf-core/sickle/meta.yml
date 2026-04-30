@@ -40,38 +40,30 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
-      - ${prefix}.se.trimmed.fastq.gz:
+      - "*.se.trimmed.fastq.gz":
           type: file
-          description: 5' or 3' trimmed (based on base quality) single-end fastq
-            file
+          description: Single end trimmed reads
           pattern: "*.se.trimmed.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989
   paired_trimmed:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
-      - ${prefix}.pe{1,2}.trimmed.fastq.gz:
+      - "*.pe{1,2}.trimmed.fastq.gz":
           type: file
-          description: 5' or 3' trimmed (based on base quality) paired-end fastq
-            files
+          description: Paired end trimmed reads
           pattern: "*.pe{1,2}.trimmed.fastq.gz"
-          ontologies: []
   singleton_trimmed:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
-      - ${prefix}.singleton.trimmed.fastq.gz:
+      - "*.singleton.trimmed.fastq.gz":
           type: file
-          description: 5' or 3' trimmed (based on base quality) singleton fastq
-            file
+          description: Singleton trimmed reads
           pattern: "*.singleton.trimmed.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989
   log:
     - - meta:
           type: map
@@ -90,18 +82,18 @@ output:
       - sickle:
           type: string
           description: The tool name
-      - 'sickle --version | sed -e "s/sickle version //"':
+      - sickle --version | sed -e "s/sickle version //":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
-          description: The name of the process
+          description: The process the versions were collected from
       - sickle:
           type: string
-          description: The name of the tool
-      - 'sickle --version | sed -e "s/sickle version //"':
+          description: The tool name
+      - sickle --version | sed -e "s/sickle version //":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
