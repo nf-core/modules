@@ -34,8 +34,7 @@ nextflow_process {
 					process.out.versions_shasta
 					).match()
 				},
-                { assert snapshot(process.out.versions_shasta).match("versions") }
-            )
+)
         }
     }
 
