@@ -30,8 +30,7 @@ nextflow_process {
                     // the calls seem not to be stable for locus A for this input data, therefore skip the results for HLA locus A
                     .split('\t')[3..7])
                     .match("bam_hla_type") },
-                { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_coverage_plot") },
-                { assert snapshot(process.out.versions).match("bam_versions") }
+                { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_coverage_plot") }
             )
         }
     }
@@ -58,8 +57,29 @@ nextflow_process {
                     // the calls seem not to be stable for locus A for this input data, therefore skip the results for HLA locus A
                     .split('\t')[3..7])
                     .match("bam_cbc_hla_type") },
-                { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_cbc_coverage_plot") },
-                { assert snapshot(process.out.versions).match("bam_cbc_versions") }
+                { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_cbc_coverage_plot") }
+            )
+        }
+    }
+
+    test("hla - bam - stub") {
+        options "-stub"
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', seq_type:'dna' ], // meta map
+                       file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam', checkIfExists: true),
+                       file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam.bai', checkIfExists: true)
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
