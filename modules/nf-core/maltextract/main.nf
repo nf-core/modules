@@ -14,7 +14,7 @@ process MALTEXTRACT {
 
     output:
     tuple val(meta), path("results")      , emit: results
-    path "versions.yml"                   , emit: versions
+    path "versions.yml"                   , emit: versions_maltextract, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +33,17 @@ process MALTEXTRACT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        maltextract: \$(MaltExtract --help | head -n 2 | tail -n 1 | sed 's/MaltExtract version//')
+        maltextract: \$(MaltExtract --help 2>&1 | head -n 2 | tail -n 1 | sed 's/MaltExtract version//')
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir -p results
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        maltextract: \$(MaltExtract --help 2>&1 | head -n 2 | tail -n 1 | sed 's/MaltExtract version//')
     END_VERSIONS
     """
 }
