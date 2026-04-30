@@ -78,26 +78,14 @@ output:
           pattern: "*.log"
           ontologies: []
   versions_prinseqplusplus:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - prinseqplusplus:
-          type: string
-          description: The name of the tool
-      - echo $(prinseq++ --version | cut -f 2 -d " " ):
-          type: eval
-          description: The expression to obtain the version of the tool
+    - - versions.yml:
+          type: file
+          description: YAML file containing versions of tools used in the module
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - prinseqplusplus:
-          type: string
-          description: The name of the tool
-      - echo $(prinseq++ --version | cut -f 2 -d " " ):
-          type: eval
-          description: The expression to obtain the version of the tool
+    - - versions.yml:
+          type: file
+          description: YAML file containing versions of tools used in the module
 authors:
   - "@jfy133"
 maintainers:
