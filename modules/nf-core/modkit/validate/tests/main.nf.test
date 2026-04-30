@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process MODKIT_VALIDATE"
+    script "../main.nf"
+    process "MODKIT_VALIDATE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "modkit"
+    tag "modkit/validate"
+    tag "modkit/pileup"
+
+    // A real validation run needs a BAM paired with a ground-truth BED whose
+    // `name` column is the short modified-base code (m/h/a/...) or `-` for a
+    // canonical reference position.
+    //
+    // The public modules test data doesn't ship such a BED, so for the real
+    // test we pipe `MODKIT_PILEUP` output through `cut -f1-6` (a bedMethyl's
+    // first six columns already satisfy the BED6 + mod-code-in-name contract)
+    // and validate the BAM against its own pileup. This is a self-consistency
+    // smoke test — it won't produce meaningful accuracy metrics but will
+    // exercise the full CLI path end-to-end.
+    setup {
+        run("MODKIT_PILEUP") {
+            script "../../pileup/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [[],[],[]]
+                input[2] = [[],[]]
+                """
+            }
+        }
+    }
+
+    test("homo sapiens - modbam + truth bed - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true) ]  // placeholder truth BED for stub — real validation needs a truth BED whose name column is the mod code (m/h/-)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
