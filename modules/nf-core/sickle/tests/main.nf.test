@@ -29,11 +29,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					process.out.single_trimmed,
-					process.out.paired_trimmed,
-					process.out.singleton_trimmed,
 					file(process.out.log[0][1]).name,
-					sanitizeOutput(process.out)
+					sanitizeOutput(process.out).findAll { it.key != 'log' }
 					).match()
 				}
             )
@@ -62,11 +59,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					process.out.single_trimmed,
-					process.out.paired_trimmed,
-					process.out.singleton_trimmed,
 					file(process.out.log[0][1]).name,
-					sanitizeOutput(process.out)
+					sanitizeOutput(process.out).findAll { it.key != 'log' }
 					).match()
 				}
             )
@@ -93,7 +87,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+					file(process.out.log[0][1]).name,
+					sanitizeOutput(process.out).findAll { it.key != 'log' }
+					).match()
+				}
             )
         }
     }
