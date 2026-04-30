@@ -1,17 +1,34 @@
 {
     "test-pairix": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz:md5,ee90dc99987ece492d598ed939d54561",
-                    "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz.px2:md5,a6e41cc7cff16fd15b5ee505549ec99a"
-                ]
-            ],
             {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz:md5,ee90dc99987ece492d598ed939d54561",
+                        "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz.px2:md5,a6e41cc7cff16fd15b5ee505549ec99a"
+                    ]
+                ],
+                "1": [
+                    [
+                        "PAIRIX",
+                        "pairix",
+                        "Program: pairix (PAIRs file InderXer)\n0.3.7\n\n\n\nOptions: -p STR     preset: pairs, merged_nodups, old_merged_nodups, gff, bed, sam, vcf, psltbl [gff]\n         -s INT     sequence name column [1]\n         -d INT     second sequence name column [null]\n         -b INT     start1 column [4]\n         -e INT     end1 column; can be identical to '-b' [5]\n         -u INT     start2 column [null]\n         -v INT     end2 column; can be identical to '-u' [null or identical to the start2 specified by -u]\n         -T         delimiter is space instead of tab.\n         -L         query region is not a string but a file listing query regions\n         -S INT     skip first INT lines [0]\n         -c CHAR    symbol for comment/meta lines [#]\n         -w CHAR    symbol for query region separator [|]\n         -r FILE    replace the header with the content of FILE [null]\n         -0         zero-based coordinate\n         -h         print also the header lines\n         -H         print only the header lines\n         -B         print only the number of bgzf blocks for existing chromosome (pairs)\n         -W         print only the region split character\n         -Y         Only check if the file is a triangle (i.e. a chromosome pair occurs only in one direction (e.g. if chr1|chr2 exists, chr2|chr1 doesn't))\n         -l         list chromosome names\n         -n         print only the total line count (same as gunzip -c | wc -l but much faster)\n         -f         force to overwrite the index\n         -a         autoflip query when the matching chromosome pair doesn't exist\n         --help     print usage with exit 0"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz:md5,ee90dc99987ece492d598ed939d54561",
+                        "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz.px2:md5,a6e41cc7cff16fd15b5ee505549ec99a"
+                    ]
+                ],
                 "versions_pairix": [
                     [
                         "PAIRIX",
@@ -21,25 +38,42 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-30T11:26:40.214091",
+        "timestamp": "2026-04-30T12:47:18.779231",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.0"
         }
     },
     "test-pairix-stub": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz:md5,ee90dc99987ece492d598ed939d54561",
-                    "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz.px2:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ]
-            ],
             {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz:md5,ee90dc99987ece492d598ed939d54561",
+                        "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz.px2:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        "PAIRIX",
+                        "pairix",
+                        "Program: pairix (PAIRs file InderXer)\n0.3.7\n\n\n\nOptions: -p STR     preset: pairs, merged_nodups, old_merged_nodups, gff, bed, sam, vcf, psltbl [gff]\n         -s INT     sequence name column [1]\n         -d INT     second sequence name column [null]\n         -b INT     start1 column [4]\n         -e INT     end1 column; can be identical to '-b' [5]\n         -u INT     start2 column [null]\n         -v INT     end2 column; can be identical to '-u' [null or identical to the start2 specified by -u]\n         -T         delimiter is space instead of tab.\n         -L         query region is not a string but a file listing query regions\n         -S INT     skip first INT lines [0]\n         -c CHAR    symbol for comment/meta lines [#]\n         -w CHAR    symbol for query region separator [|]\n         -r FILE    replace the header with the content of FILE [null]\n         -0         zero-based coordinate\n         -h         print also the header lines\n         -H         print only the header lines\n         -B         print only the number of bgzf blocks for existing chromosome (pairs)\n         -W         print only the region split character\n         -Y         Only check if the file is a triangle (i.e. a chromosome pair occurs only in one direction (e.g. if chr1|chr2 exists, chr2|chr1 doesn't))\n         -l         list chromosome names\n         -n         print only the total line count (same as gunzip -c | wc -l but much faster)\n         -f         force to overwrite the index\n         -a         autoflip query when the matching chromosome pair doesn't exist\n         --help     print usage with exit 0"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz:md5,ee90dc99987ece492d598ed939d54561",
+                        "4dn.bsorted.chr21_22_only.nontriangle.pairs.gz.px2:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "versions_pairix": [
                     [
                         "PAIRIX",
@@ -49,10 +83,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-30T11:26:44.41701",
+        "timestamp": "2026-04-30T12:47:22.756575",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.0"
         }
     }
 }
