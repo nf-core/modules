@@ -276,6 +276,26 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     // On success try attach the multiqc report
     def mqc_report = getSingleReport(multiqc_report)
 
+    // Fix issue https://github.com/nf-core/modules/issues/9424 when running on AWS batch with S3 workDir. mqc_report is not downloaded locally.
+    def mqc_report_file = null
+
+    if (mqc_report != null) {
+        try {
+            // Check if we're using S3 for the report file and need to download it so the head node can access it
+            if (mqc_report.toUriString().startsWith('s3://')) {
+                def tempFile = file("${workflow.launchDir}/multiqc_report_${workflow.sessionId}.html")
+                mqc_report.copyTo(tempFile)
+                mqc_report_file = tempFile.toString()
+            } else {
+                // Local path - just pass the path string (template will create File object)
+                mqc_report_file = mqc_report.toString()
+            }
+        } catch (Exception e) {
+            log.warn("Error accessing MultiQC report: ${e.message}")
+        }
+    }
+
+
     // Check if we are only sending emails on failure
     def email_address = email
     if (!email && email_on_fail && !workflow.success) {
@@ -295,7 +315,7 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
 
     // Render the sendmail template
     def max_multiqc_email_size = (params.containsKey('max_multiqc_email_size') ? params.max_multiqc_email_size : 0) as MemoryUnit
-    def smail_fields           = [email: email_address, subject: subject, email_txt: email_txt, email_html: email_html, projectDir: "${workflow.projectDir}", mqcFile: mqc_report, mqcMaxSize: max_multiqc_email_size.toBytes()]
+    def smail_fields           = [email: email_address, subject: subject, email_txt: email_txt, email_html: email_html, projectDir: "${workflow.projectDir}", mqcFile: mqc_report_file, mqcMaxSize: max_multiqc_email_size.toBytes()]
     def sf                     = new File("${workflow.projectDir}/assets/sendmail_template.txt")
     def sendmail_template      = engine.createTemplate(sf).make(smail_fields)
     def sendmail_html          = sendmail_template.toString()
