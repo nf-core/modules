@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process HUGGINGFACE_DOWNLOAD"
+    script "../main.nf"
+    process "HUGGINGFACE_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "huggingface"
+    tag "huggingface/download"
+
+    test("download gguf file - gemma3") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_model_gemma3' ],
+                    "ggml-org/gemma-3-1b-it-GGUF",
+                    "gemma-3-1b-it-Q4_K_M.gguf",
+                    "./hf_cache"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1]).size() > 0,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("download gguf file - smollm3") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_model_smollm3' ],
+                    "unsloth/SmolLM3-3B-GGUF",
+                    "SmolLM3-3B-UD-IQ2_XXS.gguf",
+                    "./hf_cache"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1]).size() > 0,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("stub - download gguf file - gemma3") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_model_gemma3' ],
+                    "ggml-org/gemma-3-1b-it-GGUF",
+                    "gemma-3-1b-it-Q4_K_M.gguf",
+                    "./hf_cache"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
