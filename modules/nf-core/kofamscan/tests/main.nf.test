@@ -50,7 +50,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.txt },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }
@@ -93,7 +93,53 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.tsv.get(0).get(1)).exists() },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+            )
+        }
+    }
+
+    test("test_kofamscan_txt - stub") {
+
+        options "-stub"
+
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+
+                process {
+                    """
+                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/profiles.tar.gz',checkIfExists:true)]
+                    """
+                }
+            }
+
+            run("GUNZIP") {
+                script "../../gunzip/main.nf"
+
+                process {
+                    """
+                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/ko_list.gz',checkIfExists:true)]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta',checkIfExists: true)]
+                input[1] = UNTAR.out.untar.map{it[1]}
+                input[2] = GUNZIP.out.gunzip.map{it[1]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.txt },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }

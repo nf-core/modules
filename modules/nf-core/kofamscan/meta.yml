@@ -1,6 +1,6 @@
 name: "kofamscan"
-description: Produces annotation using kofamscan against a Profile database and a
-  KO list
+description: Produces annotation using kofamscan against a Profile database and
+  a KO list
 keywords:
   - fasta
   - kegg
@@ -13,7 +13,8 @@ tools:
       documentation: "https://github.com/takaram/kofam_scan"
       tool_dev_url: "https://github.com/takaram/kofam_scan"
       doi: "10.1093/bioinformatics/btz859"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: biotools:kofamscan
 input:
   - - meta:
@@ -38,10 +39,10 @@ input:
 output:
   txt:
     - - meta:
-          type: file
-          description: Application-specific text file with hits information
-          pattern: "*.{txt}"
-          ontologies: []
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.txt":
           type: file
           description: Application-specific text file with hits information
@@ -49,23 +50,37 @@ output:
           ontologies: []
   tsv:
     - - meta:
-          type: file
-          description: Application-specific text file with hits information
-          pattern: "*.{txt}"
-          ontologies: []
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.tsv":
           type: file
           description: Tab separated file containing with detailed hits
           pattern: "*.{tsv}"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_kofamscan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kofamscan:
+          type: string
+          description: kofamscan version string
+      - "exec_annotation --version 2>&1 | sed 's/exec_annotation //;'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kofamscan:
+          type: string
+          description: kofamscan version string
+      - "exec_annotation --version 2>&1 | sed 's/exec_annotation //;'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@toniher"
 maintainers:
