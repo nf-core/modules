@@ -12,7 +12,7 @@ process TAILFINDR {
 
     output:
     tuple val(meta), path("*.csv.gz"), emit: csv_gz
-    path "versions.yml"             , emit: versions, topic: versions
+    path "versions.yml"             , emit: versions_tailfindr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

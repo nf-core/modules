@@ -41,28 +41,14 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3989
   versions_tailfindr:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - tailfindr:
-          type: string
-          description: The name of the tool
-      - Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))":
-          type: eval
-          description: The expression to obtain the version of the tool
-  versions:
-    - versions.yml: {}
+    - - versions.yml:
+          type: file
+          description: YAML file containing versions of tools used in the module
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - tailfindr:
-          type: string
-          description: The name of the tool
-      - Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))":
-          type: eval
-          description: The expression to obtain the version of the tool
+    - - versions.yml:
+          type: file
+          description: YAML file containing versions of tools used in the module
 authors:
   - "@lucacozzuto"
 maintainers:
