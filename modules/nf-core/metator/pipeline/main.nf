@@ -16,7 +16,7 @@ process METATOR_PIPELINE {
     tuple val(meta), path("binning.txt")                 , emit: contig2bin
     tuple val(meta), path("network.txt")                 , emit: network
     tuple val(meta), path("contig_data_final.txt")       , emit: contig_data
-    tuple val(meta), path("plot/*.png")                 , emit: plots, optional: true
+    tuple val(meta), path("plot/*.png")                  , emit: plots, optional: true
     tuple val("${task.process}"), val('metator'), eval("metator -v"), topic: versions, emit: versions_metator
 
     when:
