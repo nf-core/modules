@@ -8,7 +8,7 @@ process SVDSS_INDEX {
         'quay.io/biocontainers/svdss:2.1.1--he17396a_0' }"
 
     input:
-    tuple val(meta), path(fasta), path(existing_index)
+    tuple val(meta), path(fasta)
     val output_format
 
     output:
@@ -22,11 +22,9 @@ process SVDSS_INDEX {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def format_flag = output_format == 'fmd' ? '-d' : '-b'
-    def existing_index_arg = existing_index ? "-i ${existing_index}" : ''
     """
     SVDSS index \\
         -t ${task.cpus} \\
-        ${existing_index_arg} \\
         ${format_flag} ${fasta} \\
         ${args} \\
         > ${prefix}.${output_format}

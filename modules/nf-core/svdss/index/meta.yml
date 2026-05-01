@@ -30,13 +30,6 @@ input:
         pattern: "*.{fasta,fa,fna}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-    - existing_index:
-        type: file
-        description: |
-          Optional path to an existing index file to read and extend (passed via -i).
-          Set to [] when not used.
-        pattern: "*.{fmd,fmr}"
-        ontologies: []
   - output_format:
       type: string
       description: |
