@@ -61,7 +61,9 @@ output:
           description: HDF5 file containing the k-mer sketches for all input
             genomes
           pattern: "*.h5"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3590
+
   dists:
     - - meta:
           type: map
