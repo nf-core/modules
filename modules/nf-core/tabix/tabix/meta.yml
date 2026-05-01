@@ -1,16 +1,21 @@
 name: tabix_tabix
-description: create tabix index from a sorted bgzip tab-delimited genome file
+description: |
+  Create a tabix index from a sorted bgzip TAB-delimited genome file, or
+  extract regions from a bgzipped VCF file using an optional regions file.
 keywords:
   - index
   - tabix
   - vcf
+  - extract
+  - regions
 tools:
   - tabix:
       description: Generic indexer for TAB-delimited genome position files.
       homepage: https://www.htslib.org/doc/tabix.html
       documentation: https://www.htslib.org/doc/tabix.1.html
       doi: 10.1093/bioinformatics/btq671
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:tabix
 input:
   - - meta:
@@ -23,6 +28,21 @@ input:
         description: TAB-delimited genome position file compressed with bgzip
         pattern: "*.{bed.gz,gff.gz,sam.gz,vcf.gz}"
         ontologies: []
+    - tai:
+        type: file
+        description: |
+          Tabix index for the input file. Required when extracting regions.
+          Pass [] when creating an index instead.
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+    - regions:
+        type: file
+        description: |
+          Optional file of regions to extract (BED or chr:start-end format).
+          Pass [] to create an index instead of extracting regions.
+        pattern: "*.{bed,txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
 output:
   index:
     - - meta:
@@ -32,8 +52,21 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.{tbi,csi}":
           type: file
-          description: Tabix index file (either tbi or csi)
+          description: Tabix index file (tbi or csi). Emitted when no regions file
+            is provided.
           pattern: "*.{tbi,csi}"
+          ontologies: []
+  extracted:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.*gz":
+          type: file
+          description: Bgzipped file of extracted regions, preserving the input file
+            extension. Emitted when a regions file is provided.
+          pattern: "*.*gz"
           ontologies: []
   versions_tabix:
     - - ${task.process}:
@@ -45,7 +78,6 @@ output:
       - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -57,7 +89,6 @@ topics:
       - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@joseespinosa"
   - "@drpatelh"
