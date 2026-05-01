@@ -83,9 +83,9 @@ process BOWTIE2_ALIGN {
     def extension = (args2 ==~ extension_pattern) ? (args2 =~ extension_pattern)[0][2].toLowerCase() : "bam"
     def create_unmapped = ""
     if (meta.single_end) {
-        create_unmapped = save_unaligned ? "touch ${prefix}.unmapped.fastq.gz" : ""
+        create_unmapped = save_unaligned ? "echo | gzip > ${prefix}.unmapped.fastq.gz" : ""
     } else {
-        create_unmapped = save_unaligned ? "touch ${prefix}.unmapped_1.fastq.gz && touch ${prefix}.unmapped_2.fastq.gz" : ""
+        create_unmapped = save_unaligned ? "echo | gzip > ${prefix}.unmapped_1.fastq.gz && echo | gzip > ${prefix}.unmapped_2.fastq.gz" : ""
     }
     if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
 

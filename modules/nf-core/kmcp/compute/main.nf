@@ -8,7 +8,7 @@ process KMCP_COMPUTE {
         : 'quay.io/biocontainers/kmcp:0.9.4--h9ee0642_0'}"
 
     input:
-    tuple val(meta), path(sequences)
+    tuple val(meta), path(sequences, stageAs: "genomes/")
 
     output:
     tuple val(meta), path("${prefix}"), emit: outdir
@@ -21,14 +21,13 @@ process KMCP_COMPUTE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def input = sequences.isDirectory() ? "--in-dir ${sequences}" : "${sequences}"
     """
     kmcp \\
         compute \\
         ${args} \\
         --threads ${task.cpus} \\
         --out-dir ${prefix}/ \\
-        ${input}
+        --in-dir genomes/
     """
 
     stub:

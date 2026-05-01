@@ -20,6 +20,11 @@ process EAUTILS_GTF2BED {
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
     args   = task.ext.args ?: ''
+
+    """
+    echo $args
+    """
+
     template 'gtf2bed.pl'
 
     stub:
