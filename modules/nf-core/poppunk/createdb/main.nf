@@ -11,7 +11,7 @@ process POPPUNK_CREATEDB {
     tuple val(meta), path("${meta.id}"),                    emit: db
     tuple val(meta), path("${meta.id}/${meta.id}.h5"),      emit: h5
     tuple val(meta), path("${meta.id}/${meta.id}.dists.*"), emit: dists
-    tuple val("${task.process}"), val('poppunk'), eval("poppunk --version 2>&1 | sed 's/.* //'"), topic: versions, emit: versions_poppunk
+    tuple val("${task.process}"), val('poppunk'), eval("poppunk --version 2>&1 | head -1 | sed 's/^.* //'"), topic: versions, emit: versions_poppunk
     when:
     task.ext.when == null || task.ext.when
     script:
