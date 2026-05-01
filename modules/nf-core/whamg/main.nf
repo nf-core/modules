@@ -16,7 +16,7 @@ process WHAMG {
     tuple val(meta), path("*.vcf.gz")       , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi")   , emit: tbi
     tuple val(meta), path("*.txt")          , emit: graph, optional: true
-    tuple val("${task.process}"), val('whamg'), eval('whamg 2>&1 | grep Version | sed \'s/^Version: v//; s/-.*$//\''), topic: versions, emit: versions_whamg
+    tuple val("${task.process}"), val('whamg'), eval('whamg 2>&1 | grep Version | sed \'s/^Version: v//; s/-.*$//\''), topic: versions, emit: versions
 
     when:
     task.ext.when == null || task.ext.when
