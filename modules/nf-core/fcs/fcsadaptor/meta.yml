@@ -17,7 +17,8 @@ tools:
       homepage: "https://www.ncbi.nlm.nih.gov/data-hub/cgr/data-quality-tools/"
       documentation: "https://github.com/ncbi/fcs/wiki/FCS-adaptor"
       tool_dev_url: "https://github.com/ncbi/fcs"
-      licence: ["United States Government Work"]
+      licence:
+        - "NCBI-PD"
       identifier: ""
 input:
   - - meta:
@@ -85,13 +86,27 @@ output:
           description: Skipped trim information
           pattern: "*.{skipped_trims.jsonl}"
           ontologies: []
+  versions_fcsadaptor:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fcsadaptor:
+          type: string
+          description: The name of the tool
+      - "0.5.0":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fcsadaptor:
+          type: string
+          description: The name of the tool
+      - "0.5.0":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@d4straub"
 maintainers:

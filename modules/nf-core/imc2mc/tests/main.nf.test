@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process IMC2MC"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "IMC2MC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "imc2mc"
+
+    test("acquisition - txt") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/staging/imaging_mass_cytometry/acquisition.txt', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("acquisition - txt - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/staging/imaging_mass_cytometry/acquisition.txt', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

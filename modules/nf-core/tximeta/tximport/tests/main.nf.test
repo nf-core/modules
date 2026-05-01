@@ -214,6 +214,81 @@ nextflow_process {
 
     }
 
+    test("saccharomyces_cerevisiae - salmon - gtf - mismatched_transcripts") {
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test'], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/salmon_results.tar.gz', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+            run("CUSTOM_TX2GENE") {
+                script "../../../custom/tx2gene/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test'], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
+                    ])
+                    input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                    input[2] = 'salmon'
+                    input[3] = 'gene_id'
+                    input[4] = 'gene_name'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                // Remove half the entries from tx2gene to simulate FASTA/GTF mismatch
+                input[1] = CUSTOM_TX2GENE.out.tx2gene.map { meta, tx2gene ->
+                    def lines = tx2gene.readLines()
+                    def header = lines[0]
+                    def kept = lines[1..Math.max(1, (int)(lines.size() / 2))]
+                    def modified = file("\${workDir}/truncated_tx2gene.tsv")
+                    modified.text = ([header] + kept).join('\\n') + '\\n'
+                    [meta, modified]
+                }
+                input[2] = 'salmon'
+                """
+            }
+        }
+
+        then {
+            // The truncated tx2gene covers only a subset of transcripts.
+            // Without filtering, unmapped transcripts would appear as fake
+            // genes (gene_id = transcript_id), inflating the gene count to
+            // match the transcript count (yeast has ~1:1 gene:transcript).
+            // With filtering, gene rows should be strictly fewer.
+            def gene_counts = path(process.out.counts_gene[0][1])
+            def gene_lines = gene_counts.readLines()
+            def tx_lines = path(process.out.counts_transcript[0][1]).readLines()
+            def n_genes = gene_lines.size() - 1        // subtract header
+            def n_transcripts = tx_lines.size() - 1
+
+            // Read .command.err from the work directory to check for warning
+            def commandErr = gene_counts.parent.resolve('.command.err').text
+
+            assertAll(
+                { assert process.success },
+                { assert n_genes > 0 },
+                { assert n_genes < n_transcripts :
+                    "Gene count rows ($n_genes) should be fewer than transcript rows ($n_transcripts) after filtering unmapped transcripts" },
+                { assert commandErr.contains("transcripts found in quantification output but missing from") :
+                    "Expected warning about unmapped transcripts in .command.err" }
+            )
+        }
+    }
+
     test("saccharomyces_cerevisiae - salmon - gtf - stub") {
 
         options "-stub"

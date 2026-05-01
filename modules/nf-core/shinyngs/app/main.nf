@@ -13,9 +13,9 @@ process SHINYNGS_APP {
     // Those values must then be set in your Nextflow secrets.
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d0937af0a2b5efe1c18565ef320956e630a03c00c6d75ea5df92ec9f9ff2d14e/data' :
-        'community.wave.seqera.io/library/r-shinyngs:2.3.0--140cda6231347fbb' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d782b4f11adf8f3cad6af74ea585468decd873a171da1dae0e4a24a82bb29020/data' :
+        'community.wave.seqera.io/library/r-shinyngs:2.4.0--709fc6932be670a5' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)    // Experiment-level info
@@ -24,7 +24,7 @@ process SHINYNGS_APP {
 
     output:
     tuple val(meta), path("*/data.rds"), path("*/app.R")    , emit: app
-    path "versions.yml"                                     , emit: versions
+    tuple val("${task.process}"), val('shinyngs'), eval('Rscript -e "library(shinyngs); cat(as.character(packageVersion(\'shinyngs\')))"'), emit: versions_shinyngs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,11 +45,6 @@ process SHINYNGS_APP {
         --differential_results "${differential_results.join(',')}" \\
         --output_dir "$prefix" \\
         $args \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
-    END_VERSIONS
     """
 
     stub:
@@ -59,11 +54,6 @@ process SHINYNGS_APP {
     mkdir -p "$prefix"
     touch "${prefix}/data.rds"
     touch "${prefix}/app.R"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
-    END_VERSIONS
     """
 
 }

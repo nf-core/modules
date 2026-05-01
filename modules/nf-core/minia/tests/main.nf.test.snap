@@ -1,18 +1,47 @@
 {
-    "test-minia": {
+    "sarscov2 - fastq - se": {
         "content": [
-            "test.contigs.fa",
-            "test.unitigs.fa",
+            "test.contigs.fa.gz",
+            "test.unitigs.fa.gz",
             "test.h5",
-            [
-                "versions.yml:md5,242f8593f9ee8955fb73580c78f30200"
-            ]
+            "test-minia.log",
+            {
+                "versions_minia": [
+                    [
+                        "MINIA",
+                        "minia",
+                        "3.2.6"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-30T08:38:40.819046992",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-05T19:56:44.252673"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - fastq - pe": {
+        "content": [
+            "test.contigs.fa.gz",
+            "test.unitigs.fa.gz",
+            "test.h5",
+            "test-minia.log",
+            {
+                "versions_minia": [
+                    [
+                        "MINIA",
+                        "minia",
+                        "3.2.6"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-30T08:38:55.382497644",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "test-minia-stub": {
         "content": [
@@ -22,7 +51,7 @@
                         {
                             "id": "test"
                         },
-                        "test.contigs.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.contigs.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
@@ -30,7 +59,7 @@
                         {
                             "id": "test"
                         },
-                        "test.unitigs.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.unitigs.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "2": [
@@ -42,14 +71,26 @@
                     ]
                 ],
                 "3": [
-                    "versions.yml:md5,242f8593f9ee8955fb73580c78f30200"
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test-minia.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    [
+                        "MINIA",
+                        "minia",
+                        "3.2.6"
+                    ]
                 ],
                 "contigs": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.contigs.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.contigs.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "h5": [
@@ -60,23 +101,35 @@
                         "test.h5:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test-minia.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "unitigs": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.unitigs.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.unitigs.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,242f8593f9ee8955fb73580c78f30200"
+                "versions_minia": [
+                    [
+                        "MINIA",
+                        "minia",
+                        "3.2.6"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-03-30T08:39:11.428189324",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-05T19:52:02.585904"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

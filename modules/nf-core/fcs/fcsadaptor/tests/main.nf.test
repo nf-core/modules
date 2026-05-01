@@ -30,7 +30,7 @@ nextflow_process {
                     file(process.out.skipped_trims[0][1]).name,
                     process.out.adaptor_report,
                     process.out.pipeline_args,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 },
                 { assert path(process.out.log[0][1]).text.contains('[step all_cleaned_fasta] completed success') }
@@ -69,7 +69,7 @@ nextflow_process {
                     process.out.skipped_trims,
                     process.out.adaptor_report,
                     process.out.pipeline_args,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 },
                 { assert path(process.out.log[0][1]).text.contains('[step all_cleaned_fasta] completed success') },
@@ -108,7 +108,7 @@ nextflow_process {
                     ].collect { file(it).name }
                     ).match()
                 },
-                { assert snapshot(process.out.versions).match("stub_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("stub_versions") }
             )
         }
     }

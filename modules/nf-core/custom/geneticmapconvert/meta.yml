@@ -91,18 +91,21 @@ output:
             tab-delimited file with header and columns:
             chr, pos, cM
           pattern: "*.minimac.map"
-  versions_geneticmapconvert:
+  versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
 topics:
   versions:
     - versions.yml:
-        type: string
-        description: The name of the process
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LouisLeNezet"
 maintainers:

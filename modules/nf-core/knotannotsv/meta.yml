@@ -1,0 +1,83 @@
+name: "knotannotsv"
+description: Simple tool to create a customizable html file (to be displayed on
+  a web browser) from an AnnotSV output
+keywords:
+  - annotation
+  - structural variants
+  - annotsv
+  - tsv
+  - html
+tools:
+  - "knotannotsv":
+      description: "Simple tool to create a customizable html file (to be displayed
+        on a web browser) from an AnnotSV output"
+      homepage: https://github.com/mobidic/knotAnnotSV
+      documentation: "https://github.com/mobidic/knotAnnotSV/blob/master/README.knotAnnotSV_latest.pdf"
+      tool_dev_url: "https://github.com/mobidic/knotAnnotSV"
+      licence:
+        - "GPL-3.0"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - annotsv_tsv:
+        type: file
+        description: Annotated TSV produced by AnnotSV
+        pattern: "*.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - knot_out_xl:
+        type: boolean
+        description: Specify 'true' to output as XLSM (rather than HTML by default)
+output:
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.html":
+          type: file
+          description: HTML annotated file
+          pattern: "*.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+  xl:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.xlsm":
+          type: file
+          description: Alternative XLSM annotated file (if 'knot_out_xl=true')
+          pattern: "*.xlsm"
+          ontologies:
+            - edam: "http://edamontology.org/format_3620" # XLSX
+  versions_knotannotsv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - knotannotsv:
+          type: string
+          description: The name of the tool
+      - 1.1.5:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - knotannotsv:
+          type: string
+          description: The name of the tool
+      - 1.1.5:
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@thomasguignard"
+maintainers:
+  - "@thomasguignard"

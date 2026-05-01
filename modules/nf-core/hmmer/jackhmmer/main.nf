@@ -3,9 +3,9 @@ process HMMER_JACKHMMER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.4--h503566f_3':
-        'biocontainers/hmmer:3.4--h503566f_3' }"
+        'quay.io/biocontainers/hmmer:3.4--h503566f_3' }"
 
     input:
     tuple val(meta), path(fasta), path(seqdb), val(write_align), val(write_target), val(write_domain)

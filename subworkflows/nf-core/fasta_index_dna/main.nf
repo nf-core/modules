@@ -29,7 +29,15 @@ workflow FASTA_INDEX_DNA {
 
     // Handle different aligners using conditional logic
     if (val_aligner == 'bowtie2') {
-        BOWTIE2_BUILD(ch_fasta)
+
+        /*
+        This is a temporary fix until all aligner handle ch_fasta_fai
+        */
+        ch_fasta_fai = ch_fasta.map { meta, fasta ->
+            tuple(meta, fasta, [])
+        }
+
+        BOWTIE2_BUILD(ch_fasta_fai)
         ch_aligner_index = BOWTIE2_BUILD.out.index
     } else if (val_aligner == 'bwamem') {
         BWAMEM1_INDEX(ch_fasta)
