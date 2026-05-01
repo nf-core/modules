@@ -1,24 +1,23 @@
-
 nextflow_process {
 
-    name "Test Process RAVEN"
+    name "Test Process BIO2ZARR_VCF2ZARRCONVERT"
     script "../main.nf"
-    process "RAVEN"
+    process "BIO2ZARR_VCF2ZARRCONVERT"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "raven"
+    tag "bio2zarr"
+    tag "bio2zarr/vcf2zarrconvert"
 
-    test("test-raven") {
+    test("sarscov2 - vcf.gz - vcz") {
 
         when {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
-				]
-
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -29,9 +28,10 @@ nextflow_process {
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
+
     }
 
-    test("test-raven - stub") {
+    test("sarscov2 - vcf.gz - vcz - stub") {
 
         options "-stub"
 
@@ -39,10 +39,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
-				]
-
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -53,6 +52,7 @@ nextflow_process {
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
+
     }
 
 }
