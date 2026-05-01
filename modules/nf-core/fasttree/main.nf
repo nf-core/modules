@@ -11,7 +11,7 @@ process FASTTREE {
 
     output:
     path "*.tre"                                                                                                                     , emit: phylogeny
-    tuple val("${task.process}"), val('fasttree'), eval('fasttree -help 2>&1 | head -1 | sed \'s/^FastTree \\([0-9.]*\\) .*$/\\1/\''), topic: versions, emit: versions_fasttree
+    tuple val("${task.process}"), val('fasttree'), eval('fasttree -help 2>&1 | head -1 | sed \'s/^FastTree \\([0-9.]*\\) .*$/\\1/\''), topic: versions, emit: versions
 
     when:
     task.ext.when == null || task.ext.when
