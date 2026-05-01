@@ -73,7 +73,7 @@ output:
       - ${meta.id}/${meta.id}.dists.*:
           type: file
           description: Pairwise distance matrix files (numpy and pickle format)
-          pattern: "*.dists.*"
+          pattern: "*.dists.{npy,pkl}"
           ontologies: []
   versions_poppunk:
     - - ${task.process}:
