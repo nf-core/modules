@@ -11,7 +11,7 @@ process FQ_GENERATE {
     val meta
 
     output:
-    tuple val(meta), path("*.fastq.gz"), emit: fastq
+    tuple val(meta), path("*.fastq.gz")                                                                      , emit: fastq
     tuple val("${task.process}"), val('fq'), eval("fq generate --version | sed 's/fq-generate //;s/ (.*//' "), emit: versions_fq, topic: versions
 
     when:
