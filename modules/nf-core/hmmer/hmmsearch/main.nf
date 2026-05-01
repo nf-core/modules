@@ -4,8 +4,8 @@ process HMMER_HMMSEARCH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.4--hdbdd923_1' :
-        'quay.io/biocontainers/hmmer:3.4--hdbdd923_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/07c4cbd91c4459dc86b13b5cd799cacba96b27d66c276485550d299c7a4c6f8a/data' :
+        'community.wave.seqera.io/library/hmmer:3.4--cb5d2dd2e85974ca' }"
 
     input:
     tuple val(meta), path(hmmfile), path(seqdb), val(write_align), val(write_target), val(write_domain)
@@ -15,7 +15,7 @@ process HMMER_HMMSEARCH {
     tuple val(meta), path('*.sto.gz')   , emit: alignments    , optional: true
     tuple val(meta), path('*.tbl.gz')   , emit: target_summary, optional: true
     tuple val(meta), path('*.domtbl.gz'), emit: domain_summary, optional: true
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val("hmmer"), eval("hmmsearch -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //'"), topic: versions, emit: versions_hmmer
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,10 +43,6 @@ process HMMER_HMMSEARCH {
         ${write_target ? '*.tbl' : ''} \\
         ${write_domain ? '*.domtbl' : ''}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(hmmsearch -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
-    END_VERSIONS
     """
 
     stub:
@@ -61,10 +57,5 @@ process HMMER_HMMSEARCH {
         ${write_align ? '*.sto' : ''} \\
         ${write_target ? '*.tbl' : ''} \\
         ${write_domain ? '*.domtbl' : ''}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(hmmsearch -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
-    END_VERSIONS
     """
 }

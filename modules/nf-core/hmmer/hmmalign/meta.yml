@@ -45,13 +45,29 @@ output:
           pattern: "*.sto.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - hmmer:
+          type: string
+          description: The tool name
+      - hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //':
+          type: eval
+          description: The tool version
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - hmmer:
+          type: string
+          description: The tool name
+      - hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //':
+          type: eval
+          description: The tool version
+
 authors:
   - "@erikrikarddaniel"
   - "@jfy133"

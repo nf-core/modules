@@ -36,10 +36,10 @@ input:
 output:
   hmm:
     - - meta:
-          type: file
-          description: Gzipped HMM file
-          pattern: "*.{hmm.gz}"
-          ontologies: []
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.hmm.gz":
           type: file
           description: Gzipped HMM file
@@ -50,13 +50,29 @@ output:
         type: file
         description: HMM build output
         ontologies: []
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - hmmer:
+          type: string
+          description: The tool name
+      - hmmbuild -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //':
+          type: eval
+          description: The tool version
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - hmmer:
+          type: string
+          description: The tool name
+      - hmmbuild -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //':
+          type: eval
+          description: The tool version
+
 authors:
   - "@erikrikarddaniel"
 maintainers:

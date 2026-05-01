@@ -14,7 +14,7 @@ process HMMER_HMMBUILD {
     output:
     tuple val(meta), path("*.hmm.gz"), emit: hmm
     path "*.hmmbuild.txt",             emit: hmmbuildout
-    path "versions.yml",               emit: versions
+    tuple val("${task.process}"), val("hmmer"), eval("hmmbuild -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //'"), topic: versions, emit: versions_hmmer
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,22 +35,12 @@ process HMMER_HMMBUILD {
         $alignment
 
     gzip ${prefix}.hmm
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(echo \$(hmmbuild -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-    END_VERSIONS
     """
 
     stub:
     def prefix    = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.hmm.gz
+    echo "" | gzip > ${prefix}.hmm.gz
     touch ${prefix}.hmmbuild.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(echo \$(hmmbuild -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-    END_VERSIONS
     """
 }

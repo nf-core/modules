@@ -13,7 +13,7 @@ process HMMER_HMMALIGN {
 
     output:
     tuple val(meta), path("*.sto.gz"), emit: sto
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val("hmmer"), eval("hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //'"), topic: versions, emit: versions_hmmer
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process HMMER_HMMALIGN {
         $args \\
         $hmm \\
         $fasta | gzip -c > ${prefix}.sto.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.sto.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.sto.gz
     """
 }

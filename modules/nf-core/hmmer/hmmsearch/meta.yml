@@ -87,13 +87,29 @@ output:
           description: Optional tabular (space-delimited) summary of per-domain output
           pattern: "*.{domtbl.gz}"
           ontologies: []
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - hmmer:
+          type: string
+          description: The tool name
+      - hmmsearch -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //':
+          type: eval
+          description: The tool version
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - hmmer:
+          type: string
+          description: The tool name
+      - hmmsearch -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //':
+          type: eval
+          description: The tool version
+
 authors:
   - "@Midnighter"
 maintainers:
