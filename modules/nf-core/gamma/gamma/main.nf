@@ -44,9 +44,14 @@ process GAMMA_GAMMA {
         $db \\
         $prefix
     fi
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gamma: $VERSION
-    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gamma
+    touch ${prefix}.psl
+    touch ${prefix}.gff
+    touch ${prefix}.fasta
     """
 }
