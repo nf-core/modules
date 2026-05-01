@@ -74,7 +74,9 @@ output:
           type: file
           description: Pairwise distance matrix files (numpy and pickle format)
           pattern: "*.dists.{npy,pkl}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_4003
+            - edam: http://edamontology.org/format_4002
   versions_poppunk:
     - - ${task.process}:
           type: string
