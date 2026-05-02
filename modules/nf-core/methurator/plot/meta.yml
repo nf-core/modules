@@ -32,7 +32,7 @@ input:
           YAML file summarizing the saturation analysis results.
         pattern: "methurator_*.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
 output:
   plots:
     - - meta:
@@ -46,7 +46,8 @@ output:
           description: |
             HTML plots generated from the saturation analysis.
           pattern: "plots/*.html"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
   versions_methurator:
     - - ${task.process}:
           type: string

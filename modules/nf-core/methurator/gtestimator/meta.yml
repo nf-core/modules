@@ -30,17 +30,20 @@ input:
         type: file
         description: Single BAM file
         pattern: "*.{bam,cram}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
     - bai:
         type: file
         description: Single BAM/CRAM index file
         pattern: "*.{bai,crai}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAM index
     - fasta:
         type: file
         description: Input genome fasta file
         pattern: "*.{fasta,fa}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1332" # FASTA
 output:
   summary_report:
     - - meta:
@@ -54,7 +57,8 @@ output:
           description: |
             YAML file summarizing the saturation analysis results.
           pattern: "${prefix}.yml"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
   versions_methurator:
     - - ${task.process}:
           type: string
