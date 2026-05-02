@@ -3,7 +3,7 @@ process MYLOASM {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b752566c7444cbfddc44bfb332078cf36602fcfeb1e57887cee0d5d6195e1923/data'
         : 'community.wave.seqera.io/library/myloasm:0.5.1--1699da7b77a4bbdd'}"
 

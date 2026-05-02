@@ -4,7 +4,7 @@ process UCSC_BIGWIGAVERAGEOVERBED {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-bigwigaverageoverbed:482--h0b57e2e_0' :
         'quay.io/biocontainers/ucsc-bigwigaverageoverbed:482--h0b57e2e_0' }"
 

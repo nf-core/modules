@@ -13,7 +13,7 @@ process GLIMPSE2_PHASE {
     """
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.1--h46b9e50_1'
         : 'quay.io/biocontainers/glimpse-bio:2.0.1--h46b9e50_1'}"
 

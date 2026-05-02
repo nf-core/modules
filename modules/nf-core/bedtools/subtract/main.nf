@@ -3,7 +3,7 @@ process BEDTOOLS_SUBTRACT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0'
         : 'quay.io/biocontainers/bedtools:2.31.1--hf5e1c6e_0'}"
 

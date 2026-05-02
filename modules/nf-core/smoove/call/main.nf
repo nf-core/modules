@@ -3,7 +3,7 @@ process SMOOVE_CALL {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smoove:0.2.8--h9ee0642_1' :
         'quay.io/biocontainers/smoove:0.2.8--h9ee0642_1' }"
 

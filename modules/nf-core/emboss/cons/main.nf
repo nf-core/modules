@@ -3,7 +3,7 @@ process EMBOSS_CONS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/emboss:6.6.0--h86d058a_5':
         'quay.io/biocontainers/emboss:6.6.0--h86d058a_5' }"
 

@@ -3,7 +3,7 @@ process RIBOWALTZ {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ribowaltz:2.0--r43hdfd78af_0':
         'quay.io/biocontainers/ribowaltz:2.0--r43hdfd78af_0' }"
 

@@ -3,7 +3,7 @@ process MINIASM {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/miniasm:0.3_r179--h5bf99c6_2' :
         'quay.io/biocontainers/miniasm:0.3_r179--h5bf99c6_2' }"
 

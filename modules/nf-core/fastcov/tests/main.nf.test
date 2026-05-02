@@ -28,9 +28,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.coverage_plot[0][1]).name,
-                    file(process.out.log[0][1]).name
-                ).match() },
-                { assert snapshot(process.out.versions).match("versions") }
+                    file(process.out.log[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
 
@@ -56,10 +56,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.versions.collect{ path(it).yaml }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

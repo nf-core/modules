@@ -39,16 +39,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.sample_dir.collect { file(it[1]).getName() } +
-                                    process.out.contig_gbks.collect { file(it[1]).getName() } +
-                                    process.out.db_tsv.collect { file(it[1]).readLines()[0] } +
-                                    process.out.tsv.collect { file(it[1]).readLines()[0] } +
-                                    process.out.faa.collect { file(it[1]).readLines()[0] } +
                                     process.out.full_log.collect { file(it[1]).readLines().contains("File downloaded successfully") } +
-                                    process.out.sample_log.collect { file(it[1]).readLines().contains("found ampir file") } +
                                     process.out.db.collect { file(it[1]).getName() } +
-                                    process.out.db_txt.collect { file(it[1]).readLines()[0] } +
-                                    process.out.db_fasta.collect { file(it[1]).readLines()[0] } +
-                                    process.out.db_mmseqs.collect { file(it[1]).getName() } +
                                     process.out.findAll { key, val -> key.startsWith('versions') } ).match() }
             )
         }

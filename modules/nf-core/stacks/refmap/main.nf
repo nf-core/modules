@@ -3,7 +3,7 @@ process STACKS_REFMAP {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/stacks:2.68--h077b44d_0':
         'quay.io/biocontainers/stacks:2.68--h077b44d_0' }"
 

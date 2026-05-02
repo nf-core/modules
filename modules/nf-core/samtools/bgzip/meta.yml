@@ -1,8 +1,13 @@
 name: samtools_bgzip
-description: Outputs a FASTA file compressed with the BGZF algorithm
+description: Converts an arbitrary compressed or uncompressed file to BGZIP
 keywords:
+  - compression
   - fasta
+  - gff
+  - vcf
+  - bed
   - BGZF
+  - gzip
   - bgzip
 tools:
   - samtools:
@@ -22,25 +27,28 @@ input:
         description: |
           Groovy Map containing reference information
           e.g. [ id:'test' ]
-    - fasta:
+    - infile:
         type: file
-        description: FASTA file, compressed or not.
-        pattern: "*.{fa,fa.gz,fa.bz2,fa.xz,fasta,fasta.gz,fasta.bz2,fasta.xz}"
+        description: Input file, compressed or not.
+        pattern: "*.*"
         ontologies: []
+  - out_ext:
+      type: string
+      description: |
+        Extension of the output file. Only used for naming, does not affect the compression.
 output:
-  fasta:
+  output:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{fa.gz,fasta.gz}"
-      - ${output}:
+      - ${outfile}:
           type: map
           description: |
             A FASTA file compressed with the BGZF algorithm.  It will be
             the original file if it was already BGZF-compressed.
-          pattern: "*.{fa.gz,fasta.gz}"
+          pattern: "*.*.gz"
   versions_samtools:
     - - ${task.process}:
           type: string
@@ -67,3 +75,4 @@ authors:
 maintainers:
   - "@charles-plessy"
   - "@matthdsm"
+  - "@itrujnara"

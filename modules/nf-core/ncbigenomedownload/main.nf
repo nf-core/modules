@@ -3,7 +3,7 @@ process NCBIGENOMEDOWNLOAD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-genome-download:0.3.3--pyh7cba7a3_0' :
         'quay.io/biocontainers/ncbi-genome-download:0.3.3--pyh7cba7a3_0' }"
 
@@ -46,5 +46,22 @@ process NCBIGENOMEDOWNLOAD {
         --parallel $task.cpus \\
         $groups
 
+    """
+
+    stub:
+    """
+    echo "" | gzip > test_genomic.gbff.gz
+    echo "" | gzip > test_genomic.fna.gz
+    echo "" | gzip > test_rm.out.gz
+    echo "" | gzip > test_feature_table.txt.gz
+    echo "" | gzip > test_genomic.gff.gz
+    echo "" | gzip > test_protein.faa.gz
+    echo "" | gzip > test_protein.gpff.gz
+    echo "" | gzip > test_wgsmaster.gbff.gz
+    echo "" | gzip > test_cds_from_genomic.fna.gz
+    echo "" | gzip > test_rna.fna.gz
+    echo "" | gzip > test_rna_from_genomic.fna.gz
+    touch test_assembly_report.txt
+    touch test_assembly_stats.txt
     """
 }

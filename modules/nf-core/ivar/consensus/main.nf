@@ -3,7 +3,7 @@ process IVAR_CONSENSUS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ivar:1.4.4--h077b44d_0' :
         'quay.io/biocontainers/ivar:1.4.4--h077b44d_0' }"
 

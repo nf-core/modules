@@ -3,7 +3,7 @@ process HAPIBD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap-ibd:1.0.rev20May22.818--hdfd78af_0':
         'quay.io/biocontainers/hap-ibd:1.0.rev20May22.818--hdfd78af_0' }"
 
