@@ -4,8 +4,8 @@ process AMPCOMBI2_COMPLETE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ampcombi:2.0.1--pyhdfd78af_0':
-        'quay.io/biocontainers/ampcombi:2.0.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/ampcombi:3.0.0--pyhdfd78af_0':
+        'quay.io/biocontainers/ampcombi:3.0.0--pyhdfd78af_0' }"
 
     input:
     path(summaries)

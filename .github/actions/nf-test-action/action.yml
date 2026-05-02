@@ -37,10 +37,10 @@ runs:
         python-version: "3.14"
 
     - name: Set up nf-test
-      uses: nf-core/setup-nf-test@ce65500579e8587607aab289ecb3a9c343c32e79 # v2
+      uses: nf-core/setup-nf-test@4069fbbaabe94c08faba4ad261bfa88225ba133f # v2
       with:
         version: "${{ env.NFT_VER }}"
-        install-pdiff: true
+        install-fast-diff: true
 
     - name: Set up apptainer
       if: contains(inputs.profile, 'singularity')
@@ -56,7 +56,7 @@ runs:
 
     - name: Set up Conda
       if: ${{contains(inputs.profile, 'conda')}}
-      uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3
+      uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
       with:
         auto-update-conda: true
         conda-solver: libmamba
