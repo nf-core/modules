@@ -59,7 +59,7 @@ output:
       - optitype:
           type: string
           description: The name of the tool
-      - 'cat $(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g"':
+      - 'grep "Version:" $(which OptiTypePipeline.py) | sed "s/Version: //g"':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -70,7 +70,7 @@ topics:
       - optitype:
           type: string
           description: The name of the tool
-      - 'cat $(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g"':
+      - 'grep "Version:" $(which OptiTypePipeline.py) | sed "s/Version: //g"':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

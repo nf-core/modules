@@ -13,7 +13,7 @@ process OPTITYPE {
     output:
     tuple val(meta), path("${prefix}/*.tsv"), emit: hla_type
     tuple val(meta), path("${prefix}/*.pdf"), emit: coverage_plot
-    tuple val("${task.process}"), val('optitype'), eval('cat $(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g"'), emit: versions_optitype, topic: versions
+    tuple val("${task.process}"), val('optitype'), eval('grep "Version:" $(which OptiTypePipeline.py) | sed "s/Version: //g"'), emit: versions_optitype, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
