@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process SPIKEINTERFACE_SORT"
+    script "../main.nf"
+    process "SPIKEINTERFACE_SORT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "spikeinterface"
+    tag "spikeinterface/sort"
+
+    test("electrophysiology - small binary recording - mountainsort5") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/electrophysiology/recording_small.bin', checkIfExists: true)
+                ]
+                input[1] = 'mountainsort5'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.spike_times.get(0).get(1)).exists() },
+                { assert snapshot(
+                    process.out.spike_times,
+                    process.out.spike_clusters,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("electrophysiology - small binary recording - mountainsort5 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/electrophysiology/recording_small.bin', checkIfExists: true)
+                ]
+                input[1] = 'mountainsort5'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

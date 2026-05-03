@@ -1,0 +1,76 @@
+name: "spikeinterface_sort"
+description: Run spike sorting on extracellular electrophysiology recordings using SpikeInterface
+keywords:
+  - electrophysiology
+  - spike-sorting
+  - neuroscience
+  - neuromorphic
+  - machine-learning
+tools:
+  - "spikeinterface":
+      description: "A unified Python framework for spike sorting and electrophysiology analysis"
+      homepage: "https://spikeinterface.readthedocs.io"
+      documentation: "https://spikeinterface.readthedocs.io"
+      tool_dev_url: "https://github.com/SpikeInterface/spikeinterface"
+      doi: "10.7554/eLife.61834"
+      licence: ["MIT"]
+      identifier: "biotools:spikeinterface"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample metadata. Required key: `id`.
+    - recording:
+        type: file
+        description: "Input recording readable by SpikeInterface (Neo, NWB, OpenEphys, SpikeGLX, raw binary)."
+        pattern: "*.{nwb,bin,h5,dat}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2603"
+  - sorter:
+      type: string
+      description: "Spike sorter backend identifier. Examples: mountainsort5, kilosort4, herdingspikes, tridesclous."
+
+output:
+  sorting:
+    - - meta:
+          type: map
+          description: "Groovy Map containing sample metadata."
+      - "${prefix}/sorting":
+          type: directory
+          description: "Sorted units output folder produced by the chosen sorter."
+          pattern: "*/sorting"
+          ontologies:
+            - edam: "http://edamontology.org/data_3494"
+  spike_times:
+    - - meta:
+          type: map
+          description: "Groovy Map containing sample metadata."
+      - "${prefix}/sorting/spike_times.npy":
+          type: file
+          description: "Spike times as a NumPy array."
+          pattern: "*.npy"
+          ontologies:
+            - edam: "http://edamontology.org/format_3727"
+  spike_clusters:
+    - - meta:
+          type: map
+          description: "Groovy Map containing sample metadata."
+      - "${prefix}/sorting/spike_clusters.npy":
+          type: file
+          description: "Cluster assignments per spike as a NumPy array."
+          pattern: "*.npy"
+          ontologies:
+            - edam: "http://edamontology.org/format_3727"
+  versions:
+    - versions.yml:
+        type: file
+        description: "File containing software versions."
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
+
+authors:
+  - "@olaflaitinen"
+maintainers:
+  - "@olaflaitinen"
