@@ -4,7 +4,7 @@ process POPPUNK_CREATEDB {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/poppunk:2.7.8--py310h4d0eb5b_0' :
-        'biocontainers/poppunk:2.7.8--py310h4d0eb5b_0' }"
+        'quay.io/biocontainers/poppunk:2.7.8--py310h4d0eb5b_0' }"
     input:
     tuple val(meta), path(r_file), path(fasta)
     output:
