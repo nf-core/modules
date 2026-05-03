@@ -18,23 +18,22 @@ process VCF2ZARR_EXPLODE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    vcf2zarr \\
-        explode \\
-        ${args} \\
-        --worker-processes ${task.cpus} \\
-        ${vcf} \\
-        ${prefix}.icf
-    """
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/bio2zarr/vcf2zarrexplode
+
+Reason:
+The module was incorrectly named. The installed package is bio2zarr, not vcf2zarr.
+Per nf-core naming conventions, the module has been moved to bio2zarr/vcf2zarrexplode.
+"""
+    assert false: deprecation_message
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    echo ${args}
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/bio2zarr/vcf2zarrconvert
 
-    mkdir ${prefix}.icf
-    """
+Reason:
+The module was incorrectly named. The installed package is bio2zarr, not vcf2zarr.
+Per nf-core naming conventions, the module has been moved to bio2zarr/vcf2zarrconvert.
+"""
+    assert false: deprecation_message
 }
