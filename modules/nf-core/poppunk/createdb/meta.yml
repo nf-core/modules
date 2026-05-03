@@ -95,7 +95,7 @@ topics:
       - poppunk:
           type: string
           description: The name of the tool
-      - poppunk --version 2>&1 | head -1 | sed 's/^.*v//':
+      - poppunk --version 2>&1 | head -1 | sed 's/^.* //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
