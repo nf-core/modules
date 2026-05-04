@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process SDRFPIPELINES_PARSESDRF"
+    script "../main.nf"
+    process "SDRFPIPELINES_PARSESDRF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sdrfpipelines"
+    tag "sdrfpipelines/parsesdrf"
+
+    config "./nextflow.config"
+
+    test("sdrf - mhcquant - PXD009752") {
+
+        when {
+            process {
+                """
+                input[0] = file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - mhcquant - PXD009752 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

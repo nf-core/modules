@@ -1,0 +1,77 @@
+name: "sdrfpipelines_parsesdrf"
+description: |
+  Parse and convert an SDRF (Sample and Data Relationship Format) file into
+  pipeline-specific samplesheet/configuration files using the sdrf-pipelines
+  `parse_sdrf` CLI. The conversion subcommand (e.g. `convert-mhcquant`,
+  `convert-openms`) and its output flags are supplied via `task.ext.args`.
+keywords:
+  - sdrf
+  - samplesheet
+  - proteomics
+  - immunopeptidomics
+  - metadata
+tools:
+  - "sdrf-pipelines":
+      description: "A set of tools to validate and convert SDRF files for proteomics
+        pipelines."
+      homepage: "https://github.com/bigbio/sdrf-pipelines"
+      documentation: "https://github.com/bigbio/sdrf-pipelines"
+      tool_dev_url: "https://github.com/bigbio/sdrf-pipelines"
+      doi: "10.1021/acs.jproteome.1c00505"
+      licence:
+        - "Apache-2.0"
+      identifier: "biotools:sdrf-pipelines"
+input:
+  - sdrf:
+      type: file
+      description: SDRF file describing the experimental design and sample
+        metadata.
+      pattern: "*.{tsv,sdrf.tsv}"
+      ontologies:
+        - edam: http://edamontology.org/format_3475
+output:
+  samplesheet:
+    - "samplesheet.tsv":
+        type: file
+        description: |
+          Samplesheet derived from the SDRF file. The exact contents depend on
+          the conversion subcommand passed via `ext.args` (e.g. mhcquant-style
+          samplesheet when `convert-mhcquant` is used).
+        pattern: "samplesheet.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  search_presets:
+    - "search_presets.tsv":
+        type: file
+        description: |
+          Search parameter presets derived from the SDRF file (one row per
+          unique search configuration). Produced by subcommands that emit a
+          presets file, e.g. `convert-mhcquant`.
+        pattern: "search_presets.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  versions_sdrfpipelines:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "sdrf-pipelines":
+          type: string
+          description: The name of the tool
+      - "parse_sdrf --version | cut -d ' ' -f 2":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "sdrf-pipelines":
+          type: string
+          description: The name of the tool
+      - "parse_sdrf --version | cut -d ' ' -f 2":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"
