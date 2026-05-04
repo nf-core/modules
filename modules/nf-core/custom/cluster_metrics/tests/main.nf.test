@@ -4,6 +4,8 @@ nextflow_process {
     process "CLUSTER_METRICS"
     tag "modules"
     tag "modules_nfcore"
+    tag "custom"
+    tag "custom/cluster_metrics"
     tag "cluster_metrics"
 
     test("cluster_metrics - features and clusters") {

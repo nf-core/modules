@@ -242,7 +242,7 @@ def main() -> None:
         })
 
     sweep_df = pd.DataFrame(rows)
-    sweep_df.to_csv(args.out_k_sweep, sep=",", index=False)
+    sweep_df.to_csv(args.out_k_sweep, sep=",", index=False, float_format="%.10g")
     Path(args.out_selected).write_text(json.dumps(selected, indent=2))
 
     pfx = args.out_prefix

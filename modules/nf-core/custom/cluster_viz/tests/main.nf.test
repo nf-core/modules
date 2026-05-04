@@ -4,6 +4,8 @@ nextflow_process {
     process "CLUSTER_VIZ"
     tag "modules"
     tag "modules_nfcore"
+    tag "custom"
+    tag "custom/cluster_viz"
     tag "cluster_viz"
 
     test("cluster_viz - features clusters pca") {
