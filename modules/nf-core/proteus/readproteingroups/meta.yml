@@ -11,7 +11,8 @@ tools:
       documentation: "https://rdrr.io/github/bartongroup/Proteus/"
       tool_dev_url: "https://github.com/bartongroup/Proteus"
       doi: "10.1101/416511"
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: biotools:proteus-engineering
 input:
   - - meta:
@@ -134,7 +135,12 @@ output:
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@WackerO"
 maintainers:

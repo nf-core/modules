@@ -57,7 +57,9 @@ nextflow_process {
         options "-stub"
 
         when {
-
+            params {
+                process_blast_args = "-hf"
+            }
             process {
                 """
                 input[0] = Channel.of(

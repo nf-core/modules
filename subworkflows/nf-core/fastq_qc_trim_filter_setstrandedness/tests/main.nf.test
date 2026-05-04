@@ -306,6 +306,8 @@ nextflow_workflow {
                 { assert pelines2.size() == 16636 },
                 { assert workflow.out.trim_read_count[0][1] == 4169.0 },
                 { assert sortmernaRrnaCount == 20 },  // 10 pairs = 20 individual reads (100% detection)
+                { assert workflow.out.per_sample_mqc_bundle.size() == 1 },
+                { assert workflow.out.per_sample_mqc_bundle[0][1].size() > 0 },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),

@@ -1,5 +1,6 @@
 name: filtlong
-description: Filtlong filters long reads based on quality measures or short read data.
+description: Filtlong filters long reads based on quality measures or short read
+  data.
 keywords:
   - nanopore
   - quality control
@@ -9,13 +10,14 @@ keywords:
   - short reads
 tools:
   - filtlong:
-      description: Filtlong is a tool for filtering long reads. It can take a set of
-        long reads and produce a smaller, better subset. It uses both read length (longer
-        is better) and read identity (higher is better) when choosing which reads pass
-        the filter.
+      description: Filtlong is a tool for filtering long reads. It can take a set
+        of long reads and produce a smaller, better subset. It uses both read
+        length (longer is better) and read identity (higher is better) when
+        choosing which reads pass the filter.
       homepage: https://anaconda.org/bioconda/filtlong
       tool_dev_url: https://github.com/rrwick/Filtlong
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:filtlong
 input:
   - - meta:
@@ -28,13 +30,13 @@ input:
         description: fastq file
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
     - longreads:
         type: file
         description: fastq file
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
 output:
   reads:
     - - meta:
@@ -47,7 +49,7 @@ output:
           description: Filtered (compressed) fastq file
           pattern: "*.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   log:
     - - meta:
           type: map
@@ -71,12 +73,12 @@ output:
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
-          description: The name of the process
+          description: The process the versions were collected from
       - filtlong:
           type: string
-          description: The name of the tool
+          description: The tool name
       - 'filtlong --version | sed -e "s/Filtlong v//g"':
           type: eval
           description: The expression to obtain the version of the tool

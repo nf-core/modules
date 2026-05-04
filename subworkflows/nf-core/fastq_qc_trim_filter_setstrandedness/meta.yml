@@ -223,6 +223,18 @@ output:
             type: file
             description: FastQC report ZIP file
             pattern: "*.zip"
+  - per_sample_mqc_bundle:
+      description: |
+        Per-sample MultiQC-feeding outputs (FastQC raw/trim/filtered zips,
+        trim log/JSON, UMI log, BBSplit stats, SortMeRNA log, RiboDetector
+        log, SeqKit stats, Bowtie2 log) joined on meta.
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - files:
+            type: file
+            description: List of MultiQC-relevant files for the sample
 
 authors:
   - "@pinin4fjords"

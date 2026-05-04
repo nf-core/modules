@@ -3,7 +3,7 @@ process CHROMAP_INDEX {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/809e5a0166357804ca10097100e96844100019a11a3aaebf14e2cceb2ee98c0a/data' :
         'community.wave.seqera.io/library/chromap:0.3.2--4ec4bca51cd82195' }"
 
