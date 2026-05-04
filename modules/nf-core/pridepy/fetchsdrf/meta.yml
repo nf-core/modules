@@ -46,7 +46,7 @@ output:
       - pridepy:
           type: string
           description: The tool name
-      - "pip show pridepy 2>/dev/null | grep Version | cut -d' ' -f2":
+      - "python -c \"from importlib.metadata import version; print(version('pridepy'))\"":
           type: string
           description: The command used to generate the version of the tool
 
@@ -58,7 +58,7 @@ topics:
       - pridepy:
           type: string
           description: The tool name
-      - "pip show pridepy 2>/dev/null | grep Version | cut -d' ' -f2":
+      - "python -c \"from importlib.metadata import version; print(version('pridepy'))\"":
           type: string
           description: The command used to generate the version of the tool
 
