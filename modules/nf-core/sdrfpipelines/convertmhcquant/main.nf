@@ -13,7 +13,7 @@ process SDRFPIPELINES_CONVERTMHCQUANT {
     output:
     tuple val(meta), path("${prefix}_samplesheet.tsv")   , emit: samplesheet
     tuple val(meta), path("${prefix}_search_presets.tsv"), emit: search_presets
-    tuple val("${task.process}"), val('sdrf-pipelines'), eval("parse_sdrf --version | cut -d ' ' -f 2"), topic: versions
+    tuple val("${task.process}"), val('sdrf-pipelines'), eval("parse_sdrf --version | cut -d ' ' -f 2"), topic: versions, emit: versions_sdrfpipelines
 
     when:
     task.ext.when == null || task.ext.when

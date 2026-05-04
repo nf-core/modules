@@ -40,10 +40,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample/run information
-      - "*.samplesheet.tsv":
+      - "${prefix}_samplesheet.tsv":
           type: file
           description: mhcquant-style samplesheet derived from the SDRF file.
-          pattern: "*.samplesheet.tsv"
+          pattern: "*_samplesheet.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
   search_presets:
@@ -51,14 +51,24 @@ output:
           type: map
           description: |
             Groovy Map containing sample/run information
-      - "*.search_presets.tsv":
+      - "${prefix}_search_presets.tsv":
           type: file
           description: |
             Search parameter presets derived from the SDRF file (one row per
             unique search configuration).
-          pattern: "*.search_presets.tsv"
+          pattern: "*_search_presets.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
+  versions_sdrfpipelines:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "sdrf-pipelines":
+          type: string
+          description: The name of the tool
+      - "parse_sdrf --version | cut -d ' ' -f 2":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - "${task.process}":
