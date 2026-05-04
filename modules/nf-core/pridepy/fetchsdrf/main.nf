@@ -12,7 +12,7 @@ process PRIDEPY_FETCHSDRF {
 
     output:
     tuple val(meta), path("${prefix}.sdrf.tsv"), emit: sdrf
-    tuple val("${task.process}"), val('pridepy'), eval("pip show pridepy 2>/dev/null | grep Version | cut -d' ' -f2"), topic: versions, emit: versions_pridepy
+    tuple val("${task.process}"), val('pridepy'), eval('python -c "from importlib.metadata import version; print(version(\'pridepy\'))"'), topic: versions, emit: versions_pridepy
 
     when:
     task.ext.when == null || task.ext.when
