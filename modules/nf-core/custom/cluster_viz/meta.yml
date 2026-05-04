@@ -1,0 +1,112 @@
+name: "cluster_viz"
+description: "Generates PCA, UMAP and t-SNE visualizations colored by cluster"
+keywords:
+  - clustering
+  - visualization
+  - pca
+  - umap
+  - tsne
+  - dimension-reduction
+tools:
+  - "scikit-learn":
+      description: "Machine learning library for dimension reduction (PCA, t-SNE)"
+      homepage: "https://scikit-learn.org/"
+      documentation: "https://scikit-learn.org/stable/modules/clustering.html"
+      licence:
+        - "BSD-3-Clause"
+      identifier: ""
+  - "umap-learn":
+      description: "Uniform Manifold Approximation and Projection for dimension reduction"
+      homepage: "https://umap-learn.readthedocs.io/"
+      documentation: "https://umap-learn.readthedocs.io/en/latest/"
+      licence:
+        - "BSD-3-Clause"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information
+    - features:
+        type: file
+        description: TSV file with sample_id and numeric features
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+    - clusters:
+        type: file
+        description: CSV/TSV file with sample_id and cluster assignment
+        pattern: "*_clusters.*"
+        ontologies: []
+    - pca_scores:
+        type: file
+        description: TSV file with PCA scores from previous step
+        pattern: "*_pca_scores.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  - out_prefix:
+      type: string
+      description: Prefix for output files
+output:
+  umap:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_umap.tsv":
+          type: file
+          description: UMAP coordinates TSV file
+          pattern: "*_umap.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  tsne:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_tsne.tsv":
+          type: file
+          description: t-SNE coordinates TSV file
+          pattern: "*_tsne.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  umap_png:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_umap.png":
+          type: file
+          description: UMAP visualization plot
+          pattern: "*_umap.png"
+          ontologies: []
+  tsne_png:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_tsne.png":
+          type: file
+          description: t-SNE visualization plot
+          pattern: "*_tsne.png"
+          ontologies: []
+  pca_png:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_pca.png":
+          type: file
+          description: PCA visualization plot
+          pattern: "*_pca.png"
+          ontologies: []
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@dbaku42"
+maintainers:
+  - "@dbaku42"

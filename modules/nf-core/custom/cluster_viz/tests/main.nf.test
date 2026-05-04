@@ -11,9 +11,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id:'test'], 
-                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_features.tsv", checkIfExists: true),
-                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_clusters.csv", checkIfExists: true),
-                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_pca.eigenvec", checkIfExists: true) ]
+                    file("${projectDir}/modules/nf-core/custom/cluster_viz/tests/data/test_features.tsv", checkIfExists: true),
+                    file("${projectDir}/modules/nf-core/custom/cluster_viz/tests/data/test_clusters.csv", checkIfExists: true),
+                    file("${projectDir}/modules/nf-core/custom/cluster_viz/tests/data/test_pca.eigenvec", checkIfExists: true) ]
                 input[1] = 'test'
                 """
             }
@@ -37,9 +37,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id:'test'], 
-                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_features.tsv", checkIfExists: true),
-                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_clusters.csv", checkIfExists: true),
-                    file("${projectDir}/modules/nf-core/cluster_viz/tests/data/test_pca.eigenvec", checkIfExists: true) ]
+                    file("${projectDir}/modules/nf-core/custom/cluster_viz/tests/data/test_features.tsv", checkIfExists: true),
+                    file("${projectDir}/modules/nf-core/custom/cluster_viz/tests/data/test_clusters.csv", checkIfExists: true),
+                    file("${projectDir}/modules/nf-core/custom/cluster_viz/tests/data/test_pca.eigenvec", checkIfExists: true) ]
                 input[1] = 'test'
                 """
             }

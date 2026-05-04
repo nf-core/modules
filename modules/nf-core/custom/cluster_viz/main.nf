@@ -5,7 +5,7 @@ nextflow.enable.dsl = 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     PROCESS: CLUSTER_VIZ
     Generates PCA, UMAP and t-SNE visualizations colored by cluster
-    Author: Donald Baku (athor)
+    Author: Donald Baku (author)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
@@ -33,7 +33,7 @@ process CLUSTER_VIZ {
     def prefix = task.ext.prefix ?: out_prefix ?: "${meta.id}"
 
     """
-    python3 ${projectDir}/modules/nf-core/cluster_viz/templates/cluster_viz.py \\
+    python3 ${projectDir}/modules/nf-core/custom/cluster_viz/templates/cluster_viz.py \\
         --features ${features} \\
         --clusters ${clusters} \\
         --pca-scores ${pca_scores} \\

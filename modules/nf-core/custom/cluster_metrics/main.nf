@@ -5,7 +5,7 @@ nextflow.enable.dsl = 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     PROCESS: CLUSTER_METRICS
     Compute clustering quality metrics and k-sweep
-    Author: Donald Baku (athor)
+    Author: Donald Baku (author)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
@@ -32,7 +32,7 @@ process CLUSTER_METRICS {
     def prefix = task.ext.prefix ?: out_prefix ?: "${meta.id}"
 
     """
-    python3 ${projectDir}/modules/nf-core/cluster_metrics/templates/cluster_metrics.py \\
+    python3 ${projectDir}/modules/nf-core/custom/cluster_metrics/templates/cluster_metrics.py \\
         --features ${features} \\
         --clusters ${clusters} \\
         --out-k-sweep ${prefix}_k_sweep.csv \\

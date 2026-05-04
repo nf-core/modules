@@ -10,7 +10,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/cluster_metrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/cluster_metrics/tests/data/test_clusters.csv", checkIfExists: true) ]
+                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/custom/cluster_metrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/custom/cluster_metrics/tests/data/test_clusters.csv", checkIfExists: true) ]
                 input[1] = 'test'
                 """
             }
@@ -31,7 +31,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/cluster_metrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/cluster_metrics/tests/data/test_clusters.csv", checkIfExists: true) ]
+                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/custom/cluster_metrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/custom/cluster_metrics/tests/data/test_clusters.csv", checkIfExists: true) ]
                 input[1] = 'test'
                 """
             }
