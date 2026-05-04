@@ -4,16 +4,16 @@ import argparse
 import json
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.metrics import (
-    silhouette_score,
     calinski_harabasz_score,
     davies_bouldin_score,
+    silhouette_score,
 )
 
-import matplotlib
 matplotlib.use("Agg")
 
 
@@ -55,10 +55,7 @@ def _normalise_id_column(df: pd.DataFrame) -> pd.DataFrame:
 
         return df
 
-    raise ValueError(
-        f"Cannot find sample ID column (expected 'sample_id' or 'IID'). "
-        f"Found: {list(df.columns)}"
-    )
+    raise ValueError(f"Cannot find sample ID column (expected 'sample_id' or 'IID'). Found: {list(df.columns)}")
 
 
 def load_features(path: str) -> tuple[pd.DataFrame, pd.Series]:
@@ -69,11 +66,11 @@ def load_features(path: str) -> tuple[pd.DataFrame, pd.Series]:
         raise ValueError("features file must contain a sample_id column after normalization")
 
     sample_ids = df["sample_id"].astype(str)
-    X = df.drop(columns=["sample_id"]).apply(pd.to_numeric, errors="coerce")
-    X = X.fillna(X.mean(numeric_only=True))
-    X = X.fillna(0.0)
+    x = df.drop(columns=["sample_id"]).apply(pd.to_numeric, errors="coerce")
+    x = x.fillna(x.mean(numeric_only=True))
+    x = x.fillna(0.0)
 
-    return X, sample_ids
+    return x, sample_ids
 
 
 def _looks_mostly_numeric(s: pd.Series) -> bool:
@@ -120,19 +117,19 @@ def load_clusters(path: str) -> tuple[pd.DataFrame, str]:
         candidate_vals = df[candidate].astype(str)
 
         if not _looks_mostly_numeric(candidate_vals):
-            out = pd.DataFrame({
-                "sample_id": candidate_vals,
-                "cluster": pd.to_numeric(df[cluster_col], errors="raise").astype(int),
-            })
+            out = pd.DataFrame(
+                {
+                    "sample_id": candidate_vals,
+                    "cluster": pd.to_numeric(df[cluster_col], errors="raise").astype(int),
+                }
+            )
             return out, "sample_id"
 
-    out = pd.DataFrame({
-        "cluster": pd.to_numeric(df[cluster_col], errors="raise").astype(int)
-    })
+    out = pd.DataFrame({"cluster": pd.to_numeric(df[cluster_col], errors="raise").astype(int)})
     return out, "row_order"
 
 
-def safe_cluster_metrics(X: np.ndarray, labels: np.ndarray) -> dict:
+def safe_cluster_metrics(x: np.ndarray, labels: np.ndarray) -> dict:
     uniq = np.unique(labels)
     n_clusters = len(uniq) - (1 if -1 in uniq else 0)
 
@@ -145,9 +142,9 @@ def safe_cluster_metrics(X: np.ndarray, labels: np.ndarray) -> dict:
         }
 
     mask = labels != -1
-    X_use, y_use = X[mask], labels[mask]
+    x_use, y_use = x[mask], labels[mask]
 
-    if len(X_use) < 2 or len(np.unique(y_use)) < 2:
+    if len(x_use) < 2 or len(np.unique(y_use)) < 2:
         return {
             "n_clusters": int(n_clusters),
             "silhouette": None,
@@ -157,9 +154,9 @@ def safe_cluster_metrics(X: np.ndarray, labels: np.ndarray) -> dict:
 
     return {
         "n_clusters": int(n_clusters),
-        "silhouette": float(silhouette_score(X_use, y_use)),
-        "calinski_harabasz": float(calinski_harabasz_score(X_use, y_use)),
-        "davies_bouldin": float(davies_bouldin_score(X_use, y_use)),
+        "silhouette": float(silhouette_score(x_use, y_use)),
+        "calinski_harabasz": float(calinski_harabasz_score(x_use, y_use)),
+        "davies_bouldin": float(davies_bouldin_score(x_use, y_use)),
     }
 
 
@@ -174,7 +171,7 @@ def main() -> None:
     ap.add_argument("--out-prefix", required=True)
     args = ap.parse_args()
 
-    X_df, sample_ids = load_features(args.features)
+    x_df, sample_ids = load_features(args.features)
     clusters_df, cluster_mode = load_clusters(args.clusters)
 
     if cluster_mode == "sample_id":
@@ -182,12 +179,12 @@ def main() -> None:
         common = sample_ids[sample_ids.isin(clusters.index)]
 
         if len(common) > 0:
-            X = X_df.loc[common.index].values
+            x = x_df.loc[common.index].values
             labels = clusters.loc[common.values].values
             aligned_ids = common.astype(str).tolist()
             alignment_mode = "sample_id"
         elif len(clusters_df) == len(sample_ids):
-            X = X_df.values
+            x = x_df.values
             labels = clusters_df["cluster"].values
             aligned_ids = sample_ids.astype(str).tolist()
             alignment_mode = "row_order_fallback"
@@ -204,15 +201,15 @@ def main() -> None:
                 f"  n_features={len(sample_ids)}\n"
                 f"  n_clusters={len(clusters_df)}"
             )
-        X = X_df.values
+        x = x_df.values
         labels = clusters_df["cluster"].values
         aligned_ids = sample_ids.astype(str).tolist()
         alignment_mode = "row_order"
 
-    if len(X) < 2:
+    if len(x) < 2:
         raise ValueError("Need at least 2 samples to compute cluster metrics")
 
-    selected = safe_cluster_metrics(X, labels)
+    selected = safe_cluster_metrics(x, labels)
     selected["input_clusters"] = Path(args.clusters).name
     selected["input_features"] = Path(args.features).name
     selected["n_samples_used"] = int(len(aligned_ids))
@@ -222,24 +219,26 @@ def main() -> None:
     pd.DataFrame([selected]).to_csv(metrics_tsv, sep="\t", index=False)
 
     rows = []
-    max_k = min(int(args.k_max), len(X))
+    max_k = min(int(args.k_max), len(x))
     for k in range(int(args.k_min), max_k + 1):
         model = KMeans(n_clusters=k, n_init="auto", random_state=42)
-        y = model.fit_predict(X)
+        y = model.fit_predict(x)
 
         sil = ch = db = None
-        if 1 < len(np.unique(y)) < len(X):
-            sil = float(silhouette_score(X, y))
-            ch = float(calinski_harabasz_score(X, y))
-            db = float(davies_bouldin_score(X, y))
+        if 1 < len(np.unique(y)) < len(x):
+            sil = float(silhouette_score(x, y))
+            ch = float(calinski_harabasz_score(x, y))
+            db = float(davies_bouldin_score(x, y))
 
-        rows.append({
-            "k": k,
-            "inertia": float(model.inertia_),
-            "silhouette": sil,
-            "calinski_harabasz": ch,
-            "davies_bouldin": db,
-        })
+        rows.append(
+            {
+                "k": k,
+                "inertia": float(model.inertia_),
+                "silhouette": sil,
+                "calinski_harabasz": ch,
+                "davies_bouldin": db,
+            }
+        )
 
     sweep_df = pd.DataFrame(rows)
     sweep_df.to_csv(args.out_k_sweep, sep=",", index=False, float_format="%.10g")
@@ -265,8 +264,18 @@ def main() -> None:
         if not sweep_df.empty:
             plot_curve("inertia", "Elbow method (KMeans inertia)", "inertia", f"{pfx}_elbow.png")
             plot_curve("silhouette", "Silhouette score (higher is better)", "silhouette", f"{pfx}_silhouette.png")
-            plot_curve("davies_bouldin", "Davies-Bouldin index (lower is better)", "davies_bouldin", f"{pfx}_davies_bouldin.png")
-            plot_curve("calinski_harabasz", "Calinski-Harabasz index (higher is better)", "calinski_harabasz", f"{pfx}_calinski.png")
+            plot_curve(
+                "davies_bouldin",
+                "Davies-Bouldin index (lower is better)",
+                "davies_bouldin",
+                f"{pfx}_davies_bouldin.png",
+            )
+            plot_curve(
+                "calinski_harabasz",
+                "Calinski-Harabasz index (higher is better)",
+                "calinski_harabasz",
+                f"{pfx}_calinski.png",
+            )
 
     except Exception as e:
         Path("plot_warning.txt").write_text(f"Plotting failed: {e}\n")
