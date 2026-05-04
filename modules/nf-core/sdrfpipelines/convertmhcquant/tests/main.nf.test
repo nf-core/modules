@@ -1,22 +1,23 @@
 nextflow_process {
 
-    name "Test Process SDRFPIPELINES_PARSESDRF"
+    name "Test Process SDRFPIPELINES_CONVERTMHCQUANT"
     script "../main.nf"
-    process "SDRFPIPELINES_PARSESDRF"
+    process "SDRFPIPELINES_CONVERTMHCQUANT"
 
     tag "modules"
     tag "modules_nfcore"
     tag "sdrfpipelines"
-    tag "sdrfpipelines/parsesdrf"
-
-    config "./nextflow.config"
+    tag "sdrfpipelines/convertmhcquant"
 
     test("sdrf - mhcquant - PXD009752") {
 
         when {
             process {
                 """
-                input[0] = file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -37,7 +38,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                ]
                 """
             }
         }
