@@ -3,9 +3,9 @@ process ISOSEQ_CLUSTER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/isoseq:4.0.0--h9ee0642_0' :
-        'biocontainers/isoseq:4.0.0--h9ee0642_0' }"
+        'quay.io/biocontainers/isoseq:4.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam)

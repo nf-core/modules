@@ -3,7 +3,7 @@ process PROPR_PROPD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/10bcda8d87b62771528894e1c03e0f38780e48f37e1bda146e81001a0d0054aa/data' :
         'community.wave.seqera.io/library/bioconductor-limma_r-propr:4b3195a14835ef20' }"
 

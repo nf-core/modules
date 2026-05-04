@@ -298,8 +298,8 @@
             "properties": {
                 "lock_file": {
                     "type": "string",
-                    "description": "URL to the conda lock file",
-                    "pattern": "^https://.*$"
+                    "description": "Path to the conda lock file, relative to the repository root",
+                    "pattern": "^.*\\.conda-lock/.*\\.txt$"
                 }
             },
             "required": ["lock_file"]

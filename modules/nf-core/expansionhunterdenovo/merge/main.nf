@@ -3,9 +3,9 @@ process EXPANSIONHUNTERDENOVO_MERGE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/expansionhunterdenovo:0.9.0--hdc99072_3':
-        'biocontainers/expansionhunterdenovo:0.9.0--hdc99072_3' }"
+        'quay.io/biocontainers/expansionhunterdenovo:0.9.0--hdc99072_3' }"
 
     input:
     tuple val(meta), path(manifest)

@@ -3,9 +3,9 @@ process MIRDEEP2_MIRDEEP2 {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mirdeep2:2.0.1.2--0':
-        'biocontainers/mirdeep2:2.0.1.2--0' }"
+        'quay.io/biocontainers/mirdeep2:2.0.1.2--0' }"
 
     input:
     tuple val(meta), path(processed_reads), path(genome_mappings)

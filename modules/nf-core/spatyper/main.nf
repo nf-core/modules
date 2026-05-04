@@ -3,9 +3,9 @@ process SPATYPER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/spatyper:0.3.3--pyhdfd78af_3' :
-        'biocontainers/spatyper:0.3.3--pyhdfd78af_3' }"
+        'quay.io/biocontainers/spatyper:0.3.3--pyhdfd78af_3' }"
 
     input:
     tuple val(meta), path(fasta)

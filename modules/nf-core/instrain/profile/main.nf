@@ -3,9 +3,9 @@ process INSTRAIN_PROFILE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/instrain:1.7.1--pyhdfd78af_0':
-        'biocontainers/instrain:1.7.1--pyhdfd78af_0' }"
+        'quay.io/biocontainers/instrain:1.7.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)

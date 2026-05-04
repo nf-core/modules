@@ -22,7 +22,8 @@ tools:
       documentation: "https://docs.antismash.secondarymetabolites.org"
       tool_dev_url: "https://github.com/antismash/antismash"
       doi: "10.1093/nar/gkab335"
-      licence: ["AGPL v3"]
+      licence:
+        - "AGPL v3"
       identifier: biotools:antismash
 input:
   - - meta:
@@ -43,7 +44,8 @@ input:
       pattern: "*/"
   - gff:
       type: file
-      description: Optional GFF3 file containing premade annotations of the input sequence
+      description: Optional GFF3 file containing premade annotations of the input
+        sequence
       pattern: "*.gff"
       ontologies: []
 output:
@@ -65,8 +67,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}/*.gbk:
           type: file
-          description: Nucleotide sequence and annotations in GenBank format; converted
-            from input file
+          description: Nucleotide sequence and annotations in GenBank format;
+            converted from input file
           pattern: "*.gbk"
           ontologies: []
   json_results:
@@ -77,8 +79,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}/*.json:
           type: file
-          description: Nucleotide sequence and annotations in JSON format; converted
-            from GenBank file (gbk_input)
+          description: Nucleotide sequence and annotations in JSON format;
+            converted from GenBank file (gbk_input)
           pattern: "*.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
@@ -90,8 +92,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}/*.log:
           type: file
-          description: Contains all the logging output that antiSMASH produced during
-            its run
+          description: Contains all the logging output that antiSMASH produced
+            during its run
           pattern: "*.log"
           ontologies: []
   zip:
@@ -102,7 +104,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}/*.zip:
           type: file
-          description: Contains a compressed version of the output folder in zip format
+          description: Contains a compressed version of the output folder in zip
+            format
           pattern: "*.zip"
           ontologies:
             - edam: http://edamontology.org/format_3987 # ZIP format
@@ -125,8 +128,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}/regions.js:
           type: file
-          description: Sideloaded annotations of protoclusters and/or subregions (see
-            antiSMASH documentation "Annotation sideloading")
+          description: Sideloaded annotations of protoclusters and/or subregions
+            (see antiSMASH documentation "Annotation sideloading")
           pattern: "regions.js"
           ontologies: []
   clusterblast_file:
@@ -180,8 +183,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}/svg/clusterblast*.svg:
           type: file
-          description: SVG images showing the % identity of the aligned hits against
-            their queries
+          description: SVG images showing the % identity of the aligned hits
+            against their queries
           pattern: "svg/clusterblast*.svg"
           ontologies: []
   svg_files_knownclusterblast:
@@ -192,8 +195,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}/svg/knownclusterblast*.svg:
           type: file
-          description: SVG images showing the % identity of the aligned hits against
-            their queries
+          description: SVG images showing the % identity of the aligned hits
+            against their queries
           pattern: "svg/knownclusterblast*.svg"
           ontologies: []
   gbk_results:
@@ -204,8 +207,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}/*region*.gbk:
           type: file
-          description: Nucleotide sequence and annotations in GenBank format; one file
-            per antiSMASH hit
+          description: Nucleotide sequence and annotations in GenBank format; one
+            file per antiSMASH hit
           pattern: "*region*.gbk"
           ontologies: []
   clusterblastoutput:
@@ -216,8 +219,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}/clusterblastoutput.txt:
           type: file
-          description: Raw BLAST output of known clusters previously predicted by antiSMASH
-            using the built-in ClusterBlast algorithm
+          description: Raw BLAST output of known clusters previously predicted by
+            antiSMASH using the built-in ClusterBlast algorithm
           pattern: "clusterblastoutput.txt"
           ontologies: []
   knownclusterblastoutput:
@@ -231,13 +234,27 @@ output:
           description: Raw BLAST output of known clusters of the MIBiG database
           pattern: "knownclusterblastoutput.txt"
           ontologies: []
+  versions_antismash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - antismash:
+          type: string
+          description: The name of the tool
+      - antismash --version | sed 's/antiSMASH //;s/-.*//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - antismash:
+          type: string
+          description: The name of the tool
+      - antismash --version | sed 's/antiSMASH //;s/-.*//g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jasmezz"
 maintainers:
