@@ -18,8 +18,8 @@ process MEDAKA {
     task.ext.when == null || task.ext.when
 
     script:
-    args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     medaka_consensus \\
         -t $task.cpus \\
@@ -35,7 +35,7 @@ process MEDAKA {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.fa.gz
 
