@@ -15,7 +15,7 @@ process EXPANSIONHUNTERDENOVO_PROFILE {
     tuple val(meta), path("*.locus.tsv")        , emit: locus_tsv
     tuple val(meta), path("*.motif.tsv")        , emit: motif_tsv
     tuple val(meta), path("*.str_profile.json") , emit: str_profile
-    tuple val("${task.process}"), val('expansionhunterdenovo'), eval("ExpansionHunterDenovo --help 2>&1 | sed -e '1!d;s/ExpansionHunter Denovo v//'"), emit: versions_expansionhunterdenovo, topic: versions
+    tuple val("${task.process}"), val('expansionhunterdenovo'), eval("ExpansionHunterDenovo --help |& sed '1!d;s/ExpansionHunter Denovo v//'"), emit: versions_expansionhunterdenovo, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

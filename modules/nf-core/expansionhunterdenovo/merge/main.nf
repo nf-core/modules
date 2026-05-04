@@ -13,7 +13,7 @@ process EXPANSIONHUNTERDENOVO_MERGE {
 
     output:
     tuple val(meta), path("*.multisample_profile.json"), emit: merged_profiles
-    tuple val("${task.process}"), val('expansionhunterdenovo'), eval("ExpansionHunterDenovo --help 2>&1 | sed -e '1!d;s/ExpansionHunter Denovo v//'"), emit: versions_expansionhunterdenovo, topic: versions
+    tuple val("${task.process}"), val('expansionhunterdenovo'), eval("ExpansionHunterDenovo --help |& sed '1!d;s/ExpansionHunter Denovo v//'"), emit: versions_expansionhunterdenovo, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

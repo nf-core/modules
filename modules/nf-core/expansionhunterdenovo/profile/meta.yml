@@ -91,7 +91,7 @@ output:
       - expansionhunterdenovo:
           type: string
           description: The name of the tool
-      - ExpansionHunterDenovo --help 2>&1 | sed -e '1!d;s/ExpansionHunter Denovo v//':
+      - ExpansionHunterDenovo --help |& sed '1!d;s/ExpansionHunter Denovo v//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -102,7 +102,7 @@ topics:
       - expansionhunterdenovo:
           type: string
           description: The name of the tool
-      - ExpansionHunterDenovo --help 2>&1 | sed -e '1!d;s/ExpansionHunter Denovo v//':
+      - ExpansionHunterDenovo --help |& sed '1!d;s/ExpansionHunter Denovo v//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
