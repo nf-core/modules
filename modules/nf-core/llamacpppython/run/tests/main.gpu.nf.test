@@ -1,18 +1,19 @@
 nextflow_process {
 
-    name "Test Process LLAMACPPPYTHON_RUN"
+    name "Test Process LLAMACPPPYTHON_RUN (GPU)"
     script "../main.nf"
     process "LLAMACPPPYTHON_RUN"
 
+    tag "gpu"
     tag "modules"
     tag "modules_nfcore"
     tag "llamacpppython"
     tag "llamacpppython/run"
     tag "huggingface/download"
 
-    test("run inference with downloaded gguf model") {
+    test("llamacpppython/run - GPU run inference with downloaded gguf model") {
 
-        config "./nextflow.config"
+        config "./nextflow.gpu.config"
 
         setup {
             run("HUGGINGFACE_DOWNLOAD") {
@@ -66,9 +67,9 @@ nextflow_process {
         }
     }
 
-    test("stub - run inference with json prompt") {
+    test("llamacpppython/run - GPU stub run inference with json prompt") {
 
-        config "./nextflow.config"
+        config "./nextflow.gpu.config"
         options "-stub"
 
         when {
