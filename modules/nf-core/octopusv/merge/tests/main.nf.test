@@ -1,0 +1,69 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test octopusv/merge
+nextflow_process {
+
+    name "Test Process OCTOPUSV_MERGE"
+    script "../main.nf"
+    process "OCTOPUSV_MERGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "octopusv"
+    tag "octopusv/merge"
+
+    test("homo_sapiens - svcf list") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'delete_me/octopusv/merge/caller1.svcf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'delete_me/octopusv/merge/caller2.svcf', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.svcf.get(0).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - svcf list - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/sv/octopusv/merge/caller1.svcf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/sv/octopusv/merge/caller2.svcf', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

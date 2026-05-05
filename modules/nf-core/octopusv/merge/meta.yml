@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "octopusv_merge"
+description: "Merge and harmonize structural variant calls from multiple samples."
+keywords:
+  - structural variants
+  - merge
+  - genomics
+  - svcf
+tools:
+  - "octopusv":
+      description: "End-to-end structural variant post-processing: standardize, merge, compare, and export SVs."
+      homepage: "https://github.com/ylab-hi/OctopuSV"
+      documentation: "https://github.com/ylab-hi/OctopuSV"
+      tool_dev_url: "https://github.com/ylab-hi/octopusV"
+      doi: "10.1093/bioinformatics/btaf599"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - svcf:
+        type: file
+        description: Sorted SVCF file
+        pattern: "*.svcf"
+        ontologies:
+          - edam: "https://github.com/ylab-hi/OctopuSV/blob/main/docs/SVCF_specifications.md" # SVCF
+
+output:
+  svcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.svcf":
+          type: file
+          description: Sorted SVCF file
+          pattern: "*.svcf"
+          ontologies:
+            - edam: "https://github.com/ylab-hi/OctopuSV/blob/main/docs/SVCF_specifications.md" # SVCF
+
+  versions_octopusv:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "octopusv":
+          type: string
+          description: The name of the tool
+      - "octopusv --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - octopusv --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"
