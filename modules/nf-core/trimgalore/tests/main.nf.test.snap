@@ -68,16 +68,84 @@
                 ]
             ],
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    [
-                        "test_1.fastq.gz_trimming_report.txt:md5,6ba3bf7b8cb2ad42f9cae1b8621885dd",
-                        "test_2.fastq.gz_trimming_report.txt:md5,600c72cfb8e01e1cfa0f921f152ed871"
-                    ]
-                ]
+                "=== Summary ===",
+                "",
+                "Total reads processed:                  100",
+                "Reads with adapters:                     31 (31.0%)",
+                "Reads written (passing filters):        100 (100.0%)",
+                "",
+                "Total basepairs processed:         13,897 bp",
+                "Quality-trimmed:                        0 bp (0.0%)",
+                "Total written (filtered):          13,851 bp (99.7%)",
+                "",
+                "=== Adapter 1 ===",
+                "",
+                "Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 31 times.",
+                "",
+                "No. of allowed errors:",
+                "1-9 bp: 0; 10-13 bp: 1",
+                "",
+                "Overview of removed sequences",
+                "length\tcount\texpect\tmax.err\terror counts",
+                "1\t19\t25.0\t0\t19",
+                "2\t10\t6.2\t0\t10",
+                "3\t1\t1.6\t0\t1",
+                "4\t1\t0.4\t0\t1",
+                "",
+                "",
+                "RUN STATISTICS FOR INPUT FILE: test_1.fastq.gz",
+                "=============================================",
+                "100 sequences processed in total",
+                "Sequences removed because they became shorter than the length cutoff of 150 bp:\t81 (81.0%)",
+                "Sequences removed because they were longer than the upper length cutoff:\t0 (0.0%)",
+                "Sequences removed because of too many N bases:\t0 (0.0%)",
+                ""
+            ],
+            [
+                "=== Summary ===",
+                "",
+                "Total reads processed:                  100",
+                "Reads with adapters:                     40 (40.0%)",
+                "Reads written (passing filters):        100 (100.0%)",
+                "",
+                "Total basepairs processed:         13,748 bp",
+                "Quality-trimmed:                        0 bp (0.0%)",
+                "Total written (filtered):          13,693 bp (99.6%)",
+                "",
+                "=== Adapter 1 ===",
+                "",
+                "Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 40 times.",
+                "",
+                "No. of allowed errors:",
+                "1-9 bp: 0; 10-13 bp: 1",
+                "",
+                "Overview of removed sequences",
+                "length\tcount\texpect\tmax.err\terror counts",
+                "1\t28\t25.0\t0\t28",
+                "2\t10\t6.2\t0\t10",
+                "3\t1\t1.6\t0\t1",
+                "4\t1\t0.4\t0\t1",
+                "",
+                "",
+                "RUN STATISTICS FOR INPUT FILE: test_2.fastq.gz",
+                "=============================================",
+                "100 sequences processed in total",
+                "Sequences removed because they became shorter than the length cutoff of 150 bp:\t81 (81.0%)",
+                "Sequences removed because they were longer than the upper length cutoff:\t0 (0.0%)",
+                "Sequences removed because of too many N bases:\t0 (0.0%)",
+                "",
+                "=== Paired-end validation ===",
+                "",
+                "Number of sequence pairs analysed:         100",
+                "",
+                "Number of sequence pairs removed because at least one read was shorter than the length cutoff (81.00%):",
+                "                                     81",
+                "Number of pairs removed for N content (0.00%):",
+                "                                      0",
+                "",
+                "Unpaired read 1 kept:                81",
+                "Unpaired read 2 kept:                81",
+                ""
             ],
             {
                 "versions_trimgalore": [
@@ -89,7 +157,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-05T09:21:12.823243267",
+        "timestamp": "2026-05-05T09:29:31.7405794",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
@@ -146,16 +214,81 @@
                 ]
             ],
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    [
-                        "test_1.fastq.gz_trimming_report.txt:md5,075f9390aa53e184d0cee43b770ebb19",
-                        "test_2.fastq.gz_trimming_report.txt:md5,299ed54fa6f38b635d565c602b66c9de"
-                    ]
-                ]
+                "=== Summary ===",
+                "",
+                "Total reads processed:                  100",
+                "Reads with adapters:                     31 (31.0%)",
+                "Reads written (passing filters):        100 (100.0%)",
+                "",
+                "Total basepairs processed:         13,897 bp",
+                "Quality-trimmed:                        0 bp (0.0%)",
+                "Total written (filtered):          13,851 bp (99.7%)",
+                "",
+                "=== Adapter 1 ===",
+                "",
+                "Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 31 times.",
+                "",
+                "No. of allowed errors:",
+                "1-9 bp: 0; 10-13 bp: 1",
+                "",
+                "Overview of removed sequences",
+                "length\tcount\texpect\tmax.err\terror counts",
+                "1\t19\t25.0\t0\t19",
+                "2\t10\t6.2\t0\t10",
+                "3\t1\t1.6\t0\t1",
+                "4\t1\t0.4\t0\t1",
+                "",
+                "",
+                "RUN STATISTICS FOR INPUT FILE: test_1.fastq.gz",
+                "=============================================",
+                "100 sequences processed in total",
+                "Sequences removed because they became shorter than the length cutoff of 20 bp:\t0 (0.0%)",
+                "Sequences removed because they were longer than the upper length cutoff:\t0 (0.0%)",
+                "Sequences removed because of too many N bases:\t0 (0.0%)",
+                ""
+            ],
+            [
+                "=== Summary ===",
+                "",
+                "Total reads processed:                  100",
+                "Reads with adapters:                     40 (40.0%)",
+                "Reads written (passing filters):        100 (100.0%)",
+                "",
+                "Total basepairs processed:         13,748 bp",
+                "Quality-trimmed:                        0 bp (0.0%)",
+                "Total written (filtered):          13,693 bp (99.6%)",
+                "",
+                "=== Adapter 1 ===",
+                "",
+                "Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 40 times.",
+                "",
+                "No. of allowed errors:",
+                "1-9 bp: 0; 10-13 bp: 1",
+                "",
+                "Overview of removed sequences",
+                "length\tcount\texpect\tmax.err\terror counts",
+                "1\t28\t25.0\t0\t28",
+                "2\t10\t6.2\t0\t10",
+                "3\t1\t1.6\t0\t1",
+                "4\t1\t0.4\t0\t1",
+                "",
+                "",
+                "RUN STATISTICS FOR INPUT FILE: test_2.fastq.gz",
+                "=============================================",
+                "100 sequences processed in total",
+                "Sequences removed because they became shorter than the length cutoff of 20 bp:\t0 (0.0%)",
+                "Sequences removed because they were longer than the upper length cutoff:\t0 (0.0%)",
+                "Sequences removed because of too many N bases:\t0 (0.0%)",
+                "",
+                "=== Paired-end validation ===",
+                "",
+                "Number of sequence pairs analysed:         100",
+                "",
+                "Number of sequence pairs removed because at least one read was shorter than the length cutoff (0.00%):",
+                "                                      0",
+                "Number of pairs removed for N content (0.00%):",
+                "                                      0",
+                ""
             ],
             {
                 "versions_trimgalore": [
@@ -167,7 +300,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-05T09:21:07.635275178",
+        "timestamp": "2026-05-05T09:29:26.63095765",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
@@ -185,13 +318,38 @@
                 ]
             ],
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.fastq.gz_trimming_report.txt:md5,867b3b3ff8db57b22fdfd25389e0724f"
-                ]
+                "=== Summary ===",
+                "",
+                "Total reads processed:                  100",
+                "Reads with adapters:                     31 (31.0%)",
+                "Reads written (passing filters):        100 (100.0%)",
+                "",
+                "Total basepairs processed:         13,897 bp",
+                "Quality-trimmed:                        0 bp (0.0%)",
+                "Total written (filtered):          13,851 bp (99.7%)",
+                "",
+                "=== Adapter 1 ===",
+                "",
+                "Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 31 times.",
+                "",
+                "No. of allowed errors:",
+                "1-9 bp: 0; 10-13 bp: 1",
+                "",
+                "Overview of removed sequences",
+                "length\tcount\texpect\tmax.err\terror counts",
+                "1\t19\t25.0\t0\t19",
+                "2\t10\t6.2\t0\t10",
+                "3\t1\t1.6\t0\t1",
+                "4\t1\t0.4\t0\t1",
+                "",
+                "",
+                "RUN STATISTICS FOR INPUT FILE: test.fastq.gz",
+                "=============================================",
+                "100 sequences processed in total",
+                "Sequences removed because they became shorter than the length cutoff of 20 bp:\t0 (0.0%)",
+                "Sequences removed because they were longer than the upper length cutoff:\t0 (0.0%)",
+                "Sequences removed because of too many N bases:\t0 (0.0%)",
+                ""
             ],
             {
                 "versions_trimgalore": [
@@ -203,7 +361,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-05T09:21:02.398573112",
+        "timestamp": "2026-05-05T09:29:21.433585354",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
