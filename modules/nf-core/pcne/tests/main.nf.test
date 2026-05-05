@@ -31,9 +31,12 @@ nextflow_process {
 
         then {
             assert process.success
-            assert process.out.log.get(0).get(1).endsWith(".log")
-            assert snapshot(process.out.results).match("results")
-            assert snapshot(process.out.versions_pcne).match("versions")
+            assert snapshot(
+                file(process.out.log[0][1]).name ,
+                process.out.results,
+                process.out.versions_pcne
+                ).match()
+
         }
 
     }
@@ -63,7 +66,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match("stub")
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
