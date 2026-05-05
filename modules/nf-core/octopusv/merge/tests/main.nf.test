@@ -49,8 +49,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/sv/octopusv/merge/caller1.svcf', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/sv/octopusv/merge/caller2.svcf', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'delete_me/octopusv/merge/caller1.svcf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'delete_me/octopusv/merge/caller2.svcf', checkIfExists: true)
                     ]
                 ]
                 """
