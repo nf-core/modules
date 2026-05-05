@@ -135,21 +135,21 @@ process SAMTOOLS_PIPELINE {
         stub_outputs = "touch ${prefix}.${file_type}"
     } else if (final_command == "fasta") {
         if (meta.single_end) {
-            stub_outputs = "echo > ${prefix}_1.fasta.gz"
-            stub_outputs = "echo > ${prefix}_singleton.fasta.gz"
+            stub_outputs = "echo | gzip > ${prefix}_1.fasta.gz"
+            stub_outputs = "echo | gzip > ${prefix}_singleton.fasta.gz"
         } else {
-            stub_outputs = "echo > ${prefix}_1.fasta.gz"
-            stub_outputs = "echo > ${prefix}_2.fasta.gz"
-            stub_outputs = "echo > ${prefix}_singleton.fasta.gz"
+            stub_outputs = "echo | gzip > ${prefix}_1.fasta.gz"
+            stub_outputs = "echo | gzip > ${prefix}_2.fasta.gz"
+            stub_outputs = "echo | gzip > ${prefix}_singleton.fasta.gz"
         }
     } else if (final_command == "fastq") {
         if (meta.single_end) {
-            stub_outputs = "echo > ${prefix}_1.fastq.gz"
-            stub_outputs = "echo > ${prefix}_singleton.fastq.gz"
+            stub_outputs = "echo | gzip > ${prefix}_1.fastq.gz"
+            stub_outputs = "echo | gzip > ${prefix}_singleton.fastq.gz"
         } else {
-            stub_outputs = "echo > ${prefix}_1.fastq.gz"
-            stub_outputs = "echo > ${prefix}_2.fastq.gz"
-            stub_outputs = "echo > ${prefix}_singleton.fastq.gz"
+            stub_outputs = "echo | gzip > ${prefix}_1.fastq.gz"
+            stub_outputs = "echo | gzip > ${prefix}_2.fastq.gz"
+            stub_outputs = "echo | gzip > ${prefix}_singleton.fastq.gz"
         }
         stub_outputs = "touch ${prefix}_other.fastq.gz"
     } else if (final_command == "coverage") {
