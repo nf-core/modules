@@ -26,7 +26,9 @@ input:
         description: Protein structure(s) in PDB, mmCIF or mmJSON format to
           compare against a foldseek database (also works with folder input)
         pattern: "*.{pdb,mmcif,mmjson}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1476" # PDB
+          - edam: "http://edamontology.org/format_1477" # mmCIF
   - - meta2:
         type: map
         description: |
