@@ -26,8 +26,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.reads,
-                    file(process.out.log[0][1]).readLines().findAll { !it.startsWith("Trim Galore version:") && !(it =~ /^Trim Galore \d/) && !it.startsWith("This is cutadapt") },
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.log,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -52,11 +52,9 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.reads[0][1][0],
-                    process.out.reads[0][1][1],
-                    file(process.out.log[0][1][0]).readLines().findAll { !it.startsWith("Trim Galore version:") && !(it =~ /^Trim Galore \d/) && !it.startsWith("This is cutadapt") },
-                    file(process.out.log[0][1][1]).readLines().findAll { !it.startsWith("Trim Galore version:") && !(it =~ /^Trim Galore \d/) && !it.startsWith("This is cutadapt") },
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.reads,
+                    process.out.log,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -87,13 +85,10 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.reads[0][1][0],
-                    process.out.reads[0][1][1],
-                    process.out.unpaired[0][1][0],
-                    process.out.unpaired[0][1][1],
-                    file(process.out.log[0][1][0]).readLines().findAll { !it.startsWith("Trim Galore version:") && !(it =~ /^Trim Galore \d/) && !it.startsWith("This is cutadapt") },
-                    file(process.out.log[0][1][1]).readLines().findAll { !it.startsWith("Trim Galore version:") && !(it =~ /^Trim Galore \d/) && !it.startsWith("This is cutadapt") },
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.reads,
+                    process.out.unpaired,
+                    process.out.log,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -120,7 +115,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.reads,
                     process.out.log,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -128,7 +123,7 @@ nextflow_process {
 
     test("sarscov2 - fastq - paired-end - stub") {
 
-    options "-stub"
+        options "-stub"
 
         when {
             process {
@@ -149,7 +144,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.reads,
                     process.out.log,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
