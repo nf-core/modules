@@ -6,9 +6,9 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h2a3209d_3':
-        'biocontainers/circularmapper:1.93.5--h2a3209d_3' }"
+        'quay.io/biocontainers/circularmapper:1.93.5--h2a3209d_3' }"
 
     input:
     tuple val(meta), path(reference)
@@ -18,7 +18,7 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     output:
     tuple val(meta), path("*_${elongation_factor}.fasta")    , emit: fasta
     tuple val(meta), path("*${elongation_factor}_elongated") , emit: elongated
-    path "versions.yml"                                      , emit: versions
+    tuple val("${task.process}"), val('circulargenerator'), eval("circulargenerator -h | sed -n 's/usage: CircularGeneratorv//p'"), topic: versions, emit: versions_circulargenerator
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,23 +39,12 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
         mv ${reference.getSimpleName()}_${elongation_factor}${full_extension} ${prefix}_${elongation_factor}.fasta
         mv ${reference}_${elongation_factor}_elongated ${prefix}.fasta_${elongation_factor}_elongated
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        circulargenerator: \$(circulargenerator -h | grep 'usage' | sed 's/usage: CircularGenerator//')
-    END_VERSIONS
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_${elongation_factor}.fasta
     touch ${prefix}.fasta_${elongation_factor}_elongated
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        circulargenerator: \$(circulargenerator -h | grep 'usage' | sed 's/usage: CircularGenerator//')
-    END_VERSIONS
     """
 }

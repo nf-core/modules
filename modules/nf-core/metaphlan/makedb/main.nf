@@ -2,11 +2,9 @@ process METAPHLAN_MAKEDB {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaphlan:4.1.1--pyhdfd78af_0' :
-        'biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
-
-    input:
+        'quay.io/biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
 
     output:
     path "metaphlan_db_latest"      , emit: db
@@ -23,7 +21,7 @@ process METAPHLAN_MAKEDB {
         --install \\
         --nproc $task.cpus \\
         --bowtie2db metaphlan_db_latest \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

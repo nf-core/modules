@@ -3,16 +3,16 @@ process BFTOOLS_SHOWINF {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bftools:8.0.0--hdfd78af_0':
-        'biocontainers/bftools:8.0.0--hdfd78af_0' }"
+        'quay.io/biocontainers/bftools:8.0.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("*.xml"), emit: xml
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.xml.gz")                                                             , emit: xml
+    tuple val("${task.process}"), val("bftools"), eval("showinf -version | sed -n '1s/[^ ]* //p'"), emit: versions_bftools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,24 +25,13 @@ process BFTOOLS_SHOWINF {
     export BF_FLAGS='-XX:+PerfDisableSharedMem'
     showinf -nopix -no-upgrade -omexml-only \\
         $args \\
-        $image > ${prefix}.xml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
-    END_VERSIONS
+        $image | gzip > ${prefix}.xml.gz
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo '<?xml version="1.0" encoding="UTF-8">' > ${prefix}.xml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
-    END_VERSIONS
+    echo '<?xml version="1.0" encoding="UTF-8">' | gzip > ${prefix}.xml.gz
     """
 }

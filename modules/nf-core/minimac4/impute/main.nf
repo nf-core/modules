@@ -3,16 +3,16 @@ process MINIMAC4_IMPUTE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/minimac4:4.1.6--hcb620b3_1'
-        : 'biocontainers/minimac4:4.1.6--hcb620b3_1'}"
+        : 'quay.io/biocontainers/minimac4:4.1.6--hcb620b3_1'}"
 
     input:
     tuple val(meta), path(target_vcf), path(target_index), path(ref_msav), path(sites_vcf), path(sites_index), path(map), val(region)
 
     output:
     tuple val(meta), path("*.{bcf,sav,vcf.gz,vcf,ubcf,usav}"), emit: vcf
-    path "versions.yml"                                      , emit: versions
+    tuple val("${task.process}"), val('minimac4'), eval("minimac4 --version |& sed '1!d ; s/minimac v//'"), emit: versions_minimac4, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process MINIMAC4_IMPUTE {
         ${region_cmd} \\
         --threads ${task.cpus} \\
         -o ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minimac4: \$(minimac4 --version |& sed '1!d ; s/minimac v//')
-    END_VERSIONS
     """
 
     stub:
@@ -61,10 +56,5 @@ process MINIMAC4_IMPUTE {
 
     """
     ${create_cmd} ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minimac4: \$(minimac4 --version |& sed '1!d ; s/minimac v//')
-    END_VERSIONS
     """
 }

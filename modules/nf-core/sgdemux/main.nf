@@ -3,9 +3,9 @@ process SGDEMUX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sgdemux:1.1.1--ha982bd6_0' :
-        'biocontainers/sgdemux:1.1.1--ha982bd6_0' }"
+        'quay.io/biocontainers/sgdemux:1.1.1--ha982bd6_0' }"
 
     input:
     // Input fastq's must be bgzipped for compatibility with sgdemux
@@ -18,7 +18,7 @@ process SGDEMUX {
     tuple val(meta), path("${prefix}/per_project_metrics.tsv")         , emit: per_project_metrics
     tuple val(meta), path("${prefix}/per_sample_metrics.tsv")          , emit: per_sample_metrics
     tuple val(meta), path("${prefix}/sample_barcode_hop_metrics.tsv")  , emit: sample_barcode_hop_metrics
-    path "versions.yml"                                                , emit: versions
+    tuple val("${task.process}"), val('sgdemux'), eval('sgdemux --version | cut -d " " -f2'), emit: versions_sgdemux, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,10 +35,6 @@ process SGDEMUX {
         --compressor-threads ${task.cpus} \\
         --writer-threads ${task.cpus} \\
         ${args}
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sgdemux: \$(echo \$(sgdemux --version 2>&1) | cut -d " " -f2)
-    END_VERSIONS
     """
 
     stub:
@@ -61,10 +57,5 @@ process SGDEMUX {
     touch ${prefix}/per_project_metrics.tsv
     touch ${prefix}/per_sample_metrics.tsv
     touch ${prefix}/sample_barcode_hop_metrics.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sgdemux: \$(echo \$(sgdemux --version 2>&1) | cut -d " " -f2)
-    END_VERSIONS
     """
 }

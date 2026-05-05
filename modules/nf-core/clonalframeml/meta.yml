@@ -11,7 +11,8 @@ tools:
       documentation: https://github.com/xavierdidelot/clonalframeml/wiki
       tool_dev_url: https://github.com/xavierdidelot/ClonalFrameML
       doi: "10.1371/journal.pcbi.1004041"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:clonalframeml
 input:
   - - meta:
@@ -38,8 +39,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.emsim.txt":
           type: file
-          description: Bootstrapped values for the three parameters R/theta, nu and
-            delta
+          description: Bootstrapped values for the three parameters R/theta, nu
+            and delta
           pattern: "*.emsim.txt"
           ontologies: []
   em:
@@ -50,7 +51,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.em.txt":
           type: file
-          description: Point estimates for R/theta, nu, delta and the branch lengths
+          description: Point estimates for R/theta, nu, delta and the branch
+            lengths
           pattern: "*.em.txt"
           ontologies: []
   status:
@@ -94,16 +96,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.position_cross_reference.txt":
           type: file
-          description: CSV mapping input sequence files to the sequences in the *.ML_sequence.fasta
+          description: CSV mapping input sequence files to the sequences in the
+            *.ML_sequence.fasta
           pattern: "*.position_cross_reference.txt"
           ontologies: []
+  versions_clonalframeml:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clonalframeml:
+          type: string
+          description: The name of the tool
+      - ClonalFrameML -version 2>&1 | sed 's/^.*ClonalFrameML v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clonalframeml:
+          type: string
+          description: The name of the tool
+      - ClonalFrameML -version 2>&1 | sed 's/^.*ClonalFrameML v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:

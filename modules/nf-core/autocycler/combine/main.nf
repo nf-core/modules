@@ -3,17 +3,17 @@ process AUTOCYCLER_COMBINE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/autocycler:0.5.2--h3ab6199_0':
-        'biocontainers/autocycler:0.5.2--h3ab6199_0' }"
+        'quay.io/biocontainers/autocycler:0.5.2--h3ab6199_0' }"
 
     input:
     tuple val(meta), path(clusters)
 
     output:
-    tuple val(meta), path("$prefix/consensus_assembly.fasta"), emit: fasta
-    tuple val(meta), path("$prefix/consensus_assembly.gfa"),   emit: gfa
-    tuple val(meta), path("$prefix/consensus_assembly.yaml"),  emit: stats
+    tuple val(meta), path("combine/${prefix}/consensus_assembly.fasta"), emit: fasta
+    tuple val(meta), path("combine/${prefix}/consensus_assembly.gfa"),   emit: gfa
+    tuple val(meta), path("combine/${prefix}/consensus_assembly.yaml"),  emit: stats
     tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
@@ -26,14 +26,18 @@ process AUTOCYCLER_COMBINE {
     autocycler combine \\
         $args \\
         -i $clusters \\
-        -a $prefix
+        -a combine
+
+    mkdir combine/$prefix
+    mv combine/consensus_assembly.fasta combine/${prefix}/consensus_assembly.fasta
+    mv combine/consensus_assembly.gfa combine/${prefix}/consensus_assembly.gfa
+    mv combine/consensus_assembly.yaml combine/${prefix}/consensus_assembly.yaml
     """
 
     stub:
-    def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir $prefix
-    touch $prefix/consensus_assembly.{fasta,gfa,yaml}
+    mkdir -p combine/$prefix
+    touch combine/${prefix}/consensus_assembly.{fasta,gfa,yaml}
     """
 }

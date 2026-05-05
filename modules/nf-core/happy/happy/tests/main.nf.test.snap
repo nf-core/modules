@@ -1,22 +1,12 @@
 {
-    "runinfo_1": {
-        "content": [
-            "test.runinfo.json"
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-19T14:11:48.042647133"
-    },
-    "homo_sapiens - illumina - vcf": {
+    "homo_sapiens illumina vcf bed": {
         "content": [
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.summary.csv:md5,647acf226e2545624a8e71812a984ea7"
+                    "test.summary.csv:md5,8a302b92d08de8d68509e3adc4bb9d4d"
                 ]
             ],
             [
@@ -24,42 +14,69 @@
                     {
                         "id": "test"
                     },
-                    "test.extended.csv:md5,5ec5e0b3a260ddcb53a2628871547d79"
+                    "test.extended.csv:md5,3435c0b5d2adec043e72de9cf86deba0"
                 ]
             ],
             [
-                "versions.yml:md5,4950956e15868125751a19333eae8743"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-28T10:29:30.466331046"
-    },
-    "versions_1": {
-        "content": [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.all.csv.gz:md5,6d05ef088fb31469f17c379603c00a25"
+                ]
+            ],
             [
-                "versions.yml:md5,4950956e15868125751a19333eae8743"
-            ]
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.INDEL.csv.gz:md5,4e670c9fd9e27ef3b2fff7cb1064ef22"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.SNP.csv.gz:md5,c6d6e8b69864927767b755309eca3b58"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.INDEL.PASS.csv.gz:md5,b2e30f99571d167a938ce0c35d6e9202"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.SNP.PASS.csv.gz:md5,1a74e0cfe988b7278adb49c1058d1b9b"
+                ]
+            ],
+            {
+                "versions_happy": [
+                    [
+                        "HAPPY_HAPPY",
+                        "happy",
+                        "0.3.15"
+                    ]
+                ]
+            },
+            "test.metrics.json.gz",
+            "test.runinfo.json",
+            "test.vcf.gz.tbi"
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2024-08-20T08:15:53.839842249"
+        "timestamp": "2026-02-16T14:26:30.534369929"
     },
-    "metrics_json_1": {
-        "content": [
-            "test.metrics.json.gz"
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-19T14:05:27.732904018"
-    },
-    "homo_sapiens - illumina - vcf - stub": {
+    "homo_sapiens illumina vcf stub": {
         "content": [
             {
                 "0": [
@@ -87,7 +104,11 @@
                     ]
                 ],
                 "11": [
-                    "versions.yml:md5,4950956e15868125751a19333eae8743"
+                    [
+                        "HAPPY_HAPPY",
+                        "happy",
+                        "0.3.15"
+                    ]
                 ],
                 "2": [
                     [
@@ -241,25 +262,250 @@
                         "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,4950956e15868125751a19333eae8743"
+                "versions_happy": [
+                    [
+                        "HAPPY_HAPPY",
+                        "happy",
+                        "0.3.15"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2024-08-19T13:23:08.786848304"
+        "timestamp": "2026-02-16T14:27:10.75587173"
     },
-    "tbi_1": {
+    "homo_sapiens illumina vcf false_positives": {
         "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.summary.csv:md5,8a302b92d08de8d68509e3adc4bb9d4d"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.extended.csv:md5,3435c0b5d2adec043e72de9cf86deba0"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.all.csv.gz:md5,6d05ef088fb31469f17c379603c00a25"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.INDEL.csv.gz:md5,4e670c9fd9e27ef3b2fff7cb1064ef22"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.SNP.csv.gz:md5,c6d6e8b69864927767b755309eca3b58"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.INDEL.PASS.csv.gz:md5,b2e30f99571d167a938ce0c35d6e9202"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.SNP.PASS.csv.gz:md5,1a74e0cfe988b7278adb49c1058d1b9b"
+                ]
+            ],
+            {
+                "versions_happy": [
+                    [
+                        "HAPPY_HAPPY",
+                        "happy",
+                        "0.3.15"
+                    ]
+                ]
+            },
+            "test.metrics.json.gz",
+            "test.runinfo.json",
             "test.vcf.gz.tbi"
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2024-08-19T14:11:48.081967471"
+        "timestamp": "2026-02-16T16:06:21.194119754"
+    },
+    "homo_sapiens illumina vcf nobed": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.summary.csv:md5,d802ef043c6b504e7a103e8dcd4ba300"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.extended.csv:md5,c7d1851ffb1aef2b2e3ca4aaf94dade3"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.all.csv.gz:md5,f1ccbf86653374a9c09a20f5dec3bc50"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.INDEL.csv.gz:md5,e7035c81472ea713ebdaa4c7f6fbc43b"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.SNP.csv.gz:md5,12270ccd8b277097ac899b602de1fea9"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.INDEL.PASS.csv.gz:md5,c7b59f00a40bc2ce1b8d8e0c04caa7a8"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.SNP.PASS.csv.gz:md5,16466cda713d728d91e801392b514158"
+                ]
+            ],
+            {
+                "versions_happy": [
+                    [
+                        "HAPPY_HAPPY",
+                        "happy",
+                        "0.3.15"
+                    ]
+                ]
+            },
+            "test.metrics.json.gz",
+            "test.runinfo.json",
+            "test.vcf.gz.tbi"
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
+        },
+        "timestamp": "2026-02-16T14:26:54.196865294"
+    },
+    "homo_sapiens illumina vcf stratification": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.summary.csv:md5,d802ef043c6b504e7a103e8dcd4ba300"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.extended.csv:md5,5ffe4d6bf90d05bd65024265adc3938c"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.all.csv.gz:md5,2736ef78791a0aa8a31f611ed0e67cb4"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.INDEL.csv.gz:md5,e7035c81472ea713ebdaa4c7f6fbc43b"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.SNP.csv.gz:md5,12270ccd8b277097ac899b602de1fea9"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.INDEL.PASS.csv.gz:md5,c7b59f00a40bc2ce1b8d8e0c04caa7a8"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roc.Locations.SNP.PASS.csv.gz:md5,16466cda713d728d91e801392b514158"
+                ]
+            ],
+            {
+                "versions_happy": [
+                    [
+                        "HAPPY_HAPPY",
+                        "happy",
+                        "0.3.15"
+                    ]
+                ]
+            },
+            "test.metrics.json.gz",
+            "test.runinfo.json",
+            "test.vcf.gz.tbi"
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
+        },
+        "timestamp": "2026-02-16T16:53:10.562786358"
     }
 }

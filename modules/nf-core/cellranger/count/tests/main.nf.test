@@ -57,7 +57,7 @@ nextflow_process {
                 { assert process.success },
                 {
                     assert snapshot(
-                        process.out.versions,
+                        process.out.versions_cellranger,
                         process.out.outs[0][1].findAll { file(it).name !in [
                             'web_summary.html', // unstable checksum
                             'possorted_genome_bam.bam.bai', // unstable checksum despite identical content, verified with samtools idxstats

@@ -3,9 +3,9 @@ process ISOSEQ_REFINE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/isoseq:4.0.0--h9ee0642_0' :
-        'biocontainers/isoseq:4.0.0--h9ee0642_0' }"
+        'quay.io/biocontainers/isoseq:4.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -41,14 +41,13 @@ process ISOSEQ_REFINE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch dummy.bam
-    touch dummy.bam.pbi
-    touch dummy.consensusreadset.xml
-    touch dummy.filter_summary.report.json
-    touch dummy.report.csv
+    touch ${prefix}.bam
+    touch ${prefix}.bam.pbi
+    touch ${prefix}.consensusreadset.xml
+    touch ${prefix}.filter_summary.report.json
+    touch ${prefix}.report.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

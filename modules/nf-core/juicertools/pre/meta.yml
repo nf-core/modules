@@ -1,5 +1,6 @@
 name: "juicertools_pre"
-description: Create a multi-resolution .hic contact matrix for analysis with Juicer
+description: Create a multi-resolution .hic contact matrix for analysis with
+  Juicer
 keywords:
   - hic
   - contact map
@@ -11,8 +12,9 @@ tools:
       documentation: "https://github.com/aidenlab/juicer"
       tool_dev_url: "https://github.com/aidenlab/juicer"
       doi: "10.1016/j.cels.2016.07.002"
-      licence: ["MIT"]
-
+      licence:
+        - "MIT"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -47,8 +49,7 @@ input:
           Incompatible with genome_id option.
         pattern: "*.{tsv}"
         ontologies:
-          - edam: "http://edamontology.org/format_3475" # TSV
-
+          - edam: "http://edamontology.org/format_3475" # TSV
 output:
   hic:
     - - meta:
@@ -61,14 +62,27 @@ output:
           description: .hic file for analysis and visualisation in Juicer
           pattern: "*.{hic}"
           ontologies: []
+  versions_juicertools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - juicer_tools:
+          type: string
+          description: The name of the tool
+      - juicer_tools -V | grep "Version" | sed "s/Juicer Tools Version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - juicer_tools:
+          type: string
+          description: The name of the tool
+      - juicer_tools -V | grep "Version" | sed "s/Juicer Tools Version //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@prototaxites"
 maintainers:

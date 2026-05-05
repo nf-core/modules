@@ -3,9 +3,9 @@ process POPSCLE_DEMUXLET {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/popscle:0.1beta--h2c78cec_0' :
-        'biocontainers/popscle:0.1beta--h2c78cec_0' }"
+        'quay.io/biocontainers/popscle:0.1beta--h2c78cec_0' }"
 
     input:
     tuple val(meta), val(plp_prefix), path(bam), path(donor_genotype)
@@ -37,9 +37,7 @@ process POPSCLE_DEMUXLET {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = plp_prefix ? "--plp ${plp_prefix}" : "--sam $bam"
     def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
     touch ${prefix}.best

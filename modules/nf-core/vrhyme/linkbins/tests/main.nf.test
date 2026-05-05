@@ -34,7 +34,6 @@ nextflow_process {
     }
 
     test("vrhyme_linkbins") {
-
         when {
             process {
                 """
@@ -45,7 +44,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.linked_bins.collect{ meta, bins_file -> [
+                        meta,
+                        file(bins_file).name,
+                        path(bins_file).readLines().sort().join("\n").md5()
+                    ]},
+                    process.out.versions
+                ).match() }
             )
         }
     }

@@ -24,7 +24,7 @@ nextflow_process {
             assertAll(
                 {assert process.success},
                 {assert snapshot(
-                        process.out.versions,
+                        process.out.findAll { key, val -> key.startsWith('versions') },
                         process.out.h5.collect{file(it[1]).name},
                         process.out.filtered_h5.collect{file(it[1]).name},
                         process.out.posterior_h5.collect{file(it[1]).name},

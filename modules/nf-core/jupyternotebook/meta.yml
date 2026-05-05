@@ -15,21 +15,24 @@ tools:
       homepage: https://github.com/mwouts/jupytext/
       documentation: https://jupyter.org/documentation
       tool_dev_url: https://github.com/mwouts/jupytext/
-      license: ["MIT"]
+      license:
+        - "MIT"
       identifier: ""
   - papermill:
       description: Parameterize, execute, and analyze notebooks
       homepage: https://github.com/nteract/papermill
       documentation: http://papermill.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/nteract/papermill
-      license: ["BSD 3-clause"]
+      license:
+        - "BSD 3-clause"
       identifier: ""
   - nbconvert:
       description: Parameterize, execute, and analyze notebooks
       homepage: https://nbconvert.readthedocs.io/en/latest/
       documentation: https://nbconvert.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/jupyter/nbconvert
-      license: ["BSD 3-clause"]
+      license:
+        - "BSD 3-clause"
       identifier: ""
 input:
   - - meta:
@@ -42,8 +45,8 @@ input:
         description: Jupyter notebook or jupytext representation thereof
         pattern: "*.{ipynb,py,md,Rmd,myst}"
         ontologies:
-          - edam: http://edamontology.org/format_3996 # Python script
-          - edam: http://edamontology.org/format_4000 # R markdown
+          - edam: http://edamontology.org/format_3996
+          - edam: http://edamontology.org/format_4000
   - parameters:
       type: map
       description: |
@@ -54,6 +57,9 @@ input:
       description: One or multiple files serving as input data for the notebook.
       pattern: "*"
       ontologies: []
+  - kernel_:
+      type: string
+      description: Name of the kernel to use.
 output:
   report:
     - - meta:
@@ -82,7 +88,7 @@ output:
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@grst"
 maintainers:

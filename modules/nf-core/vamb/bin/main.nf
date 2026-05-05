@@ -3,9 +3,9 @@ process VAMB_BIN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vamb:5.0.4--pyhdfd78af_0':
-        'biocontainers/vamb:5.0.4--pyhdfd78af_0' }"
+        'quay.io/biocontainers/vamb:5.0.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(assembly), path(abundance_tsv), path(bams, stageAs: "bams/*"), path(taxonomy)
@@ -56,7 +56,6 @@ process VAMB_BIN {
     if(bams && abundance_tsv) {
         error("ERROR: Both bams and abundance TSV supplied to Vamb! Please only supply one.")
     }
-    def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/bins

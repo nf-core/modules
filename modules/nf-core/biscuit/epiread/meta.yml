@@ -12,12 +12,13 @@ keywords:
   - bam
 tools:
   - biscuit:
-      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification
-        data
+      description: A utility for analyzing sodium bisulfite conversion-based DNA
+        methylation/modification data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/epiread_format/
       tool_dev_url: https://github.com/huishenlab/biscuit
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:biscuit
 input:
   - - meta:
@@ -73,16 +74,50 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bed.gz":
           type: file
-          description: Gzipped BED file with methylation (and optionally SNV) information
+          description: Gzipped BED file with methylation (and optionally SNV)
+            information
           pattern: "*.{epiread.bed.gz}"
           ontologies: []
+  versions_biscuit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version |& sed '1!d; s/^.*samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version |& sed '1!d; s/^.*samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@njspix"
 maintainers:

@@ -3,9 +3,9 @@ process LTRFINDER {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ltr_finder_parallel:1.1--hdfd78af_0':
-        'biocontainers/ltr_finder_parallel:1.1--hdfd78af_0' }"
+        'quay.io/biocontainers/ltr_finder_parallel:1.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -38,8 +38,7 @@ process LTRFINDER {
     """
 
     stub:
-    def args            = task.ext.args ?: ''
-    def prefix          = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.scn"
     touch "${prefix}.gff3"

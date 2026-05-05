@@ -3,9 +3,9 @@ process GNU_SPLIT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/coreutils:9.5':
-        'biocontainers/coreutils:9.5' }"
+        'quay.io/biocontainers/coreutils:9.5' }"
 
     input:
     tuple val(meta), path(input)
@@ -36,7 +36,6 @@ process GNU_SPLIT {
     }
 
     stub:
-    def args        = task.ext.args   ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}.split"
     """
     touch ${prefix}.000.csv ${prefix}.001.csv ${prefix}.002.csv

@@ -3,9 +3,9 @@ process SEQTK_SAMPLE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
-        'biocontainers/seqtk:1.4--he4a0461_1' }"
+        'quay.io/biocontainers/seqtk:1.4--he4a0461_1' }"
 
     input:
     tuple val(meta), path(reads), val(sample_size)

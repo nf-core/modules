@@ -26,7 +26,8 @@ nextflow_workflow {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                     ]
                     """
                 }
@@ -52,8 +53,7 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.fastq_filtered,
                     workflow.out.reference,
-                    file(workflow.out.json[0][1]).name,
-                    workflow.out.versions.collect { path(it).yaml }
+                    file(workflow.out.json[0][1]).name
                 ).match() }
             )
         }
@@ -67,7 +67,8 @@ nextflow_workflow {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                     ]
                     """
                 }
@@ -96,8 +97,7 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.fastq_filtered,
                     workflow.out.reference,
-                    file(workflow.out.json[0][1]).name,
-                    workflow.out.versions.collect { path(it).yaml }
+                    file(workflow.out.json[0][1]).name
                 ).match() }
             )
         }
@@ -131,8 +131,7 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.fastq_filtered,
                     workflow.out.index,
-                    file(workflow.out.summary[0][1]).name,
-                    workflow.out.versions.collect { path(it).yaml }
+                    file(workflow.out.summary[0][1]).name
                 ).match()}
             )
         }
@@ -169,8 +168,7 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.fastq_filtered,
                     workflow.out.index,
-                    file(workflow.out.summary[0][1]).name,
-                    workflow.out.versions.collect { path(it).yaml }
+                    file(workflow.out.summary[0][1]).name
                 ).match()}
             )
         }
@@ -206,8 +204,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out
                 ).match()}
             )
         }

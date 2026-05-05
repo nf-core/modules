@@ -22,6 +22,11 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
+    - mapped_bam:
+        type: file
+        description: mapped BAM/SAM file
+        pattern: "*.{bam,sam}"
+        ontologies: []
     - unmapped_bam:
         type: file
         description: unmapped BAM file
@@ -30,32 +35,22 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - mapped_bam:
-        type: file
-        description: mapped BAM/SAM file
-        pattern: "*.{bam,sam}"
-        ontologies: []
-  - - meta3:
-        type: map
-        description: |
           Groovy Map containing reference information
           e.g. [ id:'GRCh38' ]
     - fasta:
         type: file
         description: fasta file containing genomic sequence information
-        pattern: "*.{fasta,fa}"
+        pattern: "*.{fasta,fna,fa}"
         ontologies: []
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'GRCh38' ]
+    - index:
+        type: file
+        description: fasta index file
+        pattern: "*.fai"
+        ontologies: []
     - dict:
         type: file
         description: dict file containing a sequence dictionary for the fasta file
-        pattern: "*.{dict}"
+        pattern: "*.dict"
         ontologies: []
 output:
   bam:

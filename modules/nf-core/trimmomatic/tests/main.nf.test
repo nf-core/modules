@@ -25,13 +25,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert process.out.trimmed_reads != null },
-                { assert process.out.trimmed_reads.get(0).get(1) ==~ ".*.SE.paired.trim.fastq.gz" },
-                { assert process.out.out_log.get(0).get(1) ==~ ".*.log" },
                 { assert snapshot(process.out.trimmed_reads,
-                                  process.out.trim_log,
                                   process.out.summary,
-                                  process.out.versions
+                                  file(process.out.trim_log[0][1]).name,
+                                  process.out.findAll { key, val -> key.startsWith("versions")}
                                   ).match() }
             )
         }
@@ -56,14 +53,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert process.out.trimmed_reads != null },
-                { assert process.out.trimmed_reads.get(0).get(1).get(0) ==~ ".*.paired.trim_1.fastq.gz" },
-                { assert process.out.trimmed_reads.get(0).get(1).get(1) ==~ ".*.paired.trim_2.fastq.gz" },
-                { assert process.out.out_log.get(0).get(1) ==~ ".*.log" },
                 { assert snapshot(process.out.trimmed_reads,
-                                  process.out.trim_log,
                                   process.out.summary,
-                                  process.out.versions
+                                  file(process.out.trim_log[0][1]).name,
+                                  process.out.findAll { key, val -> key.startsWith("versions")}
                                   ).match() }
             )
         }

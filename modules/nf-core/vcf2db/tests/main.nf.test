@@ -27,7 +27,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.db[0][1]).name, // Conda test fails with content md5
-                    process.out.versions
+                    process.out.findAll { it.key.startsWith('versions_') }
                     ).match()
                 }
             )
@@ -54,7 +54,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

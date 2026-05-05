@@ -74,13 +74,27 @@ output:
           pattern: "*.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_fastqscreen:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastqscreen:
+          type: string
+          description: The name of the tool
+      - fastq_screen --version 2>&1 | sed "s/^.*FastQ Screen v//;":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastqscreen:
+          type: string
+          description: The name of the tool
+      - fastq_screen --version 2>&1 | sed "s/^.*FastQ Screen v//;":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@snesic"
   - "@JPejovicApis"

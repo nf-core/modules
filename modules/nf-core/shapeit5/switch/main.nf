@@ -3,16 +3,16 @@ process SHAPEIT5_SWITCH {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/shapeit5:5.1.1--hb60d31d_0'
-        : 'biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
+        : 'quay.io/biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
 
     input:
     tuple val(meta), path(estimate), path(estimate_index), val(region), path(pedigree), path(truth), path(truth_index), path(freq), path(freq_index)
 
     output:
-        tuple val(meta), path("*.txt.gz"), emit: errors
-        path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.txt.gz"), emit: errors
+    tuple val("${task.process}"), val('shapeit5'), eval('SHAPEIT5_switch | sed "5!d;s/^.*Version *: //; s/ .*$//"'), topic: versions, emit: versions_shapeit5
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process SHAPEIT5_SWITCH {
         ${pedigree_cmd} \\
         --thread ${task.cpus} \\
         --output ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shapeit5: "\$(SHAPEIT5_switch | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
-    END_VERSIONS
     """
 
     stub:
@@ -55,10 +50,5 @@ process SHAPEIT5_SWITCH {
     ${create_cmd} ${prefix}.type.switch.txt.gz
     ${create_cmd} ${prefix}.variant.switch.txt.gz
     ${create_cmd} ${prefix}.variant.typing.txt.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shapeit5: "\$(SHAPEIT5_switch | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
-    END_VERSIONS
     """
 }

@@ -3,9 +3,9 @@ process FAQCS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/faqcs:2.10--r41h9a82719_2' :
-        'biocontainers/faqcs:2.10--r41h9a82719_2' }"
+        'quay.io/biocontainers/faqcs:2.10--r41h9a82719_2' }"
 
     input:
     tuple val(meta), path(reads)

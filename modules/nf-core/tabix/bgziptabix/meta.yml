@@ -1,5 +1,6 @@
 name: tabix_bgziptabix
-description: bgzip a sorted tab-delimited genome file and then create tabix index
+description: bgzip a sorted tab-delimited genome file and then create tabix
+  index
 keywords:
   - bgzip
   - compress
@@ -42,13 +43,48 @@ output:
           description: Tabix index file (either tbi or csi)
           pattern: "*.{tbi,csi}"
           ontologies: []
+  versions_tabix:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tabix:
+          type: string
+          description: The tool name
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tabix:
+          type: string
+          description: The tool name
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@maxulysse"
   - "@DLBPointon"

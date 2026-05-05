@@ -3,9 +3,9 @@ process KALLISTOBUSTOOLS_REF {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kb-python:0.28.2--pyhdfd78af_2' :
-        'biocontainers/kb-python:0.28.2--pyhdfd78af_2' }"
+        'quay.io/biocontainers/kb-python:0.28.2--pyhdfd78af_2' }"
 
     input:
     path fasta
@@ -25,7 +25,6 @@ process KALLISTOBUSTOOLS_REF {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     if (workflow_mode == "standard") {
         """
         kb \\

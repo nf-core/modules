@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "president"
 description: "Calculate pairwise nucleotide identity with respect to a reference sequence"
 keywords:
@@ -13,18 +12,18 @@ tools:
       homepage: "https://github.com/rki-mf1/president"
       documentation: "https://github.com/rki-mf1/president"
       tool_dev_url: "https://github.com/rki-mf1/president"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
-        description: Groovy Map containing information, e.g. [ id:'test', single_end:false
-          ]
+        description: Groovy Map containing information,
+          e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: One fasta file or a list of multiple fasta files to perform president
-          on. Has to be uncompressed!
+        description: One fasta file or a list of multiple fasta files to perform
+          president on. Has to be uncompressed!
         pattern: "*.{fasta,fas,fa,fna,ffn,faa,mpfa,frn}"
         ontologies: []
   - - meta2:
@@ -42,54 +41,54 @@ output:
   valid_fasta:
     - - meta:
           type: file
-          description: Fasta file containing sequences which passed the qc ("valid.fasta").
-            If true is set on the "compress" input value, the file is gz-compressed.
+          description: Fasta file containing sequences which passed the qc
+            ("valid.fasta"). If true is set on the "compress" input value, the
+            file is gz-compressed.
           pattern: "*.{fasta.gz, fasta}"
           ontologies: []
       - ${prefix}_valid.fasta*:
           type: file
-          description: Fasta file containing sequences which passed the qc ("valid.fasta").
-            If true is set on the "compress" input value, the file is gz-compressed.
-          pattern: "*.{fasta.gz, fasta}"
-          ontologies: []
-      - id_fasta:
-          type: file
-          description: Fasta file containing sequences which passed the qc ("valid.fasta").
-            If true is set on the "compress" input value, the file is gz-compressed.
+          description: Fasta file containing sequences which passed the qc
+            ("valid.fasta"). If true is set on the "compress" input value, the
+            file is gz-compressed.
           pattern: "*.{fasta.gz, fasta}"
           ontologies: []
   invalid_fasta:
     - - meta:
           type: file
-          description: Fasta file containing sequences which passed the qc ("valid.fasta").
-            If true is set on the "compress" input value, the file is gz-compressed.
+          description: Fasta file containing sequences which passed the qc
+            ("valid.fasta"). If true is set on the "compress" input value, the
+            file is gz-compressed.
           pattern: "*.{fasta.gz, fasta}"
           ontologies: []
       - ${prefix}_invalid.fasta*:
           type: file
-          description: Fasta file containing sequences which didn't pass the qc ("invalid.fasta").
-            If true is set on the "compress" input value, the files are gz-compressed.
+          description: Fasta file containing sequences which didn't pass the qc
+            ("invalid.fasta"). If true is set on the "compress" input value, the
+            files are gz-compressed.
           pattern: "*_invalid.{fasta.gz, fasta}"
           ontologies: []
   report:
     - - meta:
           type: file
-          description: Fasta file containing sequences which passed the qc ("valid.fasta").
-            If true is set on the "compress" input value, the file is gz-compressed.
+          description: Fasta file containing sequences which passed the qc
+            ("valid.fasta"). If true is set on the "compress" input value, the
+            file is gz-compressed.
           pattern: "*.{fasta.gz, fasta}"
           ontologies: []
       - "*.tsv":
           type: file
-          description: Report with some information for every sample, like statistic
-            values. See docs for details
+          description: Report with some information for every sample, like
+            statistic values. See docs for details
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   log:
     - - meta:
           type: file
-          description: Fasta file containing sequences which passed the qc ("valid.fasta").
-            If true is set on the "compress" input value, the file is gz-compressed.
+          description: Fasta file containing sequences which passed the qc
+            ("valid.fasta"). If true is set on the "compress" input value, the
+            file is gz-compressed.
           pattern: "*.{fasta.gz, fasta}"
           ontologies: []
       - "*.log":

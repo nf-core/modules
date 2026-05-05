@@ -55,14 +55,7 @@ input:
             type: file
             description: Panel VCF legend files by chromosomes
             pattern: "*.legend[.gz]+"
-  - ch_posfile:
-      description: Channel with position to call variants by chromosomes
-      structure:
-        - meta:
-            type: map
-            description: |
-              Metadata map with chromosome information
-        - tsv:
+        - posfile:
             type: file
             description: Position to impute variants file in TSV format (chromosome, position, ref, alt)
   - ch_chunks:
@@ -127,12 +120,6 @@ output:
             type: file
             description: VCF index file
             pattern: "*.{tbi,csi}"
-  - versions:
-      description: Channel containing software versions file
-      structure:
-        - versions.yml:
-            type: file
-            description: File containing versions of the software used
 authors:
   - "@louislenezet"
 maintainers:

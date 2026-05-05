@@ -2,7 +2,7 @@ process OPT_FLIP {
     tag "$meta.id"
     label 'process_high'
 
-    container "khersameesh24/opt:v0.0.1"
+    container "quay.io/khersameesh24/opt:v0.0.1"
 
     input:
     tuple val(meta), path(probes_fasta)
@@ -40,7 +40,6 @@ process OPT_FLIP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

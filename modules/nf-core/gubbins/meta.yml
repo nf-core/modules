@@ -1,17 +1,16 @@
 name: gubbins
-description: Gubbins (Genealogies Unbiased By recomBinations In Nucleotide Sequences)
-  is an algorithm that iteratively identifies loci containing elevated densities of
-  base substitutions while concurrently constructing a phylogeny based on the putative
-  point mutations outside of these regions.
-licence: ["GPL-2.0-only"]
+description: Gubbins (Genealogies Unbiased By recomBinations In Nucleotide
+  Sequences) is an algorithm that iteratively identifies loci containing
+  elevated densities of base substitutions while concurrently constructing a
+  phylogeny based on the putative point mutations outside of these regions.
 keywords:
   - recombination
   - alignment
   - phylogeny
 tools:
   - gubbins:
-      description: Rapid phylogenetic analysis of large samples of recombinant bacterial
-        whole genome sequences using Gubbins.
+      description: Rapid phylogenetic analysis of large samples of recombinant
+        bacterial whole genome sequences using Gubbins.
       homepage: https://sanger-pathogens.github.io/gubbins/
       documentation: https://sanger-pathogens.github.io/gubbins/
       identifier: biotools:gubbins
@@ -74,17 +73,34 @@ output:
   tree_labelled:
     - "*.node_labelled.final_tree.tre":
         type: file
-        description: Recombination removed RAxML phylogenetic tree (nodes labelled)
+        description: Recombination removed RAxML phylogenetic tree (nodes
+          labelled)
         pattern: "*.{node_labelled.final_tree.tre}"
         ontologies: []
+  versions_gubbins:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gubbins:
+          type: string
+          description: The name of the tool
+      - run_gubbins.py --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gubbins:
+          type: string
+          description: The name of the tool
+      - run_gubbins.py --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@avantonder"
 maintainers:
   - "@avantonder"
+licence:
+  - "GPL-2.0-only"

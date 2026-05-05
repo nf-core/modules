@@ -44,13 +44,27 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.vcf.gz"
+  versions_vcflib:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcflib:
+          type: string
+          description: The name of the tool
+      - 1.0.14:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcflib:
+          type: string
+          description: The name of the tool
+      - 1.0.14:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@drpatelh"
 maintainers:

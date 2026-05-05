@@ -1,0 +1,87 @@
+nextflow_process {
+
+    name "Test Process STACKS_REFMAP"
+    script "../main.nf"
+    process "STACKS_REFMAP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "stacks"
+    tag "stacks/refmap"
+
+    test("limulus_polyphemus - ddrad - bam") {
+
+        when {
+            process {
+                """
+                def base = params.modules_testdata_base_path + 'genomics/eukaryotes/limulus_polyphemus/radseq/bwa_output/'
+                def bam_files = ['msp_0','msp_1','msp_2','msp_3','msp_4','msp_5','msp_6','msp_7','msp_8','msp_9'].collect { name ->
+                    file(base + name + '.bam', checkIfExists: true)
+                }
+
+                input[0] = [
+                    [ id:'test_radseq' ],
+                    bam_files
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/eukaryotes/limulus_polyphemus/radseq/popmap.tsv', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.catalog_chrs,
+                    process.out.catalog_fa,
+                    process.out.haplotypes,
+                    process.out.hapstats,
+                    process.out.sumstats,
+                    process.out.sumstats_summary,
+                    process.out.populations_log_distribs,
+                    process.out.vcf,
+                    process.out.genepop,
+                    process.out.structure,
+                    process.out.versions_stacks_refmap
+                ).match() },
+                { assert path(process.out.catalog_calls.get(0).get(1)).exists() },
+                { assert path(process.out.gstacks_log.get(0).get(1)).exists() },
+                { assert path(process.out.gstacks_log_distribs.get(0).get(1)).exists() },
+                { assert path(process.out.populations_log.get(0).get(1)).exists() },
+                { assert path(process.out.ref_map_log.get(0).get(1)).exists() }
+            )
+        }
+
+    }
+
+    test("limulus_polyphemus - ddrad - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def base = params.modules_testdata_base_path + 'genomics/eukaryotes/limulus_polyphemus/radseq/bwa_output/'
+                def bam_files = ['msp_0','msp_1','msp_2','msp_3','msp_4','msp_5','msp_6','msp_7','msp_8','msp_9'].collect { name ->
+                    file(base + name + '.bam', checkIfExists: true)
+                }
+
+                input[0] = [
+                    [ id:'test_radseq' ],
+                    bam_files
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/eukaryotes/limulus_polyphemus/radseq/popmap.tsv', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -3,9 +3,9 @@ process HAPLOCHECK {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/haplocheck:1.3.3--h4a94de4_0':
-        'biocontainers/haplocheck:1.3.3--h4a94de4_0' }"
+        'quay.io/biocontainers/haplocheck:1.3.3--h4a94de4_0' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -19,7 +19,6 @@ process HAPLOCHECK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     haplocheck --raw --out $prefix $vcf

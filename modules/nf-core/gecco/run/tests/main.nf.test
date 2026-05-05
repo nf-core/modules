@@ -31,7 +31,7 @@ nextflow_process {
                     process.out.genes +
                     process.out.features +
                     process.out.clusters +
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() },
                 { assert path(process.out.gbk.get(0).get(1)).text.contains("MVKNDIDILILGGGCTGLSLAYYLSFLPNTVRIFLIENKFIYNND") }
             )
@@ -61,7 +61,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    process.out.versions.collect{ path(it).yaml }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

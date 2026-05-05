@@ -18,9 +18,9 @@ workflow BAM_TAPS_CONVERSION {
     ch_fasta_index         // channel: [ val(meta), [ fa.fai ] ]
 
     main:
-    ch_rastair_mbias = Channel.empty()
-    ch_rastair_call  = Channel.empty()
-    ch_versions      = Channel.empty()
+    ch_rastair_mbias = channel.empty()
+    ch_rastair_call  = channel.empty()
+    ch_versions      = channel.empty()
 
     log.info "Running TAPS conversion module with Rastair to assess C->T conversion as a readout for methylation."
 
@@ -44,8 +44,8 @@ workflow BAM_TAPS_CONVERSION {
         ch_bai,
         ch_fasta,
         ch_fasta_index,
-        ch_rastair_mbiasparser.map{ meta, nOT_clip, nOB_clip -> [ meta, nOT_clip ] },
-        ch_rastair_mbiasparser.map{ meta, nOT_clip, nOB_clip -> [ meta, nOB_clip ] },
+        ch_rastair_mbiasparser.map{ meta, nOT_clip, _nOB_clip -> [ meta, nOT_clip ] },
+        ch_rastair_mbiasparser.map{ meta, _nOT_clip, nOB_clip -> [ meta, nOB_clip ] },
     )
     ch_rastair_call = RASTAIR_CALL.out.txt // channel: [ val(meta), txt ]
     ch_versions     = ch_versions.mix(RASTAIR_CALL.out.versions)

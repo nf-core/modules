@@ -4,9 +4,9 @@ process CATPACK_DOWNLOAD {
     label 'process_long'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
+        : 'quay.io/biocontainers/cat:6.0.1--hdfd78af_1'}"
 
     input:
     tuple val(meta), val(db)
@@ -17,7 +17,7 @@ process CATPACK_DOWNLOAD {
     tuple val(meta), path("${prefix}/*.nodes.dmp"), emit: nodes
     tuple val(meta), path("${prefix}/*accession2taxid*.gz"), emit: acc2tax
     tuple val(meta), path("${prefix}/*.log"), emit: log
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process CATPACK_DOWNLOAD {
         ${args} \\
         --db ${db} \\
         -o ${prefix}/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process CATPACK_DOWNLOAD {
     touch ${prefix}/${prefix}.nodes.dmp
     echo "" | gzip > ${prefix}/${prefix}.accession2taxid.gz
     touch ${prefix}/${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 }

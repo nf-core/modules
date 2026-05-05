@@ -3,9 +3,9 @@ process GAPPA_EXAMINEHEATTREE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gappa:0.8.0--h9a82719_0':
-        'biocontainers/gappa:0.8.0--h9a82719_0' }"
+        'quay.io/biocontainers/gappa:0.8.0--h9a82719_0' }"
 
     input:
     tuple val(meta), path(jplace)
@@ -44,7 +44,6 @@ process GAPPA_EXAMINEHEATTREE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.colours.txt

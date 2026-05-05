@@ -3,9 +3,9 @@ process VIENNARNA_RNALFOLD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1':
-        'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
+        'quay.io/biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
 
     input:
     path fasta
@@ -32,8 +32,6 @@ process VIENNARNA_RNALFOLD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-
     """
     touch ${fasta.baseName}.lfold
     touch ${fasta}.ps

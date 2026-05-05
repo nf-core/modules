@@ -55,12 +55,6 @@ output:
         Channel containing the database containing the mmseqs format of each input fasta file.
         Structure: [ path(outputdir) ]
       pattern: "*/sample_db"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 
 authors:
   - "@darcy220606"

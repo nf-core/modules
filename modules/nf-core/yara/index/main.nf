@@ -3,9 +3,9 @@ process YARA_INDEX {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/yara:1.0.2--2' :
-        'biocontainers/yara:1.0.2--2' }"
+        'quay.io/biocontainers/yara:1.0.2--2' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -23,7 +23,8 @@ process YARA_INDEX {
     """
     yara_indexer \\
         $fasta \\
-        -o ${fasta}
+        -o ${fasta} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -32,7 +33,6 @@ process YARA_INDEX {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     """
     touch ${fasta}.lf.{drp,drs,drv,pst}
     touch ${fasta}.rid.{concat,limits}

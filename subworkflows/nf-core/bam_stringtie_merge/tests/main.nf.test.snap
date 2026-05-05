@@ -1,27 +1,21 @@
 {
-    "Should run stringtie subworkflow": {
+    "Should merge transcripts across multiple samples": {
         "content": [
             {
-                "0": [
-                    "stringtie.merged.gtf:md5,6da479298d73d5b3216d4e1576a2bdf4"
-                ],
-                "1": [
-                    "versions.yml:md5,3ab29dfb260f355cad809acd8dbd1424",
-                    "versions.yml:md5,7c84e875854527473ba6ada66b51e4a6"
-                ],
                 "stringtie_gtf": [
-                    "stringtie.merged.gtf:md5,6da479298d73d5b3216d4e1576a2bdf4"
-                ],
-                "versions": [
-                    "versions.yml:md5,3ab29dfb260f355cad809acd8dbd1424",
-                    "versions.yml:md5,7c84e875854527473ba6ada66b51e4a6"
+                    [
+                        {
+                            "id": "stringtie_merge"
+                        },
+                        "stringtie_merge.gtf:md5,3d11d4f54395709b4fdca53ea31cea7e"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2025-08-31T23:17:24.40243201"
+        "timestamp": "2026-04-14T13:36:54.066473"
     }
 }

@@ -1,5 +1,6 @@
 name: "glimpse2_phase"
-description: Tool for imputation and phasing from vcf file or directly from bam files.
+description: Tool for imputation and phasing from vcf file or directly from bam
+  files.
 keywords:
   - phasing
   - low-coverage
@@ -13,7 +14,8 @@ tools:
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:glimpse2
 input:
   - - meta:
@@ -120,18 +122,32 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.txt.gz":
           type: file
-          description: Optional coverage statistic file created when BAM/CRAM files
-            are used as inputs.
+          description: Optional coverage statistic file created when BAM/CRAM
+            files are used as inputs.
           pattern: "*.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_glimpse2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse2:
+          type: string
+          description: The name of the tool
+      - GLIMPSE2_phase --help | grep -oE 'v[0-9.]+' | cut -c2-:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse2:
+          type: string
+          description: The name of the tool
+      - GLIMPSE2_phase --help | grep -oE 'v[0-9.]+' | cut -c2-:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@LouisLeNezet"
 maintainers:

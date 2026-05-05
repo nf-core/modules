@@ -3,9 +3,9 @@ process FOLDSEEK_CREATEDB {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/foldseek:9.427df8a--pl5321hb365157_0':
-        'biocontainers/foldseek:9.427df8a--pl5321hb365157_0' }"
+        'quay.io/biocontainers/foldseek:9.427df8a--pl5321hb365157_0' }"
 
     input:
     tuple val(meta), path(pdb)
@@ -35,7 +35,6 @@ process FOLDSEEK_CREATEDB {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
