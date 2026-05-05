@@ -37,6 +37,12 @@ input:
   - annotation_genome_version:
       type: string
       description: Reference genome version passed to civicpy (e.g. GRCh38)
+  - cache:
+      type: file
+      description: Optional civicpy cache file (*.pkl). If not provided, civicpy
+        will download and cache data locally.
+      pattern: "*.pkl"
+      ontologies: []
 output:
   vcf:
     - - meta:

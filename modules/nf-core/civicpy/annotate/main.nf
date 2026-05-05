@@ -4,8 +4,8 @@ process CIVICPY_ANNOTATE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/civicpy:5.3.0--pyhdfd78af_0'
-        : 'biocontainers/civicpy:5.3.0--pyhdfd78af_0' }"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f7c82422a425f51e197c0f88b2927e5fdcf61afb752dec396a56511c21605931/data'
+        : 'community.wave.seqera.io/library/civicpy_htslib:a4e0f1666f9ba596' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -20,11 +20,12 @@ process CIVICPY_ANNOTATE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args       = task.ext.args   ?: ''
+    prefix         = task.ext.prefix ?: "${meta.id}"
+    def cache_file = cache            ? "\$PWD/${cache}" : "\$PWD/${prefix}.civicpy_cache.pkl"
     if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    export CIVICPY_CACHE_FILE=\$PWD/${cache}
+    export CIVICPY_CACHE_FILE=${cache_file}
 
     civicpy annotate-vcf \\
         --input-vcf ${vcf} \\
