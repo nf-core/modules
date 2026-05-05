@@ -33,7 +33,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - ${meta.id}:
+      - ${prefix}:
           type: directory
           description: Directory containing pdb database files
           pattern: "*"
