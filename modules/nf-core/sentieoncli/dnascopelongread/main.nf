@@ -6,7 +6,7 @@ process SENTIEONCLI_DNASCOPELONGREAD {
 
     secret 'SENTIEON_LICENSE_BASE64'
 
-    container "docker.io/clinicalgenomicslund/dnascope-longread:1.5.2"
+    container "docker.io/sentieon/sentieon-cli:v1.6.2-0"
 
     input:
     tuple val(meta), path(bam), path(bai), path(diploid_intervals_bed), path(haploid_intervals_bed)
