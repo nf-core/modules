@@ -79,7 +79,7 @@ def dumpParametersToJSON(outdir) {
         .addConverter(Path) { Path path -> path.toUriString() }
         .addConverter(Duration) { Duration duration -> duration.toMillis() }
         .addConverter(MemoryUnit) { MemoryUnit memory -> memory.toBytes() }
-        .addConverter(VersionNumber) { VersionNumber version -> version.toString() }
+        .addConverter(nextflow.script.types.VersionNumber) { nextflow.script.types.VersionNumber version -> version.toString() }
         .build()
     def jsonStr   = jsonGenerator.toJson(params)
     temp_pf.text  = groovy.json.JsonOutput.prettyPrint(jsonStr)
