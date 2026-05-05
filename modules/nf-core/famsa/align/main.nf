@@ -14,7 +14,7 @@ process FAMSA_ALIGN {
 
     output:
     tuple val(meta), path("${prefix}.aln{.gz,}"), emit: alignment
-    tuple val("${task.process}"), val('famsa'), eval("famsa -help 2>&1 | sed '2!d;s/ (.*//; s/^.* //'"), topic: versions, emit: versions_famsa
+    tuple val("${task.process}"), val('famsa'), eval("famsa -help 2>&1 | sed '2!d;s/.*version //;s/ .*//'"), topic: versions, emit: versions_famsa
 
     when:
     task.ext.when == null || task.ext.when
