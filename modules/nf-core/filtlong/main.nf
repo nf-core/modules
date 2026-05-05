@@ -31,4 +31,11 @@ process FILTLONG {
         2>| >(tee ${prefix}.log >&2) \\
         | gzip -n > ${prefix}.fastq.gz
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.fastq.gz
+    touch ${prefix}.log
+    """
 }
