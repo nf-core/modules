@@ -3,7 +3,7 @@ process ALIGNOTH {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2f879512a9cc25a7baa078e8a87e17b585464cf222f71be231e8f8a921354493/data'
         : 'community.wave.seqera.io/library/alignoth:1.4.6--049c1999033885bf'}"
 

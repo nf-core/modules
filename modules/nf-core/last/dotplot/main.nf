@@ -3,7 +3,7 @@ process LAST_DOTPLOT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/386dbe9821e6f2eebd5bcc67b3c82e2b730135c51bb565bae6511b24aba17e56/data'
         : 'community.wave.seqera.io/library/last_open-fonts:b8d1af8fd12256e2'}"
 

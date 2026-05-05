@@ -36,6 +36,32 @@ nextflow_process {
 
     }
 
+    test("test_fq_lint_rejects_more_than_two_fastqs") {
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                def fq1 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                def fq2 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                def fq3 = file("\${workDir}/test_3.fastq.gz")
+                fq3.bytes = fq1.bytes
+                input[0] = [ [ id:'test', single_end:false ],
+                             [ fq1, fq2, fq3 ]
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert !process.success }
+            )
+        }
+
+    }
+
     test("test_fq_lint_fail") {
         when {
             params {
