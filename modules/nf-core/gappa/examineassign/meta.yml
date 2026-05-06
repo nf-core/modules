@@ -1,5 +1,6 @@
 name: "gappa_examineassign"
-description: assigns taxonomy to query sequences in phylogenetic placement output
+description: assigns taxonomy to query sequences in phylogenetic placement
+  output
 keywords:
   - phylogeny
   - phylogenetic placement
@@ -12,7 +13,8 @@ tools:
       documentation: "https://github.com/lczech/gappa/wiki"
       tool_dev_url: "https://github.com/lczech/gappa"
       doi: "10.1093/bioinformatics/btaa070"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:GAPPA
 input:
   - - meta:
@@ -22,8 +24,8 @@ input:
           e.g. [ id:'test' ]
     - jplace:
         type: file
-        description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped
-          or not
+        description: jplace file output from phylogenetic placement, e.g. EPA-NG,
+          gzipped or not
         pattern: "*.{jplace,jplace.gz}"
         ontologies: []
     - taxonomy:
@@ -98,13 +100,27 @@ output:
           pattern: "*sativa.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_gappa:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gappa:
+          type: string
+          description: The name of the tool
+      - gappa --version 2>&1 | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gappa:
+          type: string
+          description: The name of the tool
+      - gappa --version 2>&1 | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@erikrikarddaniel"
 maintainers:
