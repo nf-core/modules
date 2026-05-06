@@ -14,9 +14,6 @@ nextflow_process {
 
 
         when {
-            params {
-                length_args = '--length 300'
-            }
             process {
                 """
                 input[0] = [
