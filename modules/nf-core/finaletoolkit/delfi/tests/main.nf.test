@@ -1,0 +1,93 @@
+nextflow_process {
+
+    name "Test Process FINALETOOLKIT_DELFI"
+    script "../main.nf"
+    process "FINALETOOLKIT_DELFI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "finaletoolkit"
+    tag "finaletoolkit/delfi"
+
+    test("homo_sapiens - bam") {
+
+
+        when {
+            params {
+                // Chr22 is too small for meaningful data, so remove all filters
+                // We need 2 workers because otherwise there is a bug (fixed upstream, but without a new version)
+                // that breaks the program with only one worker
+                task.cpus = 2
+                ext.args = "--no-merge-bins --no-gc-correct --quality-threshold 0"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true),
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bins_10kb.bed', checkIfExists: true)
+                ]
+                input[2] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.sizes', checkIfExists: true)
+                ]
+                input[3] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - stub") {
+
+        options "-stub"
+
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true),
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bins_10kb.bed', checkIfExists: true)
+                ]
+                input[2] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.sizes', checkIfExists: true)
+                ]
+                input[3] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+}
