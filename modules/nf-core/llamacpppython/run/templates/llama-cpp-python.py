@@ -132,8 +132,28 @@ def main(args_string=None):
     )
 
 
+def get_cuda_version():
+    """Return CUDA runtime version (major.minor) or 'no CUDA available'."""
+    import ctypes
+
+    for major in (13, 12, 11):
+        try:
+            cudart = ctypes.CDLL(f"libcudart.so.{major}")
+        except OSError:
+            continue
+        v = ctypes.c_int()
+        if cudart.cudaRuntimeGetVersion(ctypes.byref(v)) == 0:
+            return f"{v.value // 1000}.{(v.value % 1000) // 10}"
+    return "no CUDA available"
+
+
 def write_versions():
-    versions = {"${task.process}": {"llama-cpp-python": llama_cpp.__version__}}
+    versions = {
+        "${task.process}": {
+            "llama-cpp-python": llama_cpp.__version__,
+            "cuda": get_cuda_version(),
+        }
+    }
     with open("versions.yml", "w", encoding="utf-8") as f:
         for process, pkgs in versions.items():
             f.write(f'"{process}":\\n')
