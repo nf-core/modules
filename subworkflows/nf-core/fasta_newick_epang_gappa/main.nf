@@ -159,7 +159,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
 
     // 5. Calculate a tree with the placed sequences
     GAPPA_GRAFT ( EPANG_PLACE.out.jplace )
-    ch_versions = ch_versions.mix(GAPPA_GRAFT.out.versions)
 
     // 6. Classify
     GAPPA_ASSIGN (
@@ -167,11 +166,9 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
             .map { it -> [ [ id:it[0].id ], it[1] ] }
             .join( ch_pp_data.map { it -> [ [ id: it.meta.id ], it.data.taxonomy ] } )
     )
-    ch_versions = ch_versions.mix(GAPPA_ASSIGN.out.versions)
 
     // 7. Heat tree output
     GAPPA_HEATTREE ( EPANG_PLACE.out.jplace )
-    ch_versions = ch_versions.mix(GAPPA_HEATTREE.out.versions)
 
     emit:
     epang               = EPANG_PLACE.out.epang
