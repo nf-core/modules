@@ -51,13 +51,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out.db[0][1],
-                    ["versions_bigslice": process.out.versions_bigslice]
-                ).match() },
-                { assert process.out.versions_python }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }

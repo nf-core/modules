@@ -23,20 +23,34 @@
     },
     "bigslice - downloaddb - stub": {
         "content": [
-            [
-                [
-                    "Biosyn_pfams.hmm:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                [
-                    "corepfam.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ]
-            ],
             {
+                "db": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            [
+                                "Biosyn_pfams.hmm:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ],
+                            [
+                                "corepfam.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ]
+                        ]
+                    ]
+                ],
                 "versions_bigslice": [
                     [
                         "BIGSLICE_DOWNLOADDB",
                         "bigslice",
                         "2.0.2"
+                    ]
+                ],
+                "versions_python": [
+                    [
+                        "BIGSLICE_DOWNLOADDB",
+                        "python",
+                        "3.10.18"
                     ]
                 ]
             }
@@ -45,6 +59,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-04-28T16:52:17.824563372"
+        "timestamp": "2026-05-06T11:07:12.857974035"
     }
 }
