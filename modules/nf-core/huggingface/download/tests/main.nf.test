@@ -9,15 +9,15 @@ nextflow_process {
     tag "huggingface"
     tag "huggingface/download"
 
-    test("download gguf file - gemma3") {
+    test("download config.json - tiny-random-gpt2") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test_model_gemma3' ],
-                    "ggml-org/gemma-3-1b-it-GGUF",
-                    "gemma-3-1b-it-Q4_K_M.gguf"
+                    [ id:'test_gpt2' ],
+                    "hf-internal-testing/tiny-random-gpt2",
+                    "config.json"
                 ]
                 """
             }
@@ -37,15 +37,15 @@ nextflow_process {
         }
     }
 
-    test("download gguf file - smollm3") {
+    test("download config.json - tiny-random-bert") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test_model_smollm3' ],
-                    "unsloth/SmolLM3-3B-GGUF",
-                    "SmolLM3-3B-UD-IQ2_XXS.gguf"
+                    [ id:'test_bert' ],
+                    "hf-internal-testing/tiny-random-bert",
+                    "config.json"
                 ]
                 """
             }
@@ -65,7 +65,7 @@ nextflow_process {
         }
     }
 
-    test("stub - download gguf file - gemma3") {
+    test("stub - download config.json - tiny-random-gpt2") {
 
         options "-stub"
 
@@ -73,9 +73,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test_model_gemma3' ],
-                    "ggml-org/gemma-3-1b-it-GGUF",
-                    "gemma-3-1b-it-Q4_K_M.gguf"
+                    [ id:'test_gpt2' ],
+                    "hf-internal-testing/tiny-random-gpt2",
+                    "config.json"
                 ]
                 """
             }
