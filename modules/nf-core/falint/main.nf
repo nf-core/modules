@@ -13,7 +13,7 @@ process FALINT {
     output:
     tuple val(meta), path('*.success.log')  , emit: success_log , optional: true
     tuple val(meta), path('*.error.log')    , emit: error_log   , optional: true
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('falint'), eval('fa-lint --version'), emit: versions_falint, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,11 +39,6 @@ process FALINT {
 
         rm ${prefix}.error.log
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fa-lint: \$(fa-lint -version)
-    END_VERSIONS
     """
 
     stub:
@@ -51,10 +46,5 @@ process FALINT {
     """
     echo "Fasta is valid: $fasta" \\
         > "${prefix}.success.log"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fa-lint: \$(fa-lint -version)
-    END_VERSIONS
     """
 }

@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "geofetch"
-description: geofetch is a command-line tool that downloads and organizes data and
-  metadata from GEO and SRA
+description: geofetch is a command-line tool that downloads and organizes data
+  and metadata from GEO and SRA
 keywords:
   - GEO
   - expression
@@ -14,9 +13,9 @@ tools:
       homepage: "http://geofetch.databio.org/"
       documentation: "http://geofetch.databio.org/"
       tool_dev_url: "https://github.com/pepkit/geofetch"
-      licence: ["BSD-2-clause"]
+      licence:
+        - "BSD-2-clause"
       args_id: "$args"
-
       identifier: ""
 input:
   - geo_accession:
@@ -34,13 +33,27 @@ output:
           description: List of sample files fetched
           pattern: "${geo_accession}/*.CEL.gz"
           ontologies: []
+  versions_geofetch:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - geofetch:
+          type: string
+          description: The tool name
+      - geofetch --version 2>&1 | sed '1!d; s/^geofetch //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - geofetch:
+          type: string
+          description: The tool name
+      - geofetch --version 2>&1 | sed '1!d; s/^geofetch //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mribeirodantas"
 maintainers:

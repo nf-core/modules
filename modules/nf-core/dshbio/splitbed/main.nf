@@ -12,7 +12,7 @@ process DSHBIO_SPLITBED {
 
     output:
     tuple val(meta), path("*.bed.gz"), emit: bed
-    tuple val("${task.process}"), val('dsh-bio'), eval("dsh-bio --version | head -n 1 | sed 's/dsh-bio-tools //'"), emit: versions_dshbio, topic: versions
+    tuple val("${task.process}"), val('dsh-bio'), eval("dsh-bio --version | sed '1!d;s/dsh-bio-tools //'"), emit: versions_dshbio, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,7 +32,7 @@ process DSHBIO_SPLITBED {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}0.bed.gz
-    echo | gzip > ${prefix}1.bed.gz
+    echo "" | gzip > ${prefix}0.bed.gz
+    echo "" | gzip > ${prefix}1.bed.gz
     """
 }
