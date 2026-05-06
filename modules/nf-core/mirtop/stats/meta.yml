@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mirtop_stats"
-description: mirtop gff gets the number of isomiRs and miRNAs annotated in the GFF
-  file by isomiR category.
+description: mirtop gff gets the number of isomiRs and miRNAs annotated in the
+  GFF file by isomiR category.
 keywords:
   - mirna
   - isomir
@@ -12,9 +11,9 @@ tools:
       homepage: "https://github.com/miRTop/mirtop"
       documentation: "https://mirtop.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/miRTop/mirtop"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: biotools:miRTop
-
 input:
   - - meta:
         type: map
@@ -33,7 +32,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - stats/*.txt:
+      - stats/*_stats.txt:
           type: file
           description: TXT file with stats
           pattern: "*.{txt}"

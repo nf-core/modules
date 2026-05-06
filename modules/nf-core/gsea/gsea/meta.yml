@@ -11,7 +11,8 @@ tools:
       homepage: "http://www.gsea-msigdb.org/gsea/index.jsp"
       documentation: "https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Main_Page"
       doi: "10.1073/pnas.0506580102"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:gsea
 input:
   - - meta:
@@ -94,7 +95,7 @@ output:
           description: Main TSV results report file for the reference group.
           pattern: "gsea_report_for_reference*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475 #TSV
   report_htmls_ref:
     - - meta:
           type: map
@@ -102,8 +103,8 @@ output:
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
       - "*gsea_report_for_${reference}.html":
           type: file
-          description: Main HTML results report file for the reference group. sample
-            groups
+          description: Main HTML results report file for the reference group.
+            sample groups
           pattern: "gsea_report_for_reference*.html"
           ontologies: []
   report_tsvs_target:
@@ -116,7 +117,7 @@ output:
           description: Main TSV results report file for the target group.
           pattern: "gsea_report_for_target*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475 #TSV
   report_htmls_target:
     - - meta:
           type: map
@@ -137,7 +138,7 @@ output:
           description: TSV file with ranked gene list and scores
           pattern: "ranked_gene_list*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475 #TSV
   gene_set_sizes:
     - - meta:
           type: map
@@ -148,7 +149,7 @@ output:
           description: TSV file with gene set sizes
           pattern: "gene_set_sizes.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475 #TSV
   histogram:
     - - meta:
           type: map
@@ -206,8 +207,8 @@ output:
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
       - gene_sets_*.tsv:
           type: list
-          description: Where -make_sets is not set to false, TSV files, one file for
-            each gene set, with detail on enrichment for each gene
+          description: Where -make_sets is not set to false, TSV files, one file
+            for each gene set, with detail on enrichment for each gene
           pattern: "gene_sets_*.tsv"
   gene_set_html:
     - - meta:
@@ -216,8 +217,8 @@ output:
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
       - gene_sets_*.html:
           type: list
-          description: Where -make_sets is not set to false, HTML files, one file for
-            each gene set, with detail on enrichment for each gene
+          description: Where -make_sets is not set to false, HTML files, one file
+            for each gene set, with detail on enrichment for each gene
           pattern: "gene_sets_*.html"
   gene_set_heatmap:
     - - meta:
@@ -226,8 +227,8 @@ output:
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
       - gene_sets_*.png:
           type: list
-          description: Where -make_sets is not set to false, PNG-format heatmaps, one
-            file for each gene set, showing expression for each gene
+          description: Where -make_sets is not set to false, PNG-format heatmaps,
+            one file for each gene set, showing expression for each gene
           pattern: "gene_sets_*.png"
   snapshot:
     - - meta:
@@ -236,8 +237,8 @@ output:
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
       - "*_snapshot*.html":
           type: list
-          description: HTML files, one each for positive and negative enrichment, collecting
-            elements of gene_set_enplot
+          description: HTML files, one each for positive and negative enrichment,
+            collecting elements of gene_set_enplot
           pattern: "*_snapshot*.html"
   gene_set_enplot:
     - - meta:
@@ -246,8 +247,9 @@ output:
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
       - "*enplot*.png":
           type: list
-          description: Where -make_sets is not set to false, PNG-format enrichment (barcode)
-            plots, one file for each gene set, showing how genes contribute to enrichment.
+          description: Where -make_sets is not set to false, PNG-format enrichment
+            (barcode) plots, one file for each gene set, showing how genes
+            contribute to enrichment.
           pattern: "enplot*.png"
   gene_set_dist:
     - - meta:
@@ -256,8 +258,8 @@ output:
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
       - "*gset_rnd_es_dist*.png":
           type: list
-          description: Where -make_sets is not set to false, PNG-format enrichment score
-            distributions plots, one file for each gene set.
+          description: Where -make_sets is not set to false, PNG-format enrichment
+            score distributions plots, one file for each gene set.
           pattern: "gset_rnd_es_dist*.png"
   archive:
     - - meta:
@@ -266,17 +268,32 @@ output:
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
       - "*.zip":
           type: file
-          description: Where -zip_report is set, a zip archive containing all outputs
+          description: Where -zip_report is set, a zip archive containing all
+            outputs
           pattern: "*.zip"
           ontologies:
             - edam: http://edamontology.org/format_3987 # ZIP format
+  versions_gsea:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gsea:
+          type: string
+          description: The name of the tool
+      - 4.3.2:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gsea:
+          type: string
+          description: The name of the tool
+      - 4.3.2:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
 maintainers:

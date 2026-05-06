@@ -3,9 +3,9 @@ process FLASH {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/flash:1.2.11--h5bf99c6_6' :
-        'biocontainers/flash:1.2.11--h5bf99c6_6' }"
+        'quay.io/biocontainers/flash:1.2.11--h5bf99c6_6' }"
 
     input:
     tuple val(meta), path(reads)
@@ -42,7 +42,7 @@ process FLASH {
 
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
 
     echo "" | gzip > ${prefix}.fastq.gz

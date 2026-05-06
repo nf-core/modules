@@ -3,9 +3,9 @@ process TAILFINDR {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-f24f1399a77784f913670cbb36a0f17b78e0631b:80e40d512cd5a71665e3e00e8d0ad1462fc58f76-0':
-        'biocontainers/mulled-v2-f24f1399a77784f913670cbb36a0f17b78e0631b:80e40d512cd5a71665e3e00e8d0ad1462fc58f76-0' }"
+        'quay.io/biocontainers/mulled-v2-f24f1399a77784f913670cbb36a0f17b78e0631b:80e40d512cd5a71665e3e00e8d0ad1462fc58f76-0' }"
 
     input:
     tuple val(meta), path(fast5)
@@ -25,9 +25,9 @@ process TAILFINDR {
     R --vanilla --slave -e "library(tailfindr);
     find_tails(fast5_dir = './' ,
     save_dir = './' ${args},
-    csv_filename = \'${meta.id}.csv\',
+    csv_filename = \'${prefix}.csv\',
     num_cores = ${task.cpus})";
-    gzip ${meta.id}.csv
+    gzip ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

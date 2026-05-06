@@ -3,9 +3,9 @@ process TAXPASTA_STANDARDISE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/taxpasta:0.7.0--pyhdfd78af_1'
-        : 'biocontainers/taxpasta:0.7.0--pyhdfd78af_1'}"
+        : 'quay.io/biocontainers/taxpasta:0.7.0--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(profile)
@@ -39,9 +39,7 @@ process TAXPASTA_STANDARDISE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def taxonomy_option = taxonomy ? "--taxonomy ${taxonomy}" : ''
     """
     touch ${prefix}.${format}
 

@@ -1,6 +1,6 @@
 name: vcfanno
-description: quickly annotate your VCF with any number of INFO fields from any number
-  of VCFs or BED files
+description: quickly annotate your VCF with any number of INFO fields from any
+  number of VCFs or BED files
 keywords:
   - vcf
   - bed
@@ -34,8 +34,8 @@ input:
         ontologies: []
     - specific_resources:
         type: map
-        description: A list of sample specific reference files defined in toml config,
-          must also include indices if bgzipped.
+        description: A list of sample specific reference files defined in toml
+          config, must also include indices if bgzipped.
   - toml:
       type: file
       description: configuration file with reference file basenames
@@ -48,8 +48,8 @@ input:
       ontologies: []
   - resources:
       type: map
-      description: List of reference files defined in toml config, must also include
-        indices if bgzipped.
+      description: List of reference files defined in toml config, must also
+        include indices if bgzipped.
 output:
   vcf:
     - - meta:
@@ -77,13 +77,27 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.vcf.gz.tbi"
+  versions_vcfanno:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcfanno:
+          type: string
+          description: The name of the tool
+      - vcfanno 2>&1 | sed -n 's/.*version \([0-9.]\+\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcfanno:
+          type: string
+          description: The name of the tool
+      - vcfanno 2>&1 | sed -n 's/.*version \([0-9.]\+\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@projectoriented"
   - "@matthdsm"

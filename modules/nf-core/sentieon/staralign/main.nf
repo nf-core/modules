@@ -5,7 +5,7 @@ process SENTIEON_STARALIGN {
 
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
         : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
 
@@ -14,8 +14,6 @@ process SENTIEON_STARALIGN {
     tuple val(meta2), path(index)
     tuple val(meta3), path(gtf)
     val star_ignore_sjdbgtf
-    val seq_platform
-    val seq_center
 
     output:
     tuple val(meta), path('*Log.final.out'),                          emit: log_final
@@ -47,9 +45,7 @@ process SENTIEON_STARALIGN {
     def reads2 = []
     meta.single_end ? [reads].flatten().each { r -> reads1 << r } : reads.eachWithIndex { v, ix -> (ix & 1 ? reads2 : reads1) << v }
     def ignore_gtf = star_ignore_sjdbgtf ? '' : "--sjdbGTFfile ${gtf}"
-    def seq_platform_arg = seq_platform ? "'PL:${seq_platform}'" : ""
-    def seq_center_arg = seq_center ? "'CN:${seq_center}'" : ""
-    attrRG = args.contains("--outSAMattrRGline") ? "" : "--outSAMattrRGline 'ID:${prefix}' ${seq_center_arg} 'SM:${prefix}' ${seq_platform_arg}"
+    attrRG = args.contains("--outSAMattrRGline") ? "" : "--outSAMattrRGline 'ID:${prefix}' 'SM:${prefix}'"
     def out_sam_type = args.contains('--outSAMtype') ? '' : '--outSAMtype BAM Unsorted'
     mv_unsorted_bam = args.contains('--outSAMtype BAM Unsorted SortedByCoordinate') ? "mv ${prefix}.Aligned.out.bam ${prefix}.Aligned.unsort.out.bam" : ''
 

@@ -12,9 +12,9 @@ process GLIMPSE2_CHUNK {
         fi
     """
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.1--h46b9e50_1'
-        : 'biocontainers/glimpse-bio:2.0.1--h46b9e50_1'}"
+        : 'quay.io/biocontainers/glimpse-bio:2.0.1--h46b9e50_1'}"
 
     input:
     tuple val(meta), path(input), path(input_index), val(region), path(map)
@@ -22,7 +22,7 @@ process GLIMPSE2_CHUNK {
 
     output:
     tuple val(meta), path("*.txt"), emit: chunk_chr
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_chunk --help | grep -oE 'v[0-9.]+' | cut -c2-"), topic: versions, emit: versions_glimpse2
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,11 +41,6 @@ process GLIMPSE2_CHUNK {
         --region ${region} \\
         --threads ${task.cpus} \\
         --output ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse2: "\$(GLIMPSE2_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +48,5 @@ process GLIMPSE2_CHUNK {
 
     """
     echo "${meta.id}\t${region}\t0\t0\t0\t0\t0\t0" > ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse2: "\$(GLIMPSE2_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
-    END_VERSIONS
     """
 }

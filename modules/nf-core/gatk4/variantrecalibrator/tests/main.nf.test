@@ -48,18 +48,17 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     file(process.out.recal[0][1]).name,
                     file(process.out.idx[0][1]).name,
                     process.out.tranches,
                     process.out.plots,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("homo sapiens - vcf - no allele specificity") {
@@ -101,18 +100,17 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     file(process.out.recal[0][1]).name,
                     file(process.out.idx[0][1]).name,
                     process.out.tranches,
                     process.out.plots,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("homo sapiens - vcf - stub") {
@@ -156,12 +154,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

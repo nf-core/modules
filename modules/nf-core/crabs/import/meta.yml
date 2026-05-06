@@ -15,9 +15,9 @@ tools:
       documentation: https://github.com/gjeunen/reference_database_creator?tab=readme-ov-file#running-crabs
       tool_dev_url: https://github.com/gjeunen/reference_database_creator
       doi: 10.1111/1755-0998.13741
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -46,8 +46,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - names:
         type: file
-        description: Containing information about the phylogenetic name associated with
-          each taxonomic ID
+        description: Containing information about the phylogenetic name associated
+          with each taxonomic ID
         pattern: "*.dmp"
         ontologies: []
   - - meta4:
@@ -62,9 +62,17 @@ input:
         ontologies: []
   - import_format:
       type: string
-      description: Name of the repository from which the data was downloaded, i.e.,
-        BOLD, EMBL, GreenGenes, MIDORI, MITOFISH, NCBI, SILVA, or UNITE.
-      choices: ["bold", "embl", "greengenes", "midori", "mitofish", "ncbi", "silva", "unite"]
+      description: Name of the repository from which the data was downloaded,
+        i.e., BOLD, EMBL, GreenGenes, MIDORI, MITOFISH, NCBI, SILVA, or UNITE.
+      choices:
+        - "bold"
+        - "embl"
+        - "greengenes"
+        - "midori"
+        - "mitofish"
+        - "ncbi"
+        - "silva"
+        - "unite"
 output:
   crabsdb:
     - - meta:
@@ -77,13 +85,27 @@ output:
           description: Reverse complemented Sequence
           pattern: "*.txt"
           ontologies: []
+  versions_crabs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - crabs:
+          type: string
+          description: The name of the tool
+      - crabs --help 2>/dev/null | grep -oE 'v[0-9.]+' | cut -c2-:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - crabs:
+          type: string
+          description: The name of the tool
+      - crabs --help 2>/dev/null | grep -oE 'v[0-9.]+' | cut -c2-:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@famosab"
   - "@a4000"

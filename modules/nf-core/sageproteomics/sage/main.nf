@@ -3,9 +3,9 @@ process SAGEPROTEOMICS_SAGE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sage-proteomics:0.14.7--h031d066_0' :
-        'biocontainers/sage-proteomics:0.14.7--h031d066_0' }"
+        'quay.io/biocontainers/sage-proteomics:0.14.7--h031d066_0' }"
 
     input:
     tuple val(meta),  path("*.mzML")
@@ -26,9 +26,6 @@ process SAGEPROTEOMICS_SAGE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     export RAYON_NUM_THREADS=$task.cpus
 
@@ -45,8 +42,6 @@ process SAGEPROTEOMICS_SAGE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch results.json
     touch results.sage.tsv

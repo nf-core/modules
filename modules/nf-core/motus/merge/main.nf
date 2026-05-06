@@ -3,9 +3,9 @@ process MOTUS_MERGE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/motus:3.1.0--pyhdfd78af_0':
-        'biocontainers/motus:3.1.0--pyhdfd78af_0' }"
+        'quay.io/biocontainers/motus:3.1.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -44,13 +44,11 @@ process MOTUS_MERGE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def cmd_input = input.size() > 1 ? "-i ${input.join(',')}" : input.isDirectory() ? "-d ${input}" : "-i ${input}"
     def suffix = task.ext.args?.contains("-B") ? "biom" : "txt"
 
     """
-    touch ${prefix}.txt
+    touch ${prefix}.${suffix}
 
     VERSION=\$(cat ${profile_version_yml} | grep '/*motus:.*' | sed 's/.*otus: //g')
 

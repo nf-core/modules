@@ -31,11 +31,11 @@ nextflow_process {
         when {
             params {
                 module_args = 'afa'
-                module_postprocessing = ''
             }
             process {
                 """
                 input[0] = HMMER_HMMALIGN.out.sto
+                input[1] = ''
                 """
             }
         }
@@ -50,11 +50,11 @@ nextflow_process {
         when {
             params {
                 module_args = '-u phylip'
-                module_postprocessing = ''
             }
             process {
                 """
                 input[0] = HMMER_HMMALIGN.out.sto
+                input[1] = ''
                 """
             }
         }
@@ -70,11 +70,11 @@ nextflow_process {
         when {
             params {
                 module_args = '--gapsym=- afa'
-                module_postprocessing = '| sed "/^>/!s/-//g"'
             }
             process {
                 """
                 input[0] = HMMER_HMMALIGN.out.sto
+                input[1] = '| sed "/^>/!s/-//g"'
                 """
             }
         }
@@ -91,11 +91,11 @@ nextflow_process {
         when {
             params {
                 module_args = '--gapsym=- afa'
-                module_postprocessing = ''
             }
             process {
                 """
                 input[0] = HMMER_HMMALIGN.out.sto
+                input[1] = ''
                 """
             }
         }

@@ -3,12 +3,12 @@ process METAMDBG_ASM {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metamdbg:1.2--h077b44d_0':
-        'biocontainers/metamdbg:1.2--h077b44d_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7e10bfc69865d73b7a65a096fcf054edd5655b6b5825a03e42fe0f4f59ff4562/data':
+        'community.wave.seqera.io/library/metamdbg:1.3.1--315551ec5b8df99a' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, arity: '1..*')
     val(input_type)
 
     output:
@@ -42,7 +42,8 @@ process METAMDBG_ASM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
     touch ${prefix}.metaMDBG.log
-    touch ${prefix}.contigs.fasta.gz
+    echo | gzip > ${prefix}.contigs.fasta.gz
     """
 }

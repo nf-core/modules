@@ -14,7 +14,8 @@ tools:
       documentation: https://cnvkit.readthedocs.io/en/stable/index.html
       tool_dev_url: https://github.com/etal/cnvkit
       doi: 10.1371/journal.pcbi.1004873
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:cnvkit
 input:
   - fasta:
@@ -36,17 +37,31 @@ output:
   cnn:
     - "*.cnn":
         type: file
-        description: File containing a copy-number reference (required for CNV calling
-          in tumor_only mode)
+        description: File containing a copy-number reference (required for CNV
+          calling in tumor_only mode)
         pattern: "*.{cnn}"
         ontologies: []
+  versions_cnvkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvkit:
+          type: string
+          description: The name of the tool
+      - 'cnvkit.py version | sed -e "s/cnvkit v//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvkit:
+          type: string
+          description: The name of the tool
+      - 'cnvkit.py version | sed -e "s/cnvkit v//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@adamrtalbot"
   - "@priesgo"

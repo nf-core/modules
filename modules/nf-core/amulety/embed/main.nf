@@ -4,9 +4,9 @@ process AMULETY_EMBED {
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/amulety_curl_wget:7e9b99e37a280bac':
-        'community.wave.seqera.io/library/amulety_curl_wget:1b7068eb7e2d4527' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/eef2fbc7c8d1ba71b3890a83b520c3eefa136ec4de5a8e6a97db828ae354d7ab/data':
+        'community.wave.seqera.io/library/igblast_curl_python_wget_pruned:07dda71433b05ed5' }"
 
     input:
     tuple val(meta), path(tsv)
@@ -14,7 +14,8 @@ process AMULETY_EMBED {
     val(model)
 
     output:
-    tuple val(meta), path("*.tsv"), emit: embedding
+    tuple val(meta), path("${task.ext.prefix ?: meta.id}.tsv"), emit: embedding
+    tuple val(meta), path("*metadata.tsv"), emit: embedding_metadata
     tuple val("${task.process}"), val('amulety'), eval("amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'"), emit: versions_amulety, topic: versions
 
     when:
@@ -41,5 +42,6 @@ process AMULETY_EMBED {
 
     """
     touch ${prefix}.tsv
+    touch ${prefix}_metadata.tsv
     """
 }

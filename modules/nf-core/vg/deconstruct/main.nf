@@ -3,9 +3,9 @@ process VG_DECONSTRUCT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vg:1.43.0--h9ee0642_0' :
-        'biocontainers/vg:1.43.0--h9ee0642_0' }"
+        'quay.io/biocontainers/vg:1.43.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(gfa)
@@ -23,7 +23,7 @@ process VG_DECONSTRUCT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def snarls = pb ? "--snarls ${pb}" : ""
-    def gbwt_arg = gbwt ? "--gbwt ${gwbt}" : ""
+    def gbwt_arg = gbwt ? "--gbwt ${gbwt}" : ""
     """
     vg deconstruct \\
         --threads $task.cpus \\

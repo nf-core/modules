@@ -12,7 +12,6 @@ nextflow_process {
 
     /* The test database is 4.5Gb and takes a long time to download
     test("iPHoP_db_rw_for-test") {
-        tag "test"
         when {
             params {
                 module_args = '--db_version iPHoP_db_rw_for-test'

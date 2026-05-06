@@ -3,9 +3,9 @@ process MAGUS_ALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-ae4ea1182e75371808710b6c081bef8b228c4815:10b41722a6b9471a0945fe6baeb9aff444d8eb1d-0':
-        'biocontainers/mulled-v2-ae4ea1182e75371808710b6c081bef8b228c4815:10b41722a6b9471a0945fe6baeb9aff444d8eb1d-0' }"
+        'quay.io/biocontainers/mulled-v2-ae4ea1182e75371808710b6c081bef8b228c4815:10b41722a6b9471a0945fe6baeb9aff444d8eb1d-0' }"
 
     input:
     tuple val(meta) , path(fasta)
@@ -14,7 +14,8 @@ process MAGUS_ALIGN {
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('magus'), eval('magus --version'), emit: versions_magus, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,24 +36,11 @@ process MAGUS_ALIGN {
         $write_output \\
         $loadtree \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        MAGUS: \$(magus --version)
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.aln${compress ? '.gz' : ''}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        MAGUS: \$(magus --version)
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 }

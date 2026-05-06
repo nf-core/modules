@@ -13,9 +13,9 @@ process GLIMPSE2_PHASE {
     """
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.1--h46b9e50_1'
-        : 'biocontainers/glimpse-bio:2.0.1--h46b9e50_1'}"
+        : 'quay.io/biocontainers/glimpse-bio:2.0.1--h46b9e50_1'}"
 
     input:
     tuple val(meta), path(input, arity: '1..*'), path(input_index), path(bamlist), path(samples_file), val(input_region), val(output_region), path(reference), path(reference_index), path(map)
@@ -24,7 +24,7 @@ process GLIMPSE2_PHASE {
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bgen}"), emit: phased_variants
     tuple val(meta), path("*.txt.gz"), emit: stats_coverage, optional: true
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_phase --help | grep -oE 'v[0-9.]+' | cut -c2-"), topic: versions, emit: versions_glimpse2
 
     when:
     task.ext.when == null || task.ext.when
@@ -95,11 +95,6 @@ process GLIMPSE2_PHASE {
         ${output_region_cmd} \\
         --thread ${task.cpus} \\
         --output ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse2: "\$(GLIMPSE2_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
-    END_VERSIONS
     """
 
     stub:
@@ -109,10 +104,5 @@ process GLIMPSE2_PHASE {
     def create_cmd = suffix.endsWith(".gz") ? "echo | gzip > ${prefix}.${suffix}" : "touch ${prefix}.${suffix}"
     """
     ${create_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse2: "\$(GLIMPSE2_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
-    END_VERSIONS
     """
 }

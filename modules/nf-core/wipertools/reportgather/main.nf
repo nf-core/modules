@@ -3,9 +3,9 @@ process WIPERTOOLS_REPORTGATHER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/wipertools:1.1.5--pyhdfd78af_0':
-        'biocontainers/wipertools:1.1.5--pyhdfd78af_0' }"
+        'quay.io/biocontainers/wipertools:1.1.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(report)
@@ -22,8 +22,8 @@ process WIPERTOOLS_REPORTGATHER {
     prefix = task.ext.prefix ?: "${meta.id}_gather"
 
     // Check if the output file name is in the list of input files
-    if (report.any { it.name == "${prefix}.report" }) {
-        error 'Output file name "${prefix}.report}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
+    if (report.any { file -> file.name == "${prefix}.report" }) {
+        error 'Output file name "${prefix}.report" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
 
     """
@@ -43,8 +43,8 @@ process WIPERTOOLS_REPORTGATHER {
     prefix = task.ext.prefix ?: "${meta.id}_gather"
 
     // Check if the output file name is in the list of input files
-    if (report.any { it.name == "${prefix}.report" }) {
-        error 'Output file name "${prefix}.report}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
+    if (report.any { file -> file.name == "${prefix}.report" }) {
+        error 'Output file name "${prefix}.report" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
 
     """

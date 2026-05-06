@@ -3,9 +3,9 @@ process HICAP {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hicap:1.0.3--py_0' :
-        'biocontainers/hicap:1.0.3--py_0' }"
+        'quay.io/biocontainers/hicap:1.0.3--py_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -23,7 +23,6 @@ process HICAP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def database_args = database_dir ? "--database_dir ${database_dir}" : ""
     def model_args = model_fp ? "--model_fp ${model_fp}" : ""
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
@@ -47,11 +46,11 @@ process HICAP {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def fasta_name = fasta.getName().split('\\.')[0] // Get the base name without extension
     """
-    touch ${prefix}.gbk
-    touch ${prefix}.svg
-    touch ${prefix}.tsv
+    touch ${fasta_name}.gbk
+    touch ${fasta_name}.svg
+    touch ${fasta_name}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

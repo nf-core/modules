@@ -3,9 +3,9 @@ process VIENNARNA_RNAFOLD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1':
-        'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
+        'quay.io/biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -20,13 +20,13 @@ process VIENNARNA_RNAFOLD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = meta.id ?: "${fasta.getName()}"
+    def prefix = task.ext.prefix ?: meta.id ?: "${fasta.getName()}"
     """
     RNAfold \\
         ${args} \\
         --jobs=${task.cpus} \\
-        --infile=$fasta \\
-        --outfile=${fasta}.fold
+        --infile=${fasta} \\
+        --outfile=${prefix}.fold
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -35,11 +35,10 @@ process VIENNARNA_RNAFOLD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-
+    def prefix = task.ext.prefix ?: meta.id ?: "${fasta.getName()}"
     """
-    touch ${fasta}.fold
-    touch ${fasta}.ps
+    touch ${prefix}.fold
+    touch ${prefix}.ps
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

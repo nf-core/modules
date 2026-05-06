@@ -19,7 +19,8 @@ tools:
       documentation: https://www.ncbi.nlm.nih.gov/books/NBK25501/
       tool_dev_url: https://www.ncbi.nlm.nih.gov/books/NBK25498/
       doi: 10.1016/S0076-6879(96)66012-1
-      licence: ["PUBLIC DOMAIN"]
+      licence:
+        - "PUBLIC DOMAIN"
       identifier: ""
 input:
   - - meta:
@@ -47,14 +48,28 @@ output:
           description: XML file containing search results
           pattern: "*.xml"
           ontologies:
-            - edam: http://edamontology.org/format_2332 # XML
+            - edam: http://edamontology.org/format_2332
+  versions_esearch:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ENTREZDIRECT:
+          type: string
+          description: The name of the tool
+      - esearch -version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ENTREZDIRECT:
+          type: string
+          description: The name of the tool
+      - esearch -version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@alxndrdiaz"
 maintainers:

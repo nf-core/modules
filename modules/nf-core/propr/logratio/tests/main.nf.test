@@ -173,7 +173,6 @@ nextflow_process {
         }
     }
     test("mus_musculus - tsv - alr geneid boxcox") {
-        tag "test"
         when {
             params {
                 module_args = '--transformation alr --reference ENSMUSG00000030324 --alpha 0.2'

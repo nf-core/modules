@@ -1,6 +1,6 @@
 name: "bam2fastx_bam2fastq"
-description: Conversion of PacBio BAM files into gzipped fastq files, including splitting
-  of barcoded data
+description: Conversion of PacBio BAM files into gzipped fastq files, including
+  splitting of barcoded data
 keywords:
   - bam2fastx
   - bam2fastq
@@ -12,9 +12,9 @@ tools:
       homepage: "https://github.com/PacificBiosciences/bam2fastx"
       documentation: "https://github.com/PacificBiosciences/bam2fastx"
       tool_dev_url: "https://github.com/PacificBiosciences/bam2fastx"
-      licence: ["BSD-3-clause-Clear"]
+      licence:
+        - "BSD-3-clause-Clear"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -43,14 +43,28 @@ output:
           description: Gzipped FASTQ file
           pattern: "*.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_bam2fastx:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bam2fastx:
+          type: string
+          description: The name of the tool
+      - bam2fastq --version 2>&1) | sed 's/^.*bam2fastq //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bam2fastx:
+          type: string
+          description: The name of the tool
+      - bam2fastq --version 2>&1) | sed 's/^.*bam2fastq //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@priyanka-surana"
 maintainers:

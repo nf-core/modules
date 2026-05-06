@@ -28,7 +28,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()}
+                { assert snapshot(
+                    file(process.out.fastx[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
             with(process.out.fastx) {
                 // Including headers from both input files

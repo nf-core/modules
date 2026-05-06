@@ -61,7 +61,8 @@ nextflow_process {
                         process.out.user_msa,
                         process.out.filtered,
                         file(process.out.log[0][1]).readLines().contains('INFO: Done.'),
-                        process.out.versions,
+                        process.out.versions_gtdbtk,
+                        process.out.versions_gtdbtk_db,
                     ).match() }
             )
         }

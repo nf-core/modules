@@ -98,13 +98,46 @@ output:
           description: BAM/CRAM file
           pattern: "*.{bam,cram}"
           ontologies: []
+  versions_expansionhunter:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - expansionhunter:
+          type: string
+          description: The tool name
+      - ExpansionHunter --version | head -1 | sed -n 's/^.*ExpansionHunter v//; s/]//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - expansionhunter:
+          type: string
+          description: The tool name
+      - ExpansionHunter --version | head -1 | sed -n 's/^.*ExpansionHunter v//; s/]//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jemten"
 maintainers:

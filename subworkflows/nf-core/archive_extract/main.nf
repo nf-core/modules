@@ -33,11 +33,10 @@ workflow ARCHIVE_EXTRACT {
             UNZIP.out.unzipped_archive,
         )
 
-    versions = versions.mix(UNTAR.out.versions)
     versions = versions.mix(UNZIP.out.versions)
 
     emit:
-    extracted     // channel: [ meta, extracted_archive ]
-    not_extracted // channel: [ meta, not_extracted_archive ]
+    extracted = extracted     // channel: [ meta, extracted_archive ]
+    not_extracted = not_extracted // channel: [ meta, not_extracted_archive ]
     versions      // channel: [ versions.yml ]
 }

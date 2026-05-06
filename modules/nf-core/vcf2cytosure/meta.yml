@@ -74,12 +74,26 @@ output:
           description: SV:s in CytoSure format
           pattern: "*.cgh"
           ontologies: []
+  versions_vcf2cytosure:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2cytosure:
+          type: string
+          description: The name of the tool
+      - vcf2cytosure --version 2>&1 | sed -n 's/.*cytosure //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2cytosure:
+          type: string
+          description: The name of the tool
+      - vcf2cytosure --version 2>&1 | sed -n 's/.*cytosure //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jemten"

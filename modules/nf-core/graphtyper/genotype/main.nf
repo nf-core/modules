@@ -3,9 +3,9 @@ process GRAPHTYPER_GENOTYPE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/graphtyper:2.7.2--h7d7f7ad_0':
-        'biocontainers/graphtyper:2.7.2--h7d7f7ad_0' }"
+        'quay.io/biocontainers/graphtyper:2.7.2--h7d7f7ad_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -24,8 +24,8 @@ process GRAPHTYPER_GENOTYPE {
     script:
     def args          = task.ext.args ?: ''
     def bam_path_text = bam.sort().join('\\n')
-    def region_text   = region_file.size() > 0 ? "--region_file ${region_file}" : ""
-    if (region_file.size() == 0 && ! args.contains("region")) {
+    def region_text   = region_file ? "--region_file ${region_file}" : ""
+    if (!region_file && ! args.contains("region")) {
         error "GRAPHTYPER_GENOTYPE requires either a region file or a region specified using '--region' in ext.args"
     }
     """

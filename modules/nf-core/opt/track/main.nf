@@ -2,7 +2,7 @@ process OPT_TRACK {
     tag "$meta.id"
     label 'process_high'
 
-    container "khersameesh24/opt:v0.0.1"
+    container "quay.io/khersameesh24/opt:v0.0.1"
 
     input:
     tuple val(meta), path(fwd_oriented_fa)
@@ -41,7 +41,6 @@ process OPT_TRACK {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

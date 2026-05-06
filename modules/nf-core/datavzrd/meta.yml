@@ -46,13 +46,27 @@ output:
           type: directory
           description: directory with HTML report of provided CSV/TSV files
           pattern: "${prefix}"
+  versions_datavzrd:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - datavzrd:
+          type: string
+          description: The tool name
+      - "datavzrd --version | sed -e 's/[^0-9.]//g'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - datavzrd:
+          type: string
+          description: The tool name
+      - "datavzrd --version | sed -e 's/[^0-9.]//g'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@vickylaram"
   - "@famosab"

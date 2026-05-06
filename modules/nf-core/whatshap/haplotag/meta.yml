@@ -1,0 +1,126 @@
+name: "whatshap_haplotag"
+description: Tag reads by haplotype
+keywords:
+  - haplotypes
+  - tagging
+  - long-reads
+  - nanopore
+  - pacbio
+tools:
+  - "whatshap":
+      description: "WhatsHap is a software for phasing genomic variants using DNA sequencing
+        reads, also called read-based phasing or haplotype assembly."
+      homepage: "https://whatshap.readthedocs.io"
+      documentation: "https://whatshap.readthedocs.io"
+      tool_dev_url: "https://github.com/whatshap/whatshap"
+      doi: "10.1101/085050"
+      licence:
+        - "MIT"
+      identifier: biotools:whatshap
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: VCF file with phased variants (must be gzip-compressed and
+          indexed)
+        pattern: "*.{vcf.gz}"
+        ontologies: []
+    - tbi:
+        type: file
+        description: VCF index file
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+    - bam:
+        type: file
+        description: BAM/CRAM file with alignments to be tagged by haplotype
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Reference file. Must be accompanied by .fai index
+        pattern: "*.{fasta,fa}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fai:
+        type: file
+        description: Index for reference file.
+        pattern: "*.fai"
+        ontologies: []
+  - include_tsv_output:
+      type: boolean
+      description: Whether to include TSV output file
+      default: false
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: BAM/CRAM/SAM file with tagged reads
+          pattern: "*.{bam,cram,sam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+            - edam: "http://edamontology.org/format_2573"
+            - edam: "http://edamontology.org/format_3462"
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.{tsv,tsv.gz}":
+          type: file
+          description: Write assignments of read names to haplotypes (tab
+            separated) to given output file. If filename ends in .gz, then output
+            is gzipped.
+          pattern: "*.{tsv,tsv.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_whatshap:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "whatshap":
+          type: string
+          description: The name of the tool
+      - "whatshap --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "whatshap":
+          type: string
+          description: The name of the tool
+      - "whatshap --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sofiademmou"
+maintainers:
+  - "@sofiademmou"

@@ -22,7 +22,8 @@ nextflow_process {
                     ]
                     input[1] = [
                         [ id:'Sample_X' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true),
+                        []
                     ]
                     input[2] = ''
                     """

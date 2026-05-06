@@ -29,8 +29,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match()}
             )
         }
@@ -53,10 +52,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

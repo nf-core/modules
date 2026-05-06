@@ -2,58 +2,46 @@
     "test_fastq_align_bwaaln_singleend": {
         "content": [
             "1ca0f48b86ee8cf2417f72d6bf95939a",
-            "test_test.bam.bai",
-            [
-                "versions.yml:md5,f94390f43c6110591280c10e43440f8c"
-            ]
+            "test_test.bam.bai"
         ],
+        "timestamp": "2026-01-28T18:50:18.016278",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-25T09:10:35.364068585"
+        }
     },
     "test_fastq_align_bwaaln_paired_end": {
         "content": [
             "ae4005223c9eb0f2b11bcd984e088f9c",
-            "test_test.bam.bai",
-            [
-                "versions.yml:md5,f94390f43c6110591280c10e43440f8c"
-            ]
+            "test_test.bam.bai"
         ],
+        "timestamp": "2026-01-28T18:50:50.226213",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-25T09:10:47.297375297"
+        }
     },
     "test_fastq_align_bwa_multiref": {
         "content": [
             "88d78879c34214288644aec7ec3cb270",
-            "test_reftest2.bam.bai",
-            [
-                "versions.yml:md5,f94390f43c6110591280c10e43440f8c"
-            ]
+            "test_reftest2.bam.bai"
         ],
+        "timestamp": "2026-01-28T18:51:58.133971",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-25T09:11:19.229417206"
+        }
     },
     "test_fastq_align_bwaaln_both": {
         "content": [
             "ae4005223c9eb0f2b11bcd984e088f9c",
-            "test_test.bam.bai",
-            [
-                "versions.yml:md5,f94390f43c6110591280c10e43440f8c"
-            ]
+            "test_test.bam.bai"
         ],
+        "timestamp": "2026-01-28T18:51:23.684778",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-25T09:11:00.513980745"
+        }
     },
     "test_fastq_align_bwa_multiref -- stub": {
         "content": [
@@ -126,46 +114,6 @@
                         "test2_reftest.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "2": [
-                    
-                ],
-                "3": [
-                    "versions.yml:md5,f94390f43c6110591280c10e43440f8c"
-                ],
-                "bai": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false,
-                            "id_index": "reftest2"
-                        },
-                        "test_reftest2.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false,
-                            "id_index": "reftest"
-                        },
-                        "test_reftest.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test2",
-                            "single_end": true,
-                            "id_index": "reftest2"
-                        },
-                        "test2_reftest2.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test2",
-                            "single_end": true,
-                            "id_index": "reftest"
-                        },
-                        "test2_reftest.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "bam": [
                     [
                         {
@@ -200,25 +148,46 @@
                         "test2_reftest.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "csi": [
-                    
-                ],
-                "versions": [
-                    "versions.yml:md5,f94390f43c6110591280c10e43440f8c"
+                "index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false,
+                            "id_index": "reftest2"
+                        },
+                        "test_reftest2.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false,
+                            "id_index": "reftest"
+                        },
+                        "test_reftest.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "id": "test2",
+                            "single_end": true,
+                            "id_index": "reftest2"
+                        },
+                        "test2_reftest2.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "id": "test2",
+                            "single_end": true,
+                            "id_index": "reftest"
+                        },
+                        "test2_reftest.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ]
-            },
-            [
-                {
-                    "FASTQ_ALIGN_BWAALN:SAMTOOLS_INDEX": {
-                        "samtools": "1.22.1"
-                    }
-                }
-            ]
+            }
         ],
+        "timestamp": "2026-03-12T16:03:08.065600203",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-25T08:39:47.84242452"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }
