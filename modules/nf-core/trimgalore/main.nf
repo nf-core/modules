@@ -1,5 +1,6 @@
 process TRIMGALORE {
     tag "${meta.id}"
+    label 'process_medium'
     label 'process_low_memory'
 
     conda "${moduleDir}/environment.yml"
