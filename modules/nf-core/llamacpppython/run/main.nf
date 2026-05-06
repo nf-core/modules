@@ -30,6 +30,7 @@ process LLAMACPPPYTHON_RUN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         llama-cpp-python: \$(python3 -c 'import llama_cpp; print(llama_cpp.__version__)')
+        cuda: no CUDA available
     END_VERSIONS
     """
 }
