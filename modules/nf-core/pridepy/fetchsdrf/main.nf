@@ -1,11 +1,11 @@
 process PRIDEPY_FETCHSDRF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pridepy:0.0.15--pyhdfd78af_0':
-        'quay.io/biocontainers/pridepy:0.0.15--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pridepy:0.0.15--pyhdfd78af_0'
+        : 'quay.io/biocontainers/pridepy:0.0.15--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), val(pride_id)
@@ -24,7 +24,7 @@ process PRIDEPY_FETCHSDRF {
     pridepy stream-files-metadata \\
         -a "${pride_id}" \\
         -o files_metadata.json \\
-        $args
+        ${args}
 
     # Check if SDRF is present in metadata and extract
     sdrf_name=\$(awk -F'"' '/"fileName" *: *"(sdrf\\.tsv|[^"]+\\.sdrf\\.tsv)"/ {print \$4; exit}' files_metadata.json)
@@ -34,7 +34,7 @@ process PRIDEPY_FETCHSDRF {
         -a "${pride_id}" \\
         -f "\$sdrf_name" \\
         -o . \\
-        $args
+        ${args}
 
     mv "\$sdrf_name" "${prefix}.sdrf.tsv"
     """
