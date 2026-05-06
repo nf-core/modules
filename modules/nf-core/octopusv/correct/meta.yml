@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "octopusv_correct"
+description: "Standardize a caller VCF into OctopuSV SVCF format."
+keywords:
+  - structural
+  - variant
+  - sv
+  - svcf
+  - normalize
+tools:
+  - "octopusv":
+      description: "End-to-end structural variant post-processing: standardize, merge, compare, and export SVs."
+      homepage: "https://github.com/ylab-hi/OctopuSV"
+      documentation: "https://github.com/ylab-hi/OctopuSV"
+      tool_dev_url: "https://github.com/ylab-hi/OctopuSV"
+      doi: "10.1093/bioinformatics/btaf599"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: Structural variant calls in VCF format
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+output:
+  svcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.svcf":
+          type: file
+          description: Standardized SVCF file
+          pattern: "*.svcf"
+          ontologies:
+            - edam: "https://github.com/ylab-hi/OctopuSV/blob/main/docs/SVCF_specifications.md" # SVCF
+  versions_octopusv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - octopusv --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - octopusv --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"
