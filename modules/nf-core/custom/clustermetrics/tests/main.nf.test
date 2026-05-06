@@ -5,14 +5,14 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "custom"
-    tag "custom/cluster_metrics"
-    tag "cluster_metrics"
+    tag "custom/clustermetrics"
+    tag "clustermetrics"
 
-    test("cluster_metrics - features and clusters") {
+    test("clustermetrics - features and clusters") {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/custom/cluster_metrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/custom/cluster_metrics/tests/data/test_clusters.csv", checkIfExists: true) ]
+                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/custom/clustermetrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/custom/clustermetrics/tests/data/test_clusters.csv", checkIfExists: true) ]
                 input[1] = 'test'
                 """
             }
@@ -28,12 +28,12 @@ nextflow_process {
         }
     }
 
-    test("cluster_metrics - features and clusters - stub") {
+    test("clustermetrics - features and clusters - stub") {
         options "-stub"
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/custom/cluster_metrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/custom/cluster_metrics/tests/data/test_clusters.csv", checkIfExists: true) ]
+                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/custom/clustermetrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/custom/clustermetrics/tests/data/test_clusters.csv", checkIfExists: true) ]
                 input[1] = 'test'
                 """
             }

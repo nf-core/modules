@@ -32,7 +32,7 @@ process CLUSTER_METRICS {
     def prefix = task.ext.prefix ?: out_prefix ?: "${meta.id}"
 
     """
-    python3 ${projectDir}/modules/nf-core/custom/cluster_metrics/templates/cluster_metrics.py \\
+    python3 ${moduleDir}/templates/cluster_metrics.py \\
         --features ${features} \\
         --clusters ${clusters} \\
         --out-k-sweep ${prefix}_k_sweep.csv \\
