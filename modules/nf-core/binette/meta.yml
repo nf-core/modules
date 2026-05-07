@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "binette"
+description: write your description here
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "binette":
+      description: "A fast and accurate binning refinement tool to constructs high quality
+        MAGs from the output of multiple binning tools."
+      homepage: "https://binette.readthedocs.io"
+      documentation: "https://binette.readthedocs.io"
+      tool_dev_url: "None"
+      doi: ""
+      licence: ["GPL v3"]
+      identifier: biotools:binette
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - input:
+        type: file
+        description: ""
+        pattern: ""
+        ontologies:
+          - edam: ""
+output:
+  output:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*":
+          type: file
+          description: ""
+          pattern: ""
+          ontologies:
+            - edam: ""
+  versions_binette:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - binette:
+          type: string
+          description: The name of the tool
+      - binette --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - binette:
+          type: string
+          description: The name of the tool
+      - binette --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
