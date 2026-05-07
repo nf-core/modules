@@ -27,21 +27,28 @@ process HMMER_HMMSEARCH {
     alignment      = write_align     ? "-A ${prefix}.sto" : ''
     target_summary = write_target    ? "--tblout ${prefix}.tbl" : ''
     domain_summary = write_domain    ? "--domtblout ${prefix}.domtbl" : ''
+    def seqdb_input = seqdb.toString() - ~/\.gz$/
+    def gunzip      = seqdb.getExtension() == "gz" ? "gunzip -c ${seqdb} > ${seqdb_input}" : ""
+    def cleanup     = seqdb.getExtension() == "gz" ? "rm ${seqdb_input}" : ""
     """
+    ${gunzip}
+
     hmmsearch \\
         $args \\
-        --cpu $task.cpus \\
+        --cpu ${task.cpus} \\
         -o $output \\
-        $alignment \\
-        $target_summary \\
-        $domain_summary \\
-        $hmmfile \\
-        $seqdb
+        ${alignment} \\
+        ${target_summary} \\
+        ${domain_summary} \\
+        ${hmmfile} \\
+        ${seqdb_input}
 
     gzip --no-name *.txt \\
         ${write_align ? '*.sto' : ''} \\
         ${write_target ? '*.tbl' : ''} \\
         ${write_domain ? '*.domtbl' : ''}
+
+    ${cleanup}
     """
 
     stub:
