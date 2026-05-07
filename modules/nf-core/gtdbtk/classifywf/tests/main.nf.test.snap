@@ -1,67 +1,41 @@
 {
     "E. coli - genome fasta": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "assembler": "SPADES"
-                    },
-                    "test.bac120.summary.tsv:md5,6d78949595cbfb145108cc5374dbac23"
-                ]
-            ],
-            [
-                
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "assembler": "SPADES"
-                    },
-                    [
-                        "test.ar53.markers_summary.tsv:md5,3ba12aa91791ee263df1bee8558413eb",
-                        "test.bac120.markers_summary.tsv:md5,49c710e91fe35aff2ee5bf6b1b949ed4"
-                    ]
-                ]
-            ],
-            [
-                
-            ],
-            [
-                
-            ],
-            [
-                
-            ],
-            false,
-            [
-                [
-                    "GTDBTK_CLASSIFYWF",
-                    "gtdbtk",
-                    "2.6.1"
-                ]
-            ],
-            [
-                [
-                    "GTDBTK_CLASSIFYWF",
-                    "gtdb_db",
-                    "r226"
-                ]
-            ]
-        ],
-        "timestamp": "2026-03-06T18:32:07.523214921",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
-    "sarscov2 - genome fasta - stub": {
-        "content": [
             {
-                "0": [
+                "failed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false,
+                            "assembler": "SPADES"
+                        },
+                        "test.failed_genomes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "filtered": [
+                    
+                ],
+                "gtdb_outdir": [
+                    [
+                        {
+                            "assembler": "SPADES",
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "assembler": "SPADES",
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.log"
+                    ]
+                ],
+                "markers": [
                     [
                         {
                             "id": "test",
@@ -69,128 +43,45 @@
                             "assembler": "SPADES"
                         },
                         [
-                            [
-                                "test.ar53.filtered.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "test.ar53.msa.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                                "test.bac120.filtered.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "test.bac120.user_msa.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                            ],
-                            [
-                                "test.ar53.classify.tree:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "test.ar53.summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "test.bac120.classify.tree:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "test.bac120.summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                            ],
-                            [
-                                "test.ar53.markers_summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "test.bac120.markers_summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                            ],
-                            "test.failed_genomes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.log:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.warnings.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "test.ar53.markers_summary.tsv:md5,3ba12aa91791ee263df1bee8558413eb",
+                            "test.bac120.markers_summary.tsv:md5,49c710e91fe35aff2ee5bf6b1b949ed4"
                         ]
                     ]
                 ],
-                "1": [
+                "msa": [
+                    
+                ],
+                "summary": [
                     [
                         {
                             "id": "test",
                             "single_end": false,
                             "assembler": "SPADES"
                         },
-                        [
-                            "test.ar53.summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bac120.summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
+                        "test.bac120.summary.tsv:md5,6d78949595cbfb145108cc5374dbac23"
                     ]
                 ],
-                "10": [
+                "tree": [
+                    
+                ],
+                "user_msa": [
+                    
+                ],
+                "versions_gtdbtk": [
                     [
                         "GTDBTK_CLASSIFYWF",
                         "gtdbtk",
-                        "2.6.1"
+                        "2.7.1"
                     ]
                 ],
-                "11": [
+                "versions_gtdbtk_db": [
                     [
                         "GTDBTK_CLASSIFYWF",
                         "gtdb_db",
-                        ""
+                        "r232"
                     ]
                 ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false,
-                            "assembler": "SPADES"
-                        },
-                        [
-                            "test.ar53.classify.tree:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bac120.classify.tree:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false,
-                            "assembler": "SPADES"
-                        },
-                        [
-                            "test.ar53.markers_summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bac120.markers_summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false,
-                            "assembler": "SPADES"
-                        },
-                        "test.ar53.msa.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "5": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false,
-                            "assembler": "SPADES"
-                        },
-                        "test.bac120.user_msa.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "6": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false,
-                            "assembler": "SPADES"
-                        },
-                        [
-                            "test.ar53.filtered.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bac120.filtered.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "7": [
-                    
-                ],
-                "8": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false,
-                            "assembler": "SPADES"
-                        },
-                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "9": [
+                "warnings": [
                     [
                         {
                             "id": "test",
@@ -199,7 +90,18 @@
                         },
                         "test.warnings.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
-                ],
+                ]
+            }
+        ],
+        "timestamp": "2026-05-07T14:53:00.438674",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - genome fasta - stub": {
+        "content": [
+            {
                 "failed": [
                     
                 ],
@@ -319,7 +221,7 @@
                     [
                         "GTDBTK_CLASSIFYWF",
                         "gtdbtk",
-                        "2.6.1"
+                        "2.7.1"
                     ]
                 ],
                 "versions_gtdbtk_db": [
@@ -341,9 +243,9 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-06T18:32:13.543585307",
+        "timestamp": "2026-05-07T14:56:03.875922",
         "meta": {
-            "nf-test": "0.9.4",
+            "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
     }
