@@ -19,7 +19,7 @@ process FGUMI_EXTRACT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.fgumi_extract"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if (!args.contains('--sample') || !args.contains('--library')) {
         error("fgumi extract requires both --sample and --library to be supplied via task.ext.args")
     }
@@ -32,7 +32,7 @@ process FGUMI_EXTRACT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}.fgumi_extract"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
     """
