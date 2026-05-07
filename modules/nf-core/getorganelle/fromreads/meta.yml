@@ -12,9 +12,9 @@ tools:
       documentation: "https://github.com/Kinggerm/GetOrganelle"
       tool_dev_url: "https://github.com/Kinggerm/GetOrganelle"
       doi: "10.1186/s13059-020-02154-5"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:getorganelle
-
 input:
   - - meta:
         type: map
@@ -58,7 +58,7 @@ output:
       - getorganelle_from_reads:
           type: string
           description: The name of the tool
-      - "get_organelle_from_reads.py --version 2>&1 | sed -n 's/GetOrganelle //p'":
+      - get_organelle_from_reads.py --version |& sed 's/^GetOrganelle //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -69,7 +69,7 @@ topics:
       - getorganelle_from_reads:
           type: string
           description: The name of the tool
-      - "get_organelle_from_reads.py --version 2>&1 | sed -n 's/GetOrganelle //p'":
+      - get_organelle_from_reads.py --version |& sed 's/^GetOrganelle //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

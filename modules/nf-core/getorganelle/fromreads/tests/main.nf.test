@@ -25,14 +25,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                         file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
                     ]
                 ]
                 input[1] = GETORGANELLE_CONFIG.out.db
-
                 """
             }
         }
@@ -45,7 +44,8 @@ nextflow_process {
                     process.out.etc[0][1],
                     process.out.etc.flatten().collect { file(it).name }.sort(),
                     process.out.fasta,
-                    process.out.findAll { key, val -> key.startsWith('versions') }).match('main_output') },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
             )
         }
 
@@ -57,7 +57,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                         file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
@@ -67,25 +67,15 @@ nextflow_process {
                     'animal_mt',
                     file('mock/getorganelle')
                 ]
-
                 """
             }
         }
 
         then {
-            def fileList_results = process.out.etc.flatten().collect { file(it).name }.sort()
-            def fileList_fasta = file(process.out.fasta[0][1]).name
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        fileList_results,
-                        fileList_fasta,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match('file_list') }
-
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }

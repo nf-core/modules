@@ -14,8 +14,7 @@ process GETORGANELLE_FROMREADS {
     output:
     tuple val(meta), path("results/${prefix}.${organelle_type}.fasta.gz"), emit: fasta, optional: true
     path "results/*", emit: etc
-    // the rest of the result files
-    tuple val("${task.process}"), val('getorganelle_from_reads'), eval("get_organelle_from_reads.py --version 2>&1 | sed -n 's/GetOrganelle //p'"), topic: versions, emit: versions_getorganelle
+    tuple val("${task.process}"), val('getorganelle_from_reads'), eval("get_organelle_from_reads.py --version |& sed 's/^GetOrganelle //'"), topic: versions, emit: versions_getorganelle
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,6 +48,6 @@ process GETORGANELLE_FROMREADS {
     mkdir results
     touch results/test_1.fastq
     touch results/test_2.fastq
-    echo ''| gzip > results/${prefix}.${organelle_type}.fasta.gz
+    echo "" | gzip > results/${prefix}.${organelle_type}.fasta.gz
     """
 }
