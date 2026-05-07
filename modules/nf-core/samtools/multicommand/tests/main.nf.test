@@ -1,0 +1,343 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_MULTICOMMAND"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "SAMTOOLS_MULTICOMMAND"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/multicommand"
+
+    test("bam - view, sort") {
+
+        when {
+
+            params {
+                pipeline_args = "-h -F4"
+                pipeline_args2 = "--write-index"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [[],[],[]]
+                input[2] = ["view", "sort"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "cram", "index"])).match()}
+            )
+        }
+    }
+
+    test("bam - view, sort - to cram") {
+
+        when {
+
+            params {
+                pipeline_args = "-h -F4"
+                pipeline_args2 = "-n --output-fmt cram"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = ["view", "sort"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "cram"])).match()}
+            )
+        }
+    }
+
+    test("bam - view, fastq") {
+
+        when {
+
+            params {
+                pipeline_args = "-h -F4"
+                pipeline_args2 = ""
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [[],[],[]]
+                input[2] = ["view", "fastq"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["fastq"])).match()}
+            )
+        }
+    }
+
+    test("cram - view, fasta") {
+
+        when {
+
+            params {
+                pipeline_args = "-h -F4"
+                pipeline_args2 = ""
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = ["view", "fasta"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["fasta"])).match()}
+            )
+        }
+    }
+
+    test("bam - cat, view, sort") {
+
+        when {
+
+            params {
+                pipeline_args = ""
+                pipeline_args2 = "-h -F4"
+                pipeline_args3 = "-n"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    ],
+                    []
+                ]
+                input[1] = [[],[],[]]
+                input[2] = ["cat", "view", "sort"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "cram", "index"])).match()}
+            )
+        }
+    }
+
+    test("cram - view, stats - invalid arg") {
+
+        when {
+
+            params {
+                pipeline_args = "-h -F4"
+                pipeline_args2 = ""
+                pipeline_args3 = ""
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = ["view", "stats"]
+                """
+            }
+        }
+
+        then {
+            { assert process.success == false }
+        }
+    }
+
+    test("bam - view, sort - stub") {
+
+        options "-stub"
+
+        when {
+
+            params {
+                pipeline_args = "-h -F4"
+                pipeline_args2 = "-n"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [[],[],[]]
+                input[2] = ["view", "sort"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
+            )
+        }
+    }
+
+    test("bam - view, sort - to cram - stub") {
+
+        options "-stub"
+
+        when {
+
+            params {
+                pipeline_args = "-h -F4"
+                pipeline_args2 = "-n --output-fmt cram"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = ["view", "sort"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
+            )
+        }
+    }
+
+    test("cram - view, fasta - stub") {
+
+        options "-stub"
+
+        when {
+
+            params {
+                pipeline_args = "-h -F4"
+                pipeline_args2 = ""
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = ["view", "fasta"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
+            )
+        }
+    }
+
+    test("bam - view, fastq - stub") {
+
+        options "-stub"
+
+        when {
+
+            params {
+                pipeline_args = "-h -F4"
+                pipeline_args2 = ""
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [[],[],[]]
+                input[2] = ["view", "fastq"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
+            )
+        }
+    }
+
+}

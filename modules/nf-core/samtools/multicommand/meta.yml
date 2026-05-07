@@ -1,0 +1,185 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "samtools_multicommand"
+description: |
+  Execute a series of samtools commands in a pipeline, allowing flexible composition of
+  samtools operations such as view, sort, markdup, merge, fastq conversion and more.
+
+  The exact order of operations is specified by the pipeline input, which takes a list such as
+  [view, sort, markdup]. This is then interpolated to a script where the output of each command
+  is streamed to the next before being written to disk. The script can handle references being passed,
+  as well as writing indexes, outputting in CRAM format, and conversion to FASTA and FASTQ.
+
+  samtools view ${args} input.bam |\
+    samtools sort ${args2} |\
+    samtools markdup ${args3} -o output.bam
+keywords:
+  - view
+  - sort
+  - markdup
+  - fixmate
+  - merge
+  - cat
+  - collate
+  - fastq
+  - fasta
+  - bam
+  - sam
+  - cram
+tools:
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence:
+        - "MIT"
+      identifier: biotools:samtools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: http://edamontology.org/data_0924 # sequence_trace
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
+          - edam: http://edamontology.org/format_2573 # SAM
+    - index:
+        type: file
+        description: BAM.BAI/BAM.CSI/CRAM.CRAI file (optional)
+        pattern: "*.{bai,csi,crai}"
+        ontologies:
+          - edam: http://edamontology.org/format_3326 # Index
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Fasta reference file
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - fai:
+        type: file
+        description: Fasta reference file index
+        pattern: "*.{fai}"
+        ontologies:
+          - edam: http://edamontology.org/format_3326 # Index
+  - pipeline:
+      type: list
+      description: |
+        List of samtools commands to execute in sequence.
+        Valid options: view, sort, markdup, fixmate, merge, cat, collate, fastq, fasta
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: optional BAM file output
+          pattern: "*.{bam}"
+          ontologies:
+            - edam: http://edamontology.org/data_0924 # sequence_trace
+            - edam: http://edamontology.org/format_2572 # BAM
+  cram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cram":
+          type: file
+          description: optional CRAM file output
+          pattern: "*.{cram}"
+          ontologies:
+            - edam: http://edamontology.org/data_0924 # sequence_trace
+            - edam: http://edamontology.org/format_3462 # CRAM
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sam":
+          type: file
+          description: optional SAM file output
+          pattern: "*.{sam}"
+          ontologies:
+            - edam: http://edamontology.org/data_0924 # sequence_trace
+            - edam: http://edamontology.org/format_2573 # SAM
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{bai,csi,crai}":
+          type: file
+          description: optional index file for alignment output
+          pattern: "*.{bai,csi,crai}"
+          ontologies:
+            - edam: http://edamontology.org/format_3326 # Index
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fasta.gz":
+          type: file
+          description: FASTA files output when final command is "fasta".
+          pattern: "*.fasta.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: FASTQ file output when final command is "fastq".
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_3989 # GZIP
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - samtools:
+          type: string
+          description: Name of the tool
+      - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - samtools:
+          type: string
+          description: Name of the tool
+      - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
