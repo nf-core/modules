@@ -4,8 +4,8 @@ process AFFY_JUSTRMA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-affy:1.78.0--r43ha9d7317_1':
-        'biocontainers/bioconductor-affy:1.78.0--r43ha9d7317_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/62d22bc460807a1a4ded40e5b7a391aa6f2dac189d4153d684472d65333ca8d4/data':
+        'community.wave.seqera.io/library/bioconductor-affy_r-base:dd8a5ecd6fc301b3' }"
 
     input:
     tuple val(meta), path(samplesheet), path(celfiles_dir)

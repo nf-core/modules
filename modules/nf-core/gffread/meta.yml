@@ -68,6 +68,18 @@ output:
             is present
           pattern: "*.fasta"
           ontologies: []
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing meta data
+            e.g. [ id:'test' ]
+      - "*.bed":
+          type: file
+          description: BED file resulting from the conversion of the GFF input file
+            when the '--bed' argument is present
+          pattern: "*.bed"
+          ontologies: []
   versions_gffread:
     - - ${task.process}:
           type: string
