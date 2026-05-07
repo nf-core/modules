@@ -24,6 +24,7 @@ process VSEARCH_CLUSTER {
     tuple val(meta), path('*.profile.txt.gz')        , optional: true, emit: profile
     tuple val(meta), path('*.msa.fasta.gz')          , optional: true, emit: msa
     tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
