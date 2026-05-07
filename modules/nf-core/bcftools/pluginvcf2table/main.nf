@@ -15,7 +15,7 @@ process BCFTOOLS_PLUGINVCF2TABLE {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version"), topic: versions, emit: versions_bcftools
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
     task.ext.when == null || task.ext.when
