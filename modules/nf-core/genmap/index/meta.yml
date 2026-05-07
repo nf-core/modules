@@ -11,7 +11,8 @@ tools:
       documentation: https://github.com/cpockrandt/genmap
       tool_dev_url: https://github.com/cpockrandt/genmap
       doi: "10.1093/bioinformatics/btaa222"
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifier: ""
 input:
   - - meta:
@@ -34,13 +35,27 @@ output:
       - ${prefix}:
           type: directory
           description: Genmap index directory
+  versions_genmap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genmap:
+          type: string
+          description: The name of the tool
+      - "genmap --version |& sed 's/GenMap version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genmap:
+          type: string
+          description: The name of the tool
+      - "genmap --version |& sed 's/GenMap version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jianhong"
   - "@nvnieuwk"
