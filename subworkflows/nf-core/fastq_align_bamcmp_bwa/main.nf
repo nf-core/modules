@@ -22,7 +22,7 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     //
 
     ch_fasta = ch_fasta_fai.map { it -> tuple(it[0], it[1]) }
-    
+
     BWA_MEM_PRIMARY(ch_reads, ch_primary_index, ch_fasta, true)
 
     //
