@@ -38,7 +38,7 @@ process HTSLIB_BGZIPTABIX {
     outfile   = action == "compress" ? (out_ext ? "${prefix}.${out_ext}.gz" : "${prefix}.gz") : (out_ext ? "${prefix}.${out_ext}" : "${prefix}")
 
     def compress_cmd     = action == "compress" ? "bgzip -c ${args} -@ ${task.cpus}" : "cat"
-    def bgzip_cmd        = action == "compress" ? "[ '\$(basename ${infile})' != '\$(basename ${outfile})' ] && ln -s ${infile} ${outfile}" : "${compress_cmd} ${infile} > ${outfile}"
+    def bgzip_cmd        = action == "compress" ? "[ '\$(basename ${infile})' != '\$(basename ${outfile})' ] && ln -s ${infile} ${outfile}" : "bgzip -c -d ${args} -@ ${task.cpus} ${infile} > ${outfile}"
     def tabix_cmd        = make_index ? "tabix -@ ${task.cpus} ${args2} -f ${outfile}" : ""
     def uncompressed_cmd = action == "compress" ? "${compress_cmd} ${infile} > ${outfile}" : (infile.getName() == outfile ? "" : "ln -s ${infile} ${outfile}")
     """

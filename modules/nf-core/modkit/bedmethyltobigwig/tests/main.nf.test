@@ -31,9 +31,9 @@ nextflow_process {
             script "../../../htslib/bgziptabix/main.nf"
             process {
                 """
-                input[0] = MODKIT_PILEUP.out.bedgz,
-                input[1] = "decompress",
-                input[2] = false,
+                input[0] = MODKIT_PILEUP.out.bedgz
+                input[1] = "decompress"
+                input[2] = false
                 input[3] = "bed"
                 """
             }
