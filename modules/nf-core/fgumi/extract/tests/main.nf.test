@@ -16,7 +16,6 @@ nextflow_process {
         when {
             params {
                 module_args = '--library illumina'
-                prefix = ''
             }
             process {
                 """
@@ -45,7 +44,6 @@ nextflow_process {
         when {
             params {
                 module_args = '--read-structures +T +M'
-                prefix = ''
             }
             process {
                 """
@@ -75,7 +73,6 @@ nextflow_process {
         when {
             params {
                 module_args = "--sample test --library test --read-structures +T +M"
-                prefix = ''
             }
             process {
                 """
