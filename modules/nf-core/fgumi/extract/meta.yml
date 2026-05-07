@@ -1,5 +1,6 @@
 name: fgumi_extract
-description: Extract unique molecular indices (UMIs) from FASTQ files and write an unaligned BAM file.
+description: Extract unique molecular indices (UMIs) from FASTQ files and write
+  an unaligned BAM file.
 keywords:
   - umi
   - extract
@@ -7,11 +8,14 @@ keywords:
   - bam
 tools:
   - fgumi:
-      description: High-performance tools for working with UMI-tagged sequencing data.
+      description: High-performance tools for working with UMI-tagged sequencing
+        data.
       homepage: https://github.com/fulcrumgenomics/fgumi
       documentation: https://docs.rs/fgumi
       tool_dev_url: https://github.com/fulcrumgenomics/fgumi
-      licence: ["MIT"]
+      licence:
+        - "MIT"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -22,10 +26,8 @@ input:
         type: file
         description: Input FASTQ files used for UMI extraction.
         pattern: "*.fastq.gz"
-        ontologies: []
-    - sample:
-        type: string
-        description: Sample name to store in the output BAM read group.
+        ontologies:
+          - edam: http://edamontology.org/format_3989
     - library:
         type: string
         description: Library name to store in the output BAM read group.
@@ -51,7 +53,6 @@ output:
       - 'fgumi --version | sed "s/^fgumi //"':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
