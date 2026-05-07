@@ -15,7 +15,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--library illumina'
+                module_args = ''
             }
             process {
                 """
@@ -24,7 +24,8 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    'illumina',
                 ]
                 """
             }
@@ -39,40 +40,13 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - [fastq1, fastq2] - missing library") {
-
-        when {
-            params {
-                module_args = '--read-structures +T +M'
-            }
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_2.fastq.gz', checkIfExists: true)
-                    ]
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert !process.success },
-                { assert process.errorReport.contains('fgumi extract requires both --sample and --library') }
-            )
-            }
-    }
-
     test("homo_sapiens - [fastq1, fastq2] - stub") {
 
         options "-stub"
 
         when {
             params {
-                module_args = "--sample test --library test --read-structures +T +M"
+                module_args = "--read-structures +T +M"
             }
             process {
                 """
@@ -81,7 +55,8 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    'test',
                 ]
                 """
             }

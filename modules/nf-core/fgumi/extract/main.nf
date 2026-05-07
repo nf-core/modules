@@ -8,7 +8,7 @@ process FGUMI_EXTRACT {
         : 'community.wave.seqera.io/library/fgumi:0.2.0--fe028e7a64e5da27'}"
 
     input:
-    tuple val(meta), path(reads), val(sample), val(library)
+    tuple val(meta), path(reads), val(library)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -25,9 +25,9 @@ process FGUMI_EXTRACT {
     fgumi extract \\
         --inputs ${reads.join(' ')} \\
         --output ${prefix}.bam \\
-        --sample "${sample}" \\
-        --library "${library}" \\
-        ${args}
+        ${args} \\
+        --sample ${prefix} \\
+        --library "${library}"
     """
 
     stub:
