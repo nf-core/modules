@@ -13,12 +13,7 @@ nextflow_process {
 
 
         when {
-            params {
-                // Chr22 is too small for meaningful data, so remove all filters
-                // We need 2 workers because otherwise there is a bug (fixed upstream, but without a new version)
-                // that breaks the program with only one worker
-                module_
-            }
+
             process {
 
                 config "./delfi.config"
