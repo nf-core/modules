@@ -1,0 +1,83 @@
+name: "centrifuger_quantification"
+description: Quantification (taxonomic profiling) of Centrifuger model
+keywords:
+  - metagenomics
+  - quantification
+  - Centrifuger
+tools:
+  - "centrifuger":
+      description: "Centrifuger is an efficient taxonomic classification method that
+        compares sequencing reads against a microbial genome database."
+      homepage: "https://github.com/mourisl/centrifuger"
+      documentation: "https://github.com/mourisl/centrifuger"
+      tool_dev_url: "https://github.com/mourisl/centrifuger"
+      doi: "10.1186/s13059-024-03244-4"
+      licence:
+        - "MIT"
+      identifier: biotools:centrifuger
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' single_end:false ]`
+    - classification_file:
+        type: file
+        description: Path to file containing classification results
+  - - meta2:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1', single_end:false ]`
+    - db:
+        type: directory
+        description: Path to directory containing Centrifuger database files (that end in `.cfr`).
+  - taxonomy_nodes:
+      type: file
+      description: File describing parent-child relationships of a taxonomic tree in NCBI nodes.dmp format
+      ontologies:
+        - edam: http://edamontology.org/format_1964
+  - taxonomy_names:
+      type: file
+      description: File describing individual members of a taxonomic tree in NCBI names.dmp format
+      ontologies:
+        - edam: http://edamontology.org/format_1964
+  - size_table:
+      type: file
+      description: Optional - Table of contig (or genome) sizes.
+output:
+  report_file:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "${meta.id}.tsv":
+          type: file
+          description: |
+            File containing taxonomic profiling results
+          pattern: "${prefix}.tsv"
+  versions_centrifuger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - centrifuger:
+          type: string
+          description: The name of the tool
+      - centrifuger -v 2>&1 | sed 's/Centrifuger v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - centrifuger:
+          type: string
+          description: The name of the tool
+      - centrifuger -v 2>&1 | sed 's/Centrifuger v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@haris18s"
+maintainers:
+  - "@haris18s"
+  - "@sofstam"
+  - "@jfy133"

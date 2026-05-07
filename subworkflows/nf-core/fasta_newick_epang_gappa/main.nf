@@ -134,22 +134,25 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     )
 
     // 4. Do the placement
-    ch_epang_query = ch_pp_data.map { it -> [ it.meta, it.data.model, it.data.refphylogeny ] }
+    ch_epang_hmmer = ch_hmmer_data
+        .map { it -> [ it.meta, it.data.model, it.data.refphylogeny ] }
         .join ( HMMER_AFAFORMATQUERY.out.seqreformated )
         .join ( HMMER_AFAFORMATREF.out.seqreformated )
-        .mix(
-            ch_pp_data.map { it -> [ it.meta, it.data.model, it.data.refphylogeny ] }
-                .join(
-                    EPANG_SPLIT_CLUSTALO.out.query
-                        .mix(EPANG_SPLIT_MAFFT.out.query)
-                        .map { it -> [ it[0], it[1] ] }
-                )
-                .join(
-                    EPANG_SPLIT_CLUSTALO.out.reference
-                        .mix(EPANG_SPLIT_MAFFT.out.reference)
-                        .map { it -> [ it[0], it[1] ] }
-                )
-        )
+
+    ch_epang_clustalo = ch_clustalo_data
+        .map { it -> [ it.meta, it.data.model, it.data.refphylogeny ] }
+        .join ( EPANG_SPLIT_CLUSTALO.out.query )
+        .join ( EPANG_SPLIT_CLUSTALO.out.reference )
+
+    ch_epang_mafft = ch_pp_data
+        .filter { it -> it.data.alignmethod == 'mafft' }
+        .map { it -> [ it.meta, it.data.model, it.data.refphylogeny ] }
+        .join ( EPANG_SPLIT_MAFFT.out.query )
+        .join ( EPANG_SPLIT_MAFFT.out.reference )
+
+    ch_epang_query = ch_epang_hmmer
+        .mix(ch_epang_clustalo)
+        .mix(ch_epang_mafft)
         .map { it -> [ [ id:it[0].id, model:it[1] ], it[3], it[4], it[2] ] }
 
     EPANG_PLACE (
@@ -159,7 +162,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
 
     // 5. Calculate a tree with the placed sequences
     GAPPA_GRAFT ( EPANG_PLACE.out.jplace )
-    ch_versions = ch_versions.mix(GAPPA_GRAFT.out.versions)
 
     // 6. Classify
     GAPPA_ASSIGN (
@@ -167,11 +169,9 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
             .map { it -> [ [ id:it[0].id ], it[1] ] }
             .join( ch_pp_data.map { it -> [ [ id: it.meta.id ], it.data.taxonomy ] } )
     )
-    ch_versions = ch_versions.mix(GAPPA_ASSIGN.out.versions)
 
     // 7. Heat tree output
     GAPPA_HEATTREE ( EPANG_PLACE.out.jplace )
-    ch_versions = ch_versions.mix(GAPPA_HEATTREE.out.versions)
 
     emit:
     epang               = EPANG_PLACE.out.epang
