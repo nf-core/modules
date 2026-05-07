@@ -99,7 +99,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["fastq"])).match()}
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["fastq", "fastq_other"])).match()}
             )
         }
     }
@@ -133,7 +133,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["fasta"])).match()}
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["fasta", "fasta_other"])).match()}
             )
         }
     }

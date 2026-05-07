@@ -20,8 +20,16 @@ process SAMTOOLS_MULTICOMMAND {
     tuple val(meta), path("*.{bai,csi,crai}"), optional: true, emit: index
 
     // Sequence outputs (fasta, fastq)
-    tuple val(meta), path("*.fasta.gz"), optional: true, emit: fasta
-    tuple val(meta), path("*.fastq.gz"), optional: true, emit: fastq
+    tuple val(meta), path("*.fasta.gz")            , emit: fasta            , optional: true
+    tuple val(meta), path("*.fastq.gz")            , emit: fastq            , optional: true
+    tuple val(meta), path("*_{1,2}.fasta.gz")      , emit: fasta_pair       , optional: true
+    tuple val(meta), path("*_interleaved.fasta.gz"), emit: fasta_interleaved, optional: true
+    tuple val(meta), path("*_singleton.fasta.gz")  , emit: fasta_singleton  , optional: true
+    tuple val(meta), path("*_other.fasta.gz")      , emit: fasta_other      , optional: true
+    tuple val(meta), path("*_{1,2}.fastq.gz")      , emit: fastq_pair       , optional: true
+    tuple val(meta), path("*_interleaved.fastq")   , emit: fastq_interleaved, optional: true
+    tuple val(meta), path("*_singleton.fastq.gz")  , emit: fastq_singleton  , optional: true
+    tuple val(meta), path("*_other.fastq.gz")      , emit: fastq_other      , optional: true
 
     tuple val("${task.process}"), val('samtools'), eval('samtools version | sed "1!d;s/.* //"'), emit: versions_samtools, topic: versions
 
@@ -32,10 +40,14 @@ process SAMTOOLS_MULTICOMMAND {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    if (pipeline.size() <=1) {
+        error("Error: SAMTOOLS_MULTICOMMAND requires at least two commands!")
+    }
+
     def valid_options = ['view', 'sort', 'markdup', 'fixmate', 'merge', 'cat', 'collate', 'fastq', 'fasta']
     pipeline.collect { tool ->
         if (!(tool in valid_options)) {
-            error("Error: ${tool} not a valid pipeline argument for SAMTOOLS_PIPELINE! Valid options are: ${valid_options.join(", ")}")
+            error("Error: ${tool} not a valid pipeline argument for SAMTOOLS_MULTICOMMAND! Valid options are: ${valid_options.join(", ")}")
         }
     }
 
@@ -80,8 +92,10 @@ process SAMTOOLS_MULTICOMMAND {
     def pipeline_command = pipeline.withIndex().collect { subcommand, idx ->
         def argsKey = idx == 0 ? "args" : "args${idx + 1}"
         def taskArgs = task.ext[argsKey] ?: ""
+        def lastCommand = (idx == n_commands - 1)
 
         def cmd_parts = ["samtools", subcommand]
+        if(subcommand != "cat") { cmd_parts <<  "-@ ${task.cpus}" }
         if (taskArgs) {
             cmd_parts << taskArgs
         }
@@ -91,7 +105,9 @@ process SAMTOOLS_MULTICOMMAND {
             }
             cmd_parts << (input instanceof List ? input.join(" ") : input)
         }
-        if (idx == n_commands - 1) {
+        if (!lastCommand) {
+            if (subcommand != "cat") { cmd_parts << "-u" }
+        } else {
             if (output_reference) {
                 cmd_parts << output_reference
             }
