@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "htslib_bgziptabix"
-description: "Multi-purpose module to compress, decompress and index files using bgzip and tabix."
+description: "Multi-purpose module to compress, decompress and index files using bgzip
+  and tabix."
 keywords:
   - compress
   - decompress
@@ -17,9 +17,9 @@ tools:
       documentation: "http://www.htslib.org/doc/"
       tool_dev_url: "https://github.com/samtools/htslib"
       doi: "10.1093/gigascience/giab007"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:htslib
-
 input:
   - - meta:
         type: map
@@ -36,7 +36,8 @@ input:
       description: Action to perform, either `compress` or `decompress`
   - make_index:
       type: boolean
-      description: Whether to create a tabix index for the output file; only used if `action` is `compress`
+      description: Whether to create a tabix index for the output file; only used
+        if `action` is `compress`
   - out_ext:
       type: string
       description: Output file extension without `.gz` suffix (for example `vcf`)
@@ -47,11 +48,23 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
-      - "*":
+      - ${outfile}:
           type: file
           description: Compressed or decompressed output file
           pattern: "*"
           ontologies: []
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${outfile}.{tbi,csi}:
+          type: file
+          description: Tabix index file for the compressed output file
+          pattern: "*.{tbi,csi}"
+          ontologies:
+            - edam: http://edamontology.org/format_3616 # tabix
   versions_htslib:
     - - ${task.process}:
           type: string
@@ -59,7 +72,7 @@ output:
       - htslib:
           type: string
           description: The name of the tool
-      - "bgzip --version | sed '1! d; s/bgzip (htslib) //'":
+      - bgzip --version | sed '1! d; s/bgzip (htslib) //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -70,7 +83,7 @@ topics:
       - htslib:
           type: string
           description: The name of the tool
-      - "bgzip --version | sed '1! d; s/bgzip (htslib) //'":
+      - bgzip --version | sed '1! d; s/bgzip (htslib) //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

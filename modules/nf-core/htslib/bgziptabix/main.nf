@@ -4,11 +4,11 @@ process HTSLIB_BGZIPTABIX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/53/53334d0d6ed42b863e50a0feb601505035ed5d5ae9fe6507cadceacc9f1545aa/data':
-        'community.wave.seqera.io/library/htslib:1.23.1--45117a0a8dbaa21c' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/33/33a1f2c7f36ec58339e41cbea096d121f606918778a91cfbef944b40ba7ce48b/data':
+        'community.wave.seqera.io/library/htslib_xz:49c8c84af5c4b3b9' }"
 
     input:
-    tuple val(meta), path(in_file)
+    tuple val(meta), path(infile)
     val action
     val make_index
     val out_ext
@@ -37,23 +37,24 @@ process HTSLIB_BGZIPTABIX {
     prefix    = task.ext.prefix ?: "${meta.id}"
     outfile   = action == "compress" ? (out_ext ? "${prefix}.${out_ext}.gz" : "${prefix}.gz") : (out_ext ? "${prefix}.${out_ext}" : "${prefix}")
 
-    def compress_cmd = action == "compress" ? "bgzip -c ${args} -@ ${task.cpus}" : "cat"
-    def bgzip_cmd    = action == "compress" ? "[ '\$(basename ${in_file})' != '\$(basename ${outfile})' ] && ln -s ${in_file} ${outfile} ;;" : "bgzip -d -c ${args} -@ ${task.cpus} ${in_file} > ${outfile} ;;"
-    def tabix_cmd    = make_index ? "tabix -@ ${task.cpus} ${args2} -f ${outfile}" : ""
+    def compress_cmd     = action == "compress" ? "bgzip -c ${args} -@ ${task.cpus}" : "cat"
+    def bgzip_cmd        = action == "compress" ? "[ '\$(basename ${infile})' != '\$(basename ${outfile})' ] && ln -s ${infile} ${outfile}" : "${compress_cmd} ${infile} > ${outfile}"
+    def tabix_cmd        = make_index ? "tabix -@ ${task.cpus} ${args2} -f ${outfile}" : ""
+    def uncompressed_cmd = action == "compress" ? "${compress_cmd} ${infile} > ${outfile}" : (infile.getName() == outfile ? "" : "ln -s ${infile} ${outfile}")
     """
-    FILE_TYPE=\$(htsfile ${in_file})
+    FILE_TYPE=\$(htsfile ${infile})
     case "\$FILE_TYPE" in
         *BGZF-compressed*)
-            ${bgzip_cmd}
+            ${bgzip_cmd} ;;
         *gzip-compressed*)
-            [ "\$(basename ${in_file})" == "\$(basename ${outfile})" ] && echo "Input and output names cannot be the same" && exit 1
-            zcat  ${in_file} | ${compress_cmd} > ${outfile} ;;
+            [ "\$(basename ${infile})" == "\$(basename ${outfile})" ] && echo "Input and output names cannot be the same" && exit 1
+            zcat  ${infile} | ${compress_cmd} > ${outfile} ;;
         *bzip2-compressed*)
-            bzcat ${in_file} | ${compress_cmd} > ${outfile} ;;
+            bzcat ${infile} | ${compress_cmd} > ${outfile} ;;
         *XZ-compressed*)
-            xzcat ${in_file} | ${compress_cmd} > ${outfile} ;;
+            xzcat ${infile} | ${compress_cmd} > ${outfile} ;;
         *)
-            ${compress_cmd} ${in_file} > ${outfile} ;;
+            ${uncompressed_cmd} ;;
     esac
 
     ${tabix_cmd}

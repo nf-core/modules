@@ -186,6 +186,30 @@ nextflow_process {
         }
     }
 
+    test("sarscov2 - gzip - name clash") {
+
+         when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = 'compress' // action
+                input[2] = false // make_index
+                input[3] = 'fastq' // out_ext
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assertAll(
+                { assert process.errorReport.contains("Input and output names cannot be the same") }
+            )
+        }
+    }
+
     test("metagenome - bz2 - decompress") {
 
          when {
