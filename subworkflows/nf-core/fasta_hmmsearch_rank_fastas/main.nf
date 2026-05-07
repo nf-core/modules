@@ -18,7 +18,6 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
         .set { ch_hmmsearch }
 
     HMMER_HMMSEARCH ( ch_hmmsearch )
-    ch_versions = ch_versions.mix(HMMER_HMMSEARCH.out.versions.first())
 
     HMMER_HMMSEARCH.out.target_summary
         .collect { index -> index[1] }
