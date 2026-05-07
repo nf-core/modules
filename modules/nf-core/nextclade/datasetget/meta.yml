@@ -1,14 +1,14 @@
 name: nextclade_datasetget
-description: Get dataset for SARS-CoV-2 genome clade assignment, mutation calling,
-  and sequence quality checks (C++ implementation)
+description: Get dataset for SARS-CoV-2 genome clade assignment, mutation
+  calling, and sequence quality checks (C++ implementation)
 keywords:
   - nextclade
   - variant
   - consensus
 tools:
   - nextclade:
-      description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence
-        quality checks
+      description: SARS-CoV-2 genome clade assignment, mutation calling, and
+        sequence quality checks
       homepage: https://github.com/nextstrain/nextclade
       documentation: https://github.com/nextstrain/nextclade
       tool_dev_url: https://github.com/nextstrain/nextclade
@@ -17,26 +17,40 @@ tools:
 input:
   - dataset:
       type: string
-      description: Name of dataset to retrieve. A list of available datasets can be
-        obtained using the nextclade dataset list command.
+      description: Name of dataset to retrieve. A list of available datasets can
+        be obtained using the nextclade dataset list command.
       pattern: ".+"
   - tag:
       type: string
-      description: Version tag of the dataset to download. A list of available datasets
-        can be obtained using the nextclade dataset list command.
+      description: Version tag of the dataset to download. A list of available
+        datasets can be obtained using the nextclade dataset list command.
       pattern: ".+"
 output:
   dataset:
     - $prefix:
         type: directory
         description: Directory containing the dataset
+  versions_nextclade:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - nextclade:
+          type: string
+          description: The tool name
+      - "nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'":
+          type: eval
+          description: The version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - nextclade:
+          type: string
+          description: The tool name
+      - "nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'":
+          type: eval
+          description: The version of the tool
 authors:
   - "@antunderwood"
   - "@drpatelh"

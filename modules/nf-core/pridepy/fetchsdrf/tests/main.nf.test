@@ -1,23 +1,22 @@
-
 nextflow_process {
 
-    name "Test Process GAPPA_EXAMINEGRAFT"
+    name "Test Process PRIDEPY_FETCHSDRF"
     script "../main.nf"
-    process "GAPPA_EXAMINEGRAFT"
+    process "PRIDEPY_FETCHSDRF"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "gappa"
-    tag "gappa/examinegraft"
+    tag "pridepy"
+    tag "pridepy/fetchsdrf"
 
-    test("test-gappa-examinegraft") {
+    test("pride - PXD004684") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'delete_me/gappa/epa_result.jplace.gz', checkIfExists: true)
+                    [ id:'PXD004684' ],
+                    'PXD004684'
                 ]
                 """
             }
@@ -26,22 +25,24 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.sdrf[0][1]).text.contains('Source Name') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
+
     }
 
-    test("test-gappa-examinegraft-stub") {
-        options '-stub'
+    test("pride - PXD004684 - stub") {
+
+        options "-stub"
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'delete_me/gappa/epa_result.jplace.gz', checkIfExists: true)
+                    [ id:'PXD004684' ],
+                    'PXD004684'
                 ]
-
                 """
             }
         }
@@ -52,6 +53,7 @@ nextflow_process {
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
+
     }
 
 }
