@@ -39,9 +39,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                        [ id:'test', single_end:false, assembler:'SPADES' ],
-                        [file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)]
-                    ]
+                    [ id:'test', single_end:false, assembler:'SPADES' ],
+                    [file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)]
+                ]
                 input[1] = UNTAR.out.untar
                 input[2] = false
                 """
@@ -74,7 +74,7 @@ nextflow_process {
                     [ id:'test', single_end:false, assembler:'SPADES' ],
                     [file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)]
                 ]
-                input[1] = [[:],[]]
+                input[1] = UNTAR.out.untar
                 input[2] = false
                 """
             }
