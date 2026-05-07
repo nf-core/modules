@@ -13,7 +13,9 @@ process CLUSTER_METRICS {
     tag "$meta.id"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
-
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/clustermetrics:dev' :
+        'quay.io/nf-core/clustermetrics:dev' }"
     input:
     tuple val(meta), path(features), path(clusters)
     val out_prefix

@@ -13,7 +13,9 @@ process CLUSTER_VIZ {
     tag "$meta.id"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
-
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    'https://depot.galaxyproject.org/singularity/clustervisualiation:dev' :
+    'quay.io/nf-core/clustervisualiation:dev' }"
     input:
     tuple val(meta), path(features), path(clusters), path(pca_scores)
     val out_prefix
