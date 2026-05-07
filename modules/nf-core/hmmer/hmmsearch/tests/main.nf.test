@@ -30,7 +30,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.output[0][1]).linesGzip.toString().contains('[ok]') },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
             )
         }
 
@@ -60,7 +60,7 @@ nextflow_process {
                 { assert path(process.out.target_summary.get(0).get(1)).linesGzip.toString().contains('[ok]') },
                 { assert snapshot(
                     process.out.alignments +
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
