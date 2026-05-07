@@ -13,7 +13,7 @@ process NEXTCLADE_DATASETGET {
 
     output:
     path "$prefix"     , emit: dataset
-    tuple val("${task.process}"), val('nextclade'), eval("nextclade --version 2>&1 | sed 's/^.*nextclade //; s/ .*\$//'"), emit: versions_nextclade, topic: versions
+    tuple val("${task.process}"), val('nextclade'), eval("nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'"), emit: versions_nextclade, topic: versions
 
 
     when:

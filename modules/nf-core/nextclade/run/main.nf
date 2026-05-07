@@ -22,7 +22,7 @@ process NEXTCLADE_RUN {
     tuple val(meta), path("${prefix}.aligned.fasta") , optional:true, emit: fasta_aligned
     tuple val(meta), path("*_translation.*.fasta")   , optional:true, emit: fasta_translation
     tuple val(meta), path("${prefix}.nwk")           , optional:true, emit: nwk
-    tuple val("${task.process}"), val('nextclade'), eval("nextclade --version 2>&1 | sed 's/^.*nextclade //; s/ .*\$//'"), emit: versions_nextclade, topic: versions
+    tuple val("${task.process}"), val('nextclade'), eval("nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'"), emit: versions_nextclade, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -153,7 +153,7 @@ output:
       - nextclade:
           type: string
           description: The tool name
-      - "nextclade --version 2>&1 | sed 's/^.*nextclade //; s/ .*\\$//'":
+      - "nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'":
           type: eval
           description: The version of the tool
 topics:
@@ -164,7 +164,7 @@ topics:
       - nextclade:
           type: string
           description: The tool name
-      - "nextclade --version 2>&1 | sed 's/^.*nextclade //; s/ .*\\$//'":
+      - "nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'":
           type: eval
           description: The version of the tool
 authors:
