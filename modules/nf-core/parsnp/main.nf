@@ -45,12 +45,14 @@ process PARSNP {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def partition_cmd = args.contains("partition") ? "mkdir partition" : ""
     """
     touch ${prefix}.xmfa
     touch ${prefix}.ggr
     touch ${prefix}.snps.mblocks
     touch ${prefix}.tree
-    mkdir partition
+    ${partition_cmd}
     """
 }

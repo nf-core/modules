@@ -10,7 +10,6 @@ nextflow_process {
     tag "parsnp"
 
     test("candidatus_portiera_aleyrodidarum - fasta") {
-        config './nextflow.config'
         when {
             params {
                 module_args = ''
@@ -34,7 +33,6 @@ nextflow_process {
     }
 
     test("candidatus_portiera_aleyrodidarum - fasta - stub") {
-        config './nextflow.config'
         options "-stub"
 
         when {
@@ -61,7 +59,6 @@ nextflow_process {
     }
 
     test("candidatus_portiera_aleyrodidarum - fasta - partition") {
-        config './nextflow.config'
         when {
             params {
                 module_args = '--min-partition-size 1'
@@ -80,13 +77,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.partition },
                 { assert snapshot(
                     process.out.xmfa,
                     process.out.ggr,
                     process.out.snps_mblocks,
                     process.out.tree,
-                    process.out.versions_parsnp
+                    process.out.versions_parsnp,
+                    file(process.out.partition[0][1]).name
                 ).match() }
             )
         }
@@ -94,7 +91,6 @@ nextflow_process {
     }
 
     test("candidatus_portiera_aleyrodidarum - fasta - partition - stub") {
-        config './nextflow.config'
         options "-stub"
 
         when {
