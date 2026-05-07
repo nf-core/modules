@@ -26,10 +26,11 @@ process FINALETOOLKIT_DELFI {
     """
     finaletoolkit \\
         delfi \\
-        -w ${task.cpus}
+        -w ${task.cpus} \\
         ${bam} \\
         ${chromosome_sizes} \\
         ${genome_2bit} \\
+        ${bins} \\
         ${args} \\
         -o "${prefix}_delfi.bed"
     """

@@ -17,10 +17,12 @@ nextflow_process {
                 // Chr22 is too small for meaningful data, so remove all filters
                 // We need 2 workers because otherwise there is a bug (fixed upstream, but without a new version)
                 // that breaks the program with only one worker
-                task.cpus = 2
-                ext.args = "--no-merge-bins --no-gc-correct --quality-threshold 0"
+                module_
             }
             process {
+
+                config "./delfi.config"
+
                 """
                 input[0] = [
                     [ id:'test' ],
