@@ -4,8 +4,8 @@ process VSEARCH_CLUSTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:7b3365d778c690ca79bc85aaaeb86bb39a2dec69-0':
-        'quay.io/biocontainers/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:7b3365d778c690ca79bc85aaaeb86bb39a2dec69-0' }"
+        'oras://community.wave.seqera.io/library/samtools_vsearch:8a419aba60edb7b2':
+        'community.wave.seqera.io/library/samtools_vsearch:8a419aba60edb7b2' }"
 
     input:
     tuple val(meta), path(fasta)
