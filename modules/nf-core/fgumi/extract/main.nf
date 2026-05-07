@@ -8,7 +8,7 @@ process FGUMI_EXTRACT {
         : 'community.wave.seqera.io/library/fgumi:0.2.0--fe028e7a64e5da27'}"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads), val(sample), val(library)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -20,14 +20,13 @@ process FGUMI_EXTRACT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (!args.contains('--sample') || !args.contains('--library')) {
-        error("fgumi extract requires both --sample and --library to be supplied via task.ext.args")
-    }
 
     """
     fgumi extract \\
         --inputs ${reads.join(' ')} \\
         --output ${prefix}.bam \\
+        --sample "${sample}" \\
+        --library "${library}" \\
         ${args}
     """
 

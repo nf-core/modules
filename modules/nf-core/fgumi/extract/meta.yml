@@ -23,6 +23,12 @@ input:
         description: Input FASTQ files used for UMI extraction.
         pattern: "*.fastq.gz"
         ontologies: []
+    - sample:
+        type: string
+        description: Sample name to store in the output BAM read group.
+    - library:
+        type: string
+        description: Library name to store in the output BAM read group.
 output:
   bam:
     - - meta:
