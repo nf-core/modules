@@ -1,0 +1,74 @@
+name: huggingface_download
+description: Download a file from a Hugging Face Hub repository using the `hf` CLI
+keywords:
+  - download
+  - gguf
+  - huggingface
+  - hub
+  - inference
+  - llm
+  - model
+tools:
+  - huggingface_hub:
+      description: "Client library for interacting with the Hugging Face Hub, providing the `hf` CLI for downloading and uploading repositories, models and datasets."
+      homepage: "https://huggingface.co/docs/huggingface_hub"
+      documentation: "https://huggingface.co/docs/huggingface_hub/guides/cli"
+      tool_dev_url: "https://github.com/huggingface/huggingface_hub"
+      licence:
+        - "Apache-2.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - hf_repo:
+        type: string
+        description: |
+          Hugging Face repository identifier in `<owner>/<repo>` form,
+          e.g. `ggml-org/gemma-3-1b-it-GGUF`.
+    - hf_file:
+        type: string
+        description: |
+          Path of the file to download within the repository,
+          e.g. `gemma-3-1b-it-Q4_K_M.gguf`. The downloaded file is emitted
+          with this name in the task work directory.
+output:
+  output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - hf_file:
+          type: file
+          description: Downloaded file from the Hugging Face repository
+          ontologies: []
+  versions_huggingface_hub:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - huggingface_hub:
+          type: string
+          description: The name of the tool
+      - hf --version 2>&1 | tail -n1 | awk '{print \$NF}':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - huggingface_hub:
+          type: string
+          description: The name of the tool
+      - hf --version 2>&1 | tail -n1 | awk '{print \$NF}':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@toniher"
+  - "@lucacozzuto"
+maintainers:
+  - "@toniher"
+  - "@lucacozzuto"
