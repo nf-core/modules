@@ -4,7 +4,7 @@ process VSEARCH_CLUSTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'docker://community.wave.seqera.io/library/samtools_vsearch:8a419aba60edb7b2':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c94475a0cc7e44a967584e09e39343c138ce5fa7231ae11c6b5b72b28de58c92/data':
         'community.wave.seqera.io/library/samtools_vsearch:8a419aba60edb7b2' }"
 
     input:
