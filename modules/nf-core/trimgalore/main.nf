@@ -1,6 +1,7 @@
 process TRIMGALORE {
     tag "${meta.id}"
-    label 'process_low'
+    label 'process_medium'
+    label 'process_low_memory'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
