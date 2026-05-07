@@ -1,65 +1,128 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "binette"
-description: write your description here
+name: binette
+description: A fast and accurate binning refinement tool to construct high quality MAGs from the output of multiple binning tools.
 keywords:
-  - sort
-  - example
+  - binning
+  - refinement
   - genomics
+  - metagenomics
+  - mag
 tools:
-  - "binette":
-      description: "A fast and accurate binning refinement tool to constructs high quality
-        MAGs from the output of multiple binning tools."
-      homepage: "https://binette.readthedocs.io"
-      documentation: "https://binette.readthedocs.io"
-      tool_dev_url: "None"
-      doi: ""
-      licence: ["GPL v3"]
-      identifier: biotools:binette
-
+  - binette:
+      description: |
+        Binette is a fast and accurate binning refinement tool designed t
+        construct high-quality MAGs from the output of multiple binning tools.
+      homepage: https://binette.readthedocs.io
+      documentation: https://binette.readthedocs.io
+      tool_dev_url: https://github.com/genotoul-bioinfo/Binette
+      licence:
+        - GPL-3.0
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g. `[
-          id:'sample1' ]`
-    - input:
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - contig2bin:
         type: file
-        description: ""
-        pattern: ""
+        description: Contig to bin assignment file
+        pattern: "*.tsv"
         ontologies:
-          - edam: ""
+          - edam: http://edamontology.org/format_3475 # TSV
+    - contigs:
+        type: file
+        description: Fasta file containing contigs
+        pattern: "*.{fa.gz,fas.gz,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - proteins:
+        type: file
+        description: optional AA Fasta file containing contigs
+        pattern: "*.{fa.gz,fas.gz,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - checkm2_db:
+        type: file
+        description: CheckM2 DIAMOND database file.
+        ontologies: []
 output:
-  output:
+  final_bins:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
-      - "*":
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "final_bins/*.fa.gz":
           type: file
-          description: ""
-          pattern: ""
+          description: Refined bins in fasta format
+          pattern: "*.fa.gz"
           ontologies:
-            - edam: ""
+            - edam: http://edamontology.org/format_3475 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  contig2bin:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.final_contig_to_bin.tsv":
+          type: file
+          description: Final contig to bin assignment file
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  input_bins_quality_reports:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "input_bins_quality_reports/*.tsv":
+          type: file
+          description: Quality reports for input bins
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  final_bins_quality_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.final_bins_quality_reports.tsv":
+          type: file
+          description: Quality report for final refined bins
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   versions_binette:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
       - binette:
           type: string
           description: The name of the tool
-      - binette --version:
+      - binette --version | sed 's/Binnette //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
       - binette:
           type: string
           description: The name of the tool
-      - binette --version:
+      - binette --version | sed 's/Binnette //':
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@prototaxites"
 maintainers:
