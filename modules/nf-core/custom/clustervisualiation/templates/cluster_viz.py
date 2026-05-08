@@ -82,24 +82,13 @@ def safe_perplexity(n_samples: int, requested: float) -> float:
 
 
 def compute_umap(x: np.ndarray, n_neighbors: int, min_dist: float) -> np.ndarray:
-    try:
-        import umap
-
-        return umap.UMAP(
-            n_components=2,
-            n_neighbors=n_neighbors,
-            min_dist=min_dist,
-            random_state=42,
-        ).fit_transform(x)
-    except Exception as e:
-        print(f"[WARN] UMAP failed, fallback to first 2 feature columns: {e}")
-        if x.shape[1] >= 2:
-            return x[:, :2]
-        elif x.shape[1] == 1:
-            return np.column_stack([x[:, 0], np.zeros(x.shape[0])])
-        else:
-            return np.zeros((x.shape[0], 2))
-
+    import umap
+    return umap.UMAP(
+        n_components=2,
+        n_neighbors=n_neighbors,
+        min_dist=min_dist,
+        random_state=42,
+    ).fit_transform(x)
 
 def compute_tsne(x: np.ndarray, perplexity: float, max_iter: int) -> np.ndarray:
     return TSNE(
