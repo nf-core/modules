@@ -19,6 +19,7 @@ nextflow_process {
             run("HUGGINGFACE_DOWNLOAD") {
                 script "../../../huggingface/download/main.nf"
                 process {
+                    """
                     input[0] = [
                         [ id:'test_model' ],
                         "mradermacher/tiny-gemma-test-i1-GGUF",
