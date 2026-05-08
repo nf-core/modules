@@ -20,19 +20,18 @@ process CUSTOM_CLUSTERMETRICS {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: out_prefix ?: "${meta.id}"
+    template 'cluster_metrics.py'
 
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    python3 ${moduleDir}/templates/cluster_metrics.py \\
-        --features ${features} \\
-        --clusters ${clusters} \\
-        --out-k-sweep ${prefix}_k_sweep.csv \\
-        --out-selected ${prefix}_selected.json \\
-        --out-prefix ${prefix}
+    touch ${prefix}_metrics.tsv
+    touch ${prefix}_k_sweep.csv
+    touch ${prefix}_selected.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        python: \$(python3 --version | cut -d' ' -f2)
+        python: \$(python3 --version | sed 's/Python //')
         pandas: \$(python3 -c "import pandas; print(pandas.__version__)")
         scikit-learn: \$(python3 -c "import sklearn; print(sklearn.__version__)")
         matplotlib: \$(python3 -c "import matplotlib; print(matplotlib.__version__)")
