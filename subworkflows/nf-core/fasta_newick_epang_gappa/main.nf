@@ -44,8 +44,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
                 .map { it -> [ it.meta, it.data.hmmfile ] }
         )
 
-    ch_versions = ch_versions.mix(HMMER_HMMBUILD.out.versions.first())
-
     // 1.b For entries that do not specify an hmm file, "unalign" the reference sequences before they can be aligned to the hmm.
     HMMER_UNALIGNREF (
         ch_hmmer_data
@@ -72,7 +70,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         ch_hmmer_alignref.map { it -> [ it[0], it[1][0] ] },
         ch_hmmer_alignref.map { it -> it[1][1] }
     )
-    ch_versions = ch_versions.mix(HMMER_HMMALIGNREF.out.versions)
 
     ch_hmmer_alignquery = channel.empty()
         .mix(ch_hmmer_data.map { it -> [ it.meta, it.data.queryseqfile ] })
@@ -83,7 +80,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         ch_hmmer_alignquery.map { it -> [ it[0], it[1][0] ] },
         ch_hmmer_alignquery.map { it -> it[1][1] }
     )
-    ch_versions = ch_versions.mix(HMMER_HMMALIGNQUERY.out.versions)
 
     // 1.d Mask the alignments (Add '--rf-is-mask' ext.args in config for the process.)
     HMMER_MASKREF ( HMMER_HMMALIGNREF.out.sto.map { it -> [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
