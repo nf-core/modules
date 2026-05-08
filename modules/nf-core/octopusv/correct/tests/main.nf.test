@@ -9,7 +9,32 @@ nextflow_process {
     tag "octopusv"
     tag "octopusv/correct"
 
-    test("homo_sapiens - vcf - stub") {
+    test("homo_sapiens - vcf.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.svcf.get(0).get(1)).vcf.summary,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf.gz - stub") {
 
         options "-stub"
 
@@ -18,7 +43,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/gridss.somatic.vcf', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true)
                 ]
                 """
             }

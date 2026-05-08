@@ -24,8 +24,14 @@ process OCTOPUSV_CORRECT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    vcf_in="${vcf}"
+    if [[ "${vcf}" == *.gz ]]; then
+        gunzip -c ${vcf} > ${prefix}.input.vcf
+        vcf_in="${prefix}.input.vcf"
+    fi
+
     octopusv correct \\
-        -i ${vcf} \\
+        -i \${vcf_in} \\
         -o ${prefix}.svcf \\
         $args
     """
