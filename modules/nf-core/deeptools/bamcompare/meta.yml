@@ -60,7 +60,8 @@ output:
           type: file
           description: BigWig coverage file of comparison results
           pattern: "*.{bigWig}"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3006" # bigWig
   bedgraph:
     - - meta:
           type: map
