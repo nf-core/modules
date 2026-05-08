@@ -170,7 +170,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     }
 
     INDEX_VCF(
-        ch_tabix_input.bgzip.map { meta, vcf -> [meta, vcf, [], []] },
+        ch_tabix_input.bgzip,
         "compress",
         true,
         "vcf"
