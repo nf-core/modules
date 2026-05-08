@@ -282,4 +282,33 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    import sys
+    import platform
+
+    prefix = "${task.ext.prefix ?: meta.id}"
+
+    sys.argv = [
+        "cluster_metrics.py",
+        "--features", "$features",
+        "--clusters", "$clusters",
+        "--k-min", "2",
+        "--k-max", "12",
+        "--out-k-sweep", f"{prefix}_k_sweep.csv",
+        "--out-selected", f"{prefix}_selected.json",
+        "--out-prefix", prefix,
+    ]
+
     main()
+
+    import matplotlib
+    import pandas
+    import sklearn
+
+    with open("versions.yml", "w") as f:
+        f.write(
+            f'"${task.process}":\n'
+            f'    python: {platform.python_version()}\n'
+            f'    pandas: {pandas.__version__}\n'
+            f'    scikit-learn: {sklearn.__version__}\n'
+            f'    matplotlib: {matplotlib.__version__}\n'
+        )

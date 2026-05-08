@@ -1,4 +1,4 @@
-name: "CLUSTER_METRICS"
+name: "CUSTOM_CLUSTERMETRICS"
 description: "Computes clustering quality metrics (silhouette, Calinski-Harabasz,
   Davies-Bouldin) and performs k-sweep analysis"
 keywords:
@@ -19,22 +19,19 @@ tools:
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
     - features:
         type: file
-        description: TSV file with sample_id and numeric features (e.g. PCA
-          scores)
-        pattern: "*.tsv"
-        ontologies:
-          - edam: http://edamontology.org/format_3475
+        description: Feature matrix file
+        pattern: "*"
+        ontologies: []
     - clusters:
         type: file
-        description: CSV/TSV file with sample_id and cluster assignment
-        pattern: "*_clusters.*"
+        description: Cluster assignment file
+        pattern: "*"
         ontologies: []
-  - out_prefix:
-      type: string
-      description: Prefix for output files
 output:
   metrics:
     - - meta:

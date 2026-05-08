@@ -200,7 +200,7 @@ if __name__ == "__main__":
     import sys
     import platform
 
-    prefix = "${task.ext.prefix ?: out_prefix ?: meta.id}"
+    prefix = "${task.ext.prefix ?: meta.id}"
 
     sys.argv = [
         "cluster_viz.py",
