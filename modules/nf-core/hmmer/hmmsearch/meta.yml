@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: hmmer_hmmsearch
 description: search profile(s) against a sequence database
 keywords:
@@ -12,7 +13,8 @@ tools:
       documentation: http://hmmer.org/documentation.html
       tool_dev_url: https://github.com/EddyRivasLab/hmmer
       doi: "10.1371/journal.pcbi.1002195"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: ""
 input:
   - - meta:
@@ -32,16 +34,16 @@ input:
         ontologies: []
     - write_align:
         type: boolean
-        description: Flag to save optional alignment output. Specify with 'true' to
-          save.
+        description: Flag to save optional alignment output. Specify with 'true'
+          to save.
     - write_target:
         type: boolean
-        description: Flag to save optional per target summary. Specify with 'true' to
-          save.
+        description: Flag to save optional per target summary. Specify with 'true'
+          to save.
     - write_domain:
         type: boolean
-        description: Flag to save optional per domain summary. Specify with 'true' to
-          save.
+        description: Flag to save optional per domain summary. Specify with 'true'
+          to save.
 output:
   output:
     - - meta:
@@ -62,7 +64,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.sto.gz":
           type: file
-          description: Optional multiple sequence alignment (MSA) in Stockholm format
+          description: Optional multiple sequence alignment (MSA) in Stockholm
+            format
           pattern: "*.{sto.gz}"
           ontologies: []
   target_summary:
@@ -73,7 +76,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.tbl.gz":
           type: file
-          description: Optional tabular (space-delimited) summary of per-target output
+          description: Optional tabular (space-delimited) summary of per-target
+            output
           pattern: "*.{tbl.gz}"
           ontologies: []
   domain_summary:
@@ -84,16 +88,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.domtbl.gz":
           type: file
-          description: Optional tabular (space-delimited) summary of per-domain output
+          description: Optional tabular (space-delimited) summary of per-domain
+            output
           pattern: "*.{domtbl.gz}"
           ontologies: []
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Midnighter"
 maintainers:
