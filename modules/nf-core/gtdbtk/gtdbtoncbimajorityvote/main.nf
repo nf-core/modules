@@ -4,8 +4,8 @@ process GTDBTK_GTDBTONCBIMAJORITYVOTE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c7/c74f30749ddaf49d616a166deb3bc81b87d08afc81de6b64b2b1eda64ebb9784/data'
-        : 'community.wave.seqera.io/library/gtdbtk:2.7.1--07b35fe7297e0d9d'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa734cc7e63b0f7d0c04788ec61de5e6a101a07e966d3dde24384d54a9d75e85/data'
+        : 'community.wave.seqera.io/library/gtdbtk:2.7.2--64b0fd171db01270'}"
 
     input:
     tuple val(meta) , path(gtdbtk_outdir), val(gtdbtk_prefix)
