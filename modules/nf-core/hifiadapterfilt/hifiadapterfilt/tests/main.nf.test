@@ -29,7 +29,7 @@ nextflow_process {
                     process.out.fastq,
                     path(process.out.blastout[0][1]).exists(),
                     path(process.out.blocklist[0][1]).exists(),
-                    path(process.out.stats[0][1]).exists(),
+                    path(process.out.stats[0][1]).readLines().findAll { !it.startsWith("Started") && !it.startsWith("Finished") },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
