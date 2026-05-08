@@ -1,12 +1,13 @@
 nextflow_process {
 
-    name "Test Process HIFIADAPTERFILT"
+    name "Test Process HIFIADAPTERFILT_HIFIADAPTERFILT"
     script "../main.nf"
-    process "HIFIADAPTERFILT"
+    process "HIFIADAPTERFILT_HIFIADAPTERFILT"
 
     tag "modules"
     tag "modules_nfcore"
     tag "hifiadapterfilt"
+    tag "hifiadapterfilt/hifiadapterfilt"
 
     test("homo_sapiens - pacbio ccs bam - fastq") {
 

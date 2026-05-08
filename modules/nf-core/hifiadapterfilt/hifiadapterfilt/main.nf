@@ -1,4 +1,4 @@
-process HIFIADAPTERFILT {
+process HIFIADAPTERFILT_HIFIADAPTERFILT {
     tag "$meta.id"
     label 'process_medium'
 
