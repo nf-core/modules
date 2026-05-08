@@ -26,11 +26,26 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'sample1' ]
-    - in_file:
+    - infile:
         type: file
         description: Input file to compress or decompress
         pattern: "*"
         ontologies: []
+    - infile_tbi:
+        type: file
+        description: Optional tabix index for the input file. Required when decompressing
+          and creating an index for the output file.
+        pattern: "*.{tbi,csi}"
+        ontologies:
+          - edam: http://edamontology.org/format_3616 # tabix
+    - regions:
+        type: file
+        description: Optional file of regions to extract (BED or chr:start-end format).
+          Only used when creating an index for the output file.
+        pattern: "*.{bed,txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3003 # BED
   - action:
       type: string
       description: Action to perform, either `compress` or `decompress`
