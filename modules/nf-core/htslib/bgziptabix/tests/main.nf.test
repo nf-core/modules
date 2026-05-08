@@ -377,7 +377,7 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - vcf - compress - no index - stub") {
+    test("sarscov2 - vcf - compress - index - stub") {
 
         options "-stub"
 
@@ -391,7 +391,7 @@ nextflow_process {
                     []
                 ]
                 input[1] = 'compress' // action
-                input[2] = false // make_index
+                input[2] = true // make_index
                 input[3] = 'vcf' // out_ext
                 """
             }

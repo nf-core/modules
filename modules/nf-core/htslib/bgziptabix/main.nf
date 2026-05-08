@@ -41,7 +41,7 @@ process HTSLIB_BGZIPTABIX {
     def bgzip_cmd        = action == "compress" ? "[ '\$(basename ${infile})' != '\$(basename ${outfile})' ] && ln -s ${infile} ${outfile}" : "bgzip -c -d ${args} -@ ${task.cpus} ${infile} > ${outfile}"
 
     def regions_arg      = regions ? "-R ${regions}" : ""
-    def tabix_cmd        = make_index ? "tabix -@ ${task.cpus} ${regions_arg} ${args2} -f ${outfile}" : ""
+    def tabix_cmd        = (make_index && !infile_tbi) ? "tabix -@ ${task.cpus} ${regions_arg} ${args2} -f ${outfile}" : ""
     def link_tabix_cmd   = make_index && infile_tbi ? "ln -s ${infile_tbi} ${outfile}.${infile_tbi.extension}" : ""
     def uncompressed_cmd = action == "compress" ? "${compress_cmd} ${infile} > ${outfile}" : (infile.getName() == outfile ? "" : "ln -s ${infile} ${outfile}")
     """
