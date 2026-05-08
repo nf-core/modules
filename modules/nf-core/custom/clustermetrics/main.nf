@@ -2,9 +2,9 @@ process CUSTOM_CLUSTERMETRICS {
     tag "$meta.id"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/clustermetrics:dev' :
-        'quay.io/nf-core/clustermetrics:dev' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/69/69a6d33f6bd1a901cad8a6914b6ad11a7db6c35005b4ff8604f20f1baba10fc3/data' :
+        'community.wave.seqera.io/library/matplotlib_pandas_python_scikit-learn:b7d7028d28dc4084' }"
     input:
     tuple val(meta), path(features), path(clusters)
     val out_prefix
