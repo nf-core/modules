@@ -12,8 +12,7 @@ process OCTOPUSV_CORRECT {
 
     output:
     tuple val(meta), path("*.svcf"), emit: svcf
-    tuple val("${task.process}"), val('octopusv'),
-    eval("python -c \"import importlib.metadata as m; print(m.version('octopusv'))\""), emit: versions_octopusv, topic: versions
+    tuple val("${task.process}"), val('octopusv'), eval("python -c \"import importlib.metadata as m; print(m.version('octopusv'))\""), emit: versions_octopusv, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
