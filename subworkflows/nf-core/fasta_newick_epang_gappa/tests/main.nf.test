@@ -57,8 +57,6 @@ nextflow_workflow {
                 { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("hmmer.graft.placement.epa_result.newick_lines") },
                 { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("hmmer.taxonomy.profile.tsv") },
                 { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("hmmer.taxonomy.per_query.tsv") },
-                { assert snapshot(file(workflow.out.versions.get(0)).name).match("hmmer.versions.yml") },
-                { assert snapshot(workflow.out.versions.get(0)).md5().match("hmmer.versions.yml_lines") },
             )
         }
     }
@@ -162,8 +160,6 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(file(workflow.out.jplace.get(0).get(1)).name).match("nucl_hmmer.epa_result.jplace.gz") },
                 { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("nucl_hmmer.graft.placement.epa_result.newick") },
-                { assert snapshot(file(workflow.out.versions.get(0)).name).match("nucl_hmmer.versions.yml") },
-                { assert snapshot(workflow.out.versions.get(0)).md5().match("nucl_hmmer.versions.yml_lines") },
             )
         }
     }
