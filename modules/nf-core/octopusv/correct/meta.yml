@@ -28,7 +28,7 @@ input:
         description: Structural variant calls in VCF format
         pattern: "*.{vcf,vcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3016" # VCF
 output:
   svcf:
     - - meta:
@@ -40,7 +40,7 @@ output:
           description: Standardized SVCF file
           pattern: "*.svcf"
           ontologies:
-            - edam: "http://edamontology.org/format_3016"
+            - edam: "https://github.com/ylab-hi/OctopuSV/blob/main/docs/SVCF_specifications.md" # SVCF
   versions_octopusv:
     - - ${task.process}:
           type: string
