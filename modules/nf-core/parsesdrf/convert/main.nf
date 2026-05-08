@@ -4,26 +4,21 @@ process PARSESDRF_CONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sdrf-pipelines:0.1.3--pyhdfd78af_0':
-        'quay.io/biocontainers/sdrf-pipelines:0.1.3--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/sdrf-pipelines:0.1.4--pyhdfd78af_0':
+        'quay.io/biocontainers/sdrf-pipelines:0.1.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(sdrf)
     val format
 
     output:
-    tuple val(meta), path("${prefix}_samplesheet.tsv"),
-                     path("${prefix}_presets.tsv"),               emit: mhcquant,     optional: true
-    tuple val(meta), path("${prefix}_samplesheet.tsv"),
-                     path("${prefix}_experimental_design.tsv"),   emit: openms,       optional: true
-    tuple val(meta), path("${prefix}.xml"),
-                     path("${prefix}_design.txt"),                emit: maxquant,     optional: true
-    tuple val(meta), path("${prefix}.csv"),                       emit: msstats,      optional: true
-    tuple val(meta), path("${prefix}_design.csv"),
-                     path("${prefix}_comparisons.csv"),           emit: normalyzerde, optional: true
-    tuple val(meta), path("${prefix}.cfg"),
-                     path("${prefix}_design.tsv"),                emit: diann,        optional: true
-    tuple val("${task.process}"), val('sdrf-pipelines'), eval("parse_sdrf --version | cut -d ' ' -f 2"), topic: versions
+    tuple val(meta), path("${prefix}_samplesheet.tsv"), path("${prefix}_presets.tsv"),             emit: mhcquant,     optional: true
+    tuple val(meta), path("${prefix}_samplesheet.tsv"), path("${prefix}_experimental_design.tsv"), emit: openms,       optional: true
+    tuple val(meta), path("${prefix}.xml"),             path("${prefix}_design.txt"),              emit: maxquant,     optional: true
+    tuple val(meta), path("${prefix}.csv"),                                                        emit: msstats,      optional: true
+    tuple val(meta), path("${prefix}_design.csv"),      path("${prefix}_comparisons.csv"),         emit: normalyzerde, optional: true
+    tuple val(meta), path("${prefix}.cfg"),             path("${prefix}_design.tsv"),              emit: diann,        optional: true
+    tuple val("${task.process}"), val('sdrf-pipelines'), eval("parse_sdrf --version | cut -d ' ' -f 2"), topic: versions, emit: versions_sdrfpipelines
 
     when:
     task.ext.when == null || task.ext.when

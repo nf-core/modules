@@ -141,6 +141,16 @@ output:
           pattern: "*_design.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
+  versions_sdrfpipelines:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "sdrf-pipelines":
+          type: string
+          description: The name of the tool
+      - "parse_sdrf --version | cut -d ' ' -f 2":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - "${task.process}":
