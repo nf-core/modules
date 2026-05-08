@@ -72,7 +72,8 @@ output:
           type: file
           description: BedGraph coverage file of comparison results
           pattern: "*.{bedgraph}"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3583" # BedGraph
   versions_deeptools:
     - - ${task.process}:
           type: string
