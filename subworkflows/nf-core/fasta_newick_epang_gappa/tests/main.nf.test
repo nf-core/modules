@@ -32,7 +32,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                input[0] = channel.of(
                     [
                         meta: [ id: "hmmer", min_bitscore: 4 ],
                         data: [
@@ -62,14 +62,13 @@ nextflow_workflow {
     }
 
     test("test_fasta_newick_epang_gappa_mafft") {
-
         when {
             params {
                 outdir = "$outputDir"
             }
             workflow {
                 """
-                input[0] = Channel.of(
+                input[0] = channel.of(
                     [
                         meta: [ id: "mafft" ],
                         data: [
@@ -105,7 +104,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                input[0] = channel.of(
                     [
                         meta: [ id: "clustalo" ],
                         data: [
@@ -139,7 +138,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                input[0] = channel.of(
                     [
                         meta: [ id: "nucl_hmmer" ],
                         data: [
