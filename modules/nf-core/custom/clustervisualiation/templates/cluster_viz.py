@@ -68,11 +68,10 @@ def load_features(path: str) -> tuple[pd.DataFrame, pd.Series]:
 
 
 def load_clusters(path: str) -> pd.Series:
-    df = pd.read_csv(path, sep=",", dtype=str)
-    df = _normalise_id_column(df)
-    if "cluster" not in df.columns:
-        raise ValueError("clusters CSV must have a 'cluster' column")
-    return df.set_index("sample_id")["cluster"].astype(int)
+    df = pd.read_csv(path)
+    if "sample_id" not in df.columns or "cluster" not in df.columns:
+        raise ValueError(f"clusters file must have 'sample_id' and 'cluster' columns. Found: {list(df.columns)}")
+    return df.set_index(df["sample_id"].astype(str))["cluster"].astype(int)
 
 
 def safe_perplexity(n_samples: int, requested: float) -> float:
