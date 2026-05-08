@@ -34,7 +34,6 @@ process DEEPTOOLS_BAMCOMPARE {
         --outFileName $output_file \\
         --numberOfProcessors $task.cpus \\
         $args
-
     """
 
     stub:
