@@ -22,7 +22,17 @@ process KRAKENUNIQ_BUILD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     custom_db = custom_library_dir ? "mkdir ${prefix} && mv library taxonomy ${custom_seqid2taxid} ${prefix}" : ""
-    run_cleanup = keep_intermediate ? "" : "find -L ${prefix} -type f -not -name \"*.kdb\" -type f -not -name \"*idx\" -not -name \"taxDB\" -not -name \"*.counts\" -delete"
+    run_cleanup = keep_intermediate ? "" : """
+    find -L ${prefix} -type f \\
+        -not -name "*.kdb" \\
+        -not -name "*idx" \\
+        -not -name "taxDB" \\
+        -not -name "*.counts" \\
+        -not -path "${prefix}/library/*" \\
+        -not -path "${prefix}/taxonomy/*" \\
+        -not -name "${custom_seqid2taxid}" \\
+        -delete
+    """
 
     """
     ${custom_db}
@@ -37,7 +47,17 @@ process KRAKENUNIQ_BUILD {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    run_cleanup = keep_intermediate ? "" : "find -L ${prefix} -type f -not -name \"*.kdb\" -type f -not -name \"*idx\" -not -name \"taxDB\" -delete"
+    run_cleanup = keep_intermediate ? "" : """
+    find -L ${prefix} -type f \\
+        -not -name "*.kdb" \\
+        -not -name "*idx" \\
+        -not -name "taxDB" \\
+        -not -name "*.counts" \\
+        -not -path "${prefix}/library/*" \\
+        -not -path "${prefix}/taxonomy/*" \\
+        -not -name "${custom_seqid2taxid}" \\
+        -delete
+    """
     """
     mkdir ${prefix}/
     touch ${prefix}/database-build.log
