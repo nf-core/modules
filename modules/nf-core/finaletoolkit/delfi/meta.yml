@@ -31,29 +31,44 @@ input:
         description: BAM file index
         pattern: "*.bai"
         ontologies:
-          - edam: "http://edamontology.org/format_3327" # BAI
-  - bins:
-      type: file
-      description: |
-        BED containing binned genomic coordinates
-      pattern: "*.bed"
-      ontologies:
-        - edam: "http://edamontology.org/format_3003" # BED
-  - chromosome_sizes:
-      type: file
-      pattern: "*.sizes"
-      description: |
-        Two-column file containing the size for each chromosome
-      ontologies:
-        - edam: "http://edamontology.org/format_3475" # TSV
-  - genome_2bit:
-      type: file
-      description: |
-        2bit compressed genome file (must be the same as the one used for the
-        BAM file)
-      pattern: "*.2bit"
-      ontologies:
-        - edam: "http://edamontology.org/format_3009" # 2bit
+          - edam: "http://edamontology.org/format_3327"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - genome_2bit:
+        type: file
+        description: |
+          2bit compressed genome file (must be the same as the one used for the
+          BAM file)
+        pattern: "*.2bit"
+        ontologies:
+          - edam: "http://edamontology.org/format_3009"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - chromosome_sizes:
+        type: file
+        pattern: "*.sizes"
+        description: |
+          Two-column file containing the size for each chromosome
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bins:
+        type: file
+        description: |
+          BED containing binned genomic coordinates
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
 output:
   bed:
     - - meta:
@@ -67,7 +82,7 @@ output:
           description: |
             BED file containing DELFI scores
           ontologies:
-            - edam: "http://edamontology.org/format_3003" # BED
+            - edam: "http://edamontology.org/format_3003"
   versions_finaletoolkit:
     - - ${task.process}:
           type: string

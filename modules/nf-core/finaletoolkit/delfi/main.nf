@@ -9,9 +9,9 @@ process FINALETOOLKIT_DELFI {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    path bins
-    path chromosome_sizes
-    path genome_2bit
+    tuple val(meta2), path(genome_2bit)
+    tuple val(meta3), path(chromosome_sizes)
+    tuple val(meta4), path(bins)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed

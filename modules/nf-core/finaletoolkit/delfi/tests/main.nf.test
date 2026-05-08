@@ -11,12 +11,11 @@ nextflow_process {
 
     test("homo_sapiens - bam") {
 
-
         when {
 
             process {
 
-                config "./delfi.config"
+                config "./nextflow.config"
 
                 """
                 input[0] = [
@@ -25,13 +24,17 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true),
                 ]
                 input[1] = [
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bins_10kb.bed', checkIfExists: true)
+                    [id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true)
+                    ,
                 ]
                 input[2] = [
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.sizes', checkIfExists: true)
+                    [id: 'sizes' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.sizes', checkIfExists: true),
                 ]
                 input[3] = [
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true)
+                    [id: 'bins' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bins_10kb.bed', checkIfExists: true),
                 ]
                 """
             }
@@ -56,6 +59,9 @@ nextflow_process {
         when {
 
             process {
+
+                config "./nextflow.config"
+
                 """
                 input[0] = [
                     [ id:'test' ],
@@ -63,13 +69,17 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true),
                 ]
                 input[1] = [
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bins_10kb.bed', checkIfExists: true)
+                    [id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true)
+                    ,
                 ]
                 input[2] = [
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.sizes', checkIfExists: true)
+                    [id: 'sizes' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.sizes', checkIfExists: true),
                 ]
                 input[3] = [
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true)
+                    [id: 'bins' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bins_10kb.bed', checkIfExists: true),
                 ]
                 """
             }
