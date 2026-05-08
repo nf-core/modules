@@ -44,6 +44,5 @@ process DEEPTOOLS_BAMCOMPARE {
 
     """
     touch $output_file
-
     """
 }
