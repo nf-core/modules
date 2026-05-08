@@ -9,6 +9,7 @@ nextflow_process {
     tag "windowmasker"
     tag "windowmasker/convert"
     tag "windowmasker/mkcounts"
+    config "./nextflow.config"
 
     setup {
         run("WINDOWMASKER_MKCOUNTS") {
@@ -25,7 +26,6 @@ nextflow_process {
     }
 
     test("sarscov2_fasta_binary") {
-        config "./nextflow.config"
         when {
             params {
                 windowmasker_args = '-sformat binary'
@@ -47,7 +47,6 @@ nextflow_process {
     }
 
     test("sarscov2_fasta_obinary") {
-        config "./nextflow.config"
         when {
             params {
                 windowmasker_args = '-sformat obinary'
@@ -69,7 +68,6 @@ nextflow_process {
     }
 
     test("sarscov2_fasta_oascii") {
-        config "./nextflow.config"
         when {
             params {
                 windowmasker_args = '-sformat oascii'
@@ -95,6 +93,9 @@ nextflow_process {
         options '-stub'
 
         when {
+            params {
+                windowmasker_args = '-sformat oascii'
+            }
             process {
                 """
                 input[0] = [

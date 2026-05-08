@@ -1,0 +1,81 @@
+{
+    "One individual and one chromosome": {
+        "content": [
+            [
+                [
+                    {
+                        "panel_id": "1000GP",
+                        "id": "all_samples",
+                        "metas_count": 1
+                    },
+                    "NA12878_22.vcf.gz",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=902, phased=false, phasedAutodetect=false]",
+                    "b852b1cae943360e00ab93004509808a",
+                    "NA12878_22.vcf.gz.tbi"
+                ]
+            ],
+            [
+                "NA12878_22.bcftools_stats.txt:md5,99e061326bb518f555db886788420467"
+            ]
+        ],
+        "timestamp": "2026-03-23T01:55:41.061652061",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.2"
+        }
+    },
+    "Two individuals and two chromosomes, sort and annotate": {
+        "content": [
+            [
+                [
+                    {
+                        "panel_id": "1000GP",
+                        "id": "all_samples",
+                        "metas_count": 2
+                    },
+                    "all_samples_all_chr.annotate.vcf.gz",
+                    "VcfFile [chromosomes=[chr21, chr22], sampleCount=2, variantCount=1737, phased=false, phasedAutodetect=false]",
+                    "96e0517b17306ab297c8ac87d753d4d9",
+                    "all_samples_all_chr.annotate.vcf.gz.tbi"
+                ]
+            ],
+            [
+                "NA12878_21.bcftools_stats.txt:md5,090d000383fe17fedac8e9834a5cf2eb",
+                "NA12878_22.bcftools_stats.txt:md5,99e061326bb518f555db886788420467",
+                "NA19401_21.bcftools_stats.txt:md5,c8bd18b1f2b1426a2e7a4204489a12a9",
+                "NA19401_22.bcftools_stats.txt:md5,21caaa358f27a5722dd508e7aac1954b"
+            ]
+        ],
+        "timestamp": "2026-03-23T01:55:27.347884175",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.2"
+        }
+    },
+    "One individual and two chromosomes": {
+        "content": [
+            [
+                [
+                    {
+                        "panel_id": "1000GP",
+                        "id": "all_samples",
+                        "metas_count": 2
+                    },
+                    "all_samples_all_chr.concat.vcf.gz",
+                    "VcfFile [chromosomes=[chr21, chr22], sampleCount=1, variantCount=1737, phased=false, phasedAutodetect=false]",
+                    "2e125158b5531e9325cc00f004cebeeb",
+                    "all_samples_all_chr.concat.vcf.gz.tbi"
+                ]
+            ],
+            [
+                "NA12878_21.bcftools_stats.txt:md5,090d000383fe17fedac8e9834a5cf2eb",
+                "NA12878_22.bcftools_stats.txt:md5,99e061326bb518f555db886788420467"
+            ]
+        ],
+        "timestamp": "2026-03-23T01:55:55.943228912",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.2"
+        }
+    }
+}

@@ -3,9 +3,9 @@ process PINDEL_PINDEL {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pindel:0.2.5b9--h06e5f0a_6':
-        'biocontainers/pindel:0.2.5b9--h06e5f0a_6' }"
+        'quay.io/biocontainers/pindel:0.2.5b9--h06e5f0a_6' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -34,8 +34,8 @@ process PINDEL_PINDEL {
     def args2 = task.ext.args2 ?: '500'
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if (bam instanceof nextflow.util.BlankSeparatedList) {
-        error "pindel/pindel only takes a single bam file as input"
+    if (bam instanceof Collection) {
+        error "pindel/pindel only accepts a single BAM file as input, but received multiple files: ${bam}"
     }
 
     """

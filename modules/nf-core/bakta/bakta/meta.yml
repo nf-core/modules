@@ -6,12 +6,14 @@ keywords:
   - bacteria
 tools:
   - bakta:
-      description: Rapid & standardized annotation of bacterial genomes, MAGs & plasmids.
+      description: Rapid & standardized annotation of bacterial genomes, MAGs &
+        plasmids.
       homepage: https://github.com/oschwengers/bakta
       documentation: https://github.com/oschwengers/bakta
       tool_dev_url: https://github.com/oschwengers/bakta
       doi: "10.1099/mgen.0.000685"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:bakta
 input:
   - - meta:
@@ -31,10 +33,11 @@ input:
       description: |
         Path to the Bakta database directory. Must have amrfinderplus database directory already installed within it (in a directory called 'amrfinderplus-db/').
       ontologies:
-        - edam: http://edamontology.org/data_1049 ## Directory name
+        - edam: http://edamontology.org/data_1049 # Directory name
   - proteins:
       type: file
-      description: FASTA/GenBank file of trusted proteins to first annotate from (optional)
+      description: FASTA/GenBank file of trusted proteins to first annotate from
+        (optional)
       pattern: "*.{fa,fas,fna,fasta,faa}"
       ontologies:
         - edam: http://edamontology.org/format_1929 # FASTA
@@ -93,7 +96,6 @@ output:
           pattern: "*.ffn"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
-
   fna:
     - - meta:
           type: map
@@ -138,8 +140,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}.hypotheticals.tsv:
           type: file
-          description: additional information on hypothetical protein CDS as simple
-            human readable tab separated values
+          description: additional information on hypothetical protein CDS as
+            simple human readable tab separated values
           pattern: "*.hypotheticals.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -179,13 +181,27 @@ output:
           pattern: "*.txt"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_bakta:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bakta:
+          type: string
+          description: The name of the tool
+      - bakta --version 2>&1 | sed 's/bakta //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bakta:
+          type: string
+          description: The name of the tool
+      - bakta --version 2>&1 | sed 's/bakta //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
   - "@oschwengers"

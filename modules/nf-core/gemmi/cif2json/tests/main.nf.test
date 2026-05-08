@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process GEMMI_CIF2JSON"
+    script "../main.nf"
+    process "GEMMI_CIF2JSON"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gemmi"
+    tag "gemmi/cif2json"
+
+    test("cif - json") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/cif/1011031.cif', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("cif - json - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/cif/1011031.cif', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

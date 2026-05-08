@@ -1,0 +1,104 @@
+nextflow_process {
+
+    name "Test Process SALTSHAKER_PLOT"
+    script "../main.nf"
+    process "SALTSHAKER_PLOT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "saltshaker"
+    tag "saltshaker/call"
+    tag "saltshaker/classify"
+    tag "saltshaker/plot"
+
+    setup {
+        run("SALTSHAKER_CALL") {
+            script "../../call/main.nf"
+            process {
+            """
+            input[0] = [
+                [ id:'test' ],
+                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mitosalt/test_mitosalt.breakpoint', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mitosalt/test_mitosalt.cluster', checkIfExists: true),
+            ]
+
+            input[1] = [
+                [ id:'hg38' ],
+                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/human_mt_rCRS.fasta', checkIfExists: true),
+            ]
+
+            input[2] = 15
+            input[3] = 0.01
+            input[4] = 16569
+            input[5] = 16081
+            input[6] = 407
+            input[7] = 5730
+            input[8] = 5763
+            """
+            }
+        }
+
+        run("SALTSHAKER_CLASSIFY") {
+            script "../../classify/main.nf"
+            process {
+                """
+                input[0] = SALTSHAKER_CALL.out.call
+                input[1] = "MT"
+                """
+            }
+        }
+    }
+
+
+    test("plot - png") {
+
+        when {
+            params {
+                module_args = '--blacklist'
+            }
+            process {
+                """
+                input[0] = SALTSHAKER_CLASSIFY.out.classify
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                ).match() }
+            )
+        }
+
+    }
+
+    test("plot - png - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--blacklist'
+            }
+            process {
+                """
+                input[0] = SALTSHAKER_CLASSIFY.out.classify
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                ).match() }
+            )
+        }
+
+    }
+
+}

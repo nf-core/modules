@@ -11,31 +11,24 @@ nextflow_process {
     tag "samtools/fasta"
 
     test("test-samtools-fasta") {
-
         when {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
-				]
-				input[1] = false
-
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = false
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-					process.out.fasta[0][1].collect { file(it).name }.toSorted(),
-					file(process.out.singleton[0][1]).name,
-					file(process.out.other[0][1]).name,
-					process.out.versions
-					).match()
-				}
-            )
+            assert process.success
+            assert snapshot([
+                "fasta": process.out.fasta,
+                "versions_samtools": process.out.versions_samtools
+            ]).match()
         }
     }
 
@@ -45,25 +38,84 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
-				]
-				input[1] = true
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = true
 
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-					path(process.out.interleaved[0][1]).linesGzip[0],
-					file(process.out.other[0][1]).name,
-					process.out.versions
-					).match()
-				}
-            )
+            assert process.success
+            assert snapshot([
+                "interleaved": process.out.interleaved,
+                "versions_samtools": process.out.versions_samtools
+            ]).match()
+        }
+    }
+
+    test("test-samtools-fasta-interleave - interleaved -- stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+    test("test-samtools-fasta - single end - 1 fasta + singleton-- stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+    test("test-samtools-fasta - false - 2 fasta + singleton -- stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 

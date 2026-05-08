@@ -3,21 +3,21 @@ process AUTOCYCLER_CLUSTER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/autocycler:0.5.2--h3ab6199_0':
-        'biocontainers/autocycler:0.5.2--h3ab6199_0' }"
+        'quay.io/biocontainers/autocycler:0.5.2--h3ab6199_0' }"
 
     input:
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("$prefix/clustering/qc_pass/*/*.gfa"),  emit: clusters
-    tuple val(meta), path("$prefix/clustering/qc_pass/*/*.yaml"), emit: clusterstats
-    tuple val(meta), path("$prefix/clustering/*.newick"),         emit: newick
-    tuple val(meta), path("$prefix/clustering/*.tsv"),            emit: tsv
-    tuple val(meta), path("$prefix/clustering/*.phylip"),         emit: pairwisedistances
-    tuple val(meta), path("$prefix/clustering/*.yaml"),           emit: stats
-    path "versions.yml",                                          emit: versions
+    tuple val(meta), path("clustering/$prefix/qc_pass/*/*.gfa"),  emit: clusters
+    tuple val(meta), path("clustering/$prefix/qc_pass/*/*.yaml"), emit: clusterstats
+    tuple val(meta), path("clustering/$prefix/*.newick"),         emit: newick
+    tuple val(meta), path("clustering/$prefix/*.tsv"),            emit: tsv
+    tuple val(meta), path("clustering/$prefix/*.phylip"),         emit: pairwisedistances
+    tuple val(meta), path("clustering/$prefix/*.yaml"),           emit: stats
+    tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,27 +31,17 @@ process AUTOCYCLER_CLUSTER {
         -a .
 
     mkdir $prefix
-    mv clustering $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
+    mv clustering/* $prefix
+    mv $prefix clustering
     """
 
     stub:
-    def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir $prefix/clustering/qc_pass/cluster_000 -p
-    touch $prefix/clustering/clustering.{newick,yaml,tsv}
-    touch $prefix/clustering/pairwise_distances.phylip
-    touch $prefix/clustering/qc_pass/cluster_000/0_untrimmed.{gfa,yaml}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
+    mkdir clustering/$prefix/qc_pass/cluster_000 -p
+    touch clustering/$prefix/clustering.{newick,yaml,tsv}
+    touch clustering/$prefix/pairwise_distances.phylip
+    touch clustering/$prefix/qc_pass/cluster_000/0_untrimmed.{gfa,yaml}
     """
 }

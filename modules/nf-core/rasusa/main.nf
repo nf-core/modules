@@ -3,9 +3,9 @@ process RASUSA {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rasusa:0.3.0--h779adbc_1' :
-        'biocontainers/rasusa:0.3.0--h779adbc_1' }"
+        'quay.io/biocontainers/rasusa:0.3.0--h779adbc_1' }"
 
     input:
     tuple val(meta), path(reads), val(genome_size)
@@ -13,7 +13,7 @@ process RASUSA {
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('rasusa'), eval('rasusa --version 2>&1 | sed -e "s/rasusa //g"'), emit: versions_rasusa, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,9 +29,14 @@ process RASUSA {
         --genome-size $genome_size \\
         --input $reads \\
         $output
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rasusa: \$(rasusa --version 2>&1 | sed -e "s/rasusa //g")
-    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}_1.fastq.gz
+    if [ "${meta.single_end}" == "false" ]; then
+        echo "" | gzip > ${prefix}_2.fastq.gz
+    fi
     """
 }

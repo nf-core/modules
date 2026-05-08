@@ -12,7 +12,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,8f48acf848ff45a4fff4e10a806f29f5"
+                    [
+                        "BEDTOOLS_GROUPBY",
+                        "bedtools",
+                        "2.31.1"
+                    ]
                 ],
                 "bed": [
                     [
@@ -23,15 +27,62 @@
                         "test.grouped.bed:md5,ba080b3d282f206f6312122c71a66745"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,8f48acf848ff45a4fff4e10a806f29f5"
+                "versions_bedtools": [
+                    [
+                        "BEDTOOLS_GROUPBY",
+                        "bedtools",
+                        "2.31.1"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-08-26T14:10:16.714787"
+        "timestamp": "2026-01-21T11:30:55.60802779"
+    },
+    "test-bedtools-groupby -stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.grouped.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        "BEDTOOLS_GROUPBY",
+                        "bedtools",
+                        "2.31.1"
+                    ]
+                ],
+                "bed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.grouped.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_bedtools": [
+                    [
+                        "BEDTOOLS_GROUPBY",
+                        "bedtools",
+                        "2.31.1"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-21T11:39:53.768726368"
     }
 }

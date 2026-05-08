@@ -3,9 +3,9 @@ process SHOVILL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shovill:1.1.0--0' :
-        'biocontainers/shovill:1.1.0--0' }"
+        'quay.io/biocontainers/shovill:1.1.0--0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -16,7 +16,7 @@ process SHOVILL {
     tuple val(meta), path("shovill.log")                        , emit: log
     tuple val(meta), path("{skesa,spades,megahit,velvet}.fasta"), emit: raw_contigs
     tuple val(meta), path("contigs.{fastg,gfa,LastGraph}")      , optional:true, emit: gfa
-    path "versions.yml"                                         , emit: versions
+    tuple val("${task.process}"), val('shovill'), eval('shovill --version 2>&1 | sed "s/^.*shovill //"'), emit: versions_shovill, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,10 +33,13 @@ process SHOVILL {
         --ram $memory \\
         --outdir ./ \\
         --force
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shovill: \$(echo \$(shovill --version 2>&1) | sed 's/^.*shovill //')
-    END_VERSIONS
+    stub:
+    """
+    touch contigs.fa
+    touch shovill.corrections
+    touch shovill.log
+    touch spades.fasta
     """
 }

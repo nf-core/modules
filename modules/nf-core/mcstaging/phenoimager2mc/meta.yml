@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mcstaging_phenoimager2mc"
-description: Staging module for MCMICRO transforming PhenoImager .tif files into stacked
-  and normalized ome-tif files per cycle, compatible as ASHLAR input.
+description: Staging module for MCMICRO transforming PhenoImager .tif files into
+  stacked and normalized ome-tif files per cycle, compatible as ASHLAR input.
 keywords:
   - imaging
   - registration
@@ -14,9 +13,9 @@ tools:
       homepage: "https://github.com/SchapiroLabor/phenoimager2mc"
       documentation: "https://github.com/SchapiroLabor/phenoimager2mc/README.md"
       tool_dev_url: "https://github.com/SchapiroLabor/phenoimager2mc"
-      licence: ["GPL-2.0 license"]
+      licence:
+        - "GPL-2.0 license"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -27,7 +26,6 @@ input:
         type: list
         description: Folder or list with .tif files of one cycle from PhenoImager
 output:
-  #Only when we have meta
   tif:
     - - meta:
           type: map
@@ -36,16 +34,32 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.tif":
           type: file
-          description: One output .tif file containing concatenated tiles of the cycle.
+          description: One output .tif file containing concatenated tiles of the
+            cycle.
           pattern: "*.{tif,tiff}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3591 # TIFF
+  versions_phenoimager2mc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - phenoimager2mc:
+          type: string
+          description: The name of the tool
+      - python /phenoimager2mc/scripts/phenoimager2mc.py --version | sed "s/v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - phenoimager2mc:
+          type: string
+          description: The name of the tool
+      - python /phenoimager2mc/scripts/phenoimager2mc.py --version | sed "s/v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@chiarasch"
 maintainers:

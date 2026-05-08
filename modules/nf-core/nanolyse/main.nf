@@ -3,9 +3,9 @@ process NANOLYSE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nanolyse:1.2.0--py_0' :
-        'biocontainers/nanolyse:1.2.0--py_0' }"
+        'quay.io/biocontainers/nanolyse:1.2.0--py_0' }"
 
     input:
     tuple val(meta), path(fastq)
@@ -20,7 +20,6 @@ process NANOLYSE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     gunzip -c $fastq | NanoLyse -r $fasta | gzip > ${prefix}.fastq.gz

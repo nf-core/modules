@@ -3,7 +3,7 @@ process RIBOCODE_METAPLOTS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe815db0864b45b91afc7bc84c55cb60acb0035e7248dda7f480a55c4cb105d7/data':
         'community.wave.seqera.io/library/ribocode:1.2.15--5530b252f5433a62' }"
 
@@ -28,10 +28,17 @@ process RIBOCODE_METAPLOTS {
         -r $bam \\
         -o ${prefix} \\
         $args
+
+    # Check config file has a sample config line (non-empty, doesn't start with #)
+    if ! grep -qE '^[^#[:space:]]' ${prefix}_pre_config.txt; then
+        echo "ERROR: metaplots created config file with no data (only header)." >&2
+        echo "This usually indicates insufficient periodic signal in Ribo-Seq data." >&2
+        echo "Consider lowering the cutoff via ext.args (e.g., '-f0_percent 0.5')." >&2
+        exit 1
+    fi
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_config.txt

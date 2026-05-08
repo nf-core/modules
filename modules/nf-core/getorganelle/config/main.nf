@@ -3,9 +3,9 @@ process GETORGANELLE_CONFIG {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.0--pyh7cba7a3_0':
-        'biocontainers/getorganelle:1.7.7.0--pyh7cba7a3_0' }"
+        'quay.io/biocontainers/getorganelle:1.7.7.0--pyh7cba7a3_0' }"
 
     input:
     val(organelle_type)
@@ -32,7 +32,7 @@ process GETORGANELLE_CONFIG {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+
     """
     mkdir -p getorganelle/{LabelDatabase,SeedDatabase}
     touch getorganelle/{LabelDatabase,SeedDatabase}/${organelle_type}.fasta

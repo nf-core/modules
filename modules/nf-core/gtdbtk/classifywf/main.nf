@@ -3,9 +3,9 @@ process GTDBTK_CLASSIFYWF {
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gtdbtk:2.5.2--pyh1f0d9b5_0':
-        'biocontainers/gtdbtk:2.5.2--pyh1f0d9b5_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c7/c74f30749ddaf49d616a166deb3bc81b87d08afc81de6b64b2b1eda64ebb9784/data'
+        : 'community.wave.seqera.io/library/gtdbtk:2.7.1--07b35fe7297e0d9d'}"
 
     input:
     tuple val(meta)   , path("bins/*")
@@ -23,7 +23,8 @@ process GTDBTK_CLASSIFYWF {
     tuple val(meta), path("${prefix}/identify/*.failed_genomes.tsv") , emit: failed     , optional: true
     tuple val(meta), path("${prefix}/${prefix}.log")                 , emit: log
     tuple val(meta), path("${prefix}/${prefix}.warnings.log")        , emit: warnings
-    path ("versions.yml")                                            , emit: versions
+    tuple val("${task.process}"), val('gtdbtk'), eval("gtdbtk --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -1") , topic: versions, emit: versions_gtdbtk
+    tuple val("${task.process}"), val('gtdb_db'), eval('grep VERSION_DATA \$GTDBTK_DATA_PATH/metadata/metadata.txt | sed "s/VERSION_DATA=//"'), topic: versions, emit: versions_gtdbtk_db
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,17 +50,13 @@ process GTDBTK_CLASSIFYWF {
 
     mv ${prefix}/gtdbtk.log "${prefix}/${prefix}.log"
     mv ${prefix}/gtdbtk.warnings.log "${prefix}/${prefix}.warnings.log"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtdbtk: \$(echo \$(gtdbtk --version 2>/dev/null) | sed "s/gtdbtk: version //; s/ Copyright.*//")
-        gtdb_db: \$(grep VERSION_DATA \$GTDBTK_DATA_PATH/metadata/metadata.txt | sed "s/VERSION_DATA=//")
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export GTDBTK_DATA_PATH="\$(find -L ${db} -name 'metadata' -type d -exec dirname {} \\;)"
+
     mkdir ${prefix}
     mkdir ${prefix}/identify
     mkdir ${prefix}/classify
@@ -81,10 +78,5 @@ process GTDBTK_CLASSIFYWF {
     touch ${prefix}/${prefix}.log
     touch ${prefix}/${prefix}.warnings.log
     touch ${prefix}/${prefix}.failed_genomes.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtdbtk: \$(echo \$(gtdbtk --version 2>/dev/null) | sed "s/gtdbtk: version //; s/ Copyright.*//")
-    END_VERSIONS
     """
 }

@@ -17,18 +17,17 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
-				]
-				input[1] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
-				]
-				input[2] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-				]
-				input[3] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
-				]
-
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                ]
+                input[2] = [ [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[3] = [ [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -37,33 +36,31 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					path(process.out.vcf_lifted[0][1]).vcf.summary,
-					path(process.out.vcf_unlifted[0][1]).vcf.variantsMD5,
-					process.out.versions
-					).match()
-				}
+                    path(process.out.vcf_lifted[0][1]).vcf.summary,
+                    path(process.out.vcf_unlifted[0][1]).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
     }
 
-    test("test-picard-liftovervcf-stubs") {
-        options '-stub'
+    test("test-picard-liftovervcf - stub") {
+        options "-stub"
         when {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
-				]
-				input[1] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
-				]
-				input[2] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-				]
-				input[3] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
-				]
-
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                ]
+                input[2] = [ [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[3] = [ [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -71,14 +68,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-					file(process.out.vcf_lifted[0][1]).name,
-					file(process.out.vcf_unlifted[0][1]).name,
-					process.out.versions
-					).match()
-				}
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
-
 }

@@ -9,15 +9,37 @@ nextflow_process {
     tag "seqkit"
     tag "seqkit/grep"
 
-    test("with_file") {
+    test("with_file - gzipped input") {
 
         when {
             process {
                 """
                 input[0] = [[ id:'test', single_end:false ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz', checkIfExists: true)
                             ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.header', checkIfExists: true)
+                input[1] = channel.of("chr22").collectFile(name: "chr22.header", newLine: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("with_file - ungzipped input") {
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                            ]
+                input[1] = channel.of("chr22").collectFile(name: "chr22.header", newLine: true)
                 """
             }
         }
@@ -32,12 +54,14 @@ nextflow_process {
     }
 
     test("with_pattern") {
+
         config "./nextflow.config"
+
         when {
             process {
                 """
                 input[0] = [[ id:'test', single_end:false ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                             ]
                 input[1] = []
                 """
@@ -61,7 +85,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [[ id:'test', single_end:false ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                             ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.header', checkIfExists: true)
                 """

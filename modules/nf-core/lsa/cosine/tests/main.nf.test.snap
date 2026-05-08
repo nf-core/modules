@@ -1,0 +1,72 @@
+{
+    "Stub run": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        "test_sample_matrix.csv:md5,3932b231a8a14016bc1e7a245f05246c"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        "test_sample_heatmap.png:md5,3932b231a8a14016bc1e7a245f05246c"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,b77351a76d91db12e57dd88f7e2e0184"
+                ],
+                "heatmap": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        "test_sample_heatmap.png:md5,3932b231a8a14016bc1e7a245f05246c"
+                    ]
+                ],
+                "matrix": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        "test_sample_matrix.csv:md5,3932b231a8a14016bc1e7a245f05246c"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,b77351a76d91db12e57dd88f7e2e0184"
+                ]
+            }
+        ],
+        "timestamp": "2026-02-20T15:51:35.612855607",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.04.7"
+        }
+    },
+    "Should run successfully with a simple CSV": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test_sample"
+                    },
+                    "test_sample_matrix.csv:md5,d84209a90c22f35ef4e6ea89a9d11770"
+                ]
+            ],
+            [
+                "versions.yml:md5,b77351a76d91db12e57dd88f7e2e0184"
+            ],
+            "test_sample_heatmap.png"
+        ],
+        "timestamp": "2026-02-13T02:24:53.88495333",
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.7"
+        }
+    }
+}

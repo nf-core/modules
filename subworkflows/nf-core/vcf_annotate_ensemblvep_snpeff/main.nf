@@ -49,7 +49,6 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             [],
             [],
         )
-        ch_versions = ch_versions.mix(BCFTOOLS_PLUGINSCATTER.out.versions.first())
 
         // If BCFTOOLS_PLUGINSCATTER created multiple files we return a list of vcfs and the size of that list
         // Otherwise, a single vcf and the value 1
@@ -120,7 +119,6 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         TABIX_BGZIP(
             SNPEFF_SNPEFF.out.vcf
         )
-        ch_versions = ch_versions.mix(TABIX_BGZIP.out.versions.first())
 
         ch_snpeff_output = TABIX_BGZIP.out.output
     }
@@ -147,13 +145,9 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
 
         BCFTOOLS_CONCAT(ch_concat_input)
 
-        ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
-
         // Sort the concatenate output (bcftools concat is unable to do this on its own)
 
         BCFTOOLS_SORT(BCFTOOLS_CONCAT.out.vcf)
-
-        ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions.first())
 
         ch_ready_vcfs = BCFTOOLS_SORT.out.vcf
     }
@@ -172,7 +166,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         return [meta, vcf, []]
     }
 
-    TABIX_TABIX(ch_tabix_input.bgzip)
+    TABIX_TABIX(ch_tabix_input.bgzip.map { meta, vcf -> [meta, vcf, [], []] })
 
     def ch_vcf_tbi = ch_tabix_input.bgzip
         .join(TABIX_TABIX.out.index, failOnDuplicate: true, failOnMismatch: true)

@@ -42,8 +42,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.csi.collect { meta, csi -> [meta, "${file(csi).name}"] },
-                    workflow.out.vcf.collect { meta, vcf -> [meta, "${file(vcf).name}, variantSize:${path(vcf).vcf.variants.size()}"] },
-                    workflow.out.versions
+                    workflow.out.vcf.collect { meta, vcf -> [meta, "${file(vcf).name}, variantSize:${path(vcf).vcf.variants.size()}"] }
                 ).match() }
             )
         }

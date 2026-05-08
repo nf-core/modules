@@ -4,9 +4,9 @@ process SOMALIER_EXTRACT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/somalier:0.2.19--h0c29559_0':
-        'biocontainers/somalier:0.2.19--h0c29559_0' }"
+        'quay.io/biocontainers/somalier:0.2.19--h0c29559_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -16,7 +16,7 @@ process SOMALIER_EXTRACT {
 
     output:
     tuple val(meta), path("*.somalier") , emit: extract
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('somalier'), eval('somalier 2>&1 | sed -n \'s/.*version: \\([0-9.]*\\).*/\\1/p\''), emit: versions_somalier, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process SOMALIER_EXTRACT {
         -f ${fasta} \\
         ${input} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -41,10 +36,5 @@ process SOMALIER_EXTRACT {
 
     """
     touch ${prefix}.somalier
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
-    END_VERSIONS
     """
 }

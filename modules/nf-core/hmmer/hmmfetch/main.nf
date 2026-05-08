@@ -3,9 +3,9 @@ process HMMER_HMMFETCH {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h87f3376_2':
-        'biocontainers/hmmer:3.3.2--h87f3376_2' }"
+        'quay.io/biocontainers/hmmer:3.3.2--h87f3376_2' }"
 
     // The module can be called with either a key, a file containing keys or neither.
     // In the latter case, the hmm database will be indexed and an index but no output
@@ -29,13 +29,13 @@ process HMMER_HMMFETCH {
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def keyarg  = key ?: ''
     def kfopt   = keyfile ? '-f' : ''
-    def index   = ! key && ! keyfile ? '--index' : ''
+    def index_opt   = ! key && ! keyfile ? '--index' : ''
     def outfile = ! key && ! keyfile ? '' : "> ${prefix}.hmm"
 
     """
     hmmfetch \\
         $kfopt \\
-        $index \\
+        $index_opt \\
         $args \\
         $hmm \\
         $keyarg \\
@@ -49,7 +49,6 @@ process HMMER_HMMFETCH {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
 
     """

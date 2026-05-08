@@ -51,12 +51,26 @@ output:
         type: file
         description: Other output files
         ontologies: []
+  versions_getorganelle:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - getorganelle_from_reads:
+          type: string
+          description: The name of the tool
+      - "get_organelle_from_reads.py --version 2>&1 | sed -n 's/GetOrganelle //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - getorganelle_from_reads:
+          type: string
+          description: The name of the tool
+      - "get_organelle_from_reads.py --version 2>&1 | sed -n 's/GetOrganelle //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@erinyoung"

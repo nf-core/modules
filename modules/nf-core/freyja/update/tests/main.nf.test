@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process FREYJA_UPDATE"
     script "../main.nf"
     process "FREYJA_UPDATE"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -12,6 +13,10 @@ nextflow_process {
     test("sarscov2 - value db name ") {
 
         when {
+            params {
+                freyja_update_args = ""
+            }
+
             process {
                 """
                 input[0] = "test_db"
@@ -22,13 +27,67 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.barcodes.get(0)).exists() },
-                { assert path(process.out.lineages_meta.get(0)).exists() },
-                { assert path(process.out.lineages_topology.get(0)).exists() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert path(process.out.config.get(0)).text.contains("MPX") },
+                { assert snapshot(
+                        file(process.out.barcodes.get(0)).name,
+                        file(process.out.lineages_meta.get(0)).name,
+                        file(process.out.lineages_topology.get(0)).name,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
             )
         }
-
     }
 
+    test("MPX - value db name ") {
+
+        when {
+            params {
+                freyja_update_args = "--pathogen MPX"
+            }
+
+            process {
+                """
+                input[0] = "test_db"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.config.get(0)).text.contains("MPX") },
+                { assert snapshot(
+                        file(process.out.barcodes.get(0)).name,
+                        file(process.out.lineages_topology.get(0)).name,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("SARS-cov-2 - value db name - stub ") {
+        options "-stub"
+
+        when {
+
+            params {
+                freyja_update_args = ""
+            }
+
+            process {
+                """
+                input[0] = "test_db"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
 }

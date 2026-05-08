@@ -22,10 +22,10 @@ nextflow_workflow {
                 process {
                     """
                     input[0] = Channel.fromList([
-                        tuple([ id: 'arc16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm")),
-                        tuple([ id: 'bac16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/bac.hmm")),
-                        tuple([ id: 'euk18s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/euk.hmm")),
-                        tuple([ id: 'mito12s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/mito.hmm"))
+                        tuple([ id: 'arc16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/f843d17d39561eda7ce27cc43e3c6a8104aeb9ce/db/arc.hmm")),
+                        tuple([ id: 'bac16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/f843d17d39561eda7ce27cc43e3c6a8104aeb9ce/db/bac.hmm")),
+                        tuple([ id: 'euk18s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/f843d17d39561eda7ce27cc43e3c6a8104aeb9ce/db/euk.hmm")),
+                        tuple([ id: 'mito12s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/f843d17d39561eda7ce27cc43e3c6a8104aeb9ce/db/mito.hmm"))
                     ])
                     input[1] = Channel.of('16S_rRNA', '16S_rRNA', '18S_rRNA', '12S_rRNA')
                     input[2] = []
@@ -61,7 +61,7 @@ nextflow_workflow {
                 process {
                     """
                     input[0] = Channel.fromList([
-                        tuple([ id: 'euk28s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/euk.hmm"))
+                        tuple([ id: 'euk28s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/f843d17d39561eda7ce27cc43e3c6a8104aeb9ce/db/euk.hmm"))
                     ])
                     input[1] = Channel.of('28S_rRNA')
                     input[2] = []

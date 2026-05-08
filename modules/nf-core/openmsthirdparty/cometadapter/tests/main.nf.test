@@ -59,7 +59,7 @@ nextflow_process {
             // Make sure the file is not empty
             assert file(process.out.idxml[0][1]).readLines().any { it.contains('ProteinHit') }
             assert file(process.out.idxml[0][1]).readLines().any { it.contains('PeptideHit') }
-            assert snapshot(path(process.out.versions.get(0)).yaml).match("versions")
+            assert snapshot(process.out.versions_cometadapter, process.out.versions_comet).match("versions")
         }
     }
 

@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "magus_align"
 description: Multiple Sequence Alignment using Graph Clustering
 keywords:
@@ -13,9 +13,9 @@ tools:
       documentation: "https://github.com/vlasmirnov/MAGUS"
       tool_dev_url: "https://github.com/vlasmirnov/MAGUS"
       doi: "10.1093/bioinformatics/btaa992"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:magus
-
 input:
   - - meta:
         type: map
@@ -36,18 +36,18 @@ input:
           e.g. `[ id:'test', single_end:false ]`
     - tree:
         type: file
-        description: Optional path to a file containing a guide tree in newick format
-          to use as input. If empty, or overwritten by passing `-t [fasttree|fasttree-noml|clustal|parttree]`,
-          MAGUS will construct its own guide tree. If empty, `fasttree` is used as a
-          default.
+        description: Optional path to a file containing a guide tree in newick
+          format to use as input. If empty, or overwritten by passing `-t
+          [fasttree|fasttree-noml|clustal|parttree]`, MAGUS will construct its own
+          guide tree. If empty, `fasttree` is used as a default.
         pattern: "*.{dnd,tree}"
         ontologies:
           - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
   - compress:
       type: boolean
-      description: Flag representing whether the output MSA should be compressed. Set
-        to true to enable/false to disable compression. Compression is done using pigz,
-        and is multithreaded.
+      description: Flag representing whether the output MSA should be compressed.
+        Set to true to enable/false to disable compression. Compression is done
+        using pigz, and is multithreaded.
 output:
   alignment:
     - - meta:
@@ -57,21 +57,54 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.aln{.gz,}":
           type: file
-          description: File containing the output alignment, in FASTA format containing
-            gaps. The sequences may be in a different order than in the input FASTA.
-            The output file may or may not be gzipped, depending on the value supplied
-            to `compress`.
+          description: File containing the output alignment, in FASTA format
+            containing gaps. The sequences may be in a different order than in the
+            input FASTA. The output file may or may not be gzipped, depending on
+            the value supplied to `compress`.
           pattern: "*.aln{.gz,}"
           ontologies:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_magus:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - magus:
+          type: string
+          description: The name of the tool
+      - magus --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - magus:
+          type: string
+          description: The name of the tool
+      - magus --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lrauschning"

@@ -3,16 +3,16 @@ process GLIMPSE_CHUNK {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--h2ce4488_2'
-        : 'biocontainers/glimpse-bio:1.1.1--hce55b13_1'}"
+        : 'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1'}"
 
     input:
     tuple val(meta), path(input), path(input_index), val(region)
 
     output:
     tuple val(meta), path("*.txt"), emit: chunk_chr
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_chunk --help | sed -n '/Version/s/.*: //p'"), topic: versions, emit: versions_glimpse
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process GLIMPSE_CHUNK {
         --region ${region} \\
         --thread ${task.cpus} \\
         --output ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse: "\$(GLIMPSE_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process GLIMPSE_CHUNK {
 
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse: "\$(GLIMPSE_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
-    END_VERSIONS
     """
 }

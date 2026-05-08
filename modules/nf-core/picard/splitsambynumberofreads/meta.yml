@@ -65,7 +65,6 @@ input:
       type: file
       description: "optional Picard arguments file"
       pattern: "*.{txt,list,args,arguments}"
-
 output:
   bam:
     - - meta:
@@ -79,13 +78,27 @@ output:
           pattern: "*.{bam,sam,cram}"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
+  versions_picard:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard SplitSamByNumberOfReads --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard SplitSamByNumberOfReads --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@Y-Pei"
 maintainers:

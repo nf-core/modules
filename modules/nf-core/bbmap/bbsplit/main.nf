@@ -4,7 +4,7 @@ process BBMAP_BBSPLIT {
     label 'error_retry'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5aae5977ff9de3e01ff962dc495bfa23f4304c676446b5fdf2de5c7edfa2dc4e/data' :
         'community.wave.seqera.io/library/bbmap_pigz:07416fe99b090fa9' }"
 
@@ -21,7 +21,7 @@ process BBMAP_BBSPLIT {
     tuple val(meta), path('*fastq.gz')        , optional:true, emit: all_fastq
     tuple val(meta), path('*txt')             , optional:true, emit: stats
     tuple val(meta), path('*.log')            , optional:true, emit: log
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), topic: versions, emit: versions_bbmap
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,8 +38,8 @@ process BBMAP_BBSPLIT {
     }
 
     def other_refs = []
-    other_ref_names.eachWithIndex { name, index ->
-        other_refs << "ref_${name}=${other_ref_paths[index]}"
+    other_ref_names.eachWithIndex { name, idx ->
+        other_refs << "ref_${name}=${other_ref_paths[idx]}"
     }
 
     def fastq_in=''
@@ -103,17 +103,12 @@ process BBMAP_BBSPLIT {
         done
         mv bbsplit_build bbsplit_index
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def other_refs = ''
-    other_ref_names.eachWithIndex { name, index ->
+    other_ref_names.eachWithIndex { name, _idx ->
         other_refs += "echo '' | gzip > ${prefix}_${name}.fastq.gz"
     }
     def will_build_index = only_build_index || (!index && primary_ref && other_ref_names && other_ref_paths)
@@ -131,10 +126,5 @@ process BBMAP_BBSPLIT {
     fi
 
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 }

@@ -3,9 +3,9 @@ process MACS2_CALLPEAK {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/macs2:2.2.9.1--py39hff71179_1':
-        'biocontainers/macs2:2.2.9.1--py39hff71179_1' }"
+        'quay.io/biocontainers/macs2:2.2.9.1--py39hff71179_1' }"
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)
@@ -30,7 +30,7 @@ process MACS2_CALLPEAK {
     def format    = meta.single_end ? 'BAM' : 'BAMPE'
     def control   = controlbam ? "--control $controlbam" : ''
     if(args_list.contains('--format')){
-        def id = args_list.findIndexOf{it=='--format'}
+        def id = args_list.findIndexOf{args_i -> args_i=='--format'}
         format = args_list[id+1]
         args_list.remove(id+1)
         args_list.remove(id)
@@ -52,7 +52,6 @@ process MACS2_CALLPEAK {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gappedPeak

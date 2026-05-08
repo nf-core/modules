@@ -17,7 +17,7 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test', single_end:false ],
-				    file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
+				    file('https://raw.githubusercontent.com/tseemann/barrnap/0.9/db/arc.hmm', checkIfExists: true)
 				]
 				input[1] = '16S_rRNA'
 				input[2] = []
@@ -44,7 +44,7 @@ nextflow_process {
 
                 input[0] = [
 				    [ id:'test', single_end:false ],
-				    file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
+				    file('https://raw.githubusercontent.com/tseemann/barrnap/0.9/db/arc.hmm', checkIfExists: true)
 				]
 				input[1] = []
                 input[2] = keyfile
@@ -69,7 +69,7 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test', single_end:false ],
-				    file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
+				    file('https://raw.githubusercontent.com/tseemann/barrnap/0.9/db/arc.hmm', checkIfExists: true)
 				]
 				input[1] = []
                 input[2] = []
@@ -94,7 +94,7 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test', single_end:false ],
-				    file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
+				    file('https://raw.githubusercontent.com/tseemann/barrnap/0.9/db/arc.hmm', checkIfExists: true)
 				]
 				input[1] = []
                 input[2] = []

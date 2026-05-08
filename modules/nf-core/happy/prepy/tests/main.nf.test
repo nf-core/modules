@@ -37,7 +37,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.preprocessed_vcf[0].collect { it instanceof Map ? it : path(it).linesGzip[-3..-1] }
                 ).match("bed_preprocessed_vcf") },
-                { assert snapshot(process.out.versions).match("bed_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 
@@ -70,7 +70,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.preprocessed_vcf[0].collect { it instanceof Map ? it : path(it).linesGzip[-3..-1] }
                 ).match("preprocessed_vcf") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 
@@ -104,7 +104,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.preprocessed_vcf).match("stub_preprocessed_vcf") },
-                { assert snapshot(process.out.versions).match("stub_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 

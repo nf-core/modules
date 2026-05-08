@@ -16,8 +16,8 @@ nextflow_process {
             process {
             """
             input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar', checkIfExists: true)
+                [ id:'test' ],
+                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar', checkIfExists: true)
             ]
             """
             }
@@ -29,11 +29,10 @@ nextflow_process {
         when {
             process {
                 """
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
-                    ]
-                )
+                ])
                 input[0] = ch_samplesheet.join(UNTAR.out.untar)
                 input[1] = [[],[]]
                 """
@@ -43,10 +42,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions,
-                                  process.out.expression,
-                                  file(process.out.rds.get(0).get(1)).name,
-                                  process.out.log).match() }
+                { assert snapshot(
+                    process.out.expression,
+                    file(process.out.rds.get(0).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    path(process.out.versions_affy[0]).yaml
+                ).match()}
             )
         }
 
@@ -57,7 +58,7 @@ nextflow_process {
         when {
             process {
                 """
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
                     ]
@@ -71,11 +72,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions,
-                                  process.out.expression,
-                                  process.out.annotation,
-                                  file(process.out.rds.get(0).get(1)).name,
-                                  process.out.log).match() }
+                { assert snapshot(
+                    process.out.expression,
+                    process.out.annotation,
+                    file(process.out.rds.get(0).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    path(process.out.versions_affy[0]).yaml
+                ).match() }
             )
         }
 
@@ -87,7 +90,7 @@ nextflow_process {
         when {
             process {
                 """
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
                     ]
@@ -101,7 +104,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

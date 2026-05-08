@@ -7,14 +7,15 @@ keywords:
   - mkarv
 tools:
   - "ataqv":
-      description: "ataqv is a toolkit for measuring and comparing ATAC-seq results.
-        It was written to help understand how well ATAC-seq assays have worked, and
-        to make it easier to spot differences that might be caused by library prep or
-        sequencing."
+      description: "ataqv is a toolkit for measuring and comparing ATAC-seq results.\
+        \ It was written to help understand how well ATAC-seq assays have worked, and\
+        \ to make it easier to spot differences that might be caused by library prep\
+        \ or sequencing."
       homepage: "https://github.com/ParkerLab/ataqv/blob/master/README.rst"
       documentation: "https://github.com/ParkerLab/ataqv/blob/master/README.rst"
       tool_dev_url: "https://github.com/ParkerLab/ataqv"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:ataqv
 input:
   - jsons/*:
@@ -22,20 +23,53 @@ input:
       description: JSON files
       pattern: "*.json"
       ontologies:
-        - edam: http://edamontology.org/format_3464 # JSON
+        - edam: http://edamontology.org/format_3464
 output:
   html:
     - html:
         type: directory
         description: Web application to visualize results in HTML format
         pattern: "*.html"
+  versions_ataqv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ataqv:
+          type: string
+          description: The name of the tool
+      - echo \$(ataqv --version):
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_mkarv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mkarv:
+          type: string
+          description: The name of the tool
+      - mkarv --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ataqv:
+          type: string
+          description: The name of the tool
+      - echo \$(ataqv --version):
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mkarv:
+          type: string
+          description: The name of the tool
+      - mkarv --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@bjlang"
 maintainers:

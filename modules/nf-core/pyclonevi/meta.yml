@@ -16,7 +16,8 @@ tools:
       documentation: "https://github.com/Roth-Lab/pyclone-vi"
       tool_dev_url: "https://github.com/Roth-Lab/pyclone-vi"
       doi: "10.1186/s12859-020-03919-2"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: ""
 input:
   - - meta:
@@ -26,8 +27,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - rds_join:
         type: file
-        description: RDS file containing the mCNAqc object with joint mutations and
-          copy number segments
+        description: RDS file containing the mCNAqc object with joint mutations
+          and copy number segments
         pattern: "*.rds"
         ontologies: []
     - tumour_samples:
@@ -45,7 +46,7 @@ output:
           description: Files containing information about identified clusters
           pattern: "*_cluster_table.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   pyclone_input:
     - - meta:
           type: map
@@ -76,16 +77,25 @@ output:
             mation
       - "*_best_fit.txt":
           type: file
-          description: TXT file continaing the pyclone-vi best fit.
+          description: TXT file containing the pyclone-vi best fit.
           pattern: "*_best_fit.txt"
           ontologies: []
+
+  versions_pyclonevi:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+topics:
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@giorgiagandolfi"
   - "@elena-buscaroli"

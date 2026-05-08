@@ -3,9 +3,9 @@ process RIBOTISH_PREDICT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ribotish:0.2.7--pyhdfd78af_0':
-        'biocontainers/ribotish:0.2.7--pyhdfd78af_0' }"
+        'quay.io/biocontainers/ribotish:0.2.7--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam_ribo), path(bai_ribo)
@@ -38,7 +38,7 @@ process RIBOTISH_PREDICT {
     }
     if (bam_ti){
         ti_bam_cmd = "-t ${bam_ti.join(',')}"
-        if (para_tis){
+        if (para_ti){
             ti_bam_cmd += " --tisparapara  ${para_ti.join(',')}"
         }
     }
@@ -61,7 +61,6 @@ process RIBOTISH_PREDICT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_pred.txt

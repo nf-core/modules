@@ -3,7 +3,7 @@ process DESEQ2_DIFFERENTIAL {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a1/a15f5d61792b60b6179afd885db27d3fe60eb4c42e805c8887ed0416d88cb484/data' :
         'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-limma:b56a0c9ddc3e87e1' }"
 
@@ -15,7 +15,8 @@ process DESEQ2_DIFFERENTIAL {
 
     output:
     tuple val(meta), path("*.deseq2.results.tsv")              , emit: results
-    tuple val(meta), path("*.deseq2.dispersion.png")           , emit: dispersion_plot
+    tuple val(meta), path("*.deseq2.dispersion.png")           , emit: dispersion_plot_png
+    tuple val(meta), path("*.deseq2.dispersion.pdf")           , emit: dispersion_plot_pdf
     tuple val(meta), path("*.dds.rld.rds")                     , emit: rdata
     tuple val(meta), path("*.deseq2.sizefactors.tsv")          , emit: size_factors
     tuple val(meta), path("*.normalised_counts.tsv")           , emit: normalised_counts
@@ -23,7 +24,7 @@ process DESEQ2_DIFFERENTIAL {
     tuple val(meta), path("*.vst.tsv")                         , optional: true, emit: vst_counts
     tuple val(meta), path("*.deseq2.model.txt")                , emit: model
     tuple val(meta), path("*.R_sessionInfo.log")               , emit: session_info
-    path "versions.yml"                                        , emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,6 +36,7 @@ process DESEQ2_DIFFERENTIAL {
     """
     touch ${meta.id}.deseq2.results.tsv
     touch ${meta.id}.deseq2.dispersion.png
+    touch ${meta.id}.deseq2.dispersion.pdf
     touch ${meta.id}.dds.rld.rds
     touch ${meta.id}.deseq2.sizefactors.tsv
     touch ${meta.id}.normalised_counts.tsv

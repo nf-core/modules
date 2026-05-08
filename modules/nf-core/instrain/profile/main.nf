@@ -3,9 +3,9 @@ process INSTRAIN_PROFILE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/instrain:1.7.1--pyhdfd78af_0':
-        'biocontainers/instrain:1.7.1--pyhdfd78af_0' }"
+        'quay.io/biocontainers/instrain:1.7.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -34,13 +34,13 @@ process INSTRAIN_PROFILE {
     """
     inStrain \\
         profile \\
-        $bam \\
-        $genome_fasta \\
+        ${bam} \\
+        ${genome_fasta} \\
         -o ${prefix}.IS \\
-        -p $task.cpus \\
-        $genes_args \\
-        $stb_args \\
-        $args
+        -p ${task.cpus} \\
+        ${genes_args} \\
+        ${stb_args} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -49,10 +49,7 @@ process INSTRAIN_PROFILE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def genes_args = genes_fasta ? "-g ${genes_fasta}": ''
-    def stb_args = stb_file ? "-s ${stb_file}": ''
     """
     mkdir -p ${prefix}.IS/output
     touch ${prefix}.IS/output/${prefix}.IS_SNVs.tsv

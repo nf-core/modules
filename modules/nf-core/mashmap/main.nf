@@ -3,9 +3,9 @@ process MASHMAP {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mashmap:3.1.3--h07ea13f_0':
-        'biocontainers/mashmap:3.1.3--h07ea13f_0' }"
+        'quay.io/biocontainers/mashmap:3.1.3--h07ea13f_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -35,7 +35,6 @@ process MASHMAP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.paf

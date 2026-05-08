@@ -3,48 +3,37 @@ process VCF2ZARR_CONVERT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-        container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/ebfe707031ebecc7c4f597bb0f310465a6493ba44a16af56ab3d3872ee7492d2/data':
-        'community.wave.seqera.io/library/bio2zarr:0.1.6--8ee007f51aad5560' }"
+        container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9e0bf4a8a21faa7319626812bc557404bb37b440df1af2bbc89a80771aca1f94/data':
+        'community.wave.seqera.io/library/bio2zarr:0.1.7--a742d2d9b8ee4347' }"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
     tuple val(meta), path("*.vcz"), emit: vcz
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('vcf2zarr'), eval('vcf2zarr --version |& sed -n "s/.* //p"'), emit: versions_vcf2zarr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    vcf2zarr \\
-        convert \\
-        $args \\
-        --worker-processes $task.cpus \\
-        $vcf \\
-        ${prefix}.vcz
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/bio2zarr/vcf2zarrconvert
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2zarr: \$(vcf2zarr --version |& sed -n 's/.* //p')
-    END_VERSIONS
-    """
+Reason:
+The module was incorrectly named. The installed package is bio2zarr, not vcf2zarr.
+Per nf-core naming conventions, the module has been moved to bio2zarr/vcf2zarrconvert.
+"""
+    assert false: deprecation_message
 
     stub:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    echo $args
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/bio2zarr/vcf2zarrconvert
 
-    mkdir ${prefix}.vcz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2zarr: \$(vcf2zarr --version |& sed -n 's/.* //p')
-    END_VERSIONS
-    """
+Reason:
+The module was incorrectly named. The installed package is bio2zarr, not vcf2zarr.
+Per nf-core naming conventions, the module has been moved to bio2zarr/vcf2zarrconvert.
+"""
+    assert false: deprecation_message
 }

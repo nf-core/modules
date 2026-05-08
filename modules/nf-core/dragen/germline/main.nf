@@ -2,10 +2,11 @@ process DRAGEN {
     tag "$meta.id"
     label 'process_dragen'
 
-    // ATTENTION: No conda env or container image as Dragen requires specialized hardware to run
+    // WARNING: No conda env or container image as Dragen requires specialized hardware to run
+    // Only the stub test has been executed.
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input), val(sex)
     path checkfingerprint_expected_vcf
     path cnv_combined_counts
     path cnv_exclude_bed
@@ -188,7 +189,7 @@ process DRAGEN {
     path "streaming_log_*.csv"                                               , optional: true, emit: streaming_log_csv
     path "*_usage.txt"                                                       , emit: usage_txt
     path "**"                                                                , emit: all
-    path "versions.yml"                                                      , emit: versions
+    tuple val("${task.process}"), val('dragen'), eval("dragen --version 2>&1 | sed 's/^dragen Version //;q'"), emit: versions_dragen, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -197,16 +198,19 @@ process DRAGEN {
     prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
 
-    // set RGID and RGSM - don't move this due to bug in version 24.10.4 and lower
-    def rgid = args.contains("--RGID") || (!fastq && !ora) ? "" : " --RGID ${meta.id}"
-    def rgsm = args.contains("--RGSM") || (!fastq && !ora) ? "" : " --RGSM ${meta.id}"
-    args = args + rgid + rgsm
-
     // input data
     def bam_rex = /\.bam$/
     def cram_rex = /\.cram$/
     def fastq_rex = /\.f(ast)?q(\.gz)?$/
     def ora_rex = /\.ora$/
+
+    // set RGID and RGSM - don't move this due to bug in version 24.10.4 and lower
+    def fastq_ora = input =~ fastq_rex || input =~ ora_rex
+    def rgid = args.contains("--RGID") || (!fastq_ora) ? "" : " --RGID ${meta.id}"
+    def rgsm = args.contains("--RGSM") || (!fastq_ora) ? "" : " --RGSM ${meta.id}"
+    args = args + rgid + rgsm
+
+
     def format_input = ""
     if (input instanceof List) {
         if (input.size() != 2) {
@@ -279,9 +283,10 @@ process DRAGEN {
         if (qc_coverage_region.size() > 3) {
             error "Error: cannot have more than 3 qc-coverage-region files."
         } else {
-            for (int i = 1; i < qc_coverage_region.size() + 1; i++) {
-                args = args + " --qc-coverage-region-" + i + " " + qc_coverage_region[i]
-            }
+            def region_args = qc_coverage_region.withIndex().collect { region, idx ->
+                " --qc-coverage-region-${idx + 1} ${region}"
+            }.join('')
+            args = args + region_args
         }
     }
     if (qc_cross_cont_vcf) {
@@ -302,8 +307,8 @@ process DRAGEN {
     }
 
     // sample-sex
-    if (meta.sex && !args.contains("--repeat-genotype-enable true")) {
-        args = args + " --sample-sex " + meta.sex.toLowerCase()
+    if (sex && !args.contains("--repeat-genotype-enable true")) {
+        args = args + " --sample-sex " + sex.toLowerCase()
     }
 
     // structural variation
@@ -390,21 +395,11 @@ process DRAGEN {
         $format_input \\
         --output-file-prefix $prefix \\
         --output-directory \$(pwd)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dragen: \$(echo \$(dragen --version 2>&1) | sed 's/^dragen Version //;s/ Hash.*//')
-    END_VERSIONS
     """
 
     stub:
-    def VERSION = "stub"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch 20251120_usage.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dragen: ${VERSION}
-    END_VERSIONS
     """
 }

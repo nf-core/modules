@@ -16,19 +16,18 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end: true ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true) ]
 				]
-
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
 					path(process.out.fastq[0][1]).linesGzip[3..7],
-					process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
 					).match()
 				}
             )
@@ -41,19 +40,18 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end: false ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true) ]
 				]
-
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
 					process.out.fastq[0][1].collect { path(it).linesGzip[3..7] },
-					process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
 					).match()
 				}
             )
@@ -66,23 +64,21 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end: true ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true) ]
 				]
-
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
 					process.out.fastq[0][1].collect { file(it).name },
-					process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
 					).match()
 				}
             )
         }
     }
-
 }

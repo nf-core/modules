@@ -3,16 +3,16 @@ process SEQTK_SAMPLE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
-        'biocontainers/seqtk:1.4--he4a0461_1' }"
+        'quay.io/biocontainers/seqtk:1.4--he4a0461_1' }"
 
     input:
     tuple val(meta), path(reads), val(sample_size)
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('seqtk'), eval("seqtk 2>&1 | sed -n 's/^Version: //p'"), emit: versions_seqtk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process SEQTK_SAMPLE {
             $sample_size \\
             | gzip --no-name > ${prefix}_\$(basename \$f)
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -48,11 +43,6 @@ process SEQTK_SAMPLE {
 
     """
     echo "" | gzip > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 
 }

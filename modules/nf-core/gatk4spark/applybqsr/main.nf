@@ -3,7 +3,7 @@ process GATK4SPARK_APPLYBQSR {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/49/498aea9c9bcaf736b9fb2a01366c1b7b38ccc0d38143178afc325d6a93241447/data'
         : 'community.wave.seqera.io/library/gatk4-spark:4.6.2.0--8b5cd67ee60a714e'}"
 
@@ -14,10 +14,10 @@ process GATK4SPARK_APPLYBQSR {
     path dict
 
     output:
-    tuple val(meta), path("${prefix}.bam"),  emit: bam,  optional: true
-    tuple val(meta), path("${prefix}*bai"),  emit: bai,  optional: true
+    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
+    tuple val(meta), path("${prefix}*bai"), emit: bai, optional: true
     tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
-    path "versions.yml",                     emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,11 +47,6 @@ process GATK4SPARK_APPLYBQSR {
         --spark-master local[${task.cpus}] \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -62,10 +57,5 @@ process GATK4SPARK_APPLYBQSR {
     if [[ ${suffix} == bam ]]; then
         touch ${prefix}.${suffix}.bai
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

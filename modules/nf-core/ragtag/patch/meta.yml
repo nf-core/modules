@@ -1,7 +1,6 @@
 name: "ragtag_patch"
 description: "Homology-based assembly patching: Make continuous joins and fill gaps
   in 'target.fa' using sequences from 'query.fa'"
-
 keywords:
   - assembly
   - consensus
@@ -14,7 +13,8 @@ tools:
       documentation: "https://github.com/malonge/RagTag/wiki"
       tool_dev_url: "https://github.com/malonge/RagTag"
       doi: "10.1186/s13059-022-02823-7"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:ragtag
 input:
   - - meta:
@@ -88,8 +88,9 @@ output:
             e.g. [ id:'test' ]
       - "*.comps.fasta":
           type: file
-          description: The split target assembly and the renamed query assembly combined
-            into one FASTA file. This file contains all components in ragtag.patch.agp
+          description: The split target assembly and the renamed query assembly
+            combined into one FASTA file. This file contains all components in
+            ragtag.patch.agp
           pattern: "*.comps.fasta"
           ontologies: []
   assembly_alignments:
@@ -111,7 +112,8 @@ output:
             e.g. [ id:'test' ]
       - "*.ctg.agp":
           type: file
-          description: An AGP file defining how the target assembly was split at gaps
+          description: An AGP file defining how the target assembly was split at
+            gaps
           pattern: "*.ctg.agp"
           ontologies: []
   target_splits_fasta:
@@ -144,7 +146,8 @@ output:
             e.g. [ id:'test' ]
       - "*.rename.fasta":
           type: file
-          description: A FASTA file with the original query sequence, but with new names
+          description: A FASTA file with the original query sequence, but with new
+            names
           pattern: "*.rename.fasta"
           ontologies: []
   stderr:
@@ -158,13 +161,27 @@ output:
           description: Standard error logging for all external RagTag commands
           pattern: "*.patch.err"
           ontologies: []
+  versions_ragtag:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ragtag:
+          type: string
+          description: The name of the tool
+      - ragtag.py -v | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ragtag:
+          type: string
+          description: The name of the tool
+      - ragtag.py -v | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nschan"
 maintainers:

@@ -1,7 +1,7 @@
 name: "gecco_run"
-description: GECCO is a fast and scalable method for identifying putative novel Biosynthetic
-  Gene Clusters (BGCs) in genomic and metagenomic data using Conditional Random Fields
-  (CRFs).
+description: GECCO is a fast and scalable method for identifying putative novel
+  Biosynthetic Gene Clusters (BGCs) in genomic and metagenomic data using
+  Conditional Random Fields (CRFs).
 keywords:
   - bgc
   - detection
@@ -14,7 +14,8 @@ tools:
       documentation: "https://gecco.embl.de"
       tool_dev_url: "https://github.com/zellerlab/GECCO"
       doi: "10.1101/2021.05.03.442509"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -24,8 +25,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - input:
         type: file
-        description: A genomic file containing one or more sequences as input. Input
-          type is any supported by Biopython (fasta, gbk, etc.)
+        description: A genomic file containing one or more sequences as input.
+          Input type is any supported by Biopython (fasta, gbk, etc.)
         pattern: "*"
         ontologies: []
     - hmm:
@@ -33,11 +34,11 @@ input:
         description: Alternative HMM file(s) to use in HMMER format
         pattern: "*.hmm"
         ontologies:
-          - edam: http://edamontology.org/format_1370 # HMMER format
+          - edam: http://edamontology.org/format_1370
   - model_dir:
       type: directory
-      description: Path to an alternative CRF (Conditional Random Fields) module to
-        use
+      description: Path to an alternative CRF (Conditional Random Fields) module
+        to use
 output:
   genes:
     - - meta:
@@ -47,11 +48,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.genes.tsv":
           type: file
-          description: TSV file containing detected/predicted genes with BGC probability
-            scores. Will not be generated if no hits are found.
+          description: TSV file containing detected/predicted genes with BGC
+            probability scores. Will not be generated if no hits are found.
           pattern: "*.genes.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   features:
     - - meta:
           type: map
@@ -63,7 +64,7 @@ output:
           description: TSV file containing identified domains
           pattern: "*.features.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   clusters:
     - - meta:
           type: map
@@ -72,11 +73,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.clusters.tsv":
           type: file
-          description: TSV file containing coordinates of predicted clusters and BGC
-            types.  Will not be generated if no hits are found.
+          description: TSV file containing coordinates of predicted clusters and
+            BGC types.  Will not be generated if no hits are found.
           pattern: "*.clusters.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   gbk:
     - - meta:
           type: map
@@ -85,11 +86,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_cluster_*.gbk":
           type: file
-          description: Per cluster GenBank file (if found) containing sequence with
-            annotations. Will not be generated if no hits are found.
+          description: Per cluster GenBank file (if found) containing sequence
+            with annotations. Will not be generated if no hits are found.
           pattern: "*.gbk"
           ontologies:
-            - edam: "http://edamontology.org/format_1936" # GenBank
+            - edam: "http://edamontology.org/format_1936"
   json:
     - - meta:
           type: map
@@ -98,18 +99,32 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.json":
           type: file
-          description: AntiSMASH v6 sideload JSON file (if --antismash-sideload) supplied.
-            Will not be generated if no hits are found.
+          description: AntiSMASH v6 sideload JSON file (if --antismash-sideload)
+            supplied. Will not be generated if no hits are found.
           pattern: "*.gbk"
           ontologies:
-            - edam: "http://edamontology.org/format_1936" # GenBank
+            - edam: "http://edamontology.org/format_1936"
+  versions_gecco:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gecco:
+          type: string
+          description: The name of the tool
+      - gecco -V | cut -d" " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gecco:
+          type: string
+          description: The name of the tool
+      - gecco -V | cut -d" " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:
