@@ -1,15 +1,4 @@
-#!/usr/bin/env nextflow
-nextflow.enable.dsl = 2
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    PROCESS: CLUSTER_VIZ
-    Generates PCA, UMAP and t-SNE visualizations colored by cluster
-    Author: Donald Baku (author)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-process CLUSTER_VIZ {
+process CUSTOM_CLUSTERVISUALIATION {
     tag "$meta.id"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
