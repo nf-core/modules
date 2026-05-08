@@ -197,4 +197,41 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    import sys
+    import platform
+
+    prefix = "${task.ext.prefix ?: out_prefix ?: meta.id}"
+
+    sys.argv = [
+        "cluster_viz.py",
+        "--features", "$features",
+        "--clusters", "$clusters",
+        "--pca-scores", "$pca_scores",
+        "--out-umap-tsv", f"{prefix}_umap.tsv",
+        "--out-tsne-tsv", f"{prefix}_tsne.tsv",
+        "--out-umap-png", f"{prefix}_umap.png",
+        "--out-tsne-png", f"{prefix}_tsne.png",
+        "--out-pca-png", f"{prefix}_pca.png",
+    ]
+
     main()
+
+    import matplotlib
+    import pandas
+    import sklearn
+
+    try:
+        import umap
+        umap_version = umap.__version__
+    except Exception:
+        umap_version = "N/A"
+
+    with open("versions.yml", "w") as f:
+        f.write(
+            f'"${task.process}":\n'
+            f'    python: {platform.python_version()}\n'
+            f'    pandas: {pandas.__version__}\n'
+            f'    scikit-learn: {sklearn.__version__}\n'
+            f'    umap-learn: {umap_version}\n'
+            f'    matplotlib: {matplotlib.__version__}\n'
+        )
