@@ -194,16 +194,6 @@ def main() -> None:
     tsne_df.to_csv(args.out_tsne_tsv, sep="\t", index=False)
     plot_scatter(tsne_df, "x", "y", args.out_tsne_png, f"t-SNE (perplexity={perp:.1f})")
 
-    pca_df = pd.read_csv(args.pca_scores, sep=r"\s+", engine="python", dtype=str)
-    pca_df = _normalise_id_column(pca_df)
-    comp_cols = [c for c in pca_df.columns if c != "sample_id"]
-    if len(comp_cols) < 2:
-        raise ValueError("pca_scores must have at least 2 PC columns")
-    c1, c2 = comp_cols[0], comp_cols[1]
-    for col in [c1, c2]:
-        pca_df[col] = pd.to_numeric(pca_df[col], errors="coerce")
-    merged = pca_df.merge(umap_df[["sample_id", "cluster"]], on="sample_id", how="inner")
-    plot_scatter(merged, c1, c2, args.out_pca_png, "PCA", c1, c2)
 
 
 if __name__ == "__main__":
