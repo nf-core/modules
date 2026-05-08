@@ -1,15 +1,4 @@
-#!/usr/bin/env nextflow
-nextflow.enable.dsl = 2
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    PROCESS: CLUSTER_METRICS
-    Compute clustering quality metrics and k-sweep
-    Author: Donald Baku (author)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-process CLUSTER_METRICS {
+process CUSTOM_CLUSTERMETRICS {
     tag "$meta.id"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
