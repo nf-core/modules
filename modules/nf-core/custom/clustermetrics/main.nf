@@ -7,7 +7,6 @@ process CUSTOM_CLUSTERMETRICS {
         'community.wave.seqera.io/library/matplotlib_pandas_python_scikit-learn:b7d7028d28dc4084' }"
     input:
     tuple val(meta), path(features), path(clusters)
-    val out_prefix
 
     output:
     tuple val(meta), path("*_metrics.tsv")     , emit: metrics
