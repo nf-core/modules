@@ -17,7 +17,7 @@ process GAPPA_EXAMINEHEATTREE {
     tuple val(meta), path("*.svg")        , emit: svg     , optional: true
     tuple val(meta), path("*.colours.txt"), emit: colours
     tuple val(meta), path("*.log")        , emit: log
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('gappa'), eval("gappa --version 2>&1 | sed 's/v//'"), emit: versions_gappa, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,18 +29,13 @@ process GAPPA_EXAMINEHEATTREE {
     gappa \\
         examine \\
         heat-tree \\
-        --threads $task.cpus \\
+        --threads ${task.cpus} \\
         --file-prefix ${prefix}. \\
-        --jplace-path $jplace \\
-        $args \\
+        --jplace-path ${jplace} \\
+        ${args} \\
         --log-file ${prefix}.log
 
     grep '^ *At' ${prefix}.log > ${prefix}.colours.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gappa: \$(echo \$(gappa --version 2>&1 | sed 's/v//' ))
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process GAPPA_EXAMINEHEATTREE {
     """
     touch ${prefix}.colours.txt
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gappa: \$(echo \$(gappa --version 2>&1 | sed 's/v//' ))
-    END_VERSIONS
     """
 }
