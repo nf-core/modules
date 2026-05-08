@@ -1,0 +1,115 @@
+nextflow_process {
+
+    name "Test Process LLAMACPPPYTHON_RUN (GPU)"
+    script "../main.nf"
+    process "LLAMACPPPYTHON_RUN"
+
+    tag "gpu"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "llamacpppython"
+    tag "llamacpppython/run"
+    tag "huggingface/download"
+
+    test("llamacpppython/run - GPU run inference with downloaded gguf model") {
+
+        config "./nextflow.gpu.config"
+
+        setup {
+            run("HUGGINGFACE_DOWNLOAD") {
+                script "../../../huggingface/download/main.nf"
+                process {
+                    input[0] = [
+                        [ id:'test_model' ],
+                        "mradermacher/tiny-gemma-test-i1-GGUF",
+                        "tiny-gemma-test.i1-Q4_K_M.gguf"
+                    ]
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                def promptFile = file('prompt.json')
+                promptFile.text = '''[
+    {
+        "role": "system",
+        "content": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions"
+    },
+    {
+        "role": "user",
+        "content": "Describe Barcelona in one paragraph"
+    }
+]
+'''
+
+                input[0] = HUGGINGFACE_DOWNLOAD.out.output.map { meta, model ->
+                    [ [ id:'test_run' ], promptFile, model ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1]).size() > 0,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("llamacpppython/run - GPU stub run inference with json prompt") {
+
+        config "./nextflow.gpu.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                def promptFile = file('prompt.json')
+                promptFile.text = '''[
+    {
+        "role": "system",
+        "content": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions"
+    },
+    {
+        "role": "user",
+        "content": "Describe Barcelona in one paragraph"
+    }
+]
+'''
+
+                def modelFile = file('stub_model.gguf')
+                modelFile.text = ''
+
+                input[0] = [
+                    [ id:'test_run' ],
+                    promptFile,
+                    modelFile
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+}
