@@ -28,9 +28,11 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         "vcf"
     )
 
-    ch_somalierextract_input = ch_input.no_tbi
-        .join(HTSLIB_BGZIPTABIX.out.index)
-        .mix(ch_input.tbi)
+    ch_somalierextract_input = HTSLIB_BGZIPTABIX.out.output.join(
+        HTSLIB_BGZIPTABIX.out.index
+    ).mix(
+        ch_input.tbi
+    )
 
     SOMALIER_EXTRACT(
         ch_somalierextract_input,

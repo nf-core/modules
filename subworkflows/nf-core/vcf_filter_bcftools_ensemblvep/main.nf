@@ -42,8 +42,8 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
             "vcf"
         )
 
-        ch_vcf = HTSLIB_BGZIPTABIX.out.index.map { meta, vcf, _tbi -> [meta, vcf] }
-        ch_tbi = HTSLIB_BGZIPTABIX.out.index.map { meta, _vcf, tbi -> [meta, tbi] }
+        ch_vcf = HTSLIB_BGZIPTABIX.out.output
+        ch_tbi = HTSLIB_BGZIPTABIX.out.index
     }
 
     emit:
