@@ -41,7 +41,8 @@ input:
         type: file
         description: Sorted BAM file 2 (usually control)
         pattern: "*.{bam}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
     - bai2:
         type: file
         description: BAM index file for BAM file 2
