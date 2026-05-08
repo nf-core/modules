@@ -46,7 +46,8 @@ input:
         type: file
         description: BAM index file for BAM file 2
         pattern: "*.{bai}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
 output:
   bigwig:
     - - meta:
