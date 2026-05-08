@@ -13,7 +13,7 @@ process HMMER_HMMALIGN {
 
     output:
     tuple val(meta), path("*.sto.gz"), emit: sto
-    tuple val("${task.process}"), val("hmmer"), eval("hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //'"), topic: versions, emit: versions_hmmer
+    tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

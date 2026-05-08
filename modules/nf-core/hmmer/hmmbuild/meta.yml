@@ -53,25 +53,24 @@ output:
   versions_hmmer:
     - - ${task.process}:
           type: string
-          description: The process name
+          description: The name of the process
       - hmmer:
           type: string
-          description: The tool name
-      - hmmbuild -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //':
+          description: The name of the tool
+      - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
           type: eval
-          description: The tool version
-
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
           type: string
-          description: The process name
+          description: The name of the process
       - hmmer:
           type: string
-          description: The tool name
-      - hmmbuild -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER //':
+          description: The name of the tool
+      - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
           type: eval
-          description: The tool version
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@erikrikarddaniel"
