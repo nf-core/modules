@@ -63,7 +63,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.*gz":
+      - "output.*gz":
           type: file
           description: Bgzipped file of extracted regions, preserving the input file
             extension. Emitted when a regions file is provided.
