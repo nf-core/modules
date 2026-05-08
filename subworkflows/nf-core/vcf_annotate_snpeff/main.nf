@@ -3,7 +3,7 @@
 //
 
 include { SNPEFF_SNPEFF    } from '../../../modules/nf-core/snpeff/snpeff'
-include { TABIX_BGZIPTABIX } from '../../../modules/nf-core/tabix/bgziptabix'
+include { HTSLIB_BGZIPTABIX } from '../../../modules/nf-core/htslib/bgziptabix'
 
 workflow VCF_ANNOTATE_SNPEFF {
     take:
@@ -13,11 +13,16 @@ workflow VCF_ANNOTATE_SNPEFF {
 
     main:
     SNPEFF_SNPEFF(ch_vcf, val_snpeff_db, ch_snpeff_cache)
-    TABIX_BGZIPTABIX(SNPEFF_SNPEFF.out.vcf)
+    HTSLIB_BGZIPTABIX(
+        SNPEFF_SNPEFF.out.vcf,
+        "compress",
+        true,
+        "vcf"
+    )
 
 
     emit:
-    vcf_tbi   = TABIX_BGZIPTABIX.out.gz_index // channel: [ val(meta), path(vcf), path(tbi) ]
+    vcf_tbi   = HTSLIB_BGZIPTABIX.out.gz_index // channel: [ val(meta), path(vcf), path(tbi) ]
     reports   = SNPEFF_SNPEFF.out.report // channel: [ path(html) ]
     summary   = SNPEFF_SNPEFF.out.summary_html // channel: [ path(html) ]
     genes_txt = SNPEFF_SNPEFF.out.genes_txt // channel: [ path(genes.txt) ]

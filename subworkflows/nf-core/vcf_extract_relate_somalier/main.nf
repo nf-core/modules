@@ -1,6 +1,6 @@
-include { SOMALIER_EXTRACT } from '../../../modules/nf-core/somalier/extract/main'
-include { SOMALIER_RELATE  } from '../../../modules/nf-core/somalier/relate/main'
-include { TABIX_TABIX      } from '../../../modules/nf-core/tabix/tabix/main'
+include { SOMALIER_EXTRACT  } from '../../../modules/nf-core/somalier/extract/main'
+include { SOMALIER_RELATE   } from '../../../modules/nf-core/somalier/relate/main'
+include { HTSLIB_BGZIPTABIX } from '../../../modules/nf-core/htslib/bgziptabix/main'
 
 workflow VCF_EXTRACT_RELATE_SOMALIER {
     take:
@@ -21,12 +21,15 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
                 return [ meta, vcf ]
         }
 
-    TABIX_TABIX(
-        ch_input.no_tbi.map { meta, vcf -> [meta, vcf, [], []] }
+    HTSLIB_BGZIPTABIX(
+        ch_input.no_tbi.map { meta, vcf -> [meta, vcf, [], []] },
+        "compress",
+        true,
+        "vcf"
     )
 
     ch_somalierextract_input = ch_input.no_tbi
-        .join(TABIX_TABIX.out.index)
+        .join(HTSLIB_BGZIPTABIX.out.index)
         .mix(ch_input.tbi)
 
     SOMALIER_EXTRACT(

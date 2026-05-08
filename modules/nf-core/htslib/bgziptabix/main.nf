@@ -8,7 +8,7 @@ process HTSLIB_BGZIPTABIX {
         'community.wave.seqera.io/library/htslib_xz:49c8c84af5c4b3b9' }"
 
     input:
-    tuple val(meta), path(infile)
+    tuple val(meta), path(infile), path(infile_tbi), path(regions)
     val action
     val make_index
     val out_ext
@@ -39,10 +39,16 @@ process HTSLIB_BGZIPTABIX {
 
     def compress_cmd     = action == "compress" ? "bgzip -c ${args} -@ ${task.cpus}" : "cat"
     def bgzip_cmd        = action == "compress" ? "[ '\$(basename ${infile})' != '\$(basename ${outfile})' ] && ln -s ${infile} ${outfile}" : "bgzip -c -d ${args} -@ ${task.cpus} ${infile} > ${outfile}"
-    def tabix_cmd        = make_index ? "tabix -@ ${task.cpus} ${args2} -f ${outfile}" : ""
+
+    def regions_arg      = regions ? "-R ${regions}" : ""
+    def tabix_cmd        = make_index ? "tabix -@ ${task.cpus} ${regions_arg} ${args2} -f ${outfile}" : ""
+    def link_tabix_cmd   = make_index && infile_tbi ? "ln -s ${infile_tbi} ${outfile}.${infile_tbi.extension}" : ""
     def uncompressed_cmd = action == "compress" ? "${compress_cmd} ${infile} > ${outfile}" : (infile.getName() == outfile ? "" : "ln -s ${infile} ${outfile}")
     """
+    ${link_tabix_cmd}
+
     FILE_TYPE=\$(htsfile ${infile})
+
     case "\$FILE_TYPE" in
         *BGZF-compressed*)
             ${bgzip_cmd} ;;
@@ -66,13 +72,16 @@ process HTSLIB_BGZIPTABIX {
     prefix    = task.ext.prefix ?: "${meta.id}"
     outfile   = action == "compress" ? (out_ext ? "${prefix}.${out_ext}.gz" : "${prefix}.gz") : (out_ext ? "${prefix}.${out_ext}" : "${prefix}")
 
-    def touch_cmd = action == "compress" ? "echo | bgzip -c" : "echo"
-    def tabix_cmd = make_index ? "tabix -@ ${task.cpus} ${args2} -f ${outfile}" : ""
+    def touch_cmd      = action == "compress" ? "echo | bgzip -c" : "echo"
+    def index_fmt      = args2.contains('-C') ? 'csi' : 'tbi'
+    def tabix_cmd      = make_index ? "touch ${outfile}.${index_fmt}" : ""
+    def link_tabix_cmd = make_index && infile_tbi ? "ln -s ${infile_tbi} ${outfile}.${infile_tbi.extension}" : ""
     """
     echo $args
 
     $touch_cmd > $outfile
 
     ${tabix_cmd}
+    ${link_tabix_cmd}
     """
 }

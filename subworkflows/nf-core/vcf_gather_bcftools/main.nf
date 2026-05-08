@@ -1,6 +1,6 @@
 include { BCFTOOLS_CONCAT } from '../../../modules/nf-core/bcftools/concat/main'
 include { BCFTOOLS_SORT   } from '../../../modules/nf-core/bcftools/sort/main'
-include { TABIX_TABIX     } from '../../../modules/nf-core/tabix/tabix/main'
+include { HTSLIB_BGZIPTABIX     } from '../../../modules/nf-core/htslib/bgziptabix/main'
 
 workflow VCF_GATHER_BCFTOOLS {
     take:
@@ -54,13 +54,18 @@ workflow VCF_GATHER_BCFTOOLS {
         ch_tabix_input = ch_vcf_concat
     }
 
-    TABIX_TABIX(ch_tabix_input.map { meta, vcf -> [meta, vcf, [], []] })
+    HTSLIB_BGZIPTABIX(
+        ch_tabix_input.map { meta, vcf -> [meta, vcf, [], []] },
+        "compress",
+        true,
+        "vcf"
+    )
 
     ch_vcf_index = ch_tabix_input
-        .join(TABIX_TABIX.out.index)
+        .join(HTSLIB_BGZIPTABIX.out.index)
 
     emit:
     vcf       = ch_vcf_concat         // channel: [ val(meta), [ vcf ] ]
-    index     = TABIX_TABIX.out.index // channel: [ val(meta), [ tbi or csi ] ]
+    index     = HTSLIB_BGZIPTABIX.out.index // channel: [ val(meta), [ tbi or csi ] ]
     vcf_index = ch_vcf_index          // channel: [ val(meta), [ vcf ], [ tbi or csi ] ]
 }

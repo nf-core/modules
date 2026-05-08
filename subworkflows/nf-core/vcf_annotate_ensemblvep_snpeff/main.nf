@@ -117,7 +117,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         ch_snpeff_genes = SNPEFF_SNPEFF.out.genes_txt
 
         COMPRESS_VCF(
-            SNPEFF_SNPEFF.out.vcf,
+            SNPEFF_SNPEFF.out.vcf.map { meta, vcf -> [meta, vcf, [], []] },
             "compress",
             false,
             "vcf"
@@ -170,7 +170,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     }
 
     INDEX_VCF(
-        ch_tabix_input.bgzip,
+        ch_tabix_input.bgzip.map { meta, vcf -> [meta, vcf, [], []] },
         "compress",
         true,
         "vcf"

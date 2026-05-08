@@ -32,6 +32,7 @@ nextflow_process {
             process {
                 """
                 input[0] = MODKIT_PILEUP.out.bedgz
+                    .map { meta, bedgz -> [meta, bedgz, [], []] }
                 input[1] = "decompress"
                 input[2] = false
                 input[3] = "bed"
