@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "bam_impute_quilt2"
 description: |
-  Impute low-coverage BAM or CRAM inputs with QUILT2 and ligate chunked outputs per chromosome.
+  Impute low-coverage BAM or CRAM inputs with QUILT2 and ligate chunked outputs per chromosome. 'Region out' key will be used to store temporarily the region and therefore shouldn't be used in the meta maps.
 keywords:
   - bam
   - cram
