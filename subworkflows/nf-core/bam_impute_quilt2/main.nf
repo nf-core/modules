@@ -53,8 +53,6 @@ workflow BAM_IMPUTE_QUILT2 {
         }
 
     QUILT_QUILT2(ch_bam_params, ch_fasta)
-    ch_versions = ch_versions.mix(QUILT_QUILT2.out.versions_r_quilt)
-    ch_versions = ch_versions.mix(QUILT_QUILT2.out.versions_r_base)
 
     ligate_input = QUILT_QUILT2.out.vcf
         .join(QUILT_QUILT2.out.tbi)
