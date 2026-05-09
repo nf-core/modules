@@ -3,9 +3,9 @@ process GTDBTK_CLASSIFYWF {
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c2/c2df03eec9c0805810e0ef6caec4347d7c6545eece61e941018945502fafc9b6/data'
-        : 'community.wave.seqera.io/library/gtdbtk_python:cee0379cf1ca2968'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c7/c74f30749ddaf49d616a166deb3bc81b87d08afc81de6b64b2b1eda64ebb9784/data'
+        : 'community.wave.seqera.io/library/gtdbtk:2.7.1--07b35fe7297e0d9d'}"
 
     input:
     tuple val(meta)   , path("bins/*")
@@ -24,7 +24,7 @@ process GTDBTK_CLASSIFYWF {
     tuple val(meta), path("${prefix}/${prefix}.log")                 , emit: log
     tuple val(meta), path("${prefix}/${prefix}.warnings.log")        , emit: warnings
     tuple val("${task.process}"), val('gtdbtk'), eval("gtdbtk --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -1") , topic: versions, emit: versions_gtdbtk
-    tuple val("${task.process}"), val('gtdb_db'), eval('grep VERSION_DATA $GTDBTK_DATA_PATH/metadata/metadata.txt | sed "s/VERSION_DATA=//"'), topic: versions, emit: versions_gtdbtk_db
+    tuple val("${task.process}"), val('gtdb_db'), eval('grep VERSION_DATA \$GTDBTK_DATA_PATH/metadata/metadata.txt | sed "s/VERSION_DATA=//"'), topic: versions, emit: versions_gtdbtk_db
 
     when:
     task.ext.when == null || task.ext.when
@@ -55,6 +55,8 @@ process GTDBTK_CLASSIFYWF {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export GTDBTK_DATA_PATH="\$(find -L ${db} -name 'metadata' -type d -exec dirname {} \\;)"
+
     mkdir ${prefix}
     mkdir ${prefix}/identify
     mkdir ${prefix}/classify

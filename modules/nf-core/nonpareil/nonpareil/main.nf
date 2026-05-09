@@ -3,9 +3,9 @@ process NONPAREIL_NONPAREIL {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nonpareil:3.5.5--r43hdcf5f25_0':
-        'biocontainers/nonpareil:3.5.5--r43hdcf5f25_0' }"
+        'quay.io/biocontainers/nonpareil:3.5.5--r43hdcf5f25_0' }"
 
     input:
     tuple val(meta), path(reads)

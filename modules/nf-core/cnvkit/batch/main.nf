@@ -3,7 +3,7 @@ process CNVKIT_BATCH {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3e8542cdb0190cfe2cedd74f714f021a2ffa94be3ec2a5b95ff52610cb3e2c34/data'
         : 'community.wave.seqera.io/library/cnvkit_htslib_samtools:86928c121163aca7'}"
 

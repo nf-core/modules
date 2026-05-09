@@ -6,9 +6,12 @@
 # Written by Senthilkumar Panneerselvam and released under the MIT license.
 # Adapted for nf-core/modules by Jonathan Manning.
 
+import argparse
 import logging
 import os
 import platform
+import shlex
+import sys
 
 # Create a logger
 logging.basicConfig(format="%(name)s - %(asctime)s %(levelname)s: %(message)s")
@@ -22,6 +25,26 @@ prefix = "${task.ext.prefix}" if "${task.ext.prefix}" != "null" else "${meta.id}
 sample_name = "${meta.id}"
 
 
+def parse_ext_args(args_string):
+    """Parse arguments supplied via Nextflow's ext.args."""
+    if args_string in (None, "", "null"):
+        args_string = ""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--max_biotypes",
+        type=int,
+        default=100,
+        help="Maximum number of biotype rows to write to the MultiQC TSV. "
+        "Above this, the TSV is dropped so MultiQC does not try to plot a "
+        "category per gene.",
+    )
+    return parser.parse_args(shlex.split(args_string))
+
+
+ext_args = parse_ext_args("${task.ext.args}")
+max_biotypes = ext_args.max_biotypes
+
+
 def prepare_biotype_counts(count_file, header_file, prefix):
     """Cut gene ID and count columns from featureCounts output, prepend header."""
     outfile = f"{prefix}.biotype_counts_mqc.tsv"
@@ -32,14 +55,16 @@ def prepare_biotype_counts(count_file, header_file, prefix):
     with open(count_file) as cf:
         lines = cf.readlines()[2:]  # skip featureCounts header lines
 
+    n_rows = 0
     with open(outfile, "w") as of:
         of.write(header)
         for line in lines:
             fields = line.strip().split("\\t")
             if len(fields) >= 7:
                 of.write(f"{fields[0]}\\t{fields[6]}\\n")
+                n_rows += 1
 
-    return outfile
+    return outfile, n_rows
 
 
 mqc_main = """#id: 'biotype-gs'
@@ -97,9 +122,26 @@ def mqc_feature_stat(bfile, features, outfile, sname=None):
 
 if __name__ == "__main__":
     # Step 1: Prepare biotype counts TSV from featureCounts output
-    biotype_file = prepare_biotype_counts(count_file, header_file, prefix)
+    biotype_file, n_biotypes = prepare_biotype_counts(count_file, header_file, prefix)
 
-    # Step 2: Calculate rRNA percentage for MultiQC general stats
+    # Step 2: Fail loudly if the first column of the featureCounts output has
+    # too many unique values. MultiQC cannot render a bar plot with thousands
+    # of categories, so a high-cardinality group attribute (e.g. a per-gene
+    # identifier) passed to `featureCounts -g` is almost certainly a config
+    # mistake upstream.
+    if n_biotypes > max_biotypes:
+        logger.error(
+            f"Too many categories in '{count_file}': {n_biotypes} > "
+            f"--max_biotypes={max_biotypes}. Column 1 of this file reflects "
+            "the attribute passed to `featureCounts -g`; if a high-cardinality "
+            "attribute was used (e.g. a per-gene identifier), MultiQC cannot "
+            "plot it. Re-run featureCounts with a lower-cardinality attribute "
+            "(e.g. gene_biotype, gene_type), or raise the limit via "
+            "`ext.args = '--max_biotypes N'` if this is expected."
+        )
+        sys.exit(1)
+
+    # Step 3: Calculate rRNA percentage for MultiQC general stats
     mqc_feature_stat(
         biotype_file,
         ["rRNA"],

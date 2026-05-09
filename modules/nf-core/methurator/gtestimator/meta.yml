@@ -1,0 +1,84 @@
+name: methurator_gtestimator
+description: |
+  Run estimator for DNA methylation sequencing saturation.
+keywords:
+  - rrbs
+  - BS-seq
+  - methylation
+  - 5mC
+  - methylseq
+  - bisulphite
+  - bam
+tools:
+  - methurator:
+      description: |
+        Methurator is a Python package designed to estimate CpGs saturation
+        for DNA methylation sequencing data.
+      homepage: https://github.com/VIBTOBIlab/methurator
+      documentation: https://github.com/VIBTOBIlab/methurator/README.md
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Single BAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai:
+        type: file
+        description: Single BAM/CRAM index file
+        pattern: "*.{bai,crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAM index
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1332" # FASTA
+output:
+  summary_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.yml":
+          type: file
+          description: |
+            YAML file summarizing the saturation analysis results.
+          pattern: "${prefix}.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
+  versions_methurator:
+    - - ${task.process}:
+          type: string
+          description: methurator gtestimator
+      - methurator:
+          type: string
+          description: The name of the tool
+      - methurator --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: methurator gtestimator
+      - methurator:
+          type: string
+          description: The name of the tool
+      - methurator --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@edogiuili"
+maintainers:
+  - "@edogiuili"

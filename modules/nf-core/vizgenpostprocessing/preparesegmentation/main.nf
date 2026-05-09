@@ -3,7 +3,7 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container 'nf-core/vizgen-postprocessing_container:v0.1.1'
+    container 'quay.io/nf-core/vizgen-postprocessing_container:v0.1.1'
 
     input:
     tuple val(meta), path(input_images), path(um_to_mosaic_file)
