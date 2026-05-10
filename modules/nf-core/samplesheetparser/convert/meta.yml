@@ -1,0 +1,78 @@
+name: samplesheetparser_convert
+description: |
+  Convert an Illumina SampleSheet.csv between IEM V1 (bcl2fastq) and
+  BCLConvert V2 formats. Format of the input is auto-detected.
+  V2 → V1 conversion is lossy: V2-only fields (OverrideCycles,
+  InstrumentPlatform, etc.) are dropped with a warning.
+keywords:
+  - illumina
+  - samplesheet
+  - conversion
+  - bclconvert
+  - bcl2fastq
+  - genomics
+
+tools:
+  - samplesheet-parser:
+      description: >
+        Format-agnostic parser for Illumina SampleSheet.csv files.
+        Supports IEM V1 (bcl2fastq) and BCLConvert V2 with auto-detection,
+        bidirectional conversion, index validation, and Hamming distance checking.
+      homepage: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      documentation: https://illumina-samplesheet.readthedocs.io
+      tool_dev_url: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      doi: "10.5281/zenodo.18989694"
+      licence: ["Apache-2.0"]
+      identifier: biotools:samplesheet-parser
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          Use [ id:'run_id' ] to identify the sheet.
+    - samplesheet:
+        type: file
+        description: Illumina SampleSheet.csv (V1 or V2 format, auto-detected)
+        pattern: "*.{csv,CSV}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+  - target_version:
+      type: string
+      description: Target format — either 'v1' or 'v2'
+
+output:
+  samplesheet:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.converted.csv":
+          type: file
+          description: Converted SampleSheet.csv in the requested format
+          pattern: "*.converted.csv"
+  versions_samplesheet_parser:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@chaitanyakasaraneni"
+maintainers:
+  - "@chaitanyakasaraneni"

@@ -1,0 +1,78 @@
+name: samplesheetparser_validate
+description: |
+  Validate an Illumina SampleSheet.csv (V1 or V2) for index, adapter, and
+  structural issues. Format is auto-detected. Exits 0 if valid, 1 if errors
+  are found — causing the pipeline to fail early with a clear message rather
+  than discovering demultiplexing problems downstream.
+keywords:
+  - illumina
+  - samplesheet
+  - validation
+  - demultiplexing
+  - bclconvert
+  - bcl2fastq
+  - genomics
+
+tools:
+  - samplesheet-parser:
+      description: >
+        Format-agnostic parser for Illumina SampleSheet.csv files.
+        Supports IEM V1 (bcl2fastq) and BCLConvert V2 with auto-detection,
+        bidirectional conversion, index validation, and Hamming distance checking.
+      homepage: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      documentation: https://illumina-samplesheet.readthedocs.io
+      tool_dev_url: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      doi: "10.5281/zenodo.18989694"
+      licence: ["Apache-2.0"]
+      identifier: biotools:samplesheet-parser
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          Use [ id:'run_id' ] to identify the sheet.
+    - samplesheet:
+        type: file
+        description: Illumina SampleSheet.csv (V1 or V2 format)
+        pattern: "*.{csv,CSV}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+
+output:
+  json:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.validation.json":
+          type: file
+          description: |
+            Structured JSON validation report with is_valid, errors, warnings,
+            and min_hamming_distance fields.
+          pattern: "*.validation.json"
+  versions_samplesheet_parser:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@chaitanyakasaraneni"
+maintainers:
+  - "@chaitanyakasaraneni"

@@ -1,0 +1,89 @@
+name: samplesheetparser_merge
+description: |
+  Merge multiple per-project Illumina SampleSheet.csv files into one
+  combined sheet. Detects index collisions, Hamming distance violations,
+  and read-length mismatches across sheets. Mixed V1/V2 inputs are
+  auto-converted to the target format.
+  Exits 0 on clean merge, 1 if conflicts or warnings were found.
+keywords:
+  - illumina
+  - samplesheet
+  - merge
+  - bclconvert
+  - bcl2fastq
+  - genomics
+
+tools:
+  - samplesheet-parser:
+      description: >
+        Format-agnostic parser for Illumina SampleSheet.csv files.
+        Supports IEM V1 (bcl2fastq) and BCLConvert V2 with auto-detection,
+        bidirectional conversion, index validation, and Hamming distance checking.
+      homepage: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      documentation: https://illumina-samplesheet.readthedocs.io
+      tool_dev_url: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      doi: "10.5281/zenodo.18989694"
+      licence: ["Apache-2.0"]
+      identifier: biotools:samplesheet-parser
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          Use [ id:'run_id' ] to identify the merged run.
+    - samplesheets:
+        type: file
+        description: Two or more Illumina SampleSheet.csv files to merge (V1 or V2)
+        pattern: "*.{csv,CSV}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+  - target_version:
+      type: string
+      description: Output format — either 'v1' or 'v2'
+
+output:
+  samplesheet:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.merged.csv":
+          type: file
+          description: Merged SampleSheet.csv in the requested format
+          pattern: "*.merged.csv"
+  json:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.merge.json":
+          type: file
+          description: |
+            Structured JSON merge report with has_conflicts, sample_count,
+            source_versions, conflicts, and warnings fields.
+          pattern: "*.merge.json"
+  versions_samplesheet_parser:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@chaitanyakasaraneni"
+maintainers:
+  - "@chaitanyakasaraneni"

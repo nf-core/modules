@@ -1,0 +1,89 @@
+name: samplesheetparser_split
+description: |
+  Split a combined Illumina SampleSheet.csv into one file per project or
+  per lane. Header, reads, and settings are copied into every output file;
+  only the sample rows are divided. Output filenames follow the pattern
+  ``{prefix}{group}_SampleSheet.csv``.
+  Exits 0 on success, 1 if warnings were produced.
+keywords:
+  - illumina
+  - samplesheet
+  - split
+  - bclconvert
+  - bcl2fastq
+  - genomics
+
+tools:
+  - samplesheet-parser:
+      description: >
+        Format-agnostic parser for Illumina SampleSheet.csv files.
+        Supports IEM V1 (bcl2fastq) and BCLConvert V2 with auto-detection,
+        bidirectional conversion, index validation, and Hamming distance checking.
+      homepage: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      documentation: https://illumina-samplesheet.readthedocs.io
+      tool_dev_url: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      doi: "10.5281/zenodo.18989694"
+      licence: ["Apache-2.0"]
+      identifier: biotools:samplesheet-parser
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          Use [ id:'run_id' ] to identify the sheet.
+    - samplesheet:
+        type: file
+        description: Combined Illumina SampleSheet.csv to split (V1 or V2)
+        pattern: "*.{csv,CSV}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+  - by:
+      type: string
+      description: Grouping key — either 'project' or 'lane'
+
+output:
+  samplesheets:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "split/*.csv":
+          type: file
+          description: Per-group SampleSheet.csv files written to the split/ subdirectory
+          pattern: "split/*.csv"
+  json:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.split.json":
+          type: file
+          description: |
+            Structured JSON split report with by, output_dir, files,
+            sample_counts, and warnings fields.
+          pattern: "*.split.json"
+  versions_samplesheet_parser:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@chaitanyakasaraneni"
+maintainers:
+  - "@chaitanyakasaraneni"

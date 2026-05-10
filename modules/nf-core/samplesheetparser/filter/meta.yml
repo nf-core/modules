@@ -1,0 +1,90 @@
+name: samplesheetparser_filter
+description: |
+  Extract a subset of samples from an Illumina SampleSheet.csv by project,
+  lane, or sample ID. Multiple criteria are ANDed — a sample must match all
+  provided criteria. Sample ID supports glob patterns (e.g. 'CTRL_*').
+  Exits 0 if at least one sample matched, 1 if no samples matched.
+  Filter criteria are passed via task.ext.args (e.g. '--project ProjectA').
+keywords:
+  - illumina
+  - samplesheet
+  - filter
+  - bclconvert
+  - bcl2fastq
+  - genomics
+
+tools:
+  - samplesheet-parser:
+      description: >
+        Format-agnostic parser for Illumina SampleSheet.csv files.
+        Supports IEM V1 (bcl2fastq) and BCLConvert V2 with auto-detection,
+        bidirectional conversion, index validation, and Hamming distance checking.
+      homepage: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      documentation: https://illumina-samplesheet.readthedocs.io
+      tool_dev_url: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      doi: "10.5281/zenodo.18989694"
+      licence: ["Apache-2.0"]
+      identifier: biotools:samplesheet-parser
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          Use [ id:'run_id' ] to identify the sheet.
+          Pass filter criteria via task.ext.args:
+          e.g. ext.args = '--project ProjectA --lane 1'
+    - samplesheet:
+        type: file
+        description: Illumina SampleSheet.csv to filter (V1 or V2)
+        pattern: "*.{csv,CSV}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+
+output:
+  samplesheet:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.filtered.csv":
+          type: file
+          description: |
+            Filtered SampleSheet.csv. Not emitted when no samples match
+            the criteria (optional output).
+          pattern: "*.filtered.csv"
+  json:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.filter.json":
+          type: file
+          description: |
+            Structured JSON filter report with matched_count, total_count,
+            output_path, summary, and criteria fields.
+          pattern: "*.filter.json"
+  versions_samplesheet_parser:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@chaitanyakasaraneni"
+maintainers:
+  - "@chaitanyakasaraneni"

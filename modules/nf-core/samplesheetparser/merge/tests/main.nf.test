@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process SAMPLESHEETPARSER_MERGE"
+    script "../main.nf"
+    process "SAMPLESHEETPARSER_MERGE"
+
+    tag "samplesheetparser"
+    tag "samplesheetparser_merge"
+    tag "samplesheetparser/merge"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("Merge two V1 sheets into V2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_merge_v2' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'v2'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Merge two V2 sheets into V2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_merge_v2_v2' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v2.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v2.csv', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'v2'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Merge two V1 sheets into V2 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_stub' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'v2'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

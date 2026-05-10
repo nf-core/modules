@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process SAMPLESHEETPARSER_FILTER"
+    script "../main.nf"
+    process "SAMPLESHEETPARSER_FILTER"
+
+    tag "samplesheetparser"
+    tag "samplesheetparser_filter"
+    tag "samplesheetparser/filter"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("Filter V1 sheet by project") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_filter_project' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Filter V1 sheet by project - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
