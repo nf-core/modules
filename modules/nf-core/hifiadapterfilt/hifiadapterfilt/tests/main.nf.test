@@ -37,6 +37,34 @@ nextflow_process {
 
     }
 
+    test("gallus_gallus - pacbio hifi fastq.gz - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/gallus_gallus/pacbio_metagenome.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq,
+                    path(process.out.blastout[0][1]).exists(),
+                    path(process.out.blocklist[0][1]).exists(),
+                    path(process.out.stats[0][1]).readLines().findAll { !it.startsWith("Started") && !it.startsWith("Finished") },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
     test("homo_sapiens - pacbio ccs bam - fastq - stub") {
 
         options "-stub"

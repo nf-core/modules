@@ -28,11 +28,14 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
+    - reads:
         type: file
-        description: PacBio HiFi reads in BAM format
-        pattern: "*.bam"
-        ontologies: []
+        description: PacBio HiFi reads in BAM or FASTQ (compressed or uncompressed) format
+        pattern: "*.{bam,fastq|fq(.gz)}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_3989 # GZIP
 output:
   fastq:
     - - meta:

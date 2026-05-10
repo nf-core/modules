@@ -8,7 +8,7 @@ process HIFIADAPTERFILT_HIFIADAPTERFILT {
         'quay.io/biocontainers/hifiadapterfilt:3.0.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("${prefix}.filt.fastq.gz")       , emit: fastq
@@ -22,9 +22,11 @@ process HIFIADAPTERFILT_HIFIADAPTERFILT {
 
     script:
     def args = task.ext.args ?: ''
+    def ext  = reads.name.endsWith('.bam') ? '.bam' :
+        (reads.name.endsWith('.fastq.gz') || reads.name.endsWith('.fq.gz')) ? '.fastq.gz' : '.fastq'
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    ln -s \$(realpath ${bam}) ${prefix}.bam
+    ln -s \$(realpath ${reads}) ${prefix}${ext}
 
     hifiadapterfilt.sh \\
         -t ${task.cpus} \\
