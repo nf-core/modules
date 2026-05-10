@@ -1,25 +1,25 @@
 process GCTA_MAKEGRMPART {
-    tag "part ${meta.part_gcta_job} of ${meta.nparts_gcta} (${meta.id})"
+    tag "part ${part_gcta_job ?: 1} of ${nparts_gcta ?: 1} (${meta.id})"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9' :
-        'community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'docker://community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9'
+        : 'community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9'}"
 
     input:
-    tuple val(meta), path(mfile), path(bed_pgen), path(bim_pvar), path(fam_psam)
+    tuple val(meta), val(nparts_gcta), val(part_gcta_job), path(mfile), path(bed_pgen), path(bim_pvar), path(fam_psam)
     tuple val(meta2), path(snp_group_file)
 
     output:
-    tuple val(meta), path("*.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.id"), path("*.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.bin"), path("*.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.N.bin"), emit: grm_files
-    tuple val("${task.process}"), val("gcta"), eval("gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'"), emit: versions_gcta, topic: versions
+    tuple val(meta), path("*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.id"), path("*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.bin"), path("*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.N.bin"), val(nparts_gcta), val(part_gcta_job), emit: grm_files
+    tuple val("${task.process}"), val("gcta"), eval("gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'"), emit: versions_gcta, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def part_gcta_job = meta.part_gcta_job
-    def nparts_gcta = meta.nparts_gcta
+    def nparts = nparts_gcta ?: 1
+    def part = part_gcta_job ?: 1
     def extract_cmd = snp_group_file ? "--extract ${snp_group_file}" : ''
     def extra_args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -32,7 +32,7 @@ process GCTA_MAKEGRMPART {
 
     gcta \\
         ${multi_file_flag} ${mfile} \\
-        --make-grm-part ${nparts_gcta} ${part_gcta_job} \\
+        --make-grm-part ${nparts} ${part} \\
         ${extract_cmd} \\
         --maf 0.01 \\
         --thread-num ${task.cpus} \\
@@ -40,10 +40,12 @@ process GCTA_MAKEGRMPART {
     """
 
     stub:
+    def nparts = nparts_gcta ?: 1
+    def part = part_gcta_job ?: 1
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.id
-    touch ${prefix}.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.bin
-    touch ${prefix}.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.N.bin
+    touch ${prefix}.part_${nparts}_${part}.grm.id
+    touch ${prefix}.part_${nparts}_${part}.grm.bin
+    touch ${prefix}.part_${nparts}_${part}.grm.N.bin
     """
 }

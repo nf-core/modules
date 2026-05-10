@@ -11,43 +11,60 @@ tools:
       homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
       documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
       tool_dev_url: "https://github.com/jianyangqt/gcta"
-      licence: ["GPL-3.0-only"]
+      licence:
+        - "GPL-3.0-only"
+      identifier: biotools:gcta
 input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing GRM-partition job metadata
-          e.g. `[ id:'gcta_grm', part_gcta_job:1, nparts_gcta:2 ]`
+          Groovy Map containing GRM-partition sample metadata
+          e.g. `[ id:'gcta_grm' ]`
+    - nparts_gcta:
+        type: integer
+        description: Total number of GRM partitions requested via
+          `--make-grm-part`; defaults to `1` when `null`
+        default: 1
+    - part_gcta_job:
+        type: integer
+        description: One-based index of the GRM partition to compute via
+          `--make-grm-part`; defaults to `1` when `null`
+        default: 1
     - mfile:
         type: file
-        description: GCTA multi-input manifest consumed by `--mbfile` or `--mpfile`
+        description: GCTA multi-input manifest consumed by `--mbfile` or
+          `--mpfile`
         pattern: "*.{mbfile,mpfile,txt}"
         ontologies:
           - edam: "http://edamontology.org/format_2330"
     - bed_pgen:
         type: file
-        description: Collection of PLINK primary genotype files referenced by the multi-input manifest
+        description: Collection of PLINK primary genotype files referenced by the
+          multi-input manifest
         pattern: "*.{bed,pgen}"
         ontologies:
           - edam: "http://edamontology.org/format_3003"
     - bim_pvar:
         type: file
-        description: Collection of PLINK variant metadata files referenced by the multi-input manifest
+        description: Collection of PLINK variant metadata files referenced by the
+          multi-input manifest
         pattern: "*.{bim,pvar}"
         ontologies: []
     - fam_psam:
         type: file
-        description: Collection of PLINK sample metadata files referenced by the multi-input manifest
+        description: Collection of PLINK sample metadata files referenced by the
+          multi-input manifest
         pattern: "*.{fam,psam}"
         ontologies: []
   - - meta2:
         type: map
         description: |
           Groovy Map containing SNP-selection metadata
-          e.g. `[ id:'snp_group1', snp_group:1 ]`
+          e.g. `[ id:'snp_group1' ]`
     - snp_group_file:
         type: file
-        description: Optional SNP extraction file passed to `--extract`; provide `[]` when absent
+        description: Optional SNP extraction file passed to `--extract`; provide
+          `[]` when absent
         pattern: "*.{txt,list}"
         ontologies:
           - edam: "http://edamontology.org/format_2330"
@@ -56,31 +73,39 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing GRM-partition job metadata
-            e.g. `[ id:'gcta_grm', part_gcta_job:1, nparts_gcta:2 ]`
-      - "*.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.id":
+            Groovy Map containing GRM-partition sample metadata
+            e.g. `[ id:'gcta_grm' ]`
+      - "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.id":
           type: file
           description: Partitioned GRM ID file
-          pattern: "*.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.id"
+          pattern: "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.id"
           ontologies: []
-      - "*.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.bin":
+      - "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.bin":
           type: file
           description: Partitioned GRM binary matrix file
-          pattern: "*.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.bin"
+          pattern: "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.bin"
           ontologies: []
-      - "*.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.N.bin":
+      - "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.N.bin":
           type: file
           description: Partitioned GRM sample-count matrix file
-          pattern: "*.part_${meta.nparts_gcta}_${meta.part_gcta_job}.grm.N.bin"
+          pattern: "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.N.bin"
           ontologies: []
+      - nparts_gcta:
+          type: integer
+          description: Total number of GRM partitions requested via
+            `--make-grm-part`
+      - part_gcta_job:
+          type: integer
+          description: One-based index of the GRM partition computed via
+            `--make-grm-part`
   versions_gcta:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - "gcta":
+      - gcta:
           type: string
           description: The tool name
-      - "gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'":
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
           type: eval
           description: The command used to generate the version of the tool
 topics:
@@ -91,7 +116,7 @@ topics:
       - gcta:
           type: string
           description: The tool name
-      - gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//':
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
           type: eval
           description: The command used to generate the version of the tool
 authors:

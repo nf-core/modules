@@ -18,7 +18,9 @@ nextflow_process {
                 file('gcta_grm.mpfile').text = 'plink_simulated plink_simulated.pgen plink_simulated.psam plink_simulated.pvar\\n'
 
                 input[0] = [
-                    [ id:'gcta_grm', part_gcta_job:1, nparts_gcta:2 ],
+                    [ id:'gcta_grm' ],
+                    2,
+                    1,
                     file('gcta_grm.mpfile'),
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true)
@@ -40,6 +42,9 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.grm_files.size() == 1 },
                 { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm' },
+                { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
+                { assert process.out.grm_files.get(0).get(4) == 2 },
+                { assert process.out.grm_files.get(0).get(5) == 1 },
                 {
                     assert snapshot(
                         process.out.grm_files,
@@ -59,7 +64,9 @@ nextflow_process {
                 file('gcta_grm.mbfile').text = 'plink_simulated\\n'
 
                 input[0] = [
-                    [ id:'gcta_grm_bed', part_gcta_job:1, nparts_gcta:2 ],
+                    [ id:'gcta_grm_bed' ],
+                    2,
+                    1,
                     file('gcta_grm.mbfile'),
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
@@ -81,6 +88,9 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.grm_files.size() == 1 },
                 { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm_bed' },
+                { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
+                { assert process.out.grm_files.get(0).get(4) == 2 },
+                { assert process.out.grm_files.get(0).get(5) == 1 },
                 {
                     assert snapshot(
                         process.out.grm_files,
@@ -107,7 +117,9 @@ nextflow_process {
                 file('snp_group_extract.txt').text = extractSnps
 
                 input[0] = [
-                    [ id:'gcta_grm_bed_extract', part_gcta_job:1, nparts_gcta:2 ],
+                    [ id:'gcta_grm_bed_extract' ],
+                    2,
+                    1,
                     file('gcta_grm_extract.mbfile'),
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
@@ -119,7 +131,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
                     ]
                 ]
-                input[1] = [[ id:'snp_group_extract', snp_group:1 ], file('snp_group_extract.txt')]
+                input[1] = [[ id:'snp_group_extract' ], file('snp_group_extract.txt')]
                 """
             }
         }
@@ -129,9 +141,60 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.grm_files.size() == 1 },
                 { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm_bed_extract' },
+                { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
+                { assert process.out.grm_files.get(0).get(4) == 2 },
+                { assert process.out.grm_files.get(0).get(5) == 1 },
                 {
                     assert snapshot(
                         process.out.grm_files,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - plink1 - default partition values") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                file('gcta_grm_default.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm_bed_default' ],
+                    null,
+                    null,
+                    file('gcta_grm_default.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'snp_group0' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.size() == 1 },
+                { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm_bed_default' },
+                { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
+                { assert process.out.grm_files.get(0).get(1).contains('gcta_grm_bed_default.part_1_1.grm.id') },
+                { assert process.out.grm_files.get(0).get(2).contains('gcta_grm_bed_default.part_1_1.grm.bin') },
+                { assert process.out.grm_files.get(0).get(3).contains('gcta_grm_bed_default.part_1_1.grm.N.bin') },
+                { assert process.out.grm_files.get(0).get(4) == null },
+                { assert process.out.grm_files.get(0).get(5) == null },
+                {
+                    assert snapshot(
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
@@ -149,7 +212,9 @@ nextflow_process {
                 file('gcta_grm.mbfile').text = 'plink_simulated\\n'
 
                 input[0] = [
-                    [ id:'gcta_grm_bed', part_gcta_job:1, nparts_gcta:2 ],
+                    [ id:'gcta_grm_bed' ],
+                    2,
+                    1,
                     file('gcta_grm.mbfile'),
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
