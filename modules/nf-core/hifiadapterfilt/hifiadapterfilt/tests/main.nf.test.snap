@@ -6,18 +6,32 @@
                     {
                         "id": "test"
                     },
-                    "test.filt.fastq.gz:md5,514db8a4688a8042dc456474e974f9dd"
+                    "test.filt.fastq.gz:md5,6c315f427340d65f37f447269634ad29"
                 ]
             ],
-            true,
-            true,
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.contaminant.blastout:md5,77e33f48902d6e279ad0484060f49cfe"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.blocklist:md5,2501cf5214a7861ba2eda2a9e16d56f9"
+                ]
+            ],
             [
                 "For the test dataset:",
                 "Removing reads containing adapters a minimum of 44 bp in length and 97% match.",
                 "",
                 "Number of ccs reads: 10",
-                "Number of adapter contaminated ccs reads: 0 (0% of total)",
-                "Number of ccs reads retained: 10 (100% of total)",
+                "Number of adapter contaminated ccs reads: 1 (10% of total)",
+                "Number of ccs reads retained: 9 (90% of total)",
                 ""
             ],
             {
@@ -30,7 +44,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-10T16:44:26.463359891",
+        "timestamp": "2026-05-10T19:10:58.888783246",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
@@ -46,7 +60,14 @@
                     "test.filt.fastq.gz:md5,ce026e6b05113c474da0ef6570fbb04c"
                 ]
             ],
-            true,
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.contaminant.blastout:md5,0e110eda2d2823f64630fdbfccba6663"
+                ]
+            ],
             true,
             [
                 "For the test dataset:",
@@ -67,7 +88,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-08T14:44:24.653752744",
+        "timestamp": "2026-05-10T19:08:51.476386711",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
@@ -117,7 +138,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-08T14:35:08.128190832",
+        "timestamp": "2026-05-10T19:09:05.455426232",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"

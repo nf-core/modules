@@ -8,7 +8,7 @@ process HIFIADAPTERFILT_HIFIADAPTERFILT {
         'quay.io/biocontainers/hifiadapterfilt:3.0.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads), path(db)
 
     output:
     tuple val(meta), path("${prefix}.filt.fastq.gz")       , emit: fastq
@@ -26,6 +26,33 @@ process HIFIADAPTERFILT_HIFIADAPTERFILT {
         (reads.name.endsWith('.fastq.gz') || reads.name.endsWith('.fq.gz')) ? '.fastq.gz' : '.fastq'
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
+    # Workaround: BusyBox sed in this container lacks GNU step-address syntax (1~4,2~4).
+    # hifiadapterfilt.sh uses `sed -n '1~4s/^@/>/p;2~4p'` to convert FASTQ→FASTA for
+    # BLAST, but BusyBox sed silently produces empty output, preventing adapter detection.
+    # An awk-based sed wrapper is placed earlier in PATH to intercept step-address calls;
+    # all other sed invocations fall through to /usr/bin/sed.
+    mkdir -p _wrappers
+    cat > _wrappers/sed << 'SEDWRAP'
+#!/bin/sh
+case "\$*" in
+    *1~4*)
+        awk 'NR%4==1{print ">"substr(\$0,2)} NR%4==2{print}'
+        ;;
+    *)
+        /usr/bin/sed "\$@"
+        ;;
+esac
+SEDWRAP
+    chmod +x _wrappers/sed
+
+    # Workaround: hifiadapterfilt.sh resolves the BLAST database path by splitting PATH
+    # on ':' and grep-ing for "HiFiAdapterFilt/DB". The bioconda package installs the
+    # database to /usr/local/bin/DB which never matches that pattern. Create the expected
+    # directory structure from the provided db input and inject it into PATH.
+    mkdir -p HiFiAdapterFilt
+    ln -s \$(realpath ${db}) HiFiAdapterFilt/DB
+    export PATH="\$PWD/_wrappers:\$PWD/HiFiAdapterFilt/DB:\$PATH"
+
     ln -s \$(realpath ${reads}) ${prefix}${ext}
 
     hifiadapterfilt.sh \\

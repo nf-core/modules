@@ -7,17 +7,25 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "hifiadapterfilt"
+    tag "hifiadapterfilt/downloaddb"
     tag "hifiadapterfilt/hifiadapterfilt"
+
+    setup {
+        run("HIFIADAPTERFILT_DOWNLOADDB") {
+            script "../../downloaddb/main.nf"
+        }
+    }
 
     test("homo_sapiens - pacbio ccs bam - fastq") {
 
         when {
             process {
                 """
-                input[0] = [
+                input[0] = HIFIADAPTERFILT_DOWNLOADDB.out.db.map { db -> [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.bam', checkIfExists: true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.bam', checkIfExists: true),
+                    db
+                ] }
                 """
             }
         }
@@ -27,7 +35,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fastq,
-                    path(process.out.blastout[0][1]).exists(),
+                    process.out.blastout,
                     path(process.out.blocklist[0][1]).exists(),
                     path(process.out.stats[0][1]).readLines().findAll { !it.startsWith("Started") && !it.startsWith("Finished") },
                     process.out.findAll { key, val -> key.startsWith("versions") }
@@ -42,10 +50,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = HIFIADAPTERFILT_DOWNLOADDB.out.db.map { db -> [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/gallus_gallus/pacbio_metagenome.fastq.gz', checkIfExists: true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/gallus_gallus/pacbio_metagenome.fastq.gz', checkIfExists: true),
+                    db
+                ] }
                 """
             }
         }
@@ -55,8 +64,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fastq,
-                    path(process.out.blastout[0][1]).exists(),
-                    path(process.out.blocklist[0][1]).exists(),
+                    process.out.blastout,
+                    process.out.blocklist,
                     path(process.out.stats[0][1]).readLines().findAll { !it.startsWith("Started") && !it.startsWith("Finished") },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
@@ -72,10 +81,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = HIFIADAPTERFILT_DOWNLOADDB.out.db.map { db -> [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.bam', checkIfExists: true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.bam', checkIfExists: true),
+                    db
+                ] }
                 """
             }
         }

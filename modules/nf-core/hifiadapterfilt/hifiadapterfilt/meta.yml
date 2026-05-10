@@ -36,6 +36,13 @@ input:
           - edam: http://edamontology.org/format_2572 # BAM
           - edam: http://edamontology.org/format_1930 # FASTQ
           - edam: http://edamontology.org/format_3989 # GZIP
+    - db:
+        type: directory
+        description: |
+          Directory containing the pre-built BLAST nucleotide database for PacBio
+          adapter sequences, as produced by the hifiadapterfilt/downloaddb module.
+          Must contain pacbio_vectors_db.* files.
+        pattern: "DB"
 output:
   fastq:
     - - meta:
