@@ -45,7 +45,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.log[0][1]).name,
-                    file(process.out.log[0][1]).readLines()[14..15],  // seqs_in and seqs_out
+                    file(process.out.log[0][1]).readLines()[15..16],  // seqs_in and seqs_out
                     process.out.fastq_filtered,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
