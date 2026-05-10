@@ -21,7 +21,7 @@ tools:
       tool_dev_url: https://github.com/sheinasim/HiFiAdapterFilt
       licence:
         - "MIT"
-      identifier: ""
+      identifier: biotools:HiFiAdapterFilt
 input:
   - - meta:
         type: map
@@ -56,6 +56,7 @@ output:
           pattern: "*.filt.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_3989 # GZIP
   stats:
     - - meta:
           type: map
