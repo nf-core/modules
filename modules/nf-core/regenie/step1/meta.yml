@@ -87,6 +87,12 @@ output:
           description: REGENIE prediction list file
           pattern: "*_pred.list"
           ontologies: []
+      - pheno_col:
+          type: string
+          description: Phenotype column passed to `--phenoColList`
+      - is_binary:
+          type: boolean
+          description: Whether `--bt` was used for the emitted phenotype
   loco:
     - - meta:
           type: map
@@ -99,6 +105,12 @@ output:
           pattern: "*.loco.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3987" # GZIP
+      - pheno_col:
+          type: string
+          description: Phenotype column passed to `--phenoColList`
+      - is_binary:
+          type: boolean
+          description: Whether `--bt` was used for the emitted phenotype
   log:
     - - meta:
           type: map
@@ -111,6 +123,12 @@ output:
           pattern: "*.log"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Text
+      - pheno_col:
+          type: string
+          description: Phenotype column passed to `--phenoColList`
+      - is_binary:
+          type: boolean
+          description: Whether `--bt` was used for the emitted phenotype
   versions_regenie:
     - - "${task.process}":
           type: string

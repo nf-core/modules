@@ -1,5 +1,5 @@
 process REGENIE_STEP1 {
-    tag "${meta.id}"
+    tag "${meta.id}:${pheno_col}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -14,9 +14,9 @@ process REGENIE_STEP1 {
     val bsize
 
     output:
-    tuple val(meta), path("*_pred.list"), emit: predictions
-    tuple val(meta), path("*.loco.gz"), emit: loco
-    tuple val(meta), path("*.log"), emit: log
+    tuple val(meta), path("*_pred.list"), val(pheno_col), val(is_binary), emit: predictions
+    tuple val(meta), path("*.loco.gz"), val(pheno_col), val(is_binary), emit: loco
+    tuple val(meta), path("*.log"), val(pheno_col), val(is_binary), emit: log
     tuple val("${task.process}"), val('regenie'), eval('regenie --version 2>&1 | sed -n "1{s/^v//;s/\\.gz$//;p}"'), topic: versions, emit: versions_regenie
 
     when:
