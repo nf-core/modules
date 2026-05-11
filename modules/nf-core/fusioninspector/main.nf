@@ -20,7 +20,7 @@ process FUSIONINSPECTOR {
     tuple val(meta), path("IGV_inputs")                  , emit: igv_inputs  , optional:true
     tuple val(meta), path("fi_workdir")                  , emit: fi_workdir  , optional:true
     tuple val(meta), path("chckpts_dir")                 , emit: chckpts_dir , optional:true
-    path  "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('fusion-inspector'), eval("FusionInspector --version |& sed -n 's/.*version: //p'"), topic: versions, emit: versions_fusioninspector
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,18 +32,13 @@ process FUSIONINSPECTOR {
     def args2  = task.ext.args2  ?: ''
     """
     FusionInspector \\
-        --fusions $fusion_list \\
+        --fusions ${fusion_list} \\
         --genome_lib ${reference} \\
-        $fasta \\
+        ${fasta} \\
         --CPU ${task.cpus} \\
         -O . \\
-        --out_prefix $prefix \\
-        --vis $args $args2
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        FusionInspector: \$(FusionInspector --version 2>&1 | grep -i 'version' | sed -e 's/FusionInspector version: //' -e 's/[[:space:]]//g')
-    END_VERSIONS
+        --out_prefix ${prefix} \\
+        --vis ${args} ${args2}
     """
 
     stub:
@@ -57,10 +52,5 @@ process FUSIONINSPECTOR {
     mkdir -p fi_workdir
     touch fi_workdir/${prefix}.gtf
     mkdir -p IGV_inputs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        FusionInspector: \$(FusionInspector --version 2>&1 | grep -i 'version' | sed -e 's/FusionInspector version: //' -e 's/[[:space:]]//g')
-    END_VERSIONS
     """
 }
