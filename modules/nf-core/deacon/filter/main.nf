@@ -22,6 +22,7 @@ process DEACON_FILTER {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def read_type = (reads instanceof List) ? "-o ${prefix}_1.fq -O ${prefix}_2.fq" : "> ${prefix}.fq" // deacon's automatic compression does not work
+    if (!(reads instanceof List) && "${reads}" == "${prefix}.fq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     deacon \\
         filter \\
