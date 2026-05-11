@@ -117,7 +117,6 @@ nextflow_workflow {
                     path(vcf).vcf.header.getGenotypeSamples().sort(),
                     path(vcf).vcf.variantsMD5
                 ]},
-                workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
             ).match()
         }
     }
