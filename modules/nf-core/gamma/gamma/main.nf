@@ -33,16 +33,16 @@ process GAMMA_GAMMA {
         FNAME=\$(basename ${fasta} .gz)
         gunzip -f ${fasta}
         GAMMA.py \\
-        $args \\
+        ${args} \\
         "\${FNAME}" \\
-        $db \\
-        $prefix
+        ${db} \\
+        ${prefix}
     else
         GAMMA.py \\
-        $args \\
-        $fasta \\
-        $db \\
-        $prefix
+        ${args} \\
+        ${fasta} \\
+        ${db} \\
+        ${prefix}
     fi
     """
 
