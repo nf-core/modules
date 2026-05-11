@@ -4,8 +4,8 @@ process GETORGANELLE_FROMREADS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.0--pyh7cba7a3_0'
-        : 'quay.io/biocontainers/getorganelle:1.7.7.0--pyh7cba7a3_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.1--pyhdfd78af_0'
+        : 'quay.io/biocontainers/getorganelle:1.7.7.1--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fastq)
@@ -13,8 +13,8 @@ process GETORGANELLE_FROMREADS {
 
     output:
     tuple val(meta), path("results/${prefix}.${organelle_type}.fasta.gz"), emit: fasta, optional: true
-    path "results/*", emit: etc
-    tuple val("${task.process}"), val('getorganelle_from_reads'), eval("get_organelle_from_reads.py --version |& sed 's/^GetOrganelle //'"), topic: versions, emit: versions_getorganelle
+    tuple val(meta), path("results/*"), emit: etc
+    tuple val("${task.process}"), val('getorganelle'), eval("get_organelle_from_reads.py --version |& sed 's/^GetOrganelle v//'"), topic: versions, emit: versions_getorganelle
 
     when:
     task.ext.when == null || task.ext.when

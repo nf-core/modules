@@ -45,20 +45,25 @@ output:
           description: Complete or partial organelle sequences
           pattern: "*.fasta.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989 # GZIP
   etc:
-    - results/*:
-        type: file
-        description: Other output files
-        ontologies: []
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - results/*:
+          type: file
+          description: Other output files
+          ontologies: []
   versions_getorganelle:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - getorganelle_from_reads:
+      - getorganelle:
           type: string
           description: The name of the tool
-      - get_organelle_from_reads.py --version |& sed 's/^GetOrganelle //':
+      - get_organelle_from_reads.py --version |& sed 's/^GetOrganelle v//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -66,10 +71,10 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - getorganelle_from_reads:
+      - getorganelle:
           type: string
           description: The name of the tool
-      - get_organelle_from_reads.py --version |& sed 's/^GetOrganelle //':
+      - get_organelle_from_reads.py --version |& sed 's/^GetOrganelle v//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

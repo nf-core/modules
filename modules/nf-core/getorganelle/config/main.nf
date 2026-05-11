@@ -4,8 +4,8 @@ process GETORGANELLE_CONFIG {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.0--pyh7cba7a3_0'
-        : 'quay.io/biocontainers/getorganelle:1.7.7.0--pyh7cba7a3_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.1--pyhdfd78af_0'
+        : 'quay.io/biocontainers/getorganelle:1.7.7.1--pyhdfd78af_0'}"
 
     input:
     val(organelle_type)
