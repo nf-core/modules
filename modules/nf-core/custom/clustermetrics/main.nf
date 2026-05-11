@@ -5,7 +5,7 @@ process CUSTOM_CLUSTERMETRICS {
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
     'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c993602a6f49b387b34e84f41fda5a393355850b2dd6ab776f1307a0e7b9d540/data' :
     'community.wave.seqera.io/library/matplotlib_pandas_python_scikit-learn:c378d29780adbcbf' }"
-    
+
     input:
     tuple val(meta), path(features), path(clusters)
 
@@ -28,6 +28,10 @@ process CUSTOM_CLUSTERMETRICS {
     touch ${prefix}_metrics.tsv
     touch ${prefix}_k_sweep.csv
     touch ${prefix}_selected.json
+    touch ${prefix}_elbow.png
+    touch ${prefix}_silhouette.png
+    touch ${prefix}_davies_bouldin.png
+    touch ${prefix}_calinski.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,7 +1,7 @@
 nextflow_process {
     name "Test Process CLUSTER_METRICS"
     script "../main.nf"
-    process "CLUSTER_METRICS"
+    process "CUSTOM_CLUSTERMETRICS"
     tag "modules"
     tag "modules_nfcore"
     tag "custom"
@@ -13,7 +13,6 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/custom/clustermetrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/custom/clustermetrics/tests/data/test_clusters.csv", checkIfExists: true) ]
-                input[1] = 'test'
                 """
             }
         }
@@ -34,7 +33,6 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/custom/clustermetrics/tests/data/test_features.tsv", checkIfExists: true), file("${projectDir}/modules/nf-core/custom/clustermetrics/tests/data/test_clusters.csv", checkIfExists: true) ]
-                input[1] = 'test'
                 """
             }
         }

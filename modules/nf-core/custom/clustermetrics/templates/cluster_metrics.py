@@ -2,11 +2,14 @@
 
 import argparse
 import json
+import platform
+import sys
 from pathlib import Path
 
 import matplotlib
 import numpy as np
 import pandas as pd
+import sklearn
 from sklearn.cluster import KMeans
 from sklearn.metrics import (
     calinski_harabasz_score,
@@ -15,6 +18,18 @@ from sklearn.metrics import (
 )
 
 matplotlib.use("Agg")
+
+
+def format_yaml_like(data: dict, indent: int = 0) -> str:
+    """Formats a dictionary to a YAML-like string (nf-core standard)."""
+    yaml_str = ""
+    for key, value in data.items():
+        spaces = "  " * indent
+        if isinstance(value, dict):
+            yaml_str += f"{spaces}{key}:\\n{format_yaml_like(value, indent + 1)}"
+        else:
+            yaml_str += f"{spaces}{key}: {value}\\n"
+    return yaml_str
 
 
 def _normalise_id_column(df: pd.DataFrame) -> pd.DataFrame:
@@ -190,15 +205,15 @@ def main() -> None:
             alignment_mode = "row_order_fallback"
         else:
             raise ValueError(
-                f"No overlapping sample_id between features and clusters.\n"
-                f"  features IDs (first 5): {sample_ids.head().tolist()}\n"
+                f"No overlapping sample_id between features and clusters.\\n"
+                f"  features IDs (first 5): {sample_ids.head().tolist()}\\n"
                 f"  clusters IDs (first 5): {list(clusters.index[:5])}"
             )
     else:
         if len(clusters_df) != len(sample_ids):
             raise ValueError(
-                "clusters CSV has no usable sample_id column and row counts do not match.\n"
-                f"  n_features={len(sample_ids)}\n"
+                "clusters CSV has no usable sample_id column and row counts do not match.\\n"
+                f"  n_features={len(sample_ids)}\\n"
                 f"  n_clusters={len(clusters_df)}"
             )
         x = x_df.values
@@ -278,37 +293,40 @@ def main() -> None:
             )
 
     except Exception as e:
-        Path("plot_warning.txt").write_text(f"Plotting failed: {e}\n")
+        Path("plot_warning.txt").write_text("Plotting failed: " + str(e) + "\\n")
+
+    # === VERSIONS.YML (fix review) ===
+    versions = {
+        "${task.process}": {
+            "python": platform.python_version(),
+            "pandas": pd.__version__,
+            "scikit-learn": sklearn.__version__,
+            "matplotlib": matplotlib.__version__,
+        }
+    }
+    with open("versions.yml", "w") as f:
+        f.write(format_yaml_like(versions))
 
 
 if __name__ == "__main__":
-    import sys
-    import platform
-
     prefix = "${task.ext.prefix ?: meta.id}"
 
     sys.argv = [
         "cluster_metrics.py",
-        "--features", "$features",
-        "--clusters", "$clusters",
-        "--k-min", "2",
-        "--k-max", "12",
-        "--out-k-sweep", f"{prefix}_k_sweep.csv",
-        "--out-selected", f"{prefix}_selected.json",
-        "--out-prefix", prefix,
+        "--features",
+        "$features",
+        "--clusters",
+        "$clusters",
+        "--k-min",
+        "2",
+        "--k-max",
+        "12",
+        "--out-k-sweep",
+        f"{prefix}_k_sweep.csv",
+        "--out-selected",
+        f"{prefix}_selected.json",
+        "--out-prefix",
+        prefix,
     ]
 
     main()
-
-    import matplotlib
-    import pandas
-    import sklearn
-
-    with open("versions.yml", "w") as f:
-        f.write(
-            f'"${task.process}":\n'
-            f'    python: {platform.python_version()}\n'
-            f'    pandas: {pandas.__version__}\n'
-            f'    scikit-learn: {sklearn.__version__}\n'
-            f'    matplotlib: {matplotlib.__version__}\n'
-        )

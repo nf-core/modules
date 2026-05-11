@@ -1,0 +1,47 @@
+nextflow_process {
+    name "Test Process CUSTOM_CLUSTERVISUALIZATION"
+    script "../main.nf"
+    process "CUSTOM_CLUSTERVISUALIZATION"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/clustervisualization"
+    tag "clustervisualization"
+
+    test("clustervisualization - features and clusters") {
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'],
+                    file("${projectDir}/modules/nf-core/custom/clustervisualization/tests/data/test_features.tsv", checkIfExists: true),
+                    file("${projectDir}/modules/nf-core/custom/clustervisualization/tests/data/test_clusters.csv", checkIfExists: true) ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.umap_tsv,
+                process.out.tsne_tsv,
+                process.out.versions
+            ).match()
+        }
+    }
+
+    test("clustervisualization - features and clusters - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'],
+                    file("${projectDir}/modules/nf-core/custom/clustervisualization/tests/data/test_features.tsv", checkIfExists: true),
+                    file("${projectDir}/modules/nf-core/custom/clustervisualization/tests/data/test_clusters.csv", checkIfExists: true) ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+    }
+}
