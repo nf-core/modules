@@ -27,20 +27,11 @@ process STAPHSCAN {
         --report ${prefix}_summary.tsv \\
         -i $fastas
     mv ${prefix}_outdir/*.tsv . || true
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        staphscan: \$( echo \$(staphscan --version | sed 's/staphscan v//;'))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_summary.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        staphscan: \$( echo \$(staphscan --version | sed 's/staphscan v//;'))
-    END_VERSIONS
     """
 }
