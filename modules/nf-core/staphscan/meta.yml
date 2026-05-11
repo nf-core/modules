@@ -40,28 +40,27 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3475
   versions_staphscan:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - staphscan:
+          type: string
+          description: The tool name
+      - "staphscan --version | sed 's/staphscan v//;'":
+          type: eval
+          description: The version of the tool
 topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - staphscan:
+          type: string
+          description: The tool name
+      - "staphscan --version | sed 's/staphscan v//;'":
+          type: eval
+          description: The version of the tool
 authors:
   - "@riccabolla"
 maintainers:
   - "@riccabolla"
-versions_staphscan:
-  - - versions.yml: null
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-      ontologies:
-        - edam: http://edamontology.org/format_3750
