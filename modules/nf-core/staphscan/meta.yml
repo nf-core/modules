@@ -46,9 +46,9 @@ output:
       - staphscan:
           type: string
           description: The tool name
-      - "staphscan --version | sed 's/staphscan v//;'":
+      - staphscan --version | sed 's/staphscan //g;':
           type: eval
-          description: The version of the tool
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -57,9 +57,9 @@ topics:
       - staphscan:
           type: string
           description: The tool name
-      - "staphscan --version | sed 's/staphscan v//;'":
+      - staphscan --version | sed 's/staphscan //g;':
           type: eval
-          description: The version of the tool
+          description: The expression to obtain the version of the tool
 authors:
   - "@riccabolla"
 maintainers:
