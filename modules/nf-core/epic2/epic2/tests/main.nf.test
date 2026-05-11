@@ -42,7 +42,7 @@ nextflow_process {
         when {
             config "./genome.config"
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true) ],
