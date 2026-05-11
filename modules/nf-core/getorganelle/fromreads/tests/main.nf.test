@@ -27,8 +27,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 input[1] = GETORGANELLE_CONFIG.out.db
@@ -39,13 +39,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.etc[0][0],
-                    process.out.etc[0][1],
-                    process.out.etc.flatten().collect { file(it).name }.sort(),
-                    process.out.fasta,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["etc"])).match() },
             )
         }
 
@@ -59,8 +53,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 input[1] = [
