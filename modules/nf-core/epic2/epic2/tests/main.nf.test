@@ -1,0 +1,67 @@
+// nf-core modules test epic2/epic2
+nextflow_process {
+
+    name "Test Process EPIC2_EPIC2"
+    script "../main.nf"
+    process "EPIC2_EPIC2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "epic2"
+    tag "epic2/epic2"
+
+    test("homo_sapiens - epic2 - ipbam,controlbam - ext.args genome") {
+
+        when {
+            config "./genome.config"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - epic2 - ipbam - ext.args genome") {
+
+        when {
+            config "./genome.config"
+            process {
+                """                
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true) ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+}
