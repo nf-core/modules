@@ -14,7 +14,6 @@ workflow BAM_IMPUTE_QUILT2 {
 
     main:
 
-    ch_versions = channel.empty()
 
     ch_parameters = ch_reference_panel
         .combine(ch_map, by: 0)
@@ -74,5 +73,4 @@ workflow BAM_IMPUTE_QUILT2 {
 
     emit:
     vcf_index = ch_vcf_index // channel: [ meta, vcf, tbi/csi ]
-    versions  = ch_versions  // channel: [ versions.yml ] or topic-based version tuples
 }
