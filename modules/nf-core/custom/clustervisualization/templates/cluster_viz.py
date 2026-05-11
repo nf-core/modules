@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import platform
-import sys
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -9,9 +8,9 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import sklearn
+import umap as umap_module
 from sklearn.manifold import TSNE
 from umap import UMAP
-import umap as umap_module
 
 matplotlib.use("Agg")
 
