@@ -81,6 +81,16 @@ output:
           pattern: "*.{cram}"
           ontologies:
             - edam: "http://edamontology.org/format_3462"
+  sam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.sam":
+          type: file
+          description: Output SAM file containing read alignments
+          pattern: "*.{sam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2573"
   csi:
     - - meta:
           type: map
