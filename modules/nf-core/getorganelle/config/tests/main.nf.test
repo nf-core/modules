@@ -22,16 +22,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-{
-    def stable_name = getAllFilesFromDir(process.out.db[0][1].toString(), include:['*', '**/*'])
-    def stable_content = getAllFilesFromDir(process.out.db[0][1].toString(), include:["**/VERSION", "**/animal_mt.fasta"])
+                {
+                    def stable_name = getAllFilesFromDir(process.out.db[0][1].toString(), include:['*', '**/*'])
+                    def stable_content = getAllFilesFromDir(process.out.db[0][1].toString(), include:["**/VERSION", "**/animal_mt.fasta"])
 
-    assert snapshot(
-        stable_name*.name.sort(),
-        stable_content,
-        process.out.findAll { key, val -> key.startsWith('versions') }
-    ).match()
-}
+                    assert snapshot(
+                        stable_name*.name.sort(),
+                        stable_content,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }
