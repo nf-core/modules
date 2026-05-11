@@ -30,13 +30,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.histogram,
-                    process.out.findAll { key, val -> key.startsWith('versions') },
-                    path(process.out.merged.get(0).get(1)).linesGzip.size(),
-                    path(process.out.notcombined.get(0).get(1).get(0)).linesGzip.size(),
-                    path(process.out.notcombined.get(0).get(1).get(1)).linesGzip.size()
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["merged", "notcombined"])).match() }
             )
         }
 
@@ -66,13 +60,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.histogram,
-                    process.out.findAll { key, val -> key.startsWith('versions') },
-                    path(process.out.merged.get(0).get(1)).linesGzip.size(),
-                    path(process.out.notcombined.get(0).get(1).get(0)).linesGzip.size(),
-                    path(process.out.notcombined.get(0).get(1).get(1)).linesGzip.size()
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -69,7 +69,7 @@ output:
       - flash:
           type: string
           description: The name of the tool
-      - flash --version |& sed '1!d;s/^.*FLASH v//; s/ .*//':
+      - flash --version |& sed '1!d;s/^.*FLASH v//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -80,7 +80,7 @@ topics:
       - flash:
           type: string
           description: The name of the tool
-      - flash --version |& sed '1!d;s/^.*FLASH v//; s/ .*//':
+      - flash --version |& sed '1!d;s/^.*FLASH v//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

@@ -14,7 +14,7 @@ process FLASH {
     tuple val(meta), path("${prefix}.extendedFrags.fastq.gz"), emit: merged
     tuple val(meta), path("${prefix}.notCombined_*.fastq.gz"), emit: notcombined
     tuple val(meta), path("${prefix}.hist")                  , emit: histogram
-    tuple val("${task.process}"), val('flash'), eval("flash --version |& sed '1!d;s/^.*FLASH v//; s/ .*//'"), topic: versions, emit: versions_flash
+    tuple val("${task.process}"), val('flash'), eval("flash --version |& sed '1!d;s/^.*FLASH v//'"), topic: versions, emit: versions_flash
 
     when:
     task.ext.when == null || task.ext.when

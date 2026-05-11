@@ -1,16 +1,37 @@
 {
     "sarscov2 - bam - stub": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.hist:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ]
-            ],
             {
+                "histogram": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.hist:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "merged": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.extendedFrags.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "notcombined": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.notCombined_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.notCombined_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
                 "versions_flash": [
                     [
                         "FLASH",
@@ -18,12 +39,9 @@
                         "1.2.11"
                     ]
                 ]
-            },
-            1,
-            1,
-            1
+            }
         ],
-        "timestamp": "2026-05-11T20:00:13.960384734",
+        "timestamp": "2026-05-11T20:45:28.028922716",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.2"
@@ -31,16 +49,37 @@
     },
     "sarscov2 - bam": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.hist:md5,6aa28c9bcb430ba16c0fd0115dacda5f"
-                ]
-            ],
             {
+                "histogram": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.hist:md5,6aa28c9bcb430ba16c0fd0115dacda5f"
+                    ]
+                ],
+                "merged": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.extendedFrags.fastq.gz"
+                    ]
+                ],
+                "notcombined": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.notCombined_1.fastq.gz",
+                            "test.notCombined_2.fastq.gz"
+                        ]
+                    ]
+                ],
                 "versions_flash": [
                     [
                         "FLASH",
@@ -48,12 +87,9 @@
                         "1.2.11"
                     ]
                 ]
-            },
-            316,
-            84,
-            84
+            }
         ],
-        "timestamp": "2026-05-11T20:00:08.946869504",
+        "timestamp": "2026-05-11T20:45:22.464222189",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.2"
