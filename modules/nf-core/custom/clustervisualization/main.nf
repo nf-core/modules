@@ -2,9 +2,7 @@ process CUSTOM_CLUSTERVISUALIZATION {
     tag "$meta.id"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c993602a6f49b387b34e84f41fda5a393355850b2dd6ab776f1307a0e7b9d540/data' :
-        'community.wave.seqera.io/library/matplotlib_pandas_python_scikit-learn_seaborn_umap-learn:c378d29780adbcbf' }"
+    container "community.wave.seqera.io/library/matplotlib_pandas_python_scikit-learn_pruned:9579c043ac096a34"
 
     input:
     tuple val(meta), path(features), path(clusters)
