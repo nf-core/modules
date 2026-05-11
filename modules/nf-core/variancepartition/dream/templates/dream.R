@@ -316,7 +316,7 @@ fitmm <- eBayes(fitmm, proportion = opt\$proportion,
                 trend = opt\$trend, robust = opt\$robust,
                 winsor.tail.p = winsor_tail_p_vals)
 
-results <- topTable(fit2, coef=colnames(contrast_mat), number = Inf,
+results <- topTable(fitmm, coef=colnames(contrast_mat), number = Inf,
                     adjust.method = opt\$adjust.method,
                     p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
 
