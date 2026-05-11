@@ -296,8 +296,8 @@ cat("Coefficient names used for contrasts:", paste(normalized_coef_names, collap
 
 contrast_mat = makeContrasts(contrast = contrast_string, levels = normalized_coef_names)
 # however, reset the coefficient names in the contrast matrix to use the "original" contrast names used by DREAM
-# DREAM will check if the coefficient names match its internal design matrix, so there is no danger that 
-# design() and dream() will do things differently without noticing. 
+# DREAM will check if the coefficient names match its internal design matrix, so there is no danger that
+# design() and dream() will do things differently without noticing.
 rownames(contrast_mat) = colnames(design)
 stopifnot("exactly one contrast defined"=ncol(contrast_mat) == 1)
 
