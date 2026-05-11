@@ -31,15 +31,50 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.merged[0][1]).name,
-                    process.out.notcombined[0][1].collect { file(it).name },
                     process.out.histogram,
-                    process.out.versions,
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    path(process.out.merged.get(0).get(1)).linesGzip.size(),
+                    path(process.out.notcombined.get(0).get(1).get(0)).linesGzip.size(),
+                    path(process.out.notcombined.get(0).get(1).get(1)).linesGzip.size()
+                ).match() }
             )
         }
 
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: "test", single_end:false], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.histogram,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    path(process.out.merged.get(0).get(1)).linesGzip.size(),
+                    path(process.out.notcombined.get(0).get(1).get(0)).linesGzip.size(),
+                    path(process.out.notcombined.get(0).get(1).get(1)).linesGzip.size()
+                ).match() }
+            )
+        }
     }
 
 }
