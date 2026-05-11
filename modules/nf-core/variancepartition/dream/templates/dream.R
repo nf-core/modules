@@ -283,7 +283,7 @@ if (!is.null(opt\$contrast_string)) {
 }
 
 # define contrasts outside DREAM
-design = model.matrix(reformulas::nobars(form), metadata)
+design = model.matrix(lme4::nobars(form), metadata)
 
 # print diagnostic output of design matrix
 head(design, 3)
