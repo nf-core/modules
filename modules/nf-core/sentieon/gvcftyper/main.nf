@@ -27,13 +27,14 @@ process SENTIEON_GVCFTYPER {
     def prefix = task.ext.prefix ?: "${meta.id}_genotyped"
     def gvcfs_input = '-v ' + gvcfs.join(' -v ')
     def dbsnp_cmd = dbsnp ? "--dbsnp ${dbsnp}" : ""
+    def interval_command = intervals ? "--interval ${intervals}" : ""
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""
     """
     ${sentieonLicense}
 
-    sentieon driver -r ${fasta} --algo GVCFtyper ${gvcfs_input} ${dbsnp_cmd} ${prefix}.vcf.gz
+    sentieon driver -r ${fasta} ${interval_command} --algo GVCFtyper ${gvcfs_input} ${dbsnp_cmd} ${prefix}.vcf.gz
 
     """
 
