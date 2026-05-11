@@ -272,8 +272,39 @@ if (as.logical(opt\$apply_voom)) {
     vobjDream <- countMatrix
 }
 
-# Fit the DREAM model with ddf and reml options
-fitmm <- dream(vobjDream, form, metadata, ddf = opt\$ddf, reml = opt\$reml, BPPARAM = bp)
+# If contrast_string is provided, use that for makeContrast
+if (!is.null(opt\$contrast_string)) {
+    contrast_string <- opt\$contrast_string
+} else {
+    # Construct the contrast_string
+    treatment_target <- make.names(paste0(opt\$contrast_variable, opt\$contrast_target))
+    treatment_reference <- make.names(paste0(opt\$contrast_variable, opt\$contrast_reference))
+    contrast_string <- paste0(treatment_target, "-", treatment_reference)
+}
+
+# define contrasts outside DREAM
+design = model.matrix(reformulas::nobars(form), metadata)
+
+# print diagnostic output of design matrix
+head(design, 3)
+cat("Raw coefficient names:\n")
+print(colnames(design))
+
+# Use "normalized" coefficient names to compute contrast vector
+normalized_coef_names = make.names(colnames(design))
+cat("Coefficient names used for contrasts:", paste(normalized_coef_names, collapse = ", "), "\n")
+
+contrast_mat = makeContrasts(contrast = contrast_string, levels = normalized_coef_names)
+# however, reset the coefficient names in the contrast matrix to use the "original" contrast names used by DREAM
+# DREAM will check if the coefficient names match its internal design matrix, so there is no danger that 
+# design() and dream() will do things differently without noticing. 
+rownames(contrast_mat) = colnames(design)
+stopifnot("exactly one contrast defined"=ncol(contrast_mat) == 1)
+
+# Fit the DREAM model with ddf and reml options.
+# Specifying contrast matrix directly here saves time refitting the model and avoids downstream issues
+# with repeated calling of eBayes
+fitmm <- dream(vobjDream, form, metadata, ddf = opt\$ddf, reml = opt\$reml, BPPARAM = bp, L=contrast_mat)
 
 # Parse stdev_coef_lim and winsor_tail_p into numeric vectors
 stdev_coef_lim_vals <- as.numeric(unlist(strsplit(opt\$stdev_coef_lim, ",")))
@@ -285,52 +316,9 @@ fitmm <- eBayes(fitmm, proportion = opt\$proportion,
                 trend = opt\$trend, robust = opt\$robust,
                 winsor.tail.p = winsor_tail_p_vals)
 
-# Display design matrix
-head(fitmm\$design, 3)
-cat("Raw coefficient names from dream():\n")
-print(colnames(fitmm\$design))
-
-# Normalize coefficient names consistently before building contrasts
-normalized_coef_names <- make.names(colnames(fitmm\$design))
-colnames(fitmm\$design) <- normalized_coef_names
-
-if (!is.null(colnames(fitmm\$coefficients))) {
-    colnames(fitmm\$coefficients) <- normalized_coef_names
-}
-if (!is.null(colnames(fitmm\$stdev.unscaled))) {
-    colnames(fitmm\$stdev.unscaled) <- normalized_coef_names
-}
-if (!is.null(fitmm\$cov.coefficients)) {
-    rownames(fitmm\$cov.coefficients) <- normalized_coef_names
-    colnames(fitmm\$cov.coefficients) <- normalized_coef_names
-}
-
-cat("Coefficient names used for contrasts:", paste(normalized_coef_names, collapse = ", "), "\n")
-
-# If contrast_string is provided, use that for makeContrast
-if (!is.null(opt\$contrast_string)) {
-    contrast_string <- opt\$contrast_string
-} else {
-    # Construct the contrast_string
-    treatment_target <- make.names(paste0(opt\$contrast_variable, opt\$contrast_target))
-    treatment_reference <- make.names(paste0(opt\$contrast_variable, opt\$contrast_reference))
-    contrast_string <- paste0(treatment_target, "-", treatment_reference)
-}
-
-# Use makeContrasts if contrast_string exists
-if (is_valid_string(contrast_string)) {
-    cat("Using contrast string:", contrast_string, "\n")
-
-    contrast_matrix <- makeContrasts(contrast = contrast_string, levels = normalized_coef_names)
-    fit2 <- contrasts.fit(fitmm, contrast_matrix)
-    fit2 <- eBayes(fit2, proportion = opt\$proportion,
-                  stdev.coef.lim = stdev_coef_lim_vals,
-                  trend = opt\$trend, robust = opt\$robust,
-                  winsor.tail.p = winsor_tail_p_vals)
-    results <- topTable(fit2, number = Inf,
-                        adjust.method = opt\$adjust.method,
-                        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
-}
+results <- topTable(fit2, coef=colnames(contrast_mat), number = Inf,
+                    adjust.method = opt\$adjust.method,
+                    p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
 
 results\$gene_id <- rownames(results)
 results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]
