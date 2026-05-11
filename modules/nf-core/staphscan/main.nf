@@ -12,7 +12,7 @@ process STAPHSCAN {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml", topic: versions, emit: versions_staphscan
+    tuple val("${task.process}"), val('staphscan'), eval("staphscan --version | sed 's/staphscan v//;'"), emit: versions_staphscan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
