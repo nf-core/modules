@@ -1,5 +1,3 @@
-// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
-// nf-core modules test octopusv/merge
 nextflow_process {
 
     name "Test Process OCTOPUSV_MERGE"
@@ -31,7 +29,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.svcf.get(0).get(1)).name,
+                    path(process.out.svcf.get(0).get(1)).vcf.summary,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )

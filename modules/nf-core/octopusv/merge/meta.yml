@@ -25,10 +25,10 @@ input:
           e.g. `[ id:'sample1' ]`
     - svcf:
         type: file
-        description: Sorted SVCF file
+        description: Sorted VCF file
         pattern: "*.svcf"
         ontologies:
-          - edam: "https://github.com/ylab-hi/OctopuSV/blob/main/docs/SVCF_specifications.md" # SVCF
+          - edam: "http://edamontology.org/format_3016" # VCF
 
 output:
   svcf:
@@ -39,22 +39,21 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.svcf":
           type: file
-          description: Sorted SVCF file
+          description: Sorted VCF file
           pattern: "*.svcf"
           ontologies:
-            - edam: "https://github.com/ylab-hi/OctopuSV/blob/main/docs/SVCF_specifications.md" # SVCF
+            - edam: "http://edamontology.org/format_3016" # VCF
 
   versions_octopusv:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "octopusv":
+      - octopusv:
           type: string
           description: The name of the tool
-      - "octopusv --version":
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -63,7 +62,7 @@ topics:
       - octopusv:
           type: string
           description: The name of the tool
-      - octopusv --version:
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
