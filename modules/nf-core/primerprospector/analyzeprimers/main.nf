@@ -35,11 +35,20 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
     # This shim avoids a Python 2 TypeError that otherwise stops .ps output generation.
     cat <<'PY' > analyze_primers_compat.py
     import __builtin__
+    import os
+    import sys
     _range = __builtin__.range
     def _int_range(*args):
         return _range(*[int(arg) for arg in args])
     __builtin__.range = _int_range
-    execfile('/usr/local/bin/analyze_primers.py')
+    for path_dir in os.environ.get('PATH', '').split(os.pathsep):
+        script_path = os.path.join(path_dir, 'analyze_primers.py')
+        if os.path.exists(script_path):
+            sys.argv[0] = script_path
+            execfile(script_path)
+            break
+    else:
+        raise RuntimeError('Could not find analyze_primers.py on PATH')
     PY
 
     python analyze_primers_compat.py \\
