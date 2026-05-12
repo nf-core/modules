@@ -31,7 +31,7 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
         error "Provide a primers file in the input tuple, or specify a single primer with '-p/--primer_name' and '-s/--primer_sequence' in task.ext.args."
     }
     """
-    # Primer Prospector 1.0.1 passes numpy floats to range() while plotting.
+    # Bug: Primer Prospector 1.0.1 passes numpy floats to range(), which requires integer arguments, while plotting.
     # This shim avoids a Python 2 TypeError that otherwise stops .ps output generation.
     cat <<'PY' > analyze_primers_compat.py
     import __builtin__
