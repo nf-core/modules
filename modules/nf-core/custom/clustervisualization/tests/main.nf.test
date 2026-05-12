@@ -10,6 +10,9 @@ nextflow_process {
 
     test("clustervisualization - features and clusters") {
         when {
+            params {
+                nf_test = true
+             }
             process {
                 """
                 input[0] = [ [id:'test'],
