@@ -55,46 +55,21 @@ output:
           pattern: "*.hmmrank.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
-  versions_r:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - r-base:
-          type: string
-          description: The name of the tool
-      - R --version | sed '1!d; s/.*version //; s/ .*//':
-          type: eval
-          description: The expression to obtain the version of the tool
-  versions_r_tidyverse:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - r-tidyverse:
-          type: string
-          description: The name of the tool
-      - Rscript -e "cat(as.character(packageVersion('tidyverse')))":
-          type: eval
-          description: The expression to obtain the version of the tool
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - r-base:
-          type: string
-          description: The name of the tool
-      - R --version | sed '1!d; s/.*version //; s/ .*//':
-          type: eval
-          description: The expression to obtain the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - r-tidyverse:
-          type: string
-          description: The name of the tool
-      - Rscript -e "cat(as.character(packageVersion('tidyverse')))":
-          type: eval
-          description: The expression to obtain the version of the tool
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erikrikarddaniel"
 maintainers:
