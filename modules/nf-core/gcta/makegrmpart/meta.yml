@@ -3,7 +3,9 @@ name: "gcta_makegrmpart"
 description: Compute one partition of a GCTA genetic relationship matrix
 keywords:
   - gcta
+  - genome-wide complex trait analysis
   - grm
+  - genetic relationship matrix
   - genetics
 tools:
   - "gcta":
@@ -75,20 +77,20 @@ output:
           description: |
             Groovy Map containing GRM-partition sample metadata
             e.g. `[ id:'gcta_grm' ]`
-      - "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.id":
+      - "*.part_${nparts}_${part}.grm.id":
           type: file
           description: Partitioned GRM ID file
-          pattern: "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.id"
+          pattern: "*.part_${nparts}_${part}.grm.id"
           ontologies: []
-      - "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.bin":
+      - "*.part_${nparts}_${part}.grm.bin":
           type: file
           description: Partitioned GRM binary matrix file
-          pattern: "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.bin"
+          pattern: "*.part_${nparts}_${part}.grm.bin"
           ontologies: []
-      - "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.N.bin":
+      - "*.part_${nparts}_${part}.grm.N.bin":
           type: file
           description: Partitioned GRM sample-count matrix file
-          pattern: "*.part_${nparts_gcta ?: 1}_${part_gcta_job ?: 1}.grm.N.bin"
+          pattern: "*.part_${nparts}_${part}.grm.N.bin"
           ontologies: []
       - nparts_gcta:
           type: integer
