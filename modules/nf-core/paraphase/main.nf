@@ -68,7 +68,7 @@ process PARAPHASE {
     touch ${prefix}.paraphase.json
     touch ${prefix}.paraphase.bam
     touch ${prefix}.paraphase.bam.bai
-    echo "" | gzip > ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz
+    echo | gzip > ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz
     touch ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz.${index}
     """
 }
