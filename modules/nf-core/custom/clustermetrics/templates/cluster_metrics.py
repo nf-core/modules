@@ -182,7 +182,7 @@ def main() -> None:
     selected["alignment_mode"] = alignment_mode
 
     metrics_tsv = f"{args.out_prefix}_metrics.tsv"
-    pd.DataFrame([selected]).to_csv(metrics_tsv, sep="\t", index=False)
+    pd.DataFrame([selected]).to_csv(metrics_tsv, sep="\\t", index=False)
 
     rows = []
     max_k = min(int(args.k_max), len(x))
