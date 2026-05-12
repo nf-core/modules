@@ -38,23 +38,33 @@ fastq_all.mkdir(exist_ok=True)
 filename_pattern = r"([^a-zA-Z0-9])R1([^a-zA-Z0-9])"
 
 for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2), start=1):
-    # double escapes are required because nextflow processes this python 'template'
-    if re.sub(filename_pattern, r"\\1R2\\2", r1.name) != r2.name:
-        raise AssertionError(
-            dedent(
-                f"""\
-                We expect R1 and R2 of the same sample to have the same filename except for R1/R2.
-                This has been checked by replacing "R1" with "R2" in the first filename and comparing it to the second filename.
-                If you believe this check shouldn't have failed on your filenames, please report an issue on GitHub!
+    if "${skip_renaming}" == "true":  # nf variables are true/false, which are different from Python
+        resolved_name_r1 = r1.name
+        resolved_name_r2 = r2.name
+    else:
+        # double escapes are required because nextflow processes this python 'template'
+        if (re.sub(filename_pattern, r"\\1R2\\2", r1.name) != r2.name) and ("${ignore_filename_pattern}" != "true"):
+            raise AssertionError(
+                dedent(
+                    f"""\
+                    We expect R1 and R2 of the same sample to have the same filename except for R1/R2.
+                    This has been checked by replacing "R1" with "R2" in the first filename and comparing it to the second filename.
+                    If you believe this check shouldn't have failed on your filenames, please report an issue on GitHub!
+                    If you are confident in your filename structure and file pairing and would like to skip this check,
+                    you can set the parameter `ignore_filename_pattern` to `true`.
 
-                Files involved:
-                    - {r1}
-                    - {r2}
-                """
+                    Files involved:
+                        - {r1}
+                        - {r2}
+                    """
+                )
             )
-        )
-    r1.rename(fastq_all / f"{sample_id}_S1_L{i:03d}_R1_001.fastq.gz")
-    r2.rename(fastq_all / f"{sample_id}_S1_L{i:03d}_R2_001.fastq.gz")
+
+        resolved_name_r1 = f"{sample_id}_S1_L{i:03d}_R1_001.fastq.gz"
+        resolved_name_r2 = f"{sample_id}_S1_L{i:03d}_R2_001.fastq.gz"
+
+    r1.rename(fastq_all / resolved_name_r1)
+    r2.rename(fastq_all / resolved_name_r2)
 
 # fmt: off
 run(

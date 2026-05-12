@@ -7,6 +7,8 @@ process CELLRANGER_COUNT {
     input:
     tuple val(meta), path(reads, stageAs: "fastq_???/*")
     path  reference
+    val skip_renaming
+    val ignore_filename_pattern
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs

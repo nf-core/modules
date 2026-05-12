@@ -26,6 +26,7 @@ process CELLRANGER_MULTI {
     path frna_sampleinfo       , stageAs: "references/frna/*"
     path ocm_barcodes          , stageAs: "references/ocm/barcodes/*"
     val skip_renaming
+    val ignore_filename_pattern
 
     output:
     tuple val(meta), path("cellranger_multi_config.csv"), emit: config

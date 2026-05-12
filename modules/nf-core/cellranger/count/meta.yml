@@ -41,6 +41,13 @@ input:
       type: directory
       description: Folder containing all the reference indices needed by Cell
         Ranger
+  - skip_renaming:
+      type: boolean
+      description: Skip renaming
+  - ignore_filename_pattern:
+      type: boolean
+      description: Skip checking if the input files follow the expected file name pattern.
+
 output:
   outs:
     - - meta:
