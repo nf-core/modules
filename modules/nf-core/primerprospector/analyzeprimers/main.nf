@@ -13,7 +13,7 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
     output:
     tuple val(meta), path("${prefix}_hits.txt"), emit: hits
     tuple val(meta), path("${prefix}.ps")      , emit: plots
-    tuple val("${task.process}"), val('primerprospector'), eval("analyze_primers.py --version 2>&1 | sed 's/.* //; s/-release//'"), topic: versions, emit: versions_primerprospector
+    tuple val("${task.process}"), val('primerprospector'), eval("analyze_primers.py --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | tail -n 1"), topic: versions, emit: versions_primerprospector
 
     when:
     task.ext.when == null || task.ext.when
