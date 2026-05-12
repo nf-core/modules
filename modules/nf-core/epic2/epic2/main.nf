@@ -14,6 +14,7 @@ process EPIC2_EPIC2 {
     tuple val(meta), path("*.bed"), emit: bed
     tuple val("${task.process}"), val('epic2'), eval("epic2 --version"), topic: versions, emit: versions_epic2
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
+    tuple val("${task.process}"), val('setuptools'), eval("python -c 'import setuptools; print(setuptools.__version__)'"), topic: versions, emit: versions_setuptools
 
     when:
     task.ext.when == null || task.ext.when

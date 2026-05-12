@@ -70,6 +70,16 @@ output:
       - "python --version | sed 's/Python //'":
           type: eval
           description: The expression to obtain the version of the tool
+  versions_setuptools:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "setuptools":
+          type: string
+          description: The name of the tool
+      - "python -c 'import setuptools; print(setuptools.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
@@ -89,6 +99,15 @@ topics:
           type: string
           description: The name of the tool
       - python --version | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - setuptools:
+          type: string
+          description: The name of the tool
+      - python -c 'import setuptools; print(setuptools.__version__)':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
