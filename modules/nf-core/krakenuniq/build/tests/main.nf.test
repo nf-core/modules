@@ -42,7 +42,8 @@ nextflow_process {
         }
 
         then {
-            def unstableNames = ["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
+            def inputs = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
+            def unstableNames = ["database-build.log", "database.report.tsv"] + inputs
             def stableFiles   = []
             def unstableFiles = []
 
@@ -83,7 +84,8 @@ nextflow_process {
         }
 
         then {
-            def unstableNames = ["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
+            def inputs = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
+            def unstableNames = ["database-build.log", "database.report.tsv"] + inputs
             def stableFiles   = []
             def unstableFiles = []
 
