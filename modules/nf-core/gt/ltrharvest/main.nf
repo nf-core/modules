@@ -15,7 +15,7 @@ process GT_LTRHARVEST {
     tuple val(meta), path("*.gff3")         , emit: gff3        , optional: true
     tuple val(meta), path("$out_name")      , emit: fasta       , optional: true    // When args has -out
     tuple val(meta), path("$outinner_name") , emit: inner_fasta , optional: true    // When args has -outinner
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('genometools'), eval("gt --version | sed '1!d;s/gt (GenomeTools) //'"), emit: versions_gt, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,14 +29,9 @@ process GT_LTRHARVEST {
     """
     gt \\
         ltrharvest \\
-        -index "$index/suffixerator" \\
-        $args \\
-        > "${prefix}.${extension}"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genometools: \$(gt --version | head -1 | sed 's/gt (GenomeTools) //')
-    END_VERSIONS
+        -index ${index}/suffixerator \\
+        ${args} \\
+        > ${prefix}.${extension}
     """
 
     stub:
@@ -51,12 +46,7 @@ process GT_LTRHARVEST {
     def touch_inner = args.contains("-outinner")    ? "touch $outinner_name"        : ''
     """
     touch "${prefix}.${extension}"
-    $touch_out
-    $touch_inner
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genometools: \$(gt --version | head -1 | sed 's/gt (GenomeTools) //')
-    END_VERSIONS
+    ${touch_out}
+    ${touch_inner}
     """
 }
