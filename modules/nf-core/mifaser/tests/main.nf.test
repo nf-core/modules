@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process MIFASER"
+    script "../main.nf"
+    process "MIFASER"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mifaser"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file(
+                        'https://github.com/nf-core/test-datasets/raw/refs/heads/funcprofiler/data/database/mifaser/GS-24-all.tar.gz',
+                        checkIfExists: true
+                    )
+                ])
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - single-end fastq") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.multi_ec,
+                    process.out.analysis,
+                    process.out.ec_counts,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - single-end fastq - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
