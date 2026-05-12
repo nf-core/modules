@@ -21,7 +21,6 @@ process OCTOPUSV_CLEAN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_arg = fasta ? "-g ${fasta}" : ""
-
     """
     vcf_in="${vcf}"
     if [[ "${vcf}" == *.gz ]]; then

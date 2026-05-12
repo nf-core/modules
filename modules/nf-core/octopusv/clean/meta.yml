@@ -28,13 +28,15 @@ input:
         description: Input VCF/SVCF file to clean
         pattern: "*.{vcf,vcf.gz,svcf,svcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3615" # Bgzipped VCF
     - fasta:
         type: file
         description: Optional reference FASTA for chromosome harmonization
         pattern: "*.{fa,fasta}"
         optional: true
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
 output:
   vcf:
     - - meta:
@@ -44,11 +46,11 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.vcf.gz":
           type: file
-          description: Gzipped VCF file
+          description: Bgzipped VCF file
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016"
-            - edam: "http://edamontology.org/format_3989"
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: "http://edamontology.org/format_3615" # Bgzipped VCF
   versions_octopusv:
     - - ${task.process}:
           type: string
