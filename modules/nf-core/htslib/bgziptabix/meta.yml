@@ -89,6 +89,16 @@ output:
       - bgzip --version | sed '1! d; s/bgzip (htslib) //':
           type: eval
           description: The expression to obtain the version of the tool
+  versions_xz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - xz:
+          type: string
+          description: The name of the tool
+      - xz --version | sed '1! d; s/xz (XZ Utils) //':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -98,6 +108,15 @@ topics:
           type: string
           description: The name of the tool
       - bgzip --version | sed '1! d; s/bgzip (htslib) //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - xz:
+          type: string
+          description: The name of the tool
+      - xz --version | sed '1! d; s/xz (XZ Utils) //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
