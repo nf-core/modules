@@ -43,18 +43,19 @@ nextflow_process {
 
         then {
             def inputs = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
-            def unstableNames = ["database-build.log", "database.report.tsv"] + inputs
+            def unstableOutputs = ["database-build.log", "database.report.tsv"]
             def stableFiles   = []
             def unstableFiles = []
 
             file(process.out.db.get(0).get(1)).eachFileRecurse { f ->
                 if (f.isDirectory()) return
-                if (unstableNames.any { f.name.endsWith(it) }) unstableFiles << f.name
+                if (unstableOutputs.any { f.name.endsWith(it) }) unstableFiles << f.name
                 else stableFiles << f
             }
 
             assertAll(
                 { assert process.success },
+                { assert file(process.out.db.get(0).get(1)).eachFileRecurse { f -> f.name !in inputs } },
                 { assert snapshot(
                     stableFiles.sort(),
                     unstableFiles.sort(),
@@ -85,18 +86,19 @@ nextflow_process {
 
         then {
             def inputs = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
-            def unstableNames = ["database-build.log", "database.report.tsv"] + inputs
+            def unstableOutputs = ["database-build.log", "database.report.tsv"]
             def stableFiles   = []
             def unstableFiles = []
 
             file(process.out.db.get(0).get(1)).eachFileRecurse { f ->
                 if (f.isDirectory()) return
-                if (unstableNames.any { f.name.endsWith(it) }) unstableFiles << f.name
+                if (unstableOutputs.any { f.name.endsWith(it) }) unstableFiles << f.name
                 else stableFiles << f
             }
 
             assertAll(
                 { assert process.success },
+                { assert file(process.out.db.get(0).get(1)).eachFileRecurse { f -> f.name !in inputs } },
                 { assert snapshot(
                     stableFiles.sort(),
                     unstableFiles.sort(),
