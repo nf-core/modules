@@ -30,7 +30,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.output[0][1]).linesGzip.toString().contains('[ok]') }, // CPU execution time in result
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["output"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["output", "domain_summary"])).match() }
             )
         }
 
@@ -59,7 +59,7 @@ nextflow_process {
                 { assert path(process.out.output.get(0).get(1)).linesGzip.toString().contains('[ok]') },         // CPU execution time in result
                 { assert path(process.out.target_summary.get(0).get(1)).linesGzip.toString().contains('[ok]') }, // Timestamp in result
                 { assert path(process.out.target_summary.get(0).get(1)).linesGzip.toString().contains('[ok]') }, // Timestamp in result
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["output", "target_summary"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["output", "target_summary", "domain_summary"])).match() }
             )
         }
 

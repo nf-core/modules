@@ -43,16 +43,6 @@ output:
           pattern: "*.*.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
-  versions_easel:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - easel:
-          type: string
-          description: The name of the tool
-      - esl-reformat -h | sed '2!d;s/^# Easel *//;s/ .*//':
-          type: eval
-          description: The expression to obtain the version of the tool
   versions_hmmer:
     - - ${task.process}:
           type: string
@@ -63,8 +53,7 @@ output:
       - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
-topics:
-  versions:
+  versions_easel:
     - - ${task.process}:
           type: string
           description: The name of the process
@@ -74,6 +63,8 @@ topics:
       - esl-reformat -h | sed '2!d;s/^# Easel *//;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
+topics:
+  versions:
     - - ${task.process}:
           type: string
           description: The name of the process
@@ -81,6 +72,15 @@ topics:
           type: string
           description: The name of the tool
       - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - easel:
+          type: string
+          description: The name of the tool
+      - esl-reformat -h | sed '2!d;s/^# Easel *//;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
