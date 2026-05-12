@@ -1,5 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "octopusv_merge"
 description: "Merge and harmonize structural variant calls from multiple samples."
 keywords:
@@ -9,27 +7,28 @@ keywords:
   - svcf
 tools:
   - "octopusv":
-      description: "End-to-end structural variant post-processing: standardize, merge, compare, and export SVs."
+      description: "End-to-end structural variant post-processing: standardize, merge,
+        compare, and export SVs."
       homepage: "https://github.com/ylab-hi/OctopuSV"
       documentation: "https://github.com/ylab-hi/OctopuSV"
       tool_dev_url: "https://github.com/ylab-hi/octopusV"
       doi: "10.1093/bioinformatics/btaf599"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - svcf:
+    - svcfs:
         type: file
-        description: Sorted VCF file
+        description: List of SVCF files to merge
         pattern: "*.svcf"
         ontologies:
-          - edam: "http://edamontology.org/format_3016" # VCF
-
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3615"
 output:
   svcf:
     - - meta:
@@ -42,8 +41,7 @@ output:
           description: Sorted VCF file
           pattern: "*.svcf"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # VCF
-
+            - edam: "http://edamontology.org/format_3016"
   versions_octopusv:
     - - ${task.process}:
           type: string

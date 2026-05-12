@@ -17,8 +17,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [
-                        file(params.modules_testdata_base_path + 'delete_me/octopusv/merge/caller1.svcf', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'delete_me/octopusv/merge/caller2.svcf', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
                     ]
                 ]
                 """
@@ -30,6 +30,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.svcf.get(0).get(1)).vcf.summary,
+                    path(process.out.svcf.get(0).get(1)).vcf.variantsMD5,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -47,8 +48,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [
-                        file(params.modules_testdata_base_path + 'delete_me/octopusv/merge/caller1.svcf', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'delete_me/octopusv/merge/caller2.svcf', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
                     ]
                 ]
                 """

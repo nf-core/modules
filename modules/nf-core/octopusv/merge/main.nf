@@ -18,8 +18,23 @@ process OCTOPUSV_MERGE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = (task.ext.args ?: '').trim()
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def strategy_flags = [
+        '--union', '--intersect', '--specific',
+        '--min-support', '--exact-support', '--max-support', '--expression'
+    ]
+
+    def explicit_flags = strategy_flags.findAll { args.tokenize().contains(it) }
+    if (explicit_flags.size() > 1) {
+        error("OCTOPUSV_MERGE: multiple merge strategies specified: ${explicit_flags.join(', ')}")
+    }
+
+    def default_strategy = task.ext.merge_strategy ?: '--union'
+    if (explicit_flags.isEmpty()) {
+        args = "${default_strategy} ${args}".trim()
+    }
 
     """
     octopusv merge -i ${svcfs.join(' ')} \\
@@ -28,10 +43,10 @@ process OCTOPUSV_MERGE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args = (task.ext.args ?: '').trim()
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    """"
+    """
     echo $args
 
     touch ${prefix}.svcf
