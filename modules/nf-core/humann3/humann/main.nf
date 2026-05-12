@@ -1,4 +1,3 @@
-// Taken 98% from https://github.com/nf-core/modules/pull/1089/files
 
 process HUMANN3_HUMANN {
     tag "$meta.id"
@@ -41,7 +40,6 @@ process HUMANN3_HUMANN {
     cat \$STATIC_CONFIG  | sed "s|utility_mapping = .*|utility_mapping = ${utility_db}|g" > humann.cfg
     export HUMANN_CONFIG=humann.cfg
 
-    find \${NUCS_DB}
     humann \\
         $args \\
         --threads ${task.cpus} \\
