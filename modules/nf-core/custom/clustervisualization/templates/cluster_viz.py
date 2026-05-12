@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 import os
+
 # Fix numba + matplotlib in read-only Singularity container
-os.environ['NUMBA_CACHE_DIR'] = '/tmp'
-os.environ['MPLCONFIGDIR']     = '/tmp'
+os.environ["NUMBA_CACHE_DIR"] = "/tmp"
+os.environ["MPLCONFIGDIR"] = "/tmp"
 
 import platform
+
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
