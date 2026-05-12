@@ -42,20 +42,20 @@ nextflow_process {
         }
 
         then {
-            def inputs = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
+            def inputs          = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
             def unstableOutputs = ["database-build.log", "database.report.tsv"]
-            def stableFiles   = []
-            def unstableFiles = []
 
-            file(process.out.db.get(0).get(1)).eachFileRecurse { f ->
-                if (f.isDirectory()) return
-                if (unstableOutputs.any { f.name.endsWith(it) }) unstableFiles << f.name
-                else stableFiles << f
-            }
+            def dbDir    = file(process.out.db.get(0).get(1))
+            def allFiles = []
+            dbDir.eachFileRecurse { f -> if (!f.isDirectory()) allFiles << f }
+
+            def stableFiles   = allFiles.findAll { f -> !unstableOutputs.any { f.name.endsWith(it) } }
+            def unstableFiles = allFiles.findAll { f ->  unstableOutputs.any { f.name.endsWith(it) } }
+                                        .collect { it.name }
 
             assertAll(
                 { assert process.success },
-                { assert file(process.out.db.get(0).get(1)).eachFileRecurse { f -> f.name !in inputs } },
+                { assert !allFiles.any { it.name in inputs } },
                 { assert snapshot(
                     stableFiles.sort(),
                     unstableFiles.sort(),
@@ -85,20 +85,20 @@ nextflow_process {
         }
 
         then {
-            def inputs = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
+            def inputs          = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
             def unstableOutputs = ["database-build.log", "database.report.tsv"]
-            def stableFiles   = []
-            def unstableFiles = []
 
-            file(process.out.db.get(0).get(1)).eachFileRecurse { f ->
-                if (f.isDirectory()) return
-                if (unstableOutputs.any { f.name.endsWith(it) }) unstableFiles << f.name
-                else stableFiles << f
-            }
+            def dbDir    = file(process.out.db.get(0).get(1))
+            def allFiles = []
+            dbDir.eachFileRecurse { f -> if (!f.isDirectory()) allFiles << f }
+
+            def stableFiles   = allFiles.findAll { f -> !unstableOutputs.any { f.name.endsWith(it) } }
+            def unstableFiles = allFiles.findAll { f ->  unstableOutputs.any { f.name.endsWith(it) } }
+                                        .collect { it.name }
 
             assertAll(
                 { assert process.success },
-                { assert file(process.out.db.get(0).get(1)).eachFileRecurse { f -> f.name !in inputs } },
+                { assert !allFiles.any { it.name in inputs } },
                 { assert snapshot(
                     stableFiles.sort(),
                     unstableFiles.sort(),
