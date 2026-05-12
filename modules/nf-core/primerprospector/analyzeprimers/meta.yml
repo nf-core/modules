@@ -15,8 +15,8 @@ tools:
       doi: "10.1093/bioinformatics/btr087"
       licence:
         - "GPL"
-      identifier: ""
       args_id: "$args"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -44,7 +44,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}.*_hits.txt:
+      - ${prefix}_hits.txt:
           type: file
           description: Primer hit details, mismatches, gaps, positions, and weighted scores.
           pattern: "*_hits.txt"
@@ -56,7 +56,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}.*.ps:
+      - ${prefix}.ps:
           type: file
           description: PostScript summary plots of primer mismatch and weighted score information.
           pattern: "*.ps"

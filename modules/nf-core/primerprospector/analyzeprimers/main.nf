@@ -11,8 +11,8 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
     tuple val(meta), path(fasta), path(primers)
 
     output:
-    tuple val(meta), path("${prefix}.*_hits.txt"), emit: hits
-    tuple val(meta), path("${prefix}.*.ps")      , emit: plots
+    tuple val(meta), path("${prefix}_hits.txt"), emit: hits
+    tuple val(meta), path("${prefix}.ps")      , emit: plots
     tuple val("${task.process}"), val('primerprospector'), eval("analyze_primers.py --version 2>&1 | sed 's/.* //; s/-release//'"), topic: versions, emit: versions_primerprospector
 
     when:
@@ -31,8 +31,8 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
         error "Provide a primers file in the input tuple, or specify a single primer with '-p/--primer_name' and '-s/--primer_sequence' in task.ext.args."
     }
     """
-    mkdir -p primerprospector_out
-
+    # Primer Prospector 1.0.1 passes numpy floats to range() while plotting.
+    # This shim avoids a Python 2 TypeError that otherwise stops .ps output generation.
     cat <<'PY' > analyze_primers_compat.py
     import __builtin__
     _range = __builtin__.range
@@ -45,13 +45,10 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
     python analyze_primers_compat.py \\
         $args \\
         -f "${fasta_arg}" \\
-        ${primer_arg} \\
-        -o primerprospector_out
+        ${primer_arg}
 
-    for file in primerprospector_out/*_hits.txt primerprospector_out/*.ps; do
-        [ -e "\$file" ] || continue
-        mv "\$file" "${prefix}.\$(basename "\$file")"
-    done
+    mv *_hits.txt "${prefix}_hits.txt"
+    mv *.ps "${prefix}.ps"
     """
 
     stub:
@@ -67,7 +64,7 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
     """
     echo "$args"
 
-    touch ${prefix}.primer_fasta_hits.txt
-    touch ${prefix}.primer_fasta.ps
+    touch ${prefix}_hits.txt
+    touch ${prefix}.ps
     """
 }
