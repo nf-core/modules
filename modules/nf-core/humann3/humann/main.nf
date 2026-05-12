@@ -1,3 +1,4 @@
+
 process HUMANN3_HUMANN {
     tag "$meta.id"
     label 'process_high'
@@ -35,7 +36,9 @@ process HUMANN3_HUMANN {
     nuclist=`find -L "${nucleotide_db}" -name "*.ffn.gz" -print -quit `
     NUCS_DB=\$(dirname \$nuclist)
 
-    humann_config --update database_folders utility_mapping ${utility_db}
+    STATIC_CONFIG=`python -c "import humann; print(humann.__file__.replace('__init__.py', 'humann.cfg'))"`
+    cat \$STATIC_CONFIG  | sed "s|utility_mapping = .*|utility_mapping = ${utility_db}|g" > humann.cfg
+    export HUMANN_CONFIG=humann.cfg
 
     humann \\
         $args \\
