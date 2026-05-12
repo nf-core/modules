@@ -10,10 +10,15 @@ nextflow_process {
     tag "epic2"
     tag "epic2/epic2"
 
+    config "./nextflow.config"
+
     test("homo_sapiens - epic2 - ipbam,controlbam - ext.args genome") {
 
         when {
-            config "./genome.config"
+            params {
+                module_args = '--genome hg19'
+            }
+
             process {
                 """
                 input[0] = [
@@ -26,21 +31,20 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("homo_sapiens - epic2 - ipbam - ext.args genome") {
 
         when {
-            config "./genome.config"
+            params {
+                module_args = '--genome hg19'
+            }
+
             process {
                 """
                 input[0] = [
@@ -53,15 +57,66 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
+    test("homo_sapiens - epic2 - ipbam,controlbam - ext.args genome - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--genome hg19'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - epic2 - ipbam - ext.args genome - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--genome hg19'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true) ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
 }
