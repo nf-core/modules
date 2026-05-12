@@ -21,17 +21,15 @@ process KRAKENUNIQ_BUILD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    custom_db = custom_library_dir ? "mkdir ${prefix} && mv library taxonomy ${custom_seqid2taxid} ${prefix}" : ""
+    custom_db = custom_library_dir ? "mkdir ${prefix} && cp -rL library taxonomy ${custom_seqid2taxid} ${prefix}" : ""
     run_cleanup = keep_intermediate ? "" : """
     find -L ${prefix} -type f \\
         -not -name "*.kdb" \\
         -not -name "*idx" \\
         -not -name "taxDB" \\
         -not -name "*.counts" \\
-        -not -path "${prefix}/library/*" \\
-        -not -path "${prefix}/taxonomy/*" \\
-        -not -name "${custom_seqid2taxid}" \\
-        -delete
+        -delete && \\
+    find -type d -empty -delete
     """
 
     """
@@ -53,9 +51,6 @@ process KRAKENUNIQ_BUILD {
         -not -name "*idx" \\
         -not -name "taxDB" \\
         -not -name "*.counts" \\
-        -not -path "${prefix}/library/*" \\
-        -not -path "${prefix}/taxonomy/*" \\
-        -not -name "${custom_seqid2taxid}" \\
         -delete
     """
     """
