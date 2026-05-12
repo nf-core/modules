@@ -88,60 +88,11 @@ def load_features(path: str) -> tuple[pd.DataFrame, pd.Series]:
     return x, sample_ids
 
 
-def _looks_mostly_numeric(s: pd.Series) -> bool:
-    if len(s) == 0:
-        return False
-    parsed = pd.to_numeric(s.astype(str), errors="coerce")
-    return float(parsed.notna().mean()) >= 0.8
-
-
-def load_clusters(path: str) -> tuple[pd.DataFrame, str]:
-    df = pd.read_csv(path, sep=",", dtype=str)
-    df = df.copy()
-    df.columns = [str(c).lstrip("#") for c in df.columns]
-
-    cols_upper = {str(c).upper(): c for c in df.columns}
-
-    if "CLUSTER" not in cols_upper:
-        raise ValueError("clusters CSV must have a 'cluster' column")
-
-    cluster_col = cols_upper["CLUSTER"]
-
-    if "SAMPLE_ID" in cols_upper:
-        sample_col = cols_upper["SAMPLE_ID"]
-        out = df[[sample_col, cluster_col]].copy()
-        out.columns = ["sample_id", "cluster"]
-        out["sample_id"] = out["sample_id"].astype(str)
-        out["cluster"] = pd.to_numeric(out["cluster"], errors="raise").astype(int)
-        return out, "sample_id"
-
-    try:
-        norm = _normalise_id_column(df.copy())
-        if "sample_id" in norm.columns and "cluster" in norm.columns:
-            out = norm[["sample_id", "cluster"]].copy()
-            out["sample_id"] = out["sample_id"].astype(str)
-            out["cluster"] = pd.to_numeric(out["cluster"], errors="raise").astype(int)
-            return out, "sample_id"
-    except Exception:
-        pass
-
-    other_cols = [c for c in df.columns if c != cluster_col]
-
-    if len(other_cols) == 1:
-        candidate = other_cols[0]
-        candidate_vals = df[candidate].astype(str)
-
-        if not _looks_mostly_numeric(candidate_vals):
-            out = pd.DataFrame(
-                {
-                    "sample_id": candidate_vals,
-                    "cluster": pd.to_numeric(df[cluster_col], errors="raise").astype(int),
-                }
-            )
-            return out, "sample_id"
-
-    out = pd.DataFrame({"cluster": pd.to_numeric(df[cluster_col], errors="raise").astype(int)})
-    return out, "row_order"
+def load_clusters(path: str) -> pd.Series:
+    df = pd.read_csv(path)
+    if "sample_id" not in df.columns or "cluster" not in df.columns:
+        raise ValueError(f"clusters file must have 'sample_id' and 'cluster' columns. Found: {list(df.columns)}")
+    return df.set_index(df["sample_id"].astype(str))["cluster"].astype(int)
 
 
 def safe_cluster_metrics(x: np.ndarray, labels: np.ndarray) -> dict:
