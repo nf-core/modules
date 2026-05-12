@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
-import platform
 import os
+# Fix numba + matplotlib in read-only Singularity container
+os.environ['NUMBA_CACHE_DIR'] = '/tmp'
+os.environ['MPLCONFIGDIR']     = '/tmp'
+
+import platform
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,9 +16,6 @@ import umap as umap_module
 from sklearn.manifold import TSNE
 from umap import UMAP
 
-# Fix numba + matplotlib in read-only Singularity container
-os.environ['NUMBA_CACHE_DIR'] = '/tmp'
-os.environ['MPLCONFIGDIR']     = '/tmp'
 matplotlib.use("Agg")
 
 

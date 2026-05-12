@@ -236,7 +236,7 @@ def main() -> None:
     rows = []
     max_k = min(int(args.k_max), len(x))
     for k in range(int(args.k_min), max_k + 1):
-        model = KMeans(n_clusters=k, n_init="auto", random_state=42)
+        model = KMeans(n_clusters=k, n_init=10, random_state=42)
         y = model.fit_predict(x)
 
         sil = ch = db = None
