@@ -118,7 +118,8 @@ output:
           type: file
           description: Haplotype sequences in FASTA format
           pattern: "sequences_chrM.fa"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   custom_alignments_bam:
     - - meta:
           type: map
@@ -129,7 +130,8 @@ output:
           type: file
           description: Custom alignments in BAM format
           pattern: "custom_alignments.bam"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
   custom_alignments_bai:
     - - meta:
           type: map
