@@ -31,9 +31,8 @@ process OCTOPUSV_MERGE {
         error("OCTOPUSV_MERGE: multiple merge strategies specified: ${explicit_flags.join(', ')}")
     }
 
-    def default_strategy = task.ext.merge_strategy ?: '--union'
     if (explicit_flags.isEmpty()) {
-        args = "${default_strategy} ${args}".trim()
+        args = "--union ${args}".trim()
     }
 
     """
