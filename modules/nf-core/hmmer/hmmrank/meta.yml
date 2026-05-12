@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hmmer_hmmrank"
 description: R script that scores output from multiple runs of hmmer/hmmsearch
 keywords:
@@ -12,13 +11,15 @@ tools:
       documentation: http://hmmer.org/documentation.html
       tool_dev_url: https://github.com/EddyRivasLab/hmmer
       doi: "10.1371/journal.pcbi.1002195"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: ""
   - "R":
       description: "A Language and Environment for Statistical Computing"
       homepage: https://www.r-project.org/
       documentation: https://www.r-project.org/
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: ""
   - "Tidyverse":
       description: "Tidyverse: R packages for data science"
@@ -26,11 +27,10 @@ tools:
       documentation: https://www.tidyverse.org/
       tool_dev_url: https://github.com/tidyverse
       doi: "10.21105/joss.01686"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -43,7 +43,6 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  #Only when we have meta
   hmmrank:
     - - meta:
           type: map
@@ -56,13 +55,46 @@ output:
           pattern: "*.hmmrank.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_r:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - R --version | sed '1!d; s/.*version //; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_r_tidyverse:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-tidyverse:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(as.character(packageVersion('tidyverse')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - R --version | sed '1!d; s/.*version //; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-tidyverse:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(as.character(packageVersion('tidyverse')))":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@erikrikarddaniel"
 maintainers:

@@ -12,7 +12,8 @@ process HMMER_HMMRANK {
 
     output:
     tuple val(meta), path("*.hmmrank.tsv.gz"), emit: hmmrank
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('r-base'), eval("R --version | sed '1!d; s/.*version //; s/ .*//'"), emit: versions_r, topic: versions
+    tuple val("${task.process}"), val('r-tidyverse'), eval('Rscript -e "cat(as.character(packageVersion(\'tidyverse\')))"'), emit: versions_r_tidyverse, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,26 +44,11 @@ process HMMER_HMMRANK {
         mutate(rank = row_number()) %>%
         ungroup() %>%
         write_tsv('${prefix}.hmmrank.tsv.gz')
-
-    writeLines(
-        c(
-            "\\"${task.process}\\":",
-            paste0("    R: ", paste0(R.Version()[c("major","minor")], collapse = ".")),
-            paste0("    tidyverse: ", packageVersion('tidyverse'))
-        ),
-        "versions.yml"
-    )
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo \"profile\taccno\tprofile_desc\tevalue\tscore\trank\" | gzip -c > ${prefix}.hmmrank.tsv.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        R: 4.0
-        tidyverse: 2.0
-    END_VERSIONS
     """
 }

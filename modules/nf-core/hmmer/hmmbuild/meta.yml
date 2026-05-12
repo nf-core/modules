@@ -13,7 +13,8 @@ tools:
       documentation: "http://hmmer.org/documentation.html"
       tool_dev_url: "https://github.com/EddyRivasLab/hmmer"
       doi: "10.1371/journal.pcbi.1002195"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: ""
 input:
   - - meta:
@@ -23,14 +24,14 @@ input:
           e.g. [ id:'test', single_end:false ]
     - alignment:
         type: file
-        description: multiple sequence alignment in fasta, clustal, stockholm or phylip
-          format
+        description: multiple sequence alignment in fasta, clustal, stockholm or
+          phylip format
         pattern: "*"
         ontologies: []
   - mxfile:
       type: file
-      description: read substitution score matrix, for use when building profiles from
-        single sequences (--singlemx option)
+      description: read substitution score matrix, for use when building profiles
+        from single sequences (--singlemx option)
       pattern: "*"
       ontologies: []
 output:
@@ -71,7 +72,6 @@ topics:
       - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@erikrikarddaniel"
 maintainers:
