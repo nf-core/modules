@@ -1,0 +1,89 @@
+name: "primerprospector_analyzeprimers"
+description: Score PCR primers for binding to target sequences
+keywords:
+  - primer design
+  - pcr
+  - fasta
+  - sequence analysis
+  - primer scoring
+tools:
+  - "primerprospector":
+      description: "Primer Prospector is a pipeline of programs to design and analyze PCR primers."
+      homepage: "https://pprospector.sourceforge.net/"
+      documentation: "https://pprospector.sourceforge.net/scripts/analyze_primers.html"
+      tool_dev_url: "https://sourceforge.net/p/pprospector/code/"
+      doi: "10.1093/bioinformatics/btr087"
+      licence:
+        - "GPL"
+      identifier: ""
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information. Mandatory.
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Target FASTA file or files to score primers against. Mandatory.
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - primers:
+        type: file
+        description: |
+          Tab-delimited primers file containing primer names and sequences. Optional
+          when primer name and sequence are supplied with task.ext.args.
+        pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+output:
+  hits:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.*_hits.txt:
+          type: file
+          description: Primer hit details, mismatches, gaps, positions, and weighted scores.
+          pattern: "*_hits.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.*.ps:
+          type: file
+          description: PostScript summary plots of primer mismatch and weighted score information.
+          pattern: "*.ps"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_primerprospector:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - primerprospector:
+          type: string
+          description: The name of the tool
+      - analyze_primers.py --version 2>&1 | sed 's/.* //; s/-release//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - primerprospector:
+          type: string
+          description: The name of the tool
+      - analyze_primers.py --version 2>&1 | sed 's/.* //; s/-release//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

@@ -1,0 +1,77 @@
+nextflow_process {
+
+    name "Test Process PRIMERPROSPECTOR_ANALYZEPRIMERS"
+    script "../main.nf"
+    process "PRIMERPROSPECTOR_ANALYZEPRIMERS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "primerprospector"
+    tag "primerprospector/analyzeprimers"
+
+    test("synthetic - fasta primers - hits plots") {
+
+        when {
+            process {
+                """
+                def fasta = channel.of(
+                    '>seq1',
+                    'AAACCCGGGTTTAAACCCGGGTTT',
+                    '>seq2',
+                    'GGGTTTAAACCCGGGTTTAAA'
+                ).collectFile(name: 'test.fasta', newLine: true, sort: false)
+                def primers = channel.of(
+                    'testf\\tAAACCCGGGTTT'
+                ).collectFile(name: 'primers.txt', newLine: true, sort: false)
+
+                input[0] = fasta.combine(primers).map { fasta_file, primers_file ->
+                    [[ id:'test' ], fasta_file, primers_file]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.hits,
+                    path(process.out.plots[0][1]).exists(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("synthetic - fasta primers - hits plots - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def fasta = channel.of(
+                    '>seq1',
+                    'AAACCCGGGTTTAAACCCGGGTTT',
+                    '>seq2',
+                    'GGGTTTAAACCCGGGTTTAAA'
+                ).collectFile(name: 'test.fasta', newLine: true, sort: false)
+                def primers = channel.of(
+                    'testf\\tAAACCCGGGTTT'
+                ).collectFile(name: 'primers.txt', newLine: true, sort: false)
+
+                input[0] = fasta.combine(primers).map { fasta_file, primers_file ->
+                    [[ id:'test' ], fasta_file, primers_file]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
