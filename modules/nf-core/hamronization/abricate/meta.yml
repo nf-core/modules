@@ -21,7 +21,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - report:
         type: file
         description: Output TSV or CSV file from ABRicate
@@ -47,7 +47,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.json":
           type: file
           description: hAMRonised report in JSON format
@@ -59,7 +59,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.tsv":
           type: file
           description: hAMRonised report in TSV format
