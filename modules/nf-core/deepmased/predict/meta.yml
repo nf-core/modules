@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "deepmased_predict"
+description: "DeepMAsED predict subcommand: runs the pre-trained deep learning model on feature tables produced by DeepMAsED features to predict per-contig assembly error scores."
+keywords:
+  - metagenomics
+  - assembly
+  - quality control
+  - error detection
+  - deep learning
+  - prediction
+tools:
+  - "deepmased":
+      description: "Deep learning for Metagenome Assembly Error Detection"
+      homepage: "https://github.com/leylabmpi/DeepMAsED"
+      documentation: "https://github.com/leylabmpi/DeepMAsED"
+      tool_dev_url: "https://github.com/leylabmpi/DeepMAsED"
+      doi: "10.1093/bioinformatics/btaa386"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - feature_file_table:
+        type: file
+        description: Index TSV file listing all feature table files (output of deepmased/features)
+        pattern: "*_feature_file_paths.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - feature_files:
+        type: file
+        description: Per-contig feature table files (output of deepmased/features)
+        pattern: "*_feats.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+
+output:
+  predictions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_deepmased_predictions.tsv":
+          type: file
+          description: TSV file containing per-contig assembly error predictions (score 0=correct, 1=misassembly)
+          pattern: "*_deepmased_predictions.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+authors:
+  - "@SkyLexS"
+maintainers:
+  - "@SkyLexS"
