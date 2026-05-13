@@ -9,14 +9,13 @@ process EXPANSIONHUNTERDENOVO_PROFILE {
 
     input:
     tuple val(meta), path(alignment_file), path(alignment_index)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fasta_fai)
+    tuple val(meta2), path(fasta), path(fasta_fai)
 
     output:
     tuple val(meta), path("*.locus.tsv")        , emit: locus_tsv
     tuple val(meta), path("*.motif.tsv")        , emit: motif_tsv
     tuple val(meta), path("*.str_profile.json") , emit: str_profile
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('expansionhunterdenovo'), eval("ExpansionHunterDenovo --help |& sed '1!d;s/ExpansionHunter Denovo v//'"), emit: versions_expansionhunterdenovo, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +30,13 @@ process EXPANSIONHUNTERDENOVO_PROFILE {
         --reference ${fasta} \\
         --output-prefix ${prefix} \\
         ${args}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        expansionhunterdenovo: \$(echo \$(ExpansionHunterDenovo --help 2>&1) | sed -e "s/ExpansionHunter Denovo v//;s/ Usage.*//")
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.locus.tsv
+    touch ${prefix}.motif.tsv
+    touch ${prefix}.str_profile.json
     """
 }
