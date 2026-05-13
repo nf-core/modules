@@ -98,8 +98,7 @@ def load_clusters(path: str) -> tuple[pd.Series, str]:
         return series, "row_order"
     else:
         raise ValueError(
-            f"clusters file must have a 'cluster' column (and optionally 'sample_id'). "
-            f"Found: {list(df.columns)}"
+            f"clusters file must have a 'cluster' column (and optionally 'sample_id'). Found: {list(df.columns)}"
         )
 
 
@@ -170,7 +169,7 @@ def main() -> None:
     else:
         if len(clusters_s) != len(sample_ids):
             raise ValueError(
-                "clusters CSV has no usable sample_id column and row counts do not match.\n"
+                "clusters CSV has no usable sample_id column and row counts do not match.\\n"
                 f"  n_features={len(sample_ids)}\\n"
                 f"  n_clusters={len(clusters_s)}"
             )
@@ -267,7 +266,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    prefix = "${task.ext.prefix ?: meta.id}"
+    prefix = "${task.ext.prefix ? task.ext.prefix : meta.id}"
 
     sys.argv = [
         "cluster_metrics.py",
