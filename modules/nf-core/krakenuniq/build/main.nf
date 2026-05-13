@@ -32,7 +32,7 @@ process KRAKENUNIQ_BUILD {
     """
 
     """
-    mkdir ${prefix} && cp -rL library taxonomy ${custom_seqid2taxid} ${prefix}
+    mkdir ${prefix} && cp -r library taxonomy ${custom_seqid2taxid} ${prefix}
 
     krakenuniq-build \\
         ${args} \\
