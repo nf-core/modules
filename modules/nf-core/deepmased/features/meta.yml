@@ -1,6 +1,7 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "deepmased_features"
-description: "DeepMAsED features subcommand: extracts alignment-based features from BAM and assembly FASTA for each contig, producing feature tables used as input for DeepMAsED predict."
+description: "DeepMAsED features subcommand: extracts alignment-based features from
+  BAM and assembly FASTA for each contig, producing feature tables used as input for
+  DeepMAsED predict."
 keywords:
   - metagenomics
   - assembly
@@ -15,9 +16,9 @@ tools:
       documentation: "https://github.com/leylabmpi/DeepMAsED"
       tool_dev_url: "https://github.com/leylabmpi/DeepMAsED"
       doi: "10.1093/bioinformatics/btaa386"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -29,18 +30,18 @@ input:
         description: Sorted BAM file of reads mapped to the assembly
         pattern: "*.{bam}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2572"
     - bai:
         type: file
         description: BAM index file
         pattern: "*.{bai}"
+        ontologies: []
     - fasta:
         type: file
         description: Assembly in FASTA format
         pattern: "*.{fasta,fa,fna}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
-
+          - edam: "http://edamontology.org/format_1929"
 output:
   features:
     - - meta:
@@ -48,25 +49,39 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_feature_file_paths.tsv":
+      - ${prefix}_feature_file_paths.tsv:
           type: file
           description: Index file listing all generated feature table files
           pattern: "*_feature_file_paths.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
       - "*_feats.tsv":
           type: file
           description: Per-contig feature tables (one per parallel bin)
           pattern: "*_feats.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
+  versions_deepmased_features:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepmased:
+          type: string
+          description: The name of the tool
+      - 0.3.1:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepmased:
+          type: string
+          description: The name of the tool
+      - 0.3.1:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@SkyLexS"
 maintainers:
