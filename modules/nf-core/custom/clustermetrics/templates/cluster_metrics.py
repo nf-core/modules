@@ -88,11 +88,19 @@ def load_features(path: str) -> tuple[pd.DataFrame, pd.Series]:
     return x, sample_ids
 
 
-def load_clusters(path: str) -> pd.Series:
+def load_clusters(path: str) -> tuple[pd.Series, str]:
     df = pd.read_csv(path)
-    if "sample_id" not in df.columns or "cluster" not in df.columns:
-        raise ValueError(f"clusters file must have 'sample_id' and 'cluster' columns. Found: {list(df.columns)}")
-    return df.set_index(df["sample_id"].astype(str))["cluster"].astype(int)
+    if "sample_id" in df.columns and "cluster" in df.columns:
+        series = df.set_index(df["sample_id"].astype(str))["cluster"].astype(int)
+        return series, "sample_id"
+    elif "cluster" in df.columns:
+        series = df["cluster"].astype(int).reset_index(drop=True)
+        return series, "row_order"
+    else:
+        raise ValueError(
+            f"clusters file must have a 'cluster' column (and optionally 'sample_id'). "
+            f"Found: {list(df.columns)}"
+        )
 
 
 def safe_cluster_metrics(x: np.ndarray, labels: np.ndarray) -> dict:
