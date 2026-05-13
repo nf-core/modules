@@ -8,7 +8,7 @@ process BLOBTK_CREATE {
         'community.wave.seqera.io/library/blobtk:0.8.0--2fe0d833a26e0cd9' }"
 
     input:
-    tuple val(meta), path(fasta), path(full_table)  // [meta, fasta, full_table]
+    tuple val(meta), path(fasta), path(full_table)
 
     output:
     tuple val(meta), path("${prefix}/"), emit: blobdir
