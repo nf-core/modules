@@ -43,7 +43,11 @@ nextflow_process {
 
         then {
             def inputs          = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
-            def unstableOutputs = ["database-build.log", "database.report.tsv"]
+            def unstableOutputs = [
+                "database-build.log",  // Every line has a timestamp
+                "database.report.tsv", // Timestamp and test filepath on first line
+                "taxDB"                // Present species and species labels change: Probably because of KRAKENUNIQ_DOWNLOAD which fetches from NCBI.
+            ]
 
             def dbDir    = file(process.out.db.get(0).get(1))
             def allFiles = []
@@ -86,7 +90,11 @@ nextflow_process {
 
         then {
             def inputs          = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
-            def unstableOutputs = ["database-build.log", "database.report.tsv"]
+            def unstableOutputs = [
+                "database-build.log",  // Every line has a timestamp
+                "database.report.tsv", // Timestamp and test filepath on first line
+                "taxDB"                // Present species and species labels change: Probably because of KRAKENUNIQ_DOWNLOAD which fetches from NCBI.
+            ]
 
             def dbDir    = file(process.out.db.get(0).get(1))
             def allFiles = []
