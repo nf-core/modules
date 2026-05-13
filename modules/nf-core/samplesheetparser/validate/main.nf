@@ -5,7 +5,7 @@ process SAMPLESHEETPARSER_VALIDATE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samplesheet-parser:1.2.0--pyhdfd78af_0' :
-        'quay.io/biocontainers/samplesheet-parser:1.2.0--pyhdfd78af_0' }"
+        'biocontainers/samplesheet-parser:1.2.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(samplesheet)
