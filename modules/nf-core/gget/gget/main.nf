@@ -3,7 +3,7 @@ process GGET_GGET {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7c/7ca1a63d986bc5b68d0543ce326a703265d4a3645be7e05f9af94f2992aa8352/data':
         'community.wave.seqera.io/library/gget:0.29.1--3b5a50589bc0feb3' }"
 
@@ -11,9 +11,9 @@ process GGET_GGET {
     tuple val(meta), path(files)
 
     output:
-    tuple val(meta), path("*[!versions.yml][!${prefix}.${extension}]*"), emit: files , optional: true
-    tuple val(meta), path("${prefix}.${extension}")                    , emit: output, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*[!${prefix}.${extension}]*"), emit: files , optional: true
+    tuple val(meta), path("${prefix}.${extension}")     , emit: output, optional: true
+    tuple val("${task.process}"), val('gget'), eval("gget --version |& sed 's/gget version: //'"), topic: versions, emit: versions_gget
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process GGET_GGET {
         $args \\
         -o ${prefix}.${extension} \\
         $inputs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gget: \$(echo \$(gget --version 2>&1 | sed 's/gget version: //g'))
-    END_VERSIONS
     """
 
     stub:
@@ -47,10 +42,5 @@ process GGET_GGET {
     """
     export MPLCONFIGDIR=\$PWD/.tmp    #included in stub to stop errors in the version string
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gget: \$(echo \$(gget --version 2>&1 | sed 's/gget version: //g'))
-    END_VERSIONS
     """
 }

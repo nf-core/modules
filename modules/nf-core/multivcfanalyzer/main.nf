@@ -3,7 +3,7 @@ process MULTIVCFANALYZER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/0713bc8b2176da50f1967ae24dd955f913b7288b966408220596e91c5c14aeeb/data' :
         'community.wave.seqera.io/library/htslib_multivcfanalyzer:6387733614faccad' }"
 

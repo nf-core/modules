@@ -33,6 +33,14 @@ input:
       description: |
         Reference genome FASTA with index.
         Structure: [ val(meta2), path(fasta), path(fai) ]
+  - ch_cytoband:
+      type: file
+      description: |
+        Optional cytoband file for telomerehunter.
+        Structure: [ path(cytoband) ]
+        When not provided ([[]] / empty), telomerehunter uses its bundled hg19 cytoband.
+        Must be supplied for hg38 data to avoid an IndexError caused by
+        chromosomes that are longer in hg38 than hg19.
   - run_telomerehunter:
       type: boolean
       description: Enable telomerehunter content profiling

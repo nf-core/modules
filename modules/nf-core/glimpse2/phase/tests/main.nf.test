@@ -119,8 +119,9 @@ nextflow_process {
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz", checkIfExists: true),
                         []
                     ])
-                    input[2] = []
-                    input[3] = "crai"
+                    input[2] = [[], []]
+                    input[3] = [[], []]
+                    input[4] = "crai"
                     """
                 }
             }

@@ -1,6 +1,6 @@
 name: "gzrt"
-description: gzrecover is a program that will attempt to extract any readable data
-  out of a gzip file that has been corrupted
+description: gzrecover is a program that will attempt to extract any readable
+  data out of a gzip file that has been corrupted
 keywords:
   - corrupted
   - fastq
@@ -12,23 +12,21 @@ tools:
       documentation: "https://www.urbanophile.com/arenn/hacking/gzrt/gzrt.html"
       tool_dev_url: "https://github.com/arenn/gzrt"
       doi: "no DOI available"
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: ""
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-
     - fastqgz:
         type: file
         description: FASTQ.gz files
         pattern: "*.{gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3989"
-
+          - edam: "http://edamontology.org/format_3989" # GZIP
 output:
   recovered:
     - - meta:
@@ -41,16 +39,28 @@ output:
           description: Recovered FASTQ.gz files
           pattern: "*.{gz}"
           ontologies:
-            - edam: "http://edamontology.org/format_3989"
-
+            - edam: "http://edamontology.org/format_3989" # GZIP
+  versions_gzrt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzrt:
+          type: string
+          description: The name of the tool
+      - gzrecover -V |& sed '1!d ; s/gzrecover //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzrt:
+          type: string
+          description: The name of the tool
+      - gzrecover -V |& sed '1!d ; s/gzrecover //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mazzalab"
 maintainers:
