@@ -657,7 +657,15 @@ if (nrow(results_genewise) > 0) {
 }
 
 # save main results - genewise
+# Move gene IDs from rownames into an explicit features_id_col column so the
+# resulting TSV has a header aligned with the data rows (otherwise the first
+# row has one more field than the header line).
 results_genewise <- as.data.frame(results_genewise)
+results_genewise <- cbind(
+    setNames(data.frame(rownames(results_genewise), stringsAsFactors = FALSE), opt\$features_id_col),
+    results_genewise
+)
+rownames(results_genewise) <- NULL
 results_genewise <- results_genewise[order(
     results_genewise\$rcDdis, # sort by increasing rcDdis (from most significant to least significant)
     -abs(results_genewise\$LFC), # sort by decreasing absolute LFC (from most to least differential)
@@ -676,7 +684,7 @@ write.table(
     results_genewise,
     file      = paste0(opt\$prefix, '.propd.genewise.tsv'),
     col.names = TRUE,
-    row.names = TRUE,
+    row.names = FALSE,
     sep       = '\\t',
     quote     = FALSE
 )
