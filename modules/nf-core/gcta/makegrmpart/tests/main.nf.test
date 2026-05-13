@@ -10,8 +10,6 @@ nextflow_process {
     tag "gcta/makegrmpart"
 
     test("homo_sapiens popgen - plink2") {
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -56,8 +54,6 @@ nextflow_process {
     }
 
     test("homo_sapiens popgen - plink1") {
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -102,8 +98,6 @@ nextflow_process {
     }
 
     test("homo_sapiens popgen - plink1 - extract snp group") {
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -155,8 +149,6 @@ nextflow_process {
     }
 
     test("homo_sapiens popgen - plink1 - default partition values") {
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -204,7 +196,6 @@ nextflow_process {
 
     test("homo_sapiens popgen - plink1 - stub") {
         options "-stub"
-        config "./nextflow.config"
 
         when {
             process {

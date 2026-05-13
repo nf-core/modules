@@ -28,13 +28,10 @@ process GCTA_MAKEGRMPART {
     def multi_file_flag = genotype_extension == 'pgen' ? '--mpfile' : '--mbfile'
 
     """
-    set -euo pipefail
-
     gcta \\
         ${multi_file_flag} ${mfile} \\
         --make-grm-part ${nparts} ${part} \\
         ${extract_cmd} \\
-        --maf 0.01 \\
         --thread-num ${task.cpus} \\
         --out ${prefix} ${extra_args}
     """
