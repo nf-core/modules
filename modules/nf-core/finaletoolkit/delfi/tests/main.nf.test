@@ -25,8 +25,7 @@ nextflow_process {
                 ]
                 input[1] = [
                     [id: 'genome' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true)
-                    ,
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true),
                 ]
                 input[2] = [
                     [id: 'sizes' ],
@@ -43,10 +42,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match()  }
+            )
             )
         }
 
@@ -70,8 +67,7 @@ nextflow_process {
                 ]
                 input[1] = [
                     [id: 'genome' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true)
-                    ,
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true),
                 ]
                 input[2] = [
                     [id: 'sizes' ],
@@ -88,10 +84,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match()  }
+            )
             )
         }
 
