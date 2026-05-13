@@ -8,7 +8,7 @@ process PARSESDRF_CONVERT {
         'quay.io/biocontainers/sdrf-pipelines:0.1.4--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(sdrf)
+    tuple val(meta), path(sdrf), path(fasta), val(raw_folder)
     val format
 
     output:
@@ -35,8 +35,11 @@ process PARSESDRF_CONVERT {
         // convert-openms writes openms.tsv + (optionally) experimental_design.tsv
         post = "mv openms.tsv ${prefix}_samplesheet.tsv ; [ -f experimental_design.tsv ] && mv experimental_design.tsv ${prefix}_experimental_design.tsv || true"
     } else if (format == 'maxquant') {
-        // --fastafilepath and --raw_folder must be supplied via task.ext.args
-        output_args = "-o1 ${prefix}.xml -o2 ${prefix}_design.txt"
+        if (!fasta || !raw_folder) {
+            error "PARSESDRF_CONVERT: format 'maxquant' requires both `fasta` (path) and `raw_folder` (string) inputs"
+        }
+        // fasta is staged into the work dir; raw_folder is a literal string embedded into mqpar.xml's <filePaths>
+        output_args = "-f ${fasta} -r ${raw_folder} -o1 ${prefix}.xml -o2 ${prefix}_design.txt"
     } else if (format == 'msstats') {
         output_args = "-o ${prefix}.csv"
     } else if (format == 'normalyzerde') {

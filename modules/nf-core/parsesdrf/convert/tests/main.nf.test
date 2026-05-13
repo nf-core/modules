@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process PARSESDRF_CONVERT"
     script "../main.nf"
     process "PARSESDRF_CONVERT"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -13,14 +12,13 @@ nextflow_process {
     test("sdrf - mhcquant - PXD009752") {
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
                 ]
                 input[1] = 'mhcquant'
                 """
@@ -39,14 +37,13 @@ nextflow_process {
     test("sdrf - openms - PXD009752") {
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
                 ]
                 input[1] = 'openms'
                 """
@@ -65,14 +62,13 @@ nextflow_process {
     test("sdrf - maxquant - PXD009752") {
 
         when {
-            params {
-                module_args = '-f PXD009752.sdrf.tsv -r .'
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/UP000005640_9606_500prot.fasta', checkIfExists: true),
+                    '.'
                 ]
                 input[1] = 'maxquant'
                 """
@@ -92,14 +88,13 @@ nextflow_process {
     test("sdrf - msstats - PXD009752") {
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
                 ]
                 input[1] = 'msstats'
                 """
@@ -118,14 +113,13 @@ nextflow_process {
     test("sdrf - normalyzerde - PXD009752") {
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
                 ]
                 input[1] = 'normalyzerde'
                 """
@@ -144,14 +138,13 @@ nextflow_process {
     test("sdrf - diann - PXD009752") {
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
                 ]
                 input[1] = 'diann'
                 """
@@ -172,14 +165,13 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
                 ]
                 input[1] = 'mhcquant'
                 """
@@ -200,14 +192,13 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
                 ]
                 input[1] = 'openms'
                 """
@@ -228,14 +219,13 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
                 ]
                 input[1] = 'maxquant'
                 """
@@ -256,14 +246,13 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
                 ]
                 input[1] = 'msstats'
                 """
@@ -284,14 +273,13 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
                 ]
                 input[1] = 'normalyzerde'
                 """
@@ -312,14 +300,13 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'PXD009752' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
                 ]
                 input[1] = 'diann'
                 """

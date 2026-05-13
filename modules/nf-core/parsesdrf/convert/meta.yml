@@ -42,14 +42,27 @@ input:
         pattern: "*.{tsv,sdrf.tsv}"
         ontologies:
           - edam: http://edamontology.org/format_3475
+    - fasta:
+        type: file
+        description: |
+          Protein database FASTA. Required when `format == 'maxquant'`
+          (passed to `-f`); pass `[]` otherwise.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+    - raw_folder:
+        type: string
+        description: |
+          Directory prefix embedded as a literal string into the
+          `<filePaths>` block of the generated MaxQuant `mqpar.xml`; must
+          resolve on the host that later runs MaxQuant. Required when
+          `format == 'maxquant'`; pass `''` otherwise.
   - format:
       type: string
       description: |
         Target converter. One of: `mhcquant`, `openms`, `maxquant`,
         `msstats`, `normalyzerde`, `diann`. Selects the
-        `parse_sdrf convert-<format>` subcommand. For `maxquant`, the
-        required `--fastafilepath` and `--raw_folder` arguments must be
-        passed via `task.ext.args`.
+        `parse_sdrf convert-<format>` subcommand.
 output:
   mhcquant:
     - - meta:
@@ -89,7 +102,7 @@ output:
           description: Groovy Map containing sample/run information
       - "${prefix}.xml":
           type: file
-          description: MaxQuant `mqpar.xml` (`-o1`). Requires `aux=[fasta, raw_folder]`.
+          description: MaxQuant `mqpar.xml` (`-o1`).
           pattern: "*.xml"
           ontologies:
             - edam: http://edamontology.org/format_2332
