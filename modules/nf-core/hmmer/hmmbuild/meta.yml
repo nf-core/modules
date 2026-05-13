@@ -27,7 +27,11 @@ input:
         description: multiple sequence alignment in fasta, clustal, stockholm or
           phylip format
         pattern: "*"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/data_0863 # Sequence alignment
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1997 # PHYLIP format
+          - edam: http://edamontology.org/format_1961 # Stockholm format
   - mxfile:
       type: file
       description: read substitution score matrix, for use when building profiles

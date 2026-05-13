@@ -26,7 +26,9 @@ input:
         description: One or multiple amino acid sequences from which to start
           building a model iteratively (one model per input sequence)
         pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - seqdb:
         type: file
         description: Database of sequences in FASTA format
@@ -67,7 +69,8 @@ output:
           description: Optional multiple sequence alignment (MSA) in Stockholm
             format
           pattern: "*.{sto.gz}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
   target_summary:
     - - meta:
           type: map
@@ -79,7 +82,8 @@ output:
           description: Optional tabular (space-delimited) summary of per-target
             output
           pattern: "*.{tbl.gz}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
   domain_summary:
     - - meta:
           type: map
@@ -91,7 +95,8 @@ output:
           description: Optional tabular (space-delimited) summary of per-domain
             output
           pattern: "*.{domtbl.gz}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_hmmer:
     - - ${task.process}:
           type: string
