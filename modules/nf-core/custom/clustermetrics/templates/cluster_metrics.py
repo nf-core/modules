@@ -74,7 +74,7 @@ def _normalise_id_column(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def load_features(path: str) -> tuple[pd.DataFrame, pd.Series]:
-    df = pd.read_csv(path, sep="\t", dtype=str)
+    df = pd.read_csv(path, sep="\\t", dtype=str)
     df = _normalise_id_column(df)
 
     if "sample_id" not in df.columns:
@@ -146,37 +146,36 @@ def main() -> None:
     args = ap.parse_args()
 
     x_df, sample_ids = load_features(args.features)
-    clusters_df, cluster_mode = load_clusters(args.clusters)
+    clusters_s, cluster_mode = load_clusters(args.clusters)
 
     if cluster_mode == "sample_id":
-        clusters = clusters_df.set_index("sample_id")["cluster"]
-        common = sample_ids[sample_ids.isin(clusters.index)]
+        common = sample_ids[sample_ids.isin(clusters_s.index)]
 
         if len(common) > 0:
             x = x_df.loc[common.index].values
-            labels = clusters.loc[common.values].values
+            labels = clusters_s.loc[common.values].values
             aligned_ids = common.astype(str).tolist()
             alignment_mode = "sample_id"
-        elif len(clusters_df) == len(sample_ids):
+        elif len(clusters_s) == len(sample_ids):
             x = x_df.values
-            labels = clusters_df["cluster"].values
+            labels = clusters_s.values
             aligned_ids = sample_ids.astype(str).tolist()
             alignment_mode = "row_order_fallback"
         else:
             raise ValueError(
                 f"No overlapping sample_id between features and clusters.\\n"
                 f"  features IDs (first 5): {sample_ids.head().tolist()}\\n"
-                f"  clusters IDs (first 5): {list(clusters.index[:5])}"
+                f"  clusters IDs (first 5): {list(clusters_s.index[:5])}"
             )
     else:
-        if len(clusters_df) != len(sample_ids):
+        if len(clusters_s) != len(sample_ids):
             raise ValueError(
-                "clusters CSV has no usable sample_id column and row counts do not match.\\n"
+                "clusters CSV has no usable sample_id column and row counts do not match.\n"
                 f"  n_features={len(sample_ids)}\\n"
-                f"  n_clusters={len(clusters_df)}"
+                f"  n_clusters={len(clusters_s)}"
             )
         x = x_df.values
-        labels = clusters_df["cluster"].values
+        labels = clusters_s.values
         aligned_ids = sample_ids.astype(str).tolist()
         alignment_mode = "row_order"
 
