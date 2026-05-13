@@ -12,10 +12,9 @@ keywords:
   - bclconvert
   - bcl2fastq
   - genomics
-
 tools:
   - samplesheet-parser:
-      description: >
+      description: |
         Format-agnostic parser for Illumina SampleSheet.csv files.
         Supports IEM V1 (bcl2fastq) and BCLConvert V2 with auto-detection,
         bidirectional conversion, index validation, and Hamming distance checking.
@@ -23,9 +22,9 @@ tools:
       documentation: https://illumina-samplesheet.readthedocs.io
       tool_dev_url: https://github.com/chaitanyakasaraneni/samplesheet-parser
       doi: "10.5281/zenodo.18989694"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:samplesheet-parser
-
 input:
   - - meta:
         type: map
@@ -38,7 +37,6 @@ input:
         pattern: "*.{csv,CSV}"
         ontologies:
           - edam: "http://edamontology.org/format_3752"
-
 output:
   json:
     - - meta:
@@ -50,7 +48,9 @@ output:
             Structured JSON validation report with is_valid, errors, warnings,
             and min_hamming_distance fields.
           pattern: "*.validation.json"
-  versions_samplesheet_parser:
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  versions_samplesheetparser:
     - - ${task.process}:
           type: string
           description: The name of the process
@@ -71,7 +71,6 @@ topics:
       - samplesheet --version | sed 's/samplesheet-parser //':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@chaitanyakasaraneni"
 maintainers:

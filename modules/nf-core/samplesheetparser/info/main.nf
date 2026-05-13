@@ -3,7 +3,7 @@ process SAMPLESHEETPARSER_INFO {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samplesheet-parser:1.2.0--pyhdfd78af_0' :
         'quay.io/biocontainers/samplesheet-parser:1.2.0--pyhdfd78af_0' }"
 
@@ -12,7 +12,7 @@ process SAMPLESHEETPARSER_INFO {
 
     output:
     tuple val(meta), path("*.info.json"), emit: json
-    tuple val("${task.process}"), val('samplesheet-parser'), eval("samplesheet --version | sed 's/samplesheet-parser //'"), topic: versions, emit: versions_samplesheet_parser
+    tuple val("${task.process}"), val('samplesheet-parser'), eval("samplesheet --version | sed 's/samplesheet-parser //'"), topic: versions, emit: versions_samplesheetparser
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,6 @@ process SAMPLESHEETPARSER_INFO {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     samplesheet info \\
-        --format json \\
         ${args} \\
         ${samplesheet} > ${prefix}.info.json
     """
@@ -30,6 +29,6 @@ process SAMPLESHEETPARSER_INFO {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo '{"format": "V1", "sample_count": 0, "lanes": [], "index_type": "none"}' > ${prefix}.info.json
+    touch ${prefix}.info.json
     """
 }

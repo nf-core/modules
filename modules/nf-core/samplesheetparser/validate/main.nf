@@ -3,7 +3,7 @@ process SAMPLESHEETPARSER_VALIDATE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samplesheet-parser:1.2.0--pyhdfd78af_0' :
         'quay.io/biocontainers/samplesheet-parser:1.2.0--pyhdfd78af_0' }"
 
@@ -12,7 +12,7 @@ process SAMPLESHEETPARSER_VALIDATE {
 
     output:
     tuple val(meta), path("*.validation.json"), emit: json
-    tuple val("${task.process}"), val('samplesheet-parser'), eval("samplesheet --version | sed 's/samplesheet-parser //'"), topic: versions, emit: versions_samplesheet_parser
+    tuple val("${task.process}"), val('samplesheet-parser'), eval("samplesheet --version | sed 's/samplesheet-parser //'"), topic: versions, emit: versions_samplesheetparser
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,6 @@ process SAMPLESHEETPARSER_VALIDATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     samplesheet validate \\
-        --format json \\
         ${args} \\
         ${samplesheet} > ${prefix}.validation.json
     """
@@ -30,6 +29,6 @@ process SAMPLESHEETPARSER_VALIDATE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo '{"is_valid": true, "errors": [], "warnings": []}' > ${prefix}.validation.json
+    touch ${prefix}.validation.json
     """
 }
