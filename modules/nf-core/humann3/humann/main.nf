@@ -36,10 +36,6 @@ process HUMANN3_HUMANN {
     nuclist=`find -L "${nucleotide_db}" -name "*.ffn.gz" -print -quit `
     NUCS_DB=\$(dirname \$nuclist)
 
-    STATIC_CONFIG=`python -c "import humann; print(humann.__file__.replace('__init__.py', 'humann.cfg'))"`
-    cat \$STATIC_CONFIG  | sed "s|utility_mapping = .*|utility_mapping = ${utility_db}|g" > humann.cfg
-    export HUMANN_CONFIG=humann.cfg
-
     humann \\
         $args \\
         --threads ${task.cpus} \\
