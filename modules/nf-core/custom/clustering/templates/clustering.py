@@ -2,7 +2,6 @@
 
 import json
 import platform
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -14,46 +13,20 @@ from sklearn.cluster import DBSCAN, KMeans
 def parse_eigenvec(path):
     """Parse a PLINK2 .eigenvec file into (sample_ids: pd.Series, pcs: np.ndarray).
 
-    Handles both FID/IID and IID-only header layouts and tolerates a leading
-    '#' on the header line that PLINK2 writes by default.
+    Accepts the FID/IID and IID-only header layouts PLINK2 emits, plus the
+    leading '#' on the header line. Sample IDs are read from the IID column.
     """
-    rows = []
-    n_pcs = 0
-    mode = None
-    with Path(path).open("r") as fh:
-        for line in fh:
-            line = line.strip()
-            if not line:
-                continue
-            parts = line.split()
-            if parts[0].startswith("#"):
-                header = [p.lstrip("#") for p in parts]
-                if len(header) >= 2 and header[0].upper() == "FID" and header[1].upper() == "IID":
-                    mode = "fid_iid"
-                elif header[0].upper() == "IID":
-                    mode = "iid_only"
-                continue
-            if mode is None:
-                # No header line; infer from the first data row.
-                try:
-                    float(parts[1])
-                    mode = "iid_only"
-                except (ValueError, IndexError):
-                    mode = "fid_iid"
-            if mode == "fid_iid":
-                if len(parts) < 3:
-                    continue
-                rows.append((parts[1], parts[2:]))
-            else:
-                if len(parts) < 2:
-                    continue
-                rows.append((parts[0], parts[1:]))
-            if n_pcs == 0:
-                n_pcs = len(rows[-1][1])
-    if not rows:
-        raise ValueError(f"No data rows found in eigenvec file {path}")
-    sample_ids = pd.Series([r[0] for r in rows], dtype=str)
-    pcs = np.array([[float(v) for v in r[1]] for r in rows])
+    df = pd.read_csv(path, sep=r"\\s+", engine="python")
+    df.columns = [c.lstrip("#") for c in df.columns]
+    cols_upper = [c.upper() for c in df.columns]
+    if cols_upper[:2] == ["FID", "IID"]:
+        id_cols = df.columns[:2]
+    elif cols_upper[:1] == ["IID"]:
+        id_cols = df.columns[:1]
+    else:
+        raise ValueError(f"eigenvec file missing IID header: {list(df.columns)}")
+    sample_ids = df["IID"].astype(str)
+    pcs = df.drop(columns=id_cols).to_numpy(dtype=float)
     return sample_ids, pcs
 
 
@@ -82,17 +55,17 @@ def main():
             "algorithm": "dbscan",
             "eps": dbscan_eps,
             "min_samples": dbscan_min_samples,
-            "n_clusters_found": int(len(set(labels)) - (1 if -1 in labels else 0)),
+            "n_clusters_found": len(set(labels) - {-1}),
             "n_noise": int(np.sum(labels == -1)),
         }
     else:
         raise ValueError(f"Unknown algorithm '{algorithm}' (expected 'kmeans' or 'dbscan')")
 
-    info["n_samples"] = int(x.shape[0])
-    info["n_features"] = int(x.shape[1])
+    info |= {"n_samples": int(x.shape[0]), "n_features": int(x.shape[1])}
 
     pd.DataFrame({"sample_id": sample_ids, "cluster": labels}).to_csv(f"{prefix}_clusters.csv", index=False)
-    Path(f"{prefix}_clustering_info.json").write_text(json.dumps(info, indent=2))
+    with open(f"{prefix}_clustering_info.json", "w") as fh:
+        json.dump(info, fh, indent=2)
 
     versions = {
         "${task.process}": {

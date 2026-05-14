@@ -23,36 +23,34 @@ from sklearn.manifold import TSNE
 
 
 def load_features(path):
+    """Read a TSV of `sample_id` + numeric feature columns, indexed by sample_id."""
     df = pd.read_csv(path, sep="\\t")
     if "sample_id" not in df.columns:
         raise ValueError(f"features file must have a 'sample_id' column. Found: {list(df.columns)}")
-    sample_ids = df["sample_id"].astype(str)
-    x = df.drop(columns=["sample_id"]).apply(pd.to_numeric, errors="coerce").fillna(0.0).values
-    return x, sample_ids
+    df["sample_id"] = df["sample_id"].astype(str)
+    return df.set_index("sample_id").apply(pd.to_numeric, errors="coerce").fillna(0.0)
 
 
 def load_clusters(path):
+    """Read a CSV of `sample_id` + `cluster`, returning a Series of int labels."""
     df = pd.read_csv(path)
     if "sample_id" not in df.columns or "cluster" not in df.columns:
         raise ValueError(f"clusters file must have 'sample_id' and 'cluster' columns. Found: {list(df.columns)}")
-    return df.set_index(df["sample_id"].astype(str))["cluster"].astype(int)
+    df["sample_id"] = df["sample_id"].astype(str)
+    return df.set_index("sample_id")["cluster"].astype(int)
 
 
 def embed(x, method):
+    """Project x to 2D using UMAP or t-SNE.
+
+    n_neighbors / perplexity are clamped against sample count so tiny test
+    inputs (where the defaults would exceed n_samples) still run.
+    """
+    n = len(x)
     if method == "umap":
-        # min(15, n-1) keeps UMAP working on tiny test inputs where the default
-        # n_neighbors (15) exceeds sample count.
-        reducer = umap.UMAP(
-            n_components=2,
-            n_neighbors=min(15, max(2, len(x) - 1)),
-            random_state=42,
-        )
+        reducer = umap.UMAP(n_components=2, n_neighbors=min(15, max(2, n - 1)), random_state=42)
     elif method == "tsne":
-        reducer = TSNE(
-            n_components=2,
-            perplexity=min(30, max(2, len(x) - 1)),
-            random_state=42,
-        )
+        reducer = TSNE(n_components=2, perplexity=min(30, max(2, n - 1)), random_state=42)
     else:
         raise ValueError(f"Unknown method '{method}' (expected 'umap' or 'tsne')")
     return reducer.fit_transform(x)
@@ -80,37 +78,24 @@ def plot_embedding(emb, labels, method, out_png):
     plt.close()
 
 
-def write_embedding(emb, sample_ids, labels, out_tsv):
-    df = pd.DataFrame(
-        {
-            "sample_id": sample_ids,
-            "Dim1": emb[:, 0],
-            "Dim2": emb[:, 1],
-            "cluster": labels,
-        }
-    )
-    df.to_csv(out_tsv, sep="\\t", index=False)
-
-
 def main():
     features = "$features"
     clusters_path = "$clusters"
     prefix = "${task.ext.prefix ?: meta.id}"
 
-    x, sample_ids = load_features(features)
-    clusters = load_clusters(clusters_path)
+    joined = load_features(features).join(load_clusters(clusters_path), how="inner")
+    if len(joined) < 2:
+        raise ValueError(f"Need at least 2 samples with matching sample_id in both inputs. Got {len(joined)}.")
 
-    common = sample_ids[sample_ids.isin(clusters.index)]
-    if len(common) < 2:
-        raise ValueError(f"Need at least 2 samples with matching sample_id in both inputs. Got {len(common)}.")
-
-    x_aligned = x[common.index]
-    aligned_ids = common.values
-    labels = clusters.loc[aligned_ids].values
+    labels = joined["cluster"].values
+    x = joined.drop(columns=["cluster"]).to_numpy(dtype=float)
+    sample_ids = joined.index.to_numpy()
 
     for method in ("umap", "tsne"):
-        emb = embed(x_aligned, method)
-        write_embedding(emb, aligned_ids, labels, f"{prefix}.{method}.tsv")
+        emb = embed(x, method)
+        pd.DataFrame({"sample_id": sample_ids, "Dim1": emb[:, 0], "Dim2": emb[:, 1], "cluster": labels}).to_csv(
+            f"{prefix}.{method}.tsv", sep="\\t", index=False
+        )
         plot_embedding(emb, labels, method, f"{prefix}.{method}.png")
 
     versions = {
@@ -123,8 +108,8 @@ def main():
             "scikit-learn": sklearn.__version__,
         }
     }
-    with open("versions.yml", "w") as f:
-        yaml.dump(versions, f, default_flow_style=False, sort_keys=False)
+    with open("versions.yml", "w") as fh:
+        yaml.dump(versions, fh, default_flow_style=False, sort_keys=False)
 
 
 if __name__ == "__main__":
