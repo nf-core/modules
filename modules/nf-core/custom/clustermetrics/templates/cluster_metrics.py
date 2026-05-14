@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-import argparse
 import json
 import platform
-import sys
 from pathlib import Path
 
 import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import sklearn
@@ -16,8 +17,6 @@ from sklearn.metrics import (
     davies_bouldin_score,
     silhouette_score,
 )
-
-matplotlib.use("Agg")
 
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
@@ -32,176 +31,94 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
     return yaml_str
 
 
-def _normalise_id_column(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.copy()
-    df.columns = [str(c).lstrip("#") for c in df.columns]
-
-    cols_upper = {str(c).upper(): c for c in df.columns}
-
-    if "IID" in cols_upper:
-        iid_col = cols_upper["IID"]
-        dup_mask = df[iid_col].astype(str).str.upper().isin({"FID", "IID"})
-        if dup_mask.any():
-            df = df.loc[~dup_mask].copy().reset_index(drop=True)
-
-    cols_upper = {str(c).upper(): c for c in df.columns}
-
-    if "SAMPLE_ID" in cols_upper:
-        sample_col = cols_upper["SAMPLE_ID"]
-        if sample_col != "sample_id":
-            df = df.rename(columns={sample_col: "sample_id"})
-        return df
-
-    if "IID" in cols_upper:
-        iid_col = cols_upper["IID"]
-        iid_numeric = pd.to_numeric(df[iid_col], errors="coerce").notna().all()
-
-        if iid_numeric:
-            df = df.drop(columns=[iid_col])
-            if len(df.columns) == 0:
-                raise ValueError("Cannot infer sample_id after dropping numeric IID column")
-            df = df.rename(columns={df.columns[0]: "sample_id"})
-        else:
-            df = df.rename(columns={iid_col: "sample_id"})
-
-        fid_cols = [c for c in df.columns if str(c).upper() == "FID"]
-        if fid_cols:
-            df = df.drop(columns=fid_cols)
-
-        return df
-
-    raise ValueError(f"Cannot find sample ID column (expected 'sample_id' or 'IID'). Found: {list(df.columns)}")
-
-
-def load_features(path: str) -> tuple[pd.DataFrame, pd.Series]:
-    df = pd.read_csv(path, sep="\\t", dtype=str)
-    df = _normalise_id_column(df)
-
+def load_features(path):
+    df = pd.read_csv(path, sep="\\t")
     if "sample_id" not in df.columns:
-        raise ValueError("features file must contain a sample_id column after normalization")
-
+        raise ValueError(f"features file must have a 'sample_id' column. Found: {list(df.columns)}")
     sample_ids = df["sample_id"].astype(str)
-    x = df.drop(columns=["sample_id"]).apply(pd.to_numeric, errors="coerce")
-    x = x.fillna(x.mean(numeric_only=True))
-    x = x.fillna(0.0)
-
+    x = df.drop(columns=["sample_id"]).apply(pd.to_numeric, errors="coerce").fillna(0.0).values
     return x, sample_ids
 
 
-def load_clusters(path: str) -> tuple[pd.Series, str]:
+def load_clusters(path):
     df = pd.read_csv(path)
-    if "sample_id" in df.columns and "cluster" in df.columns:
-        series = df.set_index(df["sample_id"].astype(str))["cluster"].astype(int)
-        return series, "sample_id"
-    elif "cluster" in df.columns:
-        series = df["cluster"].astype(int).reset_index(drop=True)
-        return series, "row_order"
-    else:
-        raise ValueError(
-            f"clusters file must have a 'cluster' column (and optionally 'sample_id'). Found: {list(df.columns)}"
-        )
+    if "sample_id" not in df.columns or "cluster" not in df.columns:
+        raise ValueError(f"clusters file must have 'sample_id' and 'cluster' columns. Found: {list(df.columns)}")
+    return df.set_index(df["sample_id"].astype(str))["cluster"].astype(int)
 
 
-def safe_cluster_metrics(x: np.ndarray, labels: np.ndarray) -> dict:
+def cluster_quality(x, labels):
+    """Silhouette / Calinski-Harabasz / Davies-Bouldin for given (x, labels).
+
+    Treats label -1 as DBSCAN noise and excludes those points.
+    Returns None for each score when fewer than 2 clusters remain.
+    """
     uniq = np.unique(labels)
     n_clusters = len(uniq) - (1 if -1 in uniq else 0)
-
+    out = {
+        "n_clusters": int(n_clusters),
+        "silhouette": None,
+        "calinski_harabasz": None,
+        "davies_bouldin": None,
+    }
     if n_clusters < 2:
-        return {
-            "n_clusters": int(n_clusters),
-            "silhouette": None,
-            "calinski_harabasz": None,
-            "davies_bouldin": None,
-        }
-
+        return out
     mask = labels != -1
     x_use, y_use = x[mask], labels[mask]
-
     if len(x_use) < 2 or len(np.unique(y_use)) < 2:
-        return {
-            "n_clusters": int(n_clusters),
-            "silhouette": None,
-            "calinski_harabasz": None,
-            "davies_bouldin": None,
-        }
-
-    return {
-        "n_clusters": int(n_clusters),
-        "silhouette": float(silhouette_score(x_use, y_use)),
-        "calinski_harabasz": float(calinski_harabasz_score(x_use, y_use)),
-        "davies_bouldin": float(davies_bouldin_score(x_use, y_use)),
-    }
+        return out
+    out["silhouette"] = float(silhouette_score(x_use, y_use))
+    out["calinski_harabasz"] = float(calinski_harabasz_score(x_use, y_use))
+    out["davies_bouldin"] = float(davies_bouldin_score(x_use, y_use))
+    return out
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--features", required=True)
-    ap.add_argument("--clusters", required=True)
-    ap.add_argument("--k-min", type=int, default=2)
-    ap.add_argument("--k-max", type=int, default=12)
-    ap.add_argument("--out-k-sweep", required=True)
-    ap.add_argument("--out-selected", required=True)
-    ap.add_argument("--out-prefix", required=True)
-    args = ap.parse_args()
+def plot_curve(sweep_df, metric, title, ylabel, out_png):
+    plt.figure(figsize=(7, 4.5))
+    vals = sweep_df[metric].dropna()
+    ks = sweep_df.loc[vals.index, "k"]
+    plt.plot(ks, vals, marker="o")
+    plt.xticks(sweep_df["k"].tolist())
+    plt.title(title)
+    plt.xlabel("k")
+    plt.ylabel(ylabel)
+    plt.tight_layout()
+    plt.savefig(out_png, dpi=200)
+    plt.close()
 
-    x_df, sample_ids = load_features(args.features)
-    clusters_s, cluster_mode = load_clusters(args.clusters)
 
-    if cluster_mode == "sample_id":
-        common = sample_ids[sample_ids.isin(clusters_s.index)]
+def main():
+    features = "$features"
+    clusters_path = "$clusters"
+    prefix = "${task.ext.prefix ?: meta.id}"
+    k_min, k_max = 2, 12
 
-        if len(common) > 0:
-            x = x_df.loc[common.index].values
-            labels = clusters_s.loc[common.values].values
-            aligned_ids = common.astype(str).tolist()
-            alignment_mode = "sample_id"
-        elif len(clusters_s) == len(sample_ids):
-            x = x_df.values
-            labels = clusters_s.values
-            aligned_ids = sample_ids.astype(str).tolist()
-            alignment_mode = "row_order_fallback"
-        else:
-            raise ValueError(
-                f"No overlapping sample_id between features and clusters.\\n"
-                f"  features IDs (first 5): {sample_ids.head().tolist()}\\n"
-                f"  clusters IDs (first 5): {list(clusters_s.index[:5])}"
-            )
-    else:
-        if len(clusters_s) != len(sample_ids):
-            raise ValueError(
-                "clusters CSV has no usable sample_id column and row counts do not match.\\n"
-                f"  n_features={len(sample_ids)}\\n"
-                f"  n_clusters={len(clusters_s)}"
-            )
-        x = x_df.values
-        labels = clusters_s.values
-        aligned_ids = sample_ids.astype(str).tolist()
-        alignment_mode = "row_order"
+    x, sample_ids = load_features(features)
+    clusters = load_clusters(clusters_path)
 
-    if len(x) < 2:
-        raise ValueError("Need at least 2 samples to compute cluster metrics")
+    common = sample_ids[sample_ids.isin(clusters.index)]
+    if len(common) < 2:
+        raise ValueError(f"Need at least 2 samples with matching sample_id in both inputs. Got {len(common)}.")
 
-    selected = safe_cluster_metrics(x, labels)
-    selected["input_clusters"] = Path(args.clusters).name
-    selected["input_features"] = Path(args.features).name
-    selected["n_samples_used"] = int(len(aligned_ids))
-    selected["alignment_mode"] = alignment_mode
+    x_aligned = x[common.index]
+    labels = clusters.loc[common.values].values
 
-    metrics_tsv = f"{args.out_prefix}_metrics.tsv"
-    pd.DataFrame([selected]).to_csv(metrics_tsv, sep="\\t", index=False)
+    # Per-cluster quality metrics on the supplied labels.
+    selected = cluster_quality(x_aligned, labels)
+    pd.DataFrame([selected]).to_csv(f"{prefix}_metrics.tsv", sep="\\t", index=False)
+    Path(f"{prefix}_selected.json").write_text(json.dumps(selected, indent=2))
 
+    # KMeans k-sweep for downstream comparison.
     rows = []
-    max_k = min(int(args.k_max), len(x))
-    for k in range(int(args.k_min), max_k + 1):
+    max_k = min(k_max, len(x_aligned))
+    for k in range(k_min, max_k + 1):
         model = KMeans(n_clusters=k, n_init=10, random_state=42)
-        y = model.fit_predict(x)
-
+        y = model.fit_predict(x_aligned)
         sil = ch = db = None
-        if 1 < len(np.unique(y)) < len(x):
-            sil = float(silhouette_score(x, y))
-            ch = float(calinski_harabasz_score(x, y))
-            db = float(davies_bouldin_score(x, y))
-
+        if 1 < len(np.unique(y)) < len(x_aligned):
+            sil = float(silhouette_score(x_aligned, y))
+            ch = float(calinski_harabasz_score(x_aligned, y))
+            db = float(davies_bouldin_score(x_aligned, y))
         rows.append(
             {
                 "k": k,
@@ -213,46 +130,28 @@ def main() -> None:
         )
 
     sweep_df = pd.DataFrame(rows)
-    sweep_df.to_csv(args.out_k_sweep, sep=",", index=False, float_format="%.10g")
-    Path(args.out_selected).write_text(json.dumps(selected, indent=2))
+    sweep_df.to_csv(f"{prefix}_k_sweep.csv", index=False, float_format="%.10g")
 
-    pfx = args.out_prefix
-    try:
-        import matplotlib.pyplot as plt
+    if not sweep_df.empty:
+        plot_curve(sweep_df, "inertia", "Elbow method (KMeans inertia)", "inertia", f"{prefix}_elbow.png")
+        plot_curve(
+            sweep_df, "silhouette", "Silhouette score (higher is better)", "silhouette", f"{prefix}_silhouette.png"
+        )
+        plot_curve(
+            sweep_df,
+            "davies_bouldin",
+            "Davies-Bouldin index (lower is better)",
+            "davies_bouldin",
+            f"{prefix}_davies_bouldin.png",
+        )
+        plot_curve(
+            sweep_df,
+            "calinski_harabasz",
+            "Calinski-Harabasz index (higher is better)",
+            "calinski_harabasz",
+            f"{prefix}_calinski.png",
+        )
 
-        def plot_curve(metric, title, ylabel, out_png):
-            plt.figure(figsize=(7, 4.5))
-            vals = sweep_df[metric].dropna()
-            ks = sweep_df.loc[vals.index, "k"]
-            plt.plot(ks, vals, marker="o")
-            plt.xticks(sweep_df["k"].tolist())
-            plt.title(title)
-            plt.xlabel("k")
-            plt.ylabel(ylabel)
-            plt.tight_layout()
-            plt.savefig(out_png, dpi=200)
-            plt.close()
-
-        if not sweep_df.empty:
-            plot_curve("inertia", "Elbow method (KMeans inertia)", "inertia", f"{pfx}_elbow.png")
-            plot_curve("silhouette", "Silhouette score (higher is better)", "silhouette", f"{pfx}_silhouette.png")
-            plot_curve(
-                "davies_bouldin",
-                "Davies-Bouldin index (lower is better)",
-                "davies_bouldin",
-                f"{pfx}_davies_bouldin.png",
-            )
-            plot_curve(
-                "calinski_harabasz",
-                "Calinski-Harabasz index (higher is better)",
-                "calinski_harabasz",
-                f"{pfx}_calinski.png",
-            )
-
-    except Exception as e:
-        Path("plot_warning.txt").write_text("Plotting failed: " + str(e) + "\\n")
-
-    # === VERSIONS.YML (fix review) ===
     versions = {
         "${task.process}": {
             "python": platform.python_version(),
@@ -266,24 +165,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    prefix = "${task.ext.prefix ? task.ext.prefix : meta.id}"
-
-    sys.argv = [
-        "cluster_metrics.py",
-        "--features",
-        "$features",
-        "--clusters",
-        "$clusters",
-        "--k-min",
-        "2",
-        "--k-max",
-        "12",
-        "--out-k-sweep",
-        f"{prefix}_k_sweep.csv",
-        "--out-selected",
-        f"{prefix}_selected.json",
-        "--out-prefix",
-        prefix,
-    ]
-
     main()

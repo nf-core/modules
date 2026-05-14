@@ -2,23 +2,23 @@
 
 import os
 
-# Fix numba + matplotlib in read-only Singularity container
-os.environ["NUMBA_CACHE_DIR"] = "/tmp"
-os.environ["MPLCONFIGDIR"] = "/tmp"
+# numba (UMAP) and matplotlib write caches; redirect to /tmp so the script works
+# inside read-only container filesystems.
+os.environ.setdefault("NUMBA_CACHE_DIR", "/tmp")
+os.environ.setdefault("MPLCONFIGDIR", "/tmp")
 
 import platform
 
 import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import sklearn
-import umap as umap_module
+import umap
 from sklearn.manifold import TSNE
-from umap import UMAP
-
-matplotlib.use("Agg")
 
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
@@ -33,140 +33,48 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
     return yaml_str
 
 
-def _normalise_id_column(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.copy()
-    df.columns = [str(c).lstrip("#") for c in df.columns]
-
-    cols_upper = {str(c).upper(): c for c in df.columns}
-
-    if "IID" in cols_upper:
-        iid_col = cols_upper["IID"]
-        dup_mask = df[iid_col].astype(str).str.upper().isin({"FID", "IID"})
-        if dup_mask.any():
-            df = df.loc[~dup_mask].copy().reset_index(drop=True)
-
-    cols_upper = {str(c).upper(): c for c in df.columns}
-
-    if "SAMPLE_ID" in cols_upper:
-        sample_col = cols_upper["SAMPLE_ID"]
-        if sample_col != "sample_id":
-            df = df.rename(columns={sample_col: "sample_id"})
-        return df
-
-    if "IID" in cols_upper:
-        iid_col = cols_upper["IID"]
-        iid_numeric = pd.to_numeric(df[iid_col], errors="coerce").notna().all()
-
-        if iid_numeric:
-            df = df.drop(columns=[iid_col])
-            if len(df.columns) == 0:
-                raise ValueError("Cannot infer sample_id after dropping numeric IID column")
-            df = df.rename(columns={df.columns[0]: "sample_id"})
-        else:
-            df = df.rename(columns={iid_col: "sample_id"})
-
-        fid_cols = [c for c in df.columns if str(c).upper() == "FID"]
-        if fid_cols:
-            df = df.drop(columns=fid_cols)
-
-        return df
-
-    raise ValueError(f"Cannot find sample ID column (expected 'sample_id' or 'IID'). Found: {list(df.columns)}")
-
-
-def load_features(path: str) -> tuple[pd.DataFrame, pd.Series]:
-    df = pd.read_csv(path, sep="\\t", dtype=str)
-    df = _normalise_id_column(df)
-
+def load_features(path):
+    df = pd.read_csv(path, sep="\\t")
     if "sample_id" not in df.columns:
-        raise ValueError("features file must contain a sample_id column after normalization")
-
+        raise ValueError(f"features file must have a 'sample_id' column. Found: {list(df.columns)}")
     sample_ids = df["sample_id"].astype(str)
-    x = df.drop(columns=["sample_id"]).apply(pd.to_numeric, errors="coerce")
-    x = x.fillna(x.mean(numeric_only=True))
-    x = x.fillna(0.0)
-
+    x = df.drop(columns=["sample_id"]).apply(pd.to_numeric, errors="coerce").fillna(0.0).values
     return x, sample_ids
 
 
-def load_clusters(path: str) -> tuple[pd.DataFrame, str]:
-    """Load clusters and return (df, mode). Same logic as cluster_metrics."""
-    df = pd.read_csv(path, sep=",", dtype=str)
-    df = df.copy()
-    df.columns = [str(c).lstrip("#") for c in df.columns]
-
-    cols_upper = {str(c).upper(): c for c in df.columns}
-
-    if "CLUSTER" not in cols_upper:
-        raise ValueError("clusters CSV must have a 'cluster' column")
-
-    cluster_col = cols_upper["CLUSTER"]
-
-    if "SAMPLE_ID" in cols_upper:
-        sample_col = cols_upper["SAMPLE_ID"]
-        out = df[[sample_col, cluster_col]].copy()
-        out.columns = ["sample_id", "cluster"]
-        out["sample_id"] = out["sample_id"].astype(str)
-        out["cluster"] = pd.to_numeric(out["cluster"], errors="raise").astype(int)
-        return out, "sample_id"
-
-    try:
-        norm = _normalise_id_column(df.copy())
-        if "sample_id" in norm.columns and "cluster" in norm.columns:
-            out = norm[["sample_id", "cluster"]].copy()
-            out["sample_id"] = out["sample_id"].astype(str)
-            out["cluster"] = pd.to_numeric(out["cluster"], errors="raise").astype(int)
-            return out, "sample_id"
-    except Exception:
-        pass
-
-    other_cols = [c for c in df.columns if c != cluster_col]
-
-    if len(other_cols) == 1:
-        candidate = other_cols[0]
-        candidate_vals = df[candidate].astype(str)
-
-        if not (
-            len(candidate_vals) > 0 and float(pd.to_numeric(candidate_vals, errors="coerce").notna().mean()) >= 0.8
-        ):
-            out = pd.DataFrame(
-                {
-                    "sample_id": candidate_vals,
-                    "cluster": pd.to_numeric(df[cluster_col], errors="raise").astype(int),
-                }
-            )
-            return out, "sample_id"
-
-    out = pd.DataFrame({"cluster": pd.to_numeric(df[cluster_col], errors="raise").astype(int)})
-    return out, "row_order"
+def load_clusters(path):
+    df = pd.read_csv(path)
+    if "sample_id" not in df.columns or "cluster" not in df.columns:
+        raise ValueError(f"clusters file must have 'sample_id' and 'cluster' columns. Found: {list(df.columns)}")
+    return df.set_index(df["sample_id"].astype(str))["cluster"].astype(int)
 
 
-def plot_embedding(x: np.ndarray, labels: np.ndarray, method: str, prefix: str) -> None:
-    """Plot UMAP or t-SNE with cluster coloring."""
+def embed(x, method):
     if method == "umap":
-        reducer = UMAP(random_state=42)
-        embedding = reducer.fit_transform(x)
-        title = "UMAP"
-        out_tsv = f"{prefix}.umap.tsv"
-        out_png = f"{prefix}.umap.png"
-    else:  # tsne
-        reducer = TSNE(n_components=2, random_state=42, perplexity=min(30, len(x) - 1))
-        embedding = reducer.fit_transform(x)
-        title = "t-SNE"
-        out_tsv = f"{prefix}.tsne.tsv"
-        out_png = f"{prefix}.tsne.png"
+        # min(15, n-1) keeps UMAP working on tiny test inputs where the default
+        # n_neighbors (15) exceeds sample count.
+        reducer = umap.UMAP(
+            n_components=2,
+            n_neighbors=min(15, max(2, len(x) - 1)),
+            random_state=42,
+        )
+    elif method == "tsne":
+        reducer = TSNE(
+            n_components=2,
+            perplexity=min(30, max(2, len(x) - 1)),
+            random_state=42,
+        )
+    else:
+        raise ValueError(f"Unknown method '{method}' (expected 'umap' or 'tsne')")
+    return reducer.fit_transform(x)
 
-    # Save embedding
-    emb_df = pd.DataFrame(embedding, columns=["Dim1", "Dim2"])
-    emb_df["cluster"] = labels
-    emb_df.to_csv(out_tsv, sep="\\t", index=False)
 
-    # Plot
+def plot_embedding(emb, labels, method, out_png):
     plt.figure(figsize=(8, 6))
-    palette = sns.color_palette("tab10", n_colors=len(np.unique(labels)))
+    palette = sns.color_palette("tab10", n_colors=max(1, len(np.unique(labels))))
     sns.scatterplot(
-        x=embedding[:, 0],
-        y=embedding[:, 1],
+        x=emb[:, 0],
+        y=emb[:, 1],
         hue=labels.astype(str),
         palette=palette,
         alpha=0.8,
@@ -174,55 +82,55 @@ def plot_embedding(x: np.ndarray, labels: np.ndarray, method: str, prefix: str) 
         edgecolor="k",
         linewidth=0.3,
     )
-    plt.title(f"{title} projection of features colored by cluster")
-    plt.xlabel(f"{title} 1")
-    plt.ylabel(f"{title} 2")
+    plt.title(f"{method.upper()} projection colored by cluster")
+    plt.xlabel(f"{method.upper()} 1")
+    plt.ylabel(f"{method.upper()} 2")
     plt.legend(title="Cluster", bbox_to_anchor=(1.05, 1), loc="upper left")
     plt.tight_layout()
     plt.savefig(out_png, dpi=200, bbox_inches="tight")
     plt.close()
 
 
-def main() -> None:
+def write_embedding(emb, sample_ids, labels, out_tsv):
+    df = pd.DataFrame(
+        {
+            "sample_id": sample_ids,
+            "Dim1": emb[:, 0],
+            "Dim2": emb[:, 1],
+            "cluster": labels,
+        }
+    )
+    df.to_csv(out_tsv, sep="\\t", index=False)
+
+
+def main():
     features = "$features"
     clusters_path = "$clusters"
     prefix = "${task.ext.prefix ?: meta.id}"
 
-    x_df, sample_ids = load_features(features)
-    clusters_df, cluster_mode = load_clusters(clusters_path)
+    x, sample_ids = load_features(features)
+    clusters = load_clusters(clusters_path)
 
-    if cluster_mode == "sample_id":
-        clusters = clusters_df.set_index("sample_id")["cluster"]
-        common = sample_ids[sample_ids.isin(clusters.index)]
-        if len(common) > 0:
-            x = x_df.loc[common.index].values
-            labels = clusters.loc[common.values].values
-        elif len(clusters_df) == len(sample_ids):
-            x = x_df.values
-            labels = clusters_df["cluster"].values
-        else:
-            raise ValueError("No overlapping sample_id between features and clusters")
-    else:
-        if len(clusters_df) != len(sample_ids):
-            raise ValueError("Row counts do not match and no sample_id column found")
-        x = x_df.values
-        labels = clusters_df["cluster"].values
+    common = sample_ids[sample_ids.isin(clusters.index)]
+    if len(common) < 2:
+        raise ValueError(f"Need at least 2 samples with matching sample_id in both inputs. Got {len(common)}.")
 
-    if len(x) < 2:
-        raise ValueError("Need at least 2 samples for embedding")
+    x_aligned = x[common.index]
+    aligned_ids = common.values
+    labels = clusters.loc[aligned_ids].values
 
-    # Generate both embeddings
-    plot_embedding(x, labels, "umap", prefix)
-    plot_embedding(x, labels, "tsne", prefix)
+    for method in ("umap", "tsne"):
+        emb = embed(x_aligned, method)
+        write_embedding(emb, aligned_ids, labels, f"{prefix}.{method}.tsv")
+        plot_embedding(emb, labels, method, f"{prefix}.{method}.png")
 
-    # versions.yml
     versions = {
         "${task.process}": {
             "python": platform.python_version(),
             "pandas": pd.__version__,
             "matplotlib": matplotlib.__version__,
             "seaborn": sns.__version__,
-            "umap-learn": umap_module.__version__,
+            "umap-learn": umap.__version__,
             "scikit-learn": sklearn.__version__,
         }
     }
