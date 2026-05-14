@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
+import argparse
 import json
 import platform
+import shlex
 
 import matplotlib
 
@@ -71,7 +73,13 @@ def main():
     features = "$features"
     clusters_path = "$clusters"
     prefix = "${task.ext.prefix ?: meta.id}"
-    k_min, k_max = 2, 12
+
+    # Optional configuration via task.ext.args (nf-core convention).
+    raw_args = "$task.ext.args"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--k-min", type=int, default=2)
+    parser.add_argument("--k-max", type=int, default=12)
+    opts = parser.parse_args(shlex.split(raw_args) if raw_args and raw_args != "null" else [])
 
     joined = load_features(features).join(load_clusters(clusters_path), how="inner")
     if len(joined) < 2:
@@ -82,37 +90,37 @@ def main():
 
     # Quality metrics on the supplied labels.
     selected = {"n_clusters": len(set(labels) - {-1}), **cluster_quality(x, labels)}
-    pd.DataFrame([selected]).to_csv(f"{prefix}_metrics.tsv", sep="\\t", index=False)
-    with open(f"{prefix}_selected.json", "w") as fh:
+    pd.DataFrame([selected]).to_csv(f"{prefix}.metrics.tsv", sep="\\t", index=False)
+    with open(f"{prefix}.selected.json", "w") as fh:
         json.dump(selected, fh, indent=2)
 
     # KMeans k-sweep for downstream comparison.
     rows = []
-    for k in range(k_min, min(k_max, len(x)) + 1):
+    for k in range(opts.k_min, min(opts.k_max, len(x)) + 1):
         model = KMeans(n_clusters=k, n_init=10, random_state=42).fit(x)
         rows.append({"k": k, "inertia": float(model.inertia_), **cluster_quality(x, model.labels_)})
 
     sweep_df = pd.DataFrame(rows)
-    sweep_df.to_csv(f"{prefix}_k_sweep.csv", index=False, float_format="%.10g")
+    sweep_df.to_csv(f"{prefix}.k_sweep.csv", index=False, float_format="%.10g")
 
     if not sweep_df.empty:
-        plot_curve(sweep_df, "inertia", "Elbow method (KMeans inertia)", "inertia", f"{prefix}_elbow.png")
+        plot_curve(sweep_df, "inertia", "Elbow method (KMeans inertia)", "inertia", f"{prefix}.elbow.png")
         plot_curve(
-            sweep_df, "silhouette", "Silhouette score (higher is better)", "silhouette", f"{prefix}_silhouette.png"
+            sweep_df, "silhouette", "Silhouette score (higher is better)", "silhouette", f"{prefix}.silhouette.png"
         )
         plot_curve(
             sweep_df,
             "davies_bouldin",
             "Davies-Bouldin index (lower is better)",
             "davies_bouldin",
-            f"{prefix}_davies_bouldin.png",
+            f"{prefix}.davies_bouldin.png",
         )
         plot_curve(
             sweep_df,
             "calinski_harabasz",
             "Calinski-Harabasz index (higher is better)",
             "calinski_harabasz",
-            f"{prefix}_calinski.png",
+            f"{prefix}.calinski_harabasz.png",
         )
 
     versions = {

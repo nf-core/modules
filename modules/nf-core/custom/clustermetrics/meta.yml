@@ -43,30 +43,30 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*_metrics.tsv":
+      - "*.metrics.tsv":
           type: file
           description: TSV with selected cluster quality metrics
-          pattern: "*_metrics.tsv"
+          pattern: "*.metrics.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
   k_sweep:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*_k_sweep.csv":
+      - "*.k_sweep.csv":
           type: file
           description: CSV with metrics for different values of k
-          pattern: "*_k_sweep.csv"
+          pattern: "*.k_sweep.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752
   selected:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*_selected.json":
+      - "*.selected.json":
           type: file
           description: JSON with the selected/best metrics
-          pattern: "*_selected.json"
+          pattern: "*.selected.json"
           ontologies:
             - edam: http://edamontology.org/format_3464
   plots:

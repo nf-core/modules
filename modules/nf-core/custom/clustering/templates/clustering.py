@@ -63,8 +63,8 @@ def main():
 
     info |= {"n_samples": int(x.shape[0]), "n_features": int(x.shape[1])}
 
-    pd.DataFrame({"sample_id": sample_ids, "cluster": labels}).to_csv(f"{prefix}_clusters.csv", index=False)
-    with open(f"{prefix}_clustering_info.json", "w") as fh:
+    pd.DataFrame({"sample_id": sample_ids, "cluster": labels}).to_csv(f"{prefix}.clusters.csv", index=False)
+    with open(f"{prefix}.clustering_info.json", "w") as fh:
         json.dump(info, fh, indent=2)
 
     versions = {

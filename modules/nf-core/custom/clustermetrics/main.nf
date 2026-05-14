@@ -11,9 +11,9 @@ process CUSTOM_CLUSTERMETRICS {
     tuple val(meta), path(features), path(clusters)
 
     output:
-    tuple val(meta), path("*_metrics.tsv")  , emit: metrics
-    tuple val(meta), path("*_k_sweep.csv")  , emit: k_sweep
-    tuple val(meta), path("*_selected.json"), emit: selected
+    tuple val(meta), path("*.metrics.tsv")  , emit: metrics
+    tuple val(meta), path("*.k_sweep.csv")  , emit: k_sweep
+    tuple val(meta), path("*.selected.json"), emit: selected
     tuple val(meta), path("*.png")          , emit: plots, optional: true
     path "versions.yml"                     , emit: versions, topic: versions
 
@@ -26,13 +26,13 @@ process CUSTOM_CLUSTERMETRICS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_metrics.tsv
-    touch ${prefix}_k_sweep.csv
-    touch ${prefix}_selected.json
-    touch ${prefix}_elbow.png
-    touch ${prefix}_silhouette.png
-    touch ${prefix}_davies_bouldin.png
-    touch ${prefix}_calinski.png
+    touch ${prefix}.metrics.tsv
+    touch ${prefix}.k_sweep.csv
+    touch ${prefix}.selected.json
+    touch ${prefix}.elbow.png
+    touch ${prefix}.silhouette.png
+    touch ${prefix}.davies_bouldin.png
+    touch ${prefix}.calinski_harabasz.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

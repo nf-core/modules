@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+import argparse
 import os
+import shlex
 
 # numba (UMAP) and matplotlib write caches; redirect to /tmp so the script works
 # inside read-only container filesystems.
@@ -40,17 +42,17 @@ def load_clusters(path):
     return df.set_index("sample_id")["cluster"].astype(int)
 
 
-def embed(x, method):
+def embed(x, method, umap_neighbors, tsne_perplexity):
     """Project x to 2D using UMAP or t-SNE.
 
     n_neighbors / perplexity are clamped against sample count so tiny test
-    inputs (where the defaults would exceed n_samples) still run.
+    inputs (where the user-specified defaults exceed n_samples) still run.
     """
     n = len(x)
     if method == "umap":
-        reducer = umap.UMAP(n_components=2, n_neighbors=min(15, max(2, n - 1)), random_state=42)
+        reducer = umap.UMAP(n_components=2, n_neighbors=min(umap_neighbors, max(2, n - 1)), random_state=42)
     elif method == "tsne":
-        reducer = TSNE(n_components=2, perplexity=min(30, max(2, n - 1)), random_state=42)
+        reducer = TSNE(n_components=2, perplexity=min(tsne_perplexity, max(2, n - 1)), random_state=42)
     else:
         raise ValueError(f"Unknown method '{method}' (expected 'umap' or 'tsne')")
     return reducer.fit_transform(x)
@@ -83,6 +85,13 @@ def main():
     clusters_path = "$clusters"
     prefix = "${task.ext.prefix ?: meta.id}"
 
+    # Optional configuration via task.ext.args (nf-core convention).
+    raw_args = "$task.ext.args"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--umap-neighbors", type=int, default=15)
+    parser.add_argument("--tsne-perplexity", type=int, default=30)
+    opts = parser.parse_args(shlex.split(raw_args) if raw_args and raw_args != "null" else [])
+
     joined = load_features(features).join(load_clusters(clusters_path), how="inner")
     if len(joined) < 2:
         raise ValueError(f"Need at least 2 samples with matching sample_id in both inputs. Got {len(joined)}.")
@@ -92,7 +101,7 @@ def main():
     sample_ids = joined.index.to_numpy()
 
     for method in ("umap", "tsne"):
-        emb = embed(x, method)
+        emb = embed(x, method, opts.umap_neighbors, opts.tsne_perplexity)
         pd.DataFrame({"sample_id": sample_ids, "Dim1": emb[:, 0], "Dim2": emb[:, 1], "cluster": labels}).to_csv(
             f"{prefix}.{method}.tsv", sep="\\t", index=False
         )

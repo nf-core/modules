@@ -15,8 +15,8 @@ process CUSTOM_CLUSTERING {
     val dbscan_min_samples
 
     output:
-    tuple val(meta), path("*_clusters.csv")        , emit: clusters
-    tuple val(meta), path("*_clustering_info.json"), emit: info
+    tuple val(meta), path("*.clusters.csv")        , emit: clusters
+    tuple val(meta), path("*.clustering_info.json"), emit: info
     path "versions.yml"                            , emit: versions, topic: versions
 
     when:
@@ -28,8 +28,8 @@ process CUSTOM_CLUSTERING {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_clusters.csv
-    touch ${prefix}_clustering_info.json
+    touch ${prefix}.clusters.csv
+    touch ${prefix}.clustering_info.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

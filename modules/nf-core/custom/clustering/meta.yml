@@ -43,20 +43,20 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*_clusters.csv":
+      - "*.clusters.csv":
           type: file
           description: CSV file with sample_id and assigned cluster
-          pattern: "*_clusters.csv"
+          pattern: "*.clusters.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752
   info:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*_clustering_info.json":
+      - "*.clustering_info.json":
           type: file
           description: JSON file with clustering parameters and statistics
-          pattern: "*_clustering_info.json"
+          pattern: "*.clustering_info.json"
           ontologies:
             - edam: http://edamontology.org/format_3464
   versions:
