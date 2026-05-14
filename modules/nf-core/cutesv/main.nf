@@ -13,7 +13,7 @@ process CUTESV {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val("cuteSV"), eval("cuteSV --version 2>&1 | sed 's/cuteSV //'"), topic: versions, emit: versions_cutesv
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,13 @@ process CUTESV {
         ${fasta} \\
         ${prefix}.vcf \\
         . \\
-        --threads $task.cpus \\
-        $args
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cuteSV: \$( cuteSV --version 2>&1 | sed 's/cuteSV //g' )
-    END_VERSIONS
+        --threads ${task.cpus} \\
+        ${args}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch "${prefix}.vcf"
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cuteSV: \$( cuteSV --version 2>&1 | sed 's/cuteSV //g' )
-    END_VERSIONS
+    touch ${prefix}.vcf
     """
 }
