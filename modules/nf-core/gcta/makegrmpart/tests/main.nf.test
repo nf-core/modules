@@ -41,8 +41,9 @@ nextflow_process {
                 { assert process.out.grm_files.size() == 1 },
                 { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm' },
                 { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
-                { assert process.out.grm_files.get(0).get(4) == 2 },
-                { assert process.out.grm_files.get(0).get(5) == 1 },
+                { assert process.out.grm_files.get(0).get(1).size() == 3 },
+                { assert process.out.grm_files.get(0).get(2) == 2 },
+                { assert process.out.grm_files.get(0).get(3) == 1 },
                 {
                     assert snapshot(
                         process.out.grm_files,
@@ -85,8 +86,9 @@ nextflow_process {
                 { assert process.out.grm_files.size() == 1 },
                 { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm_bed' },
                 { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
-                { assert process.out.grm_files.get(0).get(4) == 2 },
-                { assert process.out.grm_files.get(0).get(5) == 1 },
+                { assert process.out.grm_files.get(0).get(1).size() == 3 },
+                { assert process.out.grm_files.get(0).get(2) == 2 },
+                { assert process.out.grm_files.get(0).get(3) == 1 },
                 {
                     assert snapshot(
                         process.out.grm_files,
@@ -136,8 +138,9 @@ nextflow_process {
                 { assert process.out.grm_files.size() == 1 },
                 { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm_bed_extract' },
                 { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
-                { assert process.out.grm_files.get(0).get(4) == 2 },
-                { assert process.out.grm_files.get(0).get(5) == 1 },
+                { assert process.out.grm_files.get(0).get(1).size() == 3 },
+                { assert process.out.grm_files.get(0).get(2) == 2 },
+                { assert process.out.grm_files.get(0).get(3) == 1 },
                 {
                     assert snapshot(
                         process.out.grm_files,
@@ -180,11 +183,16 @@ nextflow_process {
                 { assert process.out.grm_files.size() == 1 },
                 { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm_bed_default' },
                 { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
-                { assert process.out.grm_files.get(0).get(1).contains('gcta_grm_bed_default.part_1_1.grm.id') },
-                { assert process.out.grm_files.get(0).get(2).contains('gcta_grm_bed_default.part_1_1.grm.bin') },
-                { assert process.out.grm_files.get(0).get(3).contains('gcta_grm_bed_default.part_1_1.grm.N.bin') },
-                { assert process.out.grm_files.get(0).get(4) == null },
-                { assert process.out.grm_files.get(0).get(5) == null },
+                { assert process.out.grm_files.get(0).get(1).size() == 3 },
+                {
+                    assert process.out.grm_files.get(0).get(1).collect { it.toString().tokenize('/').last() }.toSet() == [
+                        'gcta_grm_bed_default.part_1_1.grm.id',
+                        'gcta_grm_bed_default.part_1_1.grm.bin',
+                        'gcta_grm_bed_default.part_1_1.grm.N.bin'
+                    ] as Set
+                },
+                { assert process.out.grm_files.get(0).get(2) == null },
+                { assert process.out.grm_files.get(0).get(3) == null },
                 {
                     assert snapshot(
                         process.out.findAll { key, val -> key.startsWith('versions') }
