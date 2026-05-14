@@ -18,19 +18,8 @@ import pandas as pd
 import seaborn as sns
 import sklearn
 import umap
+import yaml
 from sklearn.manifold import TSNE
-
-
-def format_yaml_like(data: dict, indent: int = 0) -> str:
-    """Formats a dictionary to a YAML-like string (nf-core standard)."""
-    yaml_str = ""
-    for key, value in data.items():
-        spaces = "  " * indent
-        if isinstance(value, dict):
-            yaml_str += f"{spaces}{key}:\\n{format_yaml_like(value, indent + 1)}"
-        else:
-            yaml_str += f"{spaces}{key}: {value}\\n"
-    return yaml_str
 
 
 def load_features(path):
@@ -135,7 +124,7 @@ def main():
         }
     }
     with open("versions.yml", "w") as f:
-        f.write(format_yaml_like(versions))
+        yaml.dump(versions, f, default_flow_style=False, sort_keys=False)
 
 
 if __name__ == "__main__":

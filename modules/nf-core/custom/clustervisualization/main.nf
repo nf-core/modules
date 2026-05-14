@@ -4,8 +4,8 @@ process CUSTOM_CLUSTERVISUALIZATION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d73caea2cd6ccf623cdb49b0c28fb9aeaa306b4db9c3eb1d0942e209e2e0cdec/data' :
-        'community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:8d25530e58844215' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64297e13d9d4f05ce543656e943a023735e7cb252d7534ccc9134d8b40423083/data' :
+        'community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:826e4ab1361ff931' }"
 
     input:
     tuple val(meta), path(features), path(clusters)

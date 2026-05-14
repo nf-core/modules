@@ -4,8 +4,8 @@ process CUSTOM_CLUSTERMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c4/c49a77f0b740f6746ed5244c37306991d2d52b95b42a080a5e0fd4aa9cf61c69/data' :
-        'community.wave.seqera.io/library/matplotlib_numpy_pandas_python_scikit-learn:c3d64d7443bbf093' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/25/25129a5258522a434c386b800d3e2e3e6dc72d8a1171b7b10f21df3488526795/data' :
+        'community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:169e228afc7d3686' }"
 
     input:
     tuple val(meta), path(features), path(clusters)
