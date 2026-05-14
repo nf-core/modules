@@ -34,12 +34,12 @@ process CUSTOM_CLUSTERVISUALIZATION {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 --version | sed 's/Python //')
-        matplotlib: \$(python3 -c "import matplotlib; print(matplotlib.__version__)")
-        numpy: \$(python3 -c "import numpy; print(numpy.__version__)")
-        pandas: \$(python3 -c "import pandas; print(pandas.__version__)")
-        scikit-learn: \$(python3 -c "import sklearn; print(sklearn.__version__)")
-        seaborn: \$(python3 -c "import seaborn; print(seaborn.__version__)")
-        umap-learn: \$(python3 -c "import umap; print(umap.__version__)")
+        matplotlib: \$(python3 -c "from importlib.metadata import version; print(version('matplotlib'))")
+        numpy: \$(python3 -c "from importlib.metadata import version; print(version('numpy'))")
+        pandas: \$(python3 -c "from importlib.metadata import version; print(version('pandas'))")
+        scikit-learn: \$(python3 -c "from importlib.metadata import version; print(version('scikit-learn'))")
+        seaborn: \$(python3 -c "from importlib.metadata import version; print(version('seaborn'))")
+        umap-learn: \$(python3 -c "from importlib.metadata import version; print(version('umap-learn'))")
     END_VERSIONS
     """
 }

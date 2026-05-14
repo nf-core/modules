@@ -58,19 +58,18 @@
                     "test_clusters.csv:md5,a0ce7a662fecdb42e15e2b2aa0906cf4"
                 ]
             ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test_clustering_info.json:md5,72744e3eed9d486b40f056cb424f7b95"
-                ]
-            ],
+            {
+                "algorithm": "kmeans",
+                "k": 3,
+                "inertia": 0.1273,
+                "n_samples": 5,
+                "n_features": 3
+            },
             [
                 "versions.yml:md5,c554e11300cca236275d37f7795f5e74"
             ]
         ],
-        "timestamp": "2026-05-14T10:32:43.62518376",
+        "timestamp": "2026-05-14T11:14:33.482885046",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.1"
