@@ -24,14 +24,20 @@ input:
           e.g. `[ id:'sample1' ]`
     - features:
         type: file
-        description: Feature matrix file
-        pattern: "*"
-        ontologies: []
+        description: |
+          Tab-separated feature matrix with a `sample_id` column and one
+          column per numeric feature (e.g. PCA scores).
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
     - clusters:
         type: file
-        description: Cluster assignment file
-        pattern: "*"
-        ontologies: []
+        description: |
+          Comma-separated cluster assignments with `sample_id` and integer
+          `cluster` columns. Label -1 is treated as DBSCAN noise.
+        pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752
 output:
   metrics:
     - - meta:

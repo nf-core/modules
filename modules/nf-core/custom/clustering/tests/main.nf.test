@@ -38,6 +38,30 @@ nextflow_process {
         }
     }
 
+    test("clustering - eigenvec - dbscan") {
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file("${projectDir}/modules/nf-core/custom/clustering/tests/data/test.eigenvec", checkIfExists: true) ]
+                input[1] = 'dbscan'
+                input[2] = 3
+                input[3] = 0.5
+                input[4] = 2
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.clusters,
+                    process.out.info,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
     test("clustering - eigenvec - stub") {
         options "-stub"
         when {

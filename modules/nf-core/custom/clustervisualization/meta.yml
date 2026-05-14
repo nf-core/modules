@@ -28,15 +28,20 @@ input:
         description: "Groovy Map containing sample information"
     - features:
         type: file
-        description: "TSV file with sample_id and numeric features"
+        description: |
+          Tab-separated feature matrix with a `sample_id` column and one
+          column per numeric feature (e.g. PCA scores).
         pattern: "*.tsv"
         ontologies:
-          - edam: "http://edamontology.org/format_3475"
+          - edam: http://edamontology.org/format_3475
     - clusters:
         type: file
-        description: "CSV/TSV file with sample_id and cluster assignment"
-        pattern: "*_clusters.*"
-        ontologies: []
+        description: |
+          Comma-separated cluster assignments with `sample_id` and integer
+          `cluster` columns. Label -1 is treated as DBSCAN noise.
+        pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752
 output:
   umap_tsv:
     - - meta:
