@@ -88,7 +88,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         skip_seqkit_rmdup,
     )
     ch_reads = FASTQ_PREPROCESS_SEQKIT.out.reads
-    ch_versions = ch_versions.mix(FASTQ_PREPROCESS_SEQKIT.out.versions)
 
     // barcoding
     if (!skip_umitools_extract) {

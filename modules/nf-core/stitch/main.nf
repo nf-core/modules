@@ -3,9 +3,9 @@ process STITCH {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/r-stitch:1.7.3--r44h64f727c_0'
-        : 'biocontainers/r-stitch:1.7.3--r44h64f727c_0'}"
+        : 'quay.io/biocontainers/r-stitch:1.7.3--r44h64f727c_0'}"
 
     input:
     tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(genetic_map), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(start), val(end), val(K), val(nGen)
@@ -20,6 +20,7 @@ process STITCH {
     tuple val(meta), path("*.bgen")             , emit: bgen  , optional: { generate_input_only || !bgen_output }
     tuple val("${task.process}"), val('r-quilt'), eval('Rscript -e "cat(as.character(packageVersion(\'STITCH\')))"'), topic: versions, emit: versions_r_quilt
     tuple val("${task.process}"), val('r-base'), eval('R --version | sed "1!d; s/.*version //; s/ .*//"'), topic: versions, emit: versions_r_base
+    tuple val("${task.process}"), val('rsync'), eval("rsync --version | sed '1!d;s/^rsync  version //; s/ .*//'"), topic: versions, emit: versions_rsync
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,7 +50,6 @@ process STITCH {
 
     // Rsync and Stitch command to copy RData from previous run if available
     def rsync_cmd            = rdata ? "rsync -rL ${rdata}/ RData" : ""
-    def rsync_version_cmd    = rdata ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
     def stitch_cmd           = seed  ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
 
     """
@@ -83,7 +83,7 @@ process STITCH {
 
     def generate_plots_cmd = !generate_input_only
     def generate_file_cmd  = !generate_input_only ? bgen_output ? "touch ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz" : ""
-    def rsync_version_cmd  = rdata ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
+
     """
     mkdir -p input
     for i in {1..${nb_samples}}

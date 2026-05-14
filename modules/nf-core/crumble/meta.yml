@@ -12,7 +12,8 @@ tools:
       documentation: "https://github.com/jkbonfield/crumble"
       tool_dev_url: "https://github.com/jkbonfield/crumble"
       doi: "10.1093/bioinformatics/bty608"
-      licence: ["multiple BSD style licenses"]
+      licence:
+        - "multiple BSD style licenses"
       identifier: ""
 input:
   - - meta:
@@ -77,13 +78,27 @@ output:
           description: optional suspicious regions BED file
           pattern: "*{bed}"
           ontologies: []
+  versions_crumble:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - crumble:
+          type: string
+          description: The name of the tool
+      - 0.9.1:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - crumble:
+          type: string
+          description: The name of the tool
+      - 0.9.1:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@priyanka-surana"
 maintainers:

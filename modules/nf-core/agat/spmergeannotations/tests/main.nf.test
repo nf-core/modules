@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
@@ -48,7 +48,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
@@ -76,7 +76,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
@@ -84,7 +84,7 @@ nextflow_process {
                     ]
                 ]
 
-                input[1] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.4.2/share/agat_config.yaml', checkIfExists: true)
+                input[1] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.6.1/share/agat_config.yaml', checkIfExists: true)
                 """
             }
         }
@@ -109,7 +109,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
@@ -117,7 +117,7 @@ nextflow_process {
                     ]
                 ]
 
-                input[1] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.4.2/share/agat_config.yaml', checkIfExists: true)
+                input[1] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.6.1/share/agat_config.yaml', checkIfExists: true)
                 """
             }
         }

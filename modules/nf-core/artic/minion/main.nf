@@ -3,7 +3,7 @@ process ARTIC_MINION {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a747cc579edfc0cb2176b749afc02550ab5de678ae6a40d2cfadeba6c0de25d/data' :
         'community.wave.seqera.io/library/artic:1.6.2--d4956cdc155b8612' }"
 
@@ -25,7 +25,7 @@ process ARTIC_MINION {
     tuple val(meta), path("${prefix}.pass.vcf.gz")                    , emit: vcf
     tuple val(meta), path("${prefix}.pass.vcf.gz.tbi")                , emit: tbi
     tuple val(meta), path("*.json")                                   , emit: json, optional:true
-    path  "versions.yml"                                              , emit: versions
+    tuple val("${task.process}"), val('artic'), eval("artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//'"), topic: versions, emit: versions_artic
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,11 +49,6 @@ process ARTIC_MINION {
         --model-dir ${model_dir_val} \\
         --model ${model} \\
         ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -101,10 +96,5 @@ process ARTIC_MINION {
     touch ${prefix}.sorted.bam.bai
     touch ${prefix}.trimmed.rg.sorted.bam
     touch ${prefix}.trimmed.rg.sorted.bam.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
     """
 }

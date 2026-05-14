@@ -1,0 +1,238 @@
+name: "caalm_caalm"
+description: |
+  Annotates carbohydrate-active enzyme (CAZyme) families from protein sequences
+  using protein language model (ESM) embeddings and FAISS-based nearest-neighbour
+  search. Performs three-level hierarchical classification: binary CAZyme detection
+  (Level 0), CAZy class assignment (Level 1), and CAZy family assignment (Level 2).
+keywords:
+  - cazyme
+  - annotation
+  - protein
+  - language model
+  - deep learning
+  - classification
+tools:
+  - "caalm":
+      description: |
+        CAALM (Carbohydrate Activity Annotation with protein Language Models) predicts
+        CAZyme class and family membership from protein FASTA sequences using ESM-based
+        embeddings and FAISS nearest-neighbour retrieval.
+      homepage: "https://github.com/lczong/CAALM"
+      documentation: "https://github.com/lczong/CAALM"
+      tool_dev_url: "https://github.com/lczong/CAALM"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Protein sequences in FASTA format.
+        pattern: "*.{fa,fasta,faa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - level0:
+        type: directory
+        description: |
+          Directory containing the Level 0 (binary CAZyme detection) model files,
+          as produced by CAALM_DOWNLOADMODELS.
+        pattern: "models/level0"
+        ontologies: []
+    - level1:
+        type: directory
+        description: |
+          Directory containing the Level 1 (CAZy class assignment) model files,
+          as produced by CAALM_DOWNLOADMODELS.
+        pattern: "models/level1"
+        ontologies: []
+    - level2:
+        type: directory
+        description: |
+          Directory containing the Level 2 (CAZy family assignment) model files,
+          as produced by CAALM_DOWNLOADMODELS.
+        pattern: "models/level2"
+        ontologies: []
+
+output:
+  predictions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_predictions.tsv:
+          type: file
+          description: |
+            Tab-separated file with per-sequence CAZy class and family predictions
+            across all three classification levels.
+          pattern: "*_predictions.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  probabilities:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_probabilities.jsonl:
+          type: file
+          description: |
+            JSON Lines file with per-sequence probability scores at all three
+            classification levels.
+          pattern: "*_probabilities.jsonl"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  statistics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_statistics.tsv:
+          type: file
+          description: |
+            Tab-separated summary file with counts and percentages of predicted
+            CAZyme classes and families across the input sequences.
+          pattern: "*_statistics.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  embeddings_level0:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_level0_embeddings.npy:
+          type: file
+          description: |
+            NumPy array file containing Level 0 ESM embeddings for each input
+            sequence. Optional; produced when `--save-level0-embeddings` is passed.
+          pattern: "*_level0_embeddings.npy"
+          ontologies: []
+  embeddings_level1:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_level1_embeddings.npy:
+          type: file
+          description: |
+            NumPy array file containing Level 1 projected embeddings for each input
+            sequence. Optional; produced when `--save-level1-embeddings` is passed.
+          pattern: "*_level1_embeddings.npy"
+          ontologies: []
+  embeddings_level2:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_level2_embeddings.npy:
+          type: file
+          description: |
+            NumPy array file containing Level 2 projected embeddings for each input
+            sequence. Optional; produced when `--save-level2-embeddings` is passed.
+          pattern: "*_level2_embeddings.npy"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.log:
+          type: file
+          description: Log file containing the stdout and stderr output of the caalm run.
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  versions_caalm:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - caalm:
+          type: string
+          description: The name of the tool
+      - caalm --version 2>&1 | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_torch:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - torch:
+          type: string
+          description: The name of the tool
+      - "python -c 'import torch; print(torch.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_faiss:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - faiss:
+          type: string
+          description: The name of the tool
+      - "python -c 'import faiss; print(faiss.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - caalm:
+          type: string
+          description: The name of the tool
+      - caalm --version 2>&1 | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - torch:
+          type: string
+          description: The name of the tool
+      - "python -c 'import torch; print(torch.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - faiss:
+          type: string
+          description: The name of the tool
+      - "python -c 'import faiss; print(faiss.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

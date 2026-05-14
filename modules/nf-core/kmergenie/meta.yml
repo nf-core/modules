@@ -87,6 +87,16 @@ output:
       - kmergenie --version |& sed "1!d ; s/KmerGenie //":
           type: eval
           description: The expression to obtain the version of the tool
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.kmergenie.log":
+          type: file
+          description: log file containing the standard output and error of the kmergenie command
+          pattern: "*.kmergenie.log"
 topics:
   versions:
     - - ${task.process}:

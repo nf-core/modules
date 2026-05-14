@@ -3,7 +3,7 @@ process MAT2JSON {
     tag "$meta.id - $matfile.baseName"
     label 'process_single'
 
-    container 'nf-core/mat2json:1.0.0'
+    container 'quay.io/nf-core/mat2json:1.0.0'
 
     input:
     tuple val(meta), path(matfile)
@@ -16,7 +16,6 @@ process MAT2JSON {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -27,14 +26,11 @@ process MAT2JSON {
     # conversion
     mat2json ${matfile}
 
-
     mv -f *.json \$results_dir 2>/dev/null || true
     mv -f *.csv \$results_dir 2>/dev/null || true
-
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -43,6 +39,5 @@ process MAT2JSON {
     results_dir=${process}/${prefix}
 
     touch \$results_dir/${prefix}.json
-
     """
 }

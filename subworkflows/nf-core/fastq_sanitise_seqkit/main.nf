@@ -7,7 +7,6 @@ workflow FASTQ_SANITISE_SEQKIT {
     ch_reads // channel: [ val(meta), [ fastq ] ]
 
     main:
-    ch_versions = channel.empty()
 
     // Add strandness information to meta
     ch_reads_with_strandness = ch_reads
@@ -30,7 +29,6 @@ workflow FASTQ_SANITISE_SEQKIT {
         }
 
     SEQKIT_SANA( ch_reads_with_strandness )
-    ch_versions = ch_versions.mix(SEQKIT_SANA.out.versions.first())
 
     ch_sanitized_reads = SEQKIT_SANA.out.reads
         .map { meta, fastq ->
@@ -48,11 +46,9 @@ workflow FASTQ_SANITISE_SEQKIT {
         }
 
     SEQKIT_PAIR ( ch_sanitized_reads.paired_end )
-    ch_versions = ch_versions.mix(SEQKIT_PAIR.out.versions.first())
 
     ch_reads = ch_sanitized_reads.single_end.mix(SEQKIT_PAIR.out.reads, SEQKIT_PAIR.out.unpaired_reads)
 
     emit:
     reads    = ch_reads    // channel: [ val(meta), [ fastq ] ]
-    versions = ch_versions // channel: [ versions.yml ]
 }

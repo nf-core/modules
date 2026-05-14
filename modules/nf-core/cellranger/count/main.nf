@@ -2,7 +2,7 @@ process CELLRANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:10.0.0"
+    container "quay.io/nf-core/cellranger:10.0.0"
 
     input:
     tuple val(meta), path(reads, stageAs: "fastq_???/*")
@@ -10,7 +10,7 @@ process CELLRANGER_COUNT {
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
-    path "versions.yml"                , emit: versions
+    path "versions.yml"                , emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

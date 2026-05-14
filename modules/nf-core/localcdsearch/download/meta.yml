@@ -17,7 +17,6 @@ tools:
       tool_dev_url: "https://github.com/apcamargo/local-cd-search"
       licence: ["MIT"]
       identifier: ""
-
 input:
   - databases:
       type: list
@@ -39,8 +38,8 @@ output:
       - local-cd-search:
           type: string
           description: The name of the tool
-      - echo ${VERSION}:
-          type: eval
+      - 0.3.0:
+          type: string
           description: The expression to obtain the version of the tool
 topics:
   versions:
@@ -50,8 +49,8 @@ topics:
       - local-cd-search:
           type: string
           description: The name of the tool
-      - echo ${VERSION}:
-          type: eval
+      - 0.3.0:
+          type: string
           description: The expression to obtain the version of the tool
 authors:
   - "@Ales-ibt"

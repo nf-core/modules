@@ -3,7 +3,7 @@ process GSEA_GSEA {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f4fe28961396eeeaa98484cb4f2db5c79abfdf117700df132312fe5c41bff81/data':
         'community.wave.seqera.io/library/gsea:4.3.2--a7421d7504fd7c81' }"
 
@@ -34,7 +34,7 @@ process GSEA_GSEA {
     tuple val(meta), path("*enplot*.png")                      , emit: gene_set_enplot , optional: true
     tuple val(meta), path("*gset_rnd_es_dist*.png")            , emit: gene_set_dist   , optional: true
     tuple val(meta), path("*.zip")                             , emit: archive         , optional: true
-    tuple val("${task.process}"), val('gsea'), eval('echo 4.3.2'), emit: versions_gsea, topic: versions // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('gsea'), val('4.3.2')    , emit: versions_gsea, topic: versions // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
 
     when:
