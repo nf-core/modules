@@ -1,9 +1,9 @@
 process GCTA_MAKEGRMPART {
-    tag "${meta.id}: part ${part_gcta_job ?: 1} of ${nparts_gcta ?: 1}"
+    tag "${meta.id}: part ${part_gcta_job} of ${nparts_gcta}"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'docker://community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9'
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46b0d05f0daa47561d87d2a9cac5e51edc2c78e26f1bbab439c688386241a274/data'
         : 'community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9'}"
 
     input:
