@@ -31,7 +31,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file("${projectDir}/modules/nf-core/humann3/regroup/tests/test_genefamilies.tsv", checkIfExists: true)
                 ])
-                input[1] = "uniref90_rxn"
+                input[1] = "uniref90_level4ec"
                 input[2] = UNTAR_v3_util.out.untar.map{ it[1] }
                 """
             }
@@ -56,7 +56,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file("${projectDir}/modules/nf-core/humann3/regroup/tests/test_genefamilies.tsv", checkIfExists: true)
                 ])
-                input[1] = "uniref90_rxn"
+                input[1] = "uniref90_level4ec"
                 input[2] = UNTAR_v3_util.out.untar.map{ it[1] }
                 """
             }
