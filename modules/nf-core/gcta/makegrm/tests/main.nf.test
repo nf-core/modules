@@ -39,11 +39,15 @@ nextflow_process {
                 { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm' },
                 { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
                 { assert process.out.grm_files.get(0).get(1).size() == 3 },
-                { assert file(process.out.grm_files.get(0).get(1)).name == 'gcta_grm.grm.id' },
-                { assert file(process.out.grm_files.get(0).get(2)).name == 'gcta_grm.grm.bin' },
-                { assert file(process.out.grm_files.get(0).get(3)).name == 'gcta_grm.grm.N.bin' },
-                { assert file(path(process.out.grm_files.get(0).get(1)).parent.toString() + '/.command.sh').text.contains('--make-grm') },
-                { assert file(path(process.out.grm_files.get(0).get(1)).parent.toString() + '/.command.sh').text.contains('--mpfile') },
+                {
+                    assert process.out.grm_files.get(0).get(1).collect { file(it).name }.toSet() == [
+                        'gcta_grm.grm.id',
+                        'gcta_grm.grm.bin',
+                        'gcta_grm.grm.N.bin'
+                    ] as Set
+                },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--make-grm') },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--mpfile') },
                 {
                     assert snapshot(
                         process.out.grm_files,
@@ -84,11 +88,15 @@ nextflow_process {
                 { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm_bed' },
                 { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
                 { assert process.out.grm_files.get(0).get(1).size() == 3 },
-                { assert file(process.out.grm_files.get(0).get(1)).name == 'gcta_grm_bed.grm.id' },
-                { assert file(process.out.grm_files.get(0).get(2)).name == 'gcta_grm_bed.grm.bin' },
-                { assert file(process.out.grm_files.get(0).get(3)).name == 'gcta_grm_bed.grm.N.bin' },
-                { assert file(path(process.out.grm_files.get(0).get(1)).parent.toString() + '/.command.sh').text.contains('--make-grm') },
-                { assert file(path(process.out.grm_files.get(0).get(1)).parent.toString() + '/.command.sh').text.contains('--mbfile') },
+                {
+                    assert process.out.grm_files.get(0).get(1).collect { file(it).name }.toSet() == [
+                        'gcta_grm_bed.grm.id',
+                        'gcta_grm_bed.grm.bin',
+                        'gcta_grm_bed.grm.N.bin'
+                    ] as Set
+                },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--make-grm') },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--mbfile') },
                 {
                     assert snapshot(
                         process.out.grm_files,

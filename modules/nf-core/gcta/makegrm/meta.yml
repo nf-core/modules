@@ -55,20 +55,10 @@ output:
           description: |
             Groovy Map containing GRM sample metadata
             e.g. `[ id:'gcta_grm' ]`
-      - "*.grm.id":
+      - "*.grm.*":
           type: file
-          description: GRM sample identifier file
-          pattern: "*.grm.id"
-          ontologies: []
-      - "*.grm.bin":
-          type: file
-          description: GRM binary matrix file
-          pattern: "*.grm.bin"
-          ontologies: []
-      - "*.grm.N.bin":
-          type: file
-          description: GRM sample-count matrix file
-          pattern: "*.grm.N.bin"
+          description: Dense GRM sidecar files
+          pattern: "*.grm.{id,bin,N.bin}"
           ontologies: []
   versions_gcta:
     - - ${task.process}:

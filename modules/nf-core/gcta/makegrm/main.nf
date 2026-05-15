@@ -10,7 +10,7 @@ process GCTA_MAKEGRM {
     tuple val(meta), path(mfile), path(bed_pgen), path(bim_pvar), path(fam_psam)
 
     output:
-    tuple val(meta), path("*.grm.id"), path("*.grm.bin"), path("*.grm.N.bin"), emit: grm_files
+    tuple val(meta), path("*.grm.*"), emit: grm_files
     tuple val("${task.process}"), val("gcta"), eval("gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'"), emit: versions_gcta, topic: versions
 
     when:
