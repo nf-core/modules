@@ -12,7 +12,7 @@ process FASTX_COLLAPSER {
 
     output:
     tuple val(meta), path("${prefix}.fasta"), emit: fasta
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('fastx'), eval("fastx_collapser -h 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | head -1"), emit: versions_fastx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,21 +25,11 @@ process FASTX_COLLAPSER {
         $args \\
         -i $fastx \\
         -o ${prefix}.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastx:  \$(echo \$(fastx_collapser -h) | sed -nE 's/.*([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/p' ))
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastx:  \$(echo \$(fastx_collapser -h) | sed -nE 's/.*([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/p' ))
-    END_VERSIONS
     """
 }
