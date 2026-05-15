@@ -16,10 +16,14 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
@@ -28,8 +32,16 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.sv_breakpoints_vcf.get(0).get(1)).vcf.summary,
+                    file(process.out.sv_breakpoints_bedpe.get(0).get(1)).name,
+                    file(process.out.sv_breakpoints_read_support.get(0).get(1)).readLines().size(),
+                    file(process.out.inserted_sequences.get(0).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
         }
     }
 
@@ -42,8 +54,12 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
@@ -52,8 +68,16 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.sv_breakpoints_vcf.get(0).get(1)).vcf.summary,
+                    file(process.out.sv_breakpoints_bedpe.get(0).get(1)).name,
+                    file(process.out.sv_breakpoints_read_support.get(0).get(1)).readLines().size(),
+                    file(process.out.inserted_sequences.get(0).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
         }
     }
 
@@ -66,10 +90,14 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]

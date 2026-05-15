@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "savana_run"
 description: "Identify and cluster SV breakpoints from long-read alignments."
 keywords:
@@ -7,61 +6,114 @@ keywords:
   - genomics
 tools:
   - "savana":
-      description: "SAVANA: a somatic structural variant and copy-number caller for long-read data."
+      description: "SAVANA: a somatic structural variant and copy-number caller for
+        long-read data."
       homepage: "https://github.com/cortes-ciriano-lab/savana"
       documentation: "https://github.com/cortes-ciriano-lab/savana"
       tool_dev_url: "https://github.com/cortes-ciriano-lab/savana"
       doi: "10.1038/s41592-025-02708-0"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
+    - tumour:
         type: file
-        description: Sorted BAM/CRAM file
+        description: Tumour BAM/CRAM file
         pattern: "*.{bam,cram}"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-
+          - edam: "http://edamontology.org/format_3462" # CRAM
+    - tumour_index:
+        type: file
+        description: Tumour BAM/CRAM index
+        pattern: "*.{bai,crai}"
+        ontologies: []
+    - normal:
+        type: file
+        description: Normal BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+    - normal_index:
+        type: file
+        description: Normal BAM/CRAM index
+        pattern: "*.{bai,crai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - ref:
+        type: file
+        description: Reference genome FASTA file used to align tumor and normal
+          BAM/CRAM files
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - ref_index:
+        type: file
+        description: Reference FASTA index
+        pattern: "*.fai"
+        ontologies: []
 output:
   sv_breakpoints_vcf:
     - - meta:
           type: map
           description: Sample information
-      - "*.sv_breakpoints.vcf":
+      - ${prefix}.sv_breakpoints.vcf:
           type: file
-          description: Raw SV breakpoints in VCF format
+          description: VCF file containing raw SV breakpoints
           pattern: "*.sv_breakpoints.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
   sv_breakpoints_bedpe:
     - - meta:
           type: map
           description: Sample information
-      - "*.sv_breakpoints.bedpe":
+      - ${prefix}.sv_breakpoints.bedpe:
           type: file
-          description: Raw SV breakpoints in BEDPE format
+          description: BEDPE file containing SV breakpoints
           pattern: "*.sv_breakpoints.bedpe"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
   sv_breakpoints_read_support:
     - - meta:
           type: map
           description: Sample information
-      - "*_sv_breakpoints_read_support.tsv":
+      - ${prefix}.sv_breakpoints_read_support.tsv:
           type: file
-          description: Read-support summary for each variant in TSV format
-          pattern: "*_sv_breakpoints_read_support.tsv"
+          description: TSV file containing read support information for each SV breakpoint
+          pattern: "*.sv_breakpoints_read_support.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   inserted_sequences:
     - - meta:
           type: map
           description: Sample information
-      - "*.inserted_sequences.fa":
+      - ${prefix}.inserted_sequences.fa:
           type: file
-          description: Information on insertions in FASTA format
+          description: FASTA file containing inserted sequences
           pattern: "*.inserted_sequences.fa"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  versions_savana:
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - savana:
+          type: string
+          description: Tool version
+      - python -c "import importlib.metadata as m; print(m.version('savana'))":
+          type: eval
+          description: Command to obtain the version of the tool
+topics:
   versions:
     - - ${task.process}:
           type: string
@@ -72,18 +124,6 @@ output:
       - python -c "import importlib.metadata as m; print(m.version('savana'))":
           type: eval
           description: Command to obtain the version of the tool
-
-topics:
-  versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - savana:
-          type: string
-          description: The name of the tool
-      - python -c "import importlib.metadata as m; print(m.version('savana'))":
-          type: eval
-          description: The expression to obtain the version of the tool
 authors:
   - "@manascripts"
 maintainers:
