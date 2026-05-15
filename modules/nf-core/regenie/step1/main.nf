@@ -24,15 +24,16 @@ process REGENIE_STEP1 {
 
     script:
     def args = task.ext.args ?: ''
-    def binary_arg = is_binary ? '--bt' : ''
-    def covar_arg = covar ? "--covarFile ${covar}" : ''
+    def input_prefix = plink_genotype_file.baseName
+    def prefix = task.ext.prefix ?: input_prefix
     def genotype_flag = plink_genotype_file.name.endsWith('.pgen') ? '--pgen' : '--bed'
-    def prefix = plink_genotype_file.baseName
+    def covar_arg = covar ? "--covarFile ${covar}" : ''
+    def binary_arg = is_binary ? '--bt' : ''
     def bsize_arg = bsize ?: 1000
     """
     regenie \\
         --step 1 \\
-        ${genotype_flag} ${prefix} \\
+        ${genotype_flag} ${input_prefix} \\
         --phenoFile ${pheno} \\
         --phenoColList ${pheno_col} \\
         ${covar_arg} \\
@@ -45,7 +46,8 @@ process REGENIE_STEP1 {
     """
 
     stub:
-    def prefix = plink_genotype_file.baseName
+    def input_prefix = plink_genotype_file.baseName
+    def prefix = task.ext.prefix ?: input_prefix
     """
     touch ${prefix}_pred.list
     echo "" | gzip > ${prefix}_1.loco.gz
