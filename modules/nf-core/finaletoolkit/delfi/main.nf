@@ -22,7 +22,7 @@ process FINALETOOLKIT_DELFI {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_delfi"
     """
     finaletoolkit \\
         delfi \\
@@ -32,15 +32,15 @@ process FINALETOOLKIT_DELFI {
         ${genome_2bit} \\
         ${bins} \\
         ${args} \\
-        -o "${prefix}_delfi.bed"
+        -o "${prefix}.bed"
     """
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_delfi"
     """
     echo ${args}
 
-    touch ${prefix}_delfi.bed
+    touch ${prefix}.bed
     """
 }
