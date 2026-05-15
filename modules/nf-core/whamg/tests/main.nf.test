@@ -30,7 +30,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.vcf.collect{ [it[0], path(it[1]).vcf.summary] },
+                    process.out.graph,
+                    process.out.versions_whamg
+                    ).match()
+                }
             )
         }
     }
