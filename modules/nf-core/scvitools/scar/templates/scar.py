@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import os
+
 import anndata as ad
 import scvi
 import yaml
@@ -7,10 +9,12 @@ from scipy.sparse import csr_matrix
 from scvi.external import SCAR
 from threadpoolctl import threadpool_limits
 
+os.environ.setdefault("USER", "scvi")
+os.environ.setdefault("HOME", os.getcwd())
+
 threadpool_limits(int("${task.cpus}"))
 
 scvi.settings.seed = 0
-
 
 adata = ad.read_h5ad("${filtered}")
 adata_unfiltered = ad.read_h5ad("${unfiltered}")

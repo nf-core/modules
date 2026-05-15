@@ -3,6 +3,8 @@
 import os
 
 os.environ["MPLCONFIGDIR"] = "./tmp"
+os.environ.setdefault("USER", "scvi")
+os.environ.setdefault("HOME", os.getcwd())
 
 import anndata as ad
 import scvi
