@@ -2,15 +2,14 @@
 
 import os
 
+os.environ.setdefault("TORCHINDUCTOR_CACHE_DIR", os.path.join(os.getcwd(), "torch_cache"))
+
 import anndata as ad
 import scvi
 import yaml
 from scipy.sparse import csr_matrix
 from scvi.external import SCAR
 from threadpoolctl import threadpool_limits
-
-os.environ.setdefault("USER", "scvi")
-os.environ.setdefault("HOME", os.getcwd())
 
 threadpool_limits(int("${task.cpus}"))
 

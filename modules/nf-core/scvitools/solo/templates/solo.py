@@ -3,8 +3,7 @@
 import os
 
 os.environ["MPLCONFIGDIR"] = "./tmp"
-os.environ.setdefault("USER", "scvi")
-os.environ.setdefault("HOME", os.getcwd())
+os.environ.setdefault("TORCHINDUCTOR_CACHE_DIR", os.path.join(os.getcwd(), "torch_cache"))
 
 import anndata as ad
 import scvi
