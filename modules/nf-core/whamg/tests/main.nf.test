@@ -32,6 +32,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect{ [it[0], path(it[1]).vcf.summary] },
+                    process.out.tbi.collect{ [it[0], file(it[1]).name] },
                     process.out.graph,
                     process.out.versions_whamg
                     ).match()
