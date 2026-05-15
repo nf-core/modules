@@ -14,7 +14,7 @@ process SSUISSERO {
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    tuple val("${task.process}"), val('ssuissero'), eval('echo 1.0.1'), emit: versions_ssuissero, topic: versions
+    tuple val("${task.process}"), val('ssuissero'), val('1.0.1'), emit: versions_ssuissero, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
