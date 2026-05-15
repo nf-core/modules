@@ -2,6 +2,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
-  - bioconda
 dependencies:
-  - conda-forge::llama-cpp-python=0.3.16
+  - python=3.11
+  - pip
+  - pip:
+      - "https://github.com/abetlen/llama-cpp-python/releases/download/v0.3.23/llama_cpp_python-0.3.23-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
