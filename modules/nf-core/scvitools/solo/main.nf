@@ -6,7 +6,7 @@ process SCVITOOLS_SOLO {
     conda "${moduleDir}/environment.yml"
     container "${ task.ext.use_gpu ? 'ghcr.io/scverse/scvi-tools:py3.13-cu12-1.4.3-' :
         workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4e/4ee36f89fd2a916f02dda1a3bf3d4f2454c91c770f08d461fe12654974284ba6/data':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/df/dfb4b54fd5cb5c5624d947914f5ab8ac86eeaa5f762ebc52c034fbd36cf30250/data':
         'community.wave.seqera.io/library/scvi-tools:1.4.3--cce8c95b58ececa6' }"
 
     input:
