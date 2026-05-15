@@ -1,0 +1,99 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_makegrm"
+description: Compute a whole dense GRM with GCTA
+keywords:
+  - gcta
+  - grm
+  - genetics
+tools:
+  - "gcta":
+      description: "GCTA is a tool for genome-wide complex trait analysis."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://github.com/jianyangqt/gcta"
+      licence:
+        - "GPL-3.0-only"
+      identifier: biotools:gcta
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing GRM sample metadata
+          e.g. `[ id:'gcta_grm' ]`
+    - mfile:
+        type: file
+        description: GCTA multi-input manifest consumed by `--mbfile` or
+          `--mpfile`
+        pattern: "*.{mbfile,mpfile,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+    - bed_pgen:
+        type: file
+        description: Collection of PLINK primary genotype files referenced by the
+          multi-input manifest
+        pattern: "*.{bed,pgen}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+    - bim_pvar:
+        type: file
+        description: Collection of PLINK variant metadata files referenced by the
+          multi-input manifest
+        pattern: "*.{bim,pvar}"
+        ontologies: []
+    - fam_psam:
+        type: file
+        description: Collection of PLINK sample metadata files referenced by the
+          multi-input manifest
+        pattern: "*.{fam,psam}"
+        ontologies: []
+
+output:
+  grm_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing GRM sample metadata
+            e.g. `[ id:'gcta_grm' ]`
+      - "*.grm.id":
+          type: file
+          description: GRM sample identifier file
+          pattern: "*.grm.id"
+          ontologies: []
+      - "*.grm.bin":
+          type: file
+          description: GRM binary matrix file
+          pattern: "*.grm.bin"
+          ontologies: []
+      - "*.grm.N.bin":
+          type: file
+          description: GRM sample-count matrix file
+          pattern: "*.grm.N.bin"
+          ontologies: []
+  versions_gcta:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to generate the version of the tool
+
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"
