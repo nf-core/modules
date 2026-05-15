@@ -23,14 +23,27 @@
                         "$comment": "The above pattern ensures that all packages are pinned to a specific version. This ensures the reproducibility of the environment"
                     },
                     {
+                        "type": "string",
+                        "pattern": "^pip$",
+                        "$comment": "Allow bare pip dependency needed to enable pip installs"
+                    },
+                    {
                         "type": "object",
                         "properties": {
                             "pip": {
                                 "type": "array",
                                 "items": {
                                     "type": "string",
-                                    "pattern": "^.*==.*$",
-                                    "$comment": "The above pattern ensures that all packages are pinned to a specific version. This ensures the reproducibility of the environment"
+                                    "anyOf": [
+                                        {
+                                            "pattern": "^.*==.*$",
+                                            "$comment": "Packages pinned to a specific version"
+                                        },
+                                        {
+                                            "pattern": "^https?://.*$",
+                                            "$comment": "Direct URL to a specific package artifact (e.g. wheel file)"
+                                        }
+                                    ]
                                 }
                             }
                         }
