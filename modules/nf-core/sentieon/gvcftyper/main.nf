@@ -34,7 +34,13 @@ process SENTIEON_GVCFTYPER {
     """
     ${sentieonLicense}
 
-    sentieon driver -r ${fasta} ${interval_command} --algo GVCFtyper ${gvcfs_input} ${dbsnp_cmd} ${prefix}.vcf.gz
+    sentieon driver \\
+        -r ${fasta} \\
+        ${interval_command} \\
+        --algo GVCFtyper \\
+        ${gvcfs_input} \\
+        ${dbsnp_cmd} \\
+        ${prefix}.vcf.gz
 
     """
 
