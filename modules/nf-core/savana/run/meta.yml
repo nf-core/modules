@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "savana_run"
+description: "Identify and cluster SV breakpoints from long-read alignments."
+keywords:
+  - structural variants
+  - long read
+  - genomics
+tools:
+  - "savana":
+      description: "SAVANA: a somatic structural variant and copy-number caller for long-read data."
+      homepage: "https://github.com/cortes-ciriano-lab/savana"
+      documentation: "https://github.com/cortes-ciriano-lab/savana"
+      tool_dev_url: "https://github.com/cortes-ciriano-lab/savana"
+      doi: "10.1038/s41592-025-02708-0"
+      licence: ["Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+
+output:
+  sv_breakpoints_vcf:
+    - - meta:
+          type: map
+          description: Sample information
+      - "*.sv_breakpoints.vcf":
+          type: file
+          description: Raw SV breakpoints in VCF format
+          pattern: "*.sv_breakpoints.vcf"
+  sv_breakpoints_bedpe:
+    - - meta:
+          type: map
+          description: Sample information
+      - "*.sv_breakpoints.bedpe":
+          type: file
+          description: Raw SV breakpoints in BEDPE format
+          pattern: "*.sv_breakpoints.bedpe"
+  sv_breakpoints_read_support:
+    - - meta:
+          type: map
+          description: Sample information
+      - "*_sv_breakpoints_read_support.tsv":
+          type: file
+          description: Read-support summary for each variant in TSV format
+          pattern: "*_sv_breakpoints_read_support.tsv"
+  inserted_sequences:
+    - - meta:
+          type: map
+          description: Sample information
+      - "*.inserted_sequences.fa":
+          type: file
+          description: Information on insertions in FASTA format
+          pattern: "*.inserted_sequences.fa"
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - savana:
+          type: string
+          description: Tool version
+      - python -c "import importlib.metadata as m; print(m.version('savana'))":
+          type: eval
+          description: Command to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - savana:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('savana'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"
