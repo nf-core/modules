@@ -46,12 +46,12 @@ nextflow_process {
                     process.out.csv_insertions,
                     process.out.fasta_aligned,
                     process.out.fasta_translation,
-                    file(process.out.json[0][1]).readLines()[4..10],
+                    file(process.out.json[0][1]).readLines()[5..11],
                     process.out.json_auspice,
                     process.out.ndjson,
                     process.out.nwk,
                     process.out.tsv,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }

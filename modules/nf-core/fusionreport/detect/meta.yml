@@ -11,9 +11,9 @@ tools:
       homepage: https://github.com/Clinical-Genomics/fusion-report
       documentation: https://matq007.github.io/fusion-report/#/
       doi: "10.1101/011650"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -43,25 +43,22 @@ input:
           Groovy Map containing sample information
     - fusionreport_ref:
         type: directory
-        description: File
+        description: directory containing the genome resource files required for fusioncatcher
         pattern: "fusion_report_db"
   - tools_cutoff:
       type: integer
-      description: Discard fusions detected by less than $tools_cutoff tools both for display in fusionreport html index and to consider in fusioninspector.
-
+      description: Discard fusions detected by less than $tools_cutoff tools both
+        for display in fusionreport html index and to consider in fusioninspector.
 output:
   fusion_list:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "*.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
       - "*fusionreport.tsv":
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
+            Fusion report
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -70,13 +67,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "*.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
       - "*fusionreport_filtered.tsv":
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
+            Filtered fusion report
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -85,13 +79,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "*.index.html"
-          ontologies:
-            - edam: "http://edamontology.org/format_2331" # HTML
       - "*index.html":
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
+            Interactive HTML report
           pattern: "*.index.html"
           ontologies:
             - edam: "http://edamontology.org/format_2331" # HTML
@@ -100,13 +91,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "*_*.html"
-          ontologies:
-            - edam: "http://edamontology.org/format_2331" # HTML
       - "*_*.html":
           type: map
           description: |
-            Groovy Map containing sample information
+            All HTML report files
           pattern: "*_*.html"
           ontologies:
             - edam: "http://edamontology.org/format_2331" # HTML
@@ -115,13 +103,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "*.csv"
-          ontologies:
-            - edam: "http://edamontology.org/format_3752" # CSV
       - "*.csv":
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
+            Report in CSV format
           pattern: "*.csv"
           ontologies:
             - edam: "http://edamontology.org/format_3752" # CSV
@@ -130,22 +115,34 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "*.json"
-          ontologies:
-            - edam: "http://edamontology.org/format_3464" # JSON
       - "*.json":
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
+            Report in JSON format
           pattern: "*.json"
           ontologies:
-            - edam: "http://edamontology.org/format_3464" # JSON
+            - edam: "http://edamontology.org/format_3464"
+  versions_fusionreport:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fusion_report:
+          type: string
+          description: The name of the tool
+      - fusion_report --version |& sed 's/fusion-report //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fusion_report:
+          type: string
+          description: The name of the tool
+      - fusion_report --version |& sed 's/fusion-report //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
-  - "@praveenraj2018, @rannick"
+  - "@praveenraj2018"
+  - "@rannick"
