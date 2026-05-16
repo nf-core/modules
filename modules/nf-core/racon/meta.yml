@@ -1,5 +1,6 @@
 name: racon
-description: Consensus module for raw de novo DNA assembly of long uncorrected reads
+description: Consensus module for raw de novo DNA assembly of long uncorrected
+  reads
 keywords:
   - assembly
   - pacbio
@@ -7,13 +8,14 @@ keywords:
   - polish
 tools:
   - racon:
-      description: Ultrafast consensus module for raw de novo genome assembly of long
-        uncorrected reads.
+      description: Ultrafast consensus module for raw de novo genome assembly of
+        long uncorrected reads.
       homepage: https://github.com/lbcb-sci/racon
       documentation: https://github.com/lbcb-sci/racon
       tool_dev_url: https://github.com/lbcb-sci/racon
       doi: 10.1101/gr.214270.116
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:Racon
 input:
   - - meta:
@@ -26,7 +28,7 @@ input:
         description: List of input FastQ files. Racon expects single end reads
         pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
     - assembly:
         type: file
         description: Genome assembly to be improved
@@ -49,14 +51,28 @@ output:
           description: Improved genome assembly
           pattern: "*_assembly_consensus.fasta.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_racon:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - racon:
+          type: string
+          description: The name of the tool
+      - racon --version 2>&1 | sed "s/^.*v//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - racon:
+          type: string
+          description: The name of the tool
+      - racon --version 2>&1 | sed "s/^.*v//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@avantonder"
 maintainers:

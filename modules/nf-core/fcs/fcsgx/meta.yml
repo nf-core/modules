@@ -1,6 +1,6 @@
 name: "fcs_fcsgx"
-description: Run FCS-GX on assembled genomes. The contigs of the assembly are searched
-  against a reference database excluding the given taxid.
+description: Run FCS-GX on assembled genomes. The contigs of the assembly are
+  searched against a reference database excluding the given taxid.
 keywords:
   - assembly
   - genomics
@@ -18,18 +18,22 @@ tools:
       homepage: "https://www.ncbi.nlm.nih.gov/data-hub/cgr/data-quality-tools/"
       documentation: "https://github.com/ncbi/fcs/wiki/FCS-GX"
       tool_dev_url: "https://github.com/ncbi/fcs"
-      license: ["United States Government Work"]
+      license:
+        - "United States Government Work"
       identifier: ""
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', taxid:'6973' ]
+          e.g. [ id:'test' ]
     - assembly:
         type: file
         description: assembly fasta file
         ontologies: []
+    - taxid:
+        type: string
+        description: Taxonomic id (e.g. "6973")
   - gxdb:
       type: file
       description: The NCBI GenBank database to search against.
@@ -40,11 +44,11 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', taxid:'9606' ]
+            e.g. [ id:'test' ]
       - out/*.fcs_gx_report.txt:
           type: file
-          description: Report containing the contig identifier and recommended action
-            (EXCLUDE, TRIM, FIX, REVIEW)
+          description: Report containing the contig identifier and recommended
+            action (EXCLUDE, TRIM, FIX, REVIEW)
           pattern: "*.fcs_gx_report.txt"
           ontologies: []
   taxonomy_report:
@@ -52,20 +56,53 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', taxid:'9606' ]
+            e.g. [ id:'test' ]
       - out/*.taxonomy.rpt:
           type: file
-          description: Report containing the contig identifier and mapped contaminant
-            species
+          description: Report containing the contig identifier and mapped
+            contaminant species
           pattern: "*.taxonomy.rpt"
           ontologies: []
+  versions_fcsadaptor:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fcsadaptor:
+          type: string
+          description: The name of the tool
+      - 0.4.0:
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python3 --version |& sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fcsadaptor:
+          type: string
+          description: The name of the tool
+      - 0.4.0:
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python3 --version |& sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@tillenglert"
 maintainers:
