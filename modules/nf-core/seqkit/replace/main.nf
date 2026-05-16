@@ -8,7 +8,7 @@ process SEQKIT_REPLACE {
         : 'quay.io/biocontainers/seqkit:2.9.0--h9ee0642_0'}"
 
     input:
-    tuple val(meta), path(fastx)
+    tuple val(meta), path(fastx, stageAs: "raw.fasta")
 
     output:
     tuple val(meta), path("*.fast*"), emit: fastx
