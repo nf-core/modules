@@ -11,29 +11,30 @@ nextflow_process {
     tag "gunzip"
     tag "kofamscan"
 
-    test("test_kofamscan_txt") {
+    setup {
+        run("UNTAR") {
+            script "../../untar/main.nf"
 
-        setup {
-            run("UNTAR") {
-                script "../../untar/main.nf"
-
-                process {
-                    """
-                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/profiles.tar.gz',checkIfExists:true)]
-                    """
-                }
-            }
-
-            run("GUNZIP") {
-                script "../../gunzip/main.nf"
-
-                process {
-                    """
-                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/ko_list.gz',checkIfExists:true)]
-                    """
-                }
+            process {
+                """
+                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/profiles.tar.gz',checkIfExists:true)]
+                """
             }
         }
+
+        run("GUNZIP") {
+            script "../../gunzip/main.nf"
+
+            process {
+                """
+                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/ko_list.gz',checkIfExists:true)]
+                """
+            }
+        }
+    }
+
+    test("test_kofamscan_txt") {
+
         when {
             params {
                 module_args = ''
@@ -54,29 +55,9 @@ nextflow_process {
             )
         }
     }
+
     test("test_kofamscan_tsv") {
 
-        setup {
-            run("UNTAR") {
-                script "../../untar/main.nf"
-
-                process {
-                    """
-                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/profiles.tar.gz',checkIfExists:true)]
-                    """
-                }
-            }
-
-            run("GUNZIP") {
-                script "../../gunzip/main.nf"
-
-                process {
-                    """
-                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/ko_list.gz',checkIfExists:true)]
-                    """
-                }
-            }
-        }
         when {
             params {
                 module_args = '--format detail-tsv'
@@ -102,27 +83,6 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("UNTAR") {
-                script "../../untar/main.nf"
-
-                process {
-                    """
-                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/profiles.tar.gz',checkIfExists:true)]
-                    """
-                }
-            }
-
-            run("GUNZIP") {
-                script "../../gunzip/main.nf"
-
-                process {
-                    """
-                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/ko_list.gz',checkIfExists:true)]
-                    """
-                }
-            }
-        }
         when {
             params {
                 module_args = ''
