@@ -13,7 +13,7 @@ process FIBERTOOLSRS_EXTRACT {
 
     output:
     tuple val(meta), path("*.bed.gz"), emit: bed
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('fibertools-rs'), eval("ft --version | sed 's/fibertools-rs v//;s/\\t.*//'"), topic: versions, emit: versions_fibertoolsrs
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,30 +27,17 @@ process FIBERTOOLSRS_EXTRACT {
     """
     ft \\
         extract \\
-        $args \\
-        --threads $task.cpus \\
-        $bam \\
-        --$extract_type \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        ${bam} \\
+        --${extract_type} \\
         ${prefix}.bed.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fibertools-rs: \$(ft --version | sed -E 's/.* ([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo $args
-
     echo "" | gzip > ${prefix}.bed.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fibertools-rs: \$(ft --version | sed -E 's/.* ([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/' )
-    END_VERSIONS
     """
 }
