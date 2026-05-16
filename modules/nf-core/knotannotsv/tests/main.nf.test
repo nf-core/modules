@@ -33,7 +33,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.findAll { key, val -> key.startsWith('versions') },
-                    "test_HTML_output_lines_count: ${path(process.out.html[0][1]).readLines().size()}"
+                    "test_HTML_output_lines_count: ${path(process.out.output_file[0][1]).readLines().size()}"
                     ).match()
                 }
             )
@@ -63,7 +63,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.findAll { key, val -> key.startsWith('versions') },
-                    "test_Excel_output_min_size: ${file(process.out.xl[0][1]).length() >= 89000}"
+                    "test_Excel_output_min_size: ${file(process.out.output_file[0][1]).length() >= 89000}"
                     ).match()
                 }
             )
