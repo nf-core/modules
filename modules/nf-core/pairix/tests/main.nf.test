@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process PAIRIX"
@@ -14,7 +13,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
+                input[0] = [ [ id:'test', single_end:false ],
 				file("https://raw.githubusercontent.com/4dn-dcic/pairix/master/samples/4dn.bsorted.chr21_22_only.nontriangle.pairs.gz", checkIfExists: true) ]
 
                 """
@@ -35,7 +34,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
+                input[0] = [ [ id:'test', single_end:false ],
 				file("https://raw.githubusercontent.com/4dn-dcic/pairix/master/samples/4dn.bsorted.chr21_22_only.nontriangle.pairs.gz", checkIfExists: true) ]
 
                 """
