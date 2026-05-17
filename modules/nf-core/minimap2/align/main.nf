@@ -5,8 +5,8 @@ process MINIMAP2_ALIGN {
     // Note: the versions here need to match the versions used in the mulled container below and minimap2/index
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/66dc96eff11ab80dfd5c044e9b3425f52d818847b9c074794cf0c02bfa781661/data' :
-        'community.wave.seqera.io/library/minimap2_samtools:33bb43c18d22e29c' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/37/37671219cfd244eb9b33db9345d3543ffd83037419a1c57f4648aace493ec2c2/data' :
+        'community.wave.seqera.io/library/minimap2_samtools:b09096fc890429ce' }"
 
     input:
     tuple val(meta), path(reads)

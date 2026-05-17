@@ -23,7 +23,8 @@ process DEEPBGC_PIPELINE {
     tuple val(meta), path("${prefix}/evaluation/${prefix}.pr.png"), optional: true, emit: pr_png
     tuple val(meta), path("${prefix}/evaluation/${prefix}.roc.png"), optional: true, emit: roc_png
     tuple val(meta), path("${prefix}/evaluation/${prefix}.score.png"), optional: true, emit: score_png
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('deepbgc'), eval("deepbgc info 2>&1 | sed '6!d;s/.*= version //;s/ .*//'"), emit: versions_deepbgc, topic: versions
+    tuple val("${task.process}"), val('prodigal'), eval("prodigal -v 2>&1 | sed '2!d;s/Prodigal V//;s/:.*//'"), emit: versions_prodigal, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,12 +47,6 @@ process DEEPBGC_PIPELINE {
     for i in \$(find -name '${genome.baseName}*' -type f); do
         mv \$i \${i/${genome.baseName}/${prefix}};
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepbgc: \$(echo \$(deepbgc info 2>&1 /dev/null/ | grep 'version' | cut -d " " -f3) )
-        prodigal: \$(prodigal -v 2>&1 | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -69,11 +64,5 @@ process DEEPBGC_PIPELINE {
     touch ${prefix}/evaluation/${prefix}.pr.png
     touch ${prefix}/evaluation/${prefix}.roc.png
     touch ${prefix}/evaluation/${prefix}.score.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepbgc: \$(echo \$(deepbgc info 2>&1 /dev/null/ | grep 'version' | cut -d " " -f3) )
-        prodigal: \$(prodigal -v 2>&1 | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p')
-    END_VERSIONS
     """
 }

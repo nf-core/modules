@@ -8,12 +8,12 @@ process KRAKENUNIQ_BUILD {
         : 'quay.io/biocontainers/krakenuniq:1.0.4--pl5321h6dccd9a_2'}"
 
     input:
-    tuple val(meta), path(custom_library_dir, stageAs: "library/*"), path(custom_taxonomy_dir, stageAs: "taxonomy"), path(custom_seqid2taxid)
+    tuple val(meta), path(custom_library_dir, stageAs: "library/*"), path(custom_taxonomy_dir, stageAs: "taxonomy/*"), path(custom_seqid2taxid, stageAs: 'seqid2taxid.map')
     val keep_intermediate
 
     output:
     tuple val(meta), path("${prefix}/"), emit: db
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('krakenuniq'), eval("krakenuniq --version | sed '1!d;s/KrakenUniq version //'"), emit: versions_krakenuniq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +33,6 @@ process KRAKENUNIQ_BUILD {
         --db ${prefix}
 
     ${run_cleanup}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +47,5 @@ process KRAKENUNIQ_BUILD {
     touch ${prefix}/database.kdb.counts
     touch ${prefix}/database.kraken.tsv
     touch ${prefix}/database.report.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
-    END_VERSIONS
     """
 }

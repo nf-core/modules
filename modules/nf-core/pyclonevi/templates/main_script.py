@@ -29,7 +29,8 @@ print("$tumour_samples")
 # input data preprocessing
 def create_pyclone_input(input_data, patient_id, output_data):
     df = pd.read_csv(input_data, sep="\t", header=0)
-    # df = df.query('karyotype=="1:1"')
+    df = df[~df["chr"].isin(["chrX", "chrY", "X", "Y"])]
+
     df["normal_cn"] = 2
     df["patient_id"] = patient_id
     df["mutation_id"] = df.apply(lambda row: f"{patient_id}:{row['chr'][3:]}:{row['from']}:{row['alt']}", axis=1)
