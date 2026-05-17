@@ -11,8 +11,8 @@ process VIRUSRECOM {
     tuple val(meta), path(alignment), path(mapping)
 
     output:
-    tuple val(meta), path("${prefix}/"), emit: results
-    tuple val("${task.process}"), val('virusrecom'), eval("virusrecom --version 2>&1 | head -1"), topic: versions, emit: versions_virusrecom
+    tuple val(meta), path("${meta.id}/"), emit: results
+    tuple val("${task.process}"), val('virusrecom'), eval("virusrecom -h 2>&1 | grep 'Version:' | sed 's/.*Version: //' | sed 's/ (.*//'"), topic: versions, emit: versions_virusrecom
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,7 @@ process VIRUSRECOM {
     virusrecom \\
         -a ${alignment} \\
         -map ${mapping} \\
-        -o ${prefix} \\
+        -o ${meta.id} \\
         -t ${task.cpus} \\
         ${args}
     """
@@ -32,7 +32,7 @@ process VIRUSRECOM {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}
-    touch ${prefix}/stub_output.txt
+    mkdir -p ${meta.id}
+    touch ${meta.id}/stub_output.txt
     """
 }

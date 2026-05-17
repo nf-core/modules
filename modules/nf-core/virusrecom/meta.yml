@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "virusrecom"
-description: Information-theory-based method for recombination detection of viral lineages using weighted information content (WIC).
+description: Information-theory-based method for recombination detection of
+  viral lineages using weighted information content (WIC).
 keywords:
   - recombination
   - virus
@@ -8,12 +8,14 @@ keywords:
   - phylogenetics
 tools:
   - "virusrecom":
-      description: "An information-theory-based method for recombination detection of viral lineages."
+      description: "An information-theory-based method for recombination detection of
+        viral lineages."
       homepage: "https://github.com/ZhijianZhou01/virusrecom"
       documentation: "https://github.com/ZhijianZhou01/virusrecom"
       tool_dev_url: "https://github.com/ZhijianZhou01/virusrecom"
       doi: "10.1093/bib/bbac513"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:virusrecom
 input:
   - - meta:
@@ -25,30 +27,45 @@ input:
         type: file
         description: Aligned FASTA file containing viral sequences
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
     - mapping:
         type: file
         description: Tab-separated file mapping sequence names to lineages
         pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
 output:
-  - results:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - "${prefix}/":
-        type: directory
-        description: Directory containing virusrecom output files including WIC plots and recombination tables
-  - versions_virusrecom:
-    - "${task.process}":
-        type: string
-        description: The name of the process
-    - "virusrecom":
-        type: string
-        description: The name of the tool
-    - "virusrecom --version":
-        type: eval
-        description: The expression to obtain the version of the tool
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${meta.id}/:
+          type: directory
+          description: Directory containing virusrecom output files including WIC
+            plots and recombination tables
+  versions_virusrecom:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - virusrecom:
+          type: string
+          description: The name of the tool
+      - "virusrecom -h 2>&1 | grep 'Version:' | sed 's/.*Version: //' | sed 's/ (.*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - virusrecom:
+          type: string
+          description: The name of the tool
+      - "virusrecom -h 2>&1 | grep 'Version:' | sed 's/.*Version: //' | sed 's/ (.*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@haggaikelisha-ai"
 maintainers:
