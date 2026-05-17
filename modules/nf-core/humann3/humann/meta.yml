@@ -128,7 +128,7 @@ output:
       - MetaPhlAn:
           type: string
           description: The name of the tool
-      - metaphlan --version 2>&1 | sed 's/metaphlan v//':
+      - metaphlan --version 2>&1 | sed 's/MetaPhlAn version //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -148,7 +148,7 @@ topics:
       - MetaPhlAn:
           type: string
           description: The name of the tool
-      - metaphlan --version 2>&1 | sed 's/metaphlan v//':
+      - metaphlan --version 2>&1 | sed 's/MetaPhlAn version //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
