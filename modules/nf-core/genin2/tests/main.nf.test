@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process GENIN2"
+    script "../main.nf"
+    process "GENIN2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genin2"
+
+    test("H5N1_2.3.4.4b_Italy - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/virus/influenza/fasta/H5N1_2.3.4.4b_Italy.fa', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("H5N1_2.3.4.4b_Italy - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/virus/influenza/fasta/H5N1_2.3.4.4b_Italy.fa', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
