@@ -2,8 +2,6 @@ process PHOLD_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    cpus params.threads
-
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
     'https://depot.galaxyproject.org/singularity/phold:1.2.5--pyhdfd78af_0':
@@ -27,6 +25,7 @@ process PHOLD_RUN {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    phold install --foldseek_gpu
     phold run \\
         --input $input \\
         --output ${prefix}_phold \\
