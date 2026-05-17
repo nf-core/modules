@@ -4,12 +4,12 @@ process MIFASER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mifaser:1.60--pyh106432d_0' :
-        'quay.io/biocontainers/mifaser:1.60--pyh106432d_0' }"
+        'https://depot.galaxyproject.org/singularity/mifaser:1.64--pyh106432d_0' :
+        'quay.io/biocontainers/mifaser:1.64--pyh106432d_0' }"
 
     input:
     tuple val(meta), path(reads)
-    path db
+    each path(db)
 
     output:
     tuple val(meta), path("*multi_ec.tsv"), emit: multi_ec
