@@ -1,0 +1,52 @@
+nextflow_process {
+    name "Test Process VIRUSRECOM"
+    script "../main.nf"
+    process "VIRUSRECOM"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "virusrecom"
+
+    test("virusrecom - fasta - aligned") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/mapping.txt', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("virusrecom - fasta - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/mapping.txt', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

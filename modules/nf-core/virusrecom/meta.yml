@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "virusrecom"
+description: Information-theory-based method for recombination detection of viral lineages using weighted information content (WIC).
+keywords:
+  - recombination
+  - virus
+  - genomics
+  - phylogenetics
+tools:
+  - "virusrecom":
+      description: "An information-theory-based method for recombination detection of viral lineages."
+      homepage: "https://github.com/ZhijianZhou01/virusrecom"
+      documentation: "https://github.com/ZhijianZhou01/virusrecom"
+      tool_dev_url: "https://github.com/ZhijianZhou01/virusrecom"
+      doi: "10.1093/bib/bbac513"
+      licence: ["GPL v3"]
+      identifier: biotools:virusrecom
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - alignment:
+        type: file
+        description: Aligned FASTA file containing viral sequences
+        pattern: "*.{fasta,fa,fna}"
+    - mapping:
+        type: file
+        description: Tab-separated file mapping sequence names to lineages
+        pattern: "*.{txt,tsv}"
+output:
+  - results:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - "${prefix}/":
+        type: directory
+        description: Directory containing virusrecom output files including WIC plots and recombination tables
+  - versions_virusrecom:
+    - "${task.process}":
+        type: string
+        description: The name of the process
+    - "virusrecom":
+        type: string
+        description: The name of the tool
+    - "virusrecom --version":
+        type: eval
+        description: The expression to obtain the version of the tool
+authors:
+  - "@haggaikelisha-ai"
+maintainers:
+  - "@haggaikelisha-ai"
