@@ -10,10 +10,10 @@ process SENTIEON_GVCFTYPER {
 
     input:
     tuple val(meta), path(gvcfs), path(tbis), path(intervals)
-    tuple val(meta1), path(fasta)
-    tuple val(meta2), path(fai)
-    tuple val(meta3), path(dbsnp)
-    tuple val(meta4), path(dbsnp_tbi)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dbsnp)
+    tuple val(meta5), path(dbsnp_tbi)
 
     output:
     tuple val(meta), path("*.vcf.gz"),     emit: vcf_gz
