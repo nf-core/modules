@@ -4,8 +4,8 @@ process GENIN2 {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/genin2':
-        'quay.io/biocontainers/genin2' }"
+        'https://depot.galaxyproject.org/singularity/genin2:2.1.6--pyhdfd78af_0':
+        'quay.io/biocontainers/genin2:2.1.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
