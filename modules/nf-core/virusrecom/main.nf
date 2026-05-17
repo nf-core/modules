@@ -12,7 +12,7 @@ process VIRUSRECOM {
 
     output:
     tuple val(meta), path("${meta.id}/"), emit: results
-    tuple val("${task.process}"), val('virusrecom'), eval("virusrecom -h 2>&1 | grep 'Version:' | sed 's/.*Version: //' | sed 's/ (.*//'"), topic: versions, emit: versions_virusrecom
+    tuple val("${task.process}"), val('virusrecom'), eval("virusrecom -h 2>&1 | grep 'Version:' | sed 's/.*Version: //' | sed 's/ (.*//'" ), topic: versions, emit: versions_virusrecom
 
     when:
     task.ext.when == null || task.ext.when
