@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process GRIMER"
+    script "../main.nf"
+    process "GRIMER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "grimer"
+
+    test("grimer - tsv - basic") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'delete_me/grimer/test_count_table.tsv',
+                         checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.report },
+                { assert process.out.versions_grimer }
+            )
+        }
+    }
+
+    test("grimer - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + 'delete_me/grimer/test_count_table.tsv',
+                         checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.report }
+            )
+        }
+    }
+}
