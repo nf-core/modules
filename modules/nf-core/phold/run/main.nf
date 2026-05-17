@@ -7,6 +7,8 @@ process PHOLD_RUN {
     'https://depot.galaxyproject.org/singularity/phold:1.2.5--pyhdfd78af_0':
     'quay.io/biocontainers/phold:1.2.5--pyhdfd78af_0' }"
 
+    publishDir "${params.outdir}", mode: 'copy'
+
     input:
     tuple val(meta), path(input)
 
@@ -25,7 +27,6 @@ process PHOLD_RUN {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    phold install --foldseek_gpu
     phold run \\
         --input $input \\
         --output ${prefix}_phold \\
