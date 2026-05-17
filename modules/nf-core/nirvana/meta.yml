@@ -1,0 +1,109 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "nirvana"
+description: Clinical-grade annotation of genomic variants including SNVs, MNVs, insertions, deletions, indels, and SVs
+keywords:
+  - annotation
+  - variant annotation
+  - vcf
+  - genomics
+  - clinical annotation
+tools:
+  - "nirvana":
+      description: "Clinical-grade annotation of genomic variants (SNVs, MNVs, insertions,
+        deletions, indels, and SVs)"
+      homepage: "https://illumina.github.io/NirvanaDocumentation/"
+      documentation: "https://illumina.github.io/NirvanaDocumentation/"
+      tool_dev_url: "https://github.com/Illumina/Nirvana"
+      licence: ["GPL v3"]
+      identifier: biotools:nirvana
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: Input VCF file to annotate
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - reference:
+        type: file
+        description: Compressed Nirvana reference sequence file
+        pattern: "*.dat"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing cache information
+          e.g. `[ id:'cache' ]`
+    - cache:
+        type: directory
+        description: Nirvana cache directory
+    - cache_prefix:
+        type: string
+        description: Prefix for cache files (e.g., 'SARS-CoV-2' for files like SARS-CoV-2.transcripts.ndb)
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing supplementary annotation information
+          e.g. `[ id:'sa' ]`
+    - supplementary_annotations:
+        type: directory
+        description: Nirvana supplementary annotation directory (optional)
+
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json.gz":
+          type: file
+          description: Gzip-compressed JSON file with variant annotations
+          pattern: "*.json.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  jsi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json.gz.jsi":
+          type: file
+          description: JSON index file for the annotations
+          pattern: "*.json.gz.jsi"
+  versions_nirvana:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "nirvana":
+          type: string
+          description: The name of the tool
+      - "Nirvana -v 2>&1 | awk '{print $2}' | cut -d'-' -f1":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - nirvana:
+          type: string
+          description: The name of the tool
+      - "Nirvana -v 2>&1 | awk '{print $2}' | cut -d'-' -f1":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@FriederikeHanssen"
+maintainers:
+  - "@FriederikeHanssen"
