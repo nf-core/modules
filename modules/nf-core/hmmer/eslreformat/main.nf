@@ -4,8 +4,8 @@ process HMMER_ESLREFORMAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h1b792b2_1':
-        'quay.io/biocontainers/hmmer:3.3.2--h1b792b2_1' }"
+        'https://depot.galaxyproject.org/singularity/hmmer:3.4--hb6cb901_4' :
+        'quay.io/biocontainers/hmmer:3.4--hb6cb901_4' }"
 
     input:
     tuple val(meta), path(seqfile)
@@ -13,7 +13,8 @@ process HMMER_ESLREFORMAT {
 
     output:
     tuple val(meta), path("*.*.gz"), emit: seqreformated
-    path "versions.yml",             emit: versions
+    tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
+    tuple val("${task.process}"), val('easel'), eval("esl-reformat -h | sed '2!d;s/^# Easel *//;s/ .*//'"), emit: versions_easel, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +29,6 @@ process HMMER_ESLREFORMAT {
         $seqfile \\
         $postprocessing_script \\
         | gzip -c > ${prefix}.${suffix}.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer/easel: \$(esl-reformat -h | grep -o '^# Easel [0-9.]*' | sed 's/^# Easel *//')
-    END_VERSIONS
     """
 
     stub:
@@ -42,10 +38,5 @@ process HMMER_ESLREFORMAT {
 
     """
     echo "" | gzip > ${prefix}.${suffix}.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer/easel: \$(esl-reformat -h | grep -o '^# Easel [0-9.]*' | sed 's/^# Easel *//')
-    END_VERSIONS
     """
 }
