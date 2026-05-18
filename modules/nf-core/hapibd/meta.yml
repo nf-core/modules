@@ -1,7 +1,7 @@
 name: "hapibd"
-description: The hap-ibd program detects identity-by-descent (IBD) segments and homozygosity-by-descent
-  (HBD) segments in phased genotype data. The hap-ibd program can analyze data sets
-  with hundreds of thousands of samples.
+description: The hap-ibd program detects identity-by-descent (IBD) segments and
+  homozygosity-by-descent (HBD) segments in phased genotype data. The hap-ibd
+  program can analyze data sets with hundreds of thousands of samples.
 keywords:
   - ibd
   - hbd
@@ -13,7 +13,8 @@ tools:
       homepage: "https://github.com/browning-lab/hap-ibd/blob/master/README.md"
       documentation: "https://github.com/browning-lab/hap-ibd/blob/master/README.md"
       doi: "10.1016/j.ajhg.2020.02.010"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
 input:
   - - meta:
@@ -23,7 +24,8 @@ input:
           e.g. [ id:'test' ]
     - vcf:
         type: file
-        description: phased VCF file with a GT FORMAT subfield with no missing alleles
+        description: phased VCF file with a GT FORMAT subfield with no missing
+          alleles
         pattern: "*.{vcf,vcf.gz}"
         ontologies: []
   - map:
@@ -33,8 +35,8 @@ input:
       ontologies: []
   - exclude:
       type: file
-      description: text file containing samples one sample per line to be excluded from
-        the analysis
+      description: text file containing samples one sample per line to be excluded
+        from the analysis
       pattern: "*.*"
       ontologies: []
 output:
@@ -70,18 +72,33 @@ output:
             e.g. [ id:'test' ]
       - "*.log":
           type: file
-          description: contains a summary of the analysis which includes the analysis
-            parameters the number of markers the number of samples the number of output
-            HBD and IBD segments and the mean number of HBD and IBD segments per sample
+          description: contains a summary of the analysis which includes the
+            analysis parameters the number of markers the number of samples the
+            number of output HBD and IBD segments and the mean number of HBD and
+            IBD segments per sample
           pattern: "*.log"
           ontologies: []
+  versions_hapibd:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hapibd:
+          type: string
+          description: The name of the tool
+      - hap-ibd 2>&1 | sed '1!d;s/^hap-ibd.jar //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hapibd:
+          type: string
+          description: The name of the tool
+      - hap-ibd 2>&1 | sed '1!d;s/^hap-ibd.jar //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ashotmarg"
 maintainers:

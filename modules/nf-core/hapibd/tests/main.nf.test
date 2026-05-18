@@ -15,12 +15,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.truth.vcf.gz", checkIfExists: true)
-				]
-				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.map", checkIfExists: true)
-				input[2] = []
-
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/hapibd/target.truth.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/hapibd/target.map', checkIfExists: true)
+                input[2] = []
                 """
             }
         }
@@ -29,13 +28,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert file(process.out.log[0][1]).text.contains('End Time') },
-                { assert snapshot(
-					file(process.out.hbd[0][1]).name, // empty
-					file(process.out.ibd[0][1]).name, // unstable
-					file(process.out.log[0][1]).name,
-					process.out.versions
-					).match()
-				}
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["hbd", "ibd", "log"])).match()}
             )
         }
     }
@@ -46,12 +39,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.truth.vcf.gz", checkIfExists: true)
-				]
-				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.map", checkIfExists: true)
-				input[2] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/excludeSamples.txt", checkIfExists: true)
-
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/hapibd/target.truth.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/hapibd/target.map', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/hapibd/excludeSamples.txt', checkIfExists: true)
                 """
             }
         }
@@ -60,13 +52,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert file(process.out.log[0][1]).text.contains('End Time') },
-                { assert snapshot(
-					file(process.out.hbd[0][1]).name, // empty
-					file(process.out.ibd[0][1]).name, // unstable
-					file(process.out.log[0][1]).name,
-					process.out.versions
-					).match()
-				}
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["hbd", "ibd", "log"])).match()}
             )
         }
     }
@@ -78,12 +64,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.truth.vcf.gz", checkIfExists: true)
-				]
-				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.map", checkIfExists: true)
-				input[2] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/excludeSamples.txt", checkIfExists: true)
-
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/hapibd/target.truth.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/hapibd/target.map', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/hapibd/excludeSamples.txt', checkIfExists: true)
                 """
             }
         }
@@ -91,7 +76,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
