@@ -28,19 +28,10 @@ process RIBOCODE_PREPARE {
         -o annotation \\
         $args
 
-    # Pre-build the pyfasta .gdx/.flat sidecars for transcripts_sequence.fa using RiboCode's
-    # own key_fn (RiboCode.prepare_transcripts.get_chrom), so the published annotation directory
-    # is complete and downstream readers don't trigger pyfasta's lazy first-read index write.
-    python - <<'PYTHON'
-from pyfasta import Fasta
-def key_fn(name):
-    if ' ' in name:
-        return name.split()[0]
-    if '|' in name:
-        return name.split('|')
-    return name
-Fasta('annotation/transcripts_sequence.fa', key_fn=key_fn)
-PYTHON
+    # Pre-build the pyfasta .gdx/.flat sidecars by instantiating RiboCode's own GenomeSeq -
+    # so the published annotation is complete and downstream readers don't trigger pyfasta's
+    # lazy first-read index write.
+    python -c "from RiboCode.prepare_transcripts import GenomeSeq; GenomeSeq('annotation/transcripts_sequence.fa')"
     """
 
     stub:
