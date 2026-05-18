@@ -21,11 +21,17 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
                 return [ meta, vcf ]
         }
 
+    ch_for_index = ch_input.no_tbi
+        .multiMap { meta, vcf -> 
+            files: [ meta, vcf ]
+            format: vcf.name.endsWith(".bcf.gz") ? "bcf" : "vcf"
+        }
+
     HTSLIB_BGZIPTABIX(
-        ch_input.no_tbi.map { meta, vcf -> [meta, vcf, [], []] },
+        ch_for_index.files.map { meta, vcf -> [meta, vcf, [], []] },
         "compress",
         true,
-        "vcf"
+        ch_for_index.format
     )
 
     ch_somalierextract_input = HTSLIB_BGZIPTABIX.out.output.join(
