@@ -17,6 +17,9 @@ process AMULETY_EMBED {
     tuple val(meta), path("${task.ext.prefix ?: meta.id}.tsv"), emit: embedding
     tuple val(meta), path("*metadata.tsv"), emit: embedding_metadata
     tuple val("${task.process}"), val('amulety'), eval("amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'"), emit: versions_amulety, topic: versions
+    tuple val("${task.process}"), val('python'), eval("python --version 2>&1 | grep -o 'Python [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'"), emit: versions_python, topic: versions
+    tuple val("${task.process}"), val('pytorch'), eval("python -c 'import torch; print(torch.__version__)'"), emit: versions_pytorch, topic: versions
+    tuple val("${task.process}"), val('transformers'), eval("python -c 'import transformers; print(transformers.__version__)'"), emit: versions_transformers, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -15,6 +15,9 @@ process AMULETY_TRANSLATE {
     tuple val(meta), path("*_translated.tsv"), emit: repertoire_translated
     tuple val("${task.process}"), val('amulety'), eval("amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'"), emit: versions_amulety, topic: versions
     tuple val("${task.process}"), val('igblastn'), eval("igblastn -version | grep -o 'igblast[0-9\\. ]\\+' | grep -o '[0-9\\. ]\\+'"), emit: versions_igblastn, topic: versions
+    tuple val("${task.process}"), val('python'), eval("python --version 2>&1 | grep -o 'Python [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'"), emit: versions_python, topic: versions
+    tuple val("${task.process}"), val('pytorch'), eval("python -c 'import torch; print(torch.__version__)'"), emit: versions_pytorch, topic: versions
+    tuple val("${task.process}"), val('transformers'), eval("python -c 'import transformers; print(transformers.__version__)'"), emit: versions_transformers, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
