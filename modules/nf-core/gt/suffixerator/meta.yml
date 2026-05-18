@@ -48,7 +48,7 @@ output:
       - genometools:
           type: string
           description: The name of the tool
-      - gt --version | sed '1!d;s/gt (GenomeTools) //':
+      - gt --version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -59,7 +59,7 @@ topics:
       - genometools:
           type: string
           description: The name of the tool
-      - gt --version | sed '1!d;s/gt (GenomeTools) //':
+      - gt --version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
