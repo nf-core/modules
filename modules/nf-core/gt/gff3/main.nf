@@ -13,7 +13,7 @@ process GT_GFF3 {
     output:
     tuple val(meta), path("*.gt.gff3")  , emit: gt_gff3  , optional: true
     tuple val(meta), path("*.error.log"), emit: error_log, optional: true
-    tuple val("${task.process}"), val('genometools'), eval("gt --version | sed '1!d;s/gt (GenomeTools) //'"), emit: versions_gt, topic: versions
+    tuple val("${task.process}"), val('genometools'), eval("gt --version | sed '1!d;s/.* //'"), emit: versions_gt, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
