@@ -61,11 +61,10 @@ workflow VCF_GATHER_BCFTOOLS {
         "vcf"
     )
 
-    ch_vcf_index = ch_tabix_input
-        .join(HTSLIB_BGZIPTABIX.out.index)
+    ch_vcf_index = HTSLIB_BGZIPTABIX.out.output.join(HTSLIB_BGZIPTABIX.out.index)
 
     emit:
-    vcf       = ch_vcf_concat         // channel: [ val(meta), [ vcf ] ]
-    index     = HTSLIB_BGZIPTABIX.out.index // channel: [ val(meta), [ tbi or csi ] ]
-    vcf_index = ch_vcf_index          // channel: [ val(meta), [ vcf ], [ tbi or csi ] ]
+    vcf       = HTSLIB_BGZIPTABIX.out.output // channel: [ val(meta), [ vcf ] ]
+    index     = HTSLIB_BGZIPTABIX.out.index  // channel: [ val(meta), [ tbi or csi ] ]
+    vcf_index = ch_vcf_index                 // channel: [ val(meta), [ vcf ], [ tbi or csi ] ]
 }
