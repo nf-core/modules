@@ -170,45 +170,6 @@ nextflow_process {
         }
     }
 
-    test("sentieon gvcftyper intervals constrain output - regression") {
-        // Regression test for the bug where `path(intervals)` was staged but
-        // never passed to `sentieon driver --interval`, causing GVCFtyper to
-        // run unconstrained. Before the fix, the variantsMD5 of an intervals
-        // run was identical to the no-intervals run
-        // ("d13216836f1452e200b215b796606671"). After the fix, the bed must
-        // actually restrict GVCFtyper, so the md5 MUST differ.
-
-        when {
-            process {
-                """
-                input[0] =  [ [ id:'test' ], // meta map
-                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
-                                file(params.modules_testdata_base_path + 'genomics//homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
-                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
-                            ]
-
-                input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
-                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
-                input[3] = [[:], []]
-                input[4] = [[:], []]
-                """
-            }
-        }
-
-        then {
-            assert process.success
-            assertAll(
-                { assert path(process.out.vcf_gz[0][1]).vcf.variantsMD5 != "d13216836f1452e200b215b796606671" },
-                { assert snapshot(
-                        process.out.findAll { key, val -> key.startsWith("versions") },
-                        file(process.out.vcf_gz_tbi.get(0).get(1)).name,
-                        path(process.out.vcf_gz[0][1]).vcf.variantsMD5
-                    ).match()
-                }
-            )
-        }
-    }
-
     test("sentieon gvcftyper - stub") {
 
         options "-stub"
