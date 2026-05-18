@@ -96,7 +96,7 @@ process LAST_MAFCONVERT {
             touch ${prefix}.${format}
             ;;
         *)
-            echo stub | gzip --no-name > ${prefix}.${format}.gz
+            echo "" | gzip > ${prefix}.${format}.gz
             ;;
     esac
     """

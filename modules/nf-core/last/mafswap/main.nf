@@ -29,6 +29,6 @@ process LAST_MAFSWAP {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo stub | gzip --no-name > ${prefix}.swapped.maf.gz
+    echo "" | gzip > ${prefix}.swapped.maf.gz
     """
 }

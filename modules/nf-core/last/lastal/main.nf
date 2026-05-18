@@ -94,7 +94,7 @@ process LAST_LASTAL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     INDEX_NAME=STUB
-    echo stub | gzip --no-name > ${prefix}.\$INDEX_NAME.maf.gz
+    echo "" | gzip > ${prefix}.\$INDEX_NAME.maf.gz
     touch ${prefix}.tsv
     """
 }

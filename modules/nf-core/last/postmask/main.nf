@@ -31,6 +31,6 @@ process LAST_POSTMASK {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    echo stub | gzip --no-name > ${prefix}.maf.gz
+    echo "" | gzip > ${prefix}.maf.gz
     """
 }
