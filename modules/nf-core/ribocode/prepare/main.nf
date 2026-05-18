@@ -28,7 +28,9 @@ process RIBOCODE_PREPARE {
         -o annotation \\
         $args
 
-    # Pre-build pyfasta .gdx/.flat with RiboCode's key_fn so consumers don't write to staged inputs.
+    # Pre-build the pyfasta .gdx/.flat sidecars for transcripts_sequence.fa using RiboCode's
+    # own key_fn (RiboCode.prepare_transcripts.get_chrom), so the published annotation directory
+    # is complete and downstream readers don't trigger pyfasta's lazy first-read index write.
     python - <<'PYTHON'
 from pyfasta import Fasta
 def key_fn(name):
