@@ -64,6 +64,13 @@ input:
           GTF-format annotation file for reference sequences used in the bam file
         pattern: "*.gtf"
         ontologies: []
+    - reference_gtf:
+        type: file
+        description: |
+          Optional secondary GTF annotation passed to ribotish as `-a` (e.g. a
+          MANE/RefSeq overlay). Pass `[]` to omit.
+        pattern: "*.gtf"
+        ontologies: []
   - - meta4:
         type: map
         description: |

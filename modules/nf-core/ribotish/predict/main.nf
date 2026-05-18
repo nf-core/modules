@@ -10,7 +10,7 @@ process RIBOTISH_PREDICT {
     input:
     tuple val(meta), path(bam_ribo), path(bai_ribo)
     tuple val(meta2), path(bam_ti), path(bai_ti)
-    tuple val(meta3), path(fasta), path(gtf)
+    tuple val(meta3), path(fasta), path(gtf), path(reference_gtf, stageAs: 'secondary.gtf')
     tuple val(meta4), path(candidate_orfs)
     tuple val(meta5), path(para_ribo)
     tuple val(meta6), path(para_ti)
@@ -27,6 +27,7 @@ process RIBOTISH_PREDICT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference_gtf_arg = reference_gtf ? "-a ${reference_gtf}" : ''
 
     ribo_bam_cmd = ''
     ti_bam_cmd = ''
@@ -48,6 +49,7 @@ process RIBOTISH_PREDICT {
         $ti_bam_cmd \\
         -f $fasta \\
         -g $gtf \\
+        $reference_gtf_arg \\
         -o ${prefix}_pred.txt \\
         --allresult ${prefix}_all.txt \\
         --transprofile ${prefix}_transprofile.py \\
