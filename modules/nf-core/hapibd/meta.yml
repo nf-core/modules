@@ -85,7 +85,7 @@ output:
       - hapibd:
           type: string
           description: The name of the tool
-      - hap-ibd 2>&1 | sed '1!d;s/^hap-ibd.jar //;s/ .*//':
+      - hap-ibd 2>&1 | sed '1!d;s/^.* version //;s/,.*//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -96,7 +96,7 @@ topics:
       - hapibd:
           type: string
           description: The name of the tool
-      - hap-ibd 2>&1 | sed '1!d;s/^hap-ibd.jar //;s/ .*//':
+      - hap-ibd 2>&1 | sed '1!d;s/^.* version //;s/,.*//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
