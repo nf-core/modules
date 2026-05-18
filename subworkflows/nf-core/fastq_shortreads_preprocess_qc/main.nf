@@ -130,7 +130,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         ch_complexity_filter_log = FASTQ_COMPLEXITY_FILTER.out.logfile
         ch_complexity_filter_report = FASTQ_COMPLEXITY_FILTER.out.report
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_COMPLEXITY_FILTER.out.multiqc_files)
-        ch_versions = ch_versions.mix(FASTQ_COMPLEXITY_FILTER.out.versions)
     }
 
     // deduplication
