@@ -4,8 +4,8 @@ process MULTIQC {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1b/1bef8af6be88c5733461959c46ac8ef73d18f65277f62a1695d0e1633054f9c2/data'
-        : 'community.wave.seqera.io/library/multiqc:1.34--db7c73dae76bc9e6'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f0/f0cd2422028bcd6fda381aa006c003630872d7eee3fc2eed76bb067dd5229181/data'
+        : 'community.wave.seqera.io/library/multiqc:1.35--5f40ae3381b1c04b'}"
 
     input:
     tuple val(meta), path(multiqc_files, stageAs: "?/*"), path(multiqc_config, stageAs: "?/*"), path(multiqc_logo), path(replace_names), path(sample_names)
