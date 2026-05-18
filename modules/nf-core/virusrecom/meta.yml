@@ -23,10 +23,10 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - alignment:
+    - fasta:
         type: file
-        description: Aligned FASTA file containing viral sequences
-        pattern: "*.{fasta,fa,fna}"
+        description: Aligned or unaligned FASTA file containing viral sequences
+        pattern: "*.{fasta,fa,fna,fas}"
         ontologies: []
     - mapping:
         type: file
@@ -34,6 +34,17 @@ input:
         pattern: "*.{txt,tsv}"
         ontologies:
           - edam: http://edamontology.org/format_3475
+    - iwic:
+        type: file
+        description: Optional CSV file containing pre-computed WIC values. Use [] to skip.
+        pattern: "*.csv"
+        ontologies: []
+  - is_aligned:
+      type: boolean
+      description: Whether the input fasta file is already aligned (true) or unaligned (false)
+  - alignment_tool:
+      type: string
+      description: Alignment tool to use for unaligned sequences (e.g. mafft, muscle, clustalo)
 output:
   results:
     - - meta:
@@ -41,10 +52,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${meta.id}/:
+      - "${meta.id}/":
           type: directory
-          description: Directory containing virusrecom output files including WIC
-            plots and recombination tables
+          description: Directory containing virusrecom output files including WIC plots and recombination tables
   versions_virusrecom:
     - - ${task.process}:
           type: string
@@ -52,7 +62,7 @@ output:
       - virusrecom:
           type: string
           description: The name of the tool
-      - "virusrecom -h 2>&1 | grep 'Version:' | sed 's/.*Version: //' | sed 's/ (.*//'":
+      - "virusrecom -h 2>&1 | sed -n 's/.*Version: \\([^ ]*\\).*/\\1/p'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -63,7 +73,7 @@ topics:
       - virusrecom:
           type: string
           description: The name of the tool
-      - "virusrecom -h 2>&1 | grep 'Version:' | sed 's/.*Version: //' | sed 's/ (.*//'":
+      - "virusrecom -h 2>&1 | sed -n 's/.*Version: \\([^ ]*\\).*/\\1/p'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
