@@ -27,6 +27,18 @@ process RIBOCODE_PREPARE {
         -f ${fasta} \\
         -o annotation \\
         $args
+
+    # Pre-build pyfasta .gdx/.flat with RiboCode's key_fn so consumers don't write to staged inputs.
+    python - <<'PYTHON'
+from pyfasta import Fasta
+def key_fn(name):
+    if ' ' in name:
+        return name.split()[0]
+    if '|' in name:
+        return name.split('|')
+    return name
+Fasta('annotation/transcripts_sequence.fa', key_fn=key_fn)
+PYTHON
     """
 
     stub:
@@ -36,6 +48,8 @@ process RIBOCODE_PREPARE {
 
     touch annotation/transcripts_cds.txt
     touch annotation/transcripts_sequence.fa
+    touch annotation/transcripts_sequence.fa.gdx
+    touch annotation/transcripts_sequence.fa.flat
     touch annotation/transcripts.pickle
     """
 }
