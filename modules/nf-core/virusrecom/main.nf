@@ -9,6 +9,7 @@ process VIRUSRECOM {
 
     input:
     tuple val(meta), path(fasta), path(mapping), path(iwic)
+    val(query)
     val(is_aligned)
     val(alignment_tool)
 
@@ -37,7 +38,8 @@ process VIRUSRECOM {
         ${input_command} \\
         ${map_command} \\
         ${at_command} \\
-        -o ${prefix} \\
+        -q ${query} \\
+        -o ${meta.id} \\
         -t ${task.cpus} \\
         ${args}
     """
@@ -45,7 +47,7 @@ process VIRUSRECOM {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}
-    touch ${prefix}/stub_output.txt
+    mkdir -p ${meta.id}
+    touch ${meta.id}/stub_output.txt
     """
 }

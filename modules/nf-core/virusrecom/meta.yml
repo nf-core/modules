@@ -36,15 +36,22 @@ input:
           - edam: http://edamontology.org/format_3475
     - iwic:
         type: file
-        description: Optional CSV file containing pre-computed WIC values. Use [] to skip.
+        description: Optional CSV file containing pre-computed WIC values. Use []
+          to skip.
         pattern: "*.csv"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3752
+  - query:
+      type: string
+      description: Name of the query lineage to test for recombination (e.g. query_recombinant). Use auto to scan all lineages.
   - is_aligned:
       type: boolean
-      description: Whether the input fasta file is already aligned (true) or unaligned (false)
+      description: Whether the input fasta file is already aligned (true) or
+        unaligned (false)
   - alignment_tool:
       type: string
-      description: Alignment tool to use for unaligned sequences (e.g. mafft, muscle, clustalo)
+      description: Alignment tool to use for unaligned sequences (e.g. mafft,
+        muscle, clustalo)
 output:
   results:
     - - meta:
@@ -54,7 +61,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "${meta.id}/":
           type: directory
-          description: Directory containing virusrecom output files including WIC plots and recombination tables
+          description: Directory containing virusrecom output files including WIC
+            plots and recombination tables
   versions_virusrecom:
     - - ${task.process}:
           type: string
