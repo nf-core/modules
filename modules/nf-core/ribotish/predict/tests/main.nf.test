@@ -53,8 +53,10 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.predictions[0][1]).getText().contains("ENSG00000132640\tENST00000254977\tBTBD3\tprotein_coding\t20:11890767-11923666:+\tATG\t45\t1743\tExtended\t0\t0\tNone\t0.013377070461772932\tT\tNone\tNone\t0.02118962148347") },
                 { assert path(process.out.all[0][1]).getText().contains("ENSG00000132640\tENST00000254977\tBTBD3\tprotein_coding\t20:11890767-11923666:+\tATG\t45\t1743\tExtended\t0\t0\tNone\t0.013377070461772932\tT\tNone\tNone\t0.02118962148347") },
-                { assert snapshot(process.out.transprofile).match("transprofile_single_end_single_ribo_bam") },
-                { assert snapshot(process.out.versions_ribotish).match("versions_ribotish_single_end_single_ribo_bam") }
+                { assert snapshot(
+                    process.out.transprofile,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -88,10 +90,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.predictions).match("predictions_single_end_single_ribo_bam_stub") },
-                { assert snapshot(process.out.all).match("all_single_end_single_ribo_bam_stub") },
-                { assert snapshot(process.out.transprofile).match("transprofile_single_end_single_ribo_bam_stub") },
-                { assert snapshot(process.out.versions_ribotish).match("versions_ribotish_single_end_single_ribo_bam_stub") }
+                { assert snapshot(
+                    process.out.predictions,
+                    process.out.all,
+                    process.out.transprofile,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -131,8 +135,10 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.predictions[0][1]).getText().contains("ENSG00000284776\tENST00000618693\t\tprotein_coding\t20:18567478-18744216:+\tATG\t26\t695\tAnnotated\t0\t0\tNone\t0.0006123183014212") },
                 { assert path(process.out.all[0][1]).getText().contains("ENSG00000284776\tENST00000618693\t\tprotein_coding\t20:18567478-18744216:+\tATG\t26\t695\tAnnotated\t0\t0\tNone\t0.0006123183014212") },
-                { assert snapshot(process.out.transprofile).match("transprofile_single_end_multi_ribo_bam") },
-                { assert snapshot(process.out.versions_ribotish).match("versions_ribotish_single_end_multi_ribo_bam") }
+                { assert snapshot(
+                    process.out.transprofile,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -172,10 +178,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.predictions).match("predictions_single_end_multi_ribo_bam_stub") },
-                { assert snapshot(process.out.all).match("all_single_end_multi_ribo_bam_stub") },
-                { assert snapshot(process.out.transprofile).match("transprofile_single_end_multi_ribo_bam_stub") },
-                { assert snapshot(process.out.versions_ribotish).match("versions_ribotish_single_end_multi_ribo_bam_stub") }
+                { assert snapshot(
+                    process.out.predictions,
+                    process.out.all,
+                    process.out.transprofile,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
