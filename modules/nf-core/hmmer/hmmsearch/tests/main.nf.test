@@ -16,8 +16,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
                     false,
                     false,
                     false
@@ -46,8 +46,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
                     true,
                     true,
                     true
@@ -82,8 +82,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
                     false,
                     false,
                     false
@@ -110,8 +110,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
                     true,
                     true,
                     true
