@@ -29,6 +29,12 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3016"
           - edam: "http://edamontology.org/format_3615"
+    - strategy_flag:
+        type: string
+        description: |
+          Merge strategy for octopusv merge. Valid values: --union, --intersect, --specific,
+          --min-support, --exact-support, --max-support, --expression. Defaults to
+          --union when empty.
 output:
   svcf:
     - - meta:

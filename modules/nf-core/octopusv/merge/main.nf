@@ -8,7 +8,7 @@ process OCTOPUSV_MERGE {
         : 'quay.io/biocontainers/octopusv:0.3.2--pyhdfd78af_0'}"
 
     input:
-    tuple val(meta), path(svcfs)
+    tuple val(meta), path(svcfs), val(strategy_flag)
 
     output:
     tuple val(meta), path("*.svcf"), emit: svcf
@@ -21,29 +21,27 @@ process OCTOPUSV_MERGE {
     def args = (task.ext.args ?: '').trim()
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def strategy_flags = ['--union', '--intersect', '--specific', '--min-support', '--exact-support', '--max-support', '--expression']
-
-    def explicit_flags = strategy_flags.findAll { flag -> args.tokenize().contains(flag) }
-    if (explicit_flags.size() > 1) {
-        error("OCTOPUSV_MERGE: multiple merge strategies specified: ${explicit_flags.join(', ')}")
-    }
-
-    if (explicit_flags.isEmpty()) {
-        args = "--union ${args}".trim()
+    def merge_strategy = (strategy_flag ?: '').trim()
+    if (!merge_strategy) {
+        merge_strategy = '--union'
     }
 
     """
-    octopusv merge -i ${svcfs.join(' ')} \\
+    octopusv merge -i ${svcfs} \\
         -o ${prefix}.svcf \\
+        ${merge_strategy} \\
         ${args}
     """
 
     stub:
     def args = (task.ext.args ?: '').trim()
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def merge_strategy = (strategy_flag ?: '').trim()
+    if (!merge_strategy) {
+        merge_strategy = '--union'
+    }
     """
-    echo ${args}
+    echo ${merge_strategy} ${args}
 
     touch ${prefix}.svcf
     """
