@@ -38,6 +38,7 @@ jobs:
     runs-on:
       - runs-on=${{ github.run_id }}-nf-test-changes-gpu
       - runner=4cpu-linux-x64
+      - volume=40gb
       - image=ubuntu22-full-x64
     outputs:
       # gpu tag outputs
