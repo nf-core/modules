@@ -43,8 +43,11 @@ input:
           - edam: http://edamontology.org/format_3746
   - sample_metadata:
       type: file
-      description: Tab-separated metadata file. Rows are samples; columns are metadata fields. Optional, pass [] to omit.
+      description: Tab-separated metadata file. Rows are samples; columns are
+        metadata fields. Optional, pass [] to omit.
       pattern: "*.tsv"
+      ontologies:
+        - edam: http://edamontology.org/format_3475
   - config:
       type: file
       description: |
@@ -72,7 +75,7 @@ output:
       - grimer:
           type: string
           description: The name of the tool
-      - grimer --version | sed "s/grimer //":
+      - grimer --version 2>&1 | tail -1:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -83,7 +86,7 @@ topics:
       - grimer:
           type: string
           description: The name of the tool
-      - grimer --version | sed "s/grimer //":
+      - grimer --version 2>&1 | tail -1:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
