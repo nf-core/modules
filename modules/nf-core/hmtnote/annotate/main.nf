@@ -12,7 +12,7 @@ process HMTNOTE_ANNOTATE {
 
     output:
     tuple val(meta), path("*_annotated.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('hmtnote'), eval("hmtnote --version 2>&1 | sed 's/.*version //'"), emit: versions_hmtnote, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,22 +24,13 @@ process HMTNOTE_ANNOTATE {
     """
     hmtnote \\
         annotate \\
-        $vcf \\
+        ${vcf} \\
         ${prefix}_annotated.vcf \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmtnote: \$(echo \$(hmtnote --version 2>&1) | sed 's/^.*hmtnote, version //; s/Using.*\$//' ))
-    END_VERSIONS
+        ${args}
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_annotated.vcf
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmtnote: \$(echo \$(hmtnote --version 2>&1) | sed 's/^.*hmtnote, version //; s/Using.*\$//' ))
-    END_VERSIONS
     """
 }
