@@ -2,11 +2,10 @@
 name: "fasta_gtf_bam_rpbp"
 description: |
   End-to-end Rp-Bp execution given a genome FASTA, an annotation GTF and a
-  set of Ribo-seq BAMs. Renders the Rp-Bp YAML config, builds the Rp-Bp
-  genome index once per run, then runs the per-sample ORF prediction chain
-  (`bam_rpbp_predictorfs`) on each BAM. Emits per-sample predicted-ORF BED,
-  DNA FASTA, protein FASTA and Bayes factor BED for downstream
-  multi-caller aggregation.
+  set of Ribo-seq BAMs. Builds the Rp-Bp BED reference once per run, then
+  runs the per-sample ORF prediction chain (`bam_rpbp_predictorfs`) on each
+  BAM. Emits per-sample predicted-ORF BED, DNA FASTA, protein FASTA and
+  Bayes factor BED for downstream multi-caller aggregation.
 keywords:
   - rpbp
   - orf
@@ -14,7 +13,6 @@ keywords:
   - translation
   - riboseq
 components:
-  - rpbp/buildconfig
   - rpbp/preparegenome
   - bam_rpbp_predictorfs
 input:
@@ -28,20 +26,11 @@ input:
         Single-value channel of genome FASTA + annotation GTF. The GTF may
         be canonical or a hybrid (e.g. extended-ORF mode).
         Structure: [ val(meta), path(fasta), path(gtf) ]
-  - extra_yaml:
-      description: |
-        Free-form YAML appended to the generated config (e.g. min metagene
-        counts). Pass `''` for defaults.
-        Structure: val(extra_yaml)
 output:
-  - config:
-      description: |
-        Rendered Rp-Bp YAML config.
-        Structure: [ val(meta), path(rpbp_config.yaml) ]
   - index:
       description: |
-        Prepared Rp-Bp genome index directory plus pass-through config.
-        Structure: [ val(meta), path(rpbp_index), path(config) ]
+        Prepared Rp-Bp BED reference directory.
+        Structure: [ val(meta), path(rpbp_index) ]
   - transcript_bed:
       description: |
         Annotated transcripts BED produced by `rpbp/preparegenome`.
@@ -49,11 +38,11 @@ output:
   - orfs_genomic_bed:
       description: |
         Per-ORF genomic BED produced by `rpbp/preparegenome`.
-        Structure: [ val(meta), path(*.orfs-genomic.bed.gz) ]
+        Structure: [ val(meta), path(*.orfs-genomic.annotated.bed.gz) ]
   - orfs_exons_bed:
       description: |
         Per-ORF exons BED produced by `rpbp/preparegenome`.
-        Structure: [ val(meta), path(*.orfs-exons.bed.gz) ]
+        Structure: [ val(meta), path(*.orfs-exons.annotated.bed.gz) ]
   - predicted:
       description: |
         Per-sample final filtered predicted-ORF BED.

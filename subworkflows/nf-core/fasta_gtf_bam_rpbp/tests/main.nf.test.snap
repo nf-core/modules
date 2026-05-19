@@ -7,7 +7,13 @@
                         {
                             "id": "reference"
                         },
-                        "rpbp_config.yaml:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "reference.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            [
+                                "reference.orfs-exons.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                "reference.orfs-genomic.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                            ]
+                        ]
                     ]
                 ],
                 "1": [
@@ -15,14 +21,7 @@
                         {
                             "id": "reference"
                         },
-                        [
-                            "reference.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                            [
-                                "reference.orfs-exons.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                                "reference.orfs-genomic.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                            ]
-                        ],
-                        "rpbp_config.yaml:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "reference.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "2": [
@@ -30,7 +29,7 @@
                         {
                             "id": "reference"
                         },
-                        "reference.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "reference.orfs-genomic.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "3": [
@@ -38,18 +37,10 @@
                         {
                             "id": "reference"
                         },
-                        "reference.orfs-genomic.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "reference.orfs-exons.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "4": [
-                    [
-                        {
-                            "id": "reference"
-                        },
-                        "reference.orfs-exons.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "5": [
                     [
                         {
                             "id": "test",
@@ -59,7 +50,7 @@
                         "test.predicted-orfs.filtered.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "6": [
+                "5": [
                     [
                         {
                             "id": "test",
@@ -69,7 +60,7 @@
                         "test.predicted-orfs.filtered.dna.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "7": [
+                "6": [
                     [
                         {
                             "id": "test",
@@ -79,7 +70,7 @@
                         "test.predicted-orfs.filtered.protein.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "8": [
+                "7": [
                     [
                         {
                             "id": "test",
@@ -87,14 +78,6 @@
                             "strandedness": "forward"
                         },
                         "test.bayes-factors.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "config": [
-                    [
-                        {
-                            "id": "reference"
-                        },
-                        "rpbp_config.yaml:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "dna_fasta": [
@@ -115,11 +98,10 @@
                         [
                             "reference.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
                             [
-                                "reference.orfs-exons.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                                "reference.orfs-genomic.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                                "reference.orfs-exons.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                "reference.orfs-genomic.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                             ]
-                        ],
-                        "rpbp_config.yaml:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "orf_bayes": [
@@ -137,7 +119,7 @@
                         {
                             "id": "reference"
                         },
-                        "reference.orfs-exons.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "reference.orfs-exons.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "orfs_genomic_bed": [
@@ -145,7 +127,7 @@
                         {
                             "id": "reference"
                         },
-                        "reference.orfs-genomic.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "reference.orfs-genomic.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "predicted": [
@@ -178,7 +160,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-19T12:09:18.793223114",
+        "timestamp": "2026-05-19T15:04:32.197048587",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.1"
@@ -191,10 +173,10 @@
             "test.predicted-orfs.filtered.protein.fa",
             "test.bayes-factors.bed.gz",
             "reference.annotated.bed.gz",
-            "reference.orfs-genomic.bed.gz",
-            "reference.orfs-exons.bed.gz"
+            "reference.orfs-genomic.annotated.bed.gz",
+            "reference.orfs-exons.annotated.bed.gz"
         ],
-        "timestamp": "2026-05-19T12:09:08.460604272",
+        "timestamp": "2026-05-19T15:04:21.925211149",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.1"

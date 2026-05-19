@@ -1,17 +1,24 @@
 name: "rpbp_preparegenome"
 description: |
-  Build the Rp-Bp genome index (`prepare-rpbp-genome`). Produces the per-genome
-  files (BED, transcript FASTA, STAR/HISAT indices, ribosomal index) required by
-  `predict-translated-orfs`. Runs once per pipeline invocation.
+  Build the Rp-Bp BED reference files required by `predict-translated-orfs`.
 
-  STAR must be available on PATH; the bundled Wave container co-installs
-  `rpbp` and `star`.
+  Invokes Rp-Bp's `get_orfs` Python function directly to chain
+  `gtf-to-bed12`, `extract-bed-sequences`, `extract-orf-coordinates`,
+  `split-bed12-blocks` and `label-orfs`. Bypasses the `prepare-rpbp-genome`
+  umbrella script so we skip its built-in `bowtie2-build` (rRNA index) and
+  `STAR --runMode genomeGenerate` (alignment index) steps. None of the
+  downstream Rp-Bp tools we wrap consume those indices - upstream alignment
+  is supplied as the BAM.
+
+  A minimal `chrName.txt` (one contig per line) is seeded from the FASTA
+  headers because `gtf-to-bed12` reads it via `--chr-name-file` to control
+  sort order.
 keywords:
   - rpbp
   - orf
   - prepare
   - genome
-  - index
+  - bed
   - riboseq
 tools:
   - "rpbp":
@@ -38,29 +45,19 @@ input:
         description: Annotation GTF (canonical or hybrid, depending on extended-ORF mode).
         pattern: "*.gtf"
         ontologies: []
-    - config_yaml:
-        type: file
-        description: Rp-Bp YAML config (see `rpbp/buildconfig`).
-        pattern: "*.yaml"
-        ontologies: []
 output:
   index:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "rpbp_index":
+      - "${prefix}":
           type: directory
-          description: Rp-Bp prepared genome index directory.
-      - "*.yaml":
-          type: file
-          description: The same config file, passed through for downstream use.
-          pattern: "*.yaml"
-          ontologies: []
+          description: Rp-Bp prepared BED reference directory.
   transcript_bed:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "rpbp_index/*.annotated.bed.gz":
+      - "${prefix}/${name}.annotated.bed.gz":
           type: file
           description: Annotated transcripts BED used by `extract-metagene-profiles`.
           pattern: "*.annotated.bed.gz"
@@ -69,19 +66,19 @@ output:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "rpbp_index/transcript-index/*.orfs-genomic.bed.gz":
+      - "${prefix}/transcript-index/${name}.orfs-genomic.annotated.bed.gz":
           type: file
           description: Per-ORF genomic BED used by `extract-orf-profiles` / `estimate-orf-bayes-factors`.
-          pattern: "*.orfs-genomic.bed.gz"
+          pattern: "*.orfs-genomic.annotated.bed.gz"
           ontologies: []
   orfs_exons_bed:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "rpbp_index/transcript-index/*.orfs-exons.bed.gz":
+      - "${prefix}/transcript-index/${name}.orfs-exons.annotated.bed.gz":
           type: file
           description: Per-ORF exons BED used by `extract-orf-profiles`.
-          pattern: "*.orfs-exons.bed.gz"
+          pattern: "*.orfs-exons.annotated.bed.gz"
           ontologies: []
   versions_rpbp:
     - - ${task.process}:

@@ -40,6 +40,6 @@ process RPBP_ESTIMATEORFBAYESFACTORS {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.bayes-factors.bed.gz
+    echo "" | gzip > ${prefix}.bayes-factors.bed.gz
     """
 }

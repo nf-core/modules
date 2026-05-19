@@ -30,6 +30,6 @@ process RPBP_SELECTPERIODICOFFSETS {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.periodic-offsets.csv.gz
+    echo "" | gzip > ${prefix}.periodic-offsets.csv.gz
     """
 }

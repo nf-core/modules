@@ -8,7 +8,7 @@ process RPBP_ESTIMATEMETAGENEBAYESFACTORS {
         'community.wave.seqera.io/library/rpbp_star:247a8ae84a6babfb' }"
 
     input:
-    tuple val(meta), path(metagene_profile)
+    tuple val(meta), path(profile_csv)
 
     output:
     tuple val(meta), path("${prefix}.metagene-periodicity-bayes-factors.csv.gz"), emit: bayes_factors
@@ -26,7 +26,7 @@ process RPBP_ESTIMATEMETAGENEBAYESFACTORS {
     NONPERIODIC_MODELS=\$(ls \$RPBP_MODELS_BASE/nonperiodic/*.stan | xargs)
 
     estimate-metagene-profile-bayes-factors \\
-        ${metagene_profile} \\
+        ${profile_csv} \\
         ${prefix}.metagene-periodicity-bayes-factors.csv.gz \\
         --periodic-models \$PERIODIC_MODELS \\
         --nonperiodic-models \$NONPERIODIC_MODELS \\
@@ -37,6 +37,6 @@ process RPBP_ESTIMATEMETAGENEBAYESFACTORS {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.metagene-periodicity-bayes-factors.csv.gz
+    echo "" | gzip > ${prefix}.metagene-periodicity-bayes-factors.csv.gz
     """
 }

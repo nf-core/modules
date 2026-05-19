@@ -39,7 +39,7 @@ output:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "*.bayes-factors.bed.gz":
+      - "${prefix}.bayes-factors.bed.gz":
           type: file
           description: Per-ORF translation Bayes factors (BED).
           pattern: "*.bayes-factors.bed.gz"

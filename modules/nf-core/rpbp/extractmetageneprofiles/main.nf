@@ -33,6 +33,6 @@ process RPBP_EXTRACTMETAGENEPROFILES {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.metagene-profile.csv.gz
+    echo "" | gzip > ${prefix}.metagene-profile.csv.gz
     """
 }

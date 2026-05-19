@@ -8,6 +8,72 @@ nextflow_process {
     tag "modules_nfcore"
     tag "rpbp"
     tag "rpbp/estimatemetagenebayesfactors"
+    tag "rpbp/extractmetageneprofiles"
+    tag "rpbp/preparegenome"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "modules/nf-core/gunzip/main.nf"
+            process {
+            """
+            input[0] = [
+                [ id:'reference' ],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
+            ]
+            """
+            }
+        }
+
+        run("RPBP_PREPAREGENOME") {
+            script "../../preparegenome/main.nf"
+            process {
+            """
+            input[0] = GUNZIP.out.gunzip
+                .map { meta, fa -> [
+                    meta,
+                    fa,
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                ] }
+            """
+            }
+        }
+
+        run("RPBP_EXTRACTMETAGENEPROFILES") {
+            script "../../extractmetageneprofiles/main.nf"
+            process {
+            """
+            input[0] = Channel.of([
+                [ id:'test', single_end:true, strandedness:'forward' ],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+            ])
+            input[1] = RPBP_PREPAREGENOME.out.transcript_bed.map { _meta, bed -> bed }.first()
+            """
+            }
+        }
+    }
+
+    test("homo_sapiens chr20 - metagene bayes factors") {
+
+        when {
+            process {
+                """
+                input[0] = RPBP_EXTRACTMETAGENEPROFILES.out.metagene
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bayes_factors[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
 
     test("homo_sapiens chr20 - metagene bayes factors - stub") {
 
@@ -16,10 +82,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:true, strandedness:'forward' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
-                ]
+                input[0] = RPBP_EXTRACTMETAGENEPROFILES.out.metagene
                 """
             }
         }

@@ -22,11 +22,15 @@ process RPBP_EXTRACTORFPROFILES {
 
     script:
     def args = task.ext.args ?: ''
+    // Periodic-length filter thresholds, space-separated:
+    //   <min_metagene_profile_count> <min_metagene_bf_mean> <max_metagene_bf_var> <min_metagene_bf_likelihood>
+    // Defaults mirror rpbp.defaults.metagene_options. Use "None" to disable a filter.
+    def filter_args = (task.ext.args2 ?: '1000 5 None 0.5').tokenize(' ')
     prefix = task.ext.prefix ?: "${meta.id}"
-    def min_count      = task.ext.min_metagene_profile_count   ?: 1000
-    def min_bf_mean    = task.ext.min_metagene_bf_mean         ?: 5
-    def max_bf_var     = task.ext.max_metagene_bf_var          ?: 'None'
-    def min_bf_lik     = task.ext.min_metagene_bf_likelihood   ?: 0.5
+    def min_count      = filter_args[0]
+    def min_bf_mean    = filter_args[1]
+    def max_bf_var     = filter_args[2]
+    def min_bf_lik     = filter_args[3]
     """
     # Replicates the length/offset filter from rpbp's
     # ribo_utils.utils.get_periodic_lengths_and_offsets so the upstream
@@ -74,7 +78,7 @@ PYTHON
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.profiles.mtx.gz
+    echo "" | gzip > ${prefix}.profiles.mtx.gz
     touch ${prefix}.periodic_lengths_offsets.tsv
     """
 }

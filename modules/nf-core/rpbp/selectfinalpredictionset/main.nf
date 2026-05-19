@@ -38,7 +38,7 @@ process RPBP_SELECTFINALPREDICTIONSET {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.predicted-orfs.filtered.bed.gz
+    echo "" | gzip > ${prefix}.predicted-orfs.filtered.bed.gz
     touch ${prefix}.predicted-orfs.filtered.dna.fa
     touch ${prefix}.predicted-orfs.filtered.protein.fa
     """

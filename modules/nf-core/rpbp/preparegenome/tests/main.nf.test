@@ -8,7 +8,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "rpbp"
     tag "rpbp/preparegenome"
-    tag "rpbp/buildconfig"
     tag "gunzip"
 
     setup {
@@ -20,21 +19,6 @@ nextflow_process {
                 [ id:'reference' ],
                 file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
             ]
-            """
-            }
-        }
-
-        run("RPBP_BUILDCONFIG") {
-            script "../../buildconfig/main.nf"
-            process {
-            """
-            input[0] = GUNZIP.out.gunzip.map { meta, fa -> [
-                meta,
-                fa,
-                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
-            ] }
-            input[1] = 'reference'
-            input[2] = ''
             """
             }
         }
@@ -51,7 +35,6 @@ nextflow_process {
                         fa,
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
                     ] }
-                    .join(RPBP_BUILDCONFIG.out.config)
                 """
             }
         }
@@ -60,7 +43,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.index.collect { [ it[0], file(it[1]).list().sort(), file(it[2]).name ] },
+                    process.out.index.collect { [ it[0], file(it[1]).list().sort() ] },
                     file(process.out.transcript_bed[0][1]).name,
                     file(process.out.orfs_genomic_bed[0][1]).name,
                     file(process.out.orfs_exons_bed[0][1]).name,
@@ -83,7 +66,6 @@ nextflow_process {
                         fa,
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
                     ] }
-                    .join(RPBP_BUILDCONFIG.out.config)
                 """
             }
         }

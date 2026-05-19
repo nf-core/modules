@@ -24,7 +24,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
-    - metagene_profile:
+    - profile_csv:
         type: file
         description: Metagene profile CSV produced by `rpbp/extractmetageneprofiles`.
         pattern: "*.metagene-profile.csv.gz"
@@ -34,7 +34,7 @@ output:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "*.metagene-periodicity-bayes-factors.csv.gz":
+      - "${prefix}.metagene-periodicity-bayes-factors.csv.gz":
           type: file
           description: Per-read-length metagene periodicity Bayes factors.
           pattern: "*.metagene-periodicity-bayes-factors.csv.gz"

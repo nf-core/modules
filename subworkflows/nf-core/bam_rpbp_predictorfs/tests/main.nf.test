@@ -10,7 +10,6 @@ nextflow_workflow {
     tag "subworkflows/bam_rpbp_predictorfs"
     tag "bam_rpbp_predictorfs"
     tag "rpbp"
-    tag "rpbp/buildconfig"
     tag "rpbp/preparegenome"
     tag "rpbp/extractmetageneprofiles"
     tag "rpbp/estimatemetagenebayesfactors"
@@ -33,21 +32,6 @@ nextflow_workflow {
             }
         }
 
-        run("RPBP_BUILDCONFIG") {
-            script "../../../../modules/nf-core/rpbp/buildconfig/main.nf"
-            process {
-            """
-            input[0] = GUNZIP.out.gunzip.map { meta, fa -> [
-                meta,
-                fa,
-                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
-            ] }
-            input[1] = 'reference'
-            input[2] = ''
-            """
-            }
-        }
-
         run("RPBP_PREPAREGENOME") {
             script "../../../../modules/nf-core/rpbp/preparegenome/main.nf"
             process {
@@ -58,7 +42,6 @@ nextflow_workflow {
                     fa,
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
                 ] }
-                .join(RPBP_BUILDCONFIG.out.config)
             """
             }
         }
