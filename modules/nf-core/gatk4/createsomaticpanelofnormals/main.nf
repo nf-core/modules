@@ -45,7 +45,7 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "${prefix}" | gzip -c > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     """
 }
