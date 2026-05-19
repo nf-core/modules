@@ -16,8 +16,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/custom/clustervisualization/tests/data/test_features.tsv", checkIfExists: true),
-                    file("${projectDir}/modules/nf-core/custom/clustervisualization/tests/data/test_clusters.csv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_features.tsv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_clusters.csv", checkIfExists: true)
                 ]
                 """
             }
@@ -45,8 +45,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/custom/clustervisualization/tests/data/test_features.tsv", checkIfExists: true),
-                    file("${projectDir}/modules/nf-core/custom/clustervisualization/tests/data/test_clusters.csv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_features.tsv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_clusters.csv", checkIfExists: true)
                 ]
                 """
             }
