@@ -240,85 +240,38 @@ if (is_valid_string(opt\$formula)) {
 
     # Put the contrast variable first in zero-intercept designs so each
     # contrast level is represented directly in the design matrix.
-    form <- as.formula(paste('~ 0 +', paste(model_vars, collapse = ' + ')))
-}
-print(form)
+# Resolve the contrast against the fixed-effects design.
+# nobars() lets the same path handle fixed- and mixed-effects formulae.
+design <- model.matrix(lme4::nobars(form), metadata)
+normalized_coef_names <- make.names(colnames(design))
+cat("Design coefficients:", paste(colnames(design), collapse = ", "), "\n")
 
-# Parallel processing setup
-threads <- as.numeric(opt\$threads)
-
-bp <- MulticoreParam(workers =  threads, RNGseed = opt\$seed, progressbar = FALSE)
-
-# Optionally apply voom
-if (as.logical(opt\$apply_voom)) {
-    # Standard usage of limma/voom
-    dge <- DGEList(countMatrix)
-    dge <- calcNormFactors(dge)
-    vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = bp)
-
-    # Write normalized counts matrix to a TSV file
-     normalized_counts <- vobjDream\$E
-    if (!is.null(opt\$round_digits)) {
-        normalized_counts <- apply(normalized_counts, 2, function(x) round(x, opt\$round_digits))
-    }
-    normalized_counts_with_genes <- data.frame(gene_id = rownames(normalized_counts), normalized_counts, check.names = FALSE, row.names = NULL)
-    write.table(normalized_counts_with_genes,
-        file = paste(opt\$output_prefix, "normalised_counts.tsv", sep = '.'),
-        sep = "	",
-        quote = FALSE,
-        row.names = FALSE)
+# A contrast_string that names a single design coefficient is not a contrast:
+# dream() would reject L as a duplicate name. Test the coefficient directly.
+if (contrast_string %in% normalized_coef_names) {
+    top_table_coef <- colnames(design)[match(contrast_string, normalized_coef_names)]
+    L <- NULL
 } else {
-    # Assume countMatrix roughly follows a normal distribution
-    vobjDream <- countMatrix
+    L <- makeContrasts(contrast = contrast_string, levels = normalized_coef_names)
+    rownames(L) <- colnames(design)
+    stopifnot("exactly one contrast defined" = ncol(L) == 1)
+    top_table_coef <- colnames(L)
 }
+cat("Testing coefficient:", top_table_coef, "\n")
 
-# If contrast_string is provided, use that for makeContrast
-if (!is.null(opt\$contrast_string)) {
-    contrast_string <- opt\$contrast_string
-} else {
-    # Construct the contrast_string
-    treatment_target <- make.names(paste0(opt\$contrast_variable, opt\$contrast_target))
-    treatment_reference <- make.names(paste0(opt\$contrast_variable, opt\$contrast_reference))
-    contrast_string <- paste0(treatment_target, "-", treatment_reference)
-}
+stdev_coef_lim_vals <- as.numeric(unlist(strsplit(opt$stdev_coef_lim, ",")))
+winsor_tail_p_vals  <- as.numeric(unlist(strsplit(opt$winsor_tail_p, ",")))
 
-# define contrasts outside DREAM
-design = model.matrix(lme4::nobars(form), metadata)
-
-# print diagnostic output of design matrix
-head(design, 3)
-cat("Raw coefficient names:\n")
-print(colnames(design))
-
-# Use "normalized" coefficient names to compute contrast vector
-normalized_coef_names = make.names(colnames(design))
-cat("Coefficient names used for contrasts:", paste(normalized_coef_names, collapse = ", "), "\n")
-
-contrast_mat = makeContrasts(contrast = contrast_string, levels = normalized_coef_names)
-# however, reset the coefficient names in the contrast matrix to use the "original" contrast names used by DREAM
-# DREAM will check if the coefficient names match its internal design matrix, so there is no danger that
-# design() and dream() will do things differently without noticing.
-rownames(contrast_mat) = colnames(design)
-stopifnot("exactly one contrast defined"=ncol(contrast_mat) == 1)
-
-# Fit the DREAM model with ddf and reml options.
-# Specifying contrast matrix directly here saves time refitting the model and avoids downstream issues
-# with repeated calling of eBayes
-fitmm <- dream(vobjDream, form, metadata, ddf = opt\$ddf, reml = opt\$reml, BPPARAM = bp, L=contrast_mat)
-
-# Parse stdev_coef_lim and winsor_tail_p into numeric vectors
-stdev_coef_lim_vals <- as.numeric(unlist(strsplit(opt\$stdev_coef_lim, ",")))
-winsor_tail_p_vals  <- as.numeric(unlist(strsplit(opt\$winsor_tail_p, ",")))
-
-# Fit the empirical Bayes model with additional parameters
-fitmm <- eBayes(fitmm, proportion = opt\$proportion,
+fitmm <- dream(vobjDream, form, metadata, L = L,
+               ddf = opt$ddf, reml = opt$reml, BPPARAM = bp)
+fitmm <- eBayes(fitmm, proportion = opt$proportion,
                 stdev.coef.lim = stdev_coef_lim_vals,
-                trend = opt\$trend, robust = opt\$robust,
+                trend = opt$trend, robust = opt$robust,
                 winsor.tail.p = winsor_tail_p_vals)
 
-results <- topTable(fitmm, coef=colnames(contrast_mat), number = Inf,
-                    adjust.method = opt\$adjust.method,
-                    p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
+results <- topTable(fitmm, coef = top_table_coef, number = Inf,
+                    adjust.method = opt$adjust.method,
+                    p.value = opt$p.value, lfc = opt$lfc, confint = opt$confint)
 
 results\$gene_id <- rownames(results)
 results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]
