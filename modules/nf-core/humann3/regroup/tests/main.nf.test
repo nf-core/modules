@@ -29,7 +29,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file("${projectDir}/modules/nf-core/humann3/regroup/tests/test_genefamilies.tsv", checkIfExists: true)
+                    file( params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/test_genefamilies.tsv', checkIfExists: true )
                 ])
                 input[1] = "uniref90_level4ec"
                 input[2] = UNTAR_v3_util.out.untar.map{ it[1] }
@@ -54,7 +54,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file("${projectDir}/modules/nf-core/humann3/regroup/tests/test_genefamilies.tsv", checkIfExists: true)
+                    file( params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/test_genefamilies.tsv', checkIfExists: true )
                 ])
                 input[1] = "uniref90_level4ec"
                 input[2] = UNTAR_v3_util.out.untar.map{ it[1] }
