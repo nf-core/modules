@@ -14,7 +14,7 @@ process SCANPY_PCA {
     output:
     tuple val(meta), path("*.h5ad") , optional: true, emit: h5ad
     tuple val(meta), path("X_*.pkl"), emit: obsm
-    path "versions.yml"             , emit: versions
+    path "versions.yml"             , emit: versions, topic: versions
     tuple val(meta), path("*.zarr") , optional: true, emit: zarr
 
     when:
