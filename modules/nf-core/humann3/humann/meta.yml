@@ -131,6 +131,16 @@ output:
       - metaphlan --version 2>&1 | sed 's/MetaPhlAn version //':
           type: eval
           description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - Python:
+          type: string
+          description: The name of the tool
+      - python --version 2>&1 | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -151,9 +161,19 @@ topics:
       - metaphlan --version 2>&1 | sed 's/MetaPhlAn version //':
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - Python:
+          type: string
+          description: The name of the tool
+      - python --version 2>&1 | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nickp60"
   - "@d4straub"
+  - "@vinisalazar"
 maintainers:
   - "@nickp60"
   - "@vinisalazar"

@@ -23,6 +23,7 @@ process HUMANN3_HUMANN {
     tuple val(meta), path("*.log")                 , emit: log
     tuple val("${task.process}"), val('HUMAnN'),    eval("humann --version 2>&1 | sed 's/humann v//'"),       emit: versions_humann,    topic: versions
     tuple val("${task.process}"), val('MetaPhlAn'), eval("metaphlan --version 2>&1 | sed 's/MetaPhlAn version //'"), emit: versions_metaphlan, topic: versions
+    tuple val("${task.process}"), val('Python'),    eval("python --version 2>&1 | sed 's/Python //'"),               emit: versions_python,    topic: versions
 
     when:
     task.ext.when == null || task.ext.when
