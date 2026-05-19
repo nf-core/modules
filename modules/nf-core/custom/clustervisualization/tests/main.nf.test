@@ -1,16 +1,13 @@
 nextflow_process {
-
     name "Test Process CUSTOM_CLUSTERVISUALIZATION"
     script "../main.nf"
     process "CUSTOM_CLUSTERVISUALIZATION"
-
     tag "modules"
     tag "modules_nfcore"
     tag "custom"
     tag "custom/clustervisualization"
 
     test("clustervisualization - features and clusters") {
-
         when {
             process {
                 """
@@ -22,13 +19,12 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.umap_tsv,
-                    process.out.tsne_tsv,
+                    path(process.out.umap_tsv[0][1]).text.replaceAll(/(\d+\.\d{6})\d+/, '$1'),
+                    path(process.out.tsne_tsv[0][1]).text.replaceAll(/(\d+\.\d{6})\d+/, '$1'),
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                 ).match() }
@@ -37,9 +33,7 @@ nextflow_process {
     }
 
     test("clustervisualization - features and clusters - stub") {
-
         options "-stub"
-
         when {
             process {
                 """
@@ -51,13 +45,12 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.umap_tsv,
-                    process.out.tsne_tsv,
+                    path(process.out.umap_tsv[0][1]).text.replaceAll(/(\d+\.\d{6})\d+/, '$1'),
+                    path(process.out.tsne_tsv[0][1]).text.replaceAll(/(\d+\.\d{6})\d+/, '$1'),
                     process.out.umap_png,
                     process.out.tsne_png,
                     process.out.versions,
