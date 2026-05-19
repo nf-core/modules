@@ -9,8 +9,8 @@ process GRIMER {
 
     input:
     tuple val(meta), path(input_table)
-    path meta2
-    path meta3
+    path sample_metadata
+    path config
 
     output:
     tuple val(meta), path("*.html"), emit: report
@@ -22,8 +22,8 @@ process GRIMER {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def m_arg  = meta2           ? "-m ${meta2}" : ''
-    def c_arg  = meta3           ? "-c ${meta3}" : ''
+    def m_arg  = sample_metadata        ? "-m ${sample_metadata}" : ''
+    def c_arg  = config          ? "-c ${config}"   : ''
     """
     grimer \\
         -i ${input_table} \\

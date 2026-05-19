@@ -10,13 +10,21 @@ nextflow_process {
 
     test("grimer - tsv - basic") {
 
+        setup {
+            // Create a minimal GRIMER-compatible count table on-the-fly
+            def count_table = file("${workDir}/test_count_table.tsv")
+            count_table.text = "#OTU_ID\tsample1\tsample2\tsample3\n" +
+                               "Bacteria;Proteobacteria\t1250\t890\t2100\n" +
+                               "Bacteria;Firmicutes\t430\t1200\t320\n" +
+                               "Viruses;Caudoviricetes\t45\t120\t88\n"
+        }
+
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test_sample' ],
-                    file(params.modules_testdata_base_path + 'genomics/metagenome/test_reads_1.fastq.gz',
-                         checkIfExists: true)
+                    file("${workDir}/test_count_table.tsv")
                 ]
                 input[1] = []
                 input[2] = []
@@ -36,13 +44,20 @@ nextflow_process {
 
         options "-stub"
 
+        setup {
+            def count_table = file("${workDir}/test_count_table.tsv")
+            count_table.text = "#OTU_ID\tsample1\tsample2\tsample3\n" +
+                               "Bacteria;Proteobacteria\t1250\t890\t2100\n" +
+                               "Bacteria;Firmicutes\t430\t1200\t320\n" +
+                               "Viruses;Caudoviricetes\t45\t120\t88\n"
+        }
+
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test_stub' ],
-                    file(params.modules_testdata_base_path + 'genomics/metagenome/test_reads_1.fastq.gz',
-                         checkIfExists: true)
+                    file("${workDir}/test_count_table.tsv")
                 ]
                 input[1] = []
                 input[2] = []
