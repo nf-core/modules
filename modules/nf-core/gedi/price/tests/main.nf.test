@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process GEDI_PRICE"
+    script "../main.nf"
+    process "GEDI_PRICE"
+
+    tag "gunzip"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gedi"
+    tag "gedi/price"
+    tag "gedi/indexgenome"
+
+    // Note: PRICE requires substantially more ribosome-profiling signal than
+    // the chr20 test dataset provides; its ORF inference step fails on such
+    // sparse input. We therefore exercise the module's command-line surface
+    // and output declarations via the stub-mode test only. End-to-end
+    // validation is performed at the pipeline level on real-scale data.
+
+    setup {
+        run("GUNZIP") {
+            script "modules/nf-core/gunzip/main.nf"
+            process {
+            """
+            input[0] = [
+                [ ],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
+            ]
+            """
+            }
+        }
+
+        run("GEDI_INDEXGENOME") {
+            script "../../indexgenome/main.nf"
+            process {
+            """
+            input[0] = GUNZIP.out.gunzip.map{[
+                [id:'homo_sapiens_chr20'],
+                it[1],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+            ]}
+            """
+            }
+        }
+    }
+
+    test("homo_sapiens [bam] - single_end - chr20 - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true) ]
+                ]
+                input[1] = GEDI_INDEXGENOME.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
