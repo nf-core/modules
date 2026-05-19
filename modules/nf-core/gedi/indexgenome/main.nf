@@ -11,7 +11,7 @@ process GEDI_INDEXGENOME {
     tuple val(meta), path(fasta), path(gtf)
 
     output:
-    tuple val(meta), path("${prefix}")                                                    , emit: index
+    tuple val(meta), path("${prefix}"), emit: index
     tuple val("${task.process}"), val('gedi'), eval("gedi -e Version 2>&1 | sed -n 's/.*Gedi version \\([^ ]*\\).*/\\1/p' | head -n 1"), topic: versions, emit: versions_gedi
 
     when:
