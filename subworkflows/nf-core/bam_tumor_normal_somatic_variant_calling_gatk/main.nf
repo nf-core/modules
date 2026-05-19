@@ -57,7 +57,7 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     GATK4_GETPILEUPSUMMARIES_TUMOR(
         ch_pileup_tumor_input,
         ch_fasta,
-        ch_fai,
+        ch_fai.map { meta, fai, _gzi -> [meta, fai] },
         ch_dict,
         ch_germline_resource,
         ch_germline_resource_tbi,
@@ -66,7 +66,7 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     GATK4_GETPILEUPSUMMARIES_NORMAL(
         ch_pileup_normal_input,
         ch_fasta,
-        ch_fai,
+        ch_fai.map { meta, fai, _gzi -> [meta, fai] },
         ch_dict,
         ch_germline_resource,
         ch_germline_resource_tbi,
@@ -99,7 +99,7 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     GATK4_FILTERMUTECTCALLS(
         ch_filtermutect_in,
         ch_fasta,
-        ch_fai,
+        ch_fai.map { meta, fai, _gzi -> [meta, fai] },
         ch_dict,
     )
 
