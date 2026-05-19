@@ -59,8 +59,7 @@ input:
         type: map
         description: |
           Groovy Map containing phenotype information for `--pheno`
-          May optionally include `is_binary` to annotate binary traits
-          e.g. [ id:'test' ] or [ id:'test', is_binary:true ]
+          e.g. [ id:'test' ]
           The phenotype file can be paired with BED/BIM/FAM, VCF, or BCF genotype inputs
     - phe:
         type: file
@@ -118,6 +117,7 @@ authors:
   - "@LorenzoS96"
 maintainers:
   - "@LorenzoS96"
+  - "@lyh970817"
 topics:
   versions:
     - - "${task.process}":
