@@ -77,14 +77,8 @@ process LAST_MAFCONVERT {
             ;;
         cram)
             # Note 1: CRAM output is not supported if the genome is compressed with something else than bgzip.
-            # Note 2: --reference is not needed because the path to the genome files is in the UR field in ${fasta}.dict
-            # Note 3: To prevent relative reference path be replaced with absolute path, we disable cache and EBI querying.
-            # This will not be needed in after htslib > 1.21 is released, see https://github.com/samtools/htslib/pull/1881
-            export REF_CACHE='.'
-            export REF_PATH='.'
-            # Note 4: CRAM version 3.0 is enforced until htsjdk, and therefore nf-test, supports 3.1
             maf-convert $args \$DICT_ARGS sam $maf -r 'ID:${meta.id} SM:${meta.id}' |
-                samtools sort -O cram,version=3.0 \$REF_ARGS -o ${prefix}.cram
+                samtools sort -O cram \$REF_ARGS -o ${prefix}.cram
             ;;
         *)
             maf-convert $args $format $maf |
