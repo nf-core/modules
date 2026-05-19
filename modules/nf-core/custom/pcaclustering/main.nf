@@ -1,4 +1,4 @@
-process CUSTOM_CLUSTERING {
+process CUSTOM_PCACLUSTERING {
     tag "$meta.id"
     label 'process_medium'
 

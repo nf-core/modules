@@ -1,12 +1,12 @@
 nextflow_process {
-    name "Test Process CUSTOM_CLUSTERING"
+    name "Test Process CUSTOM_PCACLUSTERING"
     script "../main.nf"
-    process "CUSTOM_CLUSTERING"
+    process "CUSTOM_PCACLUSTERING"
 
     tag "modules"
     tag "modules_nfcore"
     tag "custom"
-    tag "custom/clustering"
+    tag "custom/pcaclustering"
 
     test("clustering - eigenvec") {
         when {
