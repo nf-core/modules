@@ -20,7 +20,7 @@ process PROPR_PROPD {
     tuple val(meta), path("*.propd.adjacency.csv")        , emit: adjacency                , optional:true
     tuple val(meta), path("*.propd.fdr.tsv")              , emit: fdr                      , optional:true
     path "*.R_sessionInfo.log"                            , emit: session_info
-    path "versions.yml"                                   , emit: versions
+    path "versions.yml"                                   , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
