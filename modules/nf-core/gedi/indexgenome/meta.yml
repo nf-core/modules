@@ -44,12 +44,13 @@ output:
           description: |
             Groovy Map containing reference information
             e.g. `[ id:'homo_sapiens' ]`
-      - "price_index":
+      - ${prefix}:
           type: directory
           description: |
             GEDI genome index directory containing the `.oml` index file and
-            its sidecar resources. Consumed as `-genomic` by PRICE.
-          pattern: "price_index"
+            its sidecar resources. Consumed as `-genomic` by PRICE. Directory
+            name defaults to `meta.id` and can be overridden via `task.ext.prefix`.
+          pattern: "*"
   versions_gedi:
     - - ${task.process}:
           type: string
