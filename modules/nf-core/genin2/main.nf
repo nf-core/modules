@@ -32,7 +32,7 @@ process GENIN2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
-    
+
     touch ${prefix}.tsv
     """
 }
