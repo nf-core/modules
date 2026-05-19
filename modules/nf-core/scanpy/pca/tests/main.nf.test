@@ -9,6 +9,60 @@ nextflow_process {
     tag "scanpy"
     tag "scanpy/pca"
 
+    test("Should emit zarr output for zarr input - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test_zarr' ],
+                        file("${projectDir}/modules/nf-core/scanpy/pca/tests/data/test.zarr", checkIfExists: true)
+                    ]
+                )
+                input[1] = "X_pca"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert process.out.zarr },
+            { assert file(process.out.zarr[0][1]).name == "test_zarr_pca.zarr" }
+            )
+        }
+
+    }
+
+    test("Should run with zarr input") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test_zarr' ],
+                        file("${projectDir}/modules/nf-core/scanpy/pca/tests/data/test.zarr", checkIfExists: true)
+                    ]
+                )
+                input[1] = "X_pca"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert process.out.zarr },
+            { assert file(process.out.zarr[0][1]).name == "test_zarr_pca.zarr" },
+            { assert file(process.out.zarr[0][1] + "/obsm/X_pca/.zarray").exists() },
+            { assert file(process.out.obsm[0][1]).name == "X_test_zarr_pca.pkl" }
+            )
+        }
+
+    }
+
     test("Should run without failures") {
 
         when {

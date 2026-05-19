@@ -12,23 +12,26 @@ process SCANPY_PCA {
     val key_added
 
     output:
-    tuple val(meta), path("*.h5ad") , emit: h5ad
+    tuple val(meta), path("*.h5ad") , optional: true, emit: h5ad
     tuple val(meta), path("X_*.pkl"), emit: obsm
     path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.zarr") , optional: true, emit: zarr
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}_pca"
-    if ("${prefix}.h5ad" == "${h5ad}") {
+    output_file = h5ad.name.endsWith(".zarr") ? "${prefix}.zarr" : "${prefix}.h5ad"
+    if (output_file == h5ad.name) {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     template('pca.py')
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_pca"
-    if ("${prefix}.h5ad" == "${h5ad}") {
+    output_file = h5ad.name.endsWith(".zarr") ? "${prefix}.zarr" : "${prefix}.h5ad"
+    if (output_file == h5ad.name) {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     """
@@ -37,13 +40,17 @@ process SCANPY_PCA {
     export MPLCONFIGDIR=./tmp/mpl
     export NUMBA_CACHE_DIR=./tmp/numba
 
-    touch ${prefix}.h5ad
+    if [[ "${output_file}" == *.zarr ]]; then
+        mkdir -p "${output_file}"
+    else
+        touch "${output_file}"
+    fi
     touch X_${prefix}.pkl
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 -c 'import platform; print(platform.python_version())')
-        scanpy: \$(python3 -c 'import scanpy; print(scanpy.__version__)')
+        scanpy: \$(python3 -c 'import importlib.metadata; print(importlib.metadata.version("scanpy"))')
     END_VERSIONS
     """
 }

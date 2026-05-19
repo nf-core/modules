@@ -9,6 +9,7 @@ os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
 
 import platform
 
+import anndata as ad
 import numpy as np
 import pandas as pd
 import scanpy as sc
@@ -18,7 +19,9 @@ from threadpoolctl import threadpool_limits
 threadpool_limits(int("${task.cpus}"))
 sc.settings.n_jobs = int("${task.cpus}")
 
-adata = sc.read_h5ad("${h5ad}")
+input_file = "${h5ad}"
+output_file = "${output_file}"
+adata = ad.read_zarr(input_file) if input_file.endswith(".zarr") else sc.read_h5ad(input_file)
 prefix = "${prefix}"
 key_added = "${key_added}"
 
@@ -29,7 +32,10 @@ sc.pp.pca(adata, random_state=0, key_added=key_added)
 # This ensures hashes are stable
 adata.obsm[key_added] = np.round(adata.obsm[key_added], 8)
 
-adata.write_h5ad(f"{prefix}.h5ad")
+if output_file.endswith(".zarr"):
+    adata.write_zarr(output_file)
+else:
+    adata.write_h5ad(output_file)
 df = pd.DataFrame(adata.obsm[key_added], index=adata.obs_names)
 df.to_pickle(f"X_{prefix}.pkl")
 
