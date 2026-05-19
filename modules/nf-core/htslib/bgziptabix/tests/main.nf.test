@@ -88,7 +88,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out.index),
+                    sanitizeOutput(process.out),
                     path(process.out.output[0][1]).vcf.getVariantsMD5(),
                 ).match() }
             )
