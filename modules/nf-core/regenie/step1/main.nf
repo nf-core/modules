@@ -1,5 +1,5 @@
 process REGENIE_STEP1 {
-    tag "${meta.id}:${pheno_col}"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -9,14 +9,14 @@ process REGENIE_STEP1 {
 
     input:
     tuple val(meta), path(plink_genotype_file), path(plink_variant_file), path(plink_sample_file)
-    tuple val(meta2), path(pheno), val(pheno_col)
+    tuple val(meta2), path(pheno)
     tuple val(meta3), path(covar)
     val bsize
 
     output:
-    tuple val(meta), path("*_pred.list"), val(pheno_col), emit: predictions
-    tuple val(meta), path("*.loco.gz"), val(pheno_col), emit: loco
-    tuple val(meta), path("*.log"), val(pheno_col), emit: log
+    tuple val(meta), path("*_pred.list"), emit: predictions
+    tuple val(meta), path("*.loco.gz"), emit: loco
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('regenie'), eval('regenie --version 2>&1 | sed -n "1{s/^v//;s/\\.gz$//;p}"'), topic: versions, emit: versions_regenie
 
     when:
@@ -34,7 +34,6 @@ process REGENIE_STEP1 {
         --step 1 \\
         ${genotype_flag} ${input_prefix} \\
         --phenoFile ${pheno} \\
-        --phenoColList ${pheno_col} \\
         ${covar_arg} \\
         --bsize ${bsize_arg} \\
         --gz \\

@@ -53,9 +53,6 @@ input:
         pattern: "*.{phe,pheno,txt,tsv}"
         ontologies:
           - edam: "http://edamontology.org/format_3475" # TSV
-    - pheno_col:
-        type: string
-        description: Phenotype column passed to `--phenoColList`
   - - meta3:
         type: map
         description: |
@@ -84,9 +81,6 @@ output:
           description: REGENIE prediction list file
           pattern: "*_pred.list"
           ontologies: []
-      - pheno_col:
-          type: string
-          description: Phenotype column passed to `--phenoColList`
   loco:
     - - meta:
           type: map
@@ -99,9 +93,6 @@ output:
           pattern: "*.loco.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3987" # GZIP
-      - pheno_col:
-          type: string
-          description: Phenotype column passed to `--phenoColList`
   log:
     - - meta:
           type: map
@@ -114,9 +105,6 @@ output:
           pattern: "*.log"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Text
-      - pheno_col:
-          type: string
-          description: Phenotype column passed to `--phenoColList`
   versions_regenie:
     - - "${task.process}":
           type: string
