@@ -43,21 +43,12 @@ input:
           - edam: http://edamontology.org/format_3746
   - meta2:
       type: file
-      description: |
-        Tab-separated metadata file. Rows are samples; columns are
-        metadata fields. Accepts QIIME2 metadata format. Optional,
-        pass [] to omit.
+      description: Tab-separated metadata file. Rows are samples; columns are metadata fields. Optional, pass [] to omit.
       pattern: "*.tsv"
-      ontologies:
-        - edam: http://edamontology.org/format_3475
   - meta3:
       type: file
-      description: |
-        YAML configuration file defining external tool references,
-        controls, and annotations. Optional, pass [] to omit.
+      description: YAML configuration file defining external tool references, controls, and annotations. Optional, pass [] to omit.
       pattern: "*.{yml,yaml}"
-      ontologies:
-        - edam: http://edamontology.org/format_3750
 output:
   report:
     - - meta:

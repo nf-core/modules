@@ -8,16 +8,14 @@ nextflow_process {
     tag "modules_nfcore"
     tag "grimer"
 
-    test("grimer - tsv - stub") {
-
-        options "-stub"
+    test("grimer - tsv - basic") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test_stub' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/metagenome/test_reads_1.fastq.gz',
                          checkIfExists: true)
                 ]
                 input[1] = []
@@ -29,7 +27,33 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.report }
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("grimer - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/metagenome/test_reads_1.fastq.gz',
+                         checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }
