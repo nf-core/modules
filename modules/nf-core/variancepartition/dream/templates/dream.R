@@ -301,19 +301,19 @@ if (contrast_string %in% normalized_coef_names) {
 }
 cat("Testing coefficient:", top_table_coef, "\n")
 
-stdev_coef_lim_vals <- as.numeric(unlist(strsplit(opt$stdev_coef_lim, ",")))
-winsor_tail_p_vals  <- as.numeric(unlist(strsplit(opt$winsor_tail_p, ",")))
+stdev_coef_lim_vals <- as.numeric(unlist(strsplit(opt\$stdev_coef_lim, ",")))
+winsor_tail_p_vals  <- as.numeric(unlist(strsplit(opt\$winsor_tail_p, ",")))
 
 fitmm <- dream(vobjDream, form, metadata, L = L,
-               ddf = opt$ddf, reml = opt$reml, BPPARAM = bp)
-fitmm <- eBayes(fitmm, proportion = opt$proportion,
+               ddf = opt\$ddf, reml = opt\$reml, BPPARAM = bp)
+fitmm <- eBayes(fitmm, proportion = opt\$proportion,
                 stdev.coef.lim = stdev_coef_lim_vals,
-                trend = opt$trend, robust = opt$robust,
+                trend = opt\$trend, robust = opt\$robust,
                 winsor.tail.p = winsor_tail_p_vals)
 
 results <- topTable(fitmm, coef = top_table_coef, number = Inf,
-                    adjust.method = opt$adjust.method,
-                    p.value = opt$p.value, lfc = opt$lfc, confint = opt$confint)
+                    adjust.method = opt\$adjust.method,
+                    p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
 
 results\$gene_id <- rownames(results)
 results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]
