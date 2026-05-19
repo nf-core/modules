@@ -8,10 +8,8 @@ process VIRUSRECOM {
         'quay.io/biocontainers/virusrecom:1.4.0--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta), path(mapping), path(iwic)
+    tuple val(meta), path(alignment), path(mapping), path(iwic)
     val(query)
-    val(is_aligned)
-    val(alignment_tool)
 
     output:
     tuple val(meta), path("${meta.id}/"), emit: results
@@ -21,23 +19,15 @@ process VIRUSRECOM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args ?: ''
-    def prefix        = task.ext.prefix ?: "${meta.id}"
-    def use_iwic      = iwic ? true : false
-    def input_command = use_iwic   ? "-iwic ${iwic}"
-                      : is_aligned ? "-a ${fasta}"
-                      :              "-ua ${fasta}"
-    def map_command   = use_iwic ? "" : "-map ${mapping}"
-    def at_command    = (!use_iwic && !is_aligned && alignment_tool) ? "-at ${alignment_tool}" : ""
-
-    if (!use_iwic && !is_aligned && !alignment_tool) {
-        error "alignment_tool must be specified when input is unaligned and no iwic is provided"
-    }
+    def args         = task.ext.args ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def use_iwic     = iwic ? true : false
+    def input_cmd    = use_iwic ? "-iwic ${iwic}" : "-a ${alignment}"
+    def map_cmd      = use_iwic ? "" : "-map ${mapping}"
     """
     virusrecom \\
-        ${input_command} \\
-        ${map_command} \\
-        ${at_command} \\
+        ${input_cmd} \\
+        ${map_cmd} \\
         -q ${query} \\
         -o ${meta.id} \\
         -t ${task.cpus} \\

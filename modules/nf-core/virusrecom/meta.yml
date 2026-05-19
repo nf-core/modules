@@ -23,9 +23,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - fasta:
+    - alignment:
         type: file
-        description: Aligned or unaligned FASTA file containing viral sequences
+        description: Aligned FASTA file containing viral sequences. Use [] when providing iwic input.
         pattern: "*.{fasta,fa,fna,fas}"
         ontologies: []
     - mapping:
@@ -43,15 +43,8 @@ input:
           - edam: http://edamontology.org/format_3752
   - query:
       type: string
-      description: Name of the query lineage to test for recombination (e.g. query_recombinant). Use auto to scan all lineages.
-  - is_aligned:
-      type: boolean
-      description: Whether the input fasta file is already aligned (true) or
-        unaligned (false)
-  - alignment_tool:
-      type: string
-      description: Alignment tool to use for unaligned sequences (e.g. mafft,
-        muscle, clustalo)
+      description: Name of the query lineage to test for recombination (e.g.
+        query_recombinant). Use auto to scan all lineages.
 output:
   results:
     - - meta:
