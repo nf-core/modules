@@ -4,7 +4,7 @@ process FUSIONINSPECTOR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'community.wave.seqera.io/library/fusion-inspector_perl-json-xs_perl-carp-assert_pip_pruned:012cccfcb36a1691' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/42/4230f4794a421af3e8caf8de4b5b8a50ecff4768625543d97e2c1cdf5518f38e/data' :
         'community.wave.seqera.io/library/fusion-inspector_perl-json-xs_perl-carp-assert_pip_pruned:367be466d24aba4a'}"
 
     input:
