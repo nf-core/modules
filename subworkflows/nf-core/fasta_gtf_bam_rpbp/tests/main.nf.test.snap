@@ -24,6 +24,36 @@
                         "reference.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
+                "10": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "strandedness": "forward"
+                        },
+                        "test.predicted-orfs.filtered.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "11": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "strandedness": "forward"
+                        },
+                        "test.predicted-orfs.filtered.dna.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "12": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "strandedness": "forward"
+                        },
+                        "test.predicted-orfs.filtered.protein.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "2": [
                     [
                         {
@@ -47,7 +77,7 @@
                             "single_end": true,
                             "strandedness": "forward"
                         },
-                        "test.predicted-orfs.filtered.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.metagene-profile.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "5": [
@@ -57,7 +87,7 @@
                             "single_end": true,
                             "strandedness": "forward"
                         },
-                        "test.predicted-orfs.filtered.dna.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.metagene-periodicity-bayes-factors.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "6": [
@@ -67,10 +97,30 @@
                             "single_end": true,
                             "strandedness": "forward"
                         },
-                        "test.predicted-orfs.filtered.protein.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.periodic-offsets.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "7": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "strandedness": "forward"
+                        },
+                        "test.profiles.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "8": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "strandedness": "forward"
+                        },
+                        "test.periodic_lengths_offsets.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "9": [
                     [
                         {
                             "id": "test",
@@ -104,6 +154,36 @@
                         ]
                     ]
                 ],
+                "lengths_offsets": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "strandedness": "forward"
+                        },
+                        "test.periodic_lengths_offsets.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "metagene": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "strandedness": "forward"
+                        },
+                        "test.metagene-profile.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "metagene_bf": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "strandedness": "forward"
+                        },
+                        "test.metagene-periodicity-bayes-factors.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
                 "orf_bayes": [
                     [
                         {
@@ -112,6 +192,16 @@
                             "strandedness": "forward"
                         },
                         "test.bayes-factors.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "orf_profiles": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "strandedness": "forward"
+                        },
+                        "test.profiles.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "orfs_exons_bed": [
@@ -128,6 +218,16 @@
                             "id": "reference"
                         },
                         "reference.orfs-genomic.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "periodic": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "strandedness": "forward"
+                        },
+                        "test.periodic-offsets.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "predicted": [
@@ -160,7 +260,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-19T15:04:32.197048587",
+        "timestamp": "2026-05-19T16:01:00.224156667",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.1"
@@ -176,7 +276,7 @@
             "reference.orfs-genomic.annotated.bed.gz",
             "reference.orfs-exons.annotated.bed.gz"
         ],
-        "timestamp": "2026-05-19T15:04:21.925211149",
+        "timestamp": "2026-05-19T16:00:50.132235918",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.1"

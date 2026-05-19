@@ -2,10 +2,15 @@
 name: "fasta_gtf_bam_rpbp"
 description: |
   End-to-end Rp-Bp execution given a genome FASTA, an annotation GTF and a
-  set of Ribo-seq BAMs. Builds the Rp-Bp BED reference once per run, then
-  runs the per-sample ORF prediction chain (`bam_rpbp_predictorfs`) on each
-  BAM. Emits per-sample predicted-ORF BED, DNA FASTA, protein FASTA and
-  Bayes factor BED for downstream multi-caller aggregation.
+  set of Ribo-seq BAMs. Builds the Rp-Bp BED reference once per run
+  (`rpbp/preparegenome`), then runs the per-sample six-step ORF prediction
+  chain on each BAM: extract-metagene-profiles ->
+  estimate-metagene-profile-bayes-factors -> select-periodic-offsets ->
+  extract-orf-profiles -> estimate-orf-bayes-factors ->
+  select-final-prediction-set. Each tool is a separate Nextflow process so
+  resume only re-runs what changed. Emits per-sample predicted-ORF BED, DNA
+  FASTA, protein FASTA and Bayes factor BED for downstream multi-caller
+  aggregation.
 keywords:
   - rpbp
   - orf
@@ -14,7 +19,12 @@ keywords:
   - riboseq
 components:
   - rpbp/preparegenome
-  - bam_rpbp_predictorfs
+  - rpbp/extractmetageneprofiles
+  - rpbp/estimatemetagenebayesfactors
+  - rpbp/selectperiodicoffsets
+  - rpbp/extractorfprofiles
+  - rpbp/estimateorfbayesfactors
+  - rpbp/selectfinalpredictionset
 input:
   - ch_bam:
       description: |
@@ -43,6 +53,30 @@ output:
       description: |
         Per-ORF exons BED produced by `rpbp/preparegenome`.
         Structure: [ val(meta), path(*.orfs-exons.annotated.bed.gz) ]
+  - metagene:
+      description: |
+        Per-sample metagene profiles.
+        Structure: [ val(meta), path(*.metagene-profile.csv.gz) ]
+  - metagene_bf:
+      description: |
+        Per-sample metagene periodicity Bayes factors.
+        Structure: [ val(meta), path(*.metagene-periodicity-bayes-factors.csv.gz) ]
+  - periodic:
+      description: |
+        Per-sample selected periodic offsets.
+        Structure: [ val(meta), path(*.periodic-offsets.csv.gz) ]
+  - orf_profiles:
+      description: |
+        Per-sample per-ORF P-site profile matrix.
+        Structure: [ val(meta), path(*.profiles.mtx.gz) ]
+  - lengths_offsets:
+      description: |
+        Per-sample selected lengths/offsets actually used by extract-orf-profiles.
+        Structure: [ val(meta), path(*.periodic_lengths_offsets.tsv) ]
+  - orf_bayes:
+      description: |
+        Per-sample per-ORF translation Bayes factors.
+        Structure: [ val(meta), path(*.bayes-factors.bed.gz) ]
   - predicted:
       description: |
         Per-sample final filtered predicted-ORF BED.
@@ -55,10 +89,6 @@ output:
       description: |
         Per-sample predicted-ORF protein FASTA.
         Structure: [ val(meta), path(*.predicted-orfs.filtered.protein.fa) ]
-  - orf_bayes:
-      description: |
-        Per-sample per-ORF translation Bayes factors.
-        Structure: [ val(meta), path(*.bayes-factors.bed.gz) ]
   - versions:
       description: |
         Files containing software versions
