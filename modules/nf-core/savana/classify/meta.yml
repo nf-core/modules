@@ -1,0 +1,111 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "savana_classify"
+description: "Classify structural variants using SAVANA"
+keywords:
+  - classify
+  - structural variants
+  - somatic
+  - germline
+  - genomics
+tools:
+  - "savana":
+      description: "SAVANA: a somatic structural variant caller for long-read data."
+      homepage: "https://github.com/cortes-ciriano-lab/savana"
+      documentation: "https://github.com/cortes-ciriano-lab/savana"
+      tool_dev_url: "https://github.com/cortes-ciriano-lab/savana"
+      doi: "10.1038/s41592-025-02708-0"
+      licence:
+        - "Apache-2.0"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: Input VCF file
+        pattern: "*{.vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3615" # bgzip
+
+output:
+  classified_vcf:
+    - - meta:
+          type: map
+          description: Sample information
+      - "*.classified.vcf":
+          type: file
+          description: Classified VCF
+          pattern: "*.classified.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  somatic_vcf:
+    - - meta:
+          type: map
+          description: Sample information
+      - "*.classified.somatic.vcf":
+          type: file
+          description: VCF containing variants classified as somatic
+          pattern: "*.classified.somatic.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  germline_vcf:
+    - - meta:
+          type: map
+          description: Sample information
+      - "*.classified.germline.vcf":
+          type: file
+          description: VCF containing variants classified as germline
+          pattern: "*.classified.germline.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  somatic_bedpe:
+    - - meta:
+          type: map
+          description: Sample information
+      - "*.classified.somatic.bedpe":
+          type: file
+          description: Variants classified as somatic in BEDPE format
+          pattern: "*.classified.somatic.bedpe"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+  legacy_vcfs:
+    - - meta:
+          type: map
+          description: Sample information
+      - "*.classified.{strict,lenient}.vcf":
+          type: file
+          description: Legacy strict/lenient VCFs
+          pattern: "*.classified.{strict,lenient}.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  versions_savana:
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - savana:
+          type: string
+          description: Name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('savana'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - savana:
+          type: string
+          description: Name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('savana'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"
