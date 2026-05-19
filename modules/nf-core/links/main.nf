@@ -3,9 +3,9 @@ process LINKS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/links:2.0.1--h4ac6f70_5':
-        'biocontainers/links:2.0.1--h4ac6f70_5' }"
+        'quay.io/biocontainers/links:2.0.1--h4ac6f70_5' }"
 
     input:
     tuple val(meta), path(assembly)

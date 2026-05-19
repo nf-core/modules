@@ -2,7 +2,7 @@ process NUMORPH_INTENSITY {
     tag "$meta.id"
     label 'process_low'
 
-    container "nf-core/numorph_preprocessing:1.0.0"
+    container "quay.io/nf-core/numorph_preprocessing:1.0.0"
 
 
     input:
