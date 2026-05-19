@@ -240,6 +240,48 @@ if (is_valid_string(opt\$formula)) {
 
     # Put the contrast variable first in zero-intercept designs so each
     # contrast level is represented directly in the design matrix.
+    form <- as.formula(paste('~ 0 +', paste(model_vars, collapse = ' + ')))
+}
+print(form)
+
+# Parallel processing setup
+threads <- as.numeric(opt\$threads)
+
+bp <- MulticoreParam(workers =  threads, RNGseed = opt\$seed, progressbar = FALSE)
+
+# Optionally apply voom
+if (as.logical(opt\$apply_voom)) {
+    # Standard usage of limma/voom
+    dge <- DGEList(countMatrix)
+    dge <- calcNormFactors(dge)
+    vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = bp)
+
+    # Write normalized counts matrix to a TSV file
+     normalized_counts <- vobjDream\$E
+    if (!is.null(opt\$round_digits)) {
+        normalized_counts <- apply(normalized_counts, 2, function(x) round(x, opt\$round_digits))
+    }
+    normalized_counts_with_genes <- data.frame(gene_id = rownames(normalized_counts), normalized_counts, check.names = FALSE, row.names = NULL)
+    write.table(normalized_counts_with_genes,
+        file = paste(opt\$output_prefix, "normalised_counts.tsv", sep = '.'),
+        sep = "	",
+        quote = FALSE,
+        row.names = FALSE)
+} else {
+    # Assume countMatrix roughly follows a normal distribution
+    vobjDream <- countMatrix
+}
+
+# If contrast_string is provided, use that for makeContrast
+if (!is.null(opt\$contrast_string)) {
+    contrast_string <- opt\$contrast_string
+} else {
+    # Construct the contrast_string
+    treatment_target <- make.names(paste0(opt\$contrast_variable, opt\$contrast_target))
+    treatment_reference <- make.names(paste0(opt\$contrast_variable, opt\$contrast_reference))
+    contrast_string <- paste0(treatment_target, "-", treatment_reference)
+}
+
 # Resolve the contrast against the fixed-effects design.
 # nobars() lets the same path handle fixed- and mixed-effects formulae.
 design <- model.matrix(lme4::nobars(form), metadata)
