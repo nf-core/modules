@@ -22,7 +22,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         }
 
     ch_for_index = ch_input.no_tbi
-        .multiMap { meta, vcf -> 
+        .multiMap { meta, vcf ->
             files: [ meta, vcf ]
             format: vcf.name.endsWith(".bcf.gz") ? "bcf" : "vcf"
         }
