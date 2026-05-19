@@ -9,14 +9,14 @@ process REGENIE_STEP1 {
 
     input:
     tuple val(meta), path(plink_genotype_file), path(plink_variant_file), path(plink_sample_file)
-    tuple val(meta2), path(pheno), val(pheno_col), val(is_binary)
+    tuple val(meta2), path(pheno), val(pheno_col)
     tuple val(meta3), path(covar)
     val bsize
 
     output:
-    tuple val(meta), path("*_pred.list"), val(pheno_col), val(is_binary), emit: predictions
-    tuple val(meta), path("*.loco.gz"), val(pheno_col), val(is_binary), emit: loco
-    tuple val(meta), path("*.log"), val(pheno_col), val(is_binary), emit: log
+    tuple val(meta), path("*_pred.list"), val(pheno_col), emit: predictions
+    tuple val(meta), path("*.loco.gz"), val(pheno_col), emit: loco
+    tuple val(meta), path("*.log"), val(pheno_col), emit: log
     tuple val("${task.process}"), val('regenie'), eval('regenie --version 2>&1 | sed -n "1{s/^v//;s/\\.gz$//;p}"'), topic: versions, emit: versions_regenie
 
     when:
@@ -28,7 +28,6 @@ process REGENIE_STEP1 {
     def prefix = task.ext.prefix ?: input_prefix
     def genotype_flag = plink_genotype_file.name.endsWith('.pgen') ? '--pgen' : '--bed'
     def covar_arg = covar ? "--covarFile ${covar}" : ''
-    def binary_arg = is_binary ? '--bt' : ''
     def bsize_arg = bsize ?: 1000
     """
     regenie \\
@@ -37,7 +36,6 @@ process REGENIE_STEP1 {
         --phenoFile ${pheno} \\
         --phenoColList ${pheno_col} \\
         ${covar_arg} \\
-        ${binary_arg} \\
         --bsize ${bsize_arg} \\
         --gz \\
         --threads ${task.cpus} \\

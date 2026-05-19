@@ -1,3 +1,16 @@
+def regenieStep1TestConfig = new File(".nf-test/regenie_step1.tests.config")
+regenieStep1TestConfig.parentFile.mkdirs()
+regenieStep1TestConfig.text = """
+params {
+    modules_testdata_base_path = System.getenv('NF_MODULES_TESTDATA_BASE_PATH') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+}
+process {
+    withName: REGENIE_STEP1 {
+        ext.args = { meta2.bt ? '--bt' : '' }
+    }
+}
+"""
+
 nextflow_process {
 
     name "Test Process REGENIE_STEP1"
@@ -10,6 +23,8 @@ nextflow_process {
     tag "regenie/step1"
 
     test("homo_sapiens popgen - quantitative plink1 with covariates") {
+        config regenieStep1TestConfig.absolutePath
+
         when {
             process {
                 """
@@ -23,8 +38,7 @@ nextflow_process {
                 input[1] = [
                     [ id:'plink_simulated' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
-                    'QuantitativeTrait',
-                    false
+                    'QuantitativeTrait'
                 ]
 
                 input[2] = [
@@ -47,11 +61,8 @@ nextflow_process {
                 { assert process.out.loco.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.predictions.get(0).get(2) == 'QuantitativeTrait' },
-                { assert process.out.predictions.get(0).get(3) == false },
                 { assert process.out.loco.get(0).get(2) == 'QuantitativeTrait' },
-                { assert process.out.loco.get(0).get(3) == false },
                 { assert process.out.log.get(0).get(2) == 'QuantitativeTrait' },
-                { assert process.out.log.get(0).get(3) == false },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
                     def predList = path(process.out.predictions.get(0).get(1))
@@ -66,10 +77,10 @@ nextflow_process {
                 },
                 {
                     def stablePredictions = process.out.predictions.collect { prediction ->
-                        [prediction[0], path(prediction[1]).getFileName().toString(), prediction[2], prediction[3]]
+                        [prediction[0], path(prediction[1]).getFileName().toString(), prediction[2]]
                     }
                     def stableLoco = process.out.loco.collect { loco ->
-                        [loco[0], path(loco[1]).getFileName().toString(), loco[2], loco[3]]
+                        [loco[0], path(loco[1]).getFileName().toString(), loco[2]]
                     }
                     assert snapshot(
                         stablePredictions,
@@ -83,6 +94,8 @@ nextflow_process {
     }
 
     test("homo_sapiens popgen - binary plink1 with covariates") {
+        config regenieStep1TestConfig.absolutePath
+
         when {
             process {
                 """
@@ -94,10 +107,9 @@ nextflow_process {
                 ]
 
                 input[1] = [
-                    [ id:'plink_simulated' ],
+                    [ id:'plink_simulated', bt:true ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true),
-                    'BinaryTrait',
-                    true
+                    'BinaryTrait'
                 ]
 
                 input[2] = [
@@ -120,11 +132,8 @@ nextflow_process {
                 { assert process.out.loco.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.predictions.get(0).get(2) == 'BinaryTrait' },
-                { assert process.out.predictions.get(0).get(3) == true },
                 { assert process.out.loco.get(0).get(2) == 'BinaryTrait' },
-                { assert process.out.loco.get(0).get(3) == true },
                 { assert process.out.log.get(0).get(2) == 'BinaryTrait' },
-                { assert process.out.log.get(0).get(3) == true },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
                     def predList = path(process.out.predictions.get(0).get(1))
@@ -139,10 +148,10 @@ nextflow_process {
                 },
                 {
                     def stablePredictions = process.out.predictions.collect { prediction ->
-                        [prediction[0], path(prediction[1]).getFileName().toString(), prediction[2], prediction[3]]
+                        [prediction[0], path(prediction[1]).getFileName().toString(), prediction[2]]
                     }
                     def stableLoco = process.out.loco.collect { loco ->
-                        [loco[0], path(loco[1]).getFileName().toString(), loco[2], loco[3]]
+                        [loco[0], path(loco[1]).getFileName().toString(), loco[2]]
                     }
                     assert snapshot(
                         stablePredictions,
@@ -156,6 +165,8 @@ nextflow_process {
     }
 
     test("homo_sapiens popgen - quantitative plink1 without covariates") {
+        config regenieStep1TestConfig.absolutePath
+
         when {
             process {
                 """
@@ -169,8 +180,7 @@ nextflow_process {
                 input[1] = [
                     [ id:'plink_simulated' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
-                    'QuantitativeTrait',
-                    false
+                    'QuantitativeTrait'
                 ]
 
                 input[2] = [[:], []]
@@ -189,11 +199,8 @@ nextflow_process {
                 { assert process.out.loco.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.predictions.get(0).get(2) == 'QuantitativeTrait' },
-                { assert process.out.predictions.get(0).get(3) == false },
                 { assert process.out.loco.get(0).get(2) == 'QuantitativeTrait' },
-                { assert process.out.loco.get(0).get(3) == false },
                 { assert process.out.log.get(0).get(2) == 'QuantitativeTrait' },
-                { assert process.out.log.get(0).get(3) == false },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
                     def predList = path(process.out.predictions.get(0).get(1))
@@ -208,10 +215,10 @@ nextflow_process {
                 },
                 {
                     def stablePredictions = process.out.predictions.collect { prediction ->
-                        [prediction[0], path(prediction[1]).getFileName().toString(), prediction[2], prediction[3]]
+                        [prediction[0], path(prediction[1]).getFileName().toString(), prediction[2]]
                     }
                     def stableLoco = process.out.loco.collect { loco ->
-                        [loco[0], path(loco[1]).getFileName().toString(), loco[2], loco[3]]
+                        [loco[0], path(loco[1]).getFileName().toString(), loco[2]]
                     }
                     assert snapshot(
                         stablePredictions,
@@ -238,8 +245,7 @@ nextflow_process {
                 input[1] = [
                     [ id:'plink_simulated' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
-                    'QuantitativeTrait',
-                    false
+                    'QuantitativeTrait'
                 ]
 
                 input[2] = [
@@ -262,11 +268,8 @@ nextflow_process {
                 { assert process.out.loco.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.predictions.get(0).get(2) == 'QuantitativeTrait' },
-                { assert process.out.predictions.get(0).get(3) == false },
                 { assert process.out.loco.get(0).get(2) == 'QuantitativeTrait' },
-                { assert process.out.loco.get(0).get(3) == false },
                 { assert process.out.log.get(0).get(2) == 'QuantitativeTrait' },
-                { assert process.out.log.get(0).get(3) == false },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
                     def predList = path(process.out.predictions.get(0).get(1))
@@ -294,6 +297,7 @@ nextflow_process {
     test("homo_sapiens popgen - plink2 - stub") {
 
         options "-stub"
+        config regenieStep1TestConfig.absolutePath
 
         when {
             process {
@@ -308,8 +312,7 @@ nextflow_process {
                 input[1] = [
                     [ id:'plink_simulated' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
-                    'QuantitativeTrait',
-                    false
+                    'QuantitativeTrait'
                 ]
 
                 input[2] = [
@@ -327,13 +330,13 @@ nextflow_process {
                 { assert process.success },
                 {
                     def stablePredictions = process.out.predictions.collect { prediction ->
-                        [prediction[0], path(prediction[1]).getFileName().toString(), prediction[2], prediction[3]]
+                        [prediction[0], path(prediction[1]).getFileName().toString(), prediction[2]]
                     }
                     def stableLoco = process.out.loco.collect { loco ->
-                        [loco[0], path(loco[1]).getFileName().toString(), loco[2], loco[3]]
+                        [loco[0], path(loco[1]).getFileName().toString(), loco[2]]
                     }
                     def stableLogs = process.out.log.collect { logTuple ->
-                        [logTuple[0], path(logTuple[1]).getFileName().toString(), logTuple[2], logTuple[3]]
+                        [logTuple[0], path(logTuple[1]).getFileName().toString(), logTuple[2]]
                     }
                     assert snapshot(
                         stablePredictions,
