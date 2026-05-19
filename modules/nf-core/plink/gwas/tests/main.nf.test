@@ -173,11 +173,12 @@ nextflow_process {
 
     test("plink - quantitative phenotype metadata with bed input") {
 
-        config "./quantitative_pheno_name.config"
+        config "./nextflow.config"
 
         when {
             params {
                 outdir = "test"
+                module_args = '--pheno-name QuantitativeTrait --allow-no-sex'
             }
             process {
                 """
