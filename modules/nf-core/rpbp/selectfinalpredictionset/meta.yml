@@ -1,0 +1,90 @@
+name: "rpbp_selectfinalpredictionset"
+description: |
+  Run Rp-Bp's `select-final-prediction-set`, which applies the Bayes factor
+  threshold + length/overlap rules to the per-ORF Bayes factor table and
+  emits the final filtered set of predicted translated ORFs (BED plus DNA and
+  protein FASTAs).
+keywords:
+  - rpbp
+  - orf
+  - bayes
+  - prediction
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1141"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - bayes_factors:
+        type: file
+        description: Per-ORF Bayes factor BED from `rpbp/estimateorfbayesfactors`.
+        pattern: "*.bayes-factors.bed.gz"
+        ontologies: []
+  - genome_fasta:
+      type: file
+      description: Genome FASTA (matching the one used at `rpbp/preparegenome`).
+      pattern: "*.{fa,fasta,fna}"
+      ontologies: []
+output:
+  predicted:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "*.predicted-orfs.filtered.bed.gz":
+          type: file
+          description: Final filtered predicted-ORF BED.
+          pattern: "*.predicted-orfs.filtered.bed.gz"
+          ontologies: []
+  dna_fasta:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "*.predicted-orfs.filtered.dna.fa":
+          type: file
+          description: DNA FASTA of predicted ORFs.
+          pattern: "*.predicted-orfs.filtered.dna.fa"
+          ontologies: []
+  protein_fasta:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "*.predicted-orfs.filtered.protein.fa":
+          type: file
+          description: Protein FASTA of predicted ORFs.
+          pattern: "*.predicted-orfs.filtered.protein.fa"
+          ontologies: []
+  versions_rpbp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

@@ -1,0 +1,97 @@
+name: "rpbp_extractorfprofiles"
+description: |
+  Run Rp-Bp's `extract-orf-profiles` on a Ribo-seq BAM using per-read-length
+  P-site offsets. Applies the same length/offset filter as rpbp's
+  `ribo_utils.utils.get_periodic_lengths_and_offsets` to honour the periodic
+  offsets selected upstream, then emits per-ORF P-site profiles for
+  downstream Bayesian translation classification.
+keywords:
+  - rpbp
+  - orf
+  - psite
+  - profile
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1141"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - bam:
+        type: file
+        description: Sorted Ribo-seq BAM.
+        pattern: "*.bam"
+        ontologies: []
+    - bai:
+        type: file
+        description: BAM index.
+        pattern: "*.bai"
+        ontologies: []
+    - periodic_offsets:
+        type: file
+        description: Selected periodic offsets CSV from `rpbp/selectperiodicoffsets`.
+        pattern: "*.periodic-offsets.csv.gz"
+        ontologies: []
+  - orfs_genomic_bed:
+      type: file
+      description: Per-ORF genomic BED from `rpbp/preparegenome`.
+      pattern: "*.orfs-genomic.bed.gz"
+      ontologies: []
+  - exons_bed:
+      type: file
+      description: Per-ORF exons BED from `rpbp/preparegenome`.
+      pattern: "*.orfs-exons.bed.gz"
+      ontologies: []
+output:
+  profiles:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "*.profiles.mtx.gz":
+          type: file
+          description: Per-ORF P-site profile sparse matrix.
+          pattern: "*.profiles.mtx.gz"
+          ontologies: []
+  lengths_offsets:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "*.periodic_lengths_offsets.tsv":
+          type: file
+          description: Selected per-read-length offsets (length, offset) actually used.
+          pattern: "*.periodic_lengths_offsets.tsv"
+          ontologies: []
+  versions_rpbp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

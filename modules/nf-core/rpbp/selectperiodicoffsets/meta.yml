@@ -1,0 +1,66 @@
+name: "rpbp_selectperiodicoffsets"
+description: |
+  Run Rp-Bp's `select-periodic-offsets` on per-read-length Bayes factors to
+  pick a single P-site offset per high-quality read length. Output drives
+  P-site assignment in `extract-orf-profiles`.
+keywords:
+  - rpbp
+  - psite
+  - offset
+  - orf
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1141"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - bayes_factors:
+        type: file
+        description: Metagene periodicity Bayes factors CSV from `rpbp/estimatemetagenebayesfactors`.
+        pattern: "*.metagene-periodicity-bayes-factors.csv.gz"
+        ontologies: []
+output:
+  periodic:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "*.periodic-offsets.csv.gz":
+          type: file
+          description: Selected periodic offsets per read length.
+          pattern: "*.periodic-offsets.csv.gz"
+          ontologies: []
+  versions_rpbp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

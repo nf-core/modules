@@ -1,0 +1,75 @@
+name: "rpbp_extractmetageneprofiles"
+description: |
+  Run Rp-Bp's `extract-metagene-profiles` against a Ribo-seq BAM to produce
+  per-read-length 5'-end metagene profiles around annotated start codons.
+  Output feeds `estimate-metagene-profile-bayes-factors`.
+keywords:
+  - rpbp
+  - metagene
+  - orf
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1141"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - bam:
+        type: file
+        description: Sorted Ribo-seq BAM.
+        pattern: "*.bam"
+        ontologies: []
+    - bai:
+        type: file
+        description: BAM index.
+        pattern: "*.bai"
+        ontologies: []
+  - transcript_bed:
+      type: file
+      description: Annotated transcripts BED produced by `rpbp/preparegenome`.
+      pattern: "*.annotated.bed.gz"
+      ontologies: []
+output:
+  metagene:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "*.metagene-profile.csv.gz":
+          type: file
+          description: Per-read-length 5'-end metagene profile counts.
+          pattern: "*.metagene-profile.csv.gz"
+          ontologies: []
+  versions_rpbp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

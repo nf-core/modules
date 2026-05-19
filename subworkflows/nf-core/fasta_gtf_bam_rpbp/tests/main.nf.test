@@ -1,0 +1,104 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_GTF_BAM_RPBP"
+    script "../main.nf"
+    workflow "FASTA_GTF_BAM_RPBP"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_gtf_bam_rpbp"
+    tag "fasta_gtf_bam_rpbp"
+    tag "subworkflows/bam_rpbp_predictorfs"
+    tag "bam_rpbp_predictorfs"
+    tag "rpbp"
+    tag "rpbp/buildconfig"
+    tag "rpbp/preparegenome"
+    tag "rpbp/extractmetageneprofiles"
+    tag "rpbp/estimatemetagenebayesfactors"
+    tag "rpbp/selectperiodicoffsets"
+    tag "rpbp/extractorfprofiles"
+    tag "rpbp/estimateorfbayesfactors"
+    tag "rpbp/selectfinalpredictionset"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "modules/nf-core/gunzip/main.nf"
+            process {
+            """
+            input[0] = [
+                [ id:'reference' ],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
+            ]
+            """
+            }
+        }
+    }
+
+    test("homo_sapiens chr20 - end-to-end rpbp") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ])
+                input[1] = GUNZIP.out.gunzip.map { meta, fa -> [
+                    meta,
+                    fa,
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                ] }
+                input[2] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    file(workflow.out.predicted[0][1]).name,
+                    file(workflow.out.dna_fasta[0][1]).name,
+                    file(workflow.out.protein_fasta[0][1]).name,
+                    file(workflow.out.orf_bayes[0][1]).name,
+                    file(workflow.out.transcript_bed[0][1]).name,
+                    file(workflow.out.orfs_genomic_bed[0][1]).name,
+                    file(workflow.out.orfs_exons_bed[0][1]).name
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens chr20 - end-to-end rpbp - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ])
+                input[1] = GUNZIP.out.gunzip.map { meta, fa -> [
+                    meta,
+                    fa,
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                ] }
+                input[2] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

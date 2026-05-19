@@ -1,0 +1,66 @@
+name: "rpbp_estimatemetagenebayesfactors"
+description: |
+  Run Rp-Bp's `estimate-metagene-profile-bayes-factors` over per-read-length
+  metagene profiles, fitting periodic vs. non-periodic Bayesian models to
+  identify high-quality read lengths and frame offsets.
+keywords:
+  - rpbp
+  - metagene
+  - bayes
+  - orf
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1141"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - metagene_profile:
+        type: file
+        description: Metagene profile CSV produced by `rpbp/extractmetageneprofiles`.
+        pattern: "*.metagene-profile.csv.gz"
+        ontologies: []
+output:
+  bayes_factors:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "*.metagene-periodicity-bayes-factors.csv.gz":
+          type: file
+          description: Per-read-length metagene periodicity Bayes factors.
+          pattern: "*.metagene-periodicity-bayes-factors.csv.gz"
+          ontologies: []
+  versions_rpbp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_rpbp_predictorfs"
+description: |
+  Per-sample Rp-Bp ORF prediction chain. Given a Ribo-seq BAM plus the
+  cohort-shared annotation outputs from `rpbp/preparegenome`
+  (transcript BED, ORF genomic BED, ORF exons BED, genome FASTA), runs the
+  six rpbp tools in sequence: extract-metagene-profiles ->
+  estimate-metagene-profile-bayes-factors -> select-periodic-offsets ->
+  extract-orf-profiles -> estimate-orf-bayes-factors ->
+  select-final-prediction-set. Each tool is a separate Nextflow process so
+  resume only re-runs what changed.
+keywords:
+  - rpbp
+  - orf
+  - bayesian
+  - translation
+  - riboseq
+components:
+  - rpbp/extractmetageneprofiles
+  - rpbp/estimatemetagenebayesfactors
+  - rpbp/selectperiodicoffsets
+  - rpbp/extractorfprofiles
+  - rpbp/estimateorfbayesfactors
+  - rpbp/selectfinalpredictionset
+input:
+  - ch_bam:
+      description: |
+        Per-sample Ribo-seq BAM with index.
+        Structure: [ val(meta), path(bam), path(bai) ]
+  - ch_transcript_bed:
+      description: |
+        Annotated transcripts BED from `rpbp/preparegenome`.
+        Structure: path
+  - ch_orfs_genomic_bed:
+      description: |
+        ORF genomic BED from `rpbp/preparegenome`.
+        Structure: path
+  - ch_orfs_exons_bed:
+      description: |
+        ORF exons BED from `rpbp/preparegenome`.
+        Structure: path
+  - ch_genome_fasta:
+      description: |
+        Genome FASTA (same one fed into `rpbp/preparegenome`).
+        Structure: path
+output:
+  - metagene:
+      description: |
+        Per-sample metagene profiles.
+        Structure: [ val(meta), path(*.metagene-profile.csv.gz) ]
+  - metagene_bf:
+      description: |
+        Per-sample metagene periodicity Bayes factors.
+        Structure: [ val(meta), path(*.metagene-periodicity-bayes-factors.csv.gz) ]
+  - periodic:
+      description: |
+        Per-sample selected periodic offsets.
+        Structure: [ val(meta), path(*.periodic-offsets.csv.gz) ]
+  - orf_profiles:
+      description: |
+        Per-sample per-ORF P-site profile matrix.
+        Structure: [ val(meta), path(*.profiles.mtx.gz) ]
+  - lengths_offsets:
+      description: |
+        Per-sample selected lengths/offsets actually used by extract-orf-profiles.
+        Structure: [ val(meta), path(*.periodic_lengths_offsets.tsv) ]
+  - orf_bayes:
+      description: |
+        Per-sample per-ORF translation Bayes factors.
+        Structure: [ val(meta), path(*.bayes-factors.bed.gz) ]
+  - predicted:
+      description: |
+        Per-sample final filtered predicted-ORF BED.
+        Structure: [ val(meta), path(*.predicted-orfs.filtered.bed.gz) ]
+  - dna_fasta:
+      description: |
+        Per-sample predicted-ORF DNA FASTA.
+        Structure: [ val(meta), path(*.predicted-orfs.filtered.dna.fa) ]
+  - protein_fasta:
+      description: |
+        Per-sample predicted-ORF protein FASTA.
+        Structure: [ val(meta), path(*.predicted-orfs.filtered.protein.fa) ]
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

@@ -1,0 +1,80 @@
+name: "rpbp_buildconfig"
+description: |
+  Render the YAML config required by Rp-Bp (`prepare-rpbp-genome` and
+  `predict-translated-orfs`) from pipeline-supplied genome inputs. Avoids
+  asking users to hand-author a config file.
+keywords:
+  - rpbp
+  - config
+  - yaml
+  - orf
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1141"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing identifiers, e.g. `[ id: 'reference' ]`.
+    - fasta:
+        type: file
+        description: Genome FASTA.
+        pattern: "*.{fa,fasta,fna}"
+        ontologies: []
+    - gtf:
+        type: file
+        description: Annotation GTF (canonical or hybrid, depending on extended-ORF mode).
+        pattern: "*.gtf"
+        ontologies: []
+  - genome_name:
+      type: string
+      description: Logical name used inside the Rp-Bp index directory.
+  - extra_yaml:
+      type: string
+      description: |
+        Optional free-form YAML appended to the generated config (e.g. to set
+        `min_metagene_profile_count`, `min_metagene_image_count`, riboseq
+        sample lists). Pass `''` for defaults.
+output:
+  config:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "rpbp_config.yaml":
+          type: file
+          description: Rendered Rp-Bp config file.
+          pattern: "rpbp_config.yaml"
+          ontologies: []
+  versions_coreutils:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - coreutils:
+          type: string
+          description: The name of the tool
+      - cat --version | head -n1 | sed 's/^cat (GNU coreutils) //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - coreutils:
+          type: string
+          description: The name of the tool
+      - cat --version | head -n1 | sed 's/^cat (GNU coreutils) //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

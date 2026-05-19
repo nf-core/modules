@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_gtf_bam_rpbp"
+description: |
+  End-to-end Rp-Bp execution given a genome FASTA, an annotation GTF and a
+  set of Ribo-seq BAMs. Renders the Rp-Bp YAML config, builds the Rp-Bp
+  genome index once per run, then runs the per-sample ORF prediction chain
+  (`bam_rpbp_predictorfs`) on each BAM. Emits per-sample predicted-ORF BED,
+  DNA FASTA, protein FASTA and Bayes factor BED for downstream
+  multi-caller aggregation.
+keywords:
+  - rpbp
+  - orf
+  - bayesian
+  - translation
+  - riboseq
+components:
+  - rpbp/buildconfig
+  - rpbp/preparegenome
+  - bam_rpbp_predictorfs
+input:
+  - ch_bam:
+      description: |
+        Per-sample Ribo-seq BAM with index. Filter to Ribo-seq libraries
+        upstream.
+        Structure: [ val(meta), path(bam), path(bai) ]
+  - ch_fasta_gtf:
+      description: |
+        Single-value channel of genome FASTA + annotation GTF. The GTF may
+        be canonical or a hybrid (e.g. extended-ORF mode).
+        Structure: [ val(meta), path(fasta), path(gtf) ]
+  - extra_yaml:
+      description: |
+        Free-form YAML appended to the generated config (e.g. min metagene
+        counts). Pass `''` for defaults.
+        Structure: val(extra_yaml)
+output:
+  - config:
+      description: |
+        Rendered Rp-Bp YAML config.
+        Structure: [ val(meta), path(rpbp_config.yaml) ]
+  - index:
+      description: |
+        Prepared Rp-Bp genome index directory plus pass-through config.
+        Structure: [ val(meta), path(rpbp_index), path(config) ]
+  - transcript_bed:
+      description: |
+        Annotated transcripts BED produced by `rpbp/preparegenome`.
+        Structure: [ val(meta), path(*.annotated.bed.gz) ]
+  - orfs_genomic_bed:
+      description: |
+        Per-ORF genomic BED produced by `rpbp/preparegenome`.
+        Structure: [ val(meta), path(*.orfs-genomic.bed.gz) ]
+  - orfs_exons_bed:
+      description: |
+        Per-ORF exons BED produced by `rpbp/preparegenome`.
+        Structure: [ val(meta), path(*.orfs-exons.bed.gz) ]
+  - predicted:
+      description: |
+        Per-sample final filtered predicted-ORF BED.
+        Structure: [ val(meta), path(*.predicted-orfs.filtered.bed.gz) ]
+  - dna_fasta:
+      description: |
+        Per-sample predicted-ORF DNA FASTA.
+        Structure: [ val(meta), path(*.predicted-orfs.filtered.dna.fa) ]
+  - protein_fasta:
+      description: |
+        Per-sample predicted-ORF protein FASTA.
+        Structure: [ val(meta), path(*.predicted-orfs.filtered.protein.fa) ]
+  - orf_bayes:
+      description: |
+        Per-sample per-ORF translation Bayes factors.
+        Structure: [ val(meta), path(*.bayes-factors.bed.gz) ]
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"
