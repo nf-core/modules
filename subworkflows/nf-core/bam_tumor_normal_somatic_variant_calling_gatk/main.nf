@@ -26,7 +26,7 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     GATK4_MUTECT2(
         ch_input,
         ch_fasta,
-        ch_fai.map { meta, fai, _gzi -> [meta, fai] },
+        ch_fai,
         ch_dict,
         ch_alleles,
         ch_alleles_tbi,
@@ -98,8 +98,8 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
 
     GATK4_FILTERMUTECTCALLS(
         ch_filtermutect_in,
-        ch_fasta.map { meta, fai, _gzi -> [meta, fai] },
-        ch_fai,
+        ch_fasta,
+        ch_fai.map { meta, fai, _gzi -> [meta, fai] },
         ch_dict,
     )
 
