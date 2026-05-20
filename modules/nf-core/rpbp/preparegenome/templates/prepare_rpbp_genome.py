@@ -11,6 +11,8 @@ import os
 import platform
 import shutil
 
+import yaml
+
 import rpbp
 from rpbp.reference_preprocessing.prepare_rpbp_genome import get_orfs
 
@@ -65,6 +67,7 @@ get_orfs(config["gtf"], args, config, is_annotated=True, is_de_novo=False)
 shutil.rmtree(os.path.join(prefix, "star"), ignore_errors=True)
 
 with open("versions.yml", "w") as f:
-    f.write('"${task.process}":\\n')
-    f.write(f"    python: {platform.python_version()}\\n")
-    f.write(f"    rpbp: {rpbp.__version__}\\n")
+    yaml.safe_dump(
+        {"${task.process}": {"python": platform.python_version(), "rpbp": rpbp.__version__}},
+        f,
+    )

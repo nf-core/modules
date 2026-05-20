@@ -11,6 +11,7 @@ import platform
 import shutil
 
 import pandas as pd
+import yaml
 
 import rpbp
 from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
@@ -52,6 +53,7 @@ pd.DataFrame({"length": lengths, "offset": offsets}).to_csv(
 )
 
 with open("versions.yml", "w") as f:
-    f.write('"${task.process}":\\n')
-    f.write(f"    python: {platform.python_version()}\\n")
-    f.write(f"    rpbp: {rpbp.__version__}\\n")
+    yaml.safe_dump(
+        {"${task.process}": {"python": platform.python_version(), "rpbp": rpbp.__version__}},
+        f,
+    )
