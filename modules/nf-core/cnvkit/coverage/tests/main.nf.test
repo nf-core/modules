@@ -17,7 +17,7 @@ nextflow_process {
 
             process {
                 """
-                               
+
                 input[0] = [
                     [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true ),
@@ -45,12 +45,12 @@ nextflow_process {
         when {
             process {
                 """
-                
+
                 input[0] = [
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bins_10kb_annotated.bed', checkIfExists: true)]
-                
+
                 """
             }
         }
