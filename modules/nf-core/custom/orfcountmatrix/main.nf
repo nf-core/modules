@@ -4,8 +4,8 @@ process CUSTOM_ORFCOUNTMATRIX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/python:3.11' :
-        'quay.io/biocontainers/python:3.11' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7a/7a17ff642fb8c74fbf9feece8df823d78bcecca69f76770aa585e7468e6a9187/data' :
+        'community.wave.seqera.io/library/python_pandas_pyyaml:3ce680b21acf323f' }"
 
     input:
     tuple val(meta), path(per_sample_counts, stageAs: 'counts/*'), path(orf_catalogue_bed12)
@@ -22,7 +22,7 @@ process CUSTOM_ORFCOUNTMATRIX {
     template 'build_orf_count_matrix.py'
 
     stub:
-    def prefix = task.ext.prefix ?: "orf_psite_counts"
+    prefix = task.ext.prefix ?: "orf_psite_counts"
     """
     touch ${prefix}.tsv
 
