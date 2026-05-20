@@ -104,11 +104,11 @@ jobs:
   # Standard GPU tests (g4dn.xlarge - 4 vCPU, 16 GB RAM, T4 GPU)
   # Runs tests tagged "gpu" (20+ modules: parabricks, amulety, cellpose, etc.)
   nf-test-gpu:
-    runs-on: 
+    runs-on:
       - runs-on=${{ github.run_id }}
       - family=g4dn.xlarge
       - image=ubuntu24-gpu-x64
-      - volume=40gb
+      - volume=50gb
     name: "GPU Test | g4dn.xlarge | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.gpu_total_shards != '0' && needs.nf-test-changes.outputs.gpu_total_shards != '' }}
