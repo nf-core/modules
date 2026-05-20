@@ -20,7 +20,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
                     ],
-                    '--intersect'
+                    'intersect'
                 ]
                 """
             }
@@ -81,7 +81,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
                     ],
-                    '--union'
+                    'union'
                 ]
                 """
             }

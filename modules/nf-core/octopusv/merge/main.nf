@@ -20,7 +20,6 @@ process OCTOPUSV_MERGE {
     script:
     def args = (task.ext.args ?: '').trim()
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     def merge_strategy = (strategy_flag ?: '').trim()
     if (!merge_strategy) {
         merge_strategy = 'union'
