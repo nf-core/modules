@@ -8,7 +8,9 @@ process RPBP_ESTIMATEMETAGENEBAYESFACTORS {
         'community.wave.seqera.io/library/rpbp:4.0.1--71297b462026e13b' }"
 
     input:
-    tuple val(meta), path(profile_csv)
+    tuple val(meta),  path(profile_csv)
+    tuple val(meta2), path(periodic_models,    stageAs: 'periodic_models/*')
+    tuple val(meta3), path(nonperiodic_models, stageAs: 'nonperiodic_models/*')
 
     output:
     tuple val(meta), path("${prefix}.metagene-periodicity-bayes-factors.csv.gz"), emit: bayes_factors
@@ -20,16 +22,21 @@ process RPBP_ESTIMATEMETAGENEBAYESFACTORS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def periodic_flag    = periodic_models    ? "--periodic-models ${periodic_models.collect { it.toString() }.join(' ')}"        : '--periodic-models $PERIODIC_MODELS'
+    def nonperiodic_flag = nonperiodic_models ? "--nonperiodic-models ${nonperiodic_models.collect { it.toString() }.join(' ')}" : '--nonperiodic-models $NONPERIODIC_MODELS'
+    def need_bundled     = !periodic_models || !nonperiodic_models
+    def bundled_setup    = need_bundled ? '''
+    RPBP_MODELS_BASE=$(python3 -c "import os, inspect, rpbp; print(os.path.join(os.path.dirname(inspect.getfile(rpbp)), 'models'))")
+    PERIODIC_MODELS=$(ls $RPBP_MODELS_BASE/periodic/*.stan | xargs)
+    NONPERIODIC_MODELS=$(ls $RPBP_MODELS_BASE/nonperiodic/*.stan | xargs)
+    ''' : ''
     """
-    RPBP_MODELS_BASE=\$(python3 -c "import os, inspect, rpbp; print(os.path.join(os.path.dirname(inspect.getfile(rpbp)), 'models'))")
-    PERIODIC_MODELS=\$(ls \$RPBP_MODELS_BASE/periodic/*.stan | xargs)
-    NONPERIODIC_MODELS=\$(ls \$RPBP_MODELS_BASE/nonperiodic/*.stan | xargs)
-
+    ${bundled_setup}
     estimate-metagene-profile-bayes-factors \\
         ${profile_csv} \\
         ${prefix}.metagene-periodicity-bayes-factors.csv.gz \\
-        --periodic-models \$PERIODIC_MODELS \\
-        --nonperiodic-models \$NONPERIODIC_MODELS \\
+        ${periodic_flag} \\
+        ${nonperiodic_flag} \\
         --num-cpus ${task.cpus} \\
         ${args}
     """

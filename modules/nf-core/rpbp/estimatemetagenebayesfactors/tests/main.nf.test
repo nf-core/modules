@@ -18,6 +18,8 @@ nextflow_process {
                     [ id:'test', single_end:true, strandedness:'forward' ],
                     file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.metagene-profile.csv.gz", checkIfExists: true)
                 ])
+                input[1] = [[], []]
+                input[2] = [[], []]
                 """
             }
         }
@@ -44,6 +46,8 @@ nextflow_process {
                     [ id:'test', single_end:true, strandedness:'forward' ],
                     file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.metagene-profile.csv.gz", checkIfExists: true)
                 ])
+                input[1] = [[], []]
+                input[2] = [[], []]
                 """
             }
         }

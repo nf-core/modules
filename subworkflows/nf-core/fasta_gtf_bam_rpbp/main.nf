@@ -28,7 +28,9 @@ workflow FASTA_GTF_BAM_RPBP {
     )
 
     RPBP_ESTIMATEMETAGENEBAYESFACTORS (
-        RPBP_EXTRACTMETAGENEPROFILES.out.metagene
+        RPBP_EXTRACTMETAGENEPROFILES.out.metagene,
+        Channel.of([[], []]),
+        Channel.of([[], []])
     )
 
     RPBP_SELECTPERIODICOFFSETS (
@@ -50,7 +52,9 @@ workflow FASTA_GTF_BAM_RPBP {
 
     RPBP_ESTIMATEORFBAYESFACTORS (
         RPBP_EXTRACTORFPROFILES.out.profiles,
-        ch_orfs_genomic_bed
+        ch_orfs_genomic_bed,
+        Channel.of([[], []]),
+        Channel.of([[], []])
     )
 
     RPBP_SELECTFINALPREDICTIONSET (
