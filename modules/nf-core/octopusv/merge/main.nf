@@ -29,7 +29,7 @@ process OCTOPUSV_MERGE {
     """
     octopusv merge -i ${svcfs} \\
         -o ${prefix}.svcf \\
-        ${merge_strategy} \\
+        --${merge_strategy} \\
         ${args}
     """
 
