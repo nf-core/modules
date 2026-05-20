@@ -43,7 +43,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.gsmr).match("gsmr")},
                 { assert snapshot(process.out.versions_gcta).match("versions_gcta")}
-            )
+                { assert snapshot(
+                    process.out.gsmr,
+                    process.out.versions_gcta
+                    ).match("versions_gcta")}
         }
     }
 

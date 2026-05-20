@@ -13,9 +13,9 @@ process GCTA_GSMR {
     path(reference)
 
     output:
-    tuple val(meta), val(meta2), path("*.log")           , emit: log
-    tuple val(meta), val(meta2), path("*.gsmr")          , emit: gsmr
-    tuple val(meta), val(meta2), path("*.eff_plot.gz")   , emit: eff_plot, optional: true
+    tuple val(meta), val(meta2), path("*.log")          , emit: log
+    tuple val(meta), val(meta2), path("*.gsmr")         , emit: gsmr
+    tuple val(meta), val(meta2), path("*.eff_plot.gz")  , emit: eff_plot, optional: true
     tuple val(meta), val(meta2), path("*.mono.badsnps"), emit: mono_badsnps, optional: true
     tuple val("${task.process}"), val('gcta'), eval('gcta 2>&1 | grep -oE "v[0-9]+\\.[0-9]+\\.[0-9]+" | sed \'s/v//\''), emit: versions_gcta, topic: versions
 
@@ -27,14 +27,14 @@ process GCTA_GSMR {
     def prefix = task.ext.prefix ?: "${meta.id}_${meta2.id}"
     """
     echo "${meta.id} ${exposure}" > ${meta.id}.input.txt
-    echo "${meta2.id} ${outcome}" > outcome.txt
+    echo "${meta2.id} ${outcome}" > ${meta2.id} .outcome.txt
     file=\$(ls $reference | sed 's/\\.[^.]*\$//')
     echo "${reference}/\$file" | head -n1 > reference.txt
 
     gcta  \\
         $args \\
         --mbfile reference.txt  \\
-        --gsmr-file ${meta.id}.input.txt outcome.txt \\
+        --gsmr-file ${meta.id}.input.txt ${meta2.id}.outcome.txt \\
         --out "${prefix}"
     """
 
@@ -45,7 +45,6 @@ process GCTA_GSMR {
     touch ${prefix}.log
     touch ${prefix}.gsmr
     touch ${prefix}.mono.badsnps
-    echo "" | gzip > ${prefix}.eff_plot.gz
-
+    echo | gzip > ${prefix}.eff_plot.gz
     """
 }
