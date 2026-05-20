@@ -11,9 +11,8 @@ import os
 import platform
 import shutil
 
-import yaml
-
 import rpbp
+import yaml
 from rpbp.reference_preprocessing.prepare_rpbp_genome import get_orfs
 
 
@@ -30,10 +29,10 @@ def chr_names_from_fasta(fasta_path: str, out_path: str) -> None:
 
 
 prefix = "${prefix}"
-name   = "${name}"
-fasta  = "${fasta}"
-gtf    = "${gtf}"
-ncpus  = int("${task.cpus}")
+name = "${name}"
+fasta = "${fasta}"
+gtf = "${gtf}"
+ncpus = int("${task.cpus}")
 
 os.makedirs(os.path.join(prefix, "transcript-index"), exist_ok=True)
 os.makedirs(os.path.join(prefix, "star"), exist_ok=True)
@@ -42,10 +41,10 @@ chr_names_from_fasta(fasta, os.path.join(prefix, "star", "chrName.txt"))
 
 config = {
     "genome_base_path": prefix,
-    "genome_name":      name,
-    "gtf":              gtf,
-    "fasta":            fasta,
-    "star_index":       os.path.join(prefix, "star"),
+    "genome_name": name,
+    "gtf": gtf,
+    "fasta": fasta,
+    "star_index": os.path.join(prefix, "star"),
 }
 
 args = argparse.Namespace(

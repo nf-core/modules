@@ -11,9 +11,8 @@ import platform
 import shutil
 
 import pandas as pd
-import yaml
-
 import rpbp
+import yaml
 from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
 
 
@@ -26,11 +25,12 @@ def _parse_filter(value):
     except ValueError:
         return float(value)
 
-prefix      = "${prefix}"
-min_count   = _parse_filter("${min_count}")
+
+prefix = "${prefix}"
+min_count = _parse_filter("${min_count}")
 min_bf_mean = _parse_filter("${min_bf_mean}")
-max_bf_var  = _parse_filter("${max_bf_var}")
-min_bf_lik  = _parse_filter("${min_bf_lik}")
+max_bf_var = _parse_filter("${max_bf_var}")
+min_bf_lik = _parse_filter("${min_bf_lik}")
 
 work_dir = os.path.join("rpbp_work", "metagene-profiles")
 os.makedirs(work_dir, exist_ok=True)
@@ -49,7 +49,9 @@ config = dict(
 
 lengths, offsets = get_periodic_lengths_and_offsets(config, prefix, is_unique=True)
 pd.DataFrame({"length": lengths, "offset": offsets}).to_csv(
-    f"{prefix}.periodic_lengths_offsets.tsv", sep="\\t", index=False,
+    f"{prefix}.periodic_lengths_offsets.tsv",
+    sep="\\t",
+    index=False,
 )
 
 with open("versions.yml", "w") as f:
