@@ -52,6 +52,6 @@ pd.DataFrame({"length": lengths, "offset": offsets}).to_csv(
 )
 
 with open("versions.yml", "w") as f:
-    f.write(f'"${task.process}":\\n')  # noqa: F821
+    f.write('"${task.process}":\\n')
     f.write(f"    python: {platform.python_version()}\\n")
     f.write(f"    rpbp: {rpbp.__version__}\\n")
