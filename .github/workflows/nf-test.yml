@@ -36,7 +36,6 @@ jobs:
     runs-on:
       - runs-on=${{ github.run_id }}-nf-test-changes
       - runner=4cpu-linux-x64
-      - volume=40gb
       - image=ubuntu22-full-x64
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
@@ -94,6 +93,7 @@ jobs:
       - runs-on=${{ github.run_id }}
       - runner=4cpu-linux-${{ matrix.arch }}
       - image=ubuntu24-full-${{ matrix.arch }}
+      - volume=40gb
     name: "${{ matrix.arch }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
