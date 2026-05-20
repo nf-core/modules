@@ -40,31 +40,23 @@ process RPBP_EXTRACTORFPROFILES {
     cp ${periodic_offsets} rpbp_work/metagene-profiles/${prefix}-unique.periodic-offsets.csv.gz
 
     python <<'PYTHON'
+import pandas as pd
 from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
 
-config = {
-    "riboseq_data":                "rpbp_work",
-    "min_metagene_profile_count":  ${min_count},
-    "min_metagene_bf_mean":        ${min_bf_mean},
-    "max_metagene_bf_var":         ${max_bf_var},
-    "min_metagene_bf_likelihood":  ${min_bf_lik},
-}
-
+config = dict(
+    riboseq_data="rpbp_work",
+    min_metagene_profile_count=${min_count},
+    min_metagene_bf_mean=${min_bf_mean},
+    max_metagene_bf_var=${max_bf_var},
+    min_metagene_bf_likelihood=${min_bf_lik},
+)
 lengths, offsets = get_periodic_lengths_and_offsets(config, "${prefix}", is_unique=True)
-
-with open("${prefix}.periodic_lengths_offsets.tsv", "w") as fh:
-    fh.write("length\\toffset\\n")
-    for l, o in zip(lengths, offsets):
-        fh.write(f"{l}\\t{o}\\n")
-
-with open("lengths.txt", "w") as fh:
-    fh.write(" ".join(str(l) for l in lengths))
-with open("offsets.txt", "w") as fh:
-    fh.write(" ".join(str(o) for o in offsets))
+pd.DataFrame({"length": lengths, "offset": offsets}).to_csv(
+    "${prefix}.periodic_lengths_offsets.tsv", sep="\\t", index=False)
 PYTHON
 
-    LENGTHS=\$(cat lengths.txt)
-    OFFSETS=\$(cat offsets.txt)
+    LENGTHS=\$(tail -n +2 ${prefix}.periodic_lengths_offsets.tsv | cut -f1 | tr '\\n' ' ')
+    OFFSETS=\$(tail -n +2 ${prefix}.periodic_lengths_offsets.tsv | cut -f2 | tr '\\n' ' ')
 
     extract-orf-profiles \\
         ${bam} \\
