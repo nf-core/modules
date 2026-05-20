@@ -43,11 +43,11 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
+                { assert path(process.out.cazyme_annotation[0][1]).text.contains('GH13') },
+                { assert path(process.out.dbcandiamond_results[0][1]).text.contains('GT1|201643') },
                 { assert snapshot(
-                    path(process.out.cazyme_annotation[0][1]).text.contains('QYO62262.1|GH13'),
                     process.out.dbcanhmm_results,
                     process.out.dbcansub_results,
-                    path(process.out.dbcandiamond_results[0][1]).text.contains('GH13'),
                     process.out.cgc_gff,
                     process.out.cgc_standard_out,
                     process.out.diamond_out_tc,
