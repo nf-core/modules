@@ -1,9 +1,18 @@
 name: "rpbp_extractorfprofiles"
 description: |
-  Run Rp-Bp's `extract-orf-profiles` on a Ribo-seq BAM using the
-  per-read-length P-site offsets selected upstream by
-  `rpbp/getperiodiclengthsoffsets`. Emits per-ORF P-site profiles for
-  downstream Bayesian translation classification.
+  Build a per-ORF P-site count vector for every candidate open reading
+  frame (ORF) in the catalogue. For each ORF, walks the spliced exons
+  in 3-nucleotide codon steps and counts the P-site positions
+  (read 5'-end coordinate plus the length-specific offset selected
+  upstream) that fall in each codon. Counts are summed across all read
+  lengths that passed the periodicity filter from
+  `rpbp/getperiodiclengthsoffsets`.
+
+  The resulting per-ORF vectors are the input to Bayesian translation
+  scoring in `rpbp/estimateorfbayesfactors`: a translated ORF should
+  show P-site density concentrated at codon-start positions, while a
+  non-translated region should look flat or noisy. Emitted as a sparse
+  matrix (one row per ORF, columns indexed by codon position).
 keywords:
   - rpbp
   - orf
@@ -16,7 +25,7 @@ tools:
       homepage: "https://github.com/dieterich-lab/rp-bp"
       documentation: "https://rp-bp.readthedocs.io"
       tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
-      doi: "10.1093/nar/gkw1141"
+      doi: "10.1093/nar/gkw1350"
       licence:
         - "MIT"
       identifier: ""

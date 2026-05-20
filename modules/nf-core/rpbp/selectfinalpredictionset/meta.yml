@@ -1,9 +1,17 @@
 name: "rpbp_selectfinalpredictionset"
 description: |
-  Run Rp-Bp's `select-final-prediction-set`, which applies the Bayes factor
-  threshold + length/overlap rules to the per-ORF Bayes factor table and
-  emits the final filtered set of predicted translated ORFs (BED plus DNA and
-  protein FASTAs).
+  Produce the final filtered set of predicted translated ORFs from the
+  per-ORF Bayes factor table. Applies the standard Rp-Bp prediction
+  rules: a minimum Bayes-factor cutoff (favouring translated over
+  untranslated), a minimum ORF length, and overlap resolution so that
+  among overlapping candidates only the highest-scoring representative
+  is kept.
+
+  Emits three files describing the same prediction set: a BED of ORF
+  genomic coordinates plus score, a FASTA of ORF DNA sequences
+  (extracted from the genome FASTA), and a FASTA of the corresponding
+  translated protein sequences. This is the terminal step of the Rp-Bp
+  per-sample chain.
 keywords:
   - rpbp
   - orf
@@ -16,7 +24,7 @@ tools:
       homepage: "https://github.com/dieterich-lab/rp-bp"
       documentation: "https://rp-bp.readthedocs.io"
       tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
-      doi: "10.1093/nar/gkw1141"
+      doi: "10.1093/nar/gkw1350"
       licence:
         - "MIT"
       identifier: ""

@@ -1,8 +1,23 @@
 name: "rpbp_estimatemetagenebayesfactors"
 description: |
-  Run Rp-Bp's `estimate-metagene-profile-bayes-factors` over per-read-length
-  metagene profiles, fitting periodic vs. non-periodic Bayesian models to
-  identify high-quality read lengths and frame offsets.
+  Score how strongly each per-read-length metagene profile shows the
+  3-nucleotide periodicity expected of actively translating ribosomes.
+  For each candidate (read length, P-site offset) pair, Rp-Bp fits two
+  competing Bayesian models to the count window around annotated start
+  codons: a "periodic" model whose signal repeats every three
+  nucleotides, and a "non-periodic" background model. The Bayes factor
+  (ratio of the two marginal likelihoods) quantifies how much the data
+  prefer the periodic explanation.
+
+  Returns one row per (length, offset) pair with the mean and variance of
+  the log Bayes factor across MCMC samples. Downstream,
+  `rpbp/selectperiodicoffsets` picks the best offset per length from
+  this table, and `rpbp/getperiodiclengthsoffsets` filters to the
+  high-confidence pairs that drive ORF-level scoring.
+
+  Periodic/non-periodic models are supplied as Stan source files. If no
+  `.stan` files are passed, the module falls back to the models bundled
+  inside the rpbp Python package.
 keywords:
   - rpbp
   - metagene
@@ -15,7 +30,7 @@ tools:
       homepage: "https://github.com/dieterich-lab/rp-bp"
       documentation: "https://rp-bp.readthedocs.io"
       tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
-      doi: "10.1093/nar/gkw1141"
+      doi: "10.1093/nar/gkw1350"
       licence:
         - "MIT"
       identifier: ""

@@ -1,16 +1,32 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_gtf_bam_rpbp"
 description: |
-  End-to-end Rp-Bp execution given a genome FASTA, an annotation GTF and a
-  set of Ribo-seq BAMs. Builds the Rp-Bp BED reference once per run
-  (`rpbp/preparegenome`), then runs the per-sample six-step ORF prediction
-  chain on each BAM: extract-metagene-profiles ->
-  estimate-metagene-profile-bayes-factors -> select-periodic-offsets ->
-  extract-orf-profiles -> estimate-orf-bayes-factors ->
-  select-final-prediction-set. Each tool is a separate Nextflow process so
-  resume only re-runs what changed. Emits per-sample predicted-ORF BED, DNA
-  FASTA, protein FASTA and Bayes factor BED for downstream multi-caller
-  aggregation.
+  End-to-end translated-ORF discovery from ribosome profiling (Ribo-seq) data
+  with Rp-Bp (Malone et al. 2017). Ribo-seq sequences the short mRNA
+  footprints protected by translating ribosomes; Rp-Bp uses a Bayesian model
+  to score which open reading frames (ORFs) on the transcriptome show the
+  characteristic 3-nucleotide periodicity of active translation.
+
+  Given a genome FASTA, annotation GTF and one or more pre-aligned Ribo-seq
+  BAMs, the subworkflow:
+    1. Builds the per-ORF reference (rpbp/preparegenome) once per run -
+       enumerates candidate ORFs from the GTF.
+    2. For each sample, builds per-read-length metagene profiles around
+       annotated start codons (extract-metagene-profiles), scores their
+       three-nucleotide periodicity with Bayesian models
+       (estimate-metagene-profile-bayes-factors), picks the best P-site
+       offset per periodic read length (select-periodic-offsets), and
+       filters down to the high-confidence read-length/offset pairs that
+       will drive ORF-level scoring (get-periodic-lengths-offsets).
+    3. Builds per-ORF P-site count vectors with those selected offsets
+       (extract-orf-profiles), scores each ORF as "translated" vs
+       "untranslated" with a Bayesian model (estimate-orf-bayes-factors),
+       and emits the final filtered set of predicted translated ORFs as
+       BED + DNA FASTA + protein FASTA (select-final-prediction-set).
+
+  Each Rp-Bp step is a separate Nextflow process so `-resume` only re-runs
+  what changed, and STAR/bowtie alignment is supplied via the BAM input
+  (this subworkflow does not realign).
 keywords:
   - rpbp
   - orf

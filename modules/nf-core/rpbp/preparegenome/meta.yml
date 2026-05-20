@@ -1,18 +1,22 @@
 name: "rpbp_preparegenome"
 description: |
-  Build the Rp-Bp BED reference files required by `predict-translated-orfs`.
+  Build the per-ORF reference files that Rp-Bp's downstream scoring needs,
+  starting from a genome FASTA and an annotation GTF. Enumerates every
+  candidate open reading frame (ORF) in the annotation (annotated CDSs plus
+  alternative start codons within transcript exons), records their genomic
+  and per-exon coordinates, and labels them with the transcript and gene
+  they belong to.
 
-  Invokes Rp-Bp's `get_orfs` Python function directly to chain
-  `gtf-to-bed12`, `extract-bed-sequences`, `extract-orf-coordinates`,
-  `split-bed12-blocks` and `label-orfs`. Bypasses the `prepare-rpbp-genome`
-  umbrella script so we skip its built-in `bowtie2-build` (rRNA index) and
-  `STAR --runMode genomeGenerate` (alignment index) steps. None of the
-  downstream Rp-Bp tools we wrap consume those indices - upstream alignment
-  is supplied as the BAM.
+  Invokes Rp-Bp's `get_orfs` Python function directly, chaining the upstream
+  helpers `gtf-to-bed12`, `extract-bed-sequences`, `extract-orf-coordinates`,
+  `split-bed12-blocks` and `label-orfs`. Bypasses Rp-Bp's `prepare-rpbp-genome`
+  umbrella script, which would also build `bowtie2` (rRNA filtering) and
+  `STAR` (alignment) indices - neither is consumed by the Rp-Bp tools
+  wrapped here, since alignment is supplied externally as a BAM.
 
-  A minimal `chrName.txt` (one contig per line) is seeded from the FASTA
-  headers because `gtf-to-bed12` reads it via `--chr-name-file` to control
-  sort order.
+  A minimal `chrName.txt` (one contig name per line) is seeded from the
+  FASTA headers because `gtf-to-bed12` reads it via `--chr-name-file` to
+  control output sort order.
 keywords:
   - rpbp
   - orf
@@ -26,7 +30,7 @@ tools:
       homepage: "https://github.com/dieterich-lab/rp-bp"
       documentation: "https://rp-bp.readthedocs.io"
       tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
-      doi: "10.1093/nar/gkw1141"
+      doi: "10.1093/nar/gkw1350"
       licence:
         - "MIT"
       identifier: ""

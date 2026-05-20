@@ -1,8 +1,19 @@
 name: "rpbp_selectperiodicoffsets"
 description: |
-  Run Rp-Bp's `select-periodic-offsets` on per-read-length Bayes factors to
-  pick a single P-site offset per high-quality read length. Output drives
-  P-site assignment in `extract-orf-profiles`.
+  Pick the single best P-site offset for each read length from the
+  per-(length, offset) Bayes factor table produced upstream. For each
+  read length, the offset with the highest periodicity Bayes-factor mean
+  is selected - this is the offset that, when added to a read's 5' end,
+  is estimated to land closest to the ribosomal P-site (the codon being
+  decoded). Downstream, these offsets are used to convert raw read
+  5'-end coordinates into P-site positions when counting reads against
+  candidate ORFs.
+
+  Emits one row per read length (length, best offset, supporting Bayes
+  factor statistics). The next step
+  (`rpbp/getperiodiclengthsoffsets`) filters this table to the high-quality
+  pairs that pass user-specified count / signal thresholds before
+  P-site counting in `rpbp/extractorfprofiles`.
 keywords:
   - rpbp
   - psite
@@ -15,7 +26,7 @@ tools:
       homepage: "https://github.com/dieterich-lab/rp-bp"
       documentation: "https://rp-bp.readthedocs.io"
       tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
-      doi: "10.1093/nar/gkw1141"
+      doi: "10.1093/nar/gkw1350"
       licence:
         - "MIT"
       identifier: ""

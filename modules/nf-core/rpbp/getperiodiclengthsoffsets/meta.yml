@@ -1,10 +1,16 @@
 name: "rpbp_getperiodiclengthsoffsets"
 description: |
-  Filter Rp-Bp's selected per-read-length P-site offsets down to the
-  lengths/offsets actually used by `extract-orf-profiles`. Calls
-  `rpbp.ribo_utils.utils.get_periodic_lengths_and_offsets` directly so the
-  filter logic stays byte-identical to upstream. Thresholds are configured
-  via `ext.args` as four space-separated tokens:
+  Filter the per-read-length P-site offset table down to the
+  (length, offset) pairs that will actually drive ORF-level scoring.
+  Drops read lengths whose metagene profile is too sparsely populated,
+  or whose periodicity Bayes factor is too low / too uncertain, so that
+  downstream P-site counting only uses read lengths with a clean
+  3-nucleotide signal.
+
+  Wraps Rp-Bp's `get_periodic_lengths_and_offsets` Python helper directly
+  rather than reimplementing the filter, so the selection stays byte-
+  identical to the upstream tool. Thresholds are configured via
+  `ext.args` as four space-separated tokens:
   `<min_metagene_profile_count> <min_metagene_bf_mean> <max_metagene_bf_var> <min_metagene_bf_likelihood>`.
   Any token may be `None` to defer to upstream's per-slot default.
   Defaults: `1000 5 None 0.5` (mirrors `rpbp.defaults.metagene_options`).
@@ -20,7 +26,7 @@ tools:
       homepage: "https://github.com/dieterich-lab/rp-bp"
       documentation: "https://rp-bp.readthedocs.io"
       tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
-      doi: "10.1093/nar/gkw1141"
+      doi: "10.1093/nar/gkw1350"
       licence:
         - "MIT"
       identifier: ""

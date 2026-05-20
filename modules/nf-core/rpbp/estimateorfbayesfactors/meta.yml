@@ -1,8 +1,22 @@
 name: "rpbp_estimateorfbayesfactors"
 description: |
-  Run Rp-Bp's `estimate-orf-bayes-factors`, which fits a Bayesian translated
-  vs. untranslated model to per-ORF P-site profiles and emits a BED-like
-  table of ORFs with translation Bayes factor scores.
+  Score every candidate ORF for evidence of active translation. For
+  each ORF, Rp-Bp fits two competing Bayesian models to its per-codon
+  P-site count vector: a "translated" model that expects P-site density
+  to concentrate at codon-start positions (the in-frame signal a
+  translating ribosome produces), and an "untranslated" / noise model
+  for the same data. The Bayes factor (ratio of marginal likelihoods)
+  quantifies how much the data favour the translated hypothesis.
+
+  Emits a BED-style table with one row per ORF carrying genomic
+  coordinates plus the mean and variance of the log Bayes factor across
+  MCMC samples. Downstream, `rpbp/selectfinalpredictionset` applies
+  Bayes-factor, length and overlap rules to this table to produce the
+  final filtered prediction set.
+
+  Translated/untranslated models are supplied as Stan source files. If
+  no `.stan` files are passed, the module falls back to the models
+  bundled inside the rpbp Python package.
 keywords:
   - rpbp
   - orf
@@ -15,7 +29,7 @@ tools:
       homepage: "https://github.com/dieterich-lab/rp-bp"
       documentation: "https://rp-bp.readthedocs.io"
       tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
-      doi: "10.1093/nar/gkw1141"
+      doi: "10.1093/nar/gkw1350"
       licence:
         - "MIT"
       identifier: ""
