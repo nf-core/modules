@@ -24,7 +24,9 @@ process RPBP_EXTRACTORFPROFILES {
     def args = task.ext.args ?: ''
     // Periodic-length filter thresholds, space-separated:
     //   <min_metagene_profile_count> <min_metagene_bf_mean> <max_metagene_bf_var> <min_metagene_bf_likelihood>
-    // Defaults mirror rpbp.defaults.metagene_options. Use "None" to disable a filter.
+    // Defaults mirror rpbp.defaults.metagene_options. The 3rd (max_bf_var) and
+    // 4th (min_bf_likelihood) tokens accept "None" to disable that filter; the
+    // 1st (min_count) and 2nd (min_bf_mean) must be numeric.
     def filter_args = (task.ext.args2 ?: '1000 5 None 0.5').tokenize(' ')
     prefix = task.ext.prefix ?: "${meta.id}"
     def min_count      = filter_args[0]

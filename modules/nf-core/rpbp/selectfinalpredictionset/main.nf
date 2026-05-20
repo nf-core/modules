@@ -30,8 +30,6 @@ process RPBP_SELECTFINALPREDICTIONSET {
         ${prefix}.predicted-orfs.filtered.bed.gz \\
         ${prefix}.predicted-orfs.filtered.dna.fa \\
         ${prefix}.predicted-orfs.filtered.protein.fa \\
-        --select-longest-by-stop \\
-        --select-best-overlapping \\
         ${args}
     """
 

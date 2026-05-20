@@ -44,12 +44,12 @@ input:
   - orfs_genomic_bed:
       type: file
       description: Per-ORF genomic BED from `rpbp/preparegenome`.
-      pattern: "*.orfs-genomic.bed.gz"
+      pattern: "*.orfs-genomic.annotated.bed.gz"
       ontologies: []
   - exons_bed:
       type: file
       description: Per-ORF exons BED from `rpbp/preparegenome`.
-      pattern: "*.orfs-exons.bed.gz"
+      pattern: "*.orfs-exons.annotated.bed.gz"
       ontologies: []
 output:
   profiles:
