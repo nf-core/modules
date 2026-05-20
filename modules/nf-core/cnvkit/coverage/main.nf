@@ -10,12 +10,8 @@ process CNVKIT_COVERAGE {
 
     input:
     tuple val(meta), path(alignment_file), path(interval)
-    // alignement file can be BAM or CRAM
-    // in cnvkit version 0.9.13, a bedGraph (.bed.gz) file is also accepted. extract per-base coverage from BAM files once (eg. with bedtools genomecov -gb)
-    // interval file can be target or antitarget bed file.
 
     output:
-
     tuple val(meta), path("*.cnn"), emit: coverage
 
     // version
