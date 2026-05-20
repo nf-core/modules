@@ -1,22 +1,23 @@
 nextflow_process {
 
-    name "Test Process RPBP_ESTIMATEMETAGENEBAYESFACTORS"
+    name "Test Process RPBP_GETPERIODICLENGTHSOFFSETS"
     script "../main.nf"
-    process "RPBP_ESTIMATEMETAGENEBAYESFACTORS"
+    process "RPBP_GETPERIODICLENGTHSOFFSETS"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "rpbp"
-    tag "rpbp/estimatemetagenebayesfactors"
+    tag "rpbp/getperiodiclengthsoffsets"
 
-    test("homo_sapiens chr20 - metagene bayes factors") {
+    test("homo_sapiens chr20 - get periodic lengths offsets") {
 
         when {
             process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:true, strandedness:'forward' ],
-                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.metagene-profile.csv.gz", checkIfExists: true)
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.periodic-offsets.csv.gz", checkIfExists: true)
                 ])
                 """
             }
@@ -26,14 +27,14 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bayes_factors[0][1]).name,
+                    file(process.out.lengths_offsets[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
     }
 
-    test("homo_sapiens chr20 - metagene bayes factors - stub") {
+    test("homo_sapiens chr20 - get periodic lengths offsets - stub") {
 
         options '-stub'
 
@@ -42,7 +43,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:true, strandedness:'forward' ],
-                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.metagene-profile.csv.gz", checkIfExists: true)
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.periodic-offsets.csv.gz", checkIfExists: true)
                 ])
                 """
             }

@@ -3,77 +3,11 @@ nextflow_process {
     name "Test Process RPBP_EXTRACTORFPROFILES"
     script "../main.nf"
     process "RPBP_EXTRACTORFPROFILES"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "rpbp"
     tag "rpbp/extractorfprofiles"
-    tag "rpbp/selectperiodicoffsets"
-    tag "rpbp/estimatemetagenebayesfactors"
-    tag "rpbp/extractmetageneprofiles"
-    tag "rpbp/preparegenome"
-    tag "gunzip"
-
-    setup {
-        run("GUNZIP") {
-            script "modules/nf-core/gunzip/main.nf"
-            process {
-            """
-            input[0] = [
-                [ id:'reference' ],
-                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
-            ]
-            """
-            }
-        }
-
-        run("RPBP_PREPAREGENOME") {
-            script "../../preparegenome/main.nf"
-            process {
-            """
-            input[0] = GUNZIP.out.gunzip
-                .map { meta, fa -> [
-                    meta,
-                    fa,
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
-                ] }
-            """
-            }
-        }
-
-        run("RPBP_EXTRACTMETAGENEPROFILES") {
-            script "../../extractmetageneprofiles/main.nf"
-            process {
-            """
-            input[0] = Channel.of([
-                [ id:'test', single_end:true, strandedness:'forward' ],
-                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
-                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
-            ])
-            input[1] = RPBP_PREPAREGENOME.out.transcript_bed.map { _meta, bed -> bed }.first()
-            """
-            }
-        }
-
-        run("RPBP_ESTIMATEMETAGENEBAYESFACTORS") {
-            script "../../estimatemetagenebayesfactors/main.nf"
-            process {
-            """
-            input[0] = RPBP_EXTRACTMETAGENEPROFILES.out.metagene
-            """
-            }
-        }
-
-        run("RPBP_SELECTPERIODICOFFSETS") {
-            script "../../selectperiodicoffsets/main.nf"
-            process {
-            """
-            input[0] = RPBP_ESTIMATEMETAGENEBAYESFACTORS.out.bayes_factors
-            """
-            }
-        }
-    }
 
     test("homo_sapiens chr20 - extract orf profiles") {
 
@@ -83,10 +17,11 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:true, strandedness:'forward' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
-                ]).join(RPBP_SELECTPERIODICOFFSETS.out.periodic, by: 0)
-                input[1] = RPBP_PREPAREGENOME.out.orfs_genomic_bed.map { _meta, bed -> bed }.first()
-                input[2] = RPBP_PREPAREGENOME.out.orfs_exons_bed.map   { _meta, bed -> bed }.first()
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.periodic_lengths_offsets.tsv", checkIfExists: true)
+                ])
+                input[1] = file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-genomic.annotated.bed.gz", checkIfExists: true)
+                input[2] = file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-exons.annotated.bed.gz", checkIfExists: true)
                 """
             }
         }
@@ -96,7 +31,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.profiles[0][1]).name,
-                    file(process.out.lengths_offsets[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -113,10 +47,11 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:true, strandedness:'forward' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
-                ]).join(RPBP_SELECTPERIODICOFFSETS.out.periodic, by: 0)
-                input[1] = RPBP_PREPAREGENOME.out.orfs_genomic_bed.map { _meta, bed -> bed }.first()
-                input[2] = RPBP_PREPAREGENOME.out.orfs_exons_bed.map   { _meta, bed -> bed }.first()
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.periodic_lengths_offsets.tsv", checkIfExists: true)
+                ])
+                input[1] = file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-genomic.annotated.bed.gz", checkIfExists: true)
+                input[2] = file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-exons.annotated.bed.gz", checkIfExists: true)
                 """
             }
         }

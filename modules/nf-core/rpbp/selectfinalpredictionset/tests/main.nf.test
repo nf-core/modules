@@ -9,12 +9,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "rpbp"
     tag "rpbp/selectfinalpredictionset"
-    tag "rpbp/estimateorfbayesfactors"
-    tag "rpbp/extractorfprofiles"
-    tag "rpbp/selectperiodicoffsets"
-    tag "rpbp/estimatemetagenebayesfactors"
-    tag "rpbp/extractmetageneprofiles"
-    tag "rpbp/preparegenome"
     tag "gunzip"
 
     setup {
@@ -29,77 +23,6 @@ nextflow_process {
             """
             }
         }
-
-        run("RPBP_PREPAREGENOME") {
-            script "../../preparegenome/main.nf"
-            process {
-            """
-            input[0] = GUNZIP.out.gunzip
-                .map { meta, fa -> [
-                    meta,
-                    fa,
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
-                ] }
-            """
-            }
-        }
-
-        run("RPBP_EXTRACTMETAGENEPROFILES") {
-            script "../../extractmetageneprofiles/main.nf"
-            process {
-            """
-            input[0] = Channel.of([
-                [ id:'test', single_end:true, strandedness:'forward' ],
-                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
-                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
-            ])
-            input[1] = RPBP_PREPAREGENOME.out.transcript_bed.map { _meta, bed -> bed }.first()
-            """
-            }
-        }
-
-        run("RPBP_ESTIMATEMETAGENEBAYESFACTORS") {
-            script "../../estimatemetagenebayesfactors/main.nf"
-            process {
-            """
-            input[0] = RPBP_EXTRACTMETAGENEPROFILES.out.metagene
-            """
-            }
-        }
-
-        run("RPBP_SELECTPERIODICOFFSETS") {
-            script "../../selectperiodicoffsets/main.nf"
-            process {
-            """
-            input[0] = RPBP_ESTIMATEMETAGENEBAYESFACTORS.out.bayes_factors
-            """
-            }
-        }
-
-        run("RPBP_EXTRACTORFPROFILES") {
-            script "../../extractorfprofiles/main.nf"
-            process {
-            """
-            input[0] = Channel.of([
-                [ id:'test', single_end:true, strandedness:'forward' ],
-                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
-                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
-            ]).join(RPBP_SELECTPERIODICOFFSETS.out.periodic, by: 0)
-            input[1] = RPBP_PREPAREGENOME.out.orfs_genomic_bed.map { _meta, bed -> bed }.first()
-            input[2] = RPBP_PREPAREGENOME.out.orfs_exons_bed.map   { _meta, bed -> bed }.first()
-            """
-            }
-        }
-
-        run("RPBP_ESTIMATEORFBAYESFACTORS") {
-            script "../../estimateorfbayesfactors/main.nf"
-            process {
-            """
-            input[0] = RPBP_EXTRACTORFPROFILES.out.profiles
-            input[1] = RPBP_PREPAREGENOME.out.orfs_genomic_bed.map { _meta, bed -> bed }.first()
-            """
-            }
-        }
     }
 
     test("homo_sapiens chr20 - select final prediction set") {
@@ -107,7 +30,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = RPBP_ESTIMATEORFBAYESFACTORS.out.bayes_factors
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.bayes-factors.bed.gz", checkIfExists: true)
+                ])
                 input[1] = GUNZIP.out.gunzip.map { _meta, fa -> fa }.first()
                 """
             }
@@ -133,7 +59,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = RPBP_ESTIMATEORFBAYESFACTORS.out.bayes_factors
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.bayes-factors.bed.gz", checkIfExists: true)
+                ])
                 input[1] = GUNZIP.out.gunzip.map { _meta, fa -> fa }.first()
                 """
             }

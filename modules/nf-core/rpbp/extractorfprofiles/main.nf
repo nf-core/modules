@@ -8,13 +8,12 @@ process RPBP_EXTRACTORFPROFILES {
         'community.wave.seqera.io/library/rpbp:4.0.1--71297b462026e13b' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(periodic_offsets)
+    tuple val(meta), path(bam), path(bai), path(lengths_offsets)
     path  orfs_genomic_bed
     path  exons_bed
 
     output:
-    tuple val(meta), path("${prefix}.profiles.mtx.gz")             , emit: profiles
-    tuple val(meta), path("${prefix}.periodic_lengths_offsets.tsv"), emit: lengths_offsets
+    tuple val(meta), path("${prefix}.profiles.mtx.gz"), emit: profiles
     tuple val("${task.process}"), val('rpbp'), eval('python -c "import rpbp; print(rpbp.__version__)"'), emit: versions_rpbp, topic: versions
 
     when:
@@ -22,41 +21,10 @@ process RPBP_EXTRACTORFPROFILES {
 
     script:
     def args = task.ext.args ?: ''
-    // Periodic-length filter thresholds, space-separated:
-    //   <min_metagene_profile_count> <min_metagene_bf_mean> <max_metagene_bf_var> <min_metagene_bf_likelihood>
-    // Defaults mirror rpbp.defaults.metagene_options. Any token may be "None"
-    // to defer to upstream's per-slot default-filter handling.
-    def filter_args = (task.ext.args2 ?: '1000 5 None 0.5').tokenize(' ')
     prefix = task.ext.prefix ?: "${meta.id}"
-    def min_count      = filter_args[0]
-    def min_bf_mean    = filter_args[1]
-    def max_bf_var     = filter_args[2]
-    def min_bf_lik     = filter_args[3]
     """
-    # Stage the periodic-offsets CSV at the path rpbp.ribo_utils.filenames
-    # constructs for it, then call get_periodic_lengths_and_offsets directly
-    # so the filter logic stays byte-identical to upstream.
-    mkdir -p rpbp_work/metagene-profiles
-    cp ${periodic_offsets} rpbp_work/metagene-profiles/${prefix}-unique.periodic-offsets.csv.gz
-
-    python <<'PYTHON'
-import pandas as pd
-from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
-
-config = dict(
-    riboseq_data="rpbp_work",
-    min_metagene_profile_count=${min_count},
-    min_metagene_bf_mean=${min_bf_mean},
-    max_metagene_bf_var=${max_bf_var},
-    min_metagene_bf_likelihood=${min_bf_lik},
-)
-lengths, offsets = get_periodic_lengths_and_offsets(config, "${prefix}", is_unique=True)
-pd.DataFrame({"length": lengths, "offset": offsets}).to_csv(
-    "${prefix}.periodic_lengths_offsets.tsv", sep="\\t", index=False)
-PYTHON
-
-    LENGTHS=\$(tail -n +2 ${prefix}.periodic_lengths_offsets.tsv | cut -f1 | tr '\\n' ' ')
-    OFFSETS=\$(tail -n +2 ${prefix}.periodic_lengths_offsets.tsv | cut -f2 | tr '\\n' ' ')
+    LENGTHS=\$(tail -n +2 ${lengths_offsets} | cut -f1 | tr '\\n' ' ')
+    OFFSETS=\$(tail -n +2 ${lengths_offsets} | cut -f2 | tr '\\n' ' ')
 
     extract-orf-profiles \\
         ${bam} \\
@@ -73,6 +41,5 @@ PYTHON
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.profiles.mtx.gz
-    touch ${prefix}.periodic_lengths_offsets.tsv
     """
 }

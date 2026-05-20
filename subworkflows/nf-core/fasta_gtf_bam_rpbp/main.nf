@@ -2,6 +2,7 @@ include { RPBP_PREPAREGENOME                } from '../../../modules/nf-core/rpb
 include { RPBP_EXTRACTMETAGENEPROFILES      } from '../../../modules/nf-core/rpbp/extractmetageneprofiles/main'
 include { RPBP_ESTIMATEMETAGENEBAYESFACTORS } from '../../../modules/nf-core/rpbp/estimatemetagenebayesfactors/main'
 include { RPBP_SELECTPERIODICOFFSETS        } from '../../../modules/nf-core/rpbp/selectperiodicoffsets/main'
+include { RPBP_GETPERIODICLENGTHSOFFSETS    } from '../../../modules/nf-core/rpbp/getperiodiclengthsoffsets/main'
 include { RPBP_EXTRACTORFPROFILES           } from '../../../modules/nf-core/rpbp/extractorfprofiles/main'
 include { RPBP_ESTIMATEORFBAYESFACTORS      } from '../../../modules/nf-core/rpbp/estimateorfbayesfactors/main'
 include { RPBP_SELECTFINALPREDICTIONSET     } from '../../../modules/nf-core/rpbp/selectfinalpredictionset/main'
@@ -34,8 +35,12 @@ workflow FASTA_GTF_BAM_RPBP {
         RPBP_ESTIMATEMETAGENEBAYESFACTORS.out.bayes_factors
     )
 
+    RPBP_GETPERIODICLENGTHSOFFSETS (
+        RPBP_SELECTPERIODICOFFSETS.out.periodic
+    )
+
     ch_extract_in = ch_bam
-        .join(RPBP_SELECTPERIODICOFFSETS.out.periodic, by: 0)
+        .join(RPBP_GETPERIODICLENGTHSOFFSETS.out.lengths_offsets, by: 0)
 
     RPBP_EXTRACTORFPROFILES (
         ch_extract_in,
@@ -61,8 +66,8 @@ workflow FASTA_GTF_BAM_RPBP {
     metagene         = RPBP_EXTRACTMETAGENEPROFILES.out.metagene           // channel: [ val(meta), path(*.metagene-profile.csv.gz) ]
     metagene_bf      = RPBP_ESTIMATEMETAGENEBAYESFACTORS.out.bayes_factors // channel: [ val(meta), path(*.metagene-periodicity-bayes-factors.csv.gz) ]
     periodic         = RPBP_SELECTPERIODICOFFSETS.out.periodic             // channel: [ val(meta), path(*.periodic-offsets.csv.gz) ]
+    lengths_offsets  = RPBP_GETPERIODICLENGTHSOFFSETS.out.lengths_offsets  // channel: [ val(meta), path(*.periodic_lengths_offsets.tsv) ]
     orf_profiles     = RPBP_EXTRACTORFPROFILES.out.profiles                // channel: [ val(meta), path(*.profiles.mtx.gz) ]
-    lengths_offsets  = RPBP_EXTRACTORFPROFILES.out.lengths_offsets         // channel: [ val(meta), path(*.periodic_lengths_offsets.tsv) ]
     orf_bayes        = RPBP_ESTIMATEORFBAYESFACTORS.out.bayes_factors      // channel: [ val(meta), path(*.bayes-factors.bed.gz) ]
     predicted        = RPBP_SELECTFINALPREDICTIONSET.out.predicted         // channel: [ val(meta), path(*.predicted-orfs.filtered.bed.gz) ]
     dna_fasta        = RPBP_SELECTFINALPREDICTIONSET.out.dna_fasta         // channel: [ val(meta), path(*.predicted-orfs.filtered.dna.fa) ]
