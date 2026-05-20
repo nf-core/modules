@@ -9,7 +9,7 @@ process MIFASER {
 
     input:
     tuple val(meta), path(reads)
-    each path(db)
+   path(db)
 
     output:
     tuple val(meta), path("*multi_ec.tsv"), emit: multi_ec
