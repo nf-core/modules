@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process OCTOPUSV_STAT"
+    script "../main.nf"
+    process "OCTOPUSV_STAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "octopusv"
+    tag "octopusv/stat"
+
+    test("homo_sapiens - txt") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.txt.get(0).get(1)),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - txt - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
