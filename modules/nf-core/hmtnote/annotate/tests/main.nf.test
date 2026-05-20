@@ -29,11 +29,13 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                /*{ assert process.success },
                 { assert snapshot(
 					path(process.out.vcf[0][1]).vcf.variantsMD5,
 					process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match()}
+                ).match()}*/
             )
         }
     }
@@ -56,8 +58,10 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                /*{ assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }*/
             )
         }
     }
