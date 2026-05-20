@@ -5,8 +5,8 @@ process SIMPLEAF_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/83ab36a4aba7f26860f96dd73bb428a4a4eb05450c4cfc9488cf77adefad1adb/data':
-        'community.wave.seqera.io/library/simpleaf:0.24.1--41e05fd46d838d92' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aaba033a0179fd6ccc20c677f9df1fac5d8eac2dbd1bed73c4fa9f7adb65d963/data':
+        'community.wave.seqera.io/library/simpleaf:0.25.0--b9f96d8b71a01864' }"
 
     input:
     tuple val(meta),  path(genome_fasta), path(genome_gtf)
