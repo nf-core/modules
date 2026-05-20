@@ -4,8 +4,8 @@ process RPBP_EXTRACTMETAGENEPROFILES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a8aa95ce76934f6269b2d8cbdd3d57c13db029c704152975b2315e35b7a2154/data' :
-        'community.wave.seqera.io/library/rpbp_star:247a8ae84a6babfb' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/146c3f15abf184a5ec13531d2a040ba7b9235c1091723aa37c7a119817411367/data' :
+        'community.wave.seqera.io/library/rpbp:4.0.1--71297b462026e13b' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
