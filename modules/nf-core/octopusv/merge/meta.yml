@@ -28,13 +28,12 @@ input:
         pattern: "*.svcf"
         ontologies:
           - edam: "http://edamontology.org/format_3016"
-          - edam: "http://edamontology.org/format_3615"
     - strategy_flag:
         type: string
         description: |
           Merge strategy for octopusv merge. Valid values: union, intersect, specific,
-          min-support, exact-support, max-support, expression. Defaults to
-          union when this flag is empty.
+          min-support, exact-support, max-support, expression. Defaults to union when this flag is empty.
+          NOTE: Some flags require additional arguments.
 output:
   svcf:
     - - meta:
