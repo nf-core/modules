@@ -11,7 +11,7 @@ process SAVANA_CLASSIFY {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("${prefix}.classified.vcf")              , emit: classified_vcf     , optional: true
+    tuple val(meta), path("${prefix}.classified.vcf")              , emit: classified_vcf
     tuple val(meta), path("${prefix}.classified.somatic.vcf")      , emit: somatic_vcf        , optional: true
     tuple val(meta), path("${prefix}.classified.germline.vcf")     , emit: germline_vcf       , optional: true
     tuple val(meta), path("${prefix}.classified.somatic.bedpe")    , emit: somatic_bedpe      , optional: true
@@ -35,7 +35,6 @@ process SAVANA_CLASSIFY {
         --vcf \${vcf_in} \\
         --output ${prefix}.classified.vcf \\
         --somatic_output ${prefix}.classified.somatic.vcf \\
-        --germline_output ${prefix}.classified.germline.vcf \\
         --threads ${task.cpus ?: 1} \\
         ${args}
     """
@@ -45,7 +44,6 @@ process SAVANA_CLASSIFY {
     """
     touch ${prefix}.classified.vcf
     touch ${prefix}.classified.somatic.vcf
-    touch ${prefix}.classified.germline.vcf
     touch ${prefix}.classified.somatic.bedpe
     touch ${prefix}.classified.strict.vcf
     touch ${prefix}.classified.lenient.vcf

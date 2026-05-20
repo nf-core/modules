@@ -9,7 +9,7 @@ nextflow_process {
     tag "savana"
     tag "savana/classify"
 
-    test("homo_sapiens - vcf.gz") {
+    test("homo_sapiens - vcf") {
 
         when {
             process {
@@ -17,7 +17,7 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/savana/sv_breakpoints.vcf', checkIfExists: true),
                 ]
                 """
             }
@@ -30,9 +30,7 @@ nextflow_process {
                     process.out,
                     path(process.out.classified_vcf.get(0).get(1)).vcf.summary,
                     path(process.out.somatic_vcf.get(0).get(1)).vcf.summary,
-                    path(process.out.germline_vcf.get(0).get(1)).vcf.summary,
-                    path(process.out.somatic_bedpe.get(0).get(1)).name,
-                    path(process.out.legacy_vcfs.get(0).get(1)).vcf.summary,
+                    path(process.out.somatic_bedpe.get(0).get(1)),
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -40,7 +38,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - vcf.gz - stub") {
+    test("homo_sapiens - vcf - stub") {
 
         options "-stub"
 
@@ -49,7 +47,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/savana/sv_breakpoints.vcf', checkIfExists: true),
                 ]
                 """
             }
