@@ -38,7 +38,7 @@ process OCTOPUSV_MERGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def merge_strategy = (strategy_flag ?: '').trim()
     if (!merge_strategy) {
-        merge_strategy = '--union'
+        merge_strategy = 'union'
     }
     """
     echo ${merge_strategy} ${args}
