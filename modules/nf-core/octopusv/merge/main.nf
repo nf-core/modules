@@ -23,7 +23,7 @@ process OCTOPUSV_MERGE {
 
     def merge_strategy = (strategy_flag ?: '').trim()
     if (!merge_strategy) {
-        merge_strategy = '--union'
+        merge_strategy = 'union'
     }
 
     """
