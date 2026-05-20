@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_ORFCOUNTMATRIX"
+    script "../main.nf"
+    process "CUSTOM_ORFCOUNTMATRIX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/orfcountmatrix"
+
+    test("homo_sapiens - orf psite counts - bed12") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orfcountmatrix-test-data/data/genomics/homo_sapiens/riboseq_expression/orfcountmatrix/samples/sample1.orf_psite_counts.tsv", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orfcountmatrix-test-data/data/genomics/homo_sapiens/riboseq_expression/orfcountmatrix/samples/sample2.orf_psite_counts.tsv", checkIfExists: true)
+                    ],
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orfcountmatrix-test-data/data/genomics/homo_sapiens/riboseq_expression/orfcountmatrix/orf_catalogue.bed12", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.matrix,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - orf psite counts - bed12 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orfcountmatrix-test-data/data/genomics/homo_sapiens/riboseq_expression/orfcountmatrix/samples/sample1.orf_psite_counts.tsv", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orfcountmatrix-test-data/data/genomics/homo_sapiens/riboseq_expression/orfcountmatrix/samples/sample2.orf_psite_counts.tsv", checkIfExists: true)
+                    ],
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orfcountmatrix-test-data/data/genomics/homo_sapiens/riboseq_expression/orfcountmatrix/orf_catalogue.bed12", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+}

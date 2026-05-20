@@ -1,0 +1,88 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "custom_orfcountmatrix"
+description: |
+  Pivot per-sample ORF P-site count TSVs into a single ORF x sample matrix.
+  Output rows follow the order of the supplied BED12 ORF catalogue and ORFs
+  with no observed counts in a given sample are zero-filled.
+keywords:
+  - riboseq
+  - orf
+  - psite
+  - counts
+  - matrix
+tools:
+  - "custom":
+      description: |
+        "Custom module that pivots per-sample ORF P-site count TSVs into a
+        single ORF x sample matrix, zero-filled for ORFs absent from a sample
+        and including every ORF in the catalogue regardless of observed
+        counts."
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/orfcountmatrix/main.nf"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing dataset information
+          e.g. `[ id:'cohort' ]`
+    - per_sample_counts:
+        type: file
+        description: |
+          One TSV per sample with three columns (sample_id, orf_id, count).
+          Every row of a given file must carry the same sample_id; the
+          column order in the output matrix is the lexicographic sort of
+          the sample ids encountered.
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - orf_catalogue_bed12:
+        type: file
+        description: |
+          BED12 catalogue of ORFs. The 4th column is the canonical ORF id
+          and defines both the row order and the row membership of the
+          output matrix (ORFs missing from every sample appear as a row
+          of zeros).
+        pattern: "*.{bed,bed12}"
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
+
+output:
+  matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing dataset information
+            e.g. `[ id:'cohort' ]`
+      - "*.tsv":
+          type: file
+          description: |
+            ORF x sample P-site count matrix, header
+            `orf_id<tab>sample1<tab>sample2...`, one row per catalogue
+            ORF in catalogue order, zeros for missing entries.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_python:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"
