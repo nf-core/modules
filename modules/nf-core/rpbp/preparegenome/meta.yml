@@ -81,26 +81,20 @@ output:
           pattern: "*.orfs-exons.annotated.bed.gz"
           ontologies: []
   versions_rpbp:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - rpbp:
-          type: string
-          description: The name of the tool
-      - python -c "import rpbp; print(rpbp.__version__)":
-          type: eval
-          description: The expression to obtain the version of the tool
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - rpbp:
-          type: string
-          description: The name of the tool
-      - python -c "import rpbp; print(rpbp.__version__)":
-          type: eval
-          description: The expression to obtain the version of the tool
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

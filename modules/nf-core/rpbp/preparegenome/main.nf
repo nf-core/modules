@@ -15,7 +15,7 @@ process RPBP_PREPAREGENOME {
     tuple val(meta), path("${prefix}/${name}.annotated.bed.gz")                              , emit: transcript_bed
     tuple val(meta), path("${prefix}/transcript-index/${name}.orfs-genomic.annotated.bed.gz"), emit: orfs_genomic_bed
     tuple val(meta), path("${prefix}/transcript-index/${name}.orfs-exons.annotated.bed.gz")  , emit: orfs_exons_bed
-    tuple val("${task.process}"), val('rpbp'), eval('python -c "import rpbp; print(rpbp.__version__)"'), emit: versions_rpbp, topic: versions
+    path "versions.yml"                                                                      , emit: versions_rpbp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,41 +23,7 @@ process RPBP_PREPAREGENOME {
     script:
     name   = meta.id ?: 'reference'
     prefix = task.ext.prefix ?: 'rpbp_index'
-    """
-    mkdir -p ${prefix}/transcript-index ${prefix}/star
-    grep '>' ${fasta} | sed 's/>//; s/ .*//' > ${prefix}/star/chrName.txt
-
-    python <<'PYTHON'
-import argparse
-from rpbp.reference_preprocessing.prepare_rpbp_genome import get_orfs
-
-config = {
-    "genome_base_path": "${prefix}",
-    "genome_name":      "${name}",
-    "gtf":              "${gtf}",
-    "fasta":            "${fasta}",
-    "star_index":       "${prefix}/star",
-}
-
-args = argparse.Namespace(
-    do_not_call=False,
-    overwrite=False,
-    num_cpus=${task.cpus},
-    log_file="",
-    enable_ext_logging=False,
-    log_stdout=False,
-    no_log_stderr=False,
-    logging_level="WARNING",
-    file_logging_level="NOTSET",
-    stdout_logging_level="NOTSET",
-    stderr_logging_level="NOTSET",
-)
-
-get_orfs(config["gtf"], args, config, is_annotated=True, is_de_novo=False)
-PYTHON
-
-    rm -rf ${prefix}/star
-    """
+    template 'prepare_rpbp_genome.py'
 
     stub:
     name   = meta.id ?: 'reference'
@@ -67,5 +33,11 @@ PYTHON
     echo "" | gzip > ${prefix}/${name}.annotated.bed.gz
     echo "" | gzip > ${prefix}/transcript-index/${name}.orfs-genomic.annotated.bed.gz
     echo "" | gzip > ${prefix}/transcript-index/${name}.orfs-exons.annotated.bed.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python --version | sed -e "s/Python //g")
+        rpbp: \$(python -c "import rpbp; print(rpbp.__version__)")
+    END_VERSIONS
     """
 }

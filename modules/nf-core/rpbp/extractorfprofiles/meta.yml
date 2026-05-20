@@ -40,16 +40,24 @@ input:
         description: Per-read-length offsets TSV from `rpbp/getperiodiclengthsoffsets`.
         pattern: "*.periodic_lengths_offsets.tsv"
         ontologies: []
-  - orfs_genomic_bed:
-      type: file
-      description: Per-ORF genomic BED from `rpbp/preparegenome`.
-      pattern: "*.orfs-genomic.annotated.bed.gz"
-      ontologies: []
-  - exons_bed:
-      type: file
-      description: Per-ORF exons BED from `rpbp/preparegenome`.
-      pattern: "*.orfs-exons.annotated.bed.gz"
-      ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map identifying the reference (e.g. `[ id:'reference' ]`).
+    - orfs_genomic_bed:
+        type: file
+        description: Per-ORF genomic BED from `rpbp/preparegenome`.
+        pattern: "*.orfs-genomic.annotated.bed.gz"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map identifying the reference (e.g. `[ id:'reference' ]`).
+    - exons_bed:
+        type: file
+        description: Per-ORF exons BED from `rpbp/preparegenome`.
+        pattern: "*.orfs-exons.annotated.bed.gz"
+        ontologies: []
 output:
   profiles:
     - - meta:

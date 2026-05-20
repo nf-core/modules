@@ -33,11 +33,15 @@ input:
         description: BAM index.
         pattern: "*.bai"
         ontologies: []
-  - transcript_bed:
-      type: file
-      description: Annotated transcripts BED produced by `rpbp/preparegenome`.
-      pattern: "*.annotated.bed.gz"
-      ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map identifying the reference (e.g. `[ id:'reference' ]`).
+    - transcript_bed:
+        type: file
+        description: Annotated transcripts BED produced by `rpbp/preparegenome`.
+        pattern: "*.annotated.bed.gz"
+        ontologies: []
 output:
   metagene:
     - - meta:

@@ -17,10 +17,10 @@ workflow FASTA_GTF_BAM_RPBP {
 
     RPBP_PREPAREGENOME(ch_fasta_gtf)
 
-    ch_transcript_bed   = RPBP_PREPAREGENOME.out.transcript_bed  .map { _meta, bed -> bed }.first()
-    ch_orfs_genomic_bed = RPBP_PREPAREGENOME.out.orfs_genomic_bed.map { _meta, bed -> bed }.first()
-    ch_orfs_exons_bed   = RPBP_PREPAREGENOME.out.orfs_exons_bed  .map { _meta, bed -> bed }.first()
-    ch_genome_fasta     = ch_fasta_gtf.map { _meta, fasta, _gtf -> fasta }.first()
+    ch_transcript_bed   = RPBP_PREPAREGENOME.out.transcript_bed.first()
+    ch_orfs_genomic_bed = RPBP_PREPAREGENOME.out.orfs_genomic_bed.first()
+    ch_orfs_exons_bed   = RPBP_PREPAREGENOME.out.orfs_exons_bed.first()
+    ch_genome_fasta     = ch_fasta_gtf.map { meta, fasta, _gtf -> [ meta, fasta ] }.first()
 
     RPBP_EXTRACTMETAGENEPROFILES (
         ch_bam,

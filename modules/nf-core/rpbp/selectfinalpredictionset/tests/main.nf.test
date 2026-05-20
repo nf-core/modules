@@ -34,7 +34,7 @@ nextflow_process {
                     [ id:'test', single_end:true, strandedness:'forward' ],
                     file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.bayes-factors.bed.gz", checkIfExists: true)
                 ])
-                input[1] = GUNZIP.out.gunzip.map { _meta, fa -> fa }.first()
+                input[1] = GUNZIP.out.gunzip.first()
                 """
             }
         }
@@ -63,7 +63,7 @@ nextflow_process {
                     [ id:'test', single_end:true, strandedness:'forward' ],
                     file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.bayes-factors.bed.gz", checkIfExists: true)
                 ])
-                input[1] = GUNZIP.out.gunzip.map { _meta, fa -> fa }.first()
+                input[1] = GUNZIP.out.gunzip.first()
                 """
             }
         }

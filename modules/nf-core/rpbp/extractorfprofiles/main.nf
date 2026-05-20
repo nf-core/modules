@@ -8,9 +8,9 @@ process RPBP_EXTRACTORFPROFILES {
         'community.wave.seqera.io/library/rpbp:4.0.1--71297b462026e13b' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(lengths_offsets)
-    path  orfs_genomic_bed
-    path  exons_bed
+    tuple val(meta),  path(bam), path(bai), path(lengths_offsets)
+    tuple val(meta2), path(orfs_genomic_bed)
+    tuple val(meta3), path(exons_bed)
 
     output:
     tuple val(meta), path("${prefix}.profiles.mtx.gz"), emit: profiles

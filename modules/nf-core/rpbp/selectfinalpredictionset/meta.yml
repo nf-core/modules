@@ -30,11 +30,15 @@ input:
         description: Per-ORF Bayes factor BED from `rpbp/estimateorfbayesfactors`.
         pattern: "*.bayes-factors.bed.gz"
         ontologies: []
-  - genome_fasta:
-      type: file
-      description: Genome FASTA (matching the one used at `rpbp/preparegenome`).
-      pattern: "*.{fa,fasta,fna}"
-      ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map identifying the reference (e.g. `[ id:'reference' ]`).
+    - genome_fasta:
+        type: file
+        description: Genome FASTA (matching the one used at `rpbp/preparegenome`).
+        pattern: "*.{fa,fasta,fna}"
+        ontologies: []
 output:
   predicted:
     - - meta:

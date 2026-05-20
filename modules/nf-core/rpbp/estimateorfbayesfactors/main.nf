@@ -9,7 +9,7 @@ process RPBP_ESTIMATEORFBAYESFACTORS {
 
     input:
     tuple val(meta),  path(profiles)
-    path  orfs_genomic_bed
+    tuple val(meta4), path(orfs_genomic_bed)
     tuple val(meta2), path(translated_models,   stageAs: 'translated_models/*')
     tuple val(meta3), path(untranslated_models, stageAs: 'untranslated_models/*')
 

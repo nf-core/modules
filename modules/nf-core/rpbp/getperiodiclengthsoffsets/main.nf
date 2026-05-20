@@ -12,7 +12,7 @@ process RPBP_GETPERIODICLENGTHSOFFSETS {
 
     output:
     tuple val(meta), path("${prefix}.periodic_lengths_offsets.tsv"), emit: lengths_offsets
-    tuple val("${task.process}"), val('rpbp'), eval('python -c "import rpbp; print(rpbp.__version__)"'), emit: versions_rpbp, topic: versions
+    path "versions.yml"                                            , emit: versions_rpbp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,34 +24,21 @@ process RPBP_GETPERIODICLENGTHSOFFSETS {
     // to defer to upstream's per-slot default-filter handling.
     def filter_args = (task.ext.args ?: '1000 5 None 0.5').tokenize(' ')
     prefix = task.ext.prefix ?: "${meta.id}"
-    def min_count   = filter_args[0]
-    def min_bf_mean = filter_args[1]
-    def max_bf_var  = filter_args[2]
-    def min_bf_lik  = filter_args[3]
-    """
-    mkdir -p rpbp_work/metagene-profiles
-    cp ${periodic_offsets} rpbp_work/metagene-profiles/${prefix}-unique.periodic-offsets.csv.gz
-
-    python <<'PYTHON'
-import pandas as pd
-from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
-
-config = dict(
-    riboseq_data="rpbp_work",
-    min_metagene_profile_count=${min_count},
-    min_metagene_bf_mean=${min_bf_mean},
-    max_metagene_bf_var=${max_bf_var},
-    min_metagene_bf_likelihood=${min_bf_lik},
-)
-lengths, offsets = get_periodic_lengths_and_offsets(config, "${prefix}", is_unique=True)
-pd.DataFrame({"length": lengths, "offset": offsets}).to_csv(
-    "${prefix}.periodic_lengths_offsets.tsv", sep="\\t", index=False)
-PYTHON
-    """
+    min_count   = filter_args[0]
+    min_bf_mean = filter_args[1]
+    max_bf_var  = filter_args[2]
+    min_bf_lik  = filter_args[3]
+    template 'get_periodic_lengths_and_offsets.py'
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.periodic_lengths_offsets.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python --version | sed -e "s/Python //g")
+        rpbp: \$(python -c "import rpbp; print(rpbp.__version__)")
+    END_VERSIONS
     """
 }

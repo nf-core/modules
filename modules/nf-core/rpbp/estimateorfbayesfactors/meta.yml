@@ -29,11 +29,15 @@ input:
         description: Per-ORF P-site profile matrix from `rpbp/extractorfprofiles`.
         pattern: "*.profiles.mtx.gz"
         ontologies: []
-  - orfs_genomic_bed:
-      type: file
-      description: Per-ORF genomic BED from `rpbp/preparegenome`.
-      pattern: "*.orfs-genomic.annotated.bed.gz"
-      ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map identifying the reference (e.g. `[ id:'reference' ]`).
+    - orfs_genomic_bed:
+        type: file
+        description: Per-ORF genomic BED from `rpbp/preparegenome`.
+        pattern: "*.orfs-genomic.annotated.bed.gz"
+        ontologies: []
   - - meta2:
         type: map
         description: |

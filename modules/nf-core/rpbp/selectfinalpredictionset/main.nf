@@ -8,8 +8,8 @@ process RPBP_SELECTFINALPREDICTIONSET {
         'community.wave.seqera.io/library/rpbp:4.0.1--71297b462026e13b' }"
 
     input:
-    tuple val(meta), path(bayes_factors)
-    path  genome_fasta
+    tuple val(meta),  path(bayes_factors)
+    tuple val(meta2), path(genome_fasta)
 
     output:
     tuple val(meta), path("${prefix}.predicted-orfs.filtered.bed.gz")     , emit: predicted

@@ -20,8 +20,14 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true),
                     file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.periodic_lengths_offsets.tsv", checkIfExists: true)
                 ])
-                input[1] = file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-genomic.annotated.bed.gz", checkIfExists: true)
-                input[2] = file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-exons.annotated.bed.gz", checkIfExists: true)
+                input[1] = [
+                    [ id:'reference' ],
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-genomic.annotated.bed.gz", checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'reference' ],
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-exons.annotated.bed.gz", checkIfExists: true)
+                ]
                 """
             }
         }
@@ -50,8 +56,14 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true),
                     file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.periodic_lengths_offsets.tsv", checkIfExists: true)
                 ])
-                input[1] = file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-genomic.annotated.bed.gz", checkIfExists: true)
-                input[2] = file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-exons.annotated.bed.gz", checkIfExists: true)
+                input[1] = [
+                    [ id:'reference' ],
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-genomic.annotated.bed.gz", checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'reference' ],
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-exons.annotated.bed.gz", checkIfExists: true)
+                ]
                 """
             }
         }

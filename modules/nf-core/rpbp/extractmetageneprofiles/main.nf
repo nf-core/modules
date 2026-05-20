@@ -8,8 +8,8 @@ process RPBP_EXTRACTMETAGENEPROFILES {
         'community.wave.seqera.io/library/rpbp:4.0.1--71297b462026e13b' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
-    path  transcript_bed
+    tuple val(meta),  path(bam), path(bai)
+    tuple val(meta2), path(transcript_bed)
 
     output:
     tuple val(meta), path("${prefix}.metagene-profile.csv.gz"), emit: metagene
