@@ -6,7 +6,7 @@ process CNVKIT_COVERAGE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cnvkit:0.9.13--pyhdfd78af_0':
-        'biocontainers/cnvkit:0.9.13--pyhdfd78af_0' }"
+        'quay.io/biocontainers/cnvkit:0.9.13--pyhdfd78af_0' }"
 
     input:
 
