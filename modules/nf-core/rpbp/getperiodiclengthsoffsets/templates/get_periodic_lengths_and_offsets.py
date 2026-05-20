@@ -10,6 +10,11 @@ import os
 import platform
 import shutil
 
+import pandas as pd
+
+import rpbp
+from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
+
 
 def _parse_filter(value):
     """Parse a filter token to int/float or None."""
@@ -19,12 +24,6 @@ def _parse_filter(value):
         return int(value)
     except ValueError:
         return float(value)
-
-
-import pandas as pd
-
-import rpbp
-from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
 
 prefix      = "${prefix}"
 min_count   = _parse_filter("${min_count}")
@@ -53,6 +52,6 @@ pd.DataFrame({"length": lengths, "offset": offsets}).to_csv(
 )
 
 with open("versions.yml", "w") as f:
-    f.write(f'"${task.process}":\\n')
+    f.write(f'"${task.process}":\\n')  # noqa: F821
     f.write(f"    python: {platform.python_version()}\\n")
     f.write(f"    rpbp: {rpbp.__version__}\\n")
