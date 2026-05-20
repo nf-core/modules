@@ -24,9 +24,8 @@ process RPBP_EXTRACTORFPROFILES {
     def args = task.ext.args ?: ''
     // Periodic-length filter thresholds, space-separated:
     //   <min_metagene_profile_count> <min_metagene_bf_mean> <max_metagene_bf_var> <min_metagene_bf_likelihood>
-    // Defaults mirror rpbp.defaults.metagene_options. The 3rd (max_bf_var) and
-    // 4th (min_bf_likelihood) tokens accept "None" to disable that filter; the
-    // 1st (min_count) and 2nd (min_bf_mean) must be numeric.
+    // Defaults mirror rpbp.defaults.metagene_options. Any token may be "None"
+    // to defer to upstream's per-slot default-filter handling.
     def filter_args = (task.ext.args2 ?: '1000 5 None 0.5').tokenize(' ')
     prefix = task.ext.prefix ?: "${meta.id}"
     def min_count      = filter_args[0]
@@ -34,33 +33,34 @@ process RPBP_EXTRACTORFPROFILES {
     def max_bf_var     = filter_args[2]
     def min_bf_lik     = filter_args[3]
     """
-    # Replicates the length/offset filter from rpbp's
-    # ribo_utils.utils.get_periodic_lengths_and_offsets so the upstream
-    # `select-periodic-offsets` output can be consumed without going
-    # through rpbp's filename-driven config plumbing. Same defaults as
-    # rpbp.defaults.metagene_options.
-    python - <<'PYTHON'
-import pandas as pd, scipy.stats as st, math
-df = pd.read_csv("${periodic_offsets}")
-df = df[df["highest_peak_profile_sum"] >= ${min_count}]
-df = df[df["highest_peak_bf_mean"]      >= ${min_bf_mean}]
-max_bf_var = ${max_bf_var}
-if max_bf_var is not None:
-    df = df[df["highest_peak_bf_var"]   <= max_bf_var]
-min_lik = ${min_bf_lik}
-if min_lik is not None and len(df):
-    s   = df["highest_peak_bf_var"].apply(math.sqrt)
-    z   = (df["highest_peak_bf_mean"] - ${min_bf_mean}) / s
-    lik = 1 - st.norm.cdf(-z)
-    df  = df[lik > min_lik]
-lengths = df["length"].astype(int).tolist()
-offsets = df["highest_peak_offset"].astype(int).tolist()
+    # Stage the periodic-offsets CSV at the path rpbp.ribo_utils.filenames
+    # constructs for it, then call get_periodic_lengths_and_offsets directly
+    # so the filter logic stays byte-identical to upstream.
+    mkdir -p rpbp_work/metagene-profiles
+    cp ${periodic_offsets} rpbp_work/metagene-profiles/${prefix}-unique.periodic-offsets.csv.gz
+
+    python <<'PYTHON'
+from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
+
+config = {
+    "riboseq_data":                "rpbp_work",
+    "min_metagene_profile_count":  ${min_count},
+    "min_metagene_bf_mean":        ${min_bf_mean},
+    "max_metagene_bf_var":         ${max_bf_var},
+    "min_metagene_bf_likelihood":  ${min_bf_lik},
+}
+
+lengths, offsets = get_periodic_lengths_and_offsets(config, "${prefix}", is_unique=True)
+
 with open("${prefix}.periodic_lengths_offsets.tsv", "w") as fh:
     fh.write("length\\toffset\\n")
     for l, o in zip(lengths, offsets):
         fh.write(f"{l}\\t{o}\\n")
-print(" ".join(str(l) for l in lengths), file=open("lengths.txt","w"))
-print(" ".join(str(o) for o in offsets), file=open("offsets.txt","w"))
+
+with open("lengths.txt", "w") as fh:
+    fh.write(" ".join(str(l) for l in lengths))
+with open("offsets.txt", "w") as fh:
+    fh.write(" ".join(str(o) for o in offsets))
 PYTHON
 
     LENGTHS=\$(cat lengths.txt)
