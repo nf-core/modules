@@ -23,22 +23,23 @@ process RPBP_ESTIMATEORFBAYESFACTORS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def translated_flag   = translated_models   ? "--translated-models ${translated_models.collect { it.toString() }.join(' ')}"     : '--translated-models $TRANSLATED_MODELS'
-    def untranslated_flag = untranslated_models ? "--untranslated-models ${untranslated_models.collect { it.toString() }.join(' ')}" : '--untranslated-models $UNTRANSLATED_MODELS'
-    def need_bundled      = !translated_models || !untranslated_models
-    def bundled_setup     = need_bundled ? '''
-    RPBP_MODELS_BASE=$(python3 -c "import os, inspect, rpbp; print(os.path.join(os.path.dirname(inspect.getfile(rpbp)), 'models'))")
-    TRANSLATED_MODELS=$(ls $RPBP_MODELS_BASE/translated/*.stan | xargs)
-    UNTRANSLATED_MODELS=$(ls $RPBP_MODELS_BASE/untranslated/*.stan | xargs)
-    ''' : ''
+    def translated_paths   = translated_models   ? translated_models.join(' ')   : ''
+    def untranslated_paths = untranslated_models ? untranslated_models.join(' ') : ''
     """
-    ${bundled_setup}
+    TRANSLATED="${translated_paths}"
+    UNTRANSLATED="${untranslated_paths}"
+    if [ -z "\$TRANSLATED" ] || [ -z "\$UNTRANSLATED" ]; then
+        RPBP_MODELS_BASE=\$(python3 -c "import os, inspect, rpbp; print(os.path.join(os.path.dirname(inspect.getfile(rpbp)), 'models'))")
+        [ -z "\$TRANSLATED" ]   && TRANSLATED=\$(ls "\$RPBP_MODELS_BASE"/translated/*.stan)
+        [ -z "\$UNTRANSLATED" ] && UNTRANSLATED=\$(ls "\$RPBP_MODELS_BASE"/untranslated/*.stan)
+    fi
+
     estimate-orf-bayes-factors \\
         ${profiles} \\
         ${orfs_genomic_bed} \\
         ${prefix}.bayes-factors.bed.gz \\
-        ${translated_flag} \\
-        ${untranslated_flag} \\
+        --translated-models \$TRANSLATED \\
+        --untranslated-models \$UNTRANSLATED \\
         --num-cpus ${task.cpus} \\
         ${args}
     """

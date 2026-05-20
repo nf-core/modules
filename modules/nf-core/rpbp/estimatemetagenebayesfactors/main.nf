@@ -22,21 +22,22 @@ process RPBP_ESTIMATEMETAGENEBAYESFACTORS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def periodic_flag    = periodic_models    ? "--periodic-models ${periodic_models.collect { it.toString() }.join(' ')}"        : '--periodic-models $PERIODIC_MODELS'
-    def nonperiodic_flag = nonperiodic_models ? "--nonperiodic-models ${nonperiodic_models.collect { it.toString() }.join(' ')}" : '--nonperiodic-models $NONPERIODIC_MODELS'
-    def need_bundled     = !periodic_models || !nonperiodic_models
-    def bundled_setup    = need_bundled ? '''
-    RPBP_MODELS_BASE=$(python3 -c "import os, inspect, rpbp; print(os.path.join(os.path.dirname(inspect.getfile(rpbp)), 'models'))")
-    PERIODIC_MODELS=$(ls $RPBP_MODELS_BASE/periodic/*.stan | xargs)
-    NONPERIODIC_MODELS=$(ls $RPBP_MODELS_BASE/nonperiodic/*.stan | xargs)
-    ''' : ''
+    def periodic_paths    = periodic_models    ? periodic_models.join(' ')    : ''
+    def nonperiodic_paths = nonperiodic_models ? nonperiodic_models.join(' ') : ''
     """
-    ${bundled_setup}
+    PERIODIC="${periodic_paths}"
+    NONPERIODIC="${nonperiodic_paths}"
+    if [ -z "\$PERIODIC" ] || [ -z "\$NONPERIODIC" ]; then
+        RPBP_MODELS_BASE=\$(python3 -c "import os, inspect, rpbp; print(os.path.join(os.path.dirname(inspect.getfile(rpbp)), 'models'))")
+        [ -z "\$PERIODIC" ]    && PERIODIC=\$(ls "\$RPBP_MODELS_BASE"/periodic/*.stan)
+        [ -z "\$NONPERIODIC" ] && NONPERIODIC=\$(ls "\$RPBP_MODELS_BASE"/nonperiodic/*.stan)
+    fi
+
     estimate-metagene-profile-bayes-factors \\
         ${profile_csv} \\
         ${prefix}.metagene-periodicity-bayes-factors.csv.gz \\
-        ${periodic_flag} \\
-        ${nonperiodic_flag} \\
+        --periodic-models \$PERIODIC \\
+        --nonperiodic-models \$NONPERIODIC \\
         --num-cpus ${task.cpus} \\
         ${args}
     """
