@@ -14,9 +14,7 @@ description: |
   Bayes-factor, length and overlap rules to this table to produce the
   final filtered prediction set.
 
-  Translated/untranslated models are supplied as Stan source files. If
-  no `.stan` files are passed, the module falls back to the models
-  bundled inside the rpbp Python package.
+  Uses the Stan models bundled inside the rpbp Python package.
 keywords:
   - rpbp
   - orf
@@ -43,7 +41,7 @@ input:
         description: Per-ORF P-site profile matrix from `rpbp/extractorfprofiles`.
         pattern: "*.profiles.mtx.gz"
         ontologies: []
-  - - meta4:
+  - - meta2:
         type: map
         description: |
           Groovy Map identifying the reference (e.g. `[ id:'reference' ]`).
@@ -51,32 +49,6 @@ input:
         type: file
         description: Per-ORF genomic BED from `rpbp/preparegenome`.
         pattern: "*.orfs-genomic.annotated.bed.gz"
-        ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map identifying the model set (e.g. `[ id:'translated' ]`).
-          Pass `[]` to fall back to the Stan models bundled with rpbp.
-    - translated_models:
-        type: file
-        description: |
-          Optional list of `.stan` files for the translated/foreground model.
-          If not supplied, the module uses the `.stan` files bundled inside
-          the rpbp Python package (resolved at runtime).
-        pattern: "*.stan"
-        ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map identifying the model set (e.g. `[ id:'untranslated' ]`).
-          Pass `[]` to fall back to the Stan models bundled with rpbp.
-    - untranslated_models:
-        type: file
-        description: |
-          Optional list of `.stan` files for the untranslated/background model.
-          If not supplied, the module uses the `.stan` files bundled inside
-          the rpbp Python package (resolved at runtime).
-        pattern: "*.stan"
         ontologies: []
 output:
   bayes_factors:

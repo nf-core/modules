@@ -15,9 +15,7 @@ description: |
   this table, and `rpbp/getperiodiclengthsoffsets` filters to the
   high-confidence pairs that drive ORF-level scoring.
 
-  Periodic/non-periodic models are supplied as Stan source files. If no
-  `.stan` files are passed, the module falls back to the models bundled
-  inside the rpbp Python package.
+  Uses the Stan models bundled inside the rpbp Python package.
 keywords:
   - rpbp
   - metagene
@@ -43,32 +41,6 @@ input:
         type: file
         description: Metagene profile CSV produced by `rpbp/extractmetageneprofiles`.
         pattern: "*.metagene-profile.csv.gz"
-        ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map identifying the model set (e.g. `[ id:'periodic' ]`).
-          Pass `[]` to fall back to the Stan models bundled with rpbp.
-    - periodic_models:
-        type: file
-        description: |
-          Optional list of `.stan` files for the periodic/foreground model.
-          If not supplied, the module uses the `.stan` files bundled inside
-          the rpbp Python package (resolved at runtime).
-        pattern: "*.stan"
-        ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map identifying the model set (e.g. `[ id:'nonperiodic' ]`).
-          Pass `[]` to fall back to the Stan models bundled with rpbp.
-    - nonperiodic_models:
-        type: file
-        description: |
-          Optional list of `.stan` files for the non-periodic/background model.
-          If not supplied, the module uses the `.stan` files bundled inside
-          the rpbp Python package (resolved at runtime).
-        pattern: "*.stan"
         ontologies: []
 output:
   bayes_factors:

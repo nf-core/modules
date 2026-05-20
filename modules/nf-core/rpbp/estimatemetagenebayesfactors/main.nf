@@ -8,9 +8,7 @@ process RPBP_ESTIMATEMETAGENEBAYESFACTORS {
         'community.wave.seqera.io/library/rpbp:4.0.1--71297b462026e13b' }"
 
     input:
-    tuple val(meta),  path(profile_csv)
-    tuple val(meta2), path(periodic_models,    stageAs: 'periodic_models/*')
-    tuple val(meta3), path(nonperiodic_models, stageAs: 'nonperiodic_models/*')
+    tuple val(meta), path(profile_csv)
 
     output:
     tuple val(meta), path("${prefix}.metagene-periodicity-bayes-factors.csv.gz"), emit: bayes_factors
@@ -22,16 +20,10 @@ process RPBP_ESTIMATEMETAGENEBAYESFACTORS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def periodic_paths    = periodic_models    ? periodic_models.join(' ')    : ''
-    def nonperiodic_paths = nonperiodic_models ? nonperiodic_models.join(' ') : ''
     """
-    PERIODIC="${periodic_paths}"
-    NONPERIODIC="${nonperiodic_paths}"
-    if [ -z "\$PERIODIC" ] || [ -z "\$NONPERIODIC" ]; then
-        RPBP_MODELS_BASE=\$(python3 -c "import os, inspect, rpbp; print(os.path.join(os.path.dirname(inspect.getfile(rpbp)), 'models'))")
-        [ -z "\$PERIODIC" ]    && PERIODIC=\$(ls "\$RPBP_MODELS_BASE"/periodic/*.stan)
-        [ -z "\$NONPERIODIC" ] && NONPERIODIC=\$(ls "\$RPBP_MODELS_BASE"/nonperiodic/*.stan)
-    fi
+    RPBP_MODELS_BASE=\$(python3 -c "import os, inspect, rpbp; print(os.path.join(os.path.dirname(inspect.getfile(rpbp)), 'models'))")
+    PERIODIC=\$(ls "\$RPBP_MODELS_BASE"/periodic/*.stan)
+    NONPERIODIC=\$(ls "\$RPBP_MODELS_BASE"/nonperiodic/*.stan)
 
     estimate-metagene-profile-bayes-factors \\
         ${profile_csv} \\

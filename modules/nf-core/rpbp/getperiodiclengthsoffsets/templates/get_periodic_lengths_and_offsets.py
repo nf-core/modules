@@ -48,6 +48,11 @@ config = dict(
 )
 
 lengths, offsets = get_periodic_lengths_and_offsets(config, prefix, is_unique=True)
+if len(lengths) == 0:
+    raise SystemExit(
+        "No periodic read lengths passed filters; "
+        "check min_count/min_bf_mean thresholds and metagene Bayes-factor output."
+    )
 pd.DataFrame({"length": lengths, "offset": offsets}).to_csv(
     f"{prefix}.periodic_lengths_offsets.tsv",
     sep="\\t",

@@ -22,8 +22,6 @@ nextflow_process {
                     [ id:'reference' ],
                     file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-genomic.annotated.bed.gz", checkIfExists: true)
                 ]
-                input[2] = [[], []]
-                input[3] = [[], []]
                 """
             }
         }
@@ -54,8 +52,6 @@ nextflow_process {
                     [ id:'reference' ],
                     file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-genomic.annotated.bed.gz", checkIfExists: true)
                 ]
-                input[2] = [[], []]
-                input[3] = [[], []]
                 """
             }
         }

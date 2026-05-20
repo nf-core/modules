@@ -17,6 +17,12 @@ description: |
   A minimal `chrName.txt` (one contig name per line) is seeded from the
   FASTA headers because `gtf-to-bed12` reads it via `--chr-name-file` to
   control output sort order.
+
+  Note: emits the `*.annotated.bed.gz` filenames produced by `get_orfs`
+  directly, rather than the `*.bed.gz`-renamed forms that the upstream
+  umbrella `prepare-rpbp-genome` script produces. The downstream module
+  outputs and consumers in this module set reference these names
+  explicitly, so the two are functionally equivalent.
 keywords:
   - rpbp
   - orf

@@ -9,9 +9,7 @@ process RPBP_ESTIMATEORFBAYESFACTORS {
 
     input:
     tuple val(meta),  path(profiles)
-    tuple val(meta4), path(orfs_genomic_bed)
-    tuple val(meta2), path(translated_models,   stageAs: 'translated_models/*')
-    tuple val(meta3), path(untranslated_models, stageAs: 'untranslated_models/*')
+    tuple val(meta2), path(orfs_genomic_bed)
 
     output:
     tuple val(meta), path("${prefix}.bayes-factors.bed.gz"), emit: bayes_factors
@@ -23,16 +21,10 @@ process RPBP_ESTIMATEORFBAYESFACTORS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def translated_paths   = translated_models   ? translated_models.join(' ')   : ''
-    def untranslated_paths = untranslated_models ? untranslated_models.join(' ') : ''
     """
-    TRANSLATED="${translated_paths}"
-    UNTRANSLATED="${untranslated_paths}"
-    if [ -z "\$TRANSLATED" ] || [ -z "\$UNTRANSLATED" ]; then
-        RPBP_MODELS_BASE=\$(python3 -c "import os, inspect, rpbp; print(os.path.join(os.path.dirname(inspect.getfile(rpbp)), 'models'))")
-        [ -z "\$TRANSLATED" ]   && TRANSLATED=\$(ls "\$RPBP_MODELS_BASE"/translated/*.stan)
-        [ -z "\$UNTRANSLATED" ] && UNTRANSLATED=\$(ls "\$RPBP_MODELS_BASE"/untranslated/*.stan)
-    fi
+    RPBP_MODELS_BASE=\$(python3 -c "import os, inspect, rpbp; print(os.path.join(os.path.dirname(inspect.getfile(rpbp)), 'models'))")
+    TRANSLATED=\$(ls "\$RPBP_MODELS_BASE"/translated/*.stan)
+    UNTRANSLATED=\$(ls "\$RPBP_MODELS_BASE"/untranslated/*.stan)
 
     estimate-orf-bayes-factors \\
         ${profiles} \\
