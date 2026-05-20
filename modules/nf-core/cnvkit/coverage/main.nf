@@ -9,7 +9,6 @@ process CNVKIT_COVERAGE {
         'quay.io/biocontainers/cnvkit:0.9.13--pyhdfd78af_0' }"
 
     input:
-
     tuple val(meta), path(alignment_file), path(interval)
     // alignement file can be BAM or CRAM
     // in cnvkit version 0.9.13, a bedGraph (.bed.gz) file is also accepted. extract per-base coverage from BAM files once (eg. with bedtools genomecov -gb)
