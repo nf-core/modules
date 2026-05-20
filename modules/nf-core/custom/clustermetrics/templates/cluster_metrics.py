@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# Copyright (c) nf-core
+# This software is licensed under the MIT License.
+# SPDX-License-Identifier: MIT
+
 import argparse
 import json
 import platform
