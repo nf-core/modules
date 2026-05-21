@@ -131,7 +131,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 {
-                    assert snapshot(sanitizeOutputs(process.out)).match()
+                    assert snapshot(sanitizeOutput(process.out)).match()
                 },
             )
         }
