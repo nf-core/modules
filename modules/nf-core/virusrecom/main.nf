@@ -37,7 +37,7 @@ process VIRUSRECOM {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${meta.id}
-    touch ${meta.id}/stub_output.txt
+    mkdir -p ${prefix}
+    touch ${prefix}/stub_output.txt
     """
 }
