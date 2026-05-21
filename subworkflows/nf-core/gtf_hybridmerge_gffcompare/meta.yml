@@ -15,13 +15,9 @@ description: |
   feature types in column 3. GFF3 dialects (Parent= / ID= attributes) and
   prokaryotic GTFs without transcript rows are out of scope.
 
-  Resource sizing: the GAWK steps are buffer-then-emit (full input held in
-  awk arrays), running under the gawk module's `process_single` label. Fine
-  for annotation-scale GTFs; consumers building hybrids against unusually
-  large GTFs (>~500 MB) should override the resource attributes directly
-  with `withName: ...GAWK_* { memory = ...; cpus = ... }`. Re-setting
-  `label` inside `withName` is a no-op because `withLabel` resolution runs
-  earlier in the selector cascade.
+  Resource sizing: GAWK steps hold the full input in memory under
+  `process_single`. Fine for annotation-scale GTFs; for >~500 MB inputs
+  override `memory` / `cpus` directly via `withName`.
 keywords:
   - gtf
   - annotation
