@@ -180,7 +180,11 @@ def load_normalised(tsv_paths, bed_paths):
         if not p.exists() or p.stat().st_size == 0:
             continue
         with open(p) as fh:
-            reader = csv.DictReader(fh, delimiter="\\t")
+            # Skip `#`-prefixed comment lines (e.g. the `# parser_columns: ...`
+            # provenance header that custom/orfnormalise writes at the top
+            # of the normalised TSV).
+            uncommented = (line for line in fh if not line.startswith("#"))
+            reader = csv.DictReader(uncommented, delimiter="\\t")
             for row in reader:
                 rows.append(row)
     for p in bed_paths:

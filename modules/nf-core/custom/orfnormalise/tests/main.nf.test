@@ -27,9 +27,11 @@ nextflow_process {
         }
 
         then {
-            def lines = path(process.out.tsv[0][1]).text.readLines()
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
             def cols  = lines[0].split('\t') as List
             def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
             def aa    = cols.indexOf('aa_length')
             def score = cols.indexOf('score')
             def cls   = cols.indexOf('orf_class')
@@ -39,7 +41,10 @@ nextflow_process {
                 { assert rows.size() > 0 },
                 { assert rows.every { it[aa].toInteger() > 0 } },
                 { assert rows.every { it[score] && it[score] != '' } },
-                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } }
+                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } },
+                { assert parser_columns_line != null },
+                { assert parser_columns_line.contains('caller=ribocode') },
+                { assert parser_columns_line.contains('score=pval_combined') }
             )
         }
     }
@@ -62,9 +67,11 @@ nextflow_process {
         }
 
         then {
-            def lines = path(process.out.tsv[0][1]).text.readLines()
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
             def cols  = lines[0].split('\t') as List
             def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
             def aa    = cols.indexOf('aa_length')
             def score = cols.indexOf('score')
             def cls   = cols.indexOf('orf_class')
@@ -97,11 +104,12 @@ nextflow_process {
         }
 
         then {
-            def lines    = path(process.out.tsv[0][1]).text.readLines()
-            def cols     = lines[0].split('\t') as List
-            def rows     = lines.drop(1).collect { it.split('\t') }
-            def aa       = cols.indexOf('aa_length')
-            def cls      = cols.indexOf('orf_class')
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines     = all_lines.findAll { !it.startsWith('#') }
+            def cols      = lines[0].split('\t') as List
+            def rows      = lines.drop(1).collect { it.split('\t') }
+            def aa        = cols.indexOf('aa_length')
+            def cls       = cols.indexOf('orf_class')
             // Verify multi-exon recovery: at least one BED12 row should
             // have blockCount > 1 (parser uses GTF exon intersection so
             // multi-exon transcripts don't collapse to one intron-spanning
@@ -137,9 +145,11 @@ nextflow_process {
         }
 
         then {
-            def lines = path(process.out.tsv[0][1]).text.readLines()
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
             def cols  = lines[0].split('\t') as List
             def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
             def aa    = cols.indexOf('aa_length')
             def score = cols.indexOf('score')
             def cls   = cols.indexOf('orf_class')
@@ -174,9 +184,11 @@ nextflow_process {
         }
 
         then {
-            def lines = path(process.out.tsv[0][1]).text.readLines()
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
             def cols  = lines[0].split('\t') as List
             def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
             def aa    = cols.indexOf('aa_length')
             def cls   = cols.indexOf('orf_class')
             // Verify PRICE's multi-exon Location decoding: at least one BED12
@@ -191,6 +203,36 @@ nextflow_process {
                 { assert rows.every { it[aa].toInteger() > 0 } },
                 { assert rows.collect { it[cls] }.toSet().any { it != 'other' } },
                 { assert block_counts.any { it > 1 } }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - ribotish - score-field override") {
+        config "./score_override.config"
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1', caller: 'ribotish'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true)
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            assertAll(
+                { assert process.success },
+                // Override resolves to RiboPvalue (not the default FisherPvalue),
+                // and the provenance header reflects that.
+                { assert parser_columns_line.contains('score=RiboPvalue') }
             )
         }
     }
