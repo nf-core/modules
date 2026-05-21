@@ -8,18 +8,61 @@ nextflow_process {
     tag "modules_nfcore"
     tag "custom"
     tag "custom/orfmerge"
+    tag "custom/orfnormalise"
 
-    test("synthetic - stub") {
-        options "-stub-run"
+    setup {
+        run("CUSTOM_ORFNORMALISE", alias: "CUSTOM_ORFNORMALISE_RIBOTISH") {
+            script "../../orfnormalise/main.nf"
+            config "./setup_prefix.config"
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1', caller: 'ribotish'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true)
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        run("CUSTOM_ORFNORMALISE", alias: "CUSTOM_ORFNORMALISE_RIBOCODE") {
+            script "../../orfnormalise/main.nf"
+            config "./setup_prefix.config"
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1', caller: 'ribocode'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true)
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens [chr20] - ribotish + ribocode") {
 
         when {
             process {
                 """
-                def bed = file('sample_X.ribotish.normalised.bed12')
-                bed.text = ''
-                def tsv = file('sample_X.ribotish.normalised.tsv')
-                tsv.text = ''
-                input[0] = Channel.of([ [id: 'allsamples'], [bed], [tsv] ])
+                ch_beds = CUSTOM_ORFNORMALISE_RIBOTISH.out.bed12
+                    .mix(CUSTOM_ORFNORMALISE_RIBOCODE.out.bed12)
+                    .map { _meta, bed -> bed }
+                    .collect()
+                    .map { beds -> [ 'cohort', beds ] }
+                ch_tsvs = CUSTOM_ORFNORMALISE_RIBOTISH.out.tsv
+                    .mix(CUSTOM_ORFNORMALISE_RIBOCODE.out.tsv)
+                    .map { _meta, tsv -> tsv }
+                    .collect()
+                    .map { tsvs -> [ 'cohort', tsvs ] }
+                input[0] = ch_beds
+                    .combine(ch_tsvs, by: 0)
+                    .map { _k, beds, tsvs -> [ [id: 'cohort'], beds, tsvs ] }
                 """
             }
         }
@@ -32,16 +75,25 @@ nextflow_process {
         }
     }
 
-    test("empty inputs exercise template") {
+    test("homo_sapiens [chr20] - ribotish + ribocode - stub") {
+        options "-stub-run"
 
         when {
             process {
                 """
-                def bed = file('sample_X.ribotish.normalised.bed12')
-                bed.text = ''
-                def tsv = file('sample_X.ribotish.normalised.tsv')
-                tsv.text = ''
-                input[0] = Channel.of([ [id: 'allsamples'], [bed], [tsv] ])
+                ch_beds = CUSTOM_ORFNORMALISE_RIBOTISH.out.bed12
+                    .mix(CUSTOM_ORFNORMALISE_RIBOCODE.out.bed12)
+                    .map { _meta, bed -> bed }
+                    .collect()
+                    .map { beds -> [ 'cohort', beds ] }
+                ch_tsvs = CUSTOM_ORFNORMALISE_RIBOTISH.out.tsv
+                    .mix(CUSTOM_ORFNORMALISE_RIBOCODE.out.tsv)
+                    .map { _meta, tsv -> tsv }
+                    .collect()
+                    .map { tsvs -> [ 'cohort', tsvs ] }
+                input[0] = ch_beds
+                    .combine(ch_tsvs, by: 0)
+                    .map { _k, beds, tsvs -> [ [id: 'cohort'], beds, tsvs ] }
                 """
             }
         }

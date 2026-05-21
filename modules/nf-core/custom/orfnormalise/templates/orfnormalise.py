@@ -84,7 +84,8 @@ def parse_attributes(field):
 
 
 def load_transcripts(gtf_path):
-    if not Path(gtf_path).exists() or Path(gtf_path).stat().st_size == 0:
+    p = Path(gtf_path)
+    if not p.is_file() or p.stat().st_size == 0:
         return {}
     by_tid = {}
     with open_text(gtf_path) as fh:
@@ -487,6 +488,27 @@ def _parse_ribotricer_coord(s):
     return out
 
 
+def _ribotricer_blocks_from_id(orf_id):
+    """Derive a single-block fallback span from a ribotricer ORF_ID of
+    shape '<transcript_id>_<gstart>_<gend>_<length_nt>'. Returns [] on any
+    parse failure. Used when the optional 'coordinate' column (which
+    carries the multi-block intron-aware span) is absent.
+    """
+    if not orf_id:
+        return []
+    parts = orf_id.rsplit("_", 3)
+    if len(parts) != 4:
+        return []
+    try:
+        gstart = int(parts[1])
+        gend = int(parts[2])
+    except ValueError:
+        return []
+    if gend < gstart:
+        gstart, gend = gend, gstart
+    return [(gstart - 1, gend)]
+
+
 def parse_ribotricer(path, transcripts):
     if not path.exists() or path.stat().st_size == 0:
         return EMPTY_PARSED.copy()
@@ -517,6 +539,8 @@ def parse_ribotricer(path, transcripts):
                 bed_score = 0
 
             blocks = _parse_ribotricer_coord(row.get("coordinate") or "")
+            if not blocks:
+                blocks = _ribotricer_blocks_from_id(orf_id_raw)
             if not blocks:
                 continue
 

@@ -2,6 +2,7 @@ nextflow_workflow {
 
     name "Test Subworkflow ORFTABLE_FASTA_GTF_BUILDORFCATALOGUE"
     script "../main.nf"
+    config "../nextflow.config"
     workflow "ORFTABLE_FASTA_GTF_BUILDORFCATALOGUE"
 
     tag "subworkflows"
@@ -11,16 +12,42 @@ nextflow_workflow {
     tag "custom/orfmerge"
     tag "bedtools/getfasta"
     tag "seqkit/translate"
+    tag "gunzip"
 
-    test("empty cohort - stub") {
-        options "-stub-run"
+    setup {
+        run("GUNZIP") {
+            script "../../../../modules/nf-core/gunzip/main.nf"
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens [chr20] - ribotish + ribocode") {
 
         when {
             workflow {
                 """
-                input[0] = Channel.empty()
-                input[1] = Channel.of([ [id: 'reference'], file('reference.fa') ])
-                input[2] = Channel.of([ [id: 'reference'], file('reference.gtf') ])
+                input[0] = channel.of(
+                    [
+                        [id: 'sample1', caller: 'ribotish'],
+                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true)
+                    ],
+                    [
+                        [id: 'sample1', caller: 'ribocode'],
+                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true)
+                    ]
+                )
+                input[1] = GUNZIP.out.gunzip
+                input[2] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -33,22 +60,27 @@ nextflow_workflow {
         }
     }
 
-    test("ribotish + ribocode single sample - stub") {
+    test("homo_sapiens [chr20] - ribotish + ribocode - stub") {
         options "-stub-run"
 
         when {
             workflow {
                 """
-                def ribotish = file('sample1.ribotish.pred.txt')
-                ribotish.text = ''
-                def ribocode = file('sample1.ribocode.txt')
-                ribocode.text = ''
-                input[0] = Channel.of(
-                    [ [id: 'sample1', caller: 'ribotish'], ribotish ],
-                    [ [id: 'sample1', caller: 'ribocode'], ribocode ]
+                input[0] = channel.of(
+                    [
+                        [id: 'sample1', caller: 'ribotish'],
+                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true)
+                    ],
+                    [
+                        [id: 'sample1', caller: 'ribocode'],
+                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true)
+                    ]
                 )
-                input[1] = Channel.of([ [id: 'reference'], file('reference.fa') ])
-                input[2] = Channel.of([ [id: 'reference'], file('reference.gtf') ])
+                input[1] = GUNZIP.out.gunzip
+                input[2] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
                 """
             }
         }
