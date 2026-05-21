@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process VCONTACT3_PREPAREDDATABASES"
+    script "../main.nf"
+    process "VCONTACT3_PREPAREDDATABASES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcontact3"
+    tag "vcontact3/prepareddatabases"
+
+    test("vcontact3_prepare_databases - latest_version") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    'latest'
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            
+            def meta  = process.out.database.get(0).get(0)
+            def dbDir = process.out.database.get(0).get(1)
+
+            assertAll(
+                { assert meta.id == 'test' },
+                { assert path(dbDir).exists() },
+                { assert snapshot(process.out.versions).match("real_versions") }
+            )
+        }
+    }
+
+    test("vcontact3_prepare_databases - latest_version - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    'latest'
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def meta   = process.out.database.get(0).get(0)
+            def dbDir  = process.out.database.get(0).get(1)
+
+            assertAll(
+                { assert meta.id == 'test' },
+                { assert path(dbDir).exists() },
+                { assert path("${dbDir}/version.json").exists() },
+                { assert path("${dbDir}/stub_database.db").exists() },
+                { assert snapshot(process.out.versions).match("stub_versions") }
+            )
+        }
+    }
+}
