@@ -36,17 +36,11 @@ workflow GTF_BUILDHYBRIDANNOTATION_GFFCOMPARE {
     // (also strips comment lines and rows with `.` strand).
     GAWK_FILTER(ch_filter_input, [], false)
 
-    // Strip the transient `class_codes` key now that GAWK_FILTER has consumed
-    // it, so downstream meta matches the caller's original shape and remains
-    // joinable against other channels keyed on the same meta.
-    ch_filtered = GAWK_FILTER.out.output
-        .map { meta, gtf -> [ meta.findAll { k, _v -> k != 'class_codes' }, gtf ] }
-
     // Optional blacklist intersect: route surviving transcripts through
     // BEDTOOLS_INTERSECT only when the caller passes a blacklist BED. The
     // bedtools args (-v for negation, -s for strand, etc.) are caller policy
     // and live in the consumer pipeline's modules.config.
-    ch_after_filter = ch_filtered
+    ch_after_filter = GAWK_FILTER.out.output
         .combine(ch_blacklist_bed.ifEmpty([[:], []]))
         .branch { _meta, _gtf, _bed_meta, bed ->
             with_blacklist: bed
@@ -62,12 +56,17 @@ workflow GTF_BUILDHYBRIDANNOTATION_GFFCOMPARE {
     ch_post_blacklist = BEDTOOLS_INTERSECT.out.intersect
         .mix(ch_after_filter.passthrough.map { meta, gtf, _bed_meta, _bed -> [ meta, gtf ] })
 
-    // Pair the survivors with the backbone annotation and emit `[backbone, novel]`
+    // Pair the survivors with the backbone annotation. The output identity is
+    // the backbone's (the hybrid GTF is logically the backbone with novel
+    // transcripts grafted on, so the emitted meta should match ch_backbone_gtf
+    // for downstream joins) so we drop the novel meta and emit `[backbone, novel]`
     // (canonical first, so the concat awk sees backbone gene rows before any
     // novel transcript and can decide which gene_ids still need a synthetic row).
     ch_concat_input = ch_post_blacklist
         .combine(ch_backbone_gtf)
-        .map { meta, novel_gtf, _backbone_meta, backbone_gtf -> [ meta, [ backbone_gtf, novel_gtf ] ] }
+        .map { _novel_meta, novel_gtf, backbone_meta, backbone_gtf ->
+            [ backbone_meta, [ backbone_gtf, novel_gtf ] ]
+        }
 
     // Concatenate backbone + novel, strip comments, and synthesise a `gene`
     // row for any novel gene_id absent from the backbone (using the first

@@ -75,6 +75,9 @@ output:
         The hybrid GTF: the backbone annotation concatenated with surviving
         novel transcripts, with synthesised gene rows for any novel gene_id
         not already present in the backbone. Comment lines (`#`) are stripped.
+        The emitted meta is the backbone's meta (`ch_backbone_gtf`), not the
+        novel input's, so downstream channels keyed on the backbone's
+        identity can `.join()` against this output directly.
         Structure: [ val(meta), path(hybrid_gtf) ]
       pattern: "*.gtf"
   - gffcompare_stats:
