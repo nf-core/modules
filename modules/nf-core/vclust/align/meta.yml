@@ -95,7 +95,7 @@ output:
       - vclust:
           type: string
           description: The name of the tool
-      - vclust --version:
+      - vclust --version | sed 's/v//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -106,7 +106,7 @@ topics:
       - vclust:
           type: string
           description: The name of the tool
-      - vclust --version:
+      - vclust --version | sed 's/v//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
