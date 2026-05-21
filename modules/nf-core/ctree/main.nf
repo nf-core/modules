@@ -3,7 +3,7 @@ process CTREE {
     label "process_medium"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/4084291fbed2d8371cc9dd8c53a422d0731a27b2366d0dc0069c0fc0fac314bb/data':
         'community.wave.seqera.io/library/r-ctree_r-mobster_r-viber_r-cli_pruned:48299db4104e296b' }"
 
@@ -16,7 +16,7 @@ process CTREE {
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.rds"), emit: ctree_report_rds, optional: true
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.pdf"), emit: ctree_report_pdf, optional: true
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.png"), emit: ctree_report_png, optional: true
-    path "versions.yml"                                                  , emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,12 +52,14 @@ process CTREE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ctree: \$(Rscript -e 'library(ctree); sessionInfo()\$otherPkgs\$ctree\$Version')
-        mobster: \$(Rscript -e 'library(mobster); sessionInfo()\$otherPkgs\$mobster\$Version')
-        VIBER: \$(Rscript -e 'library(VIBER); sessionInfo()\$otherPkgs\$VIBER\$Version')
-        cli: \$(Rscript -e 'library(cli); sessionInfo()\$otherPkgs\$cli\$Version')
-        dplyr: \$(Rscript -e 'library(dplyr); sessionInfo()\$otherPkgs\$dplyr\$Version')
-        ggplot2: \$(Rscript -e 'library(ggplot2); sessionInfo()\$otherPkgs\$ggplot2\$Version')
+        ctree: \$(Rscript -e "library(ctree); cat(as.character(packageVersion('ctree')))")
+        mobster: \$(Rscript -e "library(mobster); cat(as.character(packageVersion('mobster')))")
+        VIBER: \$(Rscript -e "library(VIBER); cat(as.character(packageVersion('VIBER')))")
+        cli: \$(Rscript -e "library(cli); cat(as.character(packageVersion('cli')))")
+        dplyr: \$(Rscript -e "library(dplyr); cat(as.character(packageVersion('dplyr')))")
+        tidyr: \$(Rscript -e "library(tidyr); cat(as.character(packageVersion('tidyr')))")
+        ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
+        ggpubr: \$(Rscript -e "library(ggpubr); cat(as.character(packageVersion('ggpubr')))")
     END_VERSIONS
     """
 }

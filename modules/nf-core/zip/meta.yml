@@ -7,12 +7,13 @@ keywords:
   - archiving
 tools:
   - unzip:
-      description: p7zip is a quick port of 7z.exe and 7za.exe (command line version
-        of 7zip, see www.7-zip.org) for Unix.
+      description: p7zip is a quick port of 7z.exe and 7za.exe (command line
+        version of 7zip, see www.7-zip.org) for Unix.
       homepage: https://sourceforge.net/projects/p7zip/
       documentation: https://sourceforge.net/projects/p7zip/
       tool_dev_url: https://sourceforge.net/projects/p7zip"
-      licence: ["LGPL-2.1-or-later"]
+      licence:
+        - "LGPL-2.1-or-later"
       identifier: ""
 input:
   - - meta:
@@ -36,14 +37,28 @@ output:
           description: ZIP file
           pattern: "*.zip"
           ontologies:
-            - edam: http://edamontology.org/format_3987 # ZIP format
+            - edam: http://edamontology.org/format_3987
+  versions_zip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - zip:
+          type: string
+          description: The name of the tool
+      - 7za i 2>&1 | grep 'p7zip Version' | sed 's/.*p7zip Version //; s/(.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - zip:
+          type: string
+          description: The name of the tool
+      - 7za i 2>&1 | grep 'p7zip Version' | sed 's/.*p7zip Version //; s/(.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
   - "@pinin4fjords"

@@ -18,9 +18,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [id: 'test', single_end: false],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                        ]
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
                 input[1] = true
                 """
             }
@@ -30,22 +30,17 @@ nextflow_process {
             script "../../concoctcoveragetable/main.nf"
             process {
                 """
-                ch_bam_input = Channel
-                                .fromList([
-                                    [
-                                        [ id:'test', single_end:false ], // meta map
-                                        [
-                                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
-                                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                                        ],
-                                        [
-                                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.single_end.sorted.bam.bai', checkIfExists: true),
-                                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
-                                        ]
-                                    ]
-                                ])
-
-
+                ch_bam_input = channel.of([
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.single_end.sorted.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    ]
+                ])
                 input[0] = CONCOCT_CUTUPFASTA.out.bed.join( ch_bam_input )
                 """
             }
@@ -55,10 +50,8 @@ nextflow_process {
             script "../../concoct/main.nf"
             process {
                 """
-                ch_input_for_concoctconcoct = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv
-                                                .join(CONCOCT_CUTUPFASTA.out.fasta)
-
-                input[0] = ch_input_for_concoctconcoct
+                input[0] = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv
+                    .join(CONCOCT_CUTUPFASTA.out.fasta)
                 """
             }
         }
@@ -78,11 +71,10 @@ nextflow_process {
         when {
             process {
                 """
-                fasta = [
-                            [id: 'test', single_end: false],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                        ]
-                input[0] = Channel.of(fasta).join(CONCOCT_MERGECUTUPCLUSTERING.out.csv)
+                input[0] = channel.of([
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]).join(CONCOCT_MERGECUTUPCLUSTERING.out.csv)
                 """
             }
         }
@@ -90,11 +82,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out,
-                        path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -107,10 +95,10 @@ nextflow_process {
             process {
                 """
                 input[0] =  [
-                                [id: 'test', single_end: false],
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                                []
-                            ]
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
                 """
             }
         }
@@ -118,11 +106,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out,
-                        path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

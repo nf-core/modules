@@ -23,12 +23,12 @@ nextflow_workflow {
                 bampath  = channel.of("NA12878.chr21_22.1X.bam").collectFile(name: 'bampath.txt', newLine: true)
                 input[0] = channel.of([
                     [id: "allid"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExists:true)
                 ]).combine(bampath).combine(channel.of([[]])) // input
                 input[1] = channel.of([
                     [id: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.posfile", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.posfile", checkIfExists:true)
                 ]) // posfile
                 input[2] = channel.of(
                     [[chr: "chr22", id: "1000GP"], "chr22", [], []]
@@ -52,9 +52,7 @@ nextflow_workflow {
                         path(it[1]).vcf.summary,
                         path(it[1]).vcf.header.getGenotypeSamples().sort(),
                         path(it[1]).vcf.variantsMD5
-                    ]},
-                    workflow.out.versions,
-                    workflow.out.versions.collect{ path(it).yaml }
+                    ]}
                 ).match() }
             )
         }
@@ -75,21 +73,21 @@ nextflow_workflow {
                 ch_samples = channel.of([
                     [id: "allid"],
                     [
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExist:true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.1X.bam", checkIfExist:true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.1X.bam", checkIfExists:true)
                     ],
                     [
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExist:true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.1X.bam.bai", checkIfExist:true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.1X.bam.bai", checkIfExists:true)
                     ]
                 ])
                 input[0] = ch_samples.combine(bampath).combine(bamname) // input
                 input[1] = channel.of([
                     [id: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.posfile", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.posfile", checkIfExists:true)
                 ],[
                     [id: "1000GP", chr: "chr21"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.posfile", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.posfile", checkIfExists:true)
                 ]) // posfile
                 input[2] = channel.of(
                     [[chr: "chr22", id: "1000GP"], "chr22", 16570065, 16592216],
@@ -99,10 +97,10 @@ nextflow_workflow {
                 ) // chunks
                 input[3] = channel.of([
                     [id: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExists:true)
                 ],[
                     [id: "1000GP", chr: "chr21"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.stitch.map", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.stitch.map", checkIfExists:true)
                 ]) // map
                 input[4] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
                 input[5] = 2
@@ -122,8 +120,7 @@ nextflow_workflow {
                         path(it[1]).vcf.summary,
                         path(it[1]).vcf.header.getGenotypeSamples().sort(),
                         path(it[1]).vcf.variantsMD5
-                    ]},
-                    workflow.out.versions.collect{ path(it).yaml }
+                    ]}
                 ).match() }
             )
         }
@@ -138,8 +135,8 @@ nextflow_workflow {
                 bamname = channel.of("MySample1").collectFile(name: 'bamname.txt', newLine: true)
                 ch_samples = channel.of([
                     [id: "allid"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExists:true)
                 ])
                 input[0] = ch_samples.combine(bampath).combine(bamname) // input
                 input[1] = channel.of(
@@ -166,10 +163,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -183,8 +177,8 @@ nextflow_workflow {
                 bamname = channel.of("MySample1").collectFile(name: 'bamname.txt', newLine: true)
                 ch_samples = channel.of([
                     [id: "allid"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExists:true)
                 ])
                 input[0] = ch_samples.combine(bampath).combine(bamname) // input
                 input[1] = channel.of(
@@ -225,8 +219,8 @@ nextflow_workflow {
                 bamname = channel.of("MySample1").collectFile(name: 'bamname.txt', newLine: true)
                 ch_samples = channel.of([
                     [id: "allid"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExists:true)
                 ])
                 input[0] = ch_samples.combine(bampath).combine(bamname) // input
                 input[1] = channel.of([[id: "1000GP", chr: "chr22"], []]) // posfile

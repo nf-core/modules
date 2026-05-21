@@ -64,54 +64,13 @@
                     "test_mqc.txt:md5,a039b8c1cc923db88d2484d3abbf00fe"
                 ]
             ],
-            [
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:POST_STATS:SEQFU_CHECK": {
-                        "seqfu": "1.22.3"
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:SEQKIT_RMDUP": {
-                        "seqkit": "v2.9.0"
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:SEQKIT_SEQ": {
-                        "seqkit": "v2.9.0"
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_DECONTAMINATE_DEACON_HOSTILE:FASTQ_INDEX_FILTER_DEACON:DEACON_INDEX": {
-                        "deacon": "0.12.0"
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:POST_STATS:SEQFU_STATS": {
-                        "seqfu": "1.22.3"
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:PRE_STATS:SEQFU_CHECK": {
-                        "seqfu": "1.22.3"
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
-                        "seqkit": "2.10.1"
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:PRE_STATS:SEQFU_STATS": {
-                        "seqfu": "1.22.3"
-                    }
-                }
-            ]
+            []
         ],
+        "timestamp": "2026-03-12T14:40:50.020435027",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-03T15:11:34.884075568"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 - fastq - adapterremoval - merge - cat more files - paired_end": {
         "content": [
@@ -121,19 +80,13 @@
                 "test.discarded.fastq.gz",
                 "test2.discarded.fastq.gz"
             ],
-            [
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_REMOVEADAPTERS_MERGE:ADAPTERREMOVAL_PE": {
-                        "adapterremoval": "2.3.2"
-                    }
-                }
-            ]
+            []
         ],
+        "timestamp": "2026-03-12T14:41:59.816604611",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-15T11:56:56.943674841"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 - fastq - fastqc - seqkit - cutadapt - clumpify - cat - paired_end": {
         "content": [
@@ -148,76 +101,37 @@
             "test_1_fastqc.zip",
             "test_2_fastqc.zip",
             41,
-            [
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:BBMAP_CLUMPIFY": {
-                        "bbmap": 39.18
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:SEQKIT_RMDUP": {
-                        "seqkit": "v2.9.0"
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:SEQKIT_SEQ": {
-                        "seqkit": "v2.9.0"
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
-                        "seqkit": "2.10.1"
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:FASTQ_SANITISE_SEQKIT:SEQKIT_PAIR": {
-                        "seqkit": "2.9.0"
-                    }
-                }
-            ]
+            []
         ],
+        "timestamp": "2026-03-12T14:41:47.88586849",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-03T15:12:04.335584164"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 - fastq - skip all - single_end": {
         "content": [
             "/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz",
-            [
-                
-            ]
+            []
         ],
+        "timestamp": "2026-03-12T14:42:09.599452222",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-13T11:53:40.26586129"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 - fastq - umitools - prinseq - clumpify - cat - single_end": {
         "content": [
             400,
             51,
             41,
-            [
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:BBMAP_CLUMPIFY": {
-                        "bbmap": 39.18
-                    }
-                },
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_COMPLEXITY_FILTER:PRINSEQPLUSPLUS": {
-                        "prinseqplusplus": 1.2
-                    }
-                }
-            ]
+            []
         ],
+        "timestamp": "2026-03-12T14:41:12.680642618",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-03T13:47:25.353064438"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 - fastq - skip all - single_end - stub": {
         "content": [
@@ -231,10 +145,10 @@
                 ]
             ]
         ],
+        "timestamp": "2026-01-13T12:17:19.455574032",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-13T12:17:19.455574032"
+        }
     }
 }

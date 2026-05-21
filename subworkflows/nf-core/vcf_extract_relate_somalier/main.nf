@@ -13,8 +13,6 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         val_common_id           // string:  [optional]  A common identifier for the samples that need to be related. Has to be given when using single sample VCFs
     main:
 
-    ch_versions         = Channel.empty()
-
     ch_input = ch_vcfs
         .branch { meta, vcf, tbi, _count ->
             tbi: tbi != []
@@ -24,7 +22,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         }
 
     TABIX_TABIX(
-        ch_input.no_tbi
+        ch_input.no_tbi.map { meta, vcf -> [meta, vcf, [], []] }
     )
 
     ch_somalierextract_input = ch_input.no_tbi
@@ -37,8 +35,6 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_fasta_fai,
         ch_somalier_sites
     )
-
-    ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions)
 
     ch_somalierrelate_input = SOMALIER_EXTRACT.out.extract
         .join(ch_vcfs, failOnDuplicate: true, failOnMismatch: true)
@@ -61,12 +57,9 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_sample_groups
     )
 
-    ch_versions = ch_versions.mix(SOMALIER_RELATE.out.versions)
-
     emit:
     extract        = SOMALIER_EXTRACT.out.extract       // channel: [ val(meta), path(extract) ]
     html           = SOMALIER_RELATE.out.html           // channel: [ val(meta), path(html) ]
     pairs_tsv      = SOMALIER_RELATE.out.pairs_tsv      // channel: [ val(meta), path(tsv) ]
     samples_tsv    = SOMALIER_RELATE.out.samples_tsv    // channel: [ val(meta), path(tsv) ]
-    versions       = ch_versions                        // channel: [ path(versions.yml) ]
 }

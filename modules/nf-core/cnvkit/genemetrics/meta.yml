@@ -11,7 +11,8 @@ tools:
         CNVkit is a Python library and command-line software toolkit to infer and visualize copy number from high-throughput DNA sequencing data. It is designed for use with hybrid capture, including both whole-exome and custom target panels, and short-read sequencing platforms such as Illumina and Ion Torrent.
       homepage: https://cnvkit.readthedocs.io/en/stable/index.html
       documentation: https://cnvkit.readthedocs.io/en/stable/index.html
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:cnvkit
 input:
   - - meta:
@@ -41,14 +42,28 @@ output:
           description: TSV file
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_cnvkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvkit:
+          type: string
+          description: The name of the tool
+      - 'cnvkit.py version | sed -e "s/cnvkit v//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvkit:
+          type: string
+          description: The name of the tool
+      - 'cnvkit.py version | sed -e "s/cnvkit v//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@adamrtalbot"
   - "@marrip"

@@ -1,0 +1,94 @@
+name: "saltshaker_classify"
+description: mtDNA deletion and duplication classification downstream of mitosalt
+keywords:
+  - saltshaker
+  - mitosalt
+  - mtDNA
+  - structural-variant calling
+tools:
+  - "saltshaker":
+      description: "A Python package for classifying and visualizing mitochondrial structural variants from MitoSAlt pipeline output."
+      homepage: "https://github.com/aksenia/saltshaker"
+      documentation: "https://github.com/aksenia/saltshaker/tree/main/saltshaker/docs"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - call:
+        type: file
+        description: call metadata file from saltshaker_call
+        pattern: "*_call_metadata.tsv"
+        ontologies:
+          - edam: http://edamontology.org/operation_3227 #variant calling
+          - edam: http://edamontology.org/format_3475 #tsv
+  - mito_name:
+      type: string
+      description: Name of the mitochondrial chromosome
+output:
+  classify:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_classify_metadata.tsv":
+          type: file
+          description: tsv with classified call metadata to be used in saltshaker_plot
+          pattern: "*_classify_metadata.tsv"
+          ontologies:
+            - edam: http://edamontology.org/operation_3225 #classification
+            - edam: http://edamontology.org/format_3475 #tsv
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_classify.txt":
+          type: file
+          description: txt file with case classification
+          pattern: "*_classify.txt"
+          ontologies:
+            - edam: http://edamontology.org/operation_3225 #classification
+            - edam: http://edamontology.org/format_2330 #txt
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*saltshaker.vcf":
+          type: file
+          description: vcf file with classified calls
+          pattern: "*saltshaker.vcf"
+          ontologies:
+            - edam: http://edamontology.org/operation_3225 #classification
+            - edam: http://edamontology.org/format_3016 #vcf
+  versions_saltshaker:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - saltshaker:
+          type: string
+          description: The name of the tool
+      - 1.0.1:
+          type: string
+          description: Hardcoded version of saltshaker used in the module
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - saltshaker:
+          type: string
+          description: The name of the tool
+      - 1.0.1:
+          type: string
+          description: Hardcoded version of saltshaker used in the module
+authors:
+  - "@ieduba"
+maintainers:
+  - "@ieduba"

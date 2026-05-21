@@ -7,14 +7,16 @@ keywords:
   - preprocessintervals
 tools:
   - "gatk4":
-      description: Developed in the Data Sciences Platform at the Broad Institute, the
-        toolkit offers a wide variety of tools with a primary focus on variant discovery
-        and genotyping. Its powerful processing engine and high-performance computing
-        features make it capable of taking on projects of any size.
+      description: Developed in the Data Sciences Platform at the Broad Institute,
+        the toolkit offers a wide variety of tools with a primary focus on variant
+        discovery and genotyping. Its powerful processing engine and
+        high-performance computing features make it capable of taking on projects
+        of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: "10.1158/1538-7445.AM2017-3590"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
 input:
   - - meta:
@@ -54,8 +56,8 @@ input:
           e.g. [ id:'test' ]
     - intervals:
         type: file
-        description: Interval file (bed or interval_list) with the genomic regions to
-          be included from the analysis (optional)
+        description: Interval file (bed or interval_list) with the genomic regions
+          to be included from the analysis (optional)
         pattern: "*.{bed,interval_list}"
         ontologies: []
   - - meta5:
@@ -65,8 +67,8 @@ input:
           e.g. [ id:'test' ]
     - exclude_intervals:
         type: file
-        description: Interval file (bed or interval_list) with the genomic regions to
-          be excluded from the analysis (optional)
+        description: Interval file (bed or interval_list) with the genomic regions
+          to be excluded from the analysis (optional)
         pattern: "*.{bed,interval_list}"
         ontologies: []
 output:
@@ -76,10 +78,10 @@ output:
           description: |
             Groovy Map containing reference information
             e.g. [ id:'test' ]
-      - "*.interval_list":
+      - ${prefix}.interval_list:
           type: file
           description: Processed interval list file
-          pattern: "*.{bed,interval_list}"
+          pattern: "*.interval_list"
           ontologies: []
   versions_gatk4:
     - - ${task.process}:

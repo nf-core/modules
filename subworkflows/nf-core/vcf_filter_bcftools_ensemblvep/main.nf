@@ -11,7 +11,6 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
     filter_with_filter_vep //    bool: should filter_vep be run
 
     main:
-    ch_versions = channel.empty()
     ch_tbi = channel.empty()
 
     // Since bcftools is likely much faster than filter_vep,

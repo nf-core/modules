@@ -32,8 +32,13 @@ input:
         type: file
         description: Index to sorted BAM file
         pattern: "*.{bai}"
-
         ontologies: []
+  - strand_specificity:
+      type: string
+      description: |
+        Strand specificity of the RNA-seq library preparation.
+        Options are 'XS', use XS tags provided by aligner; 'RF', first-strand; 'FR', second-strand.
+      enum: ["XS", "RF", "FR"]
 output:
   junc:
     - - meta:

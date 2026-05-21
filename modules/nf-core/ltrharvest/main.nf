@@ -3,9 +3,9 @@ process LTRHARVEST {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ltr_harvest_parallel:1.1--hdfd78af_0':
-        'biocontainers/ltr_harvest_parallel:1.1--hdfd78af_0' }"
+        'quay.io/biocontainers/ltr_harvest_parallel:1.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -35,13 +35,12 @@ process LTRHARVEST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        LTR_HARVEST_parallel: \$(LTR_HARVEST_parallel -h | sed -n '/Version/s/Version: //p')
+        LTR_HARVEST_parallel: \$(LTR_HARVEST_parallel -h | sed -n '/Version/s/Version: v//p')
         genometools: \$(gt --version | sed '1!d ; s/gt (GenomeTools) //')
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.gff3"
@@ -49,7 +48,7 @@ process LTRHARVEST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        LTR_HARVEST_parallel: \$(LTR_HARVEST_parallel -h | sed -n '/Version/s/Version: //p')
+        LTR_HARVEST_parallel: \$(LTR_HARVEST_parallel -h | sed -n '/Version/s/Version: v//p')
         genometools: \$(gt --version | sed '1!d ; s/gt (GenomeTools) //')
     END_VERSIONS
     """

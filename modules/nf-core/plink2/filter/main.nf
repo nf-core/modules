@@ -4,9 +4,9 @@ process PLINK2_FILTER {
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0':
-        'biocontainers/plink2:2.00a5.10--h4ac6f70_0' }"
+        'quay.io/biocontainers/plink2:2.00a5.10--h4ac6f70_0' }"
 
     input:
     tuple val(meta), path(plink_genotype_file), path(plink_variant_file), path(plink_sample_file)
@@ -46,7 +46,6 @@ process PLINK2_FILTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def trio = plink_genotype_file.extension == 'pgen' ? "${prefix}.pfam ${prefix}.psam ${prefix}.pvar" : "${prefix}.bed ${prefix}.bim ${prefix}.fam"
     if( "${plink_genotype_file.getBaseName()}" == "${prefix}" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"

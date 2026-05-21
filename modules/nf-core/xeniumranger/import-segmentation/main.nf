@@ -2,7 +2,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/xeniumranger:4.0"
+    container "quay.io/nf-core/xeniumranger:4.0"
 
     input:
     tuple val(meta), path(xenium_bundle, stageAs: "bundle/"), path(transcript_assignment), path(viz_polygons), path(nuclei), path(cells), path(coordinate_transform), val(units)

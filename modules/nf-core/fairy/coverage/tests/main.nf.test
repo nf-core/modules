@@ -1,0 +1,119 @@
+nextflow_process {
+
+    name "Test Process FAIRY_COVERAGE"
+    script "../main.nf"
+    process "FAIRY_COVERAGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fairy"
+    tag "fairy/coverage"
+    tag "fairy/sketch"
+
+    test("sarscov2 - illumina paired-end [fastq_gz] + contigs [fasta] - tsv coverage") {
+
+        setup {
+            run("FAIRY_SKETCH") {
+                script "../../sketch/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FAIRY_SKETCH.out.sketch.map { meta, sketches ->
+                    [
+                        meta,
+                        sketches,
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - illumina single-end [fastq_gz] + contigs [fasta] - tsv coverage") {
+
+        setup {
+            run("FAIRY_SKETCH") {
+                script "../../sketch/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FAIRY_SKETCH.out.sketch.map { meta, sketches ->
+                    [
+                        meta,
+                        sketches,
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - illumina paired-end [fastq_gz] + contigs [fasta] - tsv coverage - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

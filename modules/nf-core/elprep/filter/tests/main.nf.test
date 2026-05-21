@@ -55,7 +55,7 @@ nextflow_process {
 					process.out.table,
 					process.out.activity_profile,
 					process.out.assembly_regions,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith("versions") }
 					).match()
 				}
             )
@@ -110,7 +110,7 @@ nextflow_process {
 					process.out.table,
 					process.out.activity_profile,
 					process.out.assembly_regions,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith("versions") }
 					).match()
 				}
             )

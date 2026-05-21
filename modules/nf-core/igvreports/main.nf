@@ -3,9 +3,9 @@ process IGVREPORTS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/igv-reports:1.12.0--pyh7cba7a3_0':
-        'biocontainers/igv-reports:1.12.0--pyh7cba7a3_0' }"
+        'quay.io/biocontainers/igv-reports:1.12.0--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(sites), path(tracks), path(tracks_indices)
@@ -23,7 +23,7 @@ process IGVREPORTS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_opt = fasta ? "--fasta ${fasta}" : ""
     // If tracks is not null, create a string of the track paths
-    def track_arg = tracks ? "--tracks "+ tracks.collect { it.toString() }.join(' ') : ""
+    def track_arg = tracks ? "--tracks "+ tracks.collect { track -> track.toString() }.join(' ') : ""
     // if "--tracks" is in the args, then add track_string immediately after it in
     // the args string and set the track_arg to ""
     if (args.contains("--tracks") && track_arg) {
@@ -45,7 +45,6 @@ process IGVREPORTS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_report.html

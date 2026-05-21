@@ -31,6 +31,7 @@ nextflow_process {
                 input[2] = false
                 input[3] = false
                 input[4] = 'file'
+                input[5] = true
                 """
             }
         }
@@ -38,7 +39,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.coverage,
+                    process.out.bam.collect { meta, bam_files ->
+                        [
+                            meta,
+                            bam_files.collect { file -> bam(file).getReadsMD5() }
+                        ]
+                    },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
@@ -63,6 +73,7 @@ nextflow_process {
                 input[2] = true
                 input[3] = false
                 input[4] = ''
+                input[5] = false
                 """
             }
         }
@@ -70,7 +81,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.coverage,
+                    process.out.bam.collect { meta, bam_files ->
+                        [
+                            meta,
+                            bam_files.collect { file -> bam(file).getReadsMD5() }
+                        ]
+                    },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
@@ -105,6 +125,7 @@ nextflow_process {
                 input[2] = false
                 input[3] = false
                 input[4] = 'dir'
+                input[5] = false
                 """
             }
         }
@@ -112,7 +133,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.coverage,
+                    process.out.bam.collect { meta, bam_files ->
+                        [
+                            meta,
+                            bam_files.collect { file -> bam(file).getReadsMD5() }
+                        ]
+                    },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
     }
@@ -136,6 +166,7 @@ nextflow_process {
                 input[2] = false
                 input[3] = false
                 input[4] = 'not_a_valid_mode'
+                input[5] = false
                 """
             }
         }
@@ -169,6 +200,7 @@ nextflow_process {
                 input[2] = false
                 input[3] = false
                 input[4] = ''
+                input[5] = false
                 """
             }
         }
@@ -176,7 +208,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

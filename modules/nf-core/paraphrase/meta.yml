@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "paraphrase"
+description: Parse and annotate paraphrase JSONs
+keywords:
+  - long-read
+  - paraphrase
+  - annotate
+tools:
+  - "paraphrase":
+      description: "Paraphase JSON parser"
+      homepage: "https://github.com/Clinical-Genomics/paraphrase"
+      documentation: "https://github.com/Clinical-Genomics/paraphrase/README.md"
+      tool_dev_url: "https://github.com/Clinical-Genomics/paraphrase"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1']`
+    - jsons:
+        type: file
+        description: "One or more JSON files from paraphase"
+        pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+    - samples:
+        type: list
+        description: "Sample names corresponding to the JSON files. Must be in the same order as the JSON files."
+  - - meta2:
+        type: map
+        description: Groovy Map containing reference information.
+    - yaml:
+        type: file
+        description: "YAML file containing rules for annotation"
+        pattern: "*.yaml"
+        ontologies:
+          - edam: http://edamontology.org/format_3473 # YAML
+  - tsv_output:
+      type: boolean
+      description: "Whether to output in TSV format instead of JSON. Default is false (JSON output)."
+
+output:
+  json:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1']`
+      - "*.json":
+          type: file
+          description: "Annotated output in JSON format"
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  tsv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1']`
+      - "*.tsv":
+          type: file
+          description: "Annotated output in TSV format"
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_paraphrase:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - paraphrase:
+          type: string
+          description: The name of the tool
+      - paraphrase --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - paraphrase:
+          type: string
+          description: The name of the tool
+      - paraphrase --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@fellen31"
+maintainers:
+  - "@fellen31"

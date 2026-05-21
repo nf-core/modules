@@ -3,9 +3,9 @@ process GLIMPSE_LIGATE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1'
-        : 'biocontainers/glimpse-bio:1.1.1--hce55b13_1'}"
+        : 'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1'}"
 
     input:
     tuple val(meta), path(input_list), path(input_index)
@@ -21,8 +21,15 @@ process GLIMPSE_LIGATE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+
+    // Create file list using Groovy (most portable)
+    def file_list = input_list
+        .collect { file_path -> file_path.toString() }
+        .sort()
+        .join('\n')
+
     """
-    printf "%s\\n" ${input_list} | tr -d '[],' | sort -V > all_files.txt
+    echo "${file_list}" > all_files.txt
 
     GLIMPSE_ligate \\
         ${args} \\

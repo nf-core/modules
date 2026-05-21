@@ -3,9 +3,9 @@ process PLINK_HWE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1' :
-        'biocontainers/plink:1.90b6.21--h779adbc_1' }"
+        'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1' }"
 
     input:
     tuple val(meta), path(bed),  path(bim), path(fam)
@@ -15,7 +15,7 @@ process PLINK_HWE {
 
     output:
     tuple val(meta), path("*.hwe")      , emit: hwe
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +26,6 @@ process PLINK_HWE {
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
-    def outmeta = ""
     if (bed){
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
@@ -49,20 +48,13 @@ process PLINK_HWE {
         --hardy \\
         $args \\
         --out $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = ""
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
-    def outmeta = ""
     if (bed){
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
@@ -79,10 +71,5 @@ process PLINK_HWE {
     }
     """
     touch ${prefix}.hwe
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 }

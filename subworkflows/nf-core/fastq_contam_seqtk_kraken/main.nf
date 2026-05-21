@@ -39,5 +39,6 @@ workflow FASTQ_CONTAM_SEQTK_KRAKEN {
         ch_reports  = ch_reports.mix(KRAKEN2.out.report)
 
     emit:
-        reports  = ch_reports     // channel: [ [meta], log  ]
+        reports  = ch_reports              // channel: [ [meta], log  ]
+        reads    = SEQTK_SAMPLE.out.reads // channel: [ [meta], reads  ]
 }

@@ -121,6 +121,9 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     with_umi             // boolean: true/false: Enable UMI-based read deduplication.
     umi_discard_read     // integer: 0, 1 or 2
 
+    // Merging options
+    save_merged_fastq    // boolean: true/false: Save merged FastQ files even for single-library samples
+
     // Strandedness thresholds
     stranded_threshold   // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
     unstranded_threshold // float: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'
@@ -160,7 +163,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
 
     ch_reads
         .branch { meta, fastqs ->
-            single: fastqs.size() == 1 && fastqs.flatten()[0].name.endsWith('.gz')
+            single: fastqs.size() == 1 && fastqs.flatten()[0].name.endsWith('.gz') && !save_merged_fastq
             return [meta, fastqs.flatten()]
             multiple: true
             return [meta, fastqs.flatten()]
@@ -390,8 +393,13 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     )
 
     FASTQ_SUBSAMPLE_FQ_SALMON.out.lib_format_counts
-        .join(ch_strand_fastq.auto_strand)
+        .join(ch_strand_fastq.auto_strand, remainder: true)
         .map { meta, json, reads ->
+            if (json == null) {
+                error("Salmon failed to produce lib_format_counts for sample '${meta.id}' " +
+                    "which was set to 'auto' strandedness. Check that the Salmon " +
+                    "index matches your input reads, or set strandedness explicitly in the samplesheet.")
+            }
             def salmon_strand_analysis = getSalmonInferredStrandedness(json, stranded_threshold, unstranded_threshold)
             def strandedness = salmon_strand_analysis.inferred_strandedness
             if (strandedness == 'undetermined') {
@@ -402,10 +410,25 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         .mix(ch_strand_fastq.known_strand)
         .set { ch_strand_inferred_fastq }
 
+    // `remainder: true` needed because every contributor is gated behind
+    // a `skip_*` / `filter_*` option.
+    ch_per_sample_mqc_bundle = ch_fastqc_raw_zip
+        .join(ch_fastqc_trim_zip,      remainder: true)
+        .join(ch_trim_log,             remainder: true)
+        .join(ch_trim_json,            remainder: true)
+        .join(ch_umi_log,              remainder: true)
+        .join(ch_bbsplit_stats,        remainder: true)
+        .join(ch_sortmerna_log,        remainder: true)
+        .join(ch_ribodetector_log,     remainder: true)
+        .join(ch_seqkit_stats,         remainder: true)
+        .join(ch_bowtie2_log,          remainder: true)
+        .join(ch_fastqc_filtered_zip,  remainder: true)
+        .map { row -> [row[0], row.drop(1).findAll { f -> f != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }
+
     emit:
     reads            = ch_strand_inferred_fastq
     trim_read_count  = ch_trim_read_count
-    multiqc_files    = ch_multiqc_files.transpose().map { _meta, file -> file }
+    multiqc_files    = ch_multiqc_files.transpose()
 
     // Individual outputs for workflow outputs
     lint_log_raw     = ch_lint_log_raw
@@ -433,4 +456,5 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     fastqc_filtered_zip  = ch_fastqc_filtered_zip
     seqkit_prefixed  = ch_seqkit_prefixed
     seqkit_converted = ch_seqkit_converted
+    per_sample_mqc_bundle = ch_per_sample_mqc_bundle // channel: [ val(meta), list(files) ]
 }

@@ -4,9 +4,9 @@ process GMMDEMUX {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gmm-demux:0.2.2.3--pyh7cba7a3_0':
-        'biocontainers/gmm-demux:0.2.2.3--pyh7cba7a3_0' }"
+        'quay.io/biocontainers/gmm-demux:0.2.2.3--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(hto_matrix), val(hto_names)
@@ -21,20 +21,20 @@ process GMMDEMUX {
     tuple val(meta), path("features.tsv.gz"     ), emit: features
     tuple val(meta), path("GMM_*.csv"           ), emit: classification_report
     tuple val(meta), path("GMM_*.config"        ), emit: config_report
-    tuple val(meta), path("summary_report_*.txt"), emit: summary_report, optional: true
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("summary_report_*.txt")                                                                                     , emit: summary_report, optional: true
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('GMM-Demux'), val("0.2.2.3")                                                                 , emit: versions_gmmdemux, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args           = task.ext.args ?: ''
-    def prefix         = task.ext.prefix ?: "${meta.id}"
-    def skip_opt           = skip ? "--skip $skip" : ""
-    def examine_cells  = examine ? "--examine $examine" : ""
-    def VERSION        = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    def type_report_opt    = type_report ? "-f ." : "-s ."
-    def summary_rep    = summary_report ? "-r ${prefix}_summary_report.txt" : ""
+    def args            = task.ext.args ?: ''
+    def prefix          = task.ext.prefix ?: "${meta.id}"
+    def skip_opt        = skip ? "--skip $skip" : ""
+    def examine_cells   = examine ? "--examine $examine" : ""
+    def type_report_opt = type_report ? "-f ." : "-s ."
+    def summary_rep     = summary_report ? "-r ${prefix}_summary_report.txt" : ""
     """
     if [[ ${summary_report} == true ]]; then
         cat /dev/null > ${prefix}_summary_report.txt
@@ -48,26 +48,19 @@ process GMMDEMUX {
         $hto_matrix \\
         $hto_names \\
         -o .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        GMM-Demux: $VERSION
-    END_VERSIONS
     """
 
     stub:
-    def VERSION = '0.2.2.3'
     def prefix   = task.ext.prefix ?: "${meta.id}"
     """
+    if [[ ${summary_report} == true ]]; then
+        touch ${prefix}_summary_report.txt
+    fi
+
     echo "" | gzip > barcodes.tsv.gz
     echo "" | gzip > features.tsv.gz
     echo "" | gzip > matrix.mtx.gz
     touch GMM_full.config
     touch GMM_full.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        GMM-Demux: $VERSION
-    END_VERSIONS
     """
 }

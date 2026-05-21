@@ -4,7 +4,7 @@ process MMSEQS_CREATEINDEX {
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe49c17754753d6cd9a31e5894117edaf1c81e3d6053a12bf6dc8f3af1dffe23/data'
         : 'community.wave.seqera.io/library/mmseqs2:18.8cc5c--af05c9a98d9f6139'}"
 
@@ -13,7 +13,7 @@ process MMSEQS_CREATEINDEX {
 
     output:
     tuple val(meta), path(db), emit: db_indexed
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,10 +32,6 @@ process MMSEQS_CREATEINDEX {
         --threads ${task.cpus} \\
         --split-memory-limit ${(task.memory.toGiga() * 0.8) as int}G
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -45,9 +41,5 @@ process MMSEQS_CREATEINDEX {
 
     touch "\${DB_INPUT_PATH_NAME}.idx"
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 }

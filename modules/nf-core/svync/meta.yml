@@ -12,9 +12,9 @@ tools:
       homepage: "https://github.com/nvnieuwk/svync"
       documentation: "https://github.com/nvnieuwk/svync"
       tool_dev_url: "https://github.com/nvnieuwk/svync"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -28,7 +28,8 @@ input:
         ontologies: []
     - tbi:
         type: file
-        description: The index of the input VCF file containing structural variants
+        description: The index of the input VCF file containing structural
+          variants
         pattern: "*.tbi"
         ontologies: []
     - config:
@@ -36,7 +37,7 @@ input:
         description: The config stating how the standardization should happen
         pattern: "*.{yml,yaml}"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 output:
   vcf:
     - - meta:
@@ -49,7 +50,7 @@ output:
           description: The standardized VCF file
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   tbi:
     - - meta:
           type: map
@@ -61,13 +62,27 @@ output:
           description: The index of the standardized VCF file
           pattern: "*.tbi"
           ontologies: []
+  versions_svync:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svync:
+          type: string
+          description: The name of the tool
+      - svync --version | sed 's/svync version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svync:
+          type: string
+          description: The name of the tool
+      - svync --version | sed 's/svync version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

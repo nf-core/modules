@@ -32,7 +32,7 @@ nextflow_process {
                 { assert snapshot(
 					process.out.reads,
 					file(process.out.log[0][1]).name,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )
@@ -62,7 +62,7 @@ nextflow_process {
                 { assert snapshot(
 					process.out.reads,
 					file(process.out.log[0][1]).name,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )

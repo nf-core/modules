@@ -1,0 +1,215 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    workflow "BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_variant_calling_mpileup_bcftools"
+    tag "subworkflows/vcf_gather_bcftools"
+    tag "bam_variant_calling_mpileup_bcftools"
+    tag "vcf_gather_bcftools"
+
+    tag "gawk"
+    tag "tabix"
+    tag "tabix/bgzip"
+    tag "bcftools"
+    tag "bcftools/mpileup"
+    tag "bcftools/annotate"
+    tag "bcftools/merge"
+    tag "bcftools/concat"
+
+    test("Two individuals and two chromosomes, sort and annotate") {
+        setup { // Change CHR\tPOS\tREF\tALT to CHR\tPOS\tREF,tALT
+            run("GAWK") {
+                script "../../../../modules/nf-core/gawk/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [panel_id: "1000GP", chr: "22"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists:true)
+                    ], [
+                        [panel_id: "1000GP", chr: "21"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr21.posfile', checkIfExists:true)
+                    ])
+                    input[1] = []
+                    input[2] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id: "NA12878"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists:true),
+                ], [
+                    [id: "NA19401"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.1X.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.1X.bam.bai', checkIfExists:true),
+                ])
+                input[1] = GAWK.out.output
+                input[2] = channel.of([
+                    [id: "GRCh38"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.fai', checkIfExists:true),
+                ]).collect()
+                input[3] = "id"
+                input[4] = "all_samples"
+                input[5] = ["panel_id", "id"]
+                input[6] = true
+                input[7] = true
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.vcf_index.collect{ meta, vcf, index ->
+                def metaForSnapshot = meta.findAll { key, value -> key != 'metas' }
+                // Add a deterministic count instead of the full metas list
+                if (meta.metas) {
+                    metaForSnapshot.metas_count = meta.metas.size()
+                }
+                [
+                    metaForSnapshot,
+                    path(vcf).getFileName().toString(),
+                    path(vcf).vcf.summary, // Two individuals and 1739 variants
+                    path(vcf).vcf.variantsMD5,
+                    path(index).getFileName().toString()
+                ] },
+                workflow.out.multiqc_files
+            ).match()
+        }
+    }
+
+    test("One individual and one chromosome") {
+        setup {
+            run("GAWK") {
+                script "../../../../modules/nf-core/gawk/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [panel_id: "1000GP", chr: "22"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists:true)
+                    ])
+                    input[1] = []
+                    input[2] = false
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id: "NA12878"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists:true),
+                ])
+                input[1] = GAWK.out.output
+                input[2] = channel.of([
+                    [id: "GRCh38"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.fai', checkIfExists:true),
+                ]).collect()
+                input[3] = "id"
+                input[4] = "all_samples"
+                input[5] = ["panel_id", "id"]
+                input[6] = false
+                input[7] = false
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.vcf_index.collect{ meta, vcf, index ->
+                def metaForSnapshot = meta.findAll { key, value -> key != 'metas' }
+                // Add a deterministic count instead of the full metas list
+                if (meta.metas) {
+                    metaForSnapshot.metas_count = meta.metas.size()
+                }
+                [
+                    metaForSnapshot,
+                    path(vcf).getFileName().toString(),
+                    path(vcf).vcf.summary, // One individuals and 902 variants
+                    path(vcf).vcf.variantsMD5,
+                    path(index).getFileName().toString()
+                ] },
+                workflow.out.multiqc_files
+            ).match()
+        }
+    }
+
+    test("One individual and two chromosomes") {
+        setup {
+            run("GAWK") {
+                script "../../../../modules/nf-core/gawk/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [panel_id: "1000GP", chr: "22"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists:true)
+                    ], [
+                        [panel_id: "1000GP", chr: "21"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr21.posfile', checkIfExists:true)
+                    ])
+                    input[1] = []
+                    input[2] = false
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id: "NA12878"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists:true),
+                ])
+                input[1] = GAWK.out.output
+                input[2] = channel.of([
+                    [id: "GRCh38"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.fai', checkIfExists:true),
+                ]).collect()
+                input[3] = "id"
+                input[4] = "all_samples"
+                input[5] = ["panel_id", "id"]
+                input[6] = false
+                input[7] = false
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.vcf_index.collect{ meta, vcf, index ->
+                def metaForSnapshot = meta.findAll { key, value -> key != 'metas' }
+                // Add a deterministic count instead of the full metas list
+                if (meta.metas) {
+                    metaForSnapshot.metas_count = meta.metas.size()
+                }
+                [
+                    metaForSnapshot,
+                    path(vcf).getFileName().toString(),
+                    path(vcf).vcf.summary, // One individuals and 1737 variants
+                    path(vcf).vcf.variantsMD5,
+                    path(index).getFileName().toString()
+                ] },
+                workflow.out.multiqc_files
+            ).match()
+        }
+    }
+}
