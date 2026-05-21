@@ -1,14 +1,12 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "custom_bed12codonpositions"
 description: |
-  Expand a BED12 file into a BED6 of in-frame positions along the
-  spliced feature (one BED6 row per codon by default). BED12 records
-  describe multi-block intervals with blockStarts/blockSizes; this
-  module walks the blocks in mRNA order (left-to-right on '+' strand,
-  right-to-left on '-' strand) and emits the genomic coordinate of
-  every step-th position starting at the configured frame offset.
-  Spans wider than 1 nt that cross a block boundary are split into one
-  BED row per block.
+  Expand a BED12 into a BED6 of in-frame mRNA positions, projected back
+  to genomic coordinates. Default behaviour emits one row per codon (the
+  5' nucleotide); --step / --width / --frame control the stride, span
+  and offset on the spliced mRNA. Useful for codon-level work on
+  spliced features (e.g. ribo-seq P-site counts per codon, frame /
+  periodicity QC, novel-ORF tiling).
 keywords:
   - bed12
   - bed6

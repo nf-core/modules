@@ -1,32 +1,10 @@
 #!/usr/bin/env python3
-"""Expand a BED12 file into a BED6 of in-frame positions along the spliced feature.
+"""Expand a BED12 into a BED6 of in-frame mRNA positions.
 
-For each BED12 record, the script walks the block (exon) structure in
-mRNA order and emits one BED6 row per in-frame position along the
-spliced span, projecting each back to genomic coordinates. Frame is
-defined relative to the start of the record itself.
-
-BED12 convention (UCSC):
-  chrom start end name score strand thickStart thickEnd itemRgb
-  blockCount blockSizes blockStarts
-where `start` is 0-based and `end` is half-open, blockStarts are offsets
-from `start`, and blocks are listed in ascending genomic-coordinate
-order on both strands. mRNA-order traversal is therefore left-to-right
-on `+` strand and right-to-left on `-` strand.
-
-Output (BED6, 0-based half-open):
-  chrom  start  end  name  score  strand
-
-The score column is preserved from the input BED12 record. Rows are
-written in mRNA-traversal order, which means descending genomic order
-on `-` strand records (and per-codon rows that cross a block boundary
-are likewise in mRNA order, not genomic-sorted).
-
-By default the script emits the 5' nucleotide of every codon (step 3,
-width 1). With `--width N` (N > 1) the script emits up to N consecutive
-mRNA positions per codon; if those positions cross a block boundary the
-positions are split into one BED row per block (so the union of rows
-for a single codon still maps back to a contiguous mRNA region).
+Walks each record's blocks in mRNA order (5'→3'), emits every --step-th
+mRNA position starting at --frame, and projects them back to genomic
+coordinates. Rows are written in mRNA-traversal order, so '-' strand
+records come out in descending genomic order.
 """
 
 import argparse
