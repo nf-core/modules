@@ -18,7 +18,7 @@ process VCLUST_CLUSTER {
     output:
     tuple val(meta), path("*.tsv"), emit: clusters
     tuple val(meta), path("*.log"), emit: log
-    tuple val("${task.process}"), val('vclust'), eval("vclust --version"), topic: versions, emit: versions_vclust
+    tuple val("${task.process}"), val('vclust'), eval("vclust --version | sed 's/v//'"), topic: versions, emit: versions_vclust
 
     when:
     task.ext.when == null || task.ext.when

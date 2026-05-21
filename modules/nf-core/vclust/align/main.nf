@@ -16,7 +16,7 @@ process VCLUST_ALIGN {
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("*.ids.tsv")    , emit: ids
     tuple val(meta), path("*.aln.tsv")    , emit: aln, optional: true
-    tuple val("${task.process}"), val('vclust'), eval("vclust --version"), topic: versions, emit: versions_vclust
+    tuple val("${task.process}"), val('vclust'), eval("vclust --version | sed 's/v//'"), topic: versions, emit: versions_vclust
 
     when:
     task.ext.when == null || task.ext.when
