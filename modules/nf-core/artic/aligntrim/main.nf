@@ -3,9 +3,9 @@ process ARTIC_ALIGNTRIM {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'oras://community.wave.seqera.io/library/align_trim_samtools:ae17186e78142d18'
-        : 'community.wave.seqera.io/library/align_trim_samtools:3883b74edda083a2'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'oras://community.wave.seqera.io/library/align_trim_samtools:1752280b4d1f6d15'
+        : 'community.wave.seqera.io/library/align_trim_samtools:8522ef905ed24d0d'}"
 
     input:
     tuple val(meta), path(samfile), path(scheme_bed), val(normalise_depth)

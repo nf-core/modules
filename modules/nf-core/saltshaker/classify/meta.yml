@@ -24,21 +24,9 @@ input:
         ontologies:
           - edam: http://edamontology.org/operation_3227 #variant calling
           - edam: http://edamontology.org/format_3475 #tsv
-  - dominant_fraction:
-      type: float
-      description: Minimum heteroplasmy fraction to classify as dominant in saltshaker
-  - group_radius:
-      type: integer
-      description: Spatial clustering radius for saltshaker grouping
-  - high_heteroplasmy:
-      type: float
-      description: High heteroplasmy threshold for saltshaker classification
-  - multiple_threshold:
-      type: float
-      description: Heteroplasmy threshold for multiple classification in saltshaker
-  - noise_threshold:
-      type: float
-      description: Heteroplasmy threshold for noise in saltshaker classification
+  - mito_name:
+      type: string
+      description: Name of the mitochondrial chromosome
 output:
   classify:
     - - meta:
@@ -86,7 +74,7 @@ output:
       - saltshaker:
           type: string
           description: The name of the tool
-      - 1.0.0:
+      - 1.0.1:
           type: string
           description: Hardcoded version of saltshaker used in the module
 topics:
@@ -97,7 +85,7 @@ topics:
       - saltshaker:
           type: string
           description: The name of the tool
-      - 1.0.0:
+      - 1.0.1:
           type: string
           description: Hardcoded version of saltshaker used in the module
 authors:

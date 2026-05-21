@@ -40,6 +40,7 @@ nextflow_process {
                 input[0] = BCFTOOLS_VIEW.out.vcf.join(BCFTOOLS_VIEW.out.csi)
                     .map{ meta, vcf, index -> [meta.subMap("id"), vcf, index]}
                     .groupTuple()
+                input[1] = ''
                 """
             }
         }
@@ -73,6 +74,7 @@ nextflow_process {
                     [file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz", checkIfExists: true)],
                     [file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi", checkIfExists: true)]
                 ]
+                input[1] = ''
                 """
             }
         }

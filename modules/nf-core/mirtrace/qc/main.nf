@@ -3,9 +3,9 @@ process MIRTRACE_QC {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mirtrace:1.0.1--0':
-        'biocontainers/mirtrace:1.0.1--0' }"
+        'quay.io/biocontainers/mirtrace:1.0.1--0' }"
 
     input:
     tuple val(meta), path(reads), path(mirtrace_config)

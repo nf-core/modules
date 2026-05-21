@@ -44,11 +44,7 @@ nextflow_process {
             process {
                 """
                 input[0] = SALTSHAKER_CALL.out.call
-                input[1] = 0.5
-                input[2] = 600
-                input[3] = 10
-                input[4] = 5
-                input[5] = 0.3
+                input[1] = "MT"
                 """
             }
         }

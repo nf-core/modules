@@ -13,7 +13,7 @@ nextflow_process {
     tag "ltrretriever/lai"
     tag "ltrharvest"
     tag "ltrfinder"
-    tag "cat/cat"
+    tag "find/concatenate"
 
     test("actinidia_chinensis-genome_21_fasta_gz-success") {
 
@@ -52,8 +52,8 @@ nextflow_process {
                 }
             }
 
-            run("CAT_CAT") {
-                script "../../../cat/cat"
+            run("FIND_CONCATENATE") {
+                script "../../../find/concatenate"
 
                 process {
                     """
@@ -68,7 +68,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = GUNZIP.out.gunzip
-                    input[1] = CAT_CAT.out.file_out.map { meta, tabout -> tabout }
+                    input[1] = FIND_CONCATENATE.out.file_out.map { meta, tabout -> tabout }
                     input[2] = []
                     input[3] = []
                     input[4] = []

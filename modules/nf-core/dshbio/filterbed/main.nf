@@ -3,16 +3,16 @@ process DSHBIO_FILTERBED {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dsh-bio:3.0--hdfd78af_0' :
-        'biocontainers/dsh-bio:3.0--hdfd78af_0' }"
+        'quay.io/biocontainers/dsh-bio:3.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bed)
 
     output:
     tuple val(meta), path("*.bed.gz"), emit: bed
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('dsh-bio'), eval("dsh-bio --version | sed '1!d;s/dsh-bio-tools //'"), emit: versions_dshbio, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process DSHBIO_FILTERBED {
         $args \\
         -i $bed \\
         -o ${prefix}.bed.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.bed.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.bed.gz
     """
 }
