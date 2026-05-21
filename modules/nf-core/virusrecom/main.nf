@@ -20,7 +20,7 @@ process VIRUSRECOM {
 
     script:
     def args         = task.ext.args ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
+    prefix       = task.ext.prefix ?: "${meta.id}"
     def use_iwic     = iwic ? true : false
     def input_cmd    = use_iwic ? "-iwic ${iwic}" : "-a ${alignment}"
     def map_cmd      = use_iwic ? "" : "-map ${mapping}"
