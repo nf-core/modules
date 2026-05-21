@@ -40,7 +40,20 @@ nextflow_workflow {
 
         then {
             def hybridLines = path(workflow.out.hybrid_gtf[0][1]).readLines().findAll { !it.startsWith('#') }
-            def synthGenes  = hybridLines.findAll { it.split('\t', -1)[0] == 'chr22' && it.split('\t', -1)[2] == 'gene' }
+            def chr22Rows   = hybridLines.findAll { it.split('\t', -1)[0] == 'chr22' }
+            def synthGenes  = chr22Rows.findAll { it.split('\t', -1)[2] == 'gene' }
+            def synthSpanMatchesUnion = {
+                def geneSpans = [:]
+                def txStarts  = [:].withDefault { [] }
+                def txEnds    = [:].withDefault { [] }
+                chr22Rows.each { line ->
+                    def c = line.split('\t', -1)
+                    def gid = (c[8] =~ /gene_id "([^"]+)"/)[0][1]
+                    if (c[2] == 'gene') geneSpans[gid] = [c[3] as int, c[4] as int]
+                    if (c[2] == 'transcript') { txStarts[gid] << (c[3] as int); txEnds[gid] << (c[4] as int) }
+                }
+                geneSpans.every { gid, span -> span[0] == txStarts[gid].min() && span[1] == txEnds[gid].max() }
+            }
             assertAll(
                 { assert workflow.success },
                 { assert workflow.out.hybrid_gtf.size() == 1 },
@@ -50,6 +63,8 @@ nextflow_workflow {
                     "hybrid_gtf meta should equal the backbone meta but was ${workflow.out.hybrid_gtf[0][0]}" },
                 { assert synthGenes.size() > 0,
                     "no synthesised gene rows on chr22; the concat awk did not graft any novel genes" },
+                { assert synthSpanMatchesUnion(),
+                    "synthesised gene row spans do not match the union of their child transcripts; concat awk has regressed on gene-span correctness" },
                 { assert snapshot(
                     workflow.out.hybrid_gtf,
                     workflow.out.gffcompare_stats,
