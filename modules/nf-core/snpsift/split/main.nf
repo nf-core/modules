@@ -12,7 +12,7 @@ process SNPSIFT_SPLIT {
 
     output:
     tuple val(meta), path("*.vcf"), emit: out_vcfs
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('snpsift'), eval("SnpSift split -h 2>&1 | head -n1 | sed 's/^.*version //; s/ .*//'"), topic: versions, emit: versions_snpsift
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,6 @@ process SNPSIFT_SPLIT {
             split \\
             ${args} \\
             ${vcf}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
-        END_VERSIONS
         """
     }
     else {
@@ -41,11 +36,6 @@ process SNPSIFT_SPLIT {
             ${args} \\
             ${vcf} \\
             > ${prefix}.joined.vcf
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
-        END_VERSIONS
         """
     }
 
@@ -55,10 +45,5 @@ process SNPSIFT_SPLIT {
     """
     touch ${prefix}.chr1.vcf
     touch ${prefix}.chr2.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
-    END_VERSIONS
     """
 }
