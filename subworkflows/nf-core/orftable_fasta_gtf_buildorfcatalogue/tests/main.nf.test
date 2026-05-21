@@ -35,12 +35,14 @@ nextflow_workflow {
                 """
                 input[0] = channel.of(
                     [
-                        [id: 'sample1', caller: 'ribotish'],
-                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true)
+                        [id: 'sample1'],
+                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                        'ribotish'
                     ],
                     [
-                        [id: 'sample1', caller: 'ribocode'],
-                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true)
+                        [id: 'sample1'],
+                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
+                        'ribocode'
                     ]
                 )
                 input[1] = GUNZIP.out.gunzip

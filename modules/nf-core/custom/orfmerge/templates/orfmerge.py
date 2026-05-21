@@ -28,6 +28,7 @@ Outputs:
   ${prefix}.catalogue.mqc.tsv    MultiQC custom-content sidecar
                                  (per-class counts).
 """
+
 import argparse
 import csv
 import glob
@@ -208,8 +209,7 @@ def write_catalogue(prefix, clusters, bed_index):
     mqc_tsv = Path(f"{prefix}.catalogue.mqc.tsv")
 
     catalogue_cols = (
-        ["orf_id", "chrom", "start", "end", "strand", "gene_id",
-         "transcript_id", "orf_class", "aa_length"]
+        ["orf_id", "chrom", "start", "end", "strand", "gene_id", "transcript_id", "orf_class", "aa_length"]
         + [f"called_by_{c}" for c in CALLERS]
         + [f"score_{c}" for c in CALLERS]
     )

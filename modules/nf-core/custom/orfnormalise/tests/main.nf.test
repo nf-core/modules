@@ -15,8 +15,9 @@ nextflow_process {
             process {
                 """
                 input[0] = channel.of([
-                    [id: 'sample1', caller: 'ribocode'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true)
+                    [id: 'sample1'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
+                    'ribocode'
                 ])
                 input[1] = channel.of([
                     [id: 'reference'],
@@ -55,8 +56,9 @@ nextflow_process {
             process {
                 """
                 input[0] = channel.of([
-                    [id: 'sample1', caller: 'ribotish'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true)
+                    [id: 'sample1'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    'ribotish'
                 ])
                 input[1] = channel.of([
                     [id: 'reference'],
@@ -92,8 +94,9 @@ nextflow_process {
             process {
                 """
                 input[0] = channel.of([
-                    [id: 'sample1', caller: 'ribotricer'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotricer.tsv', checkIfExists: true)
+                    [id: 'sample1'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotricer.tsv', checkIfExists: true),
+                    'ribotricer'
                 ])
                 input[1] = channel.of([
                     [id: 'reference'],
@@ -133,8 +136,9 @@ nextflow_process {
             process {
                 """
                 input[0] = channel.of([
-                    [id: 'sample1', caller: 'rpbp'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.rpbp.predicted-orfs.bed.gz', checkIfExists: true)
+                    [id: 'sample1'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.rpbp.predicted-orfs.bed.gz', checkIfExists: true),
+                    'rpbp'
                 ])
                 input[1] = channel.of([
                     [id: 'reference'],
@@ -172,8 +176,9 @@ nextflow_process {
             process {
                 """
                 input[0] = channel.of([
-                    [id: 'cohort', caller: 'price'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/cohort.price.orfs.tsv', checkIfExists: true)
+                    [id: 'cohort'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/cohort.price.orfs.tsv', checkIfExists: true),
+                    'price'
                 ])
                 input[1] = channel.of([
                     [id: 'reference'],
@@ -214,8 +219,9 @@ nextflow_process {
             process {
                 """
                 input[0] = channel.of([
-                    [id: 'sample1', caller: 'ribotish'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true)
+                    [id: 'sample1'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    'ribotish'
                 ])
                 input[1] = channel.of([
                     [id: 'reference'],

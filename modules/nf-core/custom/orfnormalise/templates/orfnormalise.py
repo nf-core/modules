@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Normalise an ORF caller's per-sample output to a unified BED12 + sidecar TSV.
 
-One template, five callers. \${caller} (from meta.caller) selects the
-per-caller parser, classifier and score mapper.
+One template, five callers. The `caller` val input (one of ribocode,
+ribotish, ribotricer, rpbp, price) selects the per-caller parser,
+classifier and score mapper.
 
 Harmonised orf_class vocabulary written into the sidecar TSV:
     canonical_cds: ORF maps to an annotated CDS (including truncated /
@@ -33,6 +34,7 @@ chain is provided, the parser walks it in order. The resolved column
 name for each field is written into the TSV header as a
 `# parser_columns: ...` comment line for downstream provenance.
 """
+
 import argparse
 import csv
 import gzip
@@ -67,33 +69,33 @@ TSV_HEADER = (
 # elsewhere or absent from the source format).
 DEFAULT_FIELDS = {
     "ribocode": {
-        "score":     ["pval_combined", "Pval_combined"],
-        "orf_type":  ["ORF_type", "Type"],
-        "length":    ["ORF_length", "ORFlength"],
+        "score": ["pval_combined", "Pval_combined"],
+        "orf_type": ["ORF_type", "Type"],
+        "length": ["ORF_length", "ORFlength"],
         "aa_length": None,
     },
     "ribotish": {
-        "score":     ["FisherPvalue", "Pvalcombined", "RiboPvalue", "TISPvalue", "Pvalue"],
-        "orf_type":  ["TisType", "TISType"],
-        "length":    None,
+        "score": ["FisherPvalue", "Pvalcombined", "RiboPvalue", "TISPvalue", "Pvalue"],
+        "orf_type": ["TisType", "TISType"],
+        "length": None,
         "aa_length": ["AALen"],
     },
     "ribotricer": {
-        "score":     ["phase_score"],
-        "orf_type":  ["ORF_type"],
-        "length":    ["length"],
+        "score": ["phase_score"],
+        "orf_type": ["ORF_type"],
+        "length": ["length"],
         "aa_length": None,
     },
     "rpbp": {
-        "score":     ["bayes_factor_mean"],
-        "orf_type":  None,
-        "length":    ["orf_len"],
+        "score": ["bayes_factor_mean"],
+        "orf_type": None,
+        "length": ["orf_len"],
         "aa_length": None,
     },
     "price": {
-        "score":     ["p value", "p_value"],
-        "orf_type":  ["Type"],
-        "length":    None,
+        "score": ["p value", "p_value"],
+        "orf_type": ["Type"],
+        "length": None,
         "aa_length": None,
     },
 }
@@ -109,14 +111,31 @@ SCORE_DIRECTIONS = {
 # RPBP predicted-orfs BED column names (the file ships a `#`-prefixed
 # header but we keep our internal names clean).
 RPBP_COLUMNS = [
-    "seqname", "start", "end", "id", "score", "strand",
-    "thick_start", "thick_end", "color",
-    "num_exons", "exon_lengths", "exon_genomic_relative_starts",
-    "orf_num", "orf_len",
-    "p_translated_mean", "p_translated_var",
-    "p_background_mean", "p_background_var",
-    "bayes_factor_mean", "bayes_factor_var",
-    "chi_square_p", "x_1_sum", "x_2_sum", "x_3_sum", "profile_sum",
+    "seqname",
+    "start",
+    "end",
+    "id",
+    "score",
+    "strand",
+    "thick_start",
+    "thick_end",
+    "color",
+    "num_exons",
+    "exon_lengths",
+    "exon_genomic_relative_starts",
+    "orf_num",
+    "orf_len",
+    "p_translated_mean",
+    "p_translated_var",
+    "p_background_mean",
+    "p_background_var",
+    "bayes_factor_mean",
+    "bayes_factor_var",
+    "chi_square_p",
+    "x_1_sum",
+    "x_2_sum",
+    "x_3_sum",
+    "profile_sum",
 ]
 
 
@@ -140,6 +159,7 @@ class Transcript:
 # Field resolution helpers
 # ----------------------------------------------------------------------------
 
+
 def _resolve_chain(caller, field_key, override):
     if override:
         return [override]
@@ -161,11 +181,12 @@ def _pick_value(row, candidates):
 # I/O + GTF helpers
 # ----------------------------------------------------------------------------
 
+
 def open_text(path):
     p = Path(path)
     if str(p).endswith(".gz"):
         return io.TextIOWrapper(gzip.open(p, "rb"), encoding="utf-8")
-    return open(p, "r", encoding="utf-8")
+    return open(p, encoding="utf-8")
 
 
 def parse_attributes(field):
@@ -256,26 +277,50 @@ def emit_bed12(chrom, blocks, name, score, strand):
     block_count = len(blocks)
     block_sizes = ",".join(str(b[1] - b[0]) for b in blocks) + ","
     block_starts = ",".join(str(b[0] - start) for b in blocks) + ","
-    return "\\t".join([
-        chrom, str(start), str(end), name, str(score), strand,
-        str(start), str(end), "0",
-        str(block_count), block_sizes, block_starts,
-    ])
+    return "\\t".join(
+        [
+            chrom,
+            str(start),
+            str(end),
+            name,
+            str(score),
+            strand,
+            str(start),
+            str(end),
+            "0",
+            str(block_count),
+            block_sizes,
+            block_starts,
+        ]
+    )
 
 
-def emit_tsv_row(orf_id, caller, sample_id, chrom, start, end, strand,
-                 gene_id, transcript_id, orf_class, aa_length, score):
-    return "\\t".join([
-        orf_id, caller, sample_id, chrom, str(start), str(end), strand,
-        gene_id, transcript_id, orf_class, str(aa_length), str(score),
-    ])
+def emit_tsv_row(
+    orf_id, caller, sample_id, chrom, start, end, strand, gene_id, transcript_id, orf_class, aa_length, score
+):
+    return "\\t".join(
+        [
+            orf_id,
+            caller,
+            sample_id,
+            chrom,
+            str(start),
+            str(end),
+            strand,
+            gene_id,
+            transcript_id,
+            orf_class,
+            str(aa_length),
+            str(score),
+        ]
+    )
 
 
 def write_outputs(bed_path, tsv_path, bed_lines, tsv_rows, parser_columns):
-    bed_lines = [l for l in bed_lines if l]
+    bed_lines = [line for line in bed_lines if line]
     with open(bed_path, "w") as bh:
-        for l in bed_lines:
-            bh.write(l + "\\n")
+        for line in bed_lines:
+            bh.write(line + "\\n")
     with open(tsv_path, "w") as th:
         pc = " ".join(f"{k}={v}" for k, v in parser_columns.items() if v)
         th.write(f"# parser_columns: caller={CALLER} {pc}\\n")
@@ -293,6 +338,7 @@ def reclassify_smorf(orf_class, aa_length):
 # ----------------------------------------------------------------------------
 # Per-caller classifiers
 # ----------------------------------------------------------------------------
+
 
 def classify_ribotish(tis_type):
     if not tis_type:
@@ -392,8 +438,18 @@ CLASSIFIERS = {
 # ----------------------------------------------------------------------------
 
 EMPTY_PARSED = pd.DataFrame(
-    columns=["orf_id", "transcript_id", "gene_id", "chrom", "strand",
-             "aa_length", "orf_type", "raw_score", "bed_score", "blocks"]
+    columns=[
+        "orf_id",
+        "transcript_id",
+        "gene_id",
+        "chrom",
+        "strand",
+        "aa_length",
+        "orf_type",
+        "raw_score",
+        "bed_score",
+        "blocks",
+    ]
 )
 
 
@@ -462,18 +518,20 @@ def parse_ribocode(path, transcripts, fields):
                     continue
 
             orf_id_raw = row.get("ORF_ID") or f"ribocode|{tid}|{t_start_1}-{t_stop_1}"
-            rows.append({
-                "orf_id": f"ribocode|{orf_id_raw}",
-                "transcript_id": tid,
-                "gene_id": gid,
-                "chrom": chrom,
-                "strand": strand,
-                "aa_length": aa_len,
-                "orf_type": orf_type,
-                "raw_score": pval if pval == pval else "",
-                "bed_score": bed_score,
-                "blocks": blocks,
-            })
+            rows.append(
+                {
+                    "orf_id": f"ribocode|{orf_id_raw}",
+                    "transcript_id": tid,
+                    "gene_id": gid,
+                    "chrom": chrom,
+                    "strand": strand,
+                    "aa_length": aa_len,
+                    "orf_type": orf_type,
+                    "raw_score": pval if pval == pval else "",
+                    "bed_score": bed_score,
+                    "blocks": blocks,
+                }
+            )
     return (pd.DataFrame(rows) if rows else EMPTY_PARSED.copy()), resolved
 
 
@@ -567,18 +625,20 @@ def parse_ribotish(path, transcripts, fields):
                     if not blocks:
                         blocks = [(start, end)]
 
-            rows.append({
-                "orf_id": f"ribotish|{tid}|{chrom}:{blocks[0][0]}-{blocks[-1][1]}:{strand}",
-                "transcript_id": tid,
-                "gene_id": gid,
-                "chrom": chrom,
-                "strand": strand,
-                "aa_length": aa_len,
-                "orf_type": orf_type,
-                "raw_score": pval if pval == pval else "",
-                "bed_score": bed_score,
-                "blocks": blocks,
-            })
+            rows.append(
+                {
+                    "orf_id": f"ribotish|{tid}|{chrom}:{blocks[0][0]}-{blocks[-1][1]}:{strand}",
+                    "transcript_id": tid,
+                    "gene_id": gid,
+                    "chrom": chrom,
+                    "strand": strand,
+                    "aa_length": aa_len,
+                    "orf_type": orf_type,
+                    "raw_score": pval if pval == pval else "",
+                    "bed_score": bed_score,
+                    "blocks": blocks,
+                }
+            )
     return (pd.DataFrame(rows) if rows else EMPTY_PARSED.copy()), resolved
 
 
@@ -685,18 +745,20 @@ def parse_ribotricer(path, transcripts, fields):
             if not blocks:
                 continue
 
-            rows.append({
-                "orf_id": f"ribotricer|{orf_id_raw}",
-                "transcript_id": tid,
-                "gene_id": gid,
-                "chrom": chrom,
-                "strand": strand,
-                "aa_length": aa_len,
-                "orf_type": orf_type,
-                "raw_score": "",
-                "bed_score": bed_score,
-                "blocks": blocks,
-            })
+            rows.append(
+                {
+                    "orf_id": f"ribotricer|{orf_id_raw}",
+                    "transcript_id": tid,
+                    "gene_id": gid,
+                    "chrom": chrom,
+                    "strand": strand,
+                    "aa_length": aa_len,
+                    "orf_type": orf_type,
+                    "raw_score": "",
+                    "bed_score": bed_score,
+                    "blocks": blocks,
+                }
+            )
     return (pd.DataFrame(rows) if rows else EMPTY_PARSED.copy()), resolved
 
 
@@ -724,7 +786,9 @@ def parse_rpbp(path, transcripts, fields):
             try:
                 block_count = int(row.get("num_exons") or 0)
                 block_sizes = [int(x) for x in (row.get("exon_lengths") or "").rstrip(",").split(",") if x]
-                block_starts = [int(x) for x in (row.get("exon_genomic_relative_starts") or "").rstrip(",").split(",") if x]
+                block_starts = [
+                    int(x) for x in (row.get("exon_genomic_relative_starts") or "").rstrip(",").split(",") if x
+                ]
             except ValueError:
                 continue
             if not block_sizes or len(block_sizes) != block_count:
@@ -758,18 +822,20 @@ def parse_rpbp(path, transcripts, fields):
             tid = name.rsplit("_", 1)[0] if "_" in name else name
             gid = transcripts[tid].gene_id if tid in transcripts else ""
 
-            rows.append({
-                "orf_id": f"rpbp|{name}",
-                "transcript_id": tid,
-                "gene_id": gid,
-                "chrom": chrom,
-                "strand": strand,
-                "aa_length": aa_len,
-                "orf_type": orf_type,
-                "raw_score": score_val if score_val == score_val else "",
-                "bed_score": bed_score,
-                "blocks": blocks,
-            })
+            rows.append(
+                {
+                    "orf_id": f"rpbp|{name}",
+                    "transcript_id": tid,
+                    "gene_id": gid,
+                    "chrom": chrom,
+                    "strand": strand,
+                    "aa_length": aa_len,
+                    "orf_type": orf_type,
+                    "raw_score": score_val if score_val == score_val else "",
+                    "bed_score": bed_score,
+                    "blocks": blocks,
+                }
+            )
     return (pd.DataFrame(rows) if rows else EMPTY_PARSED.copy()), resolved
 
 
@@ -850,18 +916,20 @@ def parse_price(path, transcripts, fields):
             if score_col:
                 resolved["score"] = score_col
 
-            rows.append({
-                "orf_id": f"price|{orf_id_raw}",
-                "transcript_id": tid,
-                "gene_id": gid,
-                "chrom": chrom,
-                "strand": strand,
-                "aa_length": aa_len,
-                "orf_type": orf_type,
-                "raw_score": pval if pval is not None else "",
-                "bed_score": bed_score,
-                "blocks": blocks,
-            })
+            rows.append(
+                {
+                    "orf_id": f"price|{orf_id_raw}",
+                    "transcript_id": tid,
+                    "gene_id": gid,
+                    "chrom": chrom,
+                    "strand": strand,
+                    "aa_length": aa_len,
+                    "orf_type": orf_type,
+                    "raw_score": pval if pval is not None else "",
+                    "bed_score": bed_score,
+                    "blocks": blocks,
+                }
+            )
     return (pd.DataFrame(rows) if rows else EMPTY_PARSED.copy()), resolved
 
 
@@ -877,6 +945,7 @@ PARSERS = {
 # ----------------------------------------------------------------------------
 # Driver
 # ----------------------------------------------------------------------------
+
 
 def write_versions():
     with open("versions.yml", "w") as fh:
@@ -898,17 +967,17 @@ def main():
         sys.exit(f"orfnormalise: unknown meta.caller='{CALLER}'; expected one of {sorted(PARSERS)}")
 
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--score-field",     default=None)
-    parser.add_argument("--orf-type-field",  default=None)
-    parser.add_argument("--length-field",    default=None)
+    parser.add_argument("--score-field", default=None)
+    parser.add_argument("--orf-type-field", default=None)
+    parser.add_argument("--length-field", default=None)
     parser.add_argument("--aa-length-field", default=None)
     raw_args = "${args}".split() if "${args}".strip() else []
     parsed_args = parser.parse_args(raw_args)
 
     fields = {
-        "score":     _resolve_chain(CALLER, "score",     parsed_args.score_field),
-        "orf_type":  _resolve_chain(CALLER, "orf_type",  parsed_args.orf_type_field),
-        "length":    _resolve_chain(CALLER, "length",    parsed_args.length_field),
+        "score": _resolve_chain(CALLER, "score", parsed_args.score_field),
+        "orf_type": _resolve_chain(CALLER, "orf_type", parsed_args.orf_type_field),
+        "length": _resolve_chain(CALLER, "length", parsed_args.length_field),
         "aa_length": _resolve_chain(CALLER, "aa_length", parsed_args.aa_length_field),
     }
 
@@ -927,9 +996,7 @@ def main():
         seen.add(orf_id)
         orf_class = reclassify_smorf(classify(r["orf_type"]), int(r["aa_length"]))
         blocks = r["blocks"]
-        bed_lines.append(
-            emit_bed12(r["chrom"], blocks, orf_id, int(r["bed_score"]), r["strand"])
-        )
+        bed_lines.append(emit_bed12(r["chrom"], blocks, orf_id, int(r["bed_score"]), r["strand"]))
         tsv_rows.append(
             emit_tsv_row(
                 orf_id=orf_id,

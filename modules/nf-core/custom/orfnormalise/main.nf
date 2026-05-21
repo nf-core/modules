@@ -8,7 +8,7 @@ process CUSTOM_ORFNORMALISE {
         'community.wave.seqera.io/library/python_pandas_pyyaml:75514f9f977be607' }"
 
     input:
-    tuple val(meta) , path(orfs_table)
+    tuple val(meta) , path(orfs_table), val(caller)
     tuple val(meta2), path(gtf)
 
     output:
@@ -21,7 +21,6 @@ process CUSTOM_ORFNORMALISE {
 
     script:
     prefix    = task.ext.prefix ?: "${meta.id}"
-    caller    = meta.caller
     sample_id = meta.id ?: 'unknown'
     args      = task.ext.args ?: ''
     template 'orfnormalise.py'

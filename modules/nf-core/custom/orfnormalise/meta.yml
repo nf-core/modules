@@ -8,7 +8,8 @@ description: |
   predicts which open reading frames are being translated. Each caller writes
   its own table format and uses its own location encoding, classification
   vocabulary, and confidence score. This module reconciles five callers into
-  one harmonised schema. `meta.caller` selects the parser; supported values:
+  one harmonised schema. The `caller` val input selects the parser;
+  supported values:
 
     - ribocode    (RiboCode predicted ORF table; transcript-coord input,
                    lifted to genomic blocks against the GTF)
@@ -120,14 +121,19 @@ input:
         type: map
         description: |
           Groovy Map. Must include `id` (sample identifier; for PRICE this
-          is typically the cohort id) and `caller` (one of: ribocode,
-          ribotish, ribotricer, rpbp, price).
+          is typically the cohort id).
     - orfs_table:
         type: file
         description: |
           Per-sample (or per-cohort, for PRICE) ORF caller output. The
-          format must match `meta.caller`.
+          format must match the `caller` val input.
         pattern: "*"
+    - caller:
+        type: string
+        description: |
+          ORF caller that produced `orfs_table`. Selects the parser,
+          classifier and score-direction inside the module.
+        enum: ["ribocode", "ribotish", "ribotricer", "rpbp", "price"]
   - - meta2:
         type: map
         description: |
@@ -150,7 +156,7 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map matching the input meta (including `caller`).
+            Groovy Map matching the input meta.
       - ${prefix}.normalised.bed12:
           type: file
           description: |
@@ -164,7 +170,7 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map matching the input meta (including `caller`).
+            Groovy Map matching the input meta.
       - ${prefix}.normalised.tsv:
           type: file
           description: |

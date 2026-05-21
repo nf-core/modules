@@ -5,8 +5,8 @@ description: |
   ORF prediction tables. Chains:
 
     1. `custom/orfnormalise` (one invocation per caller-tagged input;
-       dispatch by `meta.caller`) - reconciles each caller's native
-       output table into a unified BED12 + sidecar TSV.
+       dispatch by the per-record `caller` val) - reconciles each
+       caller's native output table into a unified BED12 + sidecar TSV.
     2. `custom/orfmerge` (one cohort-level invocation) - class-aware
        clustering of normalised calls across callers and samples.
     3. `bedtools/getfasta` + `seqkit/translate` - lifts the merged BED12
@@ -36,9 +36,10 @@ input:
   - ch_orf_tables:
       description: |
         Per-sample, per-caller ORF prediction tables. All callers share a
-        single channel; `meta.caller` (one of: ribocode, ribotish,
-        ribotricer, rpbp, price) selects the parser inside the normaliser.
-        Structure: [ val(meta), path(orf_table) ]
+        single channel; the caller id is carried as a per-record `val`
+        (one of: ribocode, ribotish, ribotricer, rpbp, price) and selects
+        the parser inside the normaliser.
+        Structure: [ val(meta), path(orf_table), val(caller) ]
   - ch_fasta:
       description: |
         Reference genome FASTA used by bedtools/getfasta to extract
