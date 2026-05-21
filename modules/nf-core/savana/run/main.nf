@@ -24,7 +24,6 @@ process SAVANA_RUN {
     script:
     def args = (task.ext.args ?: '').trim()
     prefix = task.ext.prefix ?: "${meta.id}"
-    def outdir = "."
     """
     savana run \\
         --tumour ${tumour} \\
