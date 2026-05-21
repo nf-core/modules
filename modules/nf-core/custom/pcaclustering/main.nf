@@ -8,7 +8,7 @@ process CUSTOM_PCACLUSTERING {
         'community.wave.seqera.io/library/numpy_pandas_python_pyyaml_scikit-learn:c500ceb82d3d7606' }"
 
     input:
-    tuple val(meta), path(eigenvec)
+    tuple val(meta), path(features)
     val algorithm
     val n_clusters
     val dbscan_eps

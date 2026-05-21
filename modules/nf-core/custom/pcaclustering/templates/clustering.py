@@ -14,35 +14,28 @@ import yaml
 from sklearn.cluster import DBSCAN, KMeans
 
 
-def parse_eigenvec(path):
-    """Parse a PLINK2 .eigenvec file into (sample_ids: pd.Series, pcs: np.ndarray).
+def load_features(path):
+    """Read a TSV of `sample_id` + numeric feature columns.
 
-    Accepts the FID/IID and IID-only header layouts PLINK2 emits, plus the
-    leading '#' on the header line. Sample IDs are read from the IID column.
+    Returns (sample_ids: pd.Series, features: np.ndarray).
     """
-    df = pd.read_csv(path, sep=r"\\s+", engine="python")
-    df.columns = [c.lstrip("#") for c in df.columns]
-    cols_upper = [c.upper() for c in df.columns]
-    if cols_upper[:2] == ["FID", "IID"]:
-        id_cols = df.columns[:2]
-    elif cols_upper[:1] == ["IID"]:
-        id_cols = df.columns[:1]
-    else:
-        raise ValueError(f"eigenvec file missing IID header: {list(df.columns)}")
-    sample_ids = df["IID"].astype(str)
-    pcs = df.drop(columns=id_cols).to_numpy(dtype=float)
-    return sample_ids, pcs
+    df = pd.read_csv(path, sep="\\t")
+    if "sample_id" not in df.columns:
+        raise ValueError(f"features file must have a 'sample_id' column. Found: {list(df.columns)}")
+    sample_ids = df["sample_id"].astype(str)
+    features = df.drop(columns=["sample_id"]).to_numpy(dtype=float)
+    return sample_ids, features
 
 
 def main():
-    eigenvec = "$eigenvec"
+    features_path = "$features"
     algorithm = "$algorithm"
     n_clusters = int("$n_clusters")
     dbscan_eps = float("$dbscan_eps")
     dbscan_min_samples = int("$dbscan_min_samples")
     prefix = "${task.ext.prefix ?: meta.id}"
 
-    sample_ids, x = parse_eigenvec(eigenvec)
+    sample_ids, x = load_features(features_path)
 
     if algorithm == "kmeans":
         model = KMeans(n_clusters=n_clusters, init="random", n_init=100, random_state=42)
