@@ -20,10 +20,10 @@ def load_features(path):
 
     Returns (sample_ids: pd.Series, features: np.ndarray).
     """
-    df = pd.read_csv(path, sep="\\t")
+    df = pd.read_csv(path, sep="\\t", dtype={0: str})
     if df.shape[1] < 2:
         raise ValueError(f"features file must have at least one feature column. Found columns: {list(df.columns)}")
-    sample_ids = df.iloc[:, 0].astype(str)
+    sample_ids = df.iloc[:, 0]
     features = df.iloc[:, 1:].to_numpy(dtype=float)
     return sample_ids, features
 
