@@ -12,7 +12,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test.tsv", checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_features.tsv", checkIfExists: true) ]
                 input[1] = 'kmeans'
                 input[2] = 3
                 input[3] = 0.5
@@ -42,7 +42,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test.tsv", checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_features.tsv", checkIfExists: true) ]
                 input[1] = 'dbscan'
                 input[2] = 3
                 input[3] = 0.5
@@ -67,7 +67,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test.tsv", checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_features.tsv", checkIfExists: true) ]
                 input[1] = 'kmeans'
                 input[2] = 3
                 input[3] = 0.5
