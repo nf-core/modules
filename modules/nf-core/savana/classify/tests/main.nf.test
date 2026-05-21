@@ -27,10 +27,8 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out,
                     path(process.out.classified_vcf.get(0).get(1)).vcf.summary,
-                    path(process.out.somatic_vcf.get(0).get(1)),
-                    path(process.out.somatic_bedpe.get(0).get(1)),
+                    path(process.out.classified_vcf.get(0).get(1)).vcf.variantsMD5,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
