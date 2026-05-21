@@ -20,7 +20,7 @@ process SNPSIFT_SPLIT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (args.contains('-j')) {
+    if (args.tokenize().contains('-j')) {
         """
         SnpSift \\
             split \\
