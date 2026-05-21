@@ -52,6 +52,7 @@ nextflow_workflow {
                     "no synthesised gene rows on chr22; the concat awk did not graft any novel genes" },
                 { assert snapshot(
                     workflow.out.hybrid_gtf,
+                    workflow.out.gffcompare_stats,
                     workflow.out.gffcompare_tracking,
                     workflow.out.gffcompare_loci
                 ).match() }
@@ -96,6 +97,7 @@ nextflow_workflow {
                     "hybrid_gtf meta should equal the backbone meta but was ${workflow.out.hybrid_gtf[0][0]}" },
                 { assert snapshot(
                     workflow.out.hybrid_gtf,
+                    workflow.out.gffcompare_stats,
                     workflow.out.gffcompare_tracking,
                     workflow.out.gffcompare_loci
                 ).match() }

@@ -25,7 +25,11 @@ input:
       description: |
         Channel of novel-transcript GTFs (e.g. output of a StringTie merge or
         a user-supplied annotation of unannotated transcribed regions) that
-        will be classified against the reference annotation.
+        will be classified against the reference annotation. The subworkflow
+        is designed for a single novel-vs-single-backbone build; if a caller
+        has multiple novel GTFs (one per sample, say) they should be merged
+        before the call - the meta swap at the concat step adopts the
+        backbone meta and would collapse multiple emissions to the same id.
         Structure: [ val(meta), path(novel_gtf) ]
       pattern: "*.{gtf,gff,gff3}"
   - ch_reference_gtf:
@@ -62,10 +66,13 @@ input:
       type: file
       description: |
         Optional channel containing a BED file of regions to exclude. Novel
-        transcripts overlapping these regions are dropped (bedtools intersect
-        -v). Useful for rRNA loci, repeats, or any other interval set the
-        caller wants kept out of the final hybrid GTF. Pass `channel.empty()`
-        to skip the intersect step entirely.
+        transcripts overlapping these regions are dropped via `bedtools
+        intersect -v` (the bundled `nextflow.config` sets `ext.args = '-v'`
+        on `BEDTOOLS_INTERSECT`; consumers can override in their own
+        `modules.config` if they want strand-aware subtraction with `-v -s`,
+        or positive overlap, etc.). Useful for rRNA loci, repeats, or any
+        other interval set the caller wants kept out of the final hybrid GTF.
+        Pass `channel.empty()` to skip the intersect step entirely.
         Structure: [ val(meta), path(blacklist_bed) ]
       pattern: "*.{bed}"
 output:
