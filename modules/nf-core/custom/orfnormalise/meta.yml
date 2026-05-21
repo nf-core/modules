@@ -67,6 +67,41 @@ tools:
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/orfnormalise/main.nf"
       licence: ["MIT"]
       identifier: ""
+  - "ribocode":
+      description: "Identifying genome-wide translated ORFs from Ribo-seq data"
+      homepage: "https://github.com/xryanglab/RiboCode"
+      documentation: "https://github.com/xryanglab/RiboCode"
+      doi: "10.1093/nar/gky179"
+      licence: ["GPL-3.0"]
+      identifier: ""
+  - "ribotish":
+      description: "Ribo-seq based ORF prediction with Ribo-TISH"
+      homepage: "https://github.com/zhpn1024/ribotish"
+      documentation: "https://github.com/zhpn1024/ribotish"
+      doi: "10.1038/s41467-017-01981-8"
+      licence: ["GPL-3.0"]
+      identifier: ""
+  - "ribotricer":
+      description: "Ribosome profiling P-site phasing-based ORF detection"
+      homepage: "https://github.com/smithlabcode/ribotricer"
+      documentation: "https://github.com/smithlabcode/ribotricer"
+      doi: "10.1093/bioinformatics/btz878"
+      licence: ["GPL-3.0"]
+      identifier: ""
+  - "rpbp":
+      description: "Translated ORF identification with Rp-Bp"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1141"
+      licence: ["MIT"]
+      identifier: ""
+  - "price":
+      description: "Probabilistic inference of codon activities by an EM algorithm (PRICE)"
+      homepage: "https://github.com/erhard-lab/price"
+      documentation: "https://github.com/erhard-lab/price"
+      doi: "10.1038/nmeth.4631"
+      licence: ["Apache-2.0"]
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -87,11 +122,11 @@ input:
     - gtf:
         type: file
         description: |
-          Annotation GTF used for transcript -> gene lookups and (for
-          ribocode / ribotish) lifting transcript coordinates to genomic
-          blocks. Unused content is harmless for callers that emit genomic
-          coordinates directly (ribotricer, rpbp, price); pass `[ [:], [] ]`
-          if no GTF is available.
+          Annotation GTF. Required for ribocode and ribotish, which emit
+          transcript-relative coordinates that have to be lifted to
+          genomic blocks against the annotation. Optional for ribotricer,
+          rpbp, and price (which emit genomic coordinates directly); pass
+          `[ [:], [] ]` for those.
         pattern: "*.gtf"
         ontologies:
           - edam: http://edamontology.org/format_2306 # GTF

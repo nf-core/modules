@@ -328,9 +328,12 @@ def parse_ribocode(path, transcripts):
             except ValueError:
                 continue
             try:
-                aa_len = int(row.get("AA_length") or row.get("AAlength") or 0)
+                orf_length_nt = int(row.get("ORF_length") or row.get("ORFlength") or 0)
             except ValueError:
-                aa_len = 0
+                orf_length_nt = 0
+            # RiboCode's predicted_orfs.txt has ORF_length (nt) + AAseq but no
+            # AA_length column; derive aa_length nominally as (nt - 3) / 3.
+            aa_len = max(0, (orf_length_nt - 3) // 3) if orf_length_nt > 0 else 0
             orf_type = row.get("ORF_type") or row.get("Type") or ""
             try:
                 pval = float(row.get("pval_combined") or row.get("Pval_combined") or "1")
@@ -426,12 +429,23 @@ def parse_ribotish(path, transcripts):
             except ValueError:
                 aa_len = 0
             orf_type = row.get("TisType", "") or row.get("TISType", "")
-            try:
-                pval = float(row.get("Pvalcombined") or row.get("Pvalue") or row.get("Pvalcom") or "1")
-                bed_score = max(0, min(1000, int(round((1.0 - pval) * 1000))))
-            except (TypeError, ValueError):
-                pval = float("nan")
-                bed_score = 0
+            # Ribo-TISH predict emits TISPvalue, RiboPvalue, FisherPvalue (and
+            # their Qvalue equivalents). Fields are written as the literal
+            # string "None" when ribotish couldn't compute a value, so we
+            # have to fall back to the next available column rather than
+            # bailing on a parse error. Prefer FisherPvalue (combined TIS
+            # + frame), then RiboPvalue, then TISPvalue.
+            pval = float("nan")
+            for col in ("FisherPvalue", "Pvalcombined", "RiboPvalue", "TISPvalue", "Pvalue"):
+                raw = row.get(col)
+                if raw is None or raw == "" or raw == "None":
+                    continue
+                try:
+                    pval = float(raw)
+                    break
+                except (TypeError, ValueError):
+                    continue
+            bed_score = max(0, min(1000, int(round((1.0 - pval) * 1000)))) if pval == pval else 0
 
             gp = _parse_ribotish_genpos(row.get("GenomePos", ""))
             if gp is None:
@@ -589,15 +603,22 @@ def parse_rpbp(path, transcripts):
             blocks = [(start + bs, start + bs + sz) for bs, sz in zip(block_starts, block_sizes)]
             blocks.sort()
 
-            orf_type = cols[14] if len(cols) > 14 else ""
+            # Rp-Bp's predicted-orfs BED extends the BED12 with metric
+            # columns (orf_num, orf_len, p_translated_mean/var,
+            # p_background_mean/var, bayes_factor_mean/var, chi_square_p,
+            # x_{1,2,3}_sum, profile_sum). No orf_type column - the
+            # final-prediction-set BED is the curated post-filter output, so
+            # all rows are confident translated ORFs; default the class to
+            # canonical_cds and let GTF lookup (downstream merger) refine.
             try:
                 orf_len_nt = int(cols[13]) if len(cols) > 13 else 0
             except ValueError:
                 orf_len_nt = 0
             try:
-                bf_mean = float(cols[15]) if len(cols) > 15 else float("nan")
+                bf_mean = float(cols[18]) if len(cols) > 18 else float("nan")
             except ValueError:
                 bf_mean = float("nan")
+            orf_type = "canonical"
             aa_len = max(0, (orf_len_nt - 3) // 3) if orf_len_nt > 0 else 0
 
             if bf_mean == bf_mean:

@@ -29,15 +29,19 @@ workflow ORFTABLE_FASTA_GTF_BUILDORFCATALOGUE {
     CUSTOM_ORFNORMALISE ( ch_orf_tables, ch_gtf.first() )
 
     // 2. Gather all normalised BED12s + sidecar TSVs across callers and
-    //    samples into a single cohort-keyed channel.
+    //    samples into a single cohort-keyed channel. `.collect()` on an
+    //    empty upstream channel still emits `[]`, so filter out that case
+    //    rather than feeding the merger a zero-arity input list.
     ch_all_beds = CUSTOM_ORFNORMALISE.out.bed12
         .map { _meta, bed -> bed }
         .collect()
+        .filter { it.size() > 0 }
         .map { beds -> [ 'cohort', beds ] }
 
     ch_all_tsvs = CUSTOM_ORFNORMALISE.out.tsv
         .map { _meta, tsv -> tsv }
         .collect()
+        .filter { it.size() > 0 }
         .map { tsvs -> [ 'cohort', tsvs ] }
 
     ch_merge_in = ch_all_beds

@@ -13,8 +13,14 @@ description: |
        into a catalogue AA FASTA.
 
   Supports five callers via `meta.caller`: ribocode, ribotish, ribotricer,
-  rpbp, price. Any subset can be supplied; the subworkflow tolerates an
-  empty cohort and emits empty catalogue files in that case.
+  rpbp, price. Any subset can be supplied. When `ch_orf_tables` is empty
+  the subworkflow short-circuits the merge + FASTA chain and the output
+  channels are empty.
+
+  Output meta is hardcoded to `[ id: 'cohort' ]`; downstream consumers that
+  want a different cohort id should `.map` the emitted channels or
+  override `ext.prefix` on `CUSTOM_ORFMERGE` / `BEDTOOLS_GETFASTA` /
+  `SEQKIT_TRANSLATE` to control output filenames.
 keywords:
   - orf
   - ribo-seq
