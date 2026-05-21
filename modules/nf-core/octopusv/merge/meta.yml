@@ -47,6 +47,18 @@ output:
           pattern: "*.svcf"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
+  upset_plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.png":
+          type: file
+          description: Upset plot comparing the variants in the input SVCF files (generated with --upsetr-output flag)
+          pattern: "*.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603"
   versions_octopusv:
     - - ${task.process}:
           type: string

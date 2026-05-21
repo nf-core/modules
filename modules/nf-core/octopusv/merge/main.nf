@@ -4,14 +4,15 @@ process OCTOPUSV_MERGE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/octopusv:0.3.2--pyhdfd78af_0'
-        : 'quay.io/biocontainers/octopusv:0.3.2--pyhdfd78af_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/octopusv:0.3.3--pyhdfd78af_0'
+        : 'quay.io/biocontainers/octopusv:0.3.3--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(svcfs), val(strategy_flag)
 
     output:
     tuple val(meta), path("*.svcf"), emit: svcf
+    tuple val(meta), path("*.png"), emit: upset_plot, optional: true
     tuple val("${task.process}"), val('octopusv'), eval("python -c \"import importlib.metadata as m; print(m.version('octopusv'))\""), emit: versions_octopusv, topic: versions
 
     when:
