@@ -36,11 +36,17 @@ workflow GTF_BUILDHYBRIDANNOTATION_GFFCOMPARE {
     // (also strips comment lines and rows with `.` strand).
     GAWK_FILTER(ch_filter_input, [], false)
 
+    // Strip the transient `class_codes` key now that GAWK_FILTER has consumed
+    // it, so downstream meta matches the caller's original shape and remains
+    // joinable against other channels keyed on the same meta.
+    ch_filtered = GAWK_FILTER.out.output
+        .map { meta, gtf -> [ meta.findAll { k, _v -> k != 'class_codes' }, gtf ] }
+
     // Optional blacklist intersect: route surviving transcripts through
     // BEDTOOLS_INTERSECT only when the caller passes a blacklist BED. The
     // bedtools args (-v for negation, -s for strand, etc.) are caller policy
     // and live in the consumer pipeline's modules.config.
-    ch_after_filter = GAWK_FILTER.out.output
+    ch_after_filter = ch_filtered
         .combine(ch_blacklist_bed.ifEmpty([[:], []]))
         .branch { _meta, _gtf, _bed_meta, bed ->
             with_blacklist: bed

@@ -46,6 +46,8 @@ nextflow_workflow {
                 { assert workflow.out.hybrid_gtf.size() == 1 },
                 { assert hybridLines.every { it ==~ /.*gene_id "[^"]+";.*/ },
                     "hybrid GTF has lines without a well-formed gene_id \"...\"; attribute" },
+                { assert !workflow.out.hybrid_gtf[0][0].containsKey('class_codes'),
+                    "hybrid_gtf meta still carries transient class_codes key; would break downstream joins" },
                 { assert synthGenes.size() > 0,
                     "no synthesised gene rows on chr22; the concat awk did not graft any novel genes" },
                 { assert snapshot(
@@ -90,6 +92,8 @@ nextflow_workflow {
                 { assert workflow.out.hybrid_gtf.size() == 1 },
                 { assert hybridLines.every { it ==~ /.*gene_id "[^"]+";.*/ },
                     "hybrid GTF has lines without a well-formed gene_id \"...\"; attribute" },
+                { assert !workflow.out.hybrid_gtf[0][0].containsKey('class_codes'),
+                    "hybrid_gtf meta still carries transient class_codes key; would break downstream joins" },
                 { assert snapshot(
                     workflow.out.hybrid_gtf,
                     workflow.out.gffcompare_tracking,
