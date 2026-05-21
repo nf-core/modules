@@ -1,31 +1,26 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "custom_bed12codonpositions"
 description: |
-  Expand a BED12 file into a BED6 of in-frame positions along the spliced
-  mRNA (one BED6 row per codon by default). BED12 records describe
-  multi-block intervals (typically exons of a transcript or ORF) with
-  blockStarts/blockSizes; this module walks the blocks in mRNA order
-  (left-to-right on '+' strand, right-to-left on '-' strand) and emits
-  the genomic coordinate of every step-th position starting at the
-  configured frame offset. Frame is taken from the record's own start,
-  independent of any GTF `phase` annotation, so the transformation
-  works for arbitrary BED12 catalogues (canonical CDSs, novel ORF
-  predictions, custom feature sets). Spans wider than 1 nt that cross a
-  block boundary are split into one BED row per block.
+  Expand a BED12 file into a BED6 of in-frame positions along the
+  spliced feature (one BED6 row per codon by default). BED12 records
+  describe multi-block intervals with blockStarts/blockSizes; this
+  module walks the blocks in mRNA order (left-to-right on '+' strand,
+  right-to-left on '-' strand) and emits the genomic coordinate of
+  every step-th position starting at the configured frame offset.
+  Spans wider than 1 nt that cross a block boundary are split into one
+  BED row per block.
 keywords:
   - bed12
   - bed6
   - codon
-  - mrna
   - splicing
-  - psite
-  - orf
+  - coordinates
 tools:
   - "bed12codonpositions":
       description: |
-        Generic Python helper that expands a BED12 into per-codon BED6
-        positions along the spliced mRNA, with configurable frame, step
-        and span width via `ext.args`.
+        Python helper that expands a BED12 into per-codon BED6
+        positions along the spliced feature, with configurable frame,
+        step and span width via `ext.args`.
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/bed12codonpositions/main.nf"
       licence: ["MIT"]
       identifier: ""

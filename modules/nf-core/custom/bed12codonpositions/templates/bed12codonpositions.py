@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""Expand a BED12 file into a BED6 of in-frame positions along the spliced mRNA.
+"""Expand a BED12 file into a BED6 of in-frame positions along the spliced feature.
 
 For each BED12 record, the script walks the block (exon) structure in
 mRNA order and emits one BED6 row per in-frame position along the
-spliced mRNA span, projecting each back to genomic coordinates. Frame
-is defined relative to the start of the record itself, independent of
-any GTF `phase` annotation, so the transformation works for arbitrary
-BED12 inputs (canonical CDS, novel transcripts, custom ORF catalogues
-and so on).
+spliced span, projecting each back to genomic coordinates. Frame is
+defined relative to the start of the record itself.
 
 BED12 convention (UCSC):
   chrom start end name score strand thickStart thickEnd itemRgb
@@ -28,27 +25,11 @@ for a single codon still maps back to a contiguous mRNA region).
 """
 
 import argparse
-import platform
 import sys
 
 
-def format_yaml_like(data: dict, indent: int = 0) -> str:
-    out = ""
-    for key, value in data.items():
-        spaces = "  " * indent
-        if isinstance(value, dict):
-            out += f"{spaces}{key}:\\n{format_yaml_like(value, indent + 1)}"
-        else:
-            out += f"{spaces}{key}: {value}\\n"
-    return out
-
-
 def expand_blocks(start, block_sizes, block_starts):
-    blocks = []
-    for sz, off in zip(block_sizes, block_starts):
-        bs = start + off
-        be = bs + sz
-        blocks.append((bs, be))
+    blocks = [(start + off, start + off + sz) for sz, off in zip(block_sizes, block_starts)]
     blocks.sort()
     return blocks
 
@@ -186,6 +167,6 @@ run(
     parsed_args.keep_duplicates,
 )
 
-versions = {"${task.process}": {"python": platform.python_version()}}
-with open("versions.yml", "w") as f:
-    f.write(format_yaml_like(versions))
+python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
+with open("versions.yml", "w") as fh:
+    fh.write('"${task.process}":\\n    python: "' + python_version + '"\\n')
