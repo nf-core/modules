@@ -17,8 +17,8 @@ workflow GTF_HYBRIDMERGE_GFFCOMPARE {
     // Bundled awk programs (see ./awk/{filter,concat}.awk); shipped alongside
     // the subworkflow and passed to GAWK as `program_file` so the awk source
     // stays readable as awk rather than as an escaped Groovy string.
-    ch_filter_awk = file("${projectDir}/subworkflows/nf-core/gtf_hybridmerge_gffcompare/awk/filter.awk", checkIfExists: true)
-    ch_concat_awk = file("${projectDir}/subworkflows/nf-core/gtf_hybridmerge_gffcompare/awk/concat.awk", checkIfExists: true)
+    ch_filter_awk = file("${moduleDir}/awk/filter.awk", checkIfExists: true)
+    ch_concat_awk = file("${moduleDir}/awk/concat.awk", checkIfExists: true)
 
     // Tag every novel transcript with a gffcompare class_code attribute.
     GFFCOMPARE(
