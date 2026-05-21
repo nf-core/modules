@@ -118,7 +118,7 @@ nextflow_process {
                 { path(process.out.log.get(0).get(1)).readLines().contains("Completed Vamb") },
                 { assert snapshot(
                     process.out.abundance,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -206,7 +206,7 @@ nextflow_process {
                 { path(process.out.log.get(0).get(1)).readLines().contains("Completed Vamb") },
                 { assert snapshot(
                     process.out.abundance,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -321,7 +321,7 @@ nextflow_process {
                 { path(process.out.log.get(0).get(1)).readLines().contains("Completed Vamb") },
                 { assert snapshot(
                     process.out.abundance,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }

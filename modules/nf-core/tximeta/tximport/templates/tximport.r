@@ -81,10 +81,15 @@ write_se_table <- function(params, prefix) {
 #' @param gene_id_col Column name for gene IDs.
 #' @param gene_name_col Column name for gene names.
 #'
-#' @return A list containing three elements:
+#' @return A list containing four elements:
 #' - `transcript`: A data frame with transcript IDs, gene IDs, and gene names, indexed by transcript IDs.
 #' - `gene`: A data frame with unique gene IDs and gene names.
 #' - `tx2gene`: A data frame mapping transcript IDs to gene IDs.
+#' - `tx2gene_augmented`: The full tx2gene table actually used by tximport (input
+#'   mappings plus self-mappings appended for any transcripts present in the
+#'   quantification output but missing from the input tx2gene), with the input
+#'   column headers preserved.
+#' - `extra`: A character vector of transcript IDs found in quantification output but missing from the tx2gene file.
 
 read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col){
     info <- file.info(tinfo_path)
@@ -95,22 +100,41 @@ read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col)
     # Read file with actual header to handle variable column counts correctly
     raw_info <- read.csv(tinfo_path, sep="\t", header = TRUE, check.names = FALSE)
 
-    # Select columns by name, falling back to position if name not found
+    # Resolve column references (use named columns if present, otherwise positional)
+    resolved_tx_col        <- if (tx_col        %in% colnames(raw_info)) tx_col        else colnames(raw_info)[1]
+    resolved_gene_id_col   <- if (gene_id_col   %in% colnames(raw_info)) gene_id_col   else colnames(raw_info)[2]
+    resolved_gene_name_col <- if (gene_name_col %in% colnames(raw_info)) gene_name_col else colnames(raw_info)[3]
+
     transcript_info <- data.frame(
-        tx = raw_info[[if (tx_col %in% colnames(raw_info)) tx_col else 1]],
-        gene_id = raw_info[[if (gene_id_col %in% colnames(raw_info)) gene_id_col else 2]],
-        gene_name = raw_info[[if (gene_name_col %in% colnames(raw_info)) gene_name_col else 3]],
+        tx        = raw_info[[resolved_tx_col]],
+        gene_id   = raw_info[[resolved_gene_id_col]],
+        gene_name = raw_info[[resolved_gene_name_col]],
         check.names = FALSE
     )
 
     extra <- setdiff(rownames(txi[[1]]), as.character(transcript_info[["tx"]]))
+    if (length(extra) > 0) {
+        warning(
+            length(extra), " transcripts found in quantification output but missing from ",
+            "the tx2gene mapping (GTF). These will be included in transcript-level outputs ",
+            "but excluded from gene-level summaries. This usually means the transcript FASTA ",
+            "and GTF are from different sources or versions. First 5: ",
+            paste(head(extra, 5), collapse = ", ")
+        )
+    }
     transcript_info <- rbind(transcript_info, data.frame(tx=extra, gene_id=extra, gene_name=extra, check.names = FALSE))
     transcript_info <- transcript_info[match(rownames(txi[[1]]), transcript_info[["tx"]]), ]
     rownames(transcript_info) <- transcript_info[["tx"]]
 
+    # Restore input column headers so the augmented file can be fed back to tximport
+    tx2gene_augmented <- transcript_info
+    colnames(tx2gene_augmented) <- c(resolved_tx_col, resolved_gene_id_col, resolved_gene_name_col)
+
     list(transcript = transcript_info,
         gene = unique(transcript_info[,2:3]),
-        tx2gene = transcript_info[,1:2])
+        tx2gene = transcript_info[,1:2],
+        tx2gene_augmented = tx2gene_augmented,
+        extra = extra)
 }
 
 #' Create a SummarizedExperiment Object
@@ -206,6 +230,21 @@ if ("tx2gene" %in% names(transcript_info) && !is.null(transcript_info\$tx2gene))
     gi.ls <- summarizeToGene(txi, tx2gene = tx2gene, countsFromAbundance = "lengthScaledTPM")
     gi.s <- summarizeToGene(txi, tx2gene = tx2gene, countsFromAbundance = "scaledTPM")
 
+    # Remove fake gene entries created by unmapped transcripts (where gene_id
+    # was set to the transcript ID). These would break downstream processes
+    # like SummarizedExperiment that try to match gene IDs against the tx2gene.
+    if (length(transcript_info\$extra) > 0) {
+        real_genes <- setdiff(rownames(gi[[1]]), transcript_info\$extra)
+        filter_rows <- function(txi_list, genes) {
+            lapply(txi_list, function(x) {
+                if (is.matrix(x)) x[genes, , drop = FALSE] else x
+            })
+        }
+        gi    <- filter_rows(gi, real_genes)
+        gi.ls <- filter_rows(gi.ls, real_genes)
+        gi.s  <- filter_rows(gi.s, real_genes)
+    }
+
     gene_info <- transcript_info\$gene[match(rownames(gi[[1]]), transcript_info\$gene[["gene_id"]]),]
     rownames(gene_info) <- NULL
     col_data_frame <- DataFrame(coldata)
@@ -237,6 +276,10 @@ if ('$task.ext.prefix' != 'null'){
 }
 
 done <- lapply(params, write_se_table, prefix)
+
+write.table(transcript_info\$tx2gene_augmented,
+    paste0(prefix, ".tx2gene_augmented.tsv"),
+    sep = "\t", quote = FALSE, row.names = FALSE)
 
 ################################################
 ################################################

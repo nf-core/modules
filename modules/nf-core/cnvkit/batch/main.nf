@@ -3,14 +3,13 @@ process CNVKIT_BATCH {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3e8542cdb0190cfe2cedd74f714f021a2ffa94be3ec2a5b95ff52610cb3e2c34/data'
         : 'community.wave.seqera.io/library/cnvkit_htslib_samtools:86928c121163aca7'}"
 
     input:
-    tuple val(meta), path(tumor), path(normal)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fasta_fai)
+    tuple val(meta), path(tumor), path(tumor_index), path(normal), path(normal_index)
+    tuple val(meta2), path(fasta), path(fasta_fai)
     tuple val(meta4), path(targets)
     tuple val(meta5), path(reference)
     val panel_of_normals

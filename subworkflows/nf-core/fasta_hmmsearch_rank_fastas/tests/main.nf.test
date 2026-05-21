@@ -47,7 +47,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match('16s_out') }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -83,7 +83,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match('28s_out') }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }

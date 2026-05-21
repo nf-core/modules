@@ -3,9 +3,9 @@ process NANOQ {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/nanoq:0.10.0--h031d066_2'
-        : 'biocontainers/nanoq:0.10.0--h031d066_2'}"
+        : 'quay.io/biocontainers/nanoq:0.10.0--h031d066_2'}"
 
     input:
     tuple val(meta), path(ontreads)

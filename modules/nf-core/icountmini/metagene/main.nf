@@ -3,9 +3,9 @@ process ICOUNTMINI_METAGENE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/icount-mini:3.0.1--pyh7cba7a3_0':
-        'biocontainers/icount-mini:3.0.1--pyh7cba7a3_0' }"
+        'quay.io/biocontainers/icount-mini:3.0.1--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bed)

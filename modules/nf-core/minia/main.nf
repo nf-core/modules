@@ -3,7 +3,7 @@ process MINIA {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/40a4c0032d52284f76044828f50750948f2717e63f084e1ea80f6bd068b65b25/data' :
         'community.wave.seqera.io/library/minia:3.2.6--df502ab09998dab4' }"
 
