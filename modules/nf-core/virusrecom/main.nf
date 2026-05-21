@@ -29,7 +29,7 @@ process VIRUSRECOM {
         ${input_cmd} \\
         ${map_cmd} \\
         -q ${query} \\
-        -o ${meta.id} \\
+        -o ${prefix} \\
         -t ${task.cpus} \\
         ${args}
     """
