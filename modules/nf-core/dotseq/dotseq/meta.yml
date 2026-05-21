@@ -1,0 +1,159 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "dotseq_dotseq"
+description: |
+  Genome-wide detection of differential ORF usage (DOU) and ORF-level
+  differential translation efficiency (DTE) from Ribo-seq with matched
+  RNA-seq using DOTSeq.
+keywords:
+  - riboseq
+  - rnaseq
+  - translation
+  - differential
+  - orf
+tools:
+  - "dotseq":
+      description: "DOTSeq: Differential ORF Translation analysis for Ribo-seq with matched RNA-seq"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/DOTSeq.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DOTSeq/inst/doc/DOTSeq.html"
+      tool_dev_url: "https://github.com/compgenom/DOTSeq"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+    - contrast_variable:
+        type: string
+        description: |
+          The column in the sample sheet that holds the experimental condition
+          (will be mapped to the DOTSeq 'condition' column internally).
+    - reference:
+        type: string
+        description: |
+          The value within the contrast_variable column to use as the reference (baseline) condition.
+    - target:
+        type: string
+        description: |
+          The value within the contrast_variable column to use as the target (non-reference) condition.
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing study-wide metadata related to the sample sheet and count matrix
+    - samplesheet:
+        type: file
+        description: |
+          CSV or TSV sample sheet. Must contain columns mapping to DOTSeq's
+          required `run`, `strategy`, `replicate`, and `condition` (defaults
+          match those names; can be overridden via task.ext.args).
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - counts:
+        type: file
+        description: |
+          ORF-level featureCounts output. Header must contain the columns
+          `Geneid`, `Chr`, `Start`, `End`, `Strand`, `Length` followed by
+          per-sample count columns matching the `run` values in the sample sheet.
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - flattened_gtf:
+        type: file
+        description: |
+          Flattened ORF annotation in GTF format, with `gene_id` and
+          `exon_number` attributes and `type == "exon"` features.
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
+    - flattened_bed:
+        type: file
+        description: |
+          Flattened ORF annotation in BED format matching the GTF.
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+
+output:
+  dou_interaction:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.dou.interaction.dotseq.results.tsv":
+          type: file
+          description: |
+            DOU interaction contrasts: per-ORF beta-binomial GLM results
+            (effect size, lfsr, padj, contrast).
+          pattern: ".dou.interaction.dotseq.results.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  dte_interaction:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.dte.interaction.dotseq.results.tsv":
+          type: file
+          description: |
+            DTE interaction contrasts: per-ORF DESeq2 + ashr shrinkage results
+            for differential translation efficiency.
+          pattern: ".dte.interaction.dotseq.results.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  dou_strategy:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.dou.strategy.dotseq.results.tsv":
+          type: file
+          description: |
+            DOU strategy contrasts (Ribo vs RNA effect within each condition),
+            written when available.
+          pattern: ".dou.strategy.dotseq.results.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  dte_strategy:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.dte.strategy.dotseq.results.tsv":
+          type: file
+          description: |
+            DTE strategy contrasts (Ribo vs RNA effect within each condition),
+            written when available.
+          pattern: ".dte.strategy.dotseq.results.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  rdata:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.DOTSeqDataSets.rds":
+          type: file
+          description: Serialised DOTSeqDataSets object containing DOU and DTE results
+          pattern: ".DOTSeqDataSets.rds"
+          ontologies: []
+  session_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.R_sessionInfo.log":
+          type: file
+          description: dump of R sessionInfo()
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/data_1678" # Log
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

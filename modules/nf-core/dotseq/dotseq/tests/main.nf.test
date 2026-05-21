@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process DOTSEQ_DOTSEQ"
+    script "../main.nf"
+    process "DOTSEQ_DOTSEQ"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dotseq"
+    tag "dotseq/dotseq"
+
+    test("human - featurecounts") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cycling_vs_interphase' ],
+                    'condition',
+                    'Interphase',
+                    'Mitotic_Cycling'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/samplesheet.csv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/featureCounts.cell_cycle_subset.txt.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/gencode.v47.orf_flattened_subset.gtf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/gencode.v47.orf_flattened_subset.bed.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.session_info[0][1]).getText().contains('DOTSeq') },
+                { assert path(process.out.dou_interaction[0][1]).exists() },
+                { assert path(process.out.dte_interaction[0][1]).exists() },
+                { assert snapshot(
+                    file(process.out.dou_interaction[0][1]).name,
+                    file(process.out.dte_interaction[0][1]).name,
+                    file(process.out.rdata[0][1]).name,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}
