@@ -24,9 +24,9 @@ input:
     - features:
         type: file
         description: |
-          Tab-separated file with a `sample_id` column plus one numeric column
-          per feature (e.g. PLINK2 PCA components with `IID` renamed to
-          `sample_id` and `FID` dropped).
+          Tab-separated file whose first column is sample IDs (any column
+          name) and remaining columns are numeric features (e.g. PLINK2 PCA
+          components with `FID` dropped, scikit-learn embeddings, etc.).
         pattern: "*.{tsv,txt}"
         ontologies:
           - edam: http://edamontology.org/format_3475

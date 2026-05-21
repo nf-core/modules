@@ -15,15 +15,16 @@ from sklearn.cluster import DBSCAN, KMeans
 
 
 def load_features(path):
-    """Read a TSV of `sample_id` + numeric feature columns.
+    """Read a TSV where the first column is sample IDs and the remaining
+    columns are numeric features.
 
     Returns (sample_ids: pd.Series, features: np.ndarray).
     """
     df = pd.read_csv(path, sep="\\t")
-    if "sample_id" not in df.columns:
-        raise ValueError(f"features file must have a 'sample_id' column. Found: {list(df.columns)}")
-    sample_ids = df["sample_id"].astype(str)
-    features = df.drop(columns=["sample_id"]).to_numpy(dtype=float)
+    if df.shape[1] < 2:
+        raise ValueError(f"features file must have at least one feature column. Found columns: {list(df.columns)}")
+    sample_ids = df.iloc[:, 0].astype(str)
+    features = df.iloc[:, 1:].to_numpy(dtype=float)
     return sample_ids, features
 
 
