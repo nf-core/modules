@@ -29,7 +29,7 @@ process CUSTOM_BED12CODONPOSITIONS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        python: \$(python --version 2>&1 | sed 's/^Python //')
+        python: "\$(python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
     END_VERSIONS
     """
 }
