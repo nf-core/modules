@@ -9,7 +9,7 @@ process SAVANA_RUN {
 
     input:
     tuple val(meta), path(tumour), path(tumour_index), path(normal), path(normal_index)
-    tuple val(meta2),path(ref), path(ref_index)
+    tuple val(meta2), path(ref), path(ref_index)
 
     output:
     tuple val(meta), path("${prefix}.sv_breakpoints.vcf"), emit: sv_breakpoints_vcf
