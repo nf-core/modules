@@ -67,7 +67,7 @@ output:
     - - meta:
           type: map
           description: Sample information
-      - ${prefix}.sv_breakpoints.vcf:
+      - ${prefix}/${prefix}.sv_breakpoints.vcf:
           type: file
           description: VCF file containing raw SV breakpoints
           pattern: "*.sv_breakpoints.vcf"
@@ -77,7 +77,7 @@ output:
     - - meta:
           type: map
           description: Sample information
-      - ${prefix}.sv_breakpoints.bedpe:
+      - ${prefix}/${prefix}.sv_breakpoints.bedpe:
           type: file
           description: BEDPE file containing SV breakpoints
           pattern: "*.sv_breakpoints.bedpe"
@@ -87,7 +87,7 @@ output:
     - - meta:
           type: map
           description: Sample information
-      - ${prefix}.sv_breakpoints_read_support.tsv:
+      - ${prefix}/${prefix}.sv_breakpoints_read_support.tsv:
           type: file
           description: TSV file containing read support information for each SV breakpoint
           pattern: "*.sv_breakpoints_read_support.tsv"
@@ -97,7 +97,7 @@ output:
     - - meta:
           type: map
           description: Sample information
-      - ${prefix}.inserted_sequences.fa:
+      - ${prefix}/${prefix}.inserted_sequences.fa:
           type: file
           description: FASTA file containing inserted sequences
           pattern: "*.inserted_sequences.fa"
