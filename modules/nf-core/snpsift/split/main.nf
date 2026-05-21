@@ -12,7 +12,7 @@ process SNPSIFT_SPLIT {
 
     output:
     tuple val(meta), path("*.vcf"), emit: out_vcfs
-    tuple val("${task.process}"), val('snpsift'), eval("SnpSift split -h 2>&1 | head -n1 | sed 's/^.*version //; s/ .*//'"), topic: versions, emit: versions_snpsift
+    tuple val("${task.process}"), val('snpsift'), eval("SnpSift split -h 2>&1 | sed -n 's/.*version \\([^ ]*\\).*/\\1/p;q'"), topic: versions, emit: versions_snpsift
 
     when:
     task.ext.when == null || task.ext.when

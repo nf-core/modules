@@ -45,7 +45,7 @@ output:
       - snpsift:
           type: string
           description: The name of the tool
-      - SnpSift split -h 2>&1 | head -n1 | sed 's/^.*version //; s/ .*//':
+      - SnpSift split -h 2>&1 | sed -n 's/.*version \([^ ]*\).*/\1/p;q':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -56,7 +56,7 @@ topics:
       - snpsift:
           type: string
           description: The name of the tool
-      - SnpSift split -h 2>&1 | head -n1 | sed 's/^.*version //; s/ .*//':
+      - SnpSift split -h 2>&1 | sed -n 's/.*version \([^ ]*\).*/\1/p;q':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
