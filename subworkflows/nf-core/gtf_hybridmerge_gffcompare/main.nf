@@ -3,7 +3,7 @@ include { GAWK as GAWK_FILTER             } from '../../../modules/nf-core/gawk'
 include { BEDTOOLS_INTERSECT              } from '../../../modules/nf-core/bedtools/intersect'
 include { GAWK as GAWK_CONCAT             } from '../../../modules/nf-core/gawk'
 
-workflow GTF_BUILDHYBRIDANNOTATION_GFFCOMPARE {
+workflow GTF_HYBRIDMERGE_GFFCOMPARE {
 
     take:
     ch_novel_gtf         // channel: [ val(meta), path(novel_gtf) ]
