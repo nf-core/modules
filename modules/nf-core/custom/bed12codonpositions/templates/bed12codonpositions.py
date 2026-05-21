@@ -25,13 +25,29 @@ for a single codon still maps back to a contiguous mRNA region).
 """
 
 import argparse
-import sys
+import platform
+
+import pandas as pd
+import yaml
+
+BED12_COLUMNS = [
+    "chrom",
+    "start",
+    "end",
+    "name",
+    "score",
+    "strand",
+    "thickStart",
+    "thickEnd",
+    "itemRgb",
+    "blockCount",
+    "blockSizes",
+    "blockStarts",
+]
 
 
-def expand_blocks(start, block_sizes, block_starts):
-    blocks = [(start + off, start + off + sz) for sz, off in zip(block_sizes, block_starts)]
-    blocks.sort()
-    return blocks
+def parse_block_field(value):
+    return [int(x) for x in str(value).rstrip(",").split(",") if x != ""]
 
 
 def mrna_to_genomic_runs(blocks, strand, mrna_start, mrna_end):
@@ -71,28 +87,17 @@ def mrna_to_genomic_runs(blocks, strand, mrna_start, mrna_end):
     return runs
 
 
-def process(line, frame, step, width, keep_duplicates):
-    parts = line.rstrip("\\n").split("\\t")
-    if len(parts) < 12:
-        return []
-    chrom = parts[0]
-    try:
-        start = int(parts[1])
-    except ValueError:
-        return []
-    name = parts[3]
-    strand = parts[5]
-    try:
-        block_count = int(parts[9])
-    except ValueError:
-        return []
-    block_sizes = [int(x) for x in parts[10].rstrip(",").split(",") if x != ""]
-    block_starts = [int(x) for x in parts[11].rstrip(",").split(",") if x != ""]
-    if len(block_sizes) != block_count or len(block_starts) != block_count:
+def emit_rows(row, frame, step, width, keep_duplicates):
+    block_sizes = parse_block_field(row["blockSizes"])
+    block_starts = parse_block_field(row["blockStarts"])
+    if len(block_sizes) != int(row["blockCount"]) or len(block_starts) != int(row["blockCount"]):
         return []
 
-    blocks = expand_blocks(start, block_sizes, block_starts)
+    blocks = sorted((row["start"] + off, row["start"] + off + sz) for sz, off in zip(block_sizes, block_starts))
     total_len = sum(be - bs for bs, be in blocks)
+    chrom = row["chrom"]
+    name = row["name"]
+    strand = row["strand"]
 
     rows = []
     seen = set()
@@ -104,17 +109,8 @@ def process(line, frame, step, width, keep_duplicates):
             if not keep_duplicates and key in seen:
                 continue
             seen.add(key)
-            rows.append(f"{chrom}\\t{g_start}\\t{g_end}\\t{name}\\t0\\t{strand}")
+            rows.append((chrom, g_start, g_end, name, 0, strand))
     return rows
-
-
-def run(bed12_path, output_path, frame, step, width, keep_duplicates):
-    with open(bed12_path) as fh, open(output_path, "w") as oh:
-        for line in fh:
-            if not line.strip() or line.startswith(("#", "track", "browser")):
-                continue
-            for row in process(line, frame, step, width, keep_duplicates):
-                oh.write(row + "\\n")
 
 
 parser = argparse.ArgumentParser(
@@ -149,24 +145,46 @@ parser.add_argument(
 parsed_args = parser.parse_args("${args}".split() if "${args}".strip() else [])
 
 if parsed_args.step <= 0:
-    sys.stderr.write("--step must be positive\\n")
-    sys.exit(2)
+    raise SystemExit("--step must be positive")
 if parsed_args.width <= 0:
-    sys.stderr.write("--width must be positive\\n")
-    sys.exit(2)
+    raise SystemExit("--width must be positive")
 if parsed_args.frame < 0:
-    sys.stderr.write("--frame must be non-negative\\n")
-    sys.exit(2)
+    raise SystemExit("--frame must be non-negative")
 
-run(
+bed = pd.read_csv(
     "${bed12}",
-    "${prefix}.bed",
-    parsed_args.frame,
-    parsed_args.step,
-    parsed_args.width,
-    parsed_args.keep_duplicates,
+    sep="\\t",
+    comment="#",
+    header=None,
+    names=BED12_COLUMNS,
+    dtype={"chrom": str, "name": str, "strand": str},
 )
+bed = bed[~bed["chrom"].astype(str).str.startswith(("track", "browser"))]
 
-python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
+out_rows = []
+for _, rec in bed.iterrows():
+    out_rows.extend(
+        emit_rows(
+            rec,
+            parsed_args.frame,
+            parsed_args.step,
+            parsed_args.width,
+            parsed_args.keep_duplicates,
+        )
+    )
+
+out = pd.DataFrame(out_rows, columns=["chrom", "start", "end", "name", "score", "strand"])
+out.to_csv("${prefix}.bed", sep="\\t", header=False, index=False)
+
 with open("versions.yml", "w") as fh:
-    fh.write('"${task.process}":\\n    python: "' + python_version + '"\\n')
+    yaml.safe_dump(
+        {
+            "${task.process}": {
+                "python": platform.python_version(),
+                "pandas": pd.__version__,
+            }
+        },
+        fh,
+        default_flow_style=False,
+        sort_keys=False,
+    )

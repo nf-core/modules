@@ -4,8 +4,8 @@ process CUSTOM_BED12CODONPOSITIONS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/python:3.11' :
-        'quay.io/biocontainers/python:3.11' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1019bd22c111267bcb670fdb128829776f0ca6adfa7b0e2d126f91577d08e3/data' :
+        'community.wave.seqera.io/library/python_pandas_pyyaml:75514f9f977be607' }"
 
     input:
     tuple val(meta), path(bed12)
@@ -27,9 +27,23 @@ process CUSTOM_BED12CODONPOSITIONS {
     """
     touch ${prefix}.bed
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        python: "\$(python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
-    END_VERSIONS
+    python - <<END
+import platform
+import pandas
+import yaml
+
+with open("versions.yml", "w") as fh:
+    yaml.safe_dump(
+        {
+            "${task.process}": {
+                "python": platform.python_version(),
+                "pandas": pandas.__version__,
+            }
+        },
+        fh,
+        default_flow_style=False,
+        sort_keys=False,
+    )
+END
     """
 }
