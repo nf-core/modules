@@ -14,17 +14,14 @@ workflow GTF_HYBRIDMERGE_GFFCOMPARE {
 
     main:
 
-    // Classify every novel transcript against the reference annotation; this
-    // tags transcripts in the annotated GTF with `class_code` attributes
-    // (e.g. "u" intergenic, "j" alternative junction, "=" exact match).
+    // Tag every novel transcript with a gffcompare class_code attribute.
     GFFCOMPARE(
         ch_novel_gtf,
         [[:], [], []],
         ch_reference_gtf
     )
 
-    // Fold the requested class codes onto meta so GAWK_FILTER's closure-form
-    // `ext.args` can read them at task launch via `meta.class_codes`.
+    // Fold class codes onto meta so GAWK_FILTER's ext.args closure can read them at task launch.
     ch_filter_input = GFFCOMPARE.out.annotated_gtf
         .combine(val_class_codes)
         .map { meta, gtf, codes ->
@@ -32,14 +29,11 @@ workflow GTF_HYBRIDMERGE_GFFCOMPARE {
             [ meta + [class_codes: codes_csv], gtf ]
         }
 
-    // Drop transcripts whose class_code is not in the caller-supplied set
-    // (also strips comment lines and rows with `.` strand).
+    // Drop transcripts whose class_code is not in the caller-supplied set.
     GAWK_FILTER(ch_filter_input, [], false)
 
-    // Optional blacklist intersect: route surviving transcripts through
-    // BEDTOOLS_INTERSECT only when the caller passes a blacklist BED. The
-    // bedtools args (-v for negation, -s for strand, etc.) are caller policy
-    // and live in the consumer pipeline's modules.config.
+    // Branch: send survivors through BEDTOOLS_INTERSECT only when a blacklist BED was supplied.
+    // Bedtools args (-v for negation, -s for strand) are caller policy in modules.config.
     ch_after_filter = GAWK_FILTER.out.output
         .combine(ch_blacklist_bed.ifEmpty([[:], []]))
         .branch { _meta, _gtf, _bed_meta, bed ->
@@ -52,25 +46,18 @@ workflow GTF_HYBRIDMERGE_GFFCOMPARE {
         [[:], []]
     )
 
-    // Reunite the two branches into a single channel of survivors.
     ch_post_blacklist = BEDTOOLS_INTERSECT.out.intersect
         .mix(ch_after_filter.passthrough.map { meta, gtf, _bed_meta, _bed -> [ meta, gtf ] })
 
-    // Pair the survivors with the backbone annotation. The output identity is
-    // the backbone's (the hybrid GTF is logically the backbone with novel
-    // transcripts grafted on, so the emitted meta should match ch_backbone_gtf
-    // for downstream joins) so we drop the novel meta and emit `[backbone, novel]`
-    // (canonical first, so the concat awk sees backbone gene rows before any
-    // novel transcript and can decide which gene_ids still need a synthetic row).
+    // Adopt the backbone's meta (the hybrid identity follows the backbone) and stage
+    // [backbone, novel] in that order so backbone gene rows reach the concat awk first.
     ch_concat_input = ch_post_blacklist
         .combine(ch_backbone_gtf)
         .map { _novel_meta, novel_gtf, backbone_meta, backbone_gtf ->
             [ backbone_meta, [ backbone_gtf, novel_gtf ] ]
         }
 
-    // Concatenate backbone + novel, strip comments, and synthesise a `gene`
-    // row for any novel gene_id absent from the backbone (using the first
-    // transcript's coords as the gene span).
+    // Concatenate and synthesise missing gene rows from each novel transcript's coords.
     GAWK_CONCAT(ch_concat_input, [], false)
 
     emit:
