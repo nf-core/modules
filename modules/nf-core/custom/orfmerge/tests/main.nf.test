@@ -68,9 +68,34 @@ nextflow_process {
         }
 
         then {
+            def lines = path(process.out.catalogue_tsv[0][1]).text.readLines()
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def aa             = cols.indexOf('aa_length')
+            def cls            = cols.indexOf('orf_class')
+            def called_ribotish = cols.indexOf('called_by_ribotish')
+            def called_ribocode = cols.indexOf('called_by_ribocode')
+            def score_ribotish  = cols.indexOf('score_ribotish')
+            def score_ribocode  = cols.indexOf('score_ribocode')
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out).match() },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                // Each row must come from at least one caller; the
+                // catalogue must include calls from both callers exercised
+                // in setup.
+                { assert rows.every { it[called_ribotish] == '1' || it[called_ribocode] == '1' } },
+                { assert rows.any { it[called_ribotish] == '1' } },
+                { assert rows.any { it[called_ribocode] == '1' } },
+                // For rows where a caller contributed, the score column must
+                // carry a numeric value (catches the case where a parser
+                // bug populates `1` indicator but no real score).
+                { assert rows.findAll { it[called_ribotish] == '1' }.every { it[score_ribotish] && it[score_ribotish] != '' } },
+                { assert rows.findAll { it[called_ribocode] == '1' }.every { it[score_ribocode] && it[score_ribocode] != '' } },
+                // Class distribution must not collapse to one bucket.
+                { assert rows.collect { it[cls] }.toSet().size() >= 1 },
+                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } }
             )
         }
     }

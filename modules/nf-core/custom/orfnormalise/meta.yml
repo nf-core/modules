@@ -13,8 +13,10 @@ description: |
     - ribocode    (RiboCode predicted ORF table; transcript-coord input,
                    lifted to genomic blocks against the GTF)
     - ribotish    (Ribo-TISH predict output; GenomePos + optional Blocks)
-    - ribotricer  (Ribotricer detect-orfs translating ORFs TSV;
-                   coordinate column already genomic)
+    - ribotricer  (Ribotricer detect-orfs translating ORFs TSV; ORF span
+                   parsed from ORF_ID, multi-exon blocks recovered by
+                   intersecting with host-transcript exon structure from
+                   the GTF)
     - rpbp        (Rp-Bp predicted-orfs BED12 with extra columns)
     - price       (PRICE orfs.tsv; Gedi-style Location field, already genomic)
 
@@ -40,6 +42,17 @@ description: |
                      location-based class so downstream tools can treat
                      smORFs uniformly.
     - other:         internal / overlap / frame variants and anything else.
+
+  Per-caller mapping notes (lossy collapses):
+
+    - PRICE `iORF` (internal ORF), `intronic`, and `orphan` map to `other`.
+      Cross-caller catalogue tracking still flags these via
+      `called_by_price`, but the specific PRICE sub-type is not preserved.
+    - Rp-Bp's predicted-orfs BED carries no ORF-type column; this module
+      defaults every Rp-Bp call to `canonical_cds` (the post-
+      selectfinalpredictionset curated set is dominated by canonical
+      CDSs). uORF/dORF/novel calls present in Rp-Bp's separate
+      `.tab.gz` / `extracted-orfs.bed.gz` files are not propagated here.
 
   Each caller's native confidence score has a "direction" - some are
   lower-is-better (p-values), some are higher-is-better (Bayes factors,
@@ -122,11 +135,13 @@ input:
     - gtf:
         type: file
         description: |
-          Annotation GTF. Required for ribocode and ribotish, which emit
-          transcript-relative coordinates that have to be lifted to
-          genomic blocks against the annotation. Optional for ribotricer,
-          rpbp, and price (which emit genomic coordinates directly); pass
-          `[ [:], [] ]` for those.
+          Annotation GTF. Required for ribocode (transcript-relative
+          coordinates → genomic lift) and strongly recommended for
+          ribotish (multi-exon block recovery from GenomePos) and
+          ribotricer (multi-exon block recovery from ORF_ID span). For
+          rpbp and price (genomic coordinates emitted directly by the
+          tool) the GTF is unused; pass `[ [:], [] ]` if you only run
+          those callers.
         pattern: "*.gtf"
         ontologies:
           - edam: http://edamontology.org/format_2306 # GTF

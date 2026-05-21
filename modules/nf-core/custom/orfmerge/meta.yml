@@ -9,17 +9,23 @@ description: |
   Strategy is class-aware (operating on the harmonised `orf_class` written
   by `custom/orfnormalise`):
 
-    - canonical_cds, uORF, dORF, other:  collapse by transcript_id
-                                         (handles multi-exon CDS correctly;
-                                         uORF/dORF are anchored to a
-                                         transcript by design).
-    - novel_u, smORF:                    greedy reciprocal-overlap
-                                         clustering on the outer genomic
-                                         span at `--reciprocal-overlap`
-                                         (default 0.8). Catches fuzzy
-                                         cross-caller matches and
-                                         exact-coordinate collapses in
-                                         one pass.
+    - canonical_cds:        collapse by (transcript_id, strand). One
+                            canonical CDS per transcript by definition.
+    - uORF, dORF, other:    collapse by (transcript_id, strand, start,
+                            end). A single transcript can host multiple
+                            distinct uORFs / dORFs / internal ORFs, so
+                            keying on the outer span keeps them in
+                            separate clusters while still merging
+                            cross-caller calls that agree on coordinates.
+    - novel_u, smORF:       greedy reciprocal-overlap clustering on the
+                            outer genomic span at `--reciprocal-overlap`
+                            (default 0.8). Catches fuzzy cross-caller
+                            matches and exact-coordinate collapses in
+                            one pass. Order-dependent at the boundary:
+                            a chain A-B-C where A-B and B-C overlap at
+                            ~0.85 but A-C only at ~0.75 may cluster as
+                            {A,B,C} or {A,B}+{C} depending on iteration
+                            order. Rare in practice at 0.8.
 
   Cross-caller consensus is recorded in two column families on the
   catalogue TSV:

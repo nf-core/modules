@@ -56,16 +56,32 @@ SCORE_DIRECTIONS = {
 CLASS_ORDER = ("canonical_cds", "uORF", "dORF", "novel_u", "smORF", "other")
 
 
-def _bed_key(row):
-    return (row["chrom"], int(row["start"]), int(row["end"]), row["strand"])
-
-
 def cluster_by_transcript(rows):
+    """Collapse by (transcript_id, strand). Correct for canonical CDS
+    (one CDS per transcript by definition), wrong for classes where a
+    transcript can host multiple distinct ORFs (uORF/dORF/other) - use
+    cluster_by_transcript_position for those.
+    """
     by_tid = defaultdict(list)
     for r in rows:
         tid = r.get("transcript_id") or ""
         by_tid[(tid, r["strand"])].append(r)
     return list(by_tid.values())
+
+
+def cluster_by_transcript_position(rows):
+    """Collapse by (transcript_id, strand, start, end). A single transcript
+    can host multiple distinct uORFs / dORFs / internal ORFs; keying on
+    the outer span keeps them in separate clusters while still merging
+    cross-caller calls of the same biological ORF (which agree on
+    transcript_id and exact coordinates).
+    """
+    by_key = defaultdict(list)
+    for r in rows:
+        tid = r.get("transcript_id") or ""
+        key = (tid, r["strand"], int(r["start"]), int(r["end"]))
+        by_key[key].append(r)
+    return list(by_key.values())
 
 
 def cluster_by_reciprocal_overlap(rows, frac=0.8):
@@ -74,6 +90,13 @@ def cluster_by_reciprocal_overlap(rows, frac=0.8):
     Used to merge cross-caller calls of the same biological ORF when they
     don't share a transcript_id (e.g. novel intergenic from different
     callers). O(N^2) worst case but bounded by per-run ORF counts.
+
+    Greedy and order-dependent: at the default frac=0.8 a chain A-B-C
+    where A overlaps B at 0.85, B overlaps C at 0.85, but A overlaps C
+    at 0.75 can either land as {A, B, C} or {A, B} + {C} depending on
+    iteration order. Acceptable in practice (overlap chains that
+    straddle the threshold are rare at frac=0.8) but worth flagging for
+    consumers that want strictly transitive clustering.
     """
     clusters = []
     assigned = [False] * len(rows)
@@ -282,10 +305,13 @@ def main():
         by_class[r.get("orf_class", "other")].append(r)
 
     clusters = []
-    # transcript-id collapse for transcript-anchored classes
-    for cls in ("canonical_cds", "uORF", "dORF", "other"):
-        clusters.extend(cluster_by_transcript(by_class.get(cls, [])))
-    # reciprocal-overlap clustering for the unanchored classes
+    # canonical CDS: one per transcript by definition - collapse by tid.
+    clusters.extend(cluster_by_transcript(by_class.get("canonical_cds", [])))
+    # uORF/dORF/other: a transcript can host multiple distinct ones, so
+    # additionally key on the outer span to keep them separate.
+    for cls in ("uORF", "dORF", "other"):
+        clusters.extend(cluster_by_transcript_position(by_class.get(cls, [])))
+    # novel_u / smORF: not transcript-anchored - reciprocal-overlap clustering.
     for cls in ("novel_u", "smORF"):
         clusters.extend(cluster_by_reciprocal_overlap(by_class.get(cls, []), frac=parsed_args.reciprocal_overlap))
 

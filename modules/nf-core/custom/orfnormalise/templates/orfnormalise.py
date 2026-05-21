@@ -502,25 +502,55 @@ def _parse_ribotricer_coord(s):
     return out
 
 
-def _ribotricer_blocks_from_id(orf_id):
-    """Derive a single-block fallback span from a ribotricer ORF_ID of
-    shape '<transcript_id>_<gstart>_<gend>_<length_nt>'. Returns [] on any
-    parse failure. Used when the optional 'coordinate' column (which
-    carries the multi-block intron-aware span) is absent.
+def _ribotricer_span_from_id(orf_id):
+    """Parse the genomic span out of a ribotricer ORF_ID of shape
+    '<transcript_id>_<gstart>_<gend>_<length_nt>'. Returns (gstart_0,
+    gend_excl) or None on parse failure. ORF_ID coordinates are
+    1-based-inclusive per ribotricer convention; we return 0-based
+    half-open to match BED12.
     """
     if not orf_id:
-        return []
+        return None
     parts = orf_id.rsplit("_", 3)
     if len(parts) != 4:
-        return []
+        return None
     try:
         gstart = int(parts[1])
         gend = int(parts[2])
     except ValueError:
-        return []
+        return None
     if gend < gstart:
         gstart, gend = gend, gstart
-    return [(gstart - 1, gend)]
+    return (gstart - 1, gend)
+
+
+def _ribotricer_blocks_from_id(orf_id, transcripts):
+    """Derive ORF block structure from a ribotricer ORF_ID.
+
+    ribotricer's `detect-orfs` output does not carry the intron-aware
+    `coordinate` column from `prepare-orfs` - the ORF_ID encodes only the
+    outer genomic span. To recover proper multi-exon blocks we intersect
+    that span with the host transcript's exon structure from the GTF,
+    matching the fallback ribotish uses. Falls back to a single block
+    when no GTF / transcript lookup is available.
+    """
+    span = _ribotricer_span_from_id(orf_id)
+    if span is None:
+        return []
+    gstart_0, gend_excl = span
+    # Try to recover the transcript_id from the ORF_ID prefix.
+    tid = orf_id.rsplit("_", 3)[0] if orf_id.count("_") >= 3 else ""
+    tx = transcripts.get(tid)
+    if tx is not None and tx.exons:
+        blocks = []
+        for ex_gs, ex_ge in tx.exons:
+            lo = max(gstart_0, ex_gs)
+            hi = min(gend_excl, ex_ge)
+            if hi > lo:
+                blocks.append((lo, hi))
+        if blocks:
+            return blocks
+    return [(gstart_0, gend_excl)]
 
 
 def parse_ribotricer(path, transcripts):
@@ -554,7 +584,7 @@ def parse_ribotricer(path, transcripts):
 
             blocks = _parse_ribotricer_coord(row.get("coordinate") or "")
             if not blocks:
-                blocks = _ribotricer_blocks_from_id(orf_id_raw)
+                blocks = _ribotricer_blocks_from_id(orf_id_raw, transcripts)
             if not blocks:
                 continue
 
@@ -696,7 +726,9 @@ def parse_price(path, transcripts):
             if not blocks:
                 continue
             orf_type = (row.get("Type") or "").strip()
-            tid = orf_id_raw.split("__", 1)[0]
+            # PRICE Id format is `<transcript_id>_<type>_<index>`; take the
+            # leading underscore-delimited token as the host transcript.
+            tid = orf_id_raw.split("_", 1)[0]
             gid = (row.get("Gene") or "").strip()
             if not gid:
                 t = transcripts.get(tid)
