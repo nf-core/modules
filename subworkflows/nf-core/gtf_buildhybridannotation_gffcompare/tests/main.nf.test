@@ -39,9 +39,15 @@ nextflow_workflow {
         }
 
         then {
+            def hybridLines = path(workflow.out.hybrid_gtf[0][1]).readLines().findAll { !it.startsWith('#') }
+            def synthGenes  = hybridLines.findAll { it.split('\t', -1)[0] == 'chr22' && it.split('\t', -1)[2] == 'gene' }
             assertAll(
                 { assert workflow.success },
                 { assert workflow.out.hybrid_gtf.size() == 1 },
+                { assert hybridLines.every { it ==~ /.*gene_id "[^"]+";.*/ },
+                    "hybrid GTF has lines without a well-formed gene_id \"...\"; attribute" },
+                { assert synthGenes.size() > 0,
+                    "no synthesised gene rows on chr22; the concat awk did not graft any novel genes" },
                 { assert snapshot(
                     workflow.out.hybrid_gtf,
                     workflow.out.gffcompare_tracking,
@@ -78,9 +84,12 @@ nextflow_workflow {
         }
 
         then {
+            def hybridLines = path(workflow.out.hybrid_gtf[0][1]).readLines().findAll { !it.startsWith('#') }
             assertAll(
                 { assert workflow.success },
                 { assert workflow.out.hybrid_gtf.size() == 1 },
+                { assert hybridLines.every { it ==~ /.*gene_id "[^"]+";.*/ },
+                    "hybrid GTF has lines without a well-formed gene_id \"...\"; attribute" },
                 { assert snapshot(
                     workflow.out.hybrid_gtf,
                     workflow.out.gffcompare_tracking,
