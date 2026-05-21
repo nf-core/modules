@@ -13,7 +13,7 @@ process VARIANTBAM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    tuple val("${task.process}"), val('variant'), val('1.4.4a'), emit: versions_variant, topic: versions
+    tuple val("${task.process}"), val('VariantBam'), val('1.4.4a'), emit: versions_variant, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
