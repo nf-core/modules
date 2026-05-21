@@ -1,4 +1,28 @@
 {
+    "Downsample to 2X - no region -- stub": {
+        "content": [
+            {
+                "bam_subsampled": [
+                    [
+                        {
+                            "id": "NA12878",
+                            "my_depth": "2x",
+                            "subsample_fraction": 0.06156611674720078,
+                            "mean_depth": 32.48540115356445,
+                            "depth": 2
+                        },
+                        "NA12878.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "NA12878.bam.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-21T15:36:14.283567606",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
+        }
+    },
     "Downsample to 4X and 2X": {
         "content": [
             [
@@ -6,52 +30,79 @@
                     {
                         "id": "NA12878",
                         "my_depth": "2x",
-                        "subsample_fraction": 0.06201800538763442,
+                        "subsample_fraction": 0.061802120593278574,
+                        "mean_depth": 32.36134910583496,
                         "depth": 2
                     },
-                    "NA12878.bam:md5,0793ec4585bd0fb64be4643c0e9f6d1f",
-                    "NA12878.bam.csi:md5,e117d88fd3409d42f3cf97b3b29dba22",
-                    1164
+                    "NA12878.bam:md5,1e4245fb0e4141870a244625a15d89b0",
+                    "NA12878.bam.csi:md5,2d6ea8f47df2e7dd2249ebc228f50d39",
+                    1160
                 ],
                 [
                     {
                         "id": "NA12878",
                         "my_depth": "4x",
-                        "subsample_fraction": 0.12403601077526884,
+                        "subsample_fraction": 0.12360424118655715,
+                        "mean_depth": 32.36134910583496,
                         "depth": 4
                     },
-                    "NA12878.bam:md5,2ce0a90fb85a2a6c0dac4f1555abee04",
-                    "NA12878.bam.csi:md5,d1f24a25181d75c19f3ba169898b5678",
-                    2402
+                    "NA12878.bam:md5,22baea048a7ab3ac67ce87c5aeb278ac",
+                    "NA12878.bam.csi:md5,3f9c8481140a3adf5db3abb23d6d3af8",
+                    2394
                 ],
                 [
                     {
                         "id": "NA19401",
                         "my_depth": "2x",
-                        "subsample_fraction": 0.062137851766009305,
+                        "subsample_fraction": 0.06195882651338311,
+                        "mean_depth": 32.27950096130371,
                         "depth": 2
                     },
-                    "NA19401.bam:md5,d678ed2b80b76d5c0ee305be1c11c7dc",
-                    "NA19401.bam.csi:md5,3c33431336c405d971f9b69724310b87",
-                    1196
+                    "NA19401.bam:md5,11adc7bf18ff78b3aee2207f2d9a5f0d",
+                    "NA19401.bam.csi:md5,d100f1eb068eea7210d413357afd14f5",
+                    1194
                 ],
                 [
                     {
                         "id": "NA19401",
                         "my_depth": "4x",
-                        "subsample_fraction": 0.12427570353201861,
+                        "subsample_fraction": 0.12391765302676622,
+                        "mean_depth": 32.27950096130371,
                         "depth": 4
                     },
-                    "NA19401.bam:md5,1d19189dae93fd5b76a2644ab45ef14c",
-                    "NA19401.bam.csi:md5,14a9e8d58a46360917263c22c07dea41",
-                    2321
+                    "NA19401.bam:md5,a01bfc2e58adc24f05118f55e26ddab5",
+                    "NA19401.bam.csi:md5,c978927e2f69aee0ac33217b12d8a6c9",
+                    2320
                 ]
             ]
         ],
+        "timestamp": "2026-05-21T15:30:00.630870153",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-19T10:24:20.82405"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
+        }
+    },
+    "Downsample to 2X - no region": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "NA12878",
+                        "my_depth": "0.01x",
+                        "subsample_fraction": 0.37518312483125366,
+                        "mean_depth": 0.02665365021675825,
+                        "depth": 0.01
+                    },
+                    "NA12878.bam:md5,086481849f4bda18c7cd8a768af192ed",
+                    "NA12878.bam.csi:md5,b83a23e18571d5b78b8502fe492150f8",
+                    7297
+                ]
+            ]
+        ],
+        "timestamp": "2026-05-21T15:28:15.427197323",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
+        }
     }
 }
