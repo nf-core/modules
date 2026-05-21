@@ -14,6 +14,12 @@ workflow GTF_HYBRIDMERGE_GFFCOMPARE {
 
     main:
 
+    // Bundled awk programs (see ./awk/{filter,concat}.awk); shipped alongside
+    // the subworkflow and passed to GAWK as `program_file` so the awk source
+    // stays readable as awk rather than as an escaped Groovy string.
+    ch_filter_awk = file("${projectDir}/subworkflows/nf-core/gtf_hybridmerge_gffcompare/awk/filter.awk", checkIfExists: true)
+    ch_concat_awk = file("${projectDir}/subworkflows/nf-core/gtf_hybridmerge_gffcompare/awk/concat.awk", checkIfExists: true)
+
     // Tag every novel transcript with a gffcompare class_code attribute.
     GFFCOMPARE(
         ch_novel_gtf,
@@ -30,7 +36,7 @@ workflow GTF_HYBRIDMERGE_GFFCOMPARE {
         }
 
     // Drop transcripts whose class_code is not in the caller-supplied set.
-    GAWK_FILTER(ch_filter_input, [], false)
+    GAWK_FILTER(ch_filter_input, ch_filter_awk, false)
 
     // Branch: send survivors through BEDTOOLS_INTERSECT only when a blacklist BED was supplied.
     // Bedtools args (-v for negation, -s for strand) are caller policy in modules.config.
@@ -57,8 +63,8 @@ workflow GTF_HYBRIDMERGE_GFFCOMPARE {
             [ backbone_meta, [ backbone_gtf, novel_gtf ] ]
         }
 
-    // Concatenate and synthesise missing gene rows from each novel transcript's coords.
-    GAWK_CONCAT(ch_concat_input, [], false)
+    // Concatenate and synthesise missing gene rows with union spans.
+    GAWK_CONCAT(ch_concat_input, ch_concat_awk, false)
 
     emit:
     hybrid_gtf          = GAWK_CONCAT.out.output       // channel: [ val(meta), path(hybrid.gtf) ]
