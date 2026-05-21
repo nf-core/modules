@@ -20,20 +20,20 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [id: 'chr22_novel'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 ])
-                input[1] = Channel.value([
+                input[1] = channel.value([
                     [id: 'chr21_reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
                 ])
-                input[2] = Channel.value([
+                input[2] = channel.value([
                     [id: 'chr21_backbone'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
                 ])
-                input[3] = Channel.value("u,j,i,k,m,n,o,p,r,s,x,y,=")
-                input[4] = Channel.empty()
+                input[3] = channel.value("u,j,i,k,m,n,o,p,r,s,x,y,=")
+                input[4] = channel.empty()
                 """
             }
         }
@@ -64,20 +64,20 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [id: 'chr22_novel'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 ])
-                input[1] = Channel.value([
+                input[1] = channel.value([
                     [id: 'chr21_reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
                 ])
-                input[2] = Channel.value([
+                input[2] = channel.value([
                     [id: 'chr21_backbone'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
                 ])
-                input[3] = Channel.value("u,j,i,k,m,n,o,p,r,s,x,y,=")
-                input[4] = Channel.of([
+                input[3] = channel.value("u,j,i,k,m,n,o,p,r,s,x,y,=")
+                input[4] = channel.of([
                     [id: 'chr22_blacklist'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.blacklist_intervals.bed', checkIfExists: true)
                 ])

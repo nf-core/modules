@@ -64,7 +64,7 @@ input:
         Optional channel containing a BED file of regions to exclude. Novel
         transcripts overlapping these regions are dropped (bedtools intersect
         -v). Useful for rRNA loci, repeats, or any other interval set the
-        caller wants kept out of the final hybrid GTF. Pass `Channel.empty()`
+        caller wants kept out of the final hybrid GTF. Pass `channel.empty()`
         to skip the intersect step entirely.
         Structure: [ val(meta), path(blacklist_bed) ]
       pattern: "*.{bed}"

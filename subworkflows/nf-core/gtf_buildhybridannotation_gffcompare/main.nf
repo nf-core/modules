@@ -10,7 +10,7 @@ workflow GTF_BUILDHYBRIDANNOTATION_GFFCOMPARE {
     ch_reference_gtf     // channel: [ val(meta), path(reference_gtf) ]
     ch_backbone_gtf      // channel: [ val(meta), path(backbone_gtf) ]
     val_class_codes      // channel: val (String or List of gffcompare class codes to keep, e.g. "u" or "u,j,i")
-    ch_blacklist_bed     // channel: [ val(meta), path(blacklist_bed) ] or Channel.empty() to skip the intersect
+    ch_blacklist_bed     // channel: [ val(meta), path(blacklist_bed) ] or channel.empty() to skip the intersect
 
     main:
 
