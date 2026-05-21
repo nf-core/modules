@@ -17,19 +17,18 @@ process GCTA_MAKEGRM {
     task.ext.when == null || task.ext.when
 
     script:
-    def extra_args = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def genotype_files = bed_pgen instanceof List ? bed_pgen : [bed_pgen]
     def genotype_extension = genotype_files[0].name.tokenize('.').last()
     def multi_file_flag = genotype_extension == 'pgen' ? '--mpfile' : '--mbfile'
-
     """
-
     gcta \\
         ${multi_file_flag} ${mfile} \\
         --make-grm \\
         --thread-num ${task.cpus} \\
-        --out ${prefix} ${extra_args}
+        --out ${prefix} \\
+        ${args}
     """
 
     stub:
