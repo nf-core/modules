@@ -1,0 +1,154 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_ORFNORMALISE"
+    script "../main.nf"
+    process "CUSTOM_ORFNORMALISE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/orfnormalise"
+
+    test("ribocode - stub") {
+        options "-stub-run"
+
+        when {
+            process {
+                """
+                def orfs = file('sample_X.txt')
+                orfs.text = ''
+                def gtf = file('reference.gtf')
+                gtf.text = ''
+                input[0] = Channel.of([ [id: 'sample_X', caller: 'ribocode'], orfs ])
+                input[1] = Channel.of([ [id: 'reference'], gtf ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("ribotish - stub") {
+        options "-stub-run"
+
+        when {
+            process {
+                """
+                def orfs = file('sample_X.pred.txt')
+                orfs.text = ''
+                def gtf = file('reference.gtf')
+                gtf.text = ''
+                input[0] = Channel.of([ [id: 'sample_X', caller: 'ribotish'], orfs ])
+                input[1] = Channel.of([ [id: 'reference'], gtf ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("ribotricer - stub") {
+        options "-stub-run"
+
+        when {
+            process {
+                """
+                def orfs = file('sample_X_translating_ORFs.tsv')
+                orfs.text = ''
+                def gtf = file('reference.gtf')
+                gtf.text = ''
+                input[0] = Channel.of([ [id: 'sample_X', caller: 'ribotricer'], orfs ])
+                input[1] = Channel.of([ [id: 'reference'], gtf ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("rpbp - stub") {
+        options "-stub-run"
+
+        when {
+            process {
+                """
+                def orfs = file('sample_X.predicted-orfs.bed.gz')
+                orfs.text = ''
+                def gtf = file('reference.gtf')
+                gtf.text = ''
+                input[0] = Channel.of([ [id: 'sample_X', caller: 'rpbp'], orfs ])
+                input[1] = Channel.of([ [id: 'reference'], gtf ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("price - stub") {
+        options "-stub-run"
+
+        when {
+            process {
+                """
+                def orfs = file('cohort.orfs.tsv')
+                orfs.text = ''
+                def gtf = file('reference.gtf')
+                gtf.text = ''
+                input[0] = Channel.of([ [id: 'cohort', caller: 'price'], orfs ])
+                input[1] = Channel.of([ [id: 'reference'], gtf ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("ribocode - empty input exercises template") {
+
+        when {
+            process {
+                """
+                def orfs = file('sample_X.txt')
+                orfs.text = ''
+                def gtf = file('reference.gtf')
+                gtf.text = ''
+                input[0] = Channel.of([ [id: 'sample_X', caller: 'ribocode'], orfs ])
+                input[1] = Channel.of([ [id: 'reference'], gtf ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

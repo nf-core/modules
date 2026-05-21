@@ -1,0 +1,63 @@
+nextflow_workflow {
+
+    name "Test Subworkflow ORFTABLE_FASTA_GTF_BUILDORFCATALOGUE"
+    script "../main.nf"
+    workflow "ORFTABLE_FASTA_GTF_BUILDORFCATALOGUE"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/orftable_fasta_gtf_buildorfcatalogue"
+    tag "custom/orfnormalise"
+    tag "custom/orfmerge"
+    tag "bedtools/getfasta"
+    tag "seqkit/translate"
+
+    test("empty cohort - stub") {
+        options "-stub-run"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.empty()
+                input[1] = Channel.of([ [id: 'reference'], file('reference.fa') ])
+                input[2] = Channel.of([ [id: 'reference'], file('reference.gtf') ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("ribotish + ribocode single sample - stub") {
+        options "-stub-run"
+
+        when {
+            workflow {
+                """
+                def ribotish = file('sample1.ribotish.pred.txt')
+                ribotish.text = ''
+                def ribocode = file('sample1.ribocode.txt')
+                ribocode.text = ''
+                input[0] = Channel.of(
+                    [ [id: 'sample1', caller: 'ribotish'], ribotish ],
+                    [ [id: 'sample1', caller: 'ribocode'], ribocode ]
+                )
+                input[1] = Channel.of([ [id: 'reference'], file('reference.fa') ])
+                input[2] = Channel.of([ [id: 'reference'], file('reference.gtf') ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,142 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "custom_orfnormalise"
+description: |
+  Convert one ORF caller's per-sample output table into a unified BED12 plus a
+  sidecar metadata TSV, ready for cross-caller merging.
+
+  An "ORF caller" is a tool that scans ribosome-profiling (Ribo-seq) data and
+  predicts which open reading frames are being translated. Each caller writes
+  its own table format and uses its own location encoding, classification
+  vocabulary, and confidence score. This module reconciles five callers into
+  one harmonised schema. `meta.caller` selects the parser; supported values:
+
+    - ribocode    (RiboCode predicted ORF table; transcript-coord input,
+                   lifted to genomic blocks against the GTF)
+    - ribotish    (Ribo-TISH predict output; GenomePos + optional Blocks)
+    - ribotricer  (Ribotricer detect-orfs translating ORFs TSV;
+                   coordinate column already genomic)
+    - rpbp        (Rp-Bp predicted-orfs BED12 with extra columns)
+    - price       (PRICE orfs.tsv; Gedi-style Location field, already genomic)
+
+  Output BED12 column order:
+    chrom start end name score strand thickStart thickEnd itemRgb
+    blockCount blockSizes blockStarts
+  The BED `name` column carries `<caller>|<caller-native-id>`. The BED `score`
+  column is the caller's native score rescaled to 0-1000 (higher == more
+  confident regardless of native direction).
+
+  Output sidecar TSV columns:
+    orf_id caller sample_id chrom start end strand gene_id transcript_id
+    orf_class aa_length score
+
+  Harmonised `orf_class` vocabulary written into the sidecar TSV:
+
+    - canonical_cds: ORF maps to an annotated CDS (including truncated /
+                     extended variants of one).
+    - uORF:          upstream ORF (5'UTR-resident).
+    - dORF:          downstream ORF (3'UTR-resident).
+    - novel_u:       novel / intergenic ORF not assigned to an annotated CDS.
+    - smORF:         small ORF (aa_length <= 100); promoted regardless of
+                     location-based class so downstream tools can treat
+                     smORFs uniformly.
+    - other:         internal / overlap / frame variants and anything else.
+
+  Each caller's native confidence score has a "direction" - some are
+  lower-is-better (p-values), some are higher-is-better (Bayes factors,
+  phase scores):
+
+    ribocode:   min  (combined p-value)
+    ribotish:   min  (combined p-value)
+    ribotricer: max  (phase_score)
+    rpbp:       max  (Bayes factor mean)
+    price:      min  (p-value)
+
+  Downstream merging uses this to pick the best per-ORF call.
+keywords:
+  - orf
+  - ribo-seq
+  - normalisation
+  - bed12
+  - translation
+tools:
+  - "orfnormalise":
+      description: |
+        Python helper that parses any of five Ribo-seq ORF caller output
+        tables and emits a unified BED12 + sidecar TSV. Caller is selected
+        by `meta.caller`.
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/orfnormalise/main.nf"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map. Must include `id` (sample identifier; for PRICE this
+          is typically the cohort id) and `caller` (one of: ribocode,
+          ribotish, ribotricer, rpbp, price).
+    - orfs_table:
+        type: file
+        description: |
+          Per-sample (or per-cohort, for PRICE) ORF caller output. The
+          format must match `meta.caller`.
+        pattern: "*"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map for the annotation (typically `[ id: 'reference' ]`).
+    - gtf:
+        type: file
+        description: |
+          Annotation GTF used for transcript -> gene lookups and (for
+          ribocode / ribotish) lifting transcript coordinates to genomic
+          blocks. Unused content is harmless for callers that emit genomic
+          coordinates directly (ribotricer, rpbp, price); pass `[ [:], [] ]`
+          if no GTF is available.
+        pattern: "*.gtf"
+        ontologies:
+          - edam: http://edamontology.org/format_2306 # GTF
+output:
+  bed12:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta (including `caller`).
+      - ${prefix}.normalised.bed12:
+          type: file
+          description: |
+            Normalised BED12 with genomic ORF blocks. `name` column encodes
+            `<caller>|<caller-native-id>`; `score` is the caller's native
+            score remapped to 0-1000.
+          pattern: "*.normalised.bed12"
+          ontologies:
+            - edam: http://edamontology.org/format_3586 # BED
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta (including `caller`).
+      - ${prefix}.normalised.tsv:
+          type: file
+          description: |
+            Per-ORF metadata sidecar with columns: orf_id, caller,
+            sample_id, chrom, start, end, strand, gene_id, transcript_id,
+            orf_class, aa_length, score (native).
+          pattern: "*.normalised.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

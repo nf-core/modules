@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "orftable_fasta_gtf_buildorfcatalogue"
+description: |
+  Build a multi-caller Ribo-seq ORF catalogue from per-sample, per-caller
+  ORF prediction tables. Chains:
+
+    1. `custom/orfnormalise` (one invocation per caller-tagged input;
+       dispatch by `meta.caller`) - reconciles each caller's native
+       output table into a unified BED12 + sidecar TSV.
+    2. `custom/orfmerge` (one cohort-level invocation) - class-aware
+       clustering of normalised calls across callers and samples.
+    3. `bedtools/getfasta` + `seqkit/translate` - lifts the merged BED12
+       into a catalogue AA FASTA.
+
+  Supports five callers via `meta.caller`: ribocode, ribotish, ribotricer,
+  rpbp, price. Any subset can be supplied; the subworkflow tolerates an
+  empty cohort and emits empty catalogue files in that case.
+keywords:
+  - orf
+  - ribo-seq
+  - catalogue
+  - merge
+  - translation
+components:
+  - custom/orfnormalise
+  - custom/orfmerge
+  - bedtools/getfasta
+  - seqkit/translate
+input:
+  - ch_orf_tables:
+      description: |
+        Per-sample, per-caller ORF prediction tables. All callers share a
+        single channel; `meta.caller` (one of: ribocode, ribotish,
+        ribotricer, rpbp, price) selects the parser inside the normaliser.
+        Structure: [ val(meta), path(orf_table) ]
+  - ch_fasta:
+      description: |
+        Reference genome FASTA used by bedtools/getfasta to extract
+        catalogue nucleotide sequences.
+        Structure: [ val(meta), path(fasta) ]
+  - ch_gtf:
+      description: |
+        Reference annotation GTF. Used by the ribocode and ribotish
+        normalisers to lift transcript coordinates to genomic blocks;
+        ignored by callers that already emit genomic coordinates
+        (ribotricer, rpbp, price). Pass `[ [:], [] ]` if no GTF is
+        available (caller subset must then exclude ribocode and ribotish).
+        Structure: [ val(meta), path(gtf) ]
+output:
+  - catalogue_bed12:
+      description: |
+        Merged ORF catalogue as BED12.
+        Structure: [ val(meta), path(bed12) ]
+  - catalogue_tsv:
+      description: |
+        Per-ORF table with `called_by_<caller>` and `score_<caller>`
+        provenance columns.
+        Structure: [ val(meta), path(tsv) ]
+  - orf_to_gene_tsv:
+      description: |
+        One row per (orf_id, gene_id, transcript_id) mapping; an ORF can
+        map to multiple host transcripts/genes.
+        Structure: [ val(meta), path(tsv) ]
+  - catalogue_aa_fasta:
+      description: |
+        Catalogue amino-acid FASTA produced by seqkit translate from the
+        nucleotide extract of the merged BED12.
+        Structure: [ val(meta), path(faa) ]
+  - multiqc:
+      description: |
+        MultiQC custom-content sidecar (per-class ORF counts).
+        Structure: [ val(meta), path(tsv) ]
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"
