@@ -20,22 +20,21 @@ process SNPSIFT_SPLIT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (meta.split) {
+    if (args.contains('-j')) {
         """
         SnpSift \\
             split \\
             ${args} \\
-            ${vcf}
+            ${vcf} \\
+            > ${prefix}.joined.vcf
         """
     }
     else {
         """
         SnpSift \\
             split \\
-            -j \\
             ${args} \\
-            ${vcf} \\
-            > ${prefix}.joined.vcf
+            ${vcf}
         """
     }
 
