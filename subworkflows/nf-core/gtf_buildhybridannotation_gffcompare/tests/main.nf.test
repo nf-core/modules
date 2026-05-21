@@ -1,0 +1,102 @@
+nextflow_workflow {
+
+    name "Test Subworkflow GTF_BUILDHYBRIDANNOTATION_GFFCOMPARE"
+    script "../main.nf"
+    config "../nextflow.config"
+
+    workflow "GTF_BUILDHYBRIDANNOTATION_GFFCOMPARE"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/gtf_buildhybridannotation_gffcompare"
+
+    tag "gffcompare"
+    tag "gawk"
+    tag "bedtools"
+    tag "bedtools/intersect"
+
+    test("synthetic novel + sarscov2 reference - no blacklist") {
+
+        when {
+            workflow {
+                """
+                def novel = file("\${workflow.workDir}/novel.gtf")
+                novel.text = '''MT192765.1\\tStringTie\\ttranscript\\t1000\\t2000\\t.\\t+\\t.\\tgene_id "STRG.1"; transcript_id "STRG.1.1";
+MT192765.1\\tStringTie\\texon\\t1000\\t1500\\t.\\t+\\t.\\tgene_id "STRG.1"; transcript_id "STRG.1.1"; exon_number "1";
+MT192765.1\\tStringTie\\texon\\t1700\\t2000\\t.\\t+\\t.\\tgene_id "STRG.1"; transcript_id "STRG.1.1"; exon_number "2";
+MT192765.1\\tStringTie\\ttranscript\\t26000\\t26900\\t.\\t-\\t.\\tgene_id "STRG.2"; transcript_id "STRG.2.1";
+MT192765.1\\tStringTie\\texon\\t26000\\t26900\\t.\\t-\\t.\\tgene_id "STRG.2"; transcript_id "STRG.2.1"; exon_number "1";
+'''
+
+                input[0] = Channel.of([ [id: 'novel'], novel ])
+                input[1] = Channel.value([
+                    [id: 'sarscov2_reference'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                ])
+                input[2] = Channel.value([
+                    [id: 'sarscov2_backbone'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                ])
+                input[3] = Channel.value("u,j,i,k,m,n,o,p,r,s,x,y,=")
+                input[4] = Channel.empty()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.hybrid_gtf.size() == 1 },
+                { assert snapshot(
+                    workflow.out.hybrid_gtf,
+                    workflow.out.gffcompare_tracking,
+                    workflow.out.gffcompare_loci
+                ).match() }
+            )
+        }
+    }
+
+    test("synthetic novel + sarscov2 reference - with blacklist") {
+
+        when {
+            workflow {
+                """
+                def novel = file("\${workflow.workDir}/novel.gtf")
+                novel.text = '''MT192765.1\\tStringTie\\ttranscript\\t1000\\t2000\\t.\\t+\\t.\\tgene_id "STRG.1"; transcript_id "STRG.1.1";
+MT192765.1\\tStringTie\\texon\\t1000\\t1500\\t.\\t+\\t.\\tgene_id "STRG.1"; transcript_id "STRG.1.1"; exon_number "1";
+MT192765.1\\tStringTie\\texon\\t1700\\t2000\\t.\\t+\\t.\\tgene_id "STRG.1"; transcript_id "STRG.1.1"; exon_number "2";
+MT192765.1\\tStringTie\\ttranscript\\t26000\\t26900\\t.\\t-\\t.\\tgene_id "STRG.2"; transcript_id "STRG.2.1";
+MT192765.1\\tStringTie\\texon\\t26000\\t26900\\t.\\t-\\t.\\tgene_id "STRG.2"; transcript_id "STRG.2.1"; exon_number "1";
+'''
+
+                def blacklist = file("\${workflow.workDir}/blacklist.bed")
+                blacklist.text = 'MT192765.1\\t900\\t2100\\tdrop_region\\t.\\t+\\n'
+
+                input[0] = Channel.of([ [id: 'novel'], novel ])
+                input[1] = Channel.value([
+                    [id: 'sarscov2_reference'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                ])
+                input[2] = Channel.value([
+                    [id: 'sarscov2_backbone'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                ])
+                input[3] = Channel.value("u,j,i,k,m,n,o,p,r,s,x,y,=")
+                input[4] = Channel.of([ [id: 'blacklist'], blacklist ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.hybrid_gtf.size() == 1 },
+                { assert snapshot(
+                    workflow.out.hybrid_gtf,
+                    workflow.out.gffcompare_tracking,
+                    workflow.out.gffcompare_loci
+                ).match() }
+            )
+        }
+    }
+}
