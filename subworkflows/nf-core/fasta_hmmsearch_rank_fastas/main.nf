@@ -10,8 +10,6 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
 
     main:
 
-    ch_versions = channel.empty()
-
     ch_hmms
         .combine(ch_fasta)
         .map { index -> [ index[0], index[1], index[2], false, true, false ] }
@@ -25,7 +23,6 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
         .set { ch_hmmrank }
 
     HMMER_HMMRANK ( ch_hmmrank )
-    ch_versions = ch_versions.mix(HMMER_HMMRANK.out.versions.first())
 
     HMMER_HMMRANK.out.hmmrank
         .map { index -> index[1] }
@@ -48,6 +45,4 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
     emit:
     hmmrank                 = HMMER_HMMRANK.out.hmmrank       // channel: [ [ id: 'rank' ], hmmrank_tsv ]
     seqfastas               = SEQTK_SUBSEQ.out.sequences      // channel: [ meta, fasta ]
-
-    versions                = ch_versions                     // channel: [ versions.yml ]
 }
