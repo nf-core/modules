@@ -38,7 +38,6 @@ process SAVANA_RUN {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def outdir = "."
     """
     mkdir -p ${outdir}
     touch ${outdir}/${prefix}.sv_breakpoints.vcf
