@@ -25,7 +25,7 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
     def primer_arg = primers ? "-P \"${primers}\"" : ''
     def arg_tokens = args.tokenize()
     if (arg_tokens.any { arg -> arg == '-f' || arg.startsWith('--fasta_seqs') || arg == '-P' || arg.startsWith('--primers_filepath') || arg == '-o' || arg.startsWith('--output_dir') }) {
-        error "'-f/--fasta_seqs', '-P/--primers_filepath' and '-o/--output_dir' are reserved by this module. Use input files for fasta/primers and task.ext.prefix to control output file prefixes."
+        error "'-f/--fasta_seqs', '-P/--primers_filepath' and '-o/--output_dir' are reserved by this module. Use input files for fasta/primers."
     }
     if (!primers && !(arg_tokens.any { arg -> arg == '-p' || arg.startsWith('--primer_name') } && arg_tokens.any { arg -> arg == '-s' || arg.startsWith('--primer_sequence') })) {
         error "Provide a primers file in the input tuple, or specify a single primer with '-p/--primer_name' and '-s/--primer_sequence' in task.ext.args."
