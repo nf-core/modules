@@ -50,9 +50,9 @@ output:
           description: |
             BED6 file with one row per in-frame mRNA position projected
             back to genomic coordinates. Columns are chrom, start, end,
-            name (from BED12 column 4), score (0), strand. Sorted in
-            mRNA-traversal order, which means descending genomic order
-            on '-' strand records.
+            name (from BED12 column 4), score (preserved from BED12
+            column 5), strand. Sorted in mRNA-traversal order, which
+            means descending genomic order on '-' strand records.
           pattern: "*.bed"
           ontologies:
             - edam: http://edamontology.org/format_3003 # BED

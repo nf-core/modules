@@ -59,6 +59,118 @@ nextflow_process {
         }
     }
 
+    test("sarscov2 - bed12 - frame 1") {
+
+        config "./frame.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_frame1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed12', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bed,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("intron - bed12 - default") {
+
+        when {
+            process {
+                """
+                def intron_bed = new File('intron.bed12')
+                intron_bed.text = '''chr_test\t100\t210\tplus_2exon\t10\t+\t100\t210\t0\t2\t10,10\t0,100
+chr_test\t300\t410\tminus_2exon\t20\t-\t300\t410\t0\t2\t10,10\t0,100
+'''
+                input[0] = [
+                    [ id:'test_intron' ],
+                    file(intron_bed, checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bed,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("intron - bed12 - width 3") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                def intron_bed = new File('intron_w3.bed12')
+                intron_bed.text = '''chr_test\t100\t210\tplus_2exon\t10\t+\t100\t210\t0\t2\t10,10\t0,100
+chr_test\t300\t410\tminus_2exon\t20\t-\t300\t410\t0\t2\t10,10\t0,100
+'''
+                input[0] = [
+                    [ id:'test_intron_w3' ],
+                    file(intron_bed, checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bed,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("3 single-nt blocks - keep duplicates") {
+
+        config "./keep_duplicates.config"
+
+        when {
+            process {
+                """
+                def dup_bed = new File('dup.bed12')
+                dup_bed.text = 'chr_test\t100\t301\tdup_3exon\t50\t+\t100\t301\t0\t3\t1,1,1\t0,100,200\\n'
+                input[0] = [
+                    [ id:'test_keepdup' ],
+                    file(dup_bed, checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bed,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
     test("sarscov2 - bed12 - stub") {
 
         options '-stub'

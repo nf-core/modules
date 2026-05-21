@@ -15,7 +15,12 @@ order on both strands. mRNA-order traversal is therefore left-to-right
 on `+` strand and right-to-left on `-` strand.
 
 Output (BED6, 0-based half-open):
-  chrom  start  end  name  0  strand
+  chrom  start  end  name  score  strand
+
+The score column is preserved from the input BED12 record. Rows are
+written in mRNA-traversal order, which means descending genomic order
+on `-` strand records (and per-codon rows that cross a block boundary
+are likewise in mRNA order, not genomic-sorted).
 
 By default the script emits the 5' nucleotide of every codon (step 3,
 width 1). With `--width N` (N > 1) the script emits up to N consecutive
@@ -26,6 +31,7 @@ for a single codon still maps back to a contiguous mRNA region).
 
 import argparse
 import platform
+import sys
 
 import pandas as pd
 import yaml
@@ -53,7 +59,7 @@ def parse_block_field(value):
 def mrna_to_genomic_runs(blocks, strand, mrna_start, mrna_end):
     """Project a half-open mRNA span [mrna_start, mrna_end) onto genomic
     coordinates, returning a list of (g_start, g_end) BED-style runs
-    (one per overlapped block, in ascending genomic order)."""
+    (one per overlapped block, in mRNA-traversal order)."""
     if strand == "+":
         ordered = list(blocks)
     elif strand == "-":
@@ -83,7 +89,6 @@ def mrna_to_genomic_runs(blocks, strand, mrna_start, mrna_end):
             g_lo = blk_end - off_hi
         runs.append((g_lo, g_hi))
 
-    runs.sort()
     return runs
 
 
@@ -91,12 +96,17 @@ def emit_rows(row, frame, step, width, keep_duplicates):
     block_sizes = parse_block_field(row["blockSizes"])
     block_starts = parse_block_field(row["blockStarts"])
     if len(block_sizes) != int(row["blockCount"]) or len(block_starts) != int(row["blockCount"]):
+        sys.stderr.write(
+            f"warning: skipping {row['name']!r}: blockCount={row['blockCount']} but "
+            f"blockSizes has {len(block_sizes)} entries and blockStarts has {len(block_starts)}\\n"
+        )
         return []
 
     blocks = sorted((row["start"] + off, row["start"] + off + sz) for sz, off in zip(block_sizes, block_starts))
     total_len = sum(be - bs for bs, be in blocks)
     chrom = row["chrom"]
     name = row["name"]
+    score = row["score"]
     strand = row["strand"]
 
     rows = []
@@ -109,7 +119,7 @@ def emit_rows(row, frame, step, width, keep_duplicates):
             if not keep_duplicates and key in seen:
                 continue
             seen.add(key)
-            rows.append((chrom, g_start, g_end, name, 0, strand))
+            rows.append((chrom, g_start, g_end, name, score, strand))
     return rows
 
 
