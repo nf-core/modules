@@ -1,6 +1,6 @@
 name: "pear"
-description: PEAR is an ultrafast, memory-efficient and highly accurate pair-end read
-  merger.
+description: PEAR is an ultrafast, memory-efficient and highly accurate pair-end
+  read merger.
 keywords:
   - pair-end
   - read
@@ -10,7 +10,8 @@ tools:
       description: "paired-end read merger"
       homepage: "https://cme.h-its.org/exelixis/web/software/pear/"
       documentation: "https://cme.h-its.org/exelixis/web/software/pear/doc.html"
-      licence: ["Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported"]
+      licence:
+        - "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported"
       identifier: biotools:pear
 input:
   - - meta:
@@ -43,12 +44,14 @@ output:
             e.g. [ id:'test' ]
       - "*.unassembled.forward.fastq.gz":
           type: file
-          description: FastQ files containing Unassembled forward and reverse reads.
+          description: FastQ files containing Unassembled forward and reverse
+            reads.
           pattern: "*.{fastq.gz}"
           ontologies: []
       - "*.unassembled.reverse.fastq.gz":
           type: file
-          description: FastQ files containing Unassembled forward and reverse reads.
+          description: FastQ files containing Unassembled forward and reverse
+            reads.
           pattern: "*.{fastq.gz}"
           ontologies: []
   discarded:
@@ -62,13 +65,27 @@ output:
           description: FastQ file containing discarded reads.
           pattern: "*.{fastq.gz}"
           ontologies: []
+  versions_pear:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pear:
+          type: string
+          description: The name of the tool
+      - pear -h | grep 'PEAR v' | sed 's/PEAR v//' | sed 's/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pear:
+          type: string
+          description: The name of the tool
+      - pear -h | grep 'PEAR v' | sed 's/PEAR v//' | sed 's/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mirpedrol"
 maintainers:

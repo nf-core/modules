@@ -1,0 +1,71 @@
+name: "vcfexpress"
+description: Filter a VCF/BCF and optionally print by template expression. If no
+  template is given the output will be VCF/BCF
+keywords:
+  - vcf
+  - bcf
+  - filter
+  - lua
+  - expressions
+  - genomics
+tools:
+  - "vcfexpress":
+      description: "expressions on VCFs"
+      homepage: "https://github.com/brentp/vcfexpress"
+      documentation: "https://github.com/brentp/vcfexpress"
+      tool_dev_url: "https://github.com/brentp/vcfexpress"
+      doi: "10.5281/zenodo.14898003"
+      licence:
+        - "MIT"
+      identifier: biotools:vcfexpress
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - prelude:
+      type: file
+      description: File(s) containing lua(u) code to run once before any variants
+        are processed. `header` is available here to access or modify the header
+      pattern: "*.lua"
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.{vcf,vcf.gz,bcf,bcf.gz}":
+          type: file
+          description: VCF file
+          pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  versions_vcfexpress:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcfexpress:
+          type: string
+          description: The name of the tool
+      - vcfexpress --version | sed 's/vcfexpress //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcfexpress:
+          type: string
+          description: The name of the tool
+      - vcfexpress --version | sed 's/vcfexpress //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sofiademmou"
+maintainers:
+  - "@sofiademmou"

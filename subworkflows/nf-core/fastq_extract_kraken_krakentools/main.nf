@@ -9,10 +9,9 @@ workflow FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS {
     val_taxid // string: taxonomic ids, separated by spaces
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     KRAKEN2_KRAKEN2 ( ch_reads, ch_db, true, true )
-    ch_versions = ch_versions.mix(KRAKEN2_KRAKEN2.out.versions.first())
 
     KRAKENTOOLS_EXTRACTKRAKENREADS ( val_taxid, KRAKEN2_KRAKEN2.out.classified_reads_assignment, KRAKEN2_KRAKEN2.out.classified_reads_fastq, KRAKEN2_KRAKEN2.out.report )
     ch_versions = ch_versions.mix( KRAKENTOOLS_EXTRACTKRAKENREADS.out.versions.first() )
@@ -20,6 +19,6 @@ workflow FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS {
     emit:
     kraken2_report          = KRAKEN2_KRAKEN2.out.report                                 // channel: [ val(meta), path ]
     extracted_kraken2_reads = KRAKENTOOLS_EXTRACTKRAKENREADS.out.extracted_kraken2_reads // channel: [ val(meta), [ fastq.gz/fasta.gz ] ]
-    multiqc_files           = KRAKEN2_KRAKEN2.out.report.map{it[1]}                      // channel: [ path ]
+    multiqc_files           = KRAKEN2_KRAKEN2.out.report.map{ _meta, report -> report }  // channel: [ path ]
     versions                = ch_versions                                                // channel: [ versions.yml ]
 }

@@ -4,9 +4,9 @@ process TRINITY {
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trinity:2.15.2--pl5321hdcf5f25_1':
-        'biocontainers/trinity:2.15.2--pl5321hdcf5f25_1' }"
+        'quay.io/biocontainers/trinity:2.15.2--pl5321hdcf5f25_1' }"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*", arity: '1..*')
@@ -14,7 +14,7 @@ process TRINITY {
     output:
     tuple val(meta), path("*.fa.gz")    , emit: transcript_fasta
     tuple val(meta), path("*.log")      , emit: log
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('trinity'), eval("Trinity --version | grep 'Trinity version' | sed 's/.*Trinity-v//'"), topic: versions, emit: versions_trinity
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,12 +23,14 @@ process TRINITY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def reads1 = [], reads2 = []
-    meta.single_end ? reads1 = reads : reads.eachWithIndex{ v, ix -> ( ix & 1 ? reads2 : reads1) << v }
+    def reads1 = []
+    def reads2 = []
 
     if (meta.single_end) {
+        reads1 = reads
         reads_args = "--single ${reads1.join(',')}"
     } else {
+        reads.eachWithIndex{ v, ix -> ( ix & 1 ? reads2 : reads1) << v }
         reads_args = "--left ${reads1.join(',')} --right ${reads2.join(',')}"
     }
 
@@ -61,11 +63,6 @@ process TRINITY {
         > ${prefix}.fa.gz
 
     rm ${prefix}_trinity.Trinity.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trinity: \$(Trinity --version | grep 'Trinity version:' | sed 's/Trinity version: Trinity-//')
-    END_VERSIONS
     """
 
     stub:
@@ -74,10 +71,5 @@ process TRINITY {
     touch ${prefix}.fa
     gzip ${prefix}.fa
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trinity: \$(Trinity --version | grep 'Trinity version:' | sed 's/Trinity version: Trinity-//')
-    END_VERSIONS
     """
 }

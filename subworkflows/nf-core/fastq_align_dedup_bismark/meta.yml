@@ -27,10 +27,10 @@ input:
         respectively.
         Structure: [ val(meta), [ path(reads) ] ]
       pattern: "*.{fastq,fastq.gz}"
-  - ch_fasta:
+  - ch_fasta_fai:
       type: file
       description: |
-        Structure: [ val(meta), path(fasta) ]
+        Structure: [ val(meta), path(fasta), path(fai) ]
       pattern: "*.{fa,fa.gz}"
   - ch_bismark_index:
       description: |
@@ -121,9 +121,9 @@ output:
   - multiqc:
       type: file
       description: |
-        Channel containing MultiQC report aggregating results across samples.
-        Structure: [ val(meta), path(multiqc_report.html) ]
-      pattern: "*.html"
+        Channel containing files for MultiQC input (reports, alignment reports, methylation reports).
+        Structure: [ path(files) ]
+      pattern: "*.{html,txt}"
   - versions:
       type: file
       description: |

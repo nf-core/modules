@@ -28,13 +28,28 @@ output:
         description: Directory with busco database
         pattern: "busco_downloads"
         ontologies: []
+  versions_busco:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco:
+          type: string
+          description: The name of the tool
+      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco:
+          type: string
+          description: The name of the tool
+      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@zachary-foster"
 maintainers:

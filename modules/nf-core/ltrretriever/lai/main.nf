@@ -3,9 +3,9 @@ process LTRRETRIEVER_LAI {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ltr_retriever:2.9.9--hdfd78af_0':
-        'biocontainers/ltr_retriever:2.9.9--hdfd78af_0' }"
+        'quay.io/biocontainers/ltr_retriever:2.9.9--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -50,9 +50,7 @@ process LTRRETRIEVER_LAI {
     """
 
     stub:
-    def args            = task.ext.args     ?: ''
     def prefix          = task.ext.prefix   ?: "${meta.id}"
-    def monoploid_param = monoploid_seqs    ? "-mono $monoploid_seqs"                       : ''
     def lai_output_name = monoploid_seqs    ? "${annotation_out}.${monoploid_seqs}.out.LAI" : "${annotation_out}.LAI"
     def VERSION         = 'beta3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """

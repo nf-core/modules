@@ -1,7 +1,7 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "longphase_haplotag"
-description: LongPhase is an ultra-fast program for simultaneously co-phasing SNPs,
-  small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms.
+description: LongPhase is an ultra-fast program for simultaneously co-phasing
+  SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio
+  platforms.
 keywords:
   - haplotag
   - long-read
@@ -15,9 +15,9 @@ tools:
       documentation: "https://github.com/twolinin/longphase"
       tool_dev_url: "https://github.com/twolinin/longphase"
       doi: "10.1093/bioinformatics/btac058"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -92,13 +92,27 @@ output:
           description: Log file
           pattern: "*.log"
           ontologies: []
+  versions_longphase:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - longphase:
+          type: string
+          description: The name of the tool
+      - "longphase --version | head -n 1 | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - longphase:
+          type: string
+          description: The name of the tool
+      - "longphase --version | head -n 1 | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@fellen31"
 maintainers:

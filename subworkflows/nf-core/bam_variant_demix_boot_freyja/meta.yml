@@ -37,6 +37,11 @@ input:
       description: |
         Structure: path(lineages_meta)
         File containing lineage metadata that correspond to barcodes
+  - ch_lineages_topology:
+      type: file
+      description: |
+        Structure: path(lineages_topology)
+        File containing lineage topology information that correspond to barcodes
 output:
   - meta:
       type: map
@@ -70,14 +75,14 @@ output:
         a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
   - barcodes:
       type: file
-      description: path(barcodes) a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
+      description: File containing lineage defining barcodes
   - lineages_meta:
       type: file
-      description: path(lineages_meta) a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
-  - versions:
+      description: File containing lineage topology information that correspond to barcodes
+  - lineages_topology:
       type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: File containing lineage metadata that correspond to barcodes
+
 authors:
   - "@Joon-Klaps"
 maintainers:

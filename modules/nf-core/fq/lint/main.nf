@@ -3,16 +3,16 @@ process FQ_LINT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fq:0.12.0--h9ee0642_0':
-        'biocontainers/fq:0.12.0--h9ee0642_0' }"
+        'quay.io/biocontainers/fq:0.12.0--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(fastq)
+    tuple val(meta), path(fastq, arity: '1..2')
 
     output:
     tuple val(meta), path("*.fq_lint.txt"), emit: lint
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('fq'), eval("fq lint --version | sed 's/fq-lint //; s/ .*//'"), emit: versions_fq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,21 +24,11 @@ process FQ_LINT {
     fq lint \\
         $args \\
         $fastq > ${prefix}.fq_lint.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fq: \$(echo \$(fq lint --version | sed 's/fq-lint //g'))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.fq_lint.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fq: \$(echo \$(fq lint --version | sed 's/fq-lint //g'))
-    END_VERSIONS
     """
 }

@@ -38,11 +38,11 @@ nextflow_process {
                     process.out.class2_genotype_2d,
                     process.out.class2_genotype_4d,
                     process.out.ambiguity,
-                    process.out.versions
+                    file(process.out.class1_expression[0][1]).name,
+                    file(process.out.class2_expression[0][1]).name,
+                    file(process.out.class1_nonclass_expression[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() },
-                { assert file(process.out.class1_expression[0][1]).name.endsWith("ClassI-class.expression") },
-                { assert file(process.out.class2_expression[0][1]).name.endsWith("ClassII.expression") },
-                { assert file(process.out.class1_nonclass_expression[0][1]).name.endsWith("ClassI-nonclass.expression") }
             )
         }
 
@@ -72,7 +72,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

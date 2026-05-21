@@ -20,8 +20,11 @@ nextflow_process {
             config './nextflow.config'
             process {
                 """
-                input[0] = [[ id:'test' ],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test3.single_end.markduplicates.sorted.bam', checkIfExists: true) ]
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test3.single_end.markduplicates.sorted.bam', checkIfExists: true),
+                    []
+                ]
                 input[1] = [[ id:'test2'], []]
                 """
             }

@@ -3,9 +3,9 @@ process TRUST4 {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trust4:1.1.5--h5ca1c30_0':
-        'biocontainers/trust4:1.1.5--h5ca1c30_0' }"
+        'quay.io/biocontainers/trust4:1.1.5--h5ca1c30_0' }"
 
     input:
     tuple val(meta), path(bam), path(reads)
@@ -88,7 +88,6 @@ process TRUST4 {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_airr.tsv

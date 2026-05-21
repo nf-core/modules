@@ -3,9 +3,9 @@ process UNZIP {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/p7zip:16.02' :
-        'biocontainers/p7zip:16.02' }"
+        'quay.io/biocontainers/p7zip:16.02' }"
 
     input:
     tuple val(meta), path(archive)
@@ -35,7 +35,6 @@ process UNZIP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     if ( archive instanceof List && archive.name.size > 1 ) { error "[UNZIP] error: 7za only accepts a single archive as input. Please check module input." }
     prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
     """

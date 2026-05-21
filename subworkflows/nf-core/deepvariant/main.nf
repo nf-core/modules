@@ -12,13 +12,9 @@ workflow DEEPVARIANT {
 
     main:
 
-    ch_versions = Channel.empty()
-
     DEEPVARIANT_MAKEEXAMPLES(ch_input, ch_fasta, ch_fai, ch_gzi, ch_par_bed)
-    ch_versions = ch_versions.mix(DEEPVARIANT_MAKEEXAMPLES.out.versions.first())
 
     DEEPVARIANT_CALLVARIANTS(DEEPVARIANT_MAKEEXAMPLES.out.examples)
-    ch_versions = ch_versions.mix(DEEPVARIANT_CALLVARIANTS.out.versions.first())
 
     // Input to postprocessing step needs both the gvcfs from MAKEEXAMPLES and the variant
     // calls from CALLVARIANTS. Joining on meta, which is assumed to be unique.
@@ -42,12 +38,9 @@ workflow DEEPVARIANT {
         ch_gzi
     )
 
-    ch_versions = ch_versions.mix(DEEPVARIANT_POSTPROCESSVARIANTS.out.versions.first())
-
     emit:
     vcf        = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf
     vcf_index  = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf_index
     gvcf       = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf
     gvcf_index = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf_index
-    versions   = ch_versions
 }

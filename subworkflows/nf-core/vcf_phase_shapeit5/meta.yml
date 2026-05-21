@@ -1,71 +1,136 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: "vcf_phase_shapeit5"
-description: Phase vcf panel with Shapeit5 tools
+name: "VCF_PHASE_SHAPEIT5"
+description: |
+  Subworkflow to phase a reference panel VCF file using SHAPEIT5.
+  The panel is first chunked by chromosome by glimpse2/chunk,
+  then genotypes are phased with shapeit5/phasecommon and
+  finally the chunks are merged back together by shapeit5/ligate by chromosomes.
+  Meta map of all channels will be used to perform joint operations.
+  "regionout" key will be added to the meta map to distinguish the different file
+  before ligation and therefore should not be used.
 keywords:
-  - chunk
+  - VCF
   - phase
-  - ligate
-  - index
-  - vcf
+  - shapeit5
+  - haplotype
 components:
-  - bedtools/makewindows
+  - glimpse2/chunk
   - shapeit5/phasecommon
   - shapeit5/ligate
   - bcftools/index
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - ch_vcf:
-      type: file
-      description: |
-        Target dataset in VCF/BCF format defined at all variable positions.
-        Index file of the input VCF/BCF file containing genotype likelihoods.
-        Pedigree information in the following format: offspring father mother.
-        Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
-        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
-        Structure: [ val(meta), path(vcf), path(csi), path(pedigree), val(region) ]
+      description: Channel with target VCF files
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - vcf:
+          type: file
+          description: VCF file
+          pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+          type: file
+          description: VCF index file
+          pattern: "*.{tbi,csi}"
+        - pedigree:
+          type: file
+          description:
+            Pedigree information in the following format: offspring father mother.
+          pattern: "*.{txt, tsv}"
+        - region:
+          type: string
+          description: Region to perform the chunking on for GLIMPSE2_chunk
+          pattern: "[chr]+[0-9]+:[0-9]+-[0-9]+"
+  - ch_chunks:
+      description: Channel with region data
+      structure:
+        - meta:
+          type: map
+          description: Metadata map that will be combined with the input data map
+        - regionout:
+          type: string
+          description: Region to perform the phasing on
+          pattern: "[chr]+[0-9]+:[0-9]+-[0-9]+"
   - ch_ref:
-      type: file
-      description: |
-        Reference panel of haplotypes in VCF/BCF format.
-        Index file of the Reference panel file.
-        Structure: [ val(meta), path(ref), path(csi) ]
+      description: Channel with reference phased VCF files
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - vcf:
+          type: file
+          description: VCF file
+          pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+          type: file
+          description: VCF index file
+          pattern: "*.{tbi,csi}"
   - ch_scaffold:
-      type: file
-      description: |
-        Scaffold of haplotypes in VCF/BCF format.
-        Index file of the Scaffold of haplotypes file.
-        Structure: [ val(meta), path(scaffold), path(csi) ]
+      description: Channel with reference scaffold VCF files
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - vcf:
+          type: file
+          description: VCF file
+          pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+          type: file
+          description: VCF index file
+          pattern: "*.{tbi,csi}"
   - ch_map:
-      type: file
-      description: File containing the genetic map.
-      Structure: [val(meta), path(map)]
+      description: Channel with genetic map data (optional)
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - map:
+          type: file
+          description: Map file in GLIMPSE format
+          pattern: "*.map"
+  - chunk:
+      type: boolean
+      description: Whether to perform chunking of the input data before imputation.
+  - chunk_model:
+      description: Chunk model for GLIMPSE2_chunk
+      type: string
+      enum:
+        - recursive
+        - sequential
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bed:
-      type: file
-      description: BED file containing the windows
-      pattern: "*.bed"
-  - variants_phased:
-      type: file
-      description: Phased haplotypes in VCF/BCF format.
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - variants_index:
-      type: file
-      description: CSI bcftools index
-      pattern: "*.csi"
+  - chunks:
+      description: Channel with chunks regions
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - regionout:
+          type: string
+          description: Region to perform the phasing on
+          pattern: "[chr]+[0-9]+:[0-9]+-[0-9]+"
+  - vcf_index:
+      description: Channel with phased VCF files
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - vcf:
+          type: file
+          description: VCF file
+          pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+          type: file
+          description: VCF index file
+          pattern: "*.{tbi,csi}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: Channel containing software versions file
+      structure:
+        - versions.yml:
+            type: file
+            description: File containing versions of the software used
 authors:
-  - "@LouisLeNezet"
+  - "@louislenezet"
 maintainers:
-  - "@LouisLeNezet"
+  - "@louislenezet"

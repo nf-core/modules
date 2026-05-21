@@ -3,9 +3,9 @@ process LEVIOSAM2_INDEX {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/leviosam2:0.4.2--h4ac6f70_0':
-        'biocontainers/leviosam2:0.4.2--h4ac6f70_0' }"
+        'quay.io/biocontainers/leviosam2:0.4.2--h4ac6f70_0' }"
 
     input:
     tuple val(meta), path(fai)
@@ -19,7 +19,6 @@ process LEVIOSAM2_INDEX {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -36,7 +35,6 @@ process LEVIOSAM2_INDEX {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.clft

@@ -11,7 +11,7 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_STRELKA {
     ch_intervals     // channel: [mandatory] [ interval.bed.gz, interval.bed.gz.tbi, num_intervals ] or [ [], [], 0 ] if no intervals
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // Combine cram and intervals for spread and gather strategy
     ch_cram_intervals = ch_cram.combine(ch_intervals)
@@ -25,17 +25,17 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_STRELKA {
     )
 
     // Figuring out if there is one or more vcf(s) from the same sample
-    ch_vcf_indels = STRELKA_SOMATIC.out.vcf_indels.branch{
+    ch_vcf_indels = STRELKA_SOMATIC.out.vcf_indels.branch{ index ->
         // Use meta.num_intervals to asses number of intervals
-        intervals:    it[0].num_intervals > 1
-        no_intervals: it[0].num_intervals <= 1
+        intervals:    index[0].num_intervals > 1
+        no_intervals: index[0].num_intervals <= 1
     }
 
     // Figuring out if there is one or more vcf(s) from the same sample
-    ch_vcf_snvs = STRELKA_SOMATIC.out.vcf_snvs.branch{
+    ch_vcf_snvs = STRELKA_SOMATIC.out.vcf_snvs.branch{ index ->
         // Use meta.num_intervals to asses number of intervals
-        intervals:    it[0].num_intervals > 1
-        no_intervals: it[0].num_intervals <= 1
+        intervals:    index[0].num_intervals > 1
+        no_intervals: index[0].num_intervals <= 1
     }
 
     // Only when using intervals
@@ -46,12 +46,10 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_STRELKA {
     MERGE_STRELKA_SNVS( ch_vcf_snvs_to_merge, ch_dict )
 
     // Mix intervals and no_intervals channels together
-    ch_vcf = Channel.empty().mix(MERGE_STRELKA_INDELS.out.vcf, MERGE_STRELKA_SNVS.out.vcf, ch_vcf_indels.no_intervals, ch_vcf_snvs.no_intervals)
+    ch_vcf = channel.empty().mix(MERGE_STRELKA_INDELS.out.vcf, MERGE_STRELKA_SNVS.out.vcf, ch_vcf_indels.no_intervals, ch_vcf_snvs.no_intervals)
         // add variantcaller to meta map and remove no longer necessary field: num_intervals
         .map{ meta, vcf -> [ meta - meta.subMap('num_intervals') + [ variantcaller:'strelka' ], vcf ] }
 
-    ch_versions = ch_versions.mix(MERGE_STRELKA_SNVS.out.versions)
-    ch_versions = ch_versions.mix(MERGE_STRELKA_INDELS.out.versions)
     ch_versions = ch_versions.mix(STRELKA_SOMATIC.out.versions)
 
     emit:

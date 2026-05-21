@@ -3,9 +3,9 @@ process INSTRAIN_COMPARE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/instrain:1.7.1--pyhdfd78af_0':
-        'biocontainers/instrain:1.7.1--pyhdfd78af_0' }"
+        'quay.io/biocontainers/instrain:1.7.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bams), path(profiles)
@@ -29,11 +29,12 @@ process INSTRAIN_COMPARE {
     """
     inStrain \\
         compare \\
-        -i $profiles \\
+        -i ${profiles} \\
         -o ${prefix}.IS_compare \\
-        --processes $task.cpus \\
-        --bams $bams \\
-        $args
+        --processes ${task.cpus} \\
+        --bams ${bams} \\
+        ${stb_args} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -42,9 +43,7 @@ process INSTRAIN_COMPARE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def stb_args = stb_file ? "-s ${stb_file}": ''
     """
     mkdir -p ${prefix}.IS_compare/output
     touch ${prefix}.IS_compare/output/${prefix}.IS_compare_pooled_SNV_info.tsv

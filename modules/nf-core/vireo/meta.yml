@@ -88,6 +88,30 @@ output:
           pattern: "*_prob_doublet.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  genotype_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_GT_donors.vireo.vcf.gz":
+          type: file
+          description: contains vireo’s inferred donor genotypes at each SNP (only created if `--forceLearnGT` is set in `ext.args`, see n)
+          pattern: "*_GT_donors.vireo.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+  filtered_variants:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_filtered_variants.tsv":
+          type: file
+          description: contains the minimal set of discriminatory variants created by `GTbarcode` (only created if `--forceLearnGT` is set in `ext.args`, see the hadge pipeline as an example, and only shows consistent results if `--randSeed` is set)
+          pattern: "*_filtered_variants.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   versions:
     - versions.yml:
         type: file

@@ -50,7 +50,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.reads,
                     process.out.log,
-                    process.out.versions.collect{ path(it).yaml }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

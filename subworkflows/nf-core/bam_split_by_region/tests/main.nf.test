@@ -9,6 +9,7 @@ nextflow_workflow {
     tag "subworkflows/bam_split_by_region"
     tag "samtools"
     tag "samtools/index"
+    tag "samtools/view"
 
     config "./nextflow.config"
 
@@ -32,7 +33,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { file(it.get(1)).name },
-                    workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { bam(it.get(1)).getReadsMD5() },
+                    workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { bam(it.get(1)).getHeaderMD5() },
                     workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { file(it.get(2)).name },
                     workflow.out.versions
                 ).match() }

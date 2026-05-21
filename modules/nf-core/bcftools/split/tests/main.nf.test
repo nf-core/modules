@@ -30,11 +30,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					path(process.out.split_vcf[0][1]).vcf.variantsMD5,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith("versions") }
 					).match()
 				}
             )
         }
     }
-
 }

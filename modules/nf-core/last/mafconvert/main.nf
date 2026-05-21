@@ -3,9 +3,9 @@ process LAST_MAFCONVERT {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b03259f4457e393e47dfd87ea744afea462bd8614b14867e6b3640ae760f41f/data'
-        : 'community.wave.seqera.io/library/last_samtools:a6d74d4fe63f646a'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/33/338bf69d52491713e02bb9a9481af4102bf6fd2187b63b23e556dabcdc7004ee/data'
+        : 'community.wave.seqera.io/library/last_samtools:487a90cd4bfaccb3'}"
 
     input:
     tuple val(meta), path(maf), val(format)
@@ -15,19 +15,9 @@ process LAST_MAFCONVERT {
     tuple val(meta5), path(dict)
 
     output:
-    tuple val(meta), path("*.axt.gz"),             optional:true, emit: axt_gz
-    tuple val(meta), path("*.bam"),                optional:true, emit: bam
-    tuple val(meta), path("*.bed.gz"),             optional:true, emit: bed_gz
-    tuple val(meta), path("*.blast.gz"),           optional:true, emit: blast_gz
-    tuple val(meta), path("*.blasttab.gz"),        optional:true, emit: blasttab_gz
-    tuple val(meta), path("*.chain.gz"),           optional:true, emit: chain_gz
-    tuple val(meta), path("*.cram"),               optional:true, emit: cram
-    tuple val(meta), path("*.gff.gz"),             optional:true, emit: gff_gz
-    tuple val(meta), path("*.html.gz"),            optional:true, emit: html_gz
-    tuple val(meta), path("*.psl.gz"),             optional:true, emit: psl_gz
-    tuple val(meta), path("*.sam.gz"),             optional:true, emit: sam_gz
-    tuple val(meta), path("*.tab.gz"),             optional:true, emit: tab_gz
-    path "versions.yml"                                         , emit: versions
+    tuple val(meta), path("*.{axt.gz,bam,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"), emit: alignment
+    // last-dotplot has no --version option so let's use lastal from the same suite
+    tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -58,6 +48,14 @@ process LAST_MAFCONVERT {
     if [ -f "$dict" ]; then
         DICT_ARGS="-f ${dict}"
         [ "$format" = "gff" ] && dict2gff3 ${dict}          > "${prefix}.head.gff"
+        if [ "$format" = "cram" ]; then
+            REF_CRAM=\$(grep '^@SQ' $dict | sed -n 's/.*UR:\\([^ \\t]*\\).*/\\1/p' | uniq)
+            if [ -r \$REF_CRAM ]; then
+                REF_ARGS=''
+            else
+                REF_ARGS="--reference $fasta"
+            fi
+        fi
     else
         DICT_ARGS="-d"
         [ "$format" = "gff" ] && printf "##gff-version 3\\n" > "${prefix}.head.gff"
@@ -79,31 +77,17 @@ process LAST_MAFCONVERT {
             ;;
         cram)
             # Note 1: CRAM output is not supported if the genome is compressed with something else than bgzip.
-            # Note 2: --reference is not needed because the path to the genome files is in the UR field in ${fasta}.dict
-            # Note 3: To prevent relative reference path be replaced with absolute path, we disable cache and EBI querying.
-            # This will not be needed in after htslib > 1.21 is released, see https://github.com/samtools/htslib/pull/1881
-            export REF_CACHE='.'
-            export REF_PATH='.'
-            # Note 4: CRAM version 3.0 is enforced until htsjdk, and therefore nf-test, supports 3.1
             maf-convert $args \$DICT_ARGS sam $maf -r 'ID:${meta.id} SM:${meta.id}' |
-                samtools sort -O cram,version=3.0 -o ${prefix}.cram
+                samtools sort -O cram \$REF_ARGS -o ${prefix}.cram
             ;;
         *)
             maf-convert $args $format $maf |
                 gzip --no-name > ${prefix}.${format}.gz
             ;;
     esac
-
-    # maf-convert has no --version option but lastdb (part of the same package) has.
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     case $format in
@@ -114,15 +98,8 @@ process LAST_MAFCONVERT {
             touch ${prefix}.${format}
             ;;
         *)
-            echo stub | gzip --no-name > ${prefix}.${format}.gz
+            echo "" | gzip > ${prefix}.${format}.gz
             ;;
     esac
-
-    # maf-convert has no --version option but lastdb (part of the same package) has.
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

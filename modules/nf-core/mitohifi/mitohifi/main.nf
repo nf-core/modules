@@ -6,9 +6,8 @@ process MITOHIFI_MITOHIFI {
     container 'ghcr.io/marcelauliano/mitohifi:3.2.3'
 
     input:
-    tuple val(meta) , path(input)
-    tuple val(meta2), path(ref_fa)
-    tuple val(meta3), path(ref_gb)
+    tuple val(meta) , path(input, arity: '1..*')
+    tuple val(meta2), path(ref_fa), path(ref_gb)
     val input_mode
     val mito_code
 
@@ -29,7 +28,11 @@ process MITOHIFI_MITOHIFI {
     tuple val(meta), path("potential_contigs/")             , emit: potential_contigs          , optional: true
     tuple val(meta), path("reads_mapping_and_assembly/")    , emit: reads_mapping_and_assembly , optional: true
     tuple val(meta), path("shared_genes.tsv")               , emit: shared_genes               , optional: true
-    path  "versions.yml"                                    , emit: versions
+    tuple val(meta), path("*.log")                          , emit: log
+    tuple val(meta), path("*")                              , emit: all_files
+    // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
+    // old version command: \$(mitohifi.py -v | sed 's/.* //')
+    tuple val("${task.process}"), val('mitohifi'), eval('echo 3.2.3'), emit: versions_mitohifi, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,39 +40,52 @@ process MITOHIFI_MITOHIFI {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "MitoHiFi module does not support Conda. Please use Docker / Singularity instead."
+        error "Error: MitoHiFi module does not support Conda. Please use Docker / Singularity instead."
     }
 
-    def args      = task.ext.args ?: ''
-    def input_arg = ""
-    if(input_mode == "contigs") {
-        input_arg = "-c ${input}"
-    } else if(input_mode == "reads"){
-        input_arg = "-r ${input}"
-    } else {
+    // Check input compression
+    def isGzipped = input.collect { f -> file(f).getExtension() == "gz" }
+    if (isGzipped.any() && input_mode == "contigs") {
+        error("Error: Running Mitohifi in contigs mode requires uncompressed input!")
+    }
+    if (isGzipped.any() && !isGzipped.every()) {
+        error("Error: MitoHiFi requires all inputs to either be uncompressed or compressed!")
+    }
+
+    // Set up the input mode argument
+    def modeMap = [contigs: '-c', reads: '-r']
+    if (!modeMap.containsKey(input_mode)) {
         error "Error: invalid MitoHiFi input mode: ${input_mode}. Must be either 'contigs' or 'reads'!"
     }
-    // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
-    def VERSION   = '3.2.3'
+    def input_mode_arg = modeMap[input_mode]
+
+    // Concatenate inputs together if more than one. We have to do this via a call to
+    // cat as using process substitution doesn't work as the inputs are passed to
+    // other subshells
+    def temp_ext = isGzipped.every() ? "fa.gz" : "fa"
+    def concatenate_command = input.size() > 1 ? "cat ${input} > temp_input.${temp_ext}" : ""
+    def input_string = input.size() > 1 ? "temp_input.${temp_ext}" : "${input}"
+    def cleanup = input.size() > 1 ? "rm temp_input.${temp_ext}" : ""
+
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    ${concatenate_command}
+
     mitohifi.py \\
-        ${input_arg} \\
+        ${input_mode_arg} ${input_string} \\
         -f ${ref_fa} \\
         -g ${ref_gb} \\
         -o ${mito_code} \\
         -t $task.cpus \\
-        ${args}
+        ${args} \\
+        | tee ${prefix}.log
 
-    ## old version command: \$(mitohifi.py -v | sed 's/.* //')
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mitohifi: ${VERSION}
-    END_VERSIONS
+    ${cleanup}
     """
 
     stub:
-    // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
-    def VERSION = '3.2.3'
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch final_mitogenome.fasta
     touch final_mitogenome.gb
@@ -81,6 +97,8 @@ process MITOHIFI_MITOHIFI {
     touch final_mitogenome.annotation.png
     touch final_mitogenome.coverage.png
     touch shared_genes.tsv
+    touch shared_genes.tsv
+    touch ${prefix}.log
 
     mkdir contigs_circularization
     mkdir contigs_filtering
@@ -88,10 +106,5 @@ process MITOHIFI_MITOHIFI {
     mkdir final_mitogenome_choice
     mkdir potential_contigs
     mkdir reads_mapping_and_assembly
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mitohifi: ${VERSION}
-    END_VERSIONS
     """
 }

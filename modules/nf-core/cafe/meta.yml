@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/hahnlab/CAFE5"
       tool_dev_url: "https://github.com/hahnlab/CAFE5"
       doi: "10.1093/bioinformatics/btaa1027"
-      licence: ["IU OPEN SOURCE LICENSE (see https://github.com/hahnlab/CAFE5/blob/master/LICENSE)"]
+      licence:
+        - "IU OPEN SOURCE LICENSE (see https://github.com/hahnlab/CAFE5/blob/master/LICENSE)"
       identifier: biotools:CaFE_Calculation_of_Free_Energy
 input:
   - - meta:
@@ -21,8 +22,8 @@ input:
           e.g. [ id:'test' ]
     - infile:
         type: file
-        description: Gene counts table (from OrthoMCL, SwiftOrtho, FastOrtho, OrthAgogue
-          or OrthoFinder)
+        description: Gene counts table (from OrthoMCL, SwiftOrtho, FastOrtho,
+          OrthAgogue or OrthoFinder)
         pattern: "*.{txt,tsv,tab}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
@@ -41,13 +42,6 @@ output:
       - ${prefix}:
           type: directory
           description: A folder with all the cafe output
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
   cafe_base_count:
     - $prefix/*_count.tab:
         type: file
@@ -72,7 +66,29 @@ output:
         type: file
         description: File containing the main result files from cafe
         pattern: "*results.txt"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_cafe:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cafe:
+          type: string
+          description: The name of the tool
+      - echo 5.1.0:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cafe:
+          type: string
+          description: The name of the tool
+      - echo 5.1.0:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@chriswyatt1"
 maintainers:

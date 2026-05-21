@@ -39,12 +39,10 @@ nextflow_process {
                     file(process.out.metrics[0][1]).name,
                     size,
                     lines,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
-
     }
 
     test("sarscov2 - bam - gzippedfa") {
@@ -77,18 +75,14 @@ nextflow_process {
                     file(process.out.metrics[0][1]).name,
                     size,
                     lines,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
-
     }
 
     test("sarscov2 - bam - stub") {
-
         options "-stub"
-
         when {
             process {
                 """
@@ -110,10 +104,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("sarscov2 - bam - nofasta") {
@@ -146,12 +139,10 @@ nextflow_process {
                     file(process.out.metrics[0][1]).name,
                     size,
                     lines,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
-
     }
 
     test("sarscov2 - bam - bed") {
@@ -185,12 +176,10 @@ nextflow_process {
                     file(process.out.metrics[0][1]).name,
                     size,
                     lines,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
-
     }
 
     test("sarscov2 - bam - samebed") {
@@ -224,11 +213,9 @@ nextflow_process {
                     file(process.out.metrics[0][1]).name,
                     size,
                     lines,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
-
     }
 }

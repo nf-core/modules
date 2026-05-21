@@ -1,0 +1,210 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_DECONTAMINATE_DEACON_HOSTILE"
+    script "../main.nf"
+    workflow "FASTQ_DECONTAMINATE_DEACON_HOSTILE"
+    config './nextflow.config'
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_index_filter_deacon"
+    tag "subworkflows/fastq_fetch_clean_hostile"
+    tag "subworkflows/fastq_decontaminate_deacon_hostile"
+    tag "hostile"
+    tag "hostile/fetch"
+    tag "hostile/clean"
+    tag "bowtie2/build"
+    tag "deacon"
+    tag "deacon/filter"
+    tag "deacon/index"
+
+    test("sarscov2 - fastq - single-end - hostile") {
+        setup {
+            run("BOWTIE2_BUILD") {
+                script "../../../../modules/nf-core/bowtie2/build/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test_single', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = []
+                input[2] = BOWTIE2_BUILD.out.index.map { meta, index ->  tuple('genome', index) }
+                input[3] = []
+                input[4] = 'hostile'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq_filtered,
+                    workflow.out.reference,
+                    file(workflow.out.json[0][1]).name
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - paired-end - hostile") {
+        setup {
+            run("BOWTIE2_BUILD") {
+                script "../../../../modules/nf-core/bowtie2/build/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test_paired', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = []
+                input[2] = BOWTIE2_BUILD.out.index.map { meta, index ->  tuple('genome', index) }
+                input[3] = []
+                input[4] = 'hostile'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq_filtered,
+                    workflow.out.reference,
+                    file(workflow.out.json[0][1]).name
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - single-end - deacon") {
+        when {
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = channel.of(
+                    [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                )
+                input[2] = []
+                input[3] = []
+                input[4] = 'deacon'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq_filtered,
+                    workflow.out.index,
+                    file(workflow.out.summary[0][1]).name
+                ).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - paired-end - deacon") {
+        when {
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id:'test', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1] = channel.of(
+                    [
+                        [ id:'test', single_end:false ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                )
+                input[2] = []
+                input[3] = []
+                input[4] = 'deacon'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq_filtered,
+                    workflow.out.index,
+                    file(workflow.out.summary[0][1]).name
+                ).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - single-end - deacon - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = channel.of(
+                    [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                )
+                input[2] = []
+                input[3] = []
+                input[4] = 'deacon'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out
+                ).match()}
+            )
+        }
+    }
+}

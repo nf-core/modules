@@ -1,46 +1,123 @@
 {
-    "sarscov2 Illumina single end [fastq]": {
-        "content": [
-            "@ERR5069949.2151832 NS500628:121:HK3MMAFX2:2:21208:10793:15304/1"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-06T10:27:15.235936866"
-    },
-    "sarscov2 Illumina paired-end [fastq]": {
-        "content": [
-            "@ERR5069949.2151832 NS500628:121:HK3MMAFX2:2:21208:10793:15304/2"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-06T10:27:24.38468252"
-    },
-    "versions_paired_end": {
+    "sarscov2 - fastq - single-end - stub": {
         "content": [
             [
-                "versions.yml:md5,8428231c6f665759beec10b0aba11075"
-            ]
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.trim.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.cutadapt.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            {
+                "versions_cutadapt": [
+                    [
+                        "CUTADAPT",
+                        "cutadapt",
+                        "5.2"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-04-01T10:51:18.715277676"
+        "timestamp": "2025-12-11T12:48:07.964157954"
     },
-    "versions_single_end": {
+    "sarscov2 - fastq - paired-end": {
         "content": [
             [
-                "versions.yml:md5,8428231c6f665759beec10b0aba11075"
-            ]
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1.trim.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                        "test_2.trim.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+                    ]
+                ]
+            ],
+            [
+                "Command line parameters: --cores 2 -o test_1.trim.fastq.gz -p test_2.trim.fastq.gz test_1.fastq.gz test_2.fastq.gz",
+                "Processing paired-end reads on 2 cores ...",
+                "",
+                "=== Summary ===",
+                "",
+                "Total read pairs processed:                100",
+                "Pairs written (passing filters):           100 (100.0%)",
+                "",
+                "Total basepairs processed:        27,645 bp",
+                "  Read 1:        13,897 bp",
+                "  Read 2:        13,748 bp",
+                "Total written (filtered):         27,645 bp (100.0%)",
+                "  Read 1:        13,897 bp",
+                "  Read 2:        13,748 bp"
+            ],
+            {
+                "versions_cutadapt": [
+                    [
+                        "CUTADAPT",
+                        "cutadapt",
+                        "5.2"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-04-01T10:51:14.492236529"
+        "timestamp": "2025-12-11T14:12:08.287985982"
+    },
+    "sarscov2 - fastq - single-end": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.trim.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
+                ]
+            ],
+            [
+                "Command line parameters: --cores 2 -o test.trim.fastq.gz test_1.fastq.gz",
+                "Processing single-end reads on 2 cores ...",
+                "",
+                "=== Summary ===",
+                "",
+                "Total reads processed:                     100",
+                "Reads written (passing filters):           100 (100.0%)",
+                "",
+                "Total basepairs processed:        13,897 bp",
+                "Total written (filtered):         13,897 bp (100.0%)"
+            ],
+            {
+                "versions_cutadapt": [
+                    [
+                        "CUTADAPT",
+                        "cutadapt",
+                        "5.2"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-11T14:06:44.706447277"
     }
 }

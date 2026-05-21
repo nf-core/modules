@@ -1,6 +1,6 @@
 name: "demuxem"
-description: Demultiplexing cell nucleus hashing data, using the estimated antibody
-  background probability.
+description: Demultiplexing cell nucleus hashing data, using the estimated
+  antibody background probability.
 keywords:
   - demultiplexing
   - hashing-based deconvoltion
@@ -13,9 +13,9 @@ tools:
       documentation: "https://demuxEM.readthedocs.io"
       tool_dev_url: "https://github.com/lilab-bcb/pegasus/tree/master"
       doi: "10.1038/s41467-019-10756-2"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -32,10 +32,6 @@ input:
         description: |
           Path to file containing input HTO (antibody tag) count matrix in CSV format.
         pattern: "*.{csv}"
-  - output_name:
-      type: string
-      description: |
-        Output name. All outputs will use it as the prefix.
   - generate_gender_plot:
       type: string
       description: |
@@ -75,13 +71,27 @@ output:
           pattern: "*.out.demuxEM.zarr.zip"
           ontologies:
             - edam: http://edamontology.org/format_3987 # ZIP format
+  versions_demuxem:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - demuxEM:
+          type: string
+          description: The name of the tool
+      - demuxEM --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - demuxEM:
+          type: string
+          description: The name of the tool
+      - demuxEM --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mari-ga"
   - "@maxozo"

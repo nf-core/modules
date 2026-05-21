@@ -79,13 +79,48 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_jasminesv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jasminesv:
+          type: string
+          description: The name of the tool
+      - jasmine 2>&1 | grep "version" | sed "s/Jasmine version //":
+          type: eval
+          description: The version of the tool
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version | head -1 | sed -e "s/bgzip (htslib) //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jasminesv:
+          type: string
+          description: The name of the tool
+      - jasmine 2>&1 | grep "version" | sed "s/Jasmine version //":
+          type: eval
+          description: The version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version | head -1 | sed -e "s/bgzip (htslib) //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@nvnieuwk"
 maintainers:

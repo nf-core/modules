@@ -3,78 +3,129 @@ nextflow_process {
     name "Test Process INTERPROSCAN"
     script "../main.nf"
     process "INTERPROSCAN"
-    config "./nextflow.config"
+
     tag "modules"
     tag "modules_nfcore"
     tag "interproscan"
+    tag "aria2"
+    tag "untar"
 
-    // Note: Regular tests have been commented out because Interproscan has a harded coded a requirement of 10G memory,
-    // and so will therefore not run on the nf-core test runners without being killed.
+    test("l_asparaginase - faa - test database") {
+        config "./nextflow_database.config"
 
-    // test("sarscov2 - proteome_fasta") {
+        setup {
+            run("ARIA2") {
+                script "../../aria2/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        params.modules_testdata_base_path + 'proteomics/interproscan/interproscan_test.tar.gz' // https URL
+                    ]
+                    """
+                }
+            }
 
-    //     when {
-    //         process {
-    //             """
-    //             input[0] = [
-    //                 [ id:'test' ],
-    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
-    //             ]
-    //             input[1] = []
-    //             """
-    //         }
-    //     }
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                    process {
+                    """
+                    input[0] = ARIA2.out.downloaded_file
+                    """
+                }
+            }
+        }
 
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(
-    //                 path(process.out.tsv[0][1]).readLines()[0]
-    //                     .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
-    //                 process.out.xml,
-    //                 process.out.json,
-    //                 path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
-    //                 process.out.versions,
-    //                 ).match()
-    //             }
-    //         )
-    //     }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar.map{ f -> f[1] }
+                """
+            }
+        }
 
-    // }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.tsv[0][1]).readLines()[0]
+                        .contains("GI|225038609|EFDID|719595|FULL	079fff43a0270e432d339ea71b6f0acf	350	SFLD	SFLDS00057	Glutaminase/Asparaginase	17	347	0.0	T"),
+                    process.out.xml,
+                    process.out.json,
+                    path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match()}
+            )
+        }
 
-    // test("sarscov2 - proteome_fasta_gz") {
+    }
 
-    //     when {
-    //         process {
-    //             """
-    //             input[0] = [
-    //                 [ id:'test' ],
-    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
-    //             ]
-    //             input[1] = []
-    //             """
-    //         }
-    //     }
+    test("sarscov2 - proteome_fasta") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
 
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(
-    //                 path(process.out.tsv[0][1]).readLines()[0]
-    //                     .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
-    //                 process.out.xml,
-    //                 process.out.json,
-    //                 path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
-    //                 process.out.versions,
-    //                 ).match()
-    //             }
-    //         )
-    //     }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.tsv[0][1]).readLines()[0]
+                        .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
+                    process.out.xml,
+                    process.out.json,
+                    path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match()}
+            )
+        }
 
-    // }
+    }
+
+    test("sarscov2 - proteome_fasta_gz") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.tsv[0][1]).readLines()[0]
+                        .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
+                    process.out.xml,
+                    process.out.json,
+                    path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match()}
+            )
+        }
+
+    }
 
     test("sarscov2 - proteome_fasta_gz - stub") {
-
+        config "./nextflow.config"
         options '-stub'
 
         when {

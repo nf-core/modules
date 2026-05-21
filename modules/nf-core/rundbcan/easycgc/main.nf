@@ -1,28 +1,28 @@
 process RUNDBCAN_EASYCGC {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.1.2--pyhdfd78af_0' :
-        'biocontainers/dbcan:5.1.2--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/dbcan:5.2.9--pyhdfd78af_0' :
+        'quay.io/biocontainers/dbcan:5.2.9--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta),  path(input_raw_data)
+    tuple val(meta), path(input_raw_data)
     tuple val(meta2), path(input_gff), val(gff_type)
-    path  dbcan_db
+    path dbcan_db
 
     output:
-    tuple val(meta), path("${prefix}_overview.tsv")            , emit: cazyme_annotation
-    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")   , emit: dbcanhmm_results
+    tuple val(meta), path("${prefix}_overview.tsv"), emit: cazyme_annotation
+    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv"), emit: dbcanhmm_results
     tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
-    tuple val(meta), path("${prefix}_diamond.out")             , emit: dbcandiamond_results
-    tuple val(meta), path("${prefix}_cgc.gff")                 , emit: cgc_gff
-    tuple val(meta), path("${prefix}_cgc_standard_out.tsv")    , emit: cgc_standard_out
-    tuple val(meta), path("${prefix}_diamond.out.tc")          , emit: diamond_out_tc
-    tuple val(meta), path("${prefix}_TF_hmm_results.tsv")      , emit: tf_hmm_results
-    tuple val(meta), path("${prefix}_STP_hmm_results.tsv")     , emit: stp_hmm_results
-    path  "versions.yml"                                       , emit: versions
+    tuple val(meta), path("${prefix}_diamond.out"), emit: dbcandiamond_results
+    tuple val(meta), path("${prefix}_cgc.gff"), emit: cgc_gff
+    tuple val(meta), path("${prefix}_cgc_standard_out.tsv"), emit: cgc_standard_out
+    tuple val(meta), path("${prefix}_diamond.out.tc"), emit: diamond_out_tc
+    tuple val(meta), path("${prefix}_TF_hmm_results.tsv"), emit: tf_hmm_results, optional: true
+    tuple val(meta), path("${prefix}_STP_hmm_results.tsv"), emit: stp_hmm_results
+    tuple val("${task.process}"), val('rundbcan'), eval("run_dbcan version | sed 's/dbCAN version: //g'"), emit: versions_rundbcan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,18 +47,14 @@ process RUNDBCAN_EASYCGC {
     mv cgc.gff                  ${prefix}_cgc.gff
     mv cgc_standard_out.tsv     ${prefix}_cgc_standard_out.tsv
     mv diamond.out.tc           ${prefix}_diamond.out.tc
-    mv TF_hmm_results.tsv       ${prefix}_TF_hmm_results.tsv
     mv STP_hmm_results.tsv      ${prefix}_STP_hmm_results.tsv
     mv total_cgc_info.tsv       ${prefix}_total_cgc_info.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
-    END_VERSIONS
+    if [ -f TF_hmm_results.tsv ]; then
+        mv TF_hmm_results.tsv   ${prefix}_TF_hmm_results.tsv
+    fi
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_overview.tsv
@@ -71,10 +67,5 @@ process RUNDBCAN_EASYCGC {
     touch ${prefix}_TF_hmm_results.tsv
     touch ${prefix}_STP_hmm_results.tsv
     touch ${prefix}_total_cgc_info.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
-    END_VERSIONS
     """
 }

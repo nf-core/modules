@@ -10,52 +10,132 @@ nextflow_workflow {
     tag "subworkflows_nfcore"
     tag "subworkflows/bam_create_som_pon_gatk"
     tag "gatk4"
-    tag "gatk4/mutect2"
-    tag "gatk4/genomicsdbimport"
     tag "gatk4/createsomaticpanelofnormals"
+    tag "gatk4/genomicsdbimport"
+    tag "gatk4/mergemutectstats"
+    tag "gatk4/mergevcfs"
+    tag "gatk4/mutect2"
+    tag "gatk4/splitintervals"
 
-    test("test_create_som_pon_gatk_bam") {
+    test("test_create_som_pon_gatk_bam - no_intervals") {
         when {
             workflow {
                 """
-                // ch_mutect2_in
-                input[0] = Channel.of([
+                // ch_input
+                input[0] = channel.of(
+                    [
                         [ id:'test1' ],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
-                        [] ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
+                    ],
                     [
                         [ id:'test2' ],
-                        file(params.modules_testdata_base_path+ 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path+ 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
-                        [] ]
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
+                    ]
                 )
                 // ch_fasta
-                input[1] = Channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)])
+                input[1] = channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)])
                 // ch_fai
-                input[2] = Channel.value([
-                        [ id:'genome' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true),
-                        [] ]
-                )
+                input[2] = channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true),
+                    []
+                ])
                 // ch_dict
-                input[3] = Channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists:true)])
+                input[3] = channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)])
                 // str_pon_norm
                 input[4] = "test_panel"
-                // ch_interval_file
-                input[5] = Channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true))
+                // ch_intervals_gendb
+                input[5] = channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true))
+                // ch_intervals_num
+                input[6] = channel.value([[], 0])
                 """
             }
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(file(workflow.out.mutect2_vcf.get(0).get(1)).name).match("test1.vcf.gz") },
-                { assert snapshot(file(workflow.out.mutect2_index.get(0).get(1)).name).match("test1.vcf.gz.tbi") },
-                { assert snapshot(file(workflow.out.mutect2_stats.get(0).get(1)).name).match("test1.vcf.gz.stats") },
-                { assert snapshot(file(workflow.out.pon_vcf.get(0).get(1)).name).match("test_panel.vcf.gz") },
-                { assert snapshot(file(workflow.out.pon_index.get(0).get(1)).name).match("test_panel.vcf.gz.tbi") },
+                { assert snapshot(
+                    sanitizeOutput(workflow.out).collectEntries{ key, val ->
+                        if (key in ["mutect2_index", "mutect2_stats", "mutect2_vcf"]) {
+                            def array = [file(val[0][1]).name, file(val[1][1]).name]
+                            return [key, array.sort().unique()]
+                        } else {
+                            return [key, file(val[0][1]).name]
+                        }
+                    }
+                ).match() }
+            )
+        }
+    }
+
+    test("test_create_som_pon_gatk_bam - intervals") {
+        setup {
+            run("GATK4_SPLITINTERVALS") {
+                script "../../../../modules/nf-core/gatk4/splitintervals/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true) ]
+                    input[1] = [ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true) ]
+                    input[2] = [ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true) ]
+                    input[3] = [ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                // ch_input
+                input[0] = channel.of(
+                    [
+                        [ id:'test1' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
+                    ],
+                    [
+                        [ id:'test2' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
+                    ]
+                )
+                // ch_fasta
+                input[1] = channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)])
+                // ch_fai
+                input[2] = channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true),
+                    []
+                ])
+                // ch_dict
+                input[3] = channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)])
+                // str_pon_norm
+                input[4] = "test_panel"
+                // ch_intervals_gendb
+                input[5] = channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true))
+                // ch_intervals_num
+                input[6] = GATK4_SPLITINTERVALS.out.split_intervals
+                    .flatMap { _meta, intervals -> intervals.collect { interval -> [ interval, intervals.size() ] } }
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(workflow.out).collectEntries{ key, val ->
+                        if (key in ["mutect2_index", "mutect2_stats", "mutect2_vcf"]) {
+                            def array = [file(val[0][1]).name, file(val[1][1]).name]
+                            return [key, array.sort().unique()]
+                        } else {
+                            return [key, file(val[0][1]).name]
+                        }
+                    }
+                ).match() }
             )
         }
     }

@@ -4,7 +4,9 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  # renovate: datasource=conda depName=bioconda/mosdepth
-  - mosdepth=0.3.11=h0ec343a_1
   # renovate: datasource=conda depName=bioconda/htslib
-  - htslib=1.22.1
+  - bioconda::htslib=1.23.1
+  # renovate: datasource=conda depName=bioconda/mosdepth
+  - bioconda::mosdepth=0.3.14
+  # renovate: datasource=conda depName=conda-forge/gzip
+  - conda-forge::gzip=1.14

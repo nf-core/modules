@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: sawfish_discover
 description: SV candidate discovery from PacBio HiFi data
 keywords:
@@ -14,7 +13,7 @@ tools:
       documentation: "https://github.com/PacificBiosciences/sawfish/tree/main/docs"
       doi: "10.1093/bioinformatics/btaf136"
       licence:
-        ["Pacific Biosciences Software License (https://github.com/PacificBiosciences/sawfish/blob/main/LICENSE.md)"]
+        - "Pacific Biosciences Software License (https://github.com/PacificBiosciences/sawfish/blob/main/LICENSE.md)"
       identifier: ""
 input:
   - - meta:
@@ -140,6 +139,7 @@ output:
           type: file
           description: Copy number BEDGraph file
           pattern: "*.bedgraph"
+          optional: true
           ontologies: []
   copynum_mpack:
     - - meta:
@@ -151,6 +151,7 @@ output:
           type: file
           description: Copy number mpack file
           pattern: "*.mpack"
+          optional: true
           ontologies: []
   debug_breakpoint_clusters:
     - - meta:
@@ -185,7 +186,7 @@ output:
           description: Discover settings JSON file
           pattern: "*.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
   genome_gclevels:
     - - meta:
           type: map
@@ -196,6 +197,7 @@ output:
           type: file
           description: Genome GC levels mpack file
           pattern: "*.mpack"
+          optional: true
           ontologies: []
   max_depth:
     - - meta:
@@ -219,7 +221,7 @@ output:
           description: Run statistics JSON file
           pattern: "*.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
   sample_gcbias:
     - - meta:
           type: map
@@ -230,6 +232,7 @@ output:
           type: file
           description: Sample GC bias mpack file
           pattern: "*.mpack"
+          optional: true
           ontologies: []
   log:
     - - meta:
@@ -263,6 +266,7 @@ output:
           type: file
           description: MAF mpack file
           pattern: "*.mpack"
+          optional: true
           ontologies: []
   expected_cn:
     - - meta:
@@ -274,6 +278,7 @@ output:
           type: file
           description: Expected copy number BED file
           pattern: "*.bed"
+          optional: true
           ontologies: []
   discover_dir:
     - - meta:
@@ -285,14 +290,27 @@ output:
           type: directory
           description: Directory containing all discover output files
           ontologies: []
+  versions_sawfish:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sawfish:
+          type: string
+          description: The name of the tool
+      - sawfish --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sawfish:
+          type: string
+          description: The name of the tool
+      - sawfish --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@padraicc"
 maintainers:

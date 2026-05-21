@@ -8,7 +8,7 @@ keywords:
   - blobtoolkit
   - depth
 tools:
-  - btk:
+  - blobtk:
       description: |
         BlobTk contains a set of core functions used by BlobToolKit tools.
         Implemented in Rust, these functions are intended to be accessible
@@ -17,7 +17,7 @@ tools:
       homepage: https://github.com/genomehubs/blobtk/
       documentation: https://github.com/genomehubs/blobtk/wiki/
       licence: ["MIT"]
-      identifier: biotools:btk
+      identifier: biotools:blobtk
 input:
   - - meta:
         type: map
@@ -50,13 +50,27 @@ output:
           type: file
           description: |
             Bed file describing the depth of regions across the genome.
+  versions_blobtk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blobtk:
+          type: string
+          description: The name of the tool
+      - "blobtk --version | cut -d' ' -f2":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blobtk:
+          type: string
+          description: The name of the tool
+      - "blobtk --version | cut -d' ' -f2":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@DLBPointon"
 maintainers:

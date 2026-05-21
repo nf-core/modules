@@ -3,9 +3,9 @@ process STRINGTIE_STRINGTIE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/stringtie:2.2.3--h43eeafb_0' :
-        'biocontainers/stringtie:2.2.3--h43eeafb_0' }"
+        'quay.io/biocontainers/stringtie:2.2.3--h43eeafb_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -16,7 +16,7 @@ process STRINGTIE_STRINGTIE {
     tuple val(meta), path("*.abundance.txt")  , emit: abundance
     tuple val(meta), path("*.coverage.gtf")   , optional: true, emit: coverage_gtf
     tuple val(meta), path("*.ballgown")       , optional: true, emit: ballgown
-    path  "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('stringtie'), eval("stringtie --version"), emit: versions_stringtie, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,11 +45,6 @@ process STRINGTIE_STRINGTIE {
         $ballgown \\
         -p $task.cpus \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stringtie: \$(stringtie --version 2>&1)
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +54,5 @@ process STRINGTIE_STRINGTIE {
     touch ${prefix}.gene.abundance.txt
     touch ${prefix}.coverage.gtf
     touch ${prefix}.ballgown
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stringtie: \$(stringtie --version 2>&1)
-    END_VERSIONS
     """
 }

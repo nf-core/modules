@@ -111,48 +111,62 @@ output:
     - - meta:
           type: map
           description: A Groovy map containing sample information
-      - "*.vcf.gz":
+      - "${prefix}.vcf.gz":
           type: file
           description: compressed vcf file
-          pattern: "*.vcf.gz"
+          pattern: "${prefix}.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   tbi:
     - - meta:
           type: map
           description: A Groovy map containing sample information
-      - "*.tbi":
+      - "${prefix}.vcf.gz.tbi":
           type: file
           description: Index of vcf file
-          pattern: "*vcf.gz.tbi"
+          pattern: "${prefix}.vcf.gz.tbi"
           ontologies: []
   stats:
     - - meta:
           type: map
           description: A Groovy map containing sample information
-      - "*.stats":
+      - "${prefix}.vcf.gz.stats":
           type: file
           description: Stats file that pairs with output vcf file
-          pattern: "*vcf.gz.stats"
+          pattern: "${prefix}.vcf.gz.stats"
           ontologies: []
   f1r2:
     - - meta:
           type: map
           description: A Groovy map containing sample information
-      - "*.f1r2.tar.gz":
+      - "${prefix}.f1r2.tar.gz":
           type: file
           description: file containing information to be passed to LearnReadOrientationModel
             (only outputted when tumor_normal_pair mode is run)
-          pattern: "*.f1r2.tar.gz"
+          pattern: "${prefix}.f1r2.tar.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GCJMackenzie"
   - "@ramprasadn"

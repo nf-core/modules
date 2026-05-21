@@ -3,9 +3,9 @@ process KALLISTO_QUANT {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kallisto:0.51.1--heb0cbe2_0':
-        'biocontainers/kallisto:0.51.1--heb0cbe2_0' }"
+        'quay.io/biocontainers/kallisto:0.51.1--heb0cbe2_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -19,7 +19,7 @@ process KALLISTO_QUANT {
     tuple val(meta), path("${prefix}")        , emit: results
     tuple val(meta), path("*.run_info.json")  , emit: json_info
     tuple val(meta), path("*.log")            , emit: log
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('kallisto'), eval("kallisto version | sed 's/.*version //'"), emit: versions_kallisto, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -61,11 +61,6 @@ process KALLISTO_QUANT {
 
     cp ${prefix}/kallisto_quant.log ${prefix}.log
     cp ${prefix}/run_info.json ${prefix}.run_info.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallisto: \$(echo \$(kallisto version) | sed "s/kallisto, version //g" )
-    END_VERSIONS
     """
 
     stub:
@@ -75,10 +70,5 @@ process KALLISTO_QUANT {
     mkdir -p $prefix
     touch ${prefix}.log
     touch ${prefix}.run_info.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallisto: \$(echo \$(kallisto version) | sed "s/kallisto, version //g" )
-    END_VERSIONS
     """
 }

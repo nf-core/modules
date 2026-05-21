@@ -1,0 +1,75 @@
+nextflow_process {
+
+    name "Test Process APBS"
+    script "../main.nf"
+    process "APBS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "apbs"
+
+    test("apbs - in_pqr - dx") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/apbs/apbs-mol.in', checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + 'proteomics/apbs/methanol.pqr', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/apbs/methoxide.pqr', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.dx,
+                    file(process.out.mc[0][1]).name,
+                    path(process.out.log[0][1]).readLines().size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("apbs - in_pqr - dx - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/apbs/apbs-mol.in', checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + 'proteomics/apbs/methanol.pqr', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/apbs/methoxide.pqr', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.dx,
+                    process.out.log,
+                    file(process.out.mc[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+}

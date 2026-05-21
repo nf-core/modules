@@ -3,7 +3,7 @@ process GATK4_CNNSCOREVARIANTS {
     label 'process_low'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "nf-core/gatk:4.5.0.0"
+    container "quay.io/nf-core/gatk:4.5.0.0"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(aligned_input), path(intervals)
@@ -14,9 +14,9 @@ process GATK4_CNNSCOREVARIANTS {
     path weights
 
     output:
-    tuple val(meta), path("*cnn.vcf.gz"),     emit: vcf
+    tuple val(meta), path("*cnn.vcf.gz"), emit: vcf
     tuple val(meta), path("*cnn.vcf.gz.tbi"), emit: tbi
-    path "versions.yml",                      emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -54,23 +54,12 @@ process GATK4_CNNSCOREVARIANTS {
         ${weights_cmd} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     echo "" | gzip -c > ${prefix}.cnn.vcf.gz
     touch ${prefix}.cnn.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

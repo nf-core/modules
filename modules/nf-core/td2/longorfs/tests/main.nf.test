@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process TD2_LONGORFS"
+    script "../main.nf"
+    process "TD2_LONGORFS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "td2"
+    tag "td2/longorfs"
+
+    test("td2.longorfs - transcriptome.fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_td2_longorfs' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.orfs,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("td2.longorfs - transcriptome.fasta -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_td2_longorfs' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.orfs,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+}

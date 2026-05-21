@@ -1,0 +1,99 @@
+nextflow_process {
+
+    name "Test Process MMSEQS_CREATETAXDB"
+    script "../main.nf"
+    process "MMSEQS_CREATETAXDB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/createtaxdb"
+    tag "untar"
+
+    setup {
+        run("UNTAR", alias: "UNTAR_MMSEQS_DB") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        run("UNTAR", alias: "UNTAR_TAXDUMP") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: 'taxdump'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - mmseqs db") {
+        when {
+            process {
+                """
+                input[0] = UNTAR_MMSEQS_DB.out.untar
+                input[1] = UNTAR_TAXDUMP.out.untar
+                input[2] = [[], file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/misc/nucl2tax.map', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            def output_directory = file(process.out.db_with_taxonomy[0][1])
+
+            def mapping_file = output_directory
+                .listFiles()
+                .findAll { file ->
+                    file.getName().endsWith("_mapping") && file.exists()
+                }
+                .first()
+            def taxonomy_file = output_directory
+                .listFiles()
+                .findAll { file ->
+                    file.getName().endsWith("_taxonomy") && file.exists()
+                }
+                .first()
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        mapping_file.getName(), // mapping file will be empty in this test data
+                        taxonomy_file.getName(), // taxonomy file is not stable and it's binary, so just check the name
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - mmseqs db - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR_MMSEQS_DB.out.untar
+                input[1] = UNTAR_TAXDUMP.out.untar
+                input[2] = [[], file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/misc/nucl2tax.map', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -12,7 +12,8 @@ tools:
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -45,17 +46,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.txt":
           type: file
-          description: Tab delimited output txt file containing buffer and imputation
-            regions.
+          description: Tab delimited output txt file containing buffer and
+            imputation regions.
           pattern: "*.txt"
           ontologies: []
+  versions_glimpse:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse:
+          type: string
+          description: The name of the tool
+      - "GLIMPSE_chunk --help | sed -n '/Version/s/.*: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse:
+          type: string
+          description: The name of the tool
+      - "GLIMPSE_chunk --help | sed -n '/Version/s/.*: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louislenezet"
 maintainers:

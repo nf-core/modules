@@ -39,20 +39,16 @@ input:
       description: |
         Use samtools sort (true) or samtools view (false)
       default: false
-  - ch_fasta:
+  - ch_fasta_fai:
       type: file
-      description: Reference fasta file
-      pattern: "*.{fasta,fa}"
+      description: Reference fasta file and index
+      pattern: "*.{fasta,fa},*.{fai,fai}"
 # TODO Update when we decide on a standard for subworkflow docs
 output:
   - bam:
       type: file
       description: Output BAM file containing read alignments
       pattern: "*.{bam}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fastq:
       type: file
       description: Unaligned FastQ files

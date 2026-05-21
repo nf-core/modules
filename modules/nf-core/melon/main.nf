@@ -3,9 +3,9 @@ process MELON {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/melon:0.2.5--pyhdfd78af_0':
-        'biocontainers/melon:0.2.5--pyhdfd78af_0' }"
+        'quay.io/biocontainers/melon:0.2.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -42,7 +42,6 @@ process MELON {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}

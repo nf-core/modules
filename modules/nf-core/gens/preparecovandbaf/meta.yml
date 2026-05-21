@@ -1,0 +1,110 @@
+name: "preparecovandbaf"
+description: Tools for preparing inputs for visualization in Gens
+keywords:
+  - gens
+  - preparecovandbaf
+  - preprocessing
+  - genomics
+  - CNV
+tools:
+  - "gens":
+      description: "Scripts for preparing input data to Gens"
+      homepage: "https://github.com/SMD-Bioinformatics-Lund/Prepare-Gens-input-data"
+      documentation: "https://github.com/SMD-Bioinformatics-Lund/Prepare-Gens-input-data/README.md"
+      tool_dev_url: "https://github.com/SMD-Bioinformatics-Lund/Prepare-Gens-input-data"
+      licence: [MIT]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - read_counts:
+        type: file
+        description: Binned coverage calculations from GATK
+        pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - gvcf:
+        type: file
+        description: GVCF. It is used to calculate B-allele frequencies at the sites specified in baf_positions. It can be generated using any SNV-caller.
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - gvcf_tbi:
+        type: file
+        description: GVCF tabix index
+        pattern: "*.vcf.gz.tbi"
+        ontologies: []
+  - baf_positions:
+      type: file
+      description: Sites to sample for BAF calculations
+      pattern: "*.{tsv,tsv.gz}"
+
+      ontologies:
+        - edam: http://edamontology.org/format_3475 # TSV
+output:
+  cov_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.cov.bed.gz":
+          type: file
+          description: Coverage bed (bgzipped)
+
+  cov_tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.cov.bed.gz.tbi":
+          type: file
+          description: Tabix index for coverage bed
+
+  baf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.baf.bed.gz":
+          type: file
+          description: BAF bed (bgzipped)
+
+  baf_tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.baf.bed.gz.tbi":
+          type: file
+          description: Tabix index for BAF bed
+
+  versions_preparecovandbaf:
+    - - "${task.process}":
+          type: string
+          description: The process the versions were collected from
+      - "preparecovandbaf":
+          type: string
+          description: The tool name
+      - "generate_cov_and_baf --version":
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The process the versions were collected from
+      - "preparecovandbaf":
+          type: string
+          description: The tool name
+      - "generate_cov_and_baf --version":
+          type: eval
+          description: The expression used to obtain the tool version
+authors:
+  - "@jakob37"
+maintainers:
+  - "@jakob37"

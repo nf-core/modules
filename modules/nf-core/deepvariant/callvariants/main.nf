@@ -11,7 +11,7 @@ process DEEPVARIANT_CALLVARIANTS {
 
     output:
     tuple val(meta), path("${prefix}.call-*-of-*.tfrecord.gz"), emit: call_variants_tfrecords
-    path "versions.yml",                                        emit: versions
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,10 +39,6 @@ process DEEPVARIANT_CALLVARIANTS {
         --outfile "${prefix}.call.tfrecord.gz" \\
         --examples "${examples_tfrecords_logical_name}"
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_callvariants: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -50,9 +46,5 @@ process DEEPVARIANT_CALLVARIANTS {
     """
     echo "" | gzip > ${prefix}.call-00000-of-00001.tfrecord.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_callvariants: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 }

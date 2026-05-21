@@ -3,9 +3,9 @@ process CATPACK_BINS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
+        : 'quay.io/biocontainers/cat:6.0.1--hdfd78af_1'}"
 
     input:
     tuple val(meta), path(bins, stageAs: 'bins/*')
@@ -22,7 +22,7 @@ process CATPACK_BINS {
     tuple val(meta), path("*.diamond"), optional: true, emit: diamond
     tuple val(meta), path("*.predicted_proteins.faa"), optional: true, emit: faa
     tuple val(meta), path("*.gff"), optional: true, emit: gff
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +43,6 @@ process CATPACK_BINS {
         ${premade_table} \\
         -o ${prefix} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +54,5 @@ process CATPACK_BINS {
     touch ${prefix}.diamond
     touch ${prefix}.predicted_proteins.faa
     touch ${prefix}.predicted_proteins.gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 }

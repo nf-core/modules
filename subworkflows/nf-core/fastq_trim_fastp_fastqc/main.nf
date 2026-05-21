@@ -31,30 +31,29 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // Split input channel for reads-only operations
-    ch_reads_only = ch_reads.map { meta, reads, adapter_fasta -> [ meta, reads ] }
+    ch_reads_only = ch_reads.map { meta, reads, _adapter_fasta -> [ meta, reads ] }
 
-    ch_fastqc_raw_html = Channel.empty()
-    ch_fastqc_raw_zip  = Channel.empty()
+    ch_fastqc_raw_html = channel.empty()
+    ch_fastqc_raw_zip  = channel.empty()
     if (!val_skip_fastqc) {
         FASTQC_RAW (
             ch_reads_only
         )
         ch_fastqc_raw_html = FASTQC_RAW.out.html
         ch_fastqc_raw_zip  = FASTQC_RAW.out.zip
-        ch_versions     = ch_versions.mix(FASTQC_RAW.out.versions.first())
     }
 
     ch_trim_reads        = ch_reads_only
-    ch_trim_json         = Channel.empty()
-    ch_trim_html         = Channel.empty()
-    ch_trim_log          = Channel.empty()
-    ch_trim_reads_fail   = Channel.empty()
-    ch_trim_reads_merged = Channel.empty()
-    ch_fastqc_trim_html  = Channel.empty()
-    ch_fastqc_trim_zip   = Channel.empty()
+    ch_trim_json         = channel.empty()
+    ch_trim_html         = channel.empty()
+    ch_trim_log          = channel.empty()
+    ch_trim_reads_fail   = channel.empty()
+    ch_trim_reads_merged = channel.empty()
+    ch_fastqc_trim_html  = channel.empty()
+    ch_fastqc_trim_zip   = channel.empty()
     if (!val_skip_fastp) {
         FASTP (
             ch_reads,
@@ -68,7 +67,6 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
         ch_trim_log          = FASTP.out.log
         ch_trim_reads_fail   = FASTP.out.reads_fail
         ch_trim_reads_merged = FASTP.out.reads_merged
-        ch_versions       = ch_versions.mix(FASTP.out.versions.first())
 
         //
         // Filter empty FastQ files after adapter trimming so FastQC doesn't fail
@@ -89,7 +87,6 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
             )
             ch_fastqc_trim_html = FASTQC_TRIM.out.html
             ch_fastqc_trim_zip  = FASTQC_TRIM.out.zip
-            ch_versions      = ch_versions.mix(FASTQC_TRIM.out.versions.first())
         }
     }
 
@@ -106,5 +103,5 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
     fastqc_trim_html = ch_fastqc_trim_html   // channel: [ val(meta), path(html) ]
     fastqc_trim_zip  = ch_fastqc_trim_zip    // channel: [ val(meta), path(zip) ]
 
-    versions = ch_versions.ifEmpty(null) // channel: [ path(versions.yml) ]
+    versions = ch_versions
 }
