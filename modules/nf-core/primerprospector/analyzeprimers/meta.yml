@@ -44,9 +44,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}_hits.txt:
+      - "*_hits.txt":
           type: file
-          description: Primer hit details, mismatches, gaps, positions, and weighted scores.
+          description: Primer hit detail files, including mismatches, gaps, positions, and weighted scores. One file is produced per primer.
           pattern: "*_hits.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3752" # CSV
@@ -56,9 +56,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}.ps:
+      - "*.ps":
           type: file
-          description: PostScript summary plots of primer mismatch and weighted score information.
+          description: PostScript summary plots of primer mismatch and weighted score information. One file is produced per primer.
           pattern: "*.ps"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format

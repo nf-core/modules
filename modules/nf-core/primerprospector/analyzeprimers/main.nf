@@ -11,8 +11,8 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
     tuple val(meta), path(fasta), path(primers)
 
     output:
-    tuple val(meta), path("${prefix}_hits.txt"), emit: hits
-    tuple val(meta), path("${prefix}.ps")      , emit: plots
+    tuple val(meta), path("*_hits.txt"), emit: hits
+    tuple val(meta), path("*.ps")      , emit: plots
     tuple val("${task.process}"), val('primerprospector'), eval("analyze_primers.py --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | tail -n 1"), topic: versions, emit: versions_primerprospector
 
     when:
@@ -55,9 +55,6 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
         $args \\
         -f "${fasta_arg}" \\
         ${primer_arg}
-
-    mv *_hits.txt "${prefix}_hits.txt"
-    mv *.ps "${prefix}.ps"
     """
 
     stub:

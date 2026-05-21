@@ -43,6 +43,43 @@ nextflow_process {
         }
     }
 
+    test("synthetic - fasta multiple primers - hits plots") {
+
+        when {
+            process {
+                """
+                def fasta = channel.of(
+                    '>seq1',
+                    'AAACCCGGGTTTAAACCCGGGTTT',
+                    '>seq2',
+                    'GGGTTTAAACCCGGGTTTAAA'
+                ).collectFile(name: 'test.fasta', newLine: true, sort: false)
+                def primers = channel.of(
+                    'testf\\tAAACCCGGGTTT',
+                    'testr\\tGGGTTTAAACCC'
+                ).collectFile(name: 'primers.txt', newLine: true, sort: false)
+
+                input[0] = fasta.combine(primers).map { fasta_file, primers_file ->
+                    [[ id:'test' ], fasta_file, primers_file]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.hits[0][1].size() == 2 },
+                { assert process.out.plots[0][1].size() == 2 },
+                { assert process.out.plots[0][1].every { path(it).exists() } },
+                { assert snapshot(
+                    process.out.hits,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
     test("synthetic - fasta primers - hits plots - stub") {
 
         options "-stub"
