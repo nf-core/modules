@@ -20,7 +20,6 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_arg = fasta instanceof List ? fasta.join(':') : fasta
     def primer_arg = primers ? "-P \"${primers}\"" : ''
     def arg_tokens = args.tokenize()
@@ -59,7 +58,7 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def arg_tokens = args.tokenize()
     if (arg_tokens.any { arg -> arg == '-f' || arg.startsWith('--fasta_seqs') || arg == '-P' || arg.startsWith('--primers_filepath') || arg == '-o' || arg.startsWith('--output_dir') }) {
         error "'-f/--fasta_seqs', '-P/--primers_filepath' and '-o/--output_dir' are reserved by this module. Use input files for fasta/primers."
