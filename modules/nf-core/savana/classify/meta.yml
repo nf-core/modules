@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "savana_classify"
 description: "Classify structural variants using SAVANA"
 keywords:
@@ -17,7 +16,6 @@ tools:
       licence:
         - "Apache-2.0"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -29,17 +27,16 @@ input:
         description: Input VCF file
         pattern: "*{.vcf,vcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3016" # VCF
-          - edam: "http://edamontology.org/format_3615" # bgzip
-
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3615"
 output:
   classified_vcf:
     - - meta:
           type: map
           description: Sample information
-      - "*.classified.vcf":
+      - ${prefix}.classified.vcf:
           type: file
-          description: Classified VCF
+          description: VCF containing information about variant classification in the INFO field
           pattern: "*.classified.vcf"
           ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
@@ -47,7 +44,7 @@ output:
     - - meta:
           type: map
           description: Sample information
-      - "*.classified.somatic.vcf":
+      - ${prefix}.classified.somatic.vcf:
           type: file
           description: VCF containing variants classified as somatic
           pattern: "*.classified.somatic.vcf"
@@ -57,7 +54,7 @@ output:
     - - meta:
           type: map
           description: Sample information
-      - "*.classified.germline.vcf":
+      - ${prefix}.classified.germline.vcf:
           type: file
           description: VCF containing variants classified as germline
           pattern: "*.classified.germline.vcf"
@@ -67,7 +64,7 @@ output:
     - - meta:
           type: map
           description: Sample information
-      - "*.classified.somatic.bedpe":
+      - ${prefix}.classified.somatic.bedpe:
           type: file
           description: Variants classified as somatic in BEDPE format
           pattern: "*.classified.somatic.bedpe"
@@ -77,7 +74,7 @@ output:
     - - meta:
           type: map
           description: Sample information
-      - "*.classified.{strict,lenient}.vcf":
+      - ${prefix}.classified.{strict,lenient}.vcf:
           type: file
           description: Legacy strict/lenient VCFs
           pattern: "*.classified.{strict,lenient}.vcf"
@@ -93,7 +90,6 @@ output:
       - python -c "import importlib.metadata as m; print(m.version('savana'))":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
