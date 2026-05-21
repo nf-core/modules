@@ -6,8 +6,19 @@ description: |
   user-supplied set of class codes (e.g. "u" for novel intergenic), optionally
   subtracting features that overlap a user-supplied blacklist BED, and merging
   the survivors into an annotation backbone GTF. Gene rows missing from the
-  backbone for the surviving novel transcripts are synthesised from the
-  transcripts' own coordinates so the output is a self-consistent GTF.
+  backbone for surviving novel transcripts are synthesised with coordinates
+  spanning the union of their child transcripts so the output is a
+  self-consistent GTF.
+
+  Input format scope: standard GTF2 with `gene_id` / `transcript_id`
+  attributes in column 9 and `gene` / `transcript` (and child `exon` etc.)
+  feature types in column 3. GFF3 dialects (Parent= / ID= attributes) and
+  prokaryotic GTFs without transcript rows are out of scope.
+
+  Resource sizing: the GAWK steps are buffer-then-emit (full input held in
+  awk arrays), running under the gawk module's `process_single` label. Fine
+  for annotation-scale GTFs; consumers building hybrids against unusually
+  large GTFs (>~500 MB) should override the gawk steps to bump the label.
 keywords:
   - gtf
   - annotation
