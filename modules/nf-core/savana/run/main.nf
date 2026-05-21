@@ -30,7 +30,7 @@ process SAVANA_RUN {
         --normal ${normal} \\
         --ref ${ref} \\
         --ref_index ${ref_index} \\
-        --outdir ${outdir} \\
+        --outdir . \\
         --sample ${prefix} \\
         --threads ${task.cpus ?: 1} \\
         ${args}
