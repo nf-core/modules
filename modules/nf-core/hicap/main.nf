@@ -16,7 +16,7 @@ process HICAP {
     tuple val(meta), path("*.gbk"), emit: gbk, optional: true
     tuple val(meta), path("*.svg"), emit: svg, optional: true
     tuple val(meta), path("*.tsv"), emit: tsv, optional: true
-    tuple val("${task.process}"), val('hicap'), eval('hicap --version 2>&1 | sed \'s/^.*hicap //\''), emit: versions_hicap, topic: versions
+    tuple val("${task.process}"), val('hicap'), eval("hicap --version 2>&1 | sed 's/^.*hicap //'"), emit: versions_hicap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,15 +28,15 @@ process HICAP {
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d $fasta > ${fasta_name}
     fi
     hicap \\
-        --query_fp $fasta_name \\
-        $database_args \\
-        $model_args \\
-        $args \\
-        --threads $task.cpus \\
+        --query_fp ${fasta_name} \\
+        ${database_args} \\
+        ${model_args} \\
+        ${args} \\
+        --threads ${task.cpus} \\
         -o ./
     """
 
