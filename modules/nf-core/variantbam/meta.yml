@@ -1,5 +1,6 @@
 name: variantbam
-description: Filtering, downsampling and profiling alignments in BAM/CRAM formats
+description: Filtering, downsampling and profiling alignments in BAM/CRAM
+  formats
 keywords:
   - filter
   - bam
@@ -9,13 +10,14 @@ keywords:
   - subsample bam
 tools:
   - variantbam:
-      description: Filtering and profiling of next-generational sequencing data using
-        region-specific rules
+      description: Filtering and profiling of next-generational sequencing data
+        using region-specific rules
       homepage: https://github.com/walaj/VariantBam
       documentation: https://github.com/walaj/VariantBam#table-of-contents
       tool_dev_url: https://github.com/walaj/VariantBam
       doi: 10.1093/bioinformatics/btw111
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:variantbam
 input:
   - - meta:
@@ -27,7 +29,9 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
 output:
   bam:
     - - meta:
@@ -39,14 +43,29 @@ output:
           type: file
           description: Filtered or downsampled BAM file
           pattern: "*.{bam}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+  versions_variant:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - variant:
+          type: string
+          description: The name of the tool
+      - 1.4.4a:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - variant:
+          type: string
+          description: The name of the tool
+      - 1.4.4a:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@bjohnnyd"
 maintainers:
