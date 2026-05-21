@@ -20,9 +20,12 @@ nextflow_process {
 
                 process {
                     """
-                    vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/115_WBcel235/')).collect()
+                    vep_cache = channel.of([
+                        [ id:'115_WBcel235' ],
+                        file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                    ]).collect()
 
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test' ], // meta map
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
                         []
@@ -31,7 +34,7 @@ nextflow_process {
                     input[2] = params.vep_species
                     input[3] = params.vep_cache_version
                     input[4] = vep_cache
-                    input[5] = Channel.value([
+                    input[5] = channel.value([
                         [id:"fasta"],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ])
@@ -68,9 +71,12 @@ nextflow_process {
 
                 process {
                     """
-                    vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/115_WBcel235/')).collect()
+                    vep_cache = channel.of([
+                        [ id:'115_WBcel235' ],
+                        file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                    ]).collect()
 
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test' ], // meta map
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
                         []
@@ -79,7 +85,7 @@ nextflow_process {
                     input[2] = params.vep_species
                     input[3] = params.vep_cache_version
                     input[4] = vep_cache
-                    input[5] = Channel.value([
+                    input[5] = channel.value([
                         [id:"fasta"],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ])

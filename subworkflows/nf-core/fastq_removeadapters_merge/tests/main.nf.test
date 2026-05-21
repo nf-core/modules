@@ -258,7 +258,7 @@ nextflow_workflow {
                 { assert snapshot(
                     path(workflow.out.processed_reads[0][1]).linesGzip.size(),
                     workflow.out.discarded_reads.collect { file(it[1]).name },
-                    workflow.out.versions.collect { path(it).yaml },
+                    workflow.out.findAll { key, val -> key.startsWith("versions")},
                     workflow.out.multiqc_files.collect { file(it[1]).name }
                 ).match()}
             )

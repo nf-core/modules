@@ -24,16 +24,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out.matches,
-                    process.out.partials,
-                    process.out.virulence,
-                    process.out.out,
-                    process.out.txt,
-                    process.out.versions
-                ).match() },
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -54,12 +45,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() },
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 

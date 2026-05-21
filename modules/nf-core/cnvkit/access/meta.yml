@@ -1,6 +1,6 @@
 name: cnvkit_access
-description: Calculate the sequence-accessible coordinates in chromosomes from the
-  given reference genome, output as a BED file.
+description: Calculate the sequence-accessible coordinates in chromosomes from
+  the given reference genome, output as a BED file.
 keywords:
   - cvnkit
   - access
@@ -15,7 +15,8 @@ tools:
       documentation: https://cnvkit.readthedocs.io/en/stable/index.html
       tool_dev_url: "https://github.com/etal/cnvkit"
       doi: 10.1371/journal.pcbi.1004873
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:cnvkit
 input:
   - - meta:
@@ -35,8 +36,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - exclude_bed:
         type: file
-        description: Additional regions to exclude, in BED format. Can be used multiple
-          times.
+        description: Additional regions to exclude, in BED format. Can be used
+          multiple times.
         ontologies: []
 output:
   bed:
@@ -50,13 +51,27 @@ output:
           description: File containing accessible regions.
           pattern: "*.{bed}"
           ontologies: []
+  versions_cnvkit:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - cnvkit:
+          type: string
+          description: The tool name
+      - cnvkit.py version | sed -e "s/cnvkit v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - cnvkit:
+          type: string
+          description: The tool name
+      - cnvkit.py version | sed -e "s/cnvkit v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@adamrtalbot"
   - "@priesgo"

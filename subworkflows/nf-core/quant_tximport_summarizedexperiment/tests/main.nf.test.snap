@@ -76,17 +76,19 @@
                 ]
             ],
             [
-                "versions.yml:md5,2c734f0be55dbd9c1b5d893cbc5d29a0",
-                "versions.yml:md5,3926cde3d17a8b77579d430e7d21a7dd",
-                "versions.yml:md5,928c1a88044f1b300485c2d53c915921",
-                "versions.yml:md5,e993f80a1812e9571beb47a5a0fbacf6"
+                [
+                    {
+                        "id": "all_samples"
+                    },
+                    "kallisto.merged.tx2gene_augmented.tsv:md5,0e2418a69d2eba45097ebffc2f700bfe"
+                ]
             ]
         ],
+        "timestamp": "2026-05-05T10:37:18.465577469",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-11T10:09:49.077814425"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "salmon - stub": {
         "content": [
@@ -104,7 +106,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "10": [
@@ -116,17 +118,19 @@
                     ]
                 ],
                 "11": [
-                    "versions.yml:md5,2c734f0be55dbd9c1b5d893cbc5d29a0",
-                    "versions.yml:md5,3926cde3d17a8b77579d430e7d21a7dd",
-                    "versions.yml:md5,dbc2adfb72a3242fb84dee5e78a6c39b",
-                    "versions.yml:md5,e993f80a1812e9571beb47a5a0fbacf6"
+                    [
+                        {
+                            "id": "all_samples"
+                        },
+                        "all_samples.SummarizedExperiment.rds:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "2": [
                     [
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "3": [
@@ -134,7 +138,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "4": [
@@ -142,7 +146,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_counts_length_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
@@ -150,7 +154,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_counts_length_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "6": [
@@ -158,7 +162,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.transcript_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "7": [
@@ -166,7 +170,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.transcript_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.transcript_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "8": [
@@ -174,7 +178,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.transcript_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "9": [
@@ -182,7 +186,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.SummarizedExperiment.rds:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "counts_gene": [
@@ -273,19 +277,21 @@
                         "salmon.merged.tx2gene.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,2c734f0be55dbd9c1b5d893cbc5d29a0",
-                    "versions.yml:md5,3926cde3d17a8b77579d430e7d21a7dd",
-                    "versions.yml:md5,dbc2adfb72a3242fb84dee5e78a6c39b",
-                    "versions.yml:md5,e993f80a1812e9571beb47a5a0fbacf6"
+                "tx2gene_augmented": [
+                    [
+                        {
+                            "id": "all_samples"
+                        },
+                        "all_samples.tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-05-05T10:37:56.798812629",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-11T10:10:26.820987278"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "kallisto - stub": {
         "content": [
@@ -303,7 +309,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "10": [
@@ -315,17 +321,19 @@
                     ]
                 ],
                 "11": [
-                    "versions.yml:md5,2c734f0be55dbd9c1b5d893cbc5d29a0",
-                    "versions.yml:md5,3926cde3d17a8b77579d430e7d21a7dd",
-                    "versions.yml:md5,dbc2adfb72a3242fb84dee5e78a6c39b",
-                    "versions.yml:md5,e993f80a1812e9571beb47a5a0fbacf6"
+                    [
+                        {
+                            "id": "all_samples"
+                        },
+                        "all_samples.SummarizedExperiment.rds:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "2": [
                     [
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "3": [
@@ -333,7 +341,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "4": [
@@ -341,7 +349,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_counts_length_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
@@ -349,7 +357,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_counts_length_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "6": [
@@ -357,7 +365,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.transcript_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "7": [
@@ -365,7 +373,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.transcript_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.transcript_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "8": [
@@ -373,7 +381,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.transcript_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "9": [
@@ -381,7 +389,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.SummarizedExperiment.rds:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "counts_gene": [
@@ -472,19 +480,21 @@
                         "kallisto.merged.tx2gene.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,2c734f0be55dbd9c1b5d893cbc5d29a0",
-                    "versions.yml:md5,3926cde3d17a8b77579d430e7d21a7dd",
-                    "versions.yml:md5,dbc2adfb72a3242fb84dee5e78a6c39b",
-                    "versions.yml:md5,e993f80a1812e9571beb47a5a0fbacf6"
+                "tx2gene_augmented": [
+                    [
+                        {
+                            "id": "all_samples"
+                        },
+                        "all_samples.tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-05-05T10:38:17.567127486",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-11T10:10:54.171727044"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "rsem - stub": {
         "content": [
@@ -502,7 +512,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "10": [
@@ -514,17 +524,19 @@
                     ]
                 ],
                 "11": [
-                    "versions.yml:md5,2c734f0be55dbd9c1b5d893cbc5d29a0",
-                    "versions.yml:md5,3926cde3d17a8b77579d430e7d21a7dd",
-                    "versions.yml:md5,dbc2adfb72a3242fb84dee5e78a6c39b",
-                    "versions.yml:md5,e993f80a1812e9571beb47a5a0fbacf6"
+                    [
+                        {
+                            "id": "all_samples"
+                        },
+                        "all_samples.SummarizedExperiment.rds:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "2": [
                     [
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "3": [
@@ -532,7 +544,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "4": [
@@ -540,7 +552,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_counts_length_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
@@ -548,7 +560,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.gene_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_counts_length_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "6": [
@@ -556,7 +568,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.transcript_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.gene_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "7": [
@@ -564,7 +576,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.transcript_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.transcript_tpm.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "8": [
@@ -572,7 +584,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.transcript_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "9": [
@@ -580,7 +592,7 @@
                         {
                             "id": "all_samples"
                         },
-                        "all_samples.SummarizedExperiment.rds:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "all_samples.transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "counts_gene": [
@@ -671,19 +683,21 @@
                         "rsem.merged.tx2gene.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,2c734f0be55dbd9c1b5d893cbc5d29a0",
-                    "versions.yml:md5,3926cde3d17a8b77579d430e7d21a7dd",
-                    "versions.yml:md5,dbc2adfb72a3242fb84dee5e78a6c39b",
-                    "versions.yml:md5,e993f80a1812e9571beb47a5a0fbacf6"
+                "tx2gene_augmented": [
+                    [
+                        {
+                            "id": "all_samples"
+                        },
+                        "all_samples.tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-05-05T10:38:38.378124334",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-11T10:11:21.45224016"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "salmon": {
         "content": [
@@ -762,17 +776,19 @@
                 ]
             ],
             [
-                "versions.yml:md5,2c734f0be55dbd9c1b5d893cbc5d29a0",
-                "versions.yml:md5,3926cde3d17a8b77579d430e7d21a7dd",
-                "versions.yml:md5,928c1a88044f1b300485c2d53c915921",
-                "versions.yml:md5,e993f80a1812e9571beb47a5a0fbacf6"
+                [
+                    {
+                        "id": "all_samples"
+                    },
+                    "salmon.merged.tx2gene_augmented.tsv:md5,0e2418a69d2eba45097ebffc2f700bfe"
+                ]
             ]
         ],
+        "timestamp": "2026-05-05T10:37:00.881134125",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-11T10:09:25.366934801"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "rsem": {
         "content": [
@@ -851,16 +867,18 @@
                 ]
             ],
             [
-                "versions.yml:md5,2c734f0be55dbd9c1b5d893cbc5d29a0",
-                "versions.yml:md5,3926cde3d17a8b77579d430e7d21a7dd",
-                "versions.yml:md5,928c1a88044f1b300485c2d53c915921",
-                "versions.yml:md5,e993f80a1812e9571beb47a5a0fbacf6"
+                [
+                    {
+                        "id": "all_samples"
+                    },
+                    "rsem.merged.tx2gene_augmented.tsv:md5,58aa7e040b0ff1a512ced6b85b9939ac"
+                ]
             ]
         ],
+        "timestamp": "2026-05-05T10:37:35.975221766",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-11T10:14:57.262417912"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

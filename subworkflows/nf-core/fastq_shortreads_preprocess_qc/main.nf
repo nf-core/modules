@@ -88,7 +88,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         skip_seqkit_rmdup,
     )
     ch_reads = FASTQ_PREPROCESS_SEQKIT.out.reads
-    ch_versions = ch_versions.mix(FASTQ_PREPROCESS_SEQKIT.out.versions)
 
     // barcoding
     if (!skip_umitools_extract) {
@@ -131,7 +130,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         ch_complexity_filter_log = FASTQ_COMPLEXITY_FILTER.out.logfile
         ch_complexity_filter_report = FASTQ_COMPLEXITY_FILTER.out.report
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_COMPLEXITY_FILTER.out.multiqc_files)
-        ch_versions = ch_versions.mix(FASTQ_COMPLEXITY_FILTER.out.versions)
     }
 
     // deduplication
@@ -139,7 +137,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         BBMAP_CLUMPIFY(ch_reads)
         ch_reads = BBMAP_CLUMPIFY.out.reads
         ch_clumpify_log = BBMAP_CLUMPIFY.out.log
-        ch_versions = ch_versions.mix(BBMAP_CLUMPIFY.out.versions.first())
     }
 
     // host decontamination

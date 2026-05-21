@@ -25,6 +25,7 @@ nextflow_process {
                     file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta', checkIfExists:true),
                     file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed', checkIfExists:true)
                 ]
+                input[3] = []
                 """
             }
         }
@@ -39,7 +40,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     fileNames,
                     process.out.bam.collect{ file(it[1]).name },
                     process.out.bai,
@@ -72,6 +73,7 @@ nextflow_process {
                     file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta', checkIfExists:true),
                     file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed', checkIfExists:true)
                 ]
+                input[3] = []
                 """
             }
         }

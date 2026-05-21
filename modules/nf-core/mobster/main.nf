@@ -3,7 +3,7 @@ process MOBSTER {
     label "process_high"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c9ef4992af6754a36358a4fc7a52bdc3928c012070f06140a44ddcf174da4e62/data':
         'community.wave.seqera.io/library/r-cnaqc_r-mobster_r-cli_r-dplyr_r-ggplot2:5a94f700b38065ea' }"
 
@@ -17,7 +17,7 @@ process MOBSTER {
     tuple val(meta), path("*_mobster_report.rds")     , emit: mobster_report_rds
     tuple val(meta), path("*_mobster_report.pdf")     , emit: mobster_report_pdf
     tuple val(meta), path("*_mobster_report.png")     , emit: mobster_report_png
-    path "versions.yml"                               , emit: versions              , topic: versions
+    path "versions.yml"                               , emit: versions_mobster       , topic: versions
 
     when:
     task.ext.when == null || task.ext.when

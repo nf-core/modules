@@ -1,5 +1,6 @@
 name: "cooltools_insulation"
-description: Calculate the diamond insulation scores and call insulating boundaries
+description: Calculate the diamond insulation scores and call insulating
+  boundaries
 keywords:
   - cool
   - insulation
@@ -11,9 +12,9 @@ tools:
       documentation: "https://cooltools.readthedocs.io"
       tool_dev_url: "https://github.com/open2c/cooltools/"
       doi: "10.5281/zenodo.5214125"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:cooltools
-
 input:
   - - meta:
         type: map
@@ -22,7 +23,6 @@ input:
         type: file
         description: cool file
         pattern: "*.cool"
-
         ontologies: []
 output:
   tsv:
@@ -31,8 +31,8 @@ output:
           description: Groovy Map containing sample information e.g. id:'test'
       - "*tsv":
           type: file
-          description: tsv file with insulation score and boundaries for several window
-            sizes
+          description: tsv file with insulation score and boundaries for several
+            window sizes
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   bigwig:
@@ -44,12 +44,26 @@ output:
           description: bigwig file for different window sizes
           ontologies:
             - edam: "http://edamontology.org/format_3006" # bigWig
+  versions_cooltools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooltools:
+          type: string
+          description: The name of the tool
+      - cooltools --version | sed -n 's/cooltools, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooltools:
+          type: string
+          description: The name of the tool
+      - cooltools --version | sed -n 's/cooltools, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nservant"

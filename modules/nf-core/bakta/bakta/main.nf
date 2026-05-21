@@ -3,9 +3,9 @@ process BAKTA_BAKTA {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/bakta:1.11.4--pyhdfd78af_0'
-        : 'biocontainers/bakta:1.11.4--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/bakta:1.11.4--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -26,7 +26,7 @@ process BAKTA_BAKTA {
     tuple val(meta), path("${prefix}.hypotheticals.faa"), emit: hypotheticals_faa
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("${prefix}.txt"), emit: txt
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('bakta'), eval("bakta --version 2>&1 | sed 's/bakta //'"), emit: versions_bakta, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,6 +40,8 @@ process BAKTA_BAKTA {
     def hmms_opt = hmms ? "--hmms ${hmms}" : ""
 
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+
     bakta \\
         ${fasta} \\
         ${args} \\
@@ -50,16 +52,13 @@ process BAKTA_BAKTA {
         ${regions_opt} \\
         ${hmms_opt} \\
         --db ${db}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bakta: \$(echo \$(bakta --version) 2>&1 | cut -f '2' -d ' ')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+
     touch ${prefix}.embl
     touch ${prefix}.faa
     touch ${prefix}.ffn
@@ -70,10 +69,5 @@ process BAKTA_BAKTA {
     touch ${prefix}.hypotheticals.faa
     touch ${prefix}.tsv
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bakta: \$(echo \$(bakta --version) 2>&1 | cut -f '2' -d ' ')
-    END_VERSIONS
     """
 }

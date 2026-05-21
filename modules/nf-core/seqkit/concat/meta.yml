@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "seqkit_concat"
 description: Concatenating multiple uncompressed sequence files together
 keywords:
@@ -14,9 +13,9 @@ tools:
       documentation: https://bioinf.shenwei.me/seqkit/
       tool_dev_url: https://github.com/shenwei356/seqkit
       doi: 10.1371/journal.pone.0163962
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:seqkit
-
 input:
   - - meta:
         type: map
@@ -30,7 +29,6 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  #Only when we have meta
   fastx:
     - - meta:
           type: map
@@ -43,13 +41,27 @@ output:
           pattern: "*.{fasta,fastq,fa,fq,fas,fna,faa}"
           ontologies:
             - edam: http://edamontology.org/format_1930 # FASTQ
+  versions_seqkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqkit:
+          type: string
+          description: The name of the tool
+      - seqkit version | sed 's/^.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqkit:
+          type: string
+          description: The name of the tool
+      - seqkit version | sed 's/^.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@DLBPointon"
 maintainers:

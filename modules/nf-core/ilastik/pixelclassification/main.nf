@@ -10,7 +10,7 @@ process ILASTIK_PIXELCLASSIFICATION {
 
     output:
     tuple val(meta), path("*.${output_format}") , emit: output
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('ilastik'), eval("/opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version"), emit: versions_ilastik, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process ILASTIK_PIXELCLASSIFICATION {
         --export_source=${export_source} \\
         ${args} \\
         ${input_img}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ilastik: \$(/opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version)
-    END_VERSIONS
     """
 
     stub:
@@ -49,10 +44,5 @@ process ILASTIK_PIXELCLASSIFICATION {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.${output_format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ilastik:: \$(/opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version)
-    END_VERSIONS
     """
 }

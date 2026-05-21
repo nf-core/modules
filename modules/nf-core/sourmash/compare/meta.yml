@@ -16,7 +16,8 @@ tools:
       documentation: "https://sourmash.readthedocs.io/"
       tool_dev_url: "https://github.com/sourmash-bio/sourmash"
       doi: "10.21105/joss.00027"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:sourmash
 input:
   - - meta:
@@ -64,7 +65,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*comp.npy.labels.txt":
           type: file
-          description: A text file that specifies the labels in the output numpy_matrix
+          description: A text file that specifies the labels in the output
+            numpy_matrix
           pattern: "*.comp.labels.txt"
           ontologies: []
   csv:
@@ -78,14 +80,28 @@ output:
           description: An optional (dis)similarity matrix in CSV format
           pattern: "*.comp.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
+  versions_sourmash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourmash:
+          type: string
+          description: The name of the tool
+      - sourmash --version 2>&1 | sed 's/^sourmash //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourmash:
+          type: string
+          description: The name of the tool
+      - sourmash --version 2>&1 | sed 's/^sourmash //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@taylorreiter"
 maintainers:

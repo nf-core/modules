@@ -73,9 +73,8 @@ nextflow_process {
                         process.out.original_data_csv,
                         process.out.pca_components_csv,
                         process.out.pca_transformed_csv,
-                        process.out.versions,
-                        file(process.out.log_txt[0][1]).readLines().last().contains("CONCOCT Finished, the log shows how it went."),
-                        path(process.out.versions[0]).yaml
+                        process.out.findAll { key, val -> key.startsWith('versions') },
+                        file(process.out.log_txt[0][1]).readLines().last().contains("CONCOCT Finished, the log shows how it went.")
                     ).match()
                 }
             )
@@ -100,7 +99,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out,
-                        path(process.out.versions[0]).yaml
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

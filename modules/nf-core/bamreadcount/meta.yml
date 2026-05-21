@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "bamreadcount"
 description: bam-readcount is a utility that runs on a BAM or CRAM file and
   generates low-level information about sequencing data at specific nucleotide
@@ -17,9 +16,9 @@ tools:
       documentation: "https://github.com/genome/bam-readcount/blob/master/README.md"
       tool_dev_url: "https://github.com/genome/bam-readcount"
       doi: "10.21105/joss.03722"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bam-readcount
-
 input:
   - - meta:
         type: map
@@ -31,29 +30,28 @@ input:
         description: Sorted BAM/CRAM file
         pattern: "*.{bam,cram}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
     - bai:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
         ontologies:
-          - edam: "http://edamontology.org/format_2574" # BAM index
-          - edam: "http://edamontology.org/format_2575" # CRAM index
+          - edam: "http://edamontology.org/format_2574"
+          - edam: "http://edamontology.org/format_2575"
   - reference:
       type: file
       description: Reference genome FASTA file
       pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
       ontologies:
-        - edam: "http://edamontology.org/format_1922" # FASTA
-        - edam: "http://edamontology.org/format_3989" # GZIP format
+        - edam: "http://edamontology.org/format_1922"
+        - edam: "http://edamontology.org/format_3989"
   - bed:
       type: file
       description: BED file with regions to analyze
       pattern: "*.bed"
       ontologies:
-        - edam: "http://edamontology.org/format_1920" # BED
-
+        - edam: "http://edamontology.org/format_1920"
 output:
   rc:
     - - meta:
@@ -66,14 +64,27 @@ output:
           description: Readcount file with metrics
           pattern: "*.rc"
           ontologies: []
+  versions_bamreadcount:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamreadcount:
+          type: string
+          description: The name of the tool
+      - "bam-readcount --version | awk -F'version: ' '{print \\$2}' | awk -F'-' '{print \\$1}'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamreadcount:
+          type: string
+          description: The name of the tool
+      - "bam-readcount --version | awk -F'version: ' '{print \\$2}' | awk -F'-' '{print \\$1}'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vmelichar"
 maintainers:
