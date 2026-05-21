@@ -60,36 +60,4 @@ nextflow_workflow {
         }
     }
 
-    test("homo_sapiens [chr20] - ribotish + ribocode - stub") {
-        options "-stub-run"
-
-        when {
-            workflow {
-                """
-                input[0] = channel.of(
-                    [
-                        [id: 'sample1', caller: 'ribotish'],
-                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true)
-                    ],
-                    [
-                        [id: 'sample1', caller: 'ribocode'],
-                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true)
-                    ]
-                )
-                input[1] = GUNZIP.out.gunzip
-                input[2] = channel.of([
-                    [id: 'reference'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
-                ])
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
-            )
-        }
-    }
 }

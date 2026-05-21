@@ -623,7 +623,7 @@ def parse_rpbp(path, transcripts):
     return pd.DataFrame(rows) if rows else EMPTY_PARSED.copy()
 
 
-_PRICE_LOCATION_RE = re.compile(r"^(?P<chrom>[^:]+):(?P<strand>[+-]):(?P<blocks>.+)\$")
+_PRICE_LOCATION_RE = re.compile(r"^(?P<chrom>.+?)(?P<strand>[+-]):(?P<blocks>.+)\$")
 
 
 def _parse_price_location(loc):
