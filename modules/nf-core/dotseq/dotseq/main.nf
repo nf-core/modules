@@ -4,18 +4,29 @@ process DOTSEQ_DOTSEQ {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9c/9ca895c805758ea7068b919008213c64337748731035237d63b3e1139fae8cfc/data' :
-        'community.wave.seqera.io/library/bioconductor-dotseq:1.0.0--4ebea46321bb93bb' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/12667d472e9ae0f1602041dc018ba6bde294e6190e67999d71b65e7a2df7ea1f/data' :
+        'community.wave.seqera.io/library/bioconductor-dotseq_r-dplyr_r-eulerr_r-ggplot2_pruned:6c8a9ebdec36c958' }"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)
     tuple val(meta2), path(samplesheet), path(counts), path(flattened_gtf), path(flattened_bed)
 
     output:
-    tuple val(meta), path("*.dou.interaction.dotseq.results.tsv"), emit: dou_interaction
-    tuple val(meta), path("*.dte.interaction.dotseq.results.tsv"), emit: dte_interaction
-    tuple val(meta), path("*.dou.strategy.dotseq.results.tsv")   , emit: dou_strategy   , optional: true
-    tuple val(meta), path("*.dte.strategy.dotseq.results.tsv")   , emit: dte_strategy   , optional: true
+    // Per-ORF differential translation efficiency (DTE interaction term)
+    tuple val(meta), path("*.translation.dotseq.results.tsv")    , emit: translation
+    // Per-ORF differential ORF usage
+    tuple val(meta), path("*.dou.dotseq.results.tsv")            , emit: dou
+    // Per-condition Ribo-vs-RNA strategy contrasts, when DOTSeq emits them
+    tuple val(meta), path("*.dou_strategy.dotseq.results.tsv")   , emit: dou_strategy , optional: true
+    tuple val(meta), path("*.dte_strategy.dotseq.results.tsv")   , emit: dte_strategy , optional: true
+    // plotDOT() outputs
+    tuple val(meta), path("*.volcano.png")                       , emit: volcano_plot  , optional: true
+    tuple val(meta), path("*.composite.png")                     , emit: composite_plot, optional: true
+    tuple val(meta), path("*.venn.png")                          , emit: venn_plot     , optional: true
+    tuple val(meta), path("*.heatmap.png")                       , emit: heatmap_plot  , optional: true
+    // Histogram of DTE adjusted p-values
+    tuple val(meta), path("*.interaction_p_distribution.png")    , emit: interaction_p_distribution_plot, optional: true
+    // Serialised dataset + session info + versions
     tuple val(meta), path("*.DOTSeqDataSets.rds")                , emit: rdata
     tuple val(meta), path("*.R_sessionInfo.log")                 , emit: session_info
     path "versions.yml"                                          , emit: versions, topic: versions
