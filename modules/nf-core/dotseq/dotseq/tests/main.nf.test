@@ -39,14 +39,52 @@ nextflow_process {
                 { assert path(process.out.translation[0][1]).exists() },
                 { assert path(process.out.dou[0][1]).exists() },
                 { assert process.out.interaction_p_distribution_plot.size() > 0 },
+                { assert process.out.volcano_plot.size() > 0 },
+                { assert process.out.composite_plot.size() > 0 },
+                { assert process.out.venn_plot.size() > 0 },
                 { assert snapshot(
                     file(process.out.translation[0][1]).name,
                     file(process.out.dou[0][1]).name,
                     file(process.out.rdata[0][1]).name,
                     file(process.out.interaction_p_distribution_plot[0][1]).name,
+                    file(process.out.volcano_plot[0][1]).name,
+                    file(process.out.composite_plot[0][1]).name,
+                    file(process.out.venn_plot[0][1]).name,
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                 ).match() }
+            )
+        }
+    }
+
+    test("human - featurecounts - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cycling_vs_interphase' ],
+                    'condition',
+                    'Interphase',
+                    'Mitotic_Cycling'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/samplesheet.csv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/featureCounts.cell_cycle_subset.txt.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/gencode.v47.orf_flattened_subset.gtf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/gencode.v47.orf_flattened_subset.bed.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }

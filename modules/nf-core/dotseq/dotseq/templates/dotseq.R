@@ -68,19 +68,23 @@ ext_argv <- if (identical(ext_args_raw, "null") || !nzchar(trimws(ext_args_raw))
 
 opt <- parse_args(OptionParser(option_list = option_list), args = c(nf_defaults, ext_argv))
 
-# DOTSeq accepts TRUE, FALSE, or NULL for `stringent` (three filter modes);
-# optparse won't natively parse a tri-state into a logical, so we round-trip.
+is_set <- function(x) !is.null(x) && nzchar(trimws(x))
+
+# DOTSeq's `stringent` is tri-state TRUE / FALSE / NULL; normalise via switch.
+# Without the upfront is_set() guard, switch(toupper(NULL), ...) silently
+# returns NULL and bypasses the `stop()` fallback.
+if (!is_set(opt\$stringent)) stop("--stringent must be TRUE / FALSE / NULL.")
 stringent_val <- switch(toupper(opt\$stringent),
     "TRUE"  = TRUE,
     "FALSE" = FALSE,
     "NULL"  = NULL,
-    stop("`--stringent` must be one of TRUE, FALSE, NULL")
+    stop("--stringent must be TRUE / FALSE / NULL (got: ", opt\$stringent, ")")
 )
 modules <- trimws(strsplit(opt\$modules, ",")[[1]])
 
-walk(c("count_file", "sample_file", "flattened_gtf", "flattened_bed"), \\(x) {
-    if (!file.exists(opt[[x]])) stop("Missing input file: ", x, " = ", opt[[x]])
-})
+# An empty output_prefix would produce dotfiles that the emit globs miss.
+walk(c("contrast_variable", "reference_level", "target_level", "output_prefix"),
+     \\(x) if (!is_set(opt[[x]])) stop("Missing required option: --", x))
 
 prefix <- opt\$output_prefix
 
@@ -88,41 +92,55 @@ prefix <- opt\$output_prefix
 ## Read inputs and normalise the sample sheet                                 ##
 ################################################################################
 
-# featureCounts emits a `# Program:...` banner as the first line; `comment`
-# strips it. Returns a tibble; DOTSeqDataSetsFromFeatureCounts() wants a
-# vanilla data.frame so coerce.
+# `comment = "#"` strips featureCounts' `# Program:...` banner.
 cnt <- read_tsv(opt\$count_file, comment = "#", show_col_types = FALSE,
                 progress = FALSE) |> as.data.frame()
 
-# featureCounts column names often carry the full BAM path; the vignette uses
-# `gsub(".*(SRR[0-9]+).*", "\\1", names(cnt))` to keep just the run accession.
-# Expose the same regex via the CLI so users can adapt to their own naming.
-if (!is.null(opt\$sample_name_regex) && nzchar(opt\$sample_name_regex)) {
+# featureCounts column names often carry the full BAM path; the vignette
+# strips them to the run accession via `gsub(".*(SRR[0-9]+).*", "\\1", ...)`.
+if (is_set(opt\$sample_name_regex)) {
     names(cnt) <- gsub(opt\$sample_name_regex, "\\\\1", names(cnt))
 }
 
-cond <- read_csv(opt\$sample_file, show_col_types = FALSE, progress = FALSE) |>
+# meta.yml documents CSV or TSV; pick the delim by file extension.
+sample_ext <- tolower(tools::file_ext(sub("\\\\.gz\$", "", basename(opt\$sample_file))))
+cond <- read_delim(opt\$sample_file, delim = if (sample_ext == "csv") "," else "\t",
+                   show_col_types = FALSE, progress = FALSE) |>
     as.data.frame() |>
     rename_with(\\(nm) tolower(trimws(nm)))
 
-# DOTSeq's parse_condition_table() insists on columns named exactly
-# `run, strategy, replicate, condition` (lower-case). Allow the user to point
-# at differently-named columns via task.ext.args and rename in-place.
+# DOTSeq insists on lower-case `run, strategy, replicate, condition` columns;
+# rename from user-specified column names if necessary, refusing collisions.
 col_map <- c(
     run       = tolower(opt\$sample_id_col),
     strategy  = tolower(opt\$strategy_col),
     replicate = tolower(opt\$replicate_col),
     condition = tolower(opt\$contrast_variable)
 )
-missing_cols <- col_map[!col_map %in% names(cond)]
+missing_cols <- setdiff(col_map, names(cond))
 if (length(missing_cols) > 0) {
-    stop(sprintf("Sample sheet missing column(s): %s. Have: %s",
-                 paste(missing_cols, collapse = ", "),
-                 paste(names(cond),  collapse = ", ")))
+    stop("Sample sheet missing column(s): ", paste(missing_cols, collapse = ", "))
 }
+nm <- names(cond)
 for (req in names(col_map)) {
     src <- col_map[[req]]
-    if (src != req) names(cond)[names(cond) == src] <- req
+    if (src == req) next
+    if (req %in% nm) stop("Cannot rename '", src, "' to '", req, "': '", req, "' column already present.")
+    nm[nm == src] <- req
+}
+names(cond) <- nm
+
+if (anyDuplicated(cond\$run)) {
+    cond <- distinct(cond, run, .keep_all = TRUE)
+}
+
+if (!opt\$reference_level %in% cond\$condition) {
+    stop("--reference_level '", opt\$reference_level, "' not in `condition`. Have: ",
+         paste(unique(cond\$condition), collapse = ", "))
+}
+if (!opt\$target_level %in% cond\$condition) {
+    stop("--target_level '", opt\$target_level, "' not in `condition`. Have: ",
+         paste(unique(cond\$condition), collapse = ", "))
 }
 
 # Subset to the two contrast levels and put `reference` first so it becomes
@@ -135,6 +153,12 @@ cond <- cond |>
     )
 
 if (nrow(cond) == 0) stop("No samples remain after filtering on the contrast levels.")
+
+# DOTSeq's design `~ condition * strategy` requires both Ribo and RNA samples.
+if (nlevels(droplevels(cond\$strategy)) < 2) {
+    stop(sprintf("Strategy column must contain both Ribo and RNA after filtering; got: %s",
+                 paste(unique(as.character(cond\$strategy)), collapse = ", ")))
+}
 
 ################################################################################
 ## DOTSeq: DOU + DTE                                                          ##
@@ -166,16 +190,20 @@ d <- DOTSeq(
 )
 
 # testDOU() and the DTE wrap-up in DOTSeq both lift rownames into an `orf_id`
-# column and clear the rownames before returning, so we just coerce to tibble.
-get_contrasts_df <- function(x, type) {
-    res <- tryCatch(getContrasts(x, type = type), error = \\(e) NULL)
-    if (is.null(res)) NULL else as_tibble(as.data.frame(res))
-}
+# column and clear the rownames, so we just coerce to tibble. Interaction
+# contrasts are the module's headline output: let real errors propagate
+# rather than catching them and writing an empty TSV that looks like a
+# successful "no significant ORFs". Strategy contrasts can legitimately be
+# absent, so tryCatch is fine there.
+dou_d <- getDOU(d)
+dte_d <- getDTE(d)
+contrasts_tibble <- function(res) if (is.null(res)) NULL else as_tibble(as.data.frame(res))
+try_contrasts <- function(x, type) tryCatch(contrasts_tibble(getContrasts(x, type = type)), error = \\(e) NULL)
 
-dou_interaction <- get_contrasts_df(getDOU(d), "interaction")
-dou_strategy    <- get_contrasts_df(getDOU(d), "strategy")
-dte_interaction <- get_contrasts_df(getDTE(d), "interaction")
-dte_strategy    <- get_contrasts_df(getDTE(d), "strategy")
+dou_interaction <- contrasts_tibble(getContrasts(dou_d, "interaction"))
+dte_interaction <- contrasts_tibble(getContrasts(dte_d, "interaction"))
+dou_strategy    <- try_contrasts(dou_d, "strategy")
+dte_strategy    <- try_contrasts(dte_d, "strategy")
 
 ################################################################################
 ## Write result tables                                                        ##
@@ -184,19 +212,16 @@ dte_strategy    <- get_contrasts_df(getDTE(d), "strategy")
 ## is the per-ORF differential translation efficiency contrast.               ##
 ################################################################################
 
-# Always emit the file (even empty) so downstream Nextflow channels stay
-# consistent across runs with different significance counts.
+# Always emit the mandatory tables (even empty) so Nextflow channels are
+# consistent; strategy tables are optional and only written when populated.
 empty_safe <- function(df) if (is.null(df)) tibble() else df
-
 write_tsv(empty_safe(dte_interaction), paste0(prefix, ".translation.dotseq.results.tsv"))
 write_tsv(empty_safe(dou_interaction), paste0(prefix, ".dou.dotseq.results.tsv"))
-
-if (!is.null(dou_strategy) && nrow(dou_strategy) > 0) {
-    write_tsv(dou_strategy, paste0(prefix, ".dou_strategy.dotseq.results.tsv"))
+write_optional <- function(df, suffix) {
+    if (!is.null(df) && nrow(df) > 0) write_tsv(df, paste0(prefix, ".", suffix))
 }
-if (!is.null(dte_strategy) && nrow(dte_strategy) > 0) {
-    write_tsv(dte_strategy, paste0(prefix, ".dte_strategy.dotseq.results.tsv"))
-}
+write_optional(dou_strategy, "dou_strategy.dotseq.results.tsv")
+write_optional(dte_strategy, "dte_strategy.dotseq.results.tsv")
 
 saveRDS(d, file = paste0(prefix, ".DOTSeqDataSets.rds"))
 
@@ -227,12 +252,12 @@ if (opt\$generate_plots) {
         }
     }
 
-    # plotDOT defaults to `force_new_device = TRUE` which unconditionally
-    # resets the active graphics device, killing the png() we just opened.
-    # Disable that so the PNG actually captures the plot.
+    # plotDOT's default `force_new_device = TRUE` would reset our png() device;
+    # disable it. Return success so the heatmap fallback can distinguish a real
+    # plot from one that left a 0-byte file behind.
     safe_plot_dot <- function(plot_type, fname, results_df = NULL, data = NULL,
                               annotation_params = list()) {
-        if (is.null(results_df) || nrow(results_df) == 0) return(invisible(NULL))
+        if (is.null(results_df) || nrow(results_df) == 0) return(invisible(FALSE))
         tryCatch({
             png(fname, width = 900, height = 800, res = 110)
             plotDOT(
@@ -245,30 +270,28 @@ if (opt\$generate_plots) {
                 force_new_device  = FALSE
             )
             dev.off()
+            invisible(TRUE)
         }, error = \\(e) {
             while (length(dev.list()) > 0) dev.off()
+            if (file.exists(fname)) unlink(fname)
             message(sprintf("plotDOT(%s) failed: %s", plot_type, conditionMessage(e)))
+            invisible(FALSE)
         })
     }
 
-    # plotDOT wants both DOU and DTE columns on a single results frame keyed by orf_id.
     plotdot_df <- if (!is.null(dou_interaction) && !is.null(dte_interaction)) {
         dou_interaction |> inner_join(dte_interaction, by = "orf_id", suffix = c("_dou", "_dte"))
     } else NULL
 
-    safe_plot_dot("volcano",   paste0(prefix, ".volcano.png"),   plotdot_df, getDOU(d))
-    safe_plot_dot("composite", paste0(prefix, ".composite.png"), plotdot_df, getDOU(d))
+    safe_plot_dot("volcano",   paste0(prefix, ".volcano.png"),   plotdot_df, dou_d)
+    safe_plot_dot("composite", paste0(prefix, ".composite.png"), plotdot_df, dou_d)
     safe_plot_dot("venn",      paste0(prefix, ".venn.png"),      plotdot_df)
 
-    # The heatmap pairs mORFs with a chosen short-ORF class within each gene;
-    # try uORF first (the package default) and fall back to dORF if no
-    # significant gene has both. tryCatch in safe_plot_dot makes either a
-    # no-op if the data don't support it.
-    safe_plot_dot("heatmap", paste0(prefix, ".heatmap.png"),
-                  plotdot_df, getDOU(d), list(sorf_type = "uORF"))
-    if (!file.exists(paste0(prefix, ".heatmap.png"))) {
-        safe_plot_dot("heatmap", paste0(prefix, ".heatmap.png"),
-                      plotdot_df, getDOU(d), list(sorf_type = "dORF"))
+    # Heatmap needs mORF + sorf_type pairs per gene; try uORF (package default)
+    # then dORF.
+    heatmap_path <- paste0(prefix, ".heatmap.png")
+    if (!safe_plot_dot("heatmap", heatmap_path, plotdot_df, dou_d, list(sorf_type = "uORF"))) {
+        safe_plot_dot("heatmap", heatmap_path, plotdot_df, dou_d, list(sorf_type = "dORF"))
     }
 }
 

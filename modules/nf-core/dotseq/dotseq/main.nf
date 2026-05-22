@@ -36,4 +36,28 @@ process DOTSEQ_DOTSEQ {
 
     script:
     template 'dotseq.R'
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.translation.dotseq.results.tsv
+    touch ${prefix}.dou.dotseq.results.tsv
+    touch ${prefix}.dou_strategy.dotseq.results.tsv
+    touch ${prefix}.dte_strategy.dotseq.results.tsv
+    touch ${prefix}.volcano.png
+    touch ${prefix}.composite.png
+    touch ${prefix}.venn.png
+    touch ${prefix}.heatmap.png
+    touch ${prefix}.interaction_p_distribution.png
+    touch ${prefix}.DOTSeqDataSets.rds
+    touch ${prefix}.R_sessionInfo.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bioconductor-dotseq: \$(Rscript -e "cat(as.character(packageVersion('DOTSeq')))")
+        r-optparse: \$(Rscript -e "cat(as.character(packageVersion('optparse')))")
+        r-readr: \$(Rscript -e "cat(as.character(packageVersion('readr')))")
+        r-dplyr: \$(Rscript -e "cat(as.character(packageVersion('dplyr')))")
+    END_VERSIONS
+    """
 }
