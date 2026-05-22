@@ -1,0 +1,175 @@
+nextflow_process {
+
+    name "Test Process GCTA_ADJUSTGRM"
+    script "../main.nf"
+    process "GCTA_ADJUSTGRM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/adjustgrm"
+    tag "gcta/makegrm"
+
+    setup {
+        run("GCTA_MAKEGRM", alias: "GCTA_MAKEGRM_DENSE") {
+            script "../../makegrm/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'tiny_dense' ],
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRM", alias: "GCTA_MAKEGRM_DENSE_STUB") {
+            script "../../makegrm/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'stub_dense' ],
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - adjust dense GRM") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files.map { meta, grm_files -> [meta, grm_files, 1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.size() == 1 },
+                { assert process.out.grm_files.get(0).get(0).id == "tiny_dense" },
+                {
+                    def grm_row = process.out.grm_files.get(0)
+                    def expected_prefix = "${grm_row.get(0).id}_adj"
+                    assert grm_row.get(1).collect { file(it).name }.sort() == [
+                        "${expected_prefix}.grm.N.bin",
+                        "${expected_prefix}.grm.bin",
+                        "${expected_prefix}.grm.id"
+                    ]
+                },
+                {
+                    assert snapshot(
+                        process.out.grm_files,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - adjust dense GRM fails without adjustment scalar") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files.map { meta, grm_files -> [meta, grm_files, null] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - adjust dense GRM fails when meta.id is not GRM basename") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files.map { meta, grm_files -> [[ id:meta.id + '_mismatched' ], grm_files, 1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - adjust dense GRM fails for malformed GRM tuple") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files.map { meta, grm_files -> [meta, 1] }
+                """
+            }
+        }
+
+        then {
+            assert !process.success
+        }
+    }
+
+    test("homo_sapiens popgen - adjust dense GRM - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE_STUB.out.grm_files.map { meta, grm_files -> [meta, grm_files, 1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.get(0).get(0).id == "stub_dense" },
+                {
+                    def grm_row = process.out.grm_files.get(0)
+                    def expected_prefix = "${grm_row.get(0).id}_adj"
+                    assert grm_row.get(1).collect { file(it).name }.sort() == [
+                        "${expected_prefix}.grm.N.bin",
+                        "${expected_prefix}.grm.bin",
+                        "${expected_prefix}.grm.id"
+                    ]
+                },
+                {
+                    assert snapshot(
+                        process.out.grm_files,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+}
