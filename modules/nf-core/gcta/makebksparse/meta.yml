@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_makebksparse"
+description: Create a sparse GRM from a dense GRM for downstream fastGWA analyses
+keywords:
+  - gcta
+  - genome-wide complex trait analysis
+  - grm
+  - genetic relationship matrix
+  - sparse
+  - genetics
+tools:
+  - "gcta":
+      description: "Genome-wide Complex Trait Analysis (GCTA) estimates genetic relationships, variance components, and association statistics from genome-wide data."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://yanglab.westlake.edu.cn/software/gcta/"
+      licence: ["GPL-3.0-only"]
+      identifier: "biotools:gcta"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing dense GRM metadata
+          e.g. `[ id:'plink_simulated' ]`
+          `meta.id` is required and is the dense GRM basename contract used by `gcta --grm`.
+          Input files must therefore be staged as `<meta.id>.grm.id`, `<meta.id>.grm.bin`, and `<meta.id>.grm.N.bin`.
+    - grm_files:
+        type: file
+        description: Dense GRM sidecar files
+        pattern: "*.grm.{id,bin,N.bin}"
+        ontologies: []
+  - cutoff:
+      type: float
+      description: Sparse GRM cutoff passed to `--make-bK-sparse`
+
+output:
+  sparse_grm_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing sparse GRM metadata
+            e.g. `[ id:'plink_simulated_sp' ]`
+            `meta.id` is set to the sparse GRM basename emitted by this module and can be used downstream as `--grm-sparse`.
+      - "*_sp.grm.*":
+          type: file
+          description: Sparse GRM sidecar files
+          pattern: "*_sp.grm.{id,sp}"
+          ontologies: []
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the version was collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"
