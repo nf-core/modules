@@ -1,0 +1,96 @@
+nextflow_process {
+
+    name "Test Process GAPSEQ_FILL"
+    script "../main.nf"
+    process "GAPSEQ_FILL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gapseq"
+    tag "gapseq/fill"
+    tag "gapseq/draft"
+    tag "gapseq/find"
+    tag "gapseq/findtransport"
+
+    test("test gap filling - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test' ],
+                    file('test-draft.RDS'),
+                    []
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta] - real") {
+
+        setup {
+            run("GAPSEQ_FIND") {
+                config "./nextflow.config"
+                script "../../find/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+
+            run("GAPSEQ_FINDTRANSPORT") {
+                config "./nextflow.config"
+                script "../../findtransport/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+
+            run("GAPSEQ_DRAFT") {
+                script "../../draft/main.nf"
+                process {
+                    """
+                    input[0] = GAPSEQ_FIND.out.reactions
+                        .join(GAPSEQ_FINDTRANSPORT.out.tbl)
+                        .join(GAPSEQ_FIND.out.pathways)
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GAPSEQ_DRAFT.out.draft
+                    .map { meta, rds -> [ meta, rds, [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
