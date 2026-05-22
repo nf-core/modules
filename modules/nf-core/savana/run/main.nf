@@ -12,10 +12,10 @@ process SAVANA_RUN {
     tuple val(meta2), path(ref), path(ref_index)
 
     output:
-    tuple val(meta), path("${prefix}/${prefix}.sv_breakpoints.vcf"), emit: sv_breakpoints_vcf
-    tuple val(meta), path("${prefix}/${prefix}.sv_breakpoints.bedpe"), emit: sv_breakpoints_bedpe
-    tuple val(meta), path("${prefix}/${prefix}.sv_breakpoints_read_support.tsv"), emit: sv_breakpoints_read_support
-    tuple val(meta), path("${prefix}/${prefix}.inserted_sequences.fa"), emit: inserted_sequences
+    tuple val(meta), path("outdir/${prefix}.sv_breakpoints.vcf"), emit: sv_breakpoints_vcf
+    tuple val(meta), path("outdir/${prefix}.sv_breakpoints.bedpe"), emit: sv_breakpoints_bedpe
+    tuple val(meta), path("outdir/${prefix}.sv_breakpoints_read_support.tsv"), emit: sv_breakpoints_read_support
+    tuple val(meta), path("outdir/${prefix}.inserted_sequences.fa"), emit: inserted_sequences
     tuple val("${task.process}"), val("savana"), eval("python -c \"import importlib.metadata as m; print(m.version('savana'))\""), emit: versions_savana, topic: versions
 
     when:
@@ -30,7 +30,7 @@ process SAVANA_RUN {
         --normal ${normal} \\
         --ref ${ref} \\
         --ref_index ${ref_index} \\
-        --outdir ${prefix} \\
+        --outdir outdir \\
         --sample ${prefix} \\
         --threads ${task.cpus} \\
         ${args}
@@ -39,10 +39,10 @@ process SAVANA_RUN {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}
-    touch ${prefix}/${prefix}.sv_breakpoints.vcf
-    touch ${prefix}/${prefix}.sv_breakpoints.bedpe
-    touch ${prefix}/${prefix}.sv_breakpoints_read_support.tsv
-    touch ${prefix}/${prefix}.inserted_sequences.fa
+    mkdir -p outdir
+    touch outdir/${prefix}.sv_breakpoints.vcf
+    touch outdir/${prefix}.sv_breakpoints.bedpe
+    touch outdir/${prefix}.sv_breakpoints_read_support.tsv
+    touch outdir/${prefix}.inserted_sequences.fa
     """
 }
