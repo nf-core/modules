@@ -1,0 +1,302 @@
+nextflow_process {
+
+    name "Test Process GCTA_REML"
+    script "../main.nf"
+    process "GCTA_REML"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/reml"
+    tag "gcta/makegrm"
+    tag "gawk"
+    config "./nextflow.config"
+
+    setup {
+        run("GAWK", alias: "GAWK_QUANTITATIVE_PHENOTYPE") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTrait' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, \$3 }').collectFile(name:'quantitative_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_MULTI_PHENOTYPES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTraitMpheno' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, \$3, (\$3 * 0.5) + ((NR % 7) / 10.0) }').collectFile(name:'multi_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_BINARY_PHENOTYPE") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'BinaryTrait' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 + 1 }').collectFile(name:'binary_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_QUANTITATIVE_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_quant' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$4, \$5 }').collectFile(name:'quantitative_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_CATEGORICAL_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_cat' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'categorical_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRM", alias: "GCTA_MAKEGRM_DENSE") {
+            script "../../makegrm/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_dense' ],
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - dense GRM with mpheno selection") {
+        when {
+            params {
+                module_args = '--mpheno 2'
+            }
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files
+                input[1] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'plink_simulated_dense' ], pheno] }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_dense' ], covar] }
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_dense' ], covar] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_dense" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - quantitative phenotype with dense GRM and covariates") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files
+                input[1] = GAWK_QUANTITATIVE_PHENOTYPE.out.output.map { meta, pheno -> [[ id:'plink_simulated_dense' ], pheno] }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_dense' ], covar] }
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_dense' ], covar] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_dense" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - quantitative phenotype with dense GRM and no covariates") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files
+                input[1] = GAWK_QUANTITATIVE_PHENOTYPE.out.output.map { meta, pheno -> [[ id:'plink_simulated_dense' ], pheno] }
+                input[2] = [[ id:'plink_simulated_dense' ], []]
+                input[3] = [[ id:'plink_simulated_dense' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_dense" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - binary phenotype with dense GRM and prevalence") {
+        when {
+            params {
+                module_args = '--prevalence 0.1'
+            }
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files
+                input[1] = GAWK_BINARY_PHENOTYPE.out.output.map { meta, pheno -> [[ id:'plink_simulated_dense' ], pheno] }
+                input[2] = [[ id:'plink_simulated_dense' ], []]
+                input[3] = [[ id:'plink_simulated_dense' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_dense" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - dense GRM defaults to first phenotype") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files
+                input[1] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'plink_simulated_dense' ], pheno] }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_dense' ], covar] }
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_dense' ], covar] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_dense" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - fails when mpheno index is out of range") {
+        when {
+            params {
+                module_args = '--mpheno 3'
+            }
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files
+                input[1] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'plink_simulated_dense' ], pheno] }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_dense' ], covar] }
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_dense' ], covar] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - quantitative phenotype with dense GRM - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files
+                input[1] = GAWK_QUANTITATIVE_PHENOTYPE.out.output.map { meta, pheno -> [[ id:'plink_simulated_dense' ], pheno] }
+                input[2] = [[ id:'plink_simulated_dense' ], []]
+                input[3] = [[ id:'plink_simulated_dense' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_dense" },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+}
