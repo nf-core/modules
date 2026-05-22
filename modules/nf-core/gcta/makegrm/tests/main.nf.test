@@ -1,0 +1,142 @@
+nextflow_process {
+
+    name "Test Process GCTA_MAKEGRM"
+    script "../main.nf"
+    process "GCTA_MAKEGRM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/makegrm"
+
+    test("homo_sapiens popgen - plink2") {
+        when {
+            process {
+                """
+                file('gcta_grm.mpfile').text = 'plink_simulated plink_simulated.pgen plink_simulated.psam plink_simulated.pvar\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm' ],
+                    file('gcta_grm.mpfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.size() == 1 },
+                { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm' },
+                { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
+                { assert process.out.grm_files.get(0).get(1).size() == 3 },
+                {
+                    assert process.out.grm_files.get(0).get(1).collect { file(it).name }.toSet() == [
+                        'gcta_grm.grm.id',
+                        'gcta_grm.grm.bin',
+                        'gcta_grm.grm.N.bin'
+                    ] as Set
+                },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--make-grm') },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--mpfile') },
+                {
+                    assert snapshot(
+                        process.out.grm_files,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - plink1") {
+        when {
+            process {
+                """
+                file('gcta_grm.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm_bed' ],
+                    file('gcta_grm.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.size() == 1 },
+                { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm_bed' },
+                { assert process.out.grm_files.get(0).get(0).keySet() == ['id'] as Set },
+                { assert process.out.grm_files.get(0).get(1).size() == 3 },
+                {
+                    assert process.out.grm_files.get(0).get(1).collect { file(it).name }.toSet() == [
+                        'gcta_grm_bed.grm.id',
+                        'gcta_grm_bed.grm.bin',
+                        'gcta_grm_bed.grm.N.bin'
+                    ] as Set
+                },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--make-grm') },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--mbfile') },
+                {
+                    assert snapshot(
+                        process.out.grm_files,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - plink1 - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                file('gcta_grm.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm_bed' ],
+                    file('gcta_grm.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
