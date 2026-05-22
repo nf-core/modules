@@ -13,7 +13,7 @@ process FINALETOOLKIT_WPS {
     tuple val(meta3), path(chromosome_sizes)
 
     output:
-    tuple val(meta), path("${prefix}_wps.bw"), emit: bigwig
+    tuple val(meta), path("${prefix}.bw"), emit: bigwig
     tuple val("${task.process}"), val('finaletoolkit'), eval("finaletoolkit --version | sed 's/FinaleToolkit //g'"), topic: versions, emit: versions_finaletoolkit
 
     when:
