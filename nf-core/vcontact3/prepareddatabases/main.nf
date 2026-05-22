@@ -22,7 +22,7 @@ process VCONTACT3_PREPAREDDATABASES {
     def args = task.ext.args ?: ''
     """
     vcontact3 prepare_databases \\
-        --get-version "latest" \\
+        --get-version "${db_version}" \\
         --set-location "${prefix}"  \\
         $args
 
