@@ -9,7 +9,6 @@ process VCONTACT3_PREPAREDDATABASES {
 
     input:
     tuple val(meta), val(db_version)
-    
 
     output:
     tuple val(meta), path ("${prefix}/"), emit: database
