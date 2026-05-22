@@ -50,11 +50,11 @@ repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.13
     hooks:
-      - id: ruff
+      - id: ruff-check
         files: \.py$
         args: [--fix, --exit-non-zero-on-fix, "--select", "I,E1,E4,E7,E9,F,UP,N"] # sort imports and fix (rules taken from nf-core/tools)
       - id: ruff-format # formatter
-    # NOTE This runs with Docker instead of the binary. Hoping anyone messing with Dockerfiles has Docker installed
+  # NOTE This runs with Docker instead of the binary. Hoping anyone messing with Dockerfiles has Docker installed
   - repo: https://github.com/hadolint/hadolint
     rev: v2.14.0
     hooks:
