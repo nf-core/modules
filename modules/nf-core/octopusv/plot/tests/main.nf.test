@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process OCTOPUSV_PLOT"
+    script "../main.nf"
+    process "OCTOPUSV_PLOT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "octopusv"
+    tag "octopusv/plot"
+
+    test("homo_sapiens - stat - txt") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/stat/stats_sk-n-as-severus-ont.txt', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.sv_sizes_png.get(0).get(1)),
+                    path(process.out.sv_sizes_svg.get(0).get(1)),
+                    path(process.out.sv_types_png.get(0).get(1)),
+                    path(process.out.sv_types_svg.get(0).get(1)),
+                    path(process.out.chromosome_distribution_png.get(0).get(1)),
+                    path(process.out.chromosome_distribution_svg.get(0).get(1)),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - stat - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/stat/stats_sk-n-as-severus-ont.txt', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
