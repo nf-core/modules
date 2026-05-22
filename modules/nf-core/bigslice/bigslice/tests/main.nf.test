@@ -1,19 +1,20 @@
 nextflow_process {
 
-    name "Test Process BIGSLICE"
+    name "Test Process BIGSLICE_BIGSLICE"
     script "../main.nf"
-    process "BIGSLICE"
+    process "BIGSLICE_BIGSLICE"
     config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "bigslice"
+    tag "bigslice/bigslice"
     tag "aria2"
     tag "untar"
 
     setup {
         run("ARIA2", alias: "ARIA2_HMMDB") {
-            script "../../aria2/main.nf"
+            script "../../../aria2/main.nf"
             process {
                 """
                 input[0] = [
@@ -25,7 +26,7 @@ nextflow_process {
         }
 
         run("UNTAR", alias: "UNTAR_HMMDB") {
-            script "../../untar/main.nf"
+            script "../../../untar/main.nf"
                 process {
                 """
                 input[0] = ARIA2_HMMDB.out.downloaded_file
@@ -34,7 +35,7 @@ nextflow_process {
         }
 
         run("ARIA2", alias: "ARIA2_GBK") {
-            script "../../aria2/main.nf"
+            script "../../../aria2/main.nf"
             process {
                 """
                 input[0] = [
@@ -46,7 +47,7 @@ nextflow_process {
         }
 
         run("UNTAR", alias: "UNTAR_GBK") {
-            script "../../untar/main.nf"
+            script "../../../untar/main.nf"
                 process {
                 """
                 input[0] = ARIA2_GBK.out.downloaded_file
