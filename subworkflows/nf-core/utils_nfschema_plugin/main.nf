@@ -64,10 +64,10 @@ workflow UTILS_NFSCHEMA_PLUGIN {
     if(validate_params) {
         validateOptions = [:]
         if(parameters_schema) {
-            validateOptions << [parametersSchema: parameters_schema]
+            validateOptions << [parameters_schema: parameters_schema]
         }
         if(cli_typecast != null) {
-            validateOptions << [cliTypecast: cli_typecast]
+            validateOptions << [cast_cli_params: cli_typecast]
         }
         validateParameters(validateOptions)
     }
