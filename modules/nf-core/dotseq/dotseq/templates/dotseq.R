@@ -85,46 +85,14 @@ walk(c("count_file", "sample_file", "flattened_gtf", "flattened_bed"), \\(x) {
 prefix <- opt\$output_prefix
 
 ################################################################################
-## Helpers                                                                    ##
-################################################################################
-
-# Pick TSV/CSV from file extension; the `comment` argument lets us drop
-# featureCounts' first-line program-version comment.
-read_delim_flexible <- function(file, comment = "") {
-    base  <- sub("\\\\.gz\$", "", basename(file))
-    ext   <- tolower(tools::file_ext(base))
-    delim <- if (ext == "csv") "," else "\t"
-    suppressWarnings(
-        read_delim(file, delim = delim, comment = comment,
-                   show_col_types = FALSE, progress = FALSE)
-    )
-}
-
-# DOTSeq's getContrasts() returns objects with ORF IDs in rownames; lift
-# them into an `orf_id` column so the TSV is self-describing.
-to_orf_tibble <- function(x) {
-    if (is.null(x)) return(NULL)
-    df <- as.data.frame(x)
-    if (!"orf_id" %in% names(df)) df <- rownames_to_column(df, "orf_id")
-    as_tibble(df)
-}
-
-# Always emit the file (even when empty) so downstream Nextflow channels
-# behave consistently across runs with different significance counts.
-write_results_tsv <- function(df, suffix) {
-    out_path <- paste0(prefix, ".", suffix)
-    if (is.null(df) || nrow(df) == 0) {
-        write_tsv(tibble(), out_path)
-    } else {
-        write_tsv(df, out_path)
-    }
-}
-
-################################################################################
 ## Read inputs and normalise the sample sheet                                 ##
 ################################################################################
 
-cnt <- as.data.frame(read_delim_flexible(opt\$count_file, comment = "#"))
+# featureCounts emits a `# Program:...` banner as the first line; `comment`
+# strips it. Returns a tibble; DOTSeqDataSetsFromFeatureCounts() wants a
+# vanilla data.frame so coerce.
+cnt <- read_tsv(opt\$count_file, comment = "#", show_col_types = FALSE,
+                progress = FALSE) |> as.data.frame()
 
 # featureCounts column names often carry the full BAM path; the vignette uses
 # `gsub(".*(SRR[0-9]+).*", "\\1", names(cnt))` to keep just the run accession.
@@ -133,7 +101,7 @@ if (!is.null(opt\$sample_name_regex) && nzchar(opt\$sample_name_regex)) {
     names(cnt) <- gsub(opt\$sample_name_regex, "\\\\1", names(cnt))
 }
 
-cond <- read_delim_flexible(opt\$sample_file) |>
+cond <- read_csv(opt\$sample_file, show_col_types = FALSE, progress = FALSE) |>
     as.data.frame() |>
     rename_with(\\(nm) tolower(trimws(nm)))
 
@@ -197,10 +165,17 @@ d <- DOTSeq(
     verbose             = FALSE
 )
 
-dou_interaction <- to_orf_tibble(tryCatch(getContrasts(getDOU(d), type = "interaction"), error = \\(e) NULL))
-dou_strategy    <- to_orf_tibble(tryCatch(getContrasts(getDOU(d), type = "strategy"),    error = \\(e) NULL))
-dte_interaction <- to_orf_tibble(tryCatch(getContrasts(getDTE(d), type = "interaction"), error = \\(e) NULL))
-dte_strategy    <- to_orf_tibble(tryCatch(getContrasts(getDTE(d), type = "strategy"),    error = \\(e) NULL))
+# testDOU() and the DTE wrap-up in DOTSeq both lift rownames into an `orf_id`
+# column and clear the rownames before returning, so we just coerce to tibble.
+get_contrasts_df <- function(x, type) {
+    res <- tryCatch(getContrasts(x, type = type), error = \\(e) NULL)
+    if (is.null(res)) NULL else as_tibble(as.data.frame(res))
+}
+
+dou_interaction <- get_contrasts_df(getDOU(d), "interaction")
+dou_strategy    <- get_contrasts_df(getDOU(d), "strategy")
+dte_interaction <- get_contrasts_df(getDTE(d), "interaction")
+dte_strategy    <- get_contrasts_df(getDTE(d), "strategy")
 
 ################################################################################
 ## Write result tables                                                        ##
@@ -209,14 +184,18 @@ dte_strategy    <- to_orf_tibble(tryCatch(getContrasts(getDTE(d), type = "strate
 ## is the per-ORF differential translation efficiency contrast.               ##
 ################################################################################
 
-write_results_tsv(dte_interaction, "translation.dotseq.results.tsv")
-write_results_tsv(dou_interaction, "dou.dotseq.results.tsv")
+# Always emit the file (even empty) so downstream Nextflow channels stay
+# consistent across runs with different significance counts.
+empty_safe <- function(df) if (is.null(df)) tibble() else df
+
+write_tsv(empty_safe(dte_interaction), paste0(prefix, ".translation.dotseq.results.tsv"))
+write_tsv(empty_safe(dou_interaction), paste0(prefix, ".dou.dotseq.results.tsv"))
 
 if (!is.null(dou_strategy) && nrow(dou_strategy) > 0) {
-    write_results_tsv(dou_strategy, "dou_strategy.dotseq.results.tsv")
+    write_tsv(dou_strategy, paste0(prefix, ".dou_strategy.dotseq.results.tsv"))
 }
 if (!is.null(dte_strategy) && nrow(dte_strategy) > 0) {
-    write_results_tsv(dte_strategy, "dte_strategy.dotseq.results.tsv")
+    write_tsv(dte_strategy, paste0(prefix, ".dte_strategy.dotseq.results.tsv"))
 }
 
 saveRDS(d, file = paste0(prefix, ".DOTSeqDataSets.rds"))
@@ -251,17 +230,19 @@ if (opt\$generate_plots) {
     # plotDOT defaults to `force_new_device = TRUE` which unconditionally
     # resets the active graphics device, killing the png() we just opened.
     # Disable that so the PNG actually captures the plot.
-    safe_plot_dot <- function(plot_type, fname, results_df = NULL, data = NULL) {
+    safe_plot_dot <- function(plot_type, fname, results_df = NULL, data = NULL,
+                              annotation_params = list()) {
         if (is.null(results_df) || nrow(results_df) == 0) return(invisible(NULL))
         tryCatch({
             png(fname, width = 900, height = 800, res = 110)
             plotDOT(
-                plot_type        = plot_type,
-                results          = results_df,
-                data             = data,
-                id_mapping       = FALSE,
-                plot_params      = list(top_hits = opt\$top_hits),
-                force_new_device = FALSE
+                plot_type         = plot_type,
+                results           = results_df,
+                data              = data,
+                id_mapping        = FALSE,
+                plot_params       = list(top_hits = opt\$top_hits),
+                annotation_params = annotation_params,
+                force_new_device  = FALSE
             )
             dev.off()
         }, error = \\(e) {
@@ -278,7 +259,17 @@ if (opt\$generate_plots) {
     safe_plot_dot("volcano",   paste0(prefix, ".volcano.png"),   plotdot_df, getDOU(d))
     safe_plot_dot("composite", paste0(prefix, ".composite.png"), plotdot_df, getDOU(d))
     safe_plot_dot("venn",      paste0(prefix, ".venn.png"),      plotdot_df)
-    safe_plot_dot("heatmap",   paste0(prefix, ".heatmap.png"),   plotdot_df, getDOU(d))
+
+    # The heatmap pairs mORFs with a chosen short-ORF class within each gene;
+    # try uORF first (the package default) and fall back to dORF if no
+    # significant gene has both. tryCatch in safe_plot_dot makes either a
+    # no-op if the data don't support it.
+    safe_plot_dot("heatmap", paste0(prefix, ".heatmap.png"),
+                  plotdot_df, getDOU(d), list(sorf_type = "uORF"))
+    if (!file.exists(paste0(prefix, ".heatmap.png"))) {
+        safe_plot_dot("heatmap", paste0(prefix, ".heatmap.png"),
+                      plotdot_df, getDOU(d), list(sorf_type = "dORF"))
+    }
 }
 
 ################################################################################
