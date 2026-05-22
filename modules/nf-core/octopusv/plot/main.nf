@@ -29,7 +29,7 @@ process OCTOPUSV_PLOT {
     octopusv plot \\
         ${txt} \\
         --output-prefix ${prefix} \\
-        ${args} \\
+        ${args}
     """
 
     stub:
