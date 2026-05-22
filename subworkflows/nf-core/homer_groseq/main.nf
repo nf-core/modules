@@ -36,25 +36,21 @@ workflow HOMER_GROSEQ {
     * Create a Tag Directory From The GRO-Seq experiment
     */
     HOMER_MAKETAGDIRECTORY(bam, fasta)
-    ch_versions = ch_versions.mix(HOMER_MAKETAGDIRECTORY.out.versions)
 
     /*
     * Creating UCSC Visualization Files
     */
     HOMER_MAKEUCSCFILE(HOMER_MAKETAGDIRECTORY.out.tagdir)
-    ch_versions = ch_versions.mix(HOMER_MAKEUCSCFILE.out.versions)
 
     /*
     * Find transcripts directly from GRO-Seq
     */
     HOMER_FINDPEAKS(HOMER_MAKETAGDIRECTORY.out.tagdir, ch_uniqmap)
-    ch_versions = ch_versions.mix(HOMER_FINDPEAKS.out.versions)
 
     /*
     * Convert peak file to bed file
     */
     HOMER_POS2BED(HOMER_FINDPEAKS.out.txt)
-    ch_versions = ch_versions.mix(HOMER_POS2BED.out.versions)
 
     emit:
     tagdir    = HOMER_MAKETAGDIRECTORY.out.tagdir // channel: [ val(meta), [ tagdir ] ]
