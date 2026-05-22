@@ -35,7 +35,7 @@ process FLUMUT_RUN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
-    
+
     touch \\
         ${prefix}.xlsm \\
         ${prefix}_markers.tsv \\
