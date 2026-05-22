@@ -1,17 +1,68 @@
 {
+    "test-seqsero2 - stub": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_log.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_result.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "txt": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_result.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_seqsero2": [
+                    [
+                        "SEQSERO2",
+                        "seqsero2",
+                        "1.2.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-18T23:05:46.062686884",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.2"
+        }
+    },
     "test-seqsero2": {
         "content": [
             "SeqSero_log.txt",
             "Sample name\tOutput directory\tInput files\tO antigen prediction\tH1 antigen prediction(fliC)\tH2 antigen prediction(fljB)\tPredicted identification\tPredicted antigenic profile\tPredicted serotype\tNote",
             "Sample name:\ttest",
-            [
-                "versions.yml:md5,58aed3e038f84e5d4827dd22f5c88a13"
-            ]
+            {
+                "versions_seqsero2": [
+                    [
+                        "SEQSERO2",
+                        "seqsero2",
+                        "1.2.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-05-18T23:05:40.348910385",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-27T13:25:13.677371"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.2"
+        }
     }
 }
