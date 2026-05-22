@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "dotseq_dotseq"
 description: |
   Genome-wide detection of differential ORF usage (DOU) and ORF-level
@@ -12,13 +11,14 @@ keywords:
   - orf
 tools:
   - "dotseq":
-      description: "DOTSeq: Differential ORF Translation analysis for Ribo-seq with matched RNA-seq"
+      description: "DOTSeq: Differential ORF Translation analysis for Ribo-seq with
+        matched RNA-seq"
       homepage: "https://bioconductor.org/packages/release/bioc/html/DOTSeq.html"
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DOTSeq/inst/doc/DOTSeq.html"
       tool_dev_url: "https://github.com/compgenom/DOTSeq"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -48,8 +48,8 @@ input:
           required `run`, `strategy`, `replicate`, and `condition` (defaults
           match those names; can be overridden via task.ext.args).
         ontologies:
-          - edam: "http://edamontology.org/format_3752" # CSV
-          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752"
+          - edam: "http://edamontology.org/format_3475"
     - counts:
         type: file
         description: |
@@ -57,21 +57,20 @@ input:
           `Geneid`, `Chr`, `Start`, `End`, `Strand`, `Length` followed by
           per-sample count columns matching the `run` values in the sample sheet.
         ontologies:
-          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3475"
     - flattened_gtf:
         type: file
         description: |
           Flattened ORF annotation in GTF format, with `gene_id` and
           `exon_number` attributes and `type == "exon"` features.
         ontologies:
-          - edam: "http://edamontology.org/format_2306" # GTF
+          - edam: "http://edamontology.org/format_2306"
     - flattened_bed:
         type: file
         description: |
           Flattened ORF annotation in BED format matching the GTF.
         ontologies:
-          - edam: "http://edamontology.org/format_3003" # BED
-
+          - edam: "http://edamontology.org/format_3003"
 output:
   dou_interaction:
     - - meta:
@@ -85,7 +84,7 @@ output:
             (effect size, lfsr, padj, contrast).
           pattern: ".dou.interaction.dotseq.results.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   dte_interaction:
     - - meta:
           type: map
@@ -98,7 +97,7 @@ output:
             for differential translation efficiency.
           pattern: ".dte.interaction.dotseq.results.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   dou_strategy:
     - - meta:
           type: map
@@ -111,7 +110,7 @@ output:
             written when available.
           pattern: ".dou.strategy.dotseq.results.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   dte_strategy:
     - - meta:
           type: map
@@ -124,7 +123,7 @@ output:
             written when available.
           pattern: ".dte.strategy.dotseq.results.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   rdata:
     - - meta:
           type: map
@@ -132,7 +131,8 @@ output:
             Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
       - "*.DOTSeqDataSets.rds":
           type: file
-          description: Serialised DOTSeqDataSets object containing DOU and DTE results
+          description: Serialised DOTSeqDataSets object containing DOU and DTE
+            results
           pattern: ".DOTSeqDataSets.rds"
           ontologies: []
   session_info:
@@ -145,14 +145,19 @@ output:
           description: dump of R sessionInfo()
           pattern: "*.log"
           ontologies:
-            - edam: "http://edamontology.org/data_1678" # Log
+            - edam: "http://edamontology.org/data_1678"
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+          - edam: "http://edamontology.org/format_3750"
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@pinin4fjords"
 maintainers:
