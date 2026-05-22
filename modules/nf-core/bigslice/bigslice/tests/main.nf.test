@@ -1,13 +1,14 @@
 nextflow_process {
 
-    name "Test Process BIGSLICE"
+    name "Test Process BIGSLICE_BIGSLICE"
     script "../main.nf"
-    process "BIGSLICE"
+    process "BIGSLICE_BIGSLICE"
     config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "bigslice"
+    tag "bigslice/bigslice"
     tag "aria2"
     tag "untar"
 
