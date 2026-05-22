@@ -8,6 +8,8 @@ suppressPackageStartupMessages({
     library(tibble)
     library(purrr)
     library(ggplot2)
+    library(GenomicRanges)
+    library(IRanges)
     library(DOTSeq)
     library(SummarizedExperiment)
 })
@@ -20,16 +22,27 @@ option_list <- list(
     make_option("--output_prefix",       type = "character", default = NULL),
     make_option("--count_file",          type = "character", default = NULL),
     make_option("--sample_file",         type = "character", default = NULL),
-    make_option("--flattened_gtf",       type = "character", default = NULL),
-    make_option("--flattened_bed",       type = "character", default = NULL),
+    make_option("--annotation_file",     type = "character", default = NULL),
     make_option("--contrast_variable",   type = "character", default = NULL),
     make_option("--reference_level",     type = "character", default = NULL),
     make_option("--target_level",        type = "character", default = NULL),
     make_option("--sample_id_col",       type = "character", default = "run"),
     make_option("--strategy_col",        type = "character", default = "strategy"),
     make_option("--replicate_col",       type = "character", default = "replicate"),
-    make_option("--sample_name_regex",   type = "character", default = NULL,
-                help = "Regex applied to count-table column names; the first capture group is kept (matches DOTSeq's vignette pattern)."),
+    make_option("--orf_id_col",          type = "character", default = "orf_id",
+                help = "Annotation column holding the ORF id (must match count_file's first column) [default: %default]"),
+    make_option("--gene_id_col",         type = "character", default = "gene_id",
+                help = "Annotation column holding the parent gene id [default: %default]"),
+    make_option("--orf_type_col",        type = "character", default = "orf_type",
+                help = "Annotation column holding the ORF biotype (mORF/uORF/dORF/etc.); used by plotDOT()'s heatmap [default: %default]"),
+    make_option("--chrom_col",           type = "character", default = "chrom",
+                help = "Optional annotation column with the ORF chromosome; dummy ranges built if absent."),
+    make_option("--start_col",           type = "character", default = "start",
+                help = "Optional annotation column with the ORF start (1-based)."),
+    make_option("--end_col",             type = "character", default = "end",
+                help = "Optional annotation column with the ORF end."),
+    make_option("--strand_col",          type = "character", default = "strand",
+                help = "Optional annotation column with the ORF strand."),
     make_option("--modules",             type = "character", default = "DOU,DTE",
                 help = "Which DOTSeq modules to run [default: %default]"),
     make_option("--min_count",           type = "integer",   default = 1L),
@@ -51,8 +64,7 @@ nf_defaults <- c(
     paste0("--output_prefix=",     ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')),
     paste0("--count_file=",        '$counts'),
     paste0("--sample_file=",       '$samplesheet'),
-    paste0("--flattened_gtf=",     '$flattened_gtf'),
-    paste0("--flattened_bed=",     '$flattened_bed'),
+    paste0("--annotation_file=",   '$annotation'),
     paste0("--contrast_variable=", '$contrast_variable'),
     paste0("--reference_level=",   '$reference'),
     paste0("--target_level=",      '$target'),
@@ -71,8 +83,6 @@ opt <- parse_args(OptionParser(option_list = option_list), args = c(nf_defaults,
 is_set <- function(x) !is.null(x) && nzchar(trimws(x))
 
 # DOTSeq's `stringent` is tri-state TRUE / FALSE / NULL; normalise via switch.
-# Without the upfront is_set() guard, switch(toupper(NULL), ...) silently
-# returns NULL and bypasses the `stop()` fallback.
 if (!is_set(opt\$stringent)) stop("--stringent must be TRUE / FALSE / NULL.")
 stringent_val <- switch(toupper(opt\$stringent),
     "TRUE"  = TRUE,
@@ -82,7 +92,6 @@ stringent_val <- switch(toupper(opt\$stringent),
 )
 modules <- trimws(strsplit(opt\$modules, ",")[[1]])
 
-# An empty output_prefix would produce dotfiles that the emit globs miss.
 walk(c("contrast_variable", "reference_level", "target_level", "output_prefix"),
      \\(x) if (!is_set(opt[[x]])) stop("Missing required option: --", x))
 
@@ -92,21 +101,21 @@ prefix <- opt\$output_prefix
 ## Read inputs and normalise the sample sheet                                 ##
 ################################################################################
 
-# `comment = "#"` strips featureCounts' `# Program:...` banner.
-cnt <- read_tsv(opt\$count_file, comment = "#", show_col_types = FALSE,
-                progress = FALSE) |> as.data.frame()
-
-# featureCounts column names often carry the full BAM path; the vignette
-# strips them to the run accession via `gsub(".*(SRR[0-9]+).*", "\\1", ...)`.
-if (is_set(opt\$sample_name_regex)) {
-    names(cnt) <- gsub(opt\$sample_name_regex, "\\\\1", names(cnt))
+read_delim_auto <- function(path) {
+    ext <- tolower(tools::file_ext(sub("\\\\.gz\$", "", basename(path))))
+    delim <- if (ext == "csv") "," else "\t"
+    read_delim(path, delim = delim, show_col_types = FALSE, progress = FALSE) |> as.data.frame()
 }
 
-# meta.yml documents CSV or TSV; pick the delim by file extension.
-sample_ext <- tolower(tools::file_ext(sub("\\\\.gz\$", "", basename(opt\$sample_file))))
-cond <- read_delim(opt\$sample_file, delim = if (sample_ext == "csv") "," else "\t",
-                   show_col_types = FALSE, progress = FALSE) |>
-    as.data.frame() |>
+cnt <- read_delim_auto(opt\$count_file)
+if (!opt\$orf_id_col %in% names(cnt)) {
+    stop("Count file missing ORF id column '", opt\$orf_id_col, "'. Have: ",
+         paste(names(cnt), collapse = ", "))
+}
+rownames(cnt) <- cnt[[opt\$orf_id_col]]
+cnt[[opt\$orf_id_col]] <- NULL
+
+cond <- read_delim_auto(opt\$sample_file) |>
     rename_with(\\(nm) tolower(trimws(nm)))
 
 # DOTSeq insists on lower-case `run, strategy, replicate, condition` columns;
@@ -154,21 +163,100 @@ cond <- cond |>
 
 if (nrow(cond) == 0) stop("No samples remain after filtering on the contrast levels.")
 
-# DOTSeq's design `~ condition * strategy` requires both Ribo and RNA samples.
 if (nlevels(droplevels(cond\$strategy)) < 2) {
     stop(sprintf("Strategy column must contain both Ribo and RNA after filtering; got: %s",
                  paste(unique(as.character(cond\$strategy)), collapse = ", ")))
 }
 
+# Restrict counts to the samples retained in cond, in the same order.
+missing_samples <- setdiff(cond\$run, colnames(cnt))
+if (length(missing_samples) > 0) {
+    stop("Count file missing column(s) for sample(s): ", paste(missing_samples, collapse = ", "))
+}
+cnt <- cnt[, cond\$run, drop = FALSE]
+
+################################################################################
+## Build the per-ORF GRanges annotation                                       ##
+##                                                                            ##
+## DOTSeq's DOU module fits a beta-binomial GLM per parent gene, grouping     ##
+## the gene's child ORFs, so gene_id is load-bearing on the annotation. The   ##
+## genomic ranges themselves are stored for downstream inspection only - the  ##
+## model fit does not depend on them. plotDOT()'s heatmap uses orf_type to    ##
+## bucket uORF/dORF, so we honour it when present.                            ##
+################################################################################
+
+ann <- read_delim_auto(opt\$annotation_file)
+required_ann_cols <- c(opt\$orf_id_col, opt\$gene_id_col)
+missing_ann_cols  <- setdiff(required_ann_cols, names(ann))
+if (length(missing_ann_cols) > 0) {
+    stop("Annotation file missing required column(s): ", paste(missing_ann_cols, collapse = ", "))
+}
+
+ann <- ann |>
+    distinct(.data[[opt\$orf_id_col]], .keep_all = TRUE)
+rownames(ann) <- ann[[opt\$orf_id_col]]
+
+orfs_with_counts <- intersect(rownames(cnt), rownames(ann))
+if (length(orfs_with_counts) == 0) {
+    stop("No ORF ids overlap between count file and annotation file.")
+}
+dropped_from_counts <- setdiff(rownames(cnt), orfs_with_counts)
+if (length(dropped_from_counts) > 0) {
+    message(sprintf(
+        "Dropping %d ORF(s) from counts that have no annotation row (e.g. %s).",
+        length(dropped_from_counts),
+        paste(head(dropped_from_counts, 3), collapse = ", ")
+    ))
+}
+cnt <- cnt[orfs_with_counts, , drop = FALSE]
+ann <- ann[orfs_with_counts, , drop = FALSE]
+
+# Build the GRanges. Coordinates default to a dummy range when absent; DOTSeq
+# only consumes mcols (gene_id, orf_number, orf_type) for the fit + plotting.
+has_coords <- all(c(opt\$chrom_col, opt\$start_col, opt\$end_col) %in% names(ann))
+if (has_coords) {
+    chrom  <- as.character(ann[[opt\$chrom_col]])
+    start  <- as.integer(ann[[opt\$start_col]])
+    end    <- as.integer(ann[[opt\$end_col]])
+    strand <- if (opt\$strand_col %in% names(ann)) as.character(ann[[opt\$strand_col]]) else "*"
+} else {
+    chrom  <- rep("chrUnknown", nrow(ann))
+    start  <- seq_len(nrow(ann))
+    end    <- start
+    strand <- rep("*", nrow(ann))
+}
+strand[!strand %in% c("+", "-", "*")] <- "*"
+
+gene_ids <- as.character(ann[[opt\$gene_id_col]])
+orf_number <- ave(gene_ids, gene_ids, FUN = seq_along)
+orf_type <- if (opt\$orf_type_col %in% names(ann)) as.character(ann[[opt\$orf_type_col]]) else rep("mORF", nrow(ann))
+orf_type[is.na(orf_type) | !nzchar(trimws(orf_type))] <- "mORF"
+
+annotation_gr <- GRanges(
+    seqnames = chrom,
+    ranges   = IRanges(start = start, end = end),
+    strand   = strand
+)
+names(annotation_gr) <- rownames(ann)
+mcols(annotation_gr)\$gene_id    <- gene_ids
+mcols(annotation_gr)\$orf_number <- orf_number
+mcols(annotation_gr)\$orf_type   <- orf_type
+
+# DOTSeqDataSetsFromSummarizeOverlaps wants a data.frame for the count table.
+# DESeqDataSetFromMatrix (called downstream) requires integer counts so coerce
+# any double columns here before they hit the constructor.
+cnt_df <- as.data.frame(lapply(cnt, function(col) as.integer(round(col))), check.names = FALSE)
+rownames(cnt_df) <- rownames(cnt)
+rownames(cond) <- cond\$run
+
 ################################################################################
 ## DOTSeq: DOU + DTE                                                          ##
 ################################################################################
 
-d <- DOTSeqDataSetsFromFeatureCounts(
-    count_table     = cnt,
+d <- DOTSeqDataSetsFromSummarizeOverlaps(
+    count_table     = cnt_df,
     condition_table = cond,
-    flattened_gtf   = opt\$flattened_gtf,
-    flattened_bed   = opt\$flattened_bed,
+    annotation      = annotation_gr,
     min_count       = opt\$min_count,
     stringent       = stringent_val,
     baseline        = opt\$reference_level,

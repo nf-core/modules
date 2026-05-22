@@ -3,7 +3,7 @@ name: "dotseq_dotseq"
 description: |
   Detect differential ORF usage (DOU) and ORF-level differential
   translation efficiency (DTE) from Ribo-seq with matched RNA-seq using
-  DOTSeq. Wraps DOTSeqDataSetsFromFeatureCounts() + DOTSeq() +
+  DOTSeq. Wraps DOTSeqDataSetsFromSummarizeOverlaps() + DOTSeq() +
   getContrasts() and emits the package's native contrast tables plus
   plotDOT() visualisations.
 keywords:
@@ -52,23 +52,27 @@ input:
     - counts:
         type: file
         description: |
-          ORF-level featureCounts output - header must include
-          `Geneid, Chr, Start, End, Strand, Length` followed by per-sample
-          count columns matching the `run` values in the sample sheet.
+          Per-ORF count matrix. First column is the ORF identifier (default
+          `orf_id`, override via `--orf_id_col`); remaining columns are
+          sample IDs that must match the `run` values in the sample sheet.
+          Both Ribo-seq and RNA-seq sample columns belong in this single
+          matrix; the sample sheet's `strategy` column distinguishes them.
         ontologies:
           - edam: "http://edamontology.org/format_3475"
-    - flattened_gtf:
+    - annotation:
         type: file
         description: |
-          Flattened ORF annotation in GTF format (gene_id + exon_number,
-          type=="exon").
+          Per-ORF annotation table (one row per ORF). Required columns:
+          `orf_id` (matches the count matrix) and `gene_id` (parent gene;
+          DOTSeq's DOU model groups child ORFs by gene). Optional columns:
+          `orf_type` (mORF / uORF / dORF; used by plotDOT()'s heatmap and
+          defaults to mORF when absent) and `chrom`, `start`, `end`,
+          `strand` (used only for downstream inspection - dummy ranges
+          are generated when absent because DOTSeq's fit does not depend
+          on genomic coordinates). Column names can be overridden via
+          task.ext.args (`--gene_id_col`, `--orf_type_col`, etc.).
         ontologies:
-          - edam: "http://edamontology.org/format_2306"
-    - flattened_bed:
-        type: file
-        description: Flattened ORF annotation in BED format matching the GTF.
-        ontologies:
-          - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_3475"
 
 output:
   translation:

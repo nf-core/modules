@@ -10,7 +10,7 @@ nextflow_process {
     tag "dotseq"
     tag "dotseq/dotseq"
 
-    test("human - featurecounts") {
+    test("human - count matrix + annotation") {
 
         when {
             process {
@@ -24,9 +24,8 @@ nextflow_process {
                 input[1] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/samplesheet.csv", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/featureCounts.cell_cycle_subset.txt.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/gencode.v47.orf_flattened_subset.gtf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/gencode.v47.orf_flattened_subset.bed.gz", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/counts.tsv.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/annotation.tsv.gz", checkIfExists: true)
                 ]
                 """
             }
@@ -57,7 +56,7 @@ nextflow_process {
         }
     }
 
-    test("human - featurecounts - stub") {
+    test("human - count matrix + annotation - stub") {
 
         options "-stub"
 
@@ -73,9 +72,8 @@ nextflow_process {
                 input[1] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/samplesheet.csv", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/featureCounts.cell_cycle_subset.txt.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/gencode.v47.orf_flattened_subset.gtf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/gencode.v47.orf_flattened_subset.bed.gz", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/counts.tsv.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/annotation.tsv.gz", checkIfExists: true)
                 ]
                 """
             }

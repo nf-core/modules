@@ -9,24 +9,18 @@ process DOTSEQ_DOTSEQ {
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)
-    tuple val(meta2), path(samplesheet), path(counts), path(flattened_gtf), path(flattened_bed)
+    tuple val(meta2), path(samplesheet), path(counts), path(annotation)
 
     output:
-    // Per-ORF differential translation efficiency (DTE interaction term)
     tuple val(meta), path("*.translation.dotseq.results.tsv")    , emit: translation
-    // Per-ORF differential ORF usage
     tuple val(meta), path("*.dou.dotseq.results.tsv")            , emit: dou
-    // Per-condition Ribo-vs-RNA strategy contrasts, when DOTSeq emits them
     tuple val(meta), path("*.dou_strategy.dotseq.results.tsv")   , emit: dou_strategy , optional: true
     tuple val(meta), path("*.dte_strategy.dotseq.results.tsv")   , emit: dte_strategy , optional: true
-    // plotDOT() outputs
     tuple val(meta), path("*.volcano.png")                       , emit: volcano_plot  , optional: true
     tuple val(meta), path("*.composite.png")                     , emit: composite_plot, optional: true
     tuple val(meta), path("*.venn.png")                          , emit: venn_plot     , optional: true
     tuple val(meta), path("*.heatmap.png")                       , emit: heatmap_plot  , optional: true
-    // Histogram of DTE adjusted p-values
     tuple val(meta), path("*.interaction_p_distribution.png")    , emit: interaction_p_distribution_plot, optional: true
-    // Serialised dataset + session info + versions
     tuple val(meta), path("*.DOTSeqDataSets.rds")                , emit: rdata
     tuple val(meta), path("*.R_sessionInfo.log")                 , emit: session_info
     path "versions.yml"                                          , emit: versions, topic: versions
