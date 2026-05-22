@@ -3,7 +3,7 @@ process FLUMUT_RUN {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "quay.io/biocontainers/flumut:0.6.4--pyhdfd78af_0"
+    container "biocontainers/flumut:0.6.5--pyhdfd78af_0"
 
     input:
     tuple val(meta), path(fasta)
