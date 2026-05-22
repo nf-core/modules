@@ -3,14 +3,14 @@ process FLUMUT_RUN {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "biocontainers/flumut:0.6.5--pyhdfd78af_0"
+    container "quay.io/biocontainers/flumut:0.6.5--pyhdfd78af_0"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    tuple val(meta), path("*xlsm"), emit: xlsm
+    tuple val(meta), path("*.xlsm"), emit: xlsm
 
     tuple val("${task.process}"), val('flumut'), eval("flumut --all-versions"), topic: versions, emit: versions_flumut
 
