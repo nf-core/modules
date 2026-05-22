@@ -41,6 +41,7 @@ input:
           e.g. `[ id:'sample1' ]`
     - site_bed:
         type: file
+        pattern: "*.bed"
         description: |
           BED file containing transcription start sites (TSS)
         ontologies:
@@ -58,7 +59,7 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3475"
 output:
-  bgiwig:
+  bigwig:
     - - meta:
           type: map
           description: |

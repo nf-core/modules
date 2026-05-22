@@ -13,7 +13,7 @@ process FINALETOOLKIT_WPS {
     tuple val(meta3), path(chromosome_sizes)
 
     output:
-    tuple val(meta), path("*_wps.bw"), emit: bgiwig
+    tuple val(meta), path("${prefix}_wps.bw"), emit: bigwig
     tuple val("${task.process}"), val('finaletoolkit'), eval("finaletoolkit --version | sed 's/FinaleToolkit //g'"), topic: versions, emit: versions_finaletoolkit
 
     when:
@@ -21,7 +21,7 @@ process FINALETOOLKIT_WPS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_wps"
+    prefix = task.ext.prefix ?: "${meta.id}_wps"
     """
     finaletoolkit \\
         wps \\
@@ -35,7 +35,7 @@ process FINALETOOLKIT_WPS {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_wps"
+    prefix = task.ext.prefix ?: "${meta.id}_wps"
     """
     echo ${args}
 
