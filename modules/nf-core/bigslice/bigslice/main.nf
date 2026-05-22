@@ -1,4 +1,4 @@
-process BIGSLICE {
+process BIGSLICE_BIGSLICE {
     tag "${meta.id}"
     label 'process_medium'
 
@@ -9,12 +9,12 @@ process BIGSLICE {
 
     input:
     tuple val(meta), path(bgc, stageAs: 'bgc_files/s*/*')
-    path(hmmdb)
-    val(export_tsv)
+    path hmmdb
+    val export_tsv
 
     output:
-    tuple val(meta), path("${prefix}/result")                  , emit: output
-    tuple val(meta), path("${prefix}/result/tsv_export")       , emit: tsv, optional: true
+    tuple val(meta), path("${prefix}/result"), emit: output
+    tuple val(meta), path("${prefix}/result/tsv_export"), emit: tsv, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('bigslice'), val("2.0.2"), topic: versions, emit: versions_bigslice
 
@@ -22,9 +22,9 @@ process BIGSLICE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    def args2  = task.ext.args2 ?: ''
-    prefix     = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     def sample = meta.id
     def export_tsv_cmd = export_tsv ? "bigslice --export-tsv ${prefix}/result/tsv_export --program_db_folder ${hmmdb} ${args2} ${prefix}" : ''
     """
@@ -47,8 +47,8 @@ process BIGSLICE {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
-    prefix     = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
 
