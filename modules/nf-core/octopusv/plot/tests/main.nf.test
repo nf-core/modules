@@ -27,11 +27,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.sv_sizes_png.get(0).get(1)),
-                    path(process.out.sv_sizes_svg.get(0).get(1)),
                     path(process.out.sv_types_png.get(0).get(1)),
-                    path(process.out.sv_types_svg.get(0).get(1)),
                     path(process.out.chromosome_distribution_png.get(0).get(1)),
-                    path(process.out.chromosome_distribution_svg.get(0).get(1)),
+                    process.out.sv_sizes_svg.get(0).get(1),
+                    process.out.sv_types_svg.get(0).get(1),
+                    process.out.chromosome_distribution_svg.get(0).get(1),
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
