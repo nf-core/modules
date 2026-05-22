@@ -120,24 +120,41 @@ cond <- read_delim_auto(opt\$sample_file) |>
 
 # DOTSeq insists on lower-case `run, strategy, replicate, condition` columns;
 # rename from user-specified column names if necessary, refusing collisions.
-col_map <- c(
+# `replicate` may be absent: it is used only for stable ordering, so synthesize
+# a per-(strategy, contrast_variable) counter when the user has not supplied
+# their own column.
+col_map_required <- c(
     run       = tolower(opt\$sample_id_col),
     strategy  = tolower(opt\$strategy_col),
-    replicate = tolower(opt\$replicate_col),
     condition = tolower(opt\$contrast_variable)
 )
-missing_cols <- setdiff(col_map, names(cond))
-if (length(missing_cols) > 0) {
-    stop("Sample sheet missing column(s): ", paste(missing_cols, collapse = ", "))
+missing_required <- setdiff(col_map_required, names(cond))
+if (length(missing_required) > 0) {
+    stop("Sample sheet missing column(s): ", paste(missing_required, collapse = ", "))
 }
 nm <- names(cond)
-for (req in names(col_map)) {
-    src <- col_map[[req]]
+for (req in names(col_map_required)) {
+    src <- col_map_required[[req]]
     if (src == req) next
     if (req %in% nm) stop("Cannot rename '", src, "' to '", req, "': '", req, "' column already present.")
     nm[nm == src] <- req
 }
 names(cond) <- nm
+
+replicate_src <- tolower(opt\$replicate_col)
+if (replicate_src %in% names(cond)) {
+    if (replicate_src != "replicate") {
+        if ("replicate" %in% names(cond)) {
+            stop("Cannot rename '", replicate_src, "' to 'replicate': 'replicate' column already present.")
+        }
+        names(cond)[names(cond) == replicate_src] <- "replicate"
+    }
+} else {
+    cond <- cond |>
+        group_by(.data\$strategy, .data\$condition) |>
+        mutate(replicate = row_number()) |>
+        ungroup()
+}
 
 if (anyDuplicated(cond\$run)) {
     cond <- distinct(cond, run, .keep_all = TRUE)
