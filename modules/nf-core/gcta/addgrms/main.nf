@@ -2,7 +2,7 @@ process GCTA_ADDGRMS {
     tag "${meta.id}"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46b0d05f0daa47561d87d2a9cac5e51edc2c78e26f1bbab439c688386241a274/data'
         : 'community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9'}"
 
@@ -17,17 +17,15 @@ process GCTA_ADDGRMS {
     task.ext.when == null || task.ext.when
 
     script:
-    def extra_args = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
-
     gcta \\
         --mgrm ${mgrm_file} \\
         --make-grm \\
         --out ${prefix} \\
         --thread-num ${task.cpus} \\
-        ${extra_args}
+        ${args}
     """
 
     stub:
