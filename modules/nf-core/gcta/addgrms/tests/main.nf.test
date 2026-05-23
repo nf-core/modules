@@ -80,8 +80,6 @@ nextflow_process {
     }
 
     test("homo_sapiens popgen - merge dense GRMs from mgrm") {
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -126,7 +124,6 @@ nextflow_process {
 
     test("homo_sapiens popgen - merge dense GRMs from mgrm - stub") {
         options "-stub"
-        config "./nextflow.config"
 
         when {
             process {
