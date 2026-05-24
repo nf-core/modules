@@ -111,7 +111,7 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
         }
 
     // Impute with Glimpse2
-    GLIMPSE2_PHASE(ch_phase_input, ch_fasta, [])
+    GLIMPSE2_PHASE(ch_phase_input, ch_fasta, "bcf")
 
     // Index phased file
     BCFTOOLS_INDEX_PHASE(GLIMPSE2_PHASE.out.phased_variants)
