@@ -12,7 +12,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [,], [,], [,]]") {
         when {
             params {
-                extra_output = "--write-ec --write-paf"
+                module_args = "-f0 --write-ec --write-paf"
             }
 
             process {
@@ -98,7 +98,8 @@ nextflow_process {
 
         when {
             params {
-                extra_output = ""
+                setup_args = '-f0 --bin-only'
+                module_args = '-f0'
             }
 
             process {
@@ -143,7 +144,7 @@ nextflow_process {
 
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {
@@ -200,7 +201,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [yak, yak], [,], [,] ]") {
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {
@@ -258,7 +259,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [,], [fastq, fastq], [,] ]") {
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {
@@ -318,7 +319,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [yak, yak], [fastq, fastq], [,] ]") {
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
             process {
                 """
@@ -354,7 +355,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [yak, ], [,], [,] ]") {
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {
@@ -387,7 +388,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [,], [, fastq], [,] ]") {
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {
@@ -421,7 +422,7 @@ nextflow_process {
         options "-stub"
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {

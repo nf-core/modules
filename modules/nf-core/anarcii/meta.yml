@@ -1,0 +1,67 @@
+name: "anarcii"
+description: A language model for antigen receptor numbering
+keywords:
+  - annotate
+  - antibody
+  - TCR
+  - immunology
+tools:
+  - "anarcii":
+      description: "A language model for antigen receptor numbering"
+      homepage: "https://github.com/oxpig/ANARCII"
+      documentation: "https://github.com/oxpig/ANARCII/wiki"
+      tool_dev_url: "https://github.com/oxpig/ANARCII"
+      doi: "10.5281/zenodo.15274840"
+      licence:
+        - "BSD 3-Clause License"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Fasta file with full receptor sequences
+        pattern: "*.fasta"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+output:
+  anarcii:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.csv":
+          type: file
+          description: File containing per-base numbering
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  versions_anarcii:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - anarcii:
+          type: string
+          description: The name of the tool
+      - anarcii --version | sed "s/^anarcii //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - anarcii:
+          type: string
+          description: The name of the tool
+      - anarcii --version | sed "s/^anarcii //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Clara0611"
+maintainers:
+  - "@Clara0611"

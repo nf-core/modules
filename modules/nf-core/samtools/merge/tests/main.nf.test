@@ -35,9 +35,8 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.csi[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.cram,
-                    process.out.crai,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
                 }
@@ -76,9 +75,8 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     cram(process.out.cram[0][1], fasta).getReadsMD5(),
-                    process.out.csi,
                     process.out.bam,
-                    file(process.out.crai[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
                 }
@@ -117,9 +115,8 @@ nextflow_process {
                 { assert snapshot(
                     //nft-bam doesn't like the fasta.gz
                     file(process.out.cram[0][1]).name,
-                    process.out.csi,
                     process.out.bam,
-                    file(process.out.crai[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
                 }
@@ -150,9 +147,8 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    process.out.csi,
+                    process.out.index,
                     process.out.cram,
-                    process.out.crai,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
                 }

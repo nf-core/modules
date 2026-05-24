@@ -1,6 +1,7 @@
-name: "eigscis"
-description: Perform eigen value decomposition on a cooler matrix to calculate compartment
-  signal by finding the eigenvector that correlates best with the phasing track
+name: "cooltools_eigscis"
+description: Perform eigen value decomposition on a cooler matrix to calculate
+  compartment signal by finding the eigenvector that correlates best with the
+  phasing track
 keywords:
   - cool
   - Hi-C
@@ -13,9 +14,9 @@ tools:
       documentation: "https://cooltools.readthedocs.io"
       tool_dev_url: "https://github.com/open2c/cooltools/"
       doi: "10.5281/zenodo.5214125"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:cooltools
-
 input:
   - - meta:
         type: map
@@ -27,8 +28,8 @@ input:
         ontologies: []
   - bed:
       type: file
-      description: bed file, phasing track for orienting and ranking eigenvectors,provided
-        as /path/to/track::track_value_column_name
+      description: bed file, phasing track for orienting and ranking
+        eigenvectors, provided as /path/to/track::track_value_column_name
       pattern: "*.bed"
       ontologies: []
 output:
@@ -49,12 +50,26 @@ output:
           description: bigwig file for compartment track
           ontologies:
             - edam: "http://edamontology.org/format_3006" # bigWig
+  versions_cooltools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooltools:
+          type: string
+          description: The name of the tool
+      - cooltools --version | sed -n 's/cooltools, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooltools:
+          type: string
+          description: The name of the tool
+      - cooltools --version | sed -n 's/cooltools, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Thibault-Poinsignon"

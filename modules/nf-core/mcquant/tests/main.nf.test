@@ -41,8 +41,7 @@ nextflow_process {
                                 String.format("%.6f", value as Double)
                             }
                         }.join("\n").md5(),
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

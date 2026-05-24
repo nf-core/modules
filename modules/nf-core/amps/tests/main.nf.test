@@ -85,7 +85,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.json,
                     process.out.tsv,
                     process.out.summary_pdf.collect{file(it).name},

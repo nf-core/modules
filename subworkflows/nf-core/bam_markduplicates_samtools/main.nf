@@ -9,26 +9,24 @@ include { SAMTOOLS_MARKDUP } from '../../../modules/nf-core/samtools/markdup/mai
 
 
 workflow BAM_MARKDUPLICATES_SAMTOOLS {
-
     take:
-    ch_bam   // channel: [ val(meta), [ bam ] ]
-    ch_fasta // channel: [ val(meta), [ fasta ], [fai] ]
+    ch_bam // channel: [ val(meta), [ bam ] ]
+    ch_fasta_fai // channel: [ val(meta), [ fasta ], [fai] ]
 
     main:
 
-    SAMTOOLS_COLLATE ( ch_bam, ch_fasta )
+    SAMTOOLS_COLLATE(ch_bam, ch_fasta_fai)
 
-    SAMTOOLS_FIXMATE ( SAMTOOLS_COLLATE.out.bam )
+    SAMTOOLS_FIXMATE(SAMTOOLS_COLLATE.out.bam)
 
-    SAMTOOLS_SORT (
+    SAMTOOLS_SORT(
         SAMTOOLS_FIXMATE.out.bam,
-        ch_fasta.map{meta, fasta, _fai -> [meta, fasta]},
-        ''
+        ch_fasta_fai,
+        '',
     )
 
-    SAMTOOLS_MARKDUP ( SAMTOOLS_SORT.out.bam, ch_fasta )
+    SAMTOOLS_MARKDUP(SAMTOOLS_SORT.out.bam, ch_fasta_fai)
 
     emit:
-    bam      = SAMTOOLS_MARKDUP.out.bam        // channel: [ val(meta), [ bam ] ]
-
+    bam = SAMTOOLS_MARKDUP.out.bam // channel: [ val(meta), [ bam ] ]
 }

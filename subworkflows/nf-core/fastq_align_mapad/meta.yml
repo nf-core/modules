@@ -25,11 +25,11 @@ input:
       description: |
         mapAD genome index files
         Structure: [ val(meta), path(index) ]
-  - ch_fasta:
+  - ch_fasta_fai:
       type: file
       description: |
-        Reference fasta file
-        Structure: [ val(meta), path(fasta) ]
+        Reference fasta file and index
+        Structure: [ val(meta), path(fasta), path(fai) ]
   - val_mismatch_parameter:
       type: float
       description: |

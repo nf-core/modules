@@ -3,9 +3,9 @@ process GETORGANELLE_FROMREADS {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.0--pyh7cba7a3_0'
-        : 'biocontainers/getorganelle:1.7.7.0--pyh7cba7a3_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.1--pyhdfd78af_0'
+        : 'quay.io/biocontainers/getorganelle:1.7.7.1--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fastq)
@@ -13,9 +13,8 @@ process GETORGANELLE_FROMREADS {
 
     output:
     tuple val(meta), path("results/${prefix}.${organelle_type}.fasta.gz"), emit: fasta, optional: true
-    path "results/*", emit: etc
-    // the rest of the result files
-    path "versions.yml", emit: versions
+    tuple val(meta), path("results/*"), emit: etc
+    tuple val("${task.process}"), val('getorganelle'), eval("get_organelle_from_reads.py --version |& sed 's/^GetOrganelle v//'"), topic: versions, emit: versions_getorganelle
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,23 +38,16 @@ process GETORGANELLE_FROMREADS {
         cp results/${prefix}.${organelle_type}*graph1.1*fasta results/${prefix}.${organelle_type}.fasta
         gzip results/${prefix}.${organelle_type}.fasta
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        getorganelle: \$(get_organelle_from_reads.py --version | sed 's/^GetOrganelle v//g' )
-    END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "${args}"
-    touch results/${prefix}.${organelle_type}.fasta.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        getorganelle: \$(get_organelle_from_reads.py --version | sed 's/^GetOrganelle v//g' )
-    END_VERSIONS
+    echo '${args}'
+    mkdir results
+    touch results/test_1.fastq
+    touch results/test_2.fastq
+    echo "" | gzip > results/${prefix}.${organelle_type}.fasta.gz
     """
 }

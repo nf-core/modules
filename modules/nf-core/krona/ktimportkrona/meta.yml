@@ -1,5 +1,3 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "krona_ktimportkrona"
 description: Collect multiple krona reports into a single html file
 keywords:
@@ -11,8 +9,8 @@ keywords:
   - krona chart
 tools:
   - krona:
-      description: Krona Tools is a set of scripts to create Krona charts from several
-        Bioinformatics tools as well as from text and XML files.
+      description: Krona Tools is a set of scripts to create Krona charts from
+        several Bioinformatics tools as well as from text and XML files.
       homepage: https://github.com/marbl/Krona/wiki/KronaTools
       documentation: http://manpages.ubuntu.com/manpages/impish/man1/ktImportTaxonomy.1.html
       doi: 10.1186/1471-2105-12-385
@@ -22,18 +20,35 @@ input:
       type: file
       description: One or multiple html files each containing a krona single plot
       pattern: "*.html"
+      ontologies: []
 output:
   html:
-    - "*.html":
+    - "${prefix}.html":
         type: file
         description: HTML file containing all input HTML Krona plots with a selection bar
           to choose which one to look at
         pattern: "*.krona.html"
+  versions_krona:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krona:
+          type: string
+          description: The name of the tool
+      - ktImportKrona | grep -Po '(?<=KronaTools )[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krona:
+          type: string
+          description: The name of the tool
+      - ktImportKrona | grep -Po '(?<=KronaTools )[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@paulwolk"
 maintainers:

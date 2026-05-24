@@ -98,7 +98,8 @@ opt <- list(
     reml                       = FALSE,
     round_digits               = NULL,
     formula                    = "$formula",              # User-specified formula (e.g. "~ + (1 | sample_number)")
-    apply_voom                 = FALSE                    # Whether to apply `voomWithDreamWeights`
+    apply_voom                 = FALSE,                   # Whether to apply `voomWithDreamWeights`
+    seed                       = NULL
 )
 
 # Load external arguments to opt list
@@ -126,6 +127,12 @@ opt\$confint      <- as.logical(opt\$confint)
 
 if (!is.null(opt\$round_digits)){
   opt\$round_digits <- as.numeric(opt\$round_digits)
+}
+
+if (!is.null(opt\$seed)) {
+  opt\$seed <- as.numeric(opt\$seed)
+  RNGkind("L'Ecuyer-CMRG")
+  set.seed(opt\$seed)
 }
 
 # Load metadata
@@ -220,10 +227,10 @@ if (opt\$subset_to_contrast_samples) {
 if (is_valid_string(opt\$formula)) {
     form <- as.formula(opt\$formula)
 } else {
-    form <- '~ 0'
+    model_vars <- contrast_variable
 
     if (is_valid_string(opt\$blocking_variables)) {
-        form <- paste(form, paste(blocking.vars, collapse = ' + '), sep=' + ')
+        model_vars <- c(model_vars, blocking.vars)
     }
 
     # Make sure all the appropriate variables are factors
@@ -231,20 +238,23 @@ if (is_valid_string(opt\$formula)) {
         metadata[[v]] <- as.factor(make.names(metadata[[v]]))
     }
 
-    # Variable of interest goes last
-    form <- as.formula(paste(form, contrast_variable, sep = ' + '))
+    # Put the contrast variable first in zero-intercept designs so each
+    # contrast level is represented directly in the design matrix.
+    form <- as.formula(paste('~ 0 +', paste(model_vars, collapse = ' + ')))
 }
 print(form)
 
 # Parallel processing setup
 threads <- as.numeric(opt\$threads)
 
+bp <- MulticoreParam(workers =  threads, RNGseed = opt\$seed, progressbar = FALSE)
+
 # Optionally apply voom
 if (as.logical(opt\$apply_voom)) {
     # Standard usage of limma/voom
     dge <- DGEList(countMatrix)
     dge <- calcNormFactors(dge)
-    vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = MulticoreParam(threads))
+    vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = bp)
 
     # Write normalized counts matrix to a TSV file
      normalized_counts <- vobjDream\$E
@@ -262,23 +272,6 @@ if (as.logical(opt\$apply_voom)) {
     vobjDream <- countMatrix
 }
 
-# Fit the DREAM model with ddf and reml options
-fitmm <- dream(vobjDream, form, metadata, ddf = opt\$ddf, reml = opt\$reml)
-
-# Parse stdev_coef_lim and winsor_tail_p into numeric vectors
-stdev_coef_lim_vals <- as.numeric(unlist(strsplit(opt\$stdev_coef_lim, ",")))
-winsor_tail_p_vals  <- as.numeric(unlist(strsplit(opt\$winsor_tail_p, ",")))
-
-# Fit the empirical Bayes model with additional parameters
-fitmm <- eBayes(fitmm, proportion = opt\$proportion,
-                stdev.coef.lim = stdev_coef_lim_vals,
-                trend = opt\$trend, robust = opt\$robust,
-                winsor.tail.p = winsor_tail_p_vals)
-
-# Display design matrix
-head(fitmm\$design, 3)
-print(colnames(fitmm\$design))
-
 # If contrast_string is provided, use that for makeContrast
 if (!is.null(opt\$contrast_string)) {
     contrast_string <- opt\$contrast_string
@@ -289,21 +282,38 @@ if (!is.null(opt\$contrast_string)) {
     contrast_string <- paste0(treatment_target, "-", treatment_reference)
 }
 
-# Use makeContrasts if contrast_string exists
-if (is_valid_string(contrast_string)) {
-    cat("Using contrast string:", contrast_string, "\n")
+# Resolve the contrast against the fixed-effects design.
+# nobars() lets the same path handle fixed- and mixed-effects formulae.
+design <- model.matrix(lme4::nobars(form), metadata)
+normalized_coef_names <- make.names(colnames(design))
+cat("Design coefficients:", paste(colnames(design), collapse = ", "), "\n")
 
-    colnames(fitmm\$design) <- make.names(colnames(fitmm\$design))
-    contrast_matrix <- makeContrasts(contrast = contrast_string, levels = colnames(fitmm\$design))
-    fit2 <- contrasts.fit(fitmm, contrast_matrix)
-    fit2 <- eBayes(fit2, proportion = opt\$proportion,
-                  stdev.coef.lim = stdev_coef_lim_vals,
-                  trend = opt\$trend, robust = opt\$robust,
-                  winsor.tail.p = winsor_tail_p_vals)
-    results <- topTable(fit2, number = Inf,
-                        adjust.method = opt\$adjust.method,
-                        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
+# A contrast_string that names a single design coefficient is not a contrast:
+# dream() would reject L as a duplicate name. Test the coefficient directly.
+if (contrast_string %in% normalized_coef_names) {
+    top_table_coef <- colnames(design)[match(contrast_string, normalized_coef_names)]
+    L <- NULL
+} else {
+    L <- makeContrasts(contrast = contrast_string, levels = normalized_coef_names)
+    rownames(L) <- colnames(design)
+    stopifnot("exactly one contrast defined" = ncol(L) == 1)
+    top_table_coef <- colnames(L)
 }
+cat("Testing coefficient:", top_table_coef, "\n")
+
+stdev_coef_lim_vals <- as.numeric(unlist(strsplit(opt\$stdev_coef_lim, ",")))
+winsor_tail_p_vals  <- as.numeric(unlist(strsplit(opt\$winsor_tail_p, ",")))
+
+fitmm <- dream(vobjDream, form, metadata, L = L,
+               ddf = opt\$ddf, reml = opt\$reml, BPPARAM = bp)
+fitmm <- eBayes(fitmm, proportion = opt\$proportion,
+                stdev.coef.lim = stdev_coef_lim_vals,
+                trend = opt\$trend, robust = opt\$robust,
+                winsor.tail.p = winsor_tail_p_vals)
+
+results <- topTable(fitmm, coef = top_table_coef, number = Inf,
+                    adjust.method = opt\$adjust.method,
+                    p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
 
 results\$gene_id <- rownames(results)
 results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]

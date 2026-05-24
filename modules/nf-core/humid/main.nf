@@ -4,9 +4,9 @@ process HUMID {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/humid:1.0.4--hadf994f_0':
-        'biocontainers/humid:1.0.4--hadf994f_0' }"
+        'quay.io/biocontainers/humid:1.0.4--hadf994f_0' }"
 
     input:
     tuple val(meta), path(reads)

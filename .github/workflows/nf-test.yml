@@ -23,7 +23,7 @@ concurrency:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
-  NFT_VER: "0.9.4"
+  NFT_VER: "0.9.5"
   NXF_ANSI_LOG: false
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
@@ -93,6 +93,7 @@ jobs:
       - runs-on=${{ github.run_id }}
       - runner=4cpu-linux-${{ matrix.arch }}
       - image=ubuntu24-full-${{ matrix.arch }}
+      - volume=40gb
     name: "${{ matrix.arch }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
