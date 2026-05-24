@@ -35,7 +35,7 @@ process SAVANA_CLASSIFY {
         --vcf \${vcf_in} \\
         --output ${prefix}.classified.vcf \\
         --somatic_output ${prefix}.classified.somatic.vcf \\
-        --threads ${task.cpus ?: 1} \\
+        --threads ${task.cpus} \\
         ${args}
     """
 
