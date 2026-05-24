@@ -3,9 +3,9 @@ process UPDHMM_VCFCHECK {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine != 'singularity' && !task.ext.singularity_pull_docker_container ?
-    'biocontainers/bioconductor-updhmm:1.6.0--r44hdfd78af_0' :
-    'https://depot.galaxyproject.org/singularity/bioconductor-updhmm:1.6.0--r44hdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bioconductor-updhmm:1.6.0--r44hdfd78af_0':
+        'quay.io/biocontainers/bioconductor-updhmm:1.6.0--r44hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
