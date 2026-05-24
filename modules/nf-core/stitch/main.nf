@@ -44,9 +44,13 @@ process STITCH {
     def bamlist_cmd          = cramlist && reads_ext == ["bam" ] ? "--bamlist ${cramlist}"            : ""
 
     def reference_cmd        = fasta                       ? "--reference ${fasta}"                                            : ""
-    def regenerate_input_cmd = input && rdata && !cramlist ? "--regenerateInput FALSE --originalRegionName ${chromosome_name}" : ""
+    def original_region_name = start && end ? "${chromosome_name}.${start}.${end}" : "${chromosome_name}"
+    def regenerate_input_cmd = input && rdata && !cramlist ? "--regenerateInput FALSE --originalRegionName ${original_region_name}" : ""
     def samplename_cmd       = samplename                  ? "--sampleNames_file ${samplename}"                                : ""
     def genetic_map_command  = genetic_map                 ? "--genetic_map_file=${genetic_map}"                               : ""
+    def start_command        = start && end ? "--regionStart ${start}"                       : ""
+    def end_command          = start && end ? "--regionEnd ${end}"                           : ""
+    def buffer_command       = start && end ? "--buffer 0"                                  : ""
 
     // Rsync and Stitch command to copy RData from previous run if available
     def rsync_cmd            = rdata ? "rsync -rL ${rdata}/ RData" : ""
@@ -68,6 +72,9 @@ process STITCH {
         ${regenerate_input_cmd} \\
         ${samplename_cmd} \\
         ${genetic_map_command} \\
+        ${start_command} \\
+        ${end_command} \\
+        ${buffer_command} \\
         --output_filename ${prefix}.${suffix} \\
         ${args2}
     """
