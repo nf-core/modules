@@ -20,9 +20,10 @@ process GLIMPSE2_PHASE {
     input:
     tuple val(meta), path(input, arity: '1..*'), path(input_index), path(bamlist), path(samples_file), val(input_region), val(output_region), path(reference), path(reference_index), path(map)
     tuple val(meta2), path(fasta_reference), path(fasta_reference_index)
+    val(output_suffix)
 
     output:
-    tuple val(meta), path("*.{vcf,vcf.gz,bcf,bgen}"), emit: phased_variants
+    tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz,bgen}"), emit: phased_variants
     tuple val(meta), path("*.txt.gz"), emit: stats_coverage, optional: true
     tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_phase --help | grep -oE 'v[0-9.]+' | cut -c2-"), topic: versions, emit: versions_glimpse2
 
@@ -33,7 +34,10 @@ process GLIMPSE2_PHASE {
     def region = input_region ? "${output_region.replace(":", "_")}" : "${reference}"
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}_${region}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = output_suffix ?: "vcf.gz"
+    if (!(suffix in ["vcf", "vcf.gz", "bcf", "bcf.gz", "bgen"])) {
+        error("Output suffix must be one of vcf, vcf.gz, bcf, bcf.gz, bgen. Found: ${suffix}")
+    }
 
     def map_command = map ? "--map ${map}" : ""
     def samples_file_command = samples_file ? "--samples-file ${samples_file}" : ""
@@ -100,7 +104,10 @@ process GLIMPSE2_PHASE {
     stub:
     def region = input_region ? "${output_region.replace(":", "_")}" : "${reference}"
     def prefix = task.ext.prefix ?: "${meta.id}_${region}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = output_suffix ?: "vcf.gz"
+    if (!(suffix in ["vcf", "vcf.gz", "bcf", "bcf.gz", "bgen"])) {
+        error("Output suffix must be one of vcf, vcf.gz, bcf, bcf.gz, bgen. Found: ${suffix}")
+    }
     def create_cmd = suffix.endsWith(".gz") ? "echo | gzip > ${prefix}.${suffix}" : "touch ${prefix}.${suffix}"
     """
     ${create_cmd}
