@@ -9,6 +9,7 @@ os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
 
 import platform
 
+import anndata as ad
 import scanpy as sc
 import yaml
 from threadpoolctl import threadpool_limits
@@ -16,7 +17,9 @@ from threadpoolctl import threadpool_limits
 threadpool_limits(int("${task.cpus}"))
 sc.settings.n_jobs = int("${task.cpus}")
 
-adata = sc.read_h5ad("${h5ad}")
+input_file = "${h5ad}"
+output_file = "${output_file}"
+adata = ad.read_zarr(input_file) if input_file.endswith(".zarr") else sc.read_h5ad(input_file)
 prefix = "${prefix}"
 symbol_col = "${symbol_col}"
 
@@ -36,7 +39,10 @@ sc.pp.filter_genes(adata, min_counts=int("${min_counts_gene}"))
 sc.pp.filter_cells(adata, min_genes=int("${min_genes}"))
 sc.pp.filter_genes(adata, min_cells=int("${min_cells}"))
 
-adata.write_h5ad(f"{prefix}.h5ad")
+if output_file.endswith(".zarr"):
+    adata.write_zarr(output_file)
+else:
+    adata.write_h5ad(output_file)
 
 # Versions
 
