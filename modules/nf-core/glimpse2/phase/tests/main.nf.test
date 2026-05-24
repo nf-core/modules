@@ -315,8 +315,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.1X.bam.bai", checkIfExists: true)
                     ],
                 ]).combine(bamlist)
-                .map{ map, bam, bai, bamlist_file -> [
-                    map, bam, bai, bamlist_file, [],
+                .map{ map, bam, bai, bamlist -> [
+                    map, bam, bai, bamlist, [],
                     "chr22:16600000-16800000",
                     "chr22:16650000-16750000",
                 ]}
