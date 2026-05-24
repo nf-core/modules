@@ -104,8 +104,8 @@ input:
   - output_suffix:
         type: string
         description: |
-          Output file suffix used to choose the GLIMPSE2 output format. Defaults to `vcf.gz` when empty. Supported values: `vcf`, `vcf.gz`, `bcf`, `bcf.gz`, `bgen`.
-        pattern: "vcf|vcf.gz|bcf|bcf.gz|bgen"
+          Output file suffix used to choose the GLIMPSE2 output format. Defaults to `vcf.gz` when empty. Supported values: `vcf`, `vcf.gz`, `bcf`, `bgen`.
+        pattern: "vcf|vcf.gz|bcf|bgen"
 output:
   phased_variants:
     - - meta:
@@ -113,11 +113,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - "*.{vcf,vcf.gz,bcf,bcf.gz,bgen}":
+      - "*.{vcf,vcf.gz,bcf,bgen}":
           type: file
           description: |
             Output VCF/BCF/BGEN file containing genotype probabilities (GP field), imputed dosages (DS field), best guess genotypes (GT field), sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
-          pattern: "*.{vcf,vcf.gz,bcf,bcf.gz,bgen}"
+          pattern: "*.{vcf,vcf.gz,bcf,bgen}"
           ontologies: []
   stats_coverage:
     - - meta:
