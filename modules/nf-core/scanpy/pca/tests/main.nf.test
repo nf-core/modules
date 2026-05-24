@@ -8,19 +8,31 @@ nextflow_process {
     tag "modules_nfcore"
     tag "scanpy"
     tag "scanpy/pca"
+    tag "untar"
 
     test("Should emit zarr output for zarr input - stub") {
 
         options '-stub'
 
+        setup {
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test_zarr' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
-                input[0] = Channel.of([
-                        [ id: 'test_zarr' ],
-                        file("${projectDir}/modules/nf-core/scanpy/pca/tests/data/test.zarr", checkIfExists: true)
-                    ]
-                )
+                input[0] = UNTAR.out.untar.map { meta, zarr -> [ meta, zarr ] }
                 input[1] = "X_pca"
                 """
             }
@@ -38,14 +50,25 @@ nextflow_process {
 
     test("Should run with zarr input") {
 
+        setup {
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test_zarr' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
-                input[0] = Channel.of([
-                        [ id: 'test_zarr' ],
-                        file("${projectDir}/modules/nf-core/scanpy/pca/tests/data/test.zarr", checkIfExists: true)
-                    ]
-                )
+                input[0] = UNTAR.out.untar.map { meta, zarr -> [ meta, zarr ] }
                 input[1] = "X_pca"
                 """
             }
