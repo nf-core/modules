@@ -7,7 +7,7 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
     ch_bam_bai    // channel: [ val(meta), path(bam), path(bai) ]
     ch_depth      // channel: [ val(meta), val(depth)]
     ch_fasta      // channel: [ val(meta), path(fasta), path(fai) ]
-    ch_regions    // channel: [ val(meta), path(region) ]
+    ch_regions    // channel (optional): [ val(meta), path(region) ]
 
     main:
 
@@ -84,6 +84,10 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
         .join(SAMTOOLS_VIEW.out.bai
             .mix(SAMTOOLS_VIEW.out.crai, SAMTOOLS_VIEW.out.csi)
         )
+        .map{ meta, bam, index ->
+            def keys_to_keep = meta.keySet() - ['subsample_fraction', 'mean_depth']
+            [ meta.subMap(keys_to_keep), bam, index ]
+        }
 
     emit:
     bam_subsampled    = ch_bam_subsampled             // channel: [ val(meta), path(bam), path(csi) ]

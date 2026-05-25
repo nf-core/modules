@@ -4,6 +4,7 @@ description: |
   Subsample a BAM/CRAM/SAM file using samtools to a given mean depth.
   "region", "subsample_fraction", "mean_depth" and "depth" keys will be added to the meta
   map to distinguish the different file generated and therefore shouldn't be used.
+  The `depth` key will be added to the meta map of the output channel.
 keywords:
   - subsample
   - bam
@@ -34,7 +35,7 @@ input:
   - ch_region:
       type: file
       description: |
-        The reference genome channel containing the different regions to consider
+        An optional channel containing the different regions to consider
         for the coverage calculation and downsampling.
         Structure: [ val(meta), path(region) ]
       pattern: "*.bed"
