@@ -3,7 +3,7 @@ process PICRUST2_PIPELINE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6a/6a9b732fec49b33334dcff4f8875dcd552402ead5654443a54c7f4f79823df78/data'
         : 'community.wave.seqera.io/library/picrust2:2.6.2--a7c158f7c987b452'}"
 

@@ -3,7 +3,7 @@ process GSTAMA_COLLAPSE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0' :
         'quay.io/biocontainers/gs-tama:1.0.3--hdfd78af_0' }"
 
@@ -19,10 +19,9 @@ process GSTAMA_COLLAPSE {
     tuple val(meta), path("*_read.txt")               , emit: read
     tuple val(meta), path("*_strand_check.txt")       , emit: strand_check
     tuple val(meta), path("*_trans_report.txt")       , emit: trans_report
-    path "versions.yml"                               , emit: versions
-
     tuple val(meta), path("*_varcov.txt")             , emit: varcov  , optional: true
     tuple val(meta), path("*_variants.txt")           , emit: variants, optional: true
+    tuple val("${task.process}"), val('gstama'), eval("tama_collapse.py -version | sed -n 's/tc_version_date_//p'"), emit: versions_gstama, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,14 +31,18 @@ process GSTAMA_COLLAPSE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     tama_collapse.py \\
-        -s $bam \\
-        -f $fasta \\
+        -s ${bam} \\
+        -f ${fasta} \\
         -p ${prefix} \\
-        $args
+        ${args}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gstama: \$( tama_collapse.py -version | grep 'tc_version_date_'|sed 's/tc_version_date_//g' )
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}_{collapsed,trans_read}.bed
+    touch ${prefix}_{local_density_error,polya,read}.txt
+    touch ${prefix}_{strand_check,trans_report,varcov,variants}.txt
     """
 }

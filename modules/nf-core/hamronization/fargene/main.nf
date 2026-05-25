@@ -3,7 +3,7 @@ process HAMRONIZATION_FARGENE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/hamronization:1.1.9--pyhdfd78af_0'
         : 'quay.io/biocontainers/hamronization:1.1.9--pyhdfd78af_0'}"
 
@@ -16,7 +16,7 @@ process HAMRONIZATION_FARGENE {
     output:
     tuple val(meta), path("*.json"), optional: true, emit: json
     tuple val(meta), path("*.tsv"), optional: true, emit: tsv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('hamronization'), eval("hamronize --version 2>&1 | sed 's/hamronize //'"), topic: versions, emit: versions_hamronization
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,21 +34,11 @@ process HAMRONIZATION_FARGENE {
         --reference_database_version ${reference_db_version} \\
         --input_file_name ${prefix} \\
         > ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "stub" > ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
-    END_VERSIONS
+    touch ${prefix}.${format}
     """
 }

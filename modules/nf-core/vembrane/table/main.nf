@@ -3,7 +3,7 @@ process VEMBRANE_TABLE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/vembrane:2.4.0--pyhdfd78af_0'
         : 'quay.io/biocontainers/vembrane:2.4.0--pyhdfd78af_0'}"
 
@@ -27,21 +27,11 @@ process VEMBRANE_TABLE {
         --output ${prefix}.tsv \\
         '${expression}' \\
         ${vcf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
-    END_VERSIONS
     """
 }

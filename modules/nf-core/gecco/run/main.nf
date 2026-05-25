@@ -3,7 +3,7 @@ process GECCO_RUN {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gecco:0.10.1--pyhdfd78af_0':
         'quay.io/biocontainers/gecco:0.10.1--pyhdfd78af_0' }"
 
@@ -17,7 +17,7 @@ process GECCO_RUN {
     tuple val(meta), path("*.clusters.tsv") , optional: true, emit: clusters
     tuple val(meta), path("*_cluster_*.gbk"), optional: true, emit: gbk
     tuple val(meta), path("*.json")         , optional: true, emit: json
-    tuple val("${task.process}"), val('gecco'), eval('gecco -V | cut -d" " -f2'), emit: versions_gecco, topic: versions
+    tuple val("${task.process}"), val('gecco'), eval("gecco -V |& sed 's/gecco //'"), emit: versions_gecco, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,12 +30,12 @@ process GECCO_RUN {
     """
     gecco \\
         run \\
-        $args \\
-        -j $task.cpus \\
+        ${args} \\
+        -j ${task.cpus} \\
         -o ./ \\
         -g ${input} \\
-        $custom_model \\
-        $custom_hmm
+        ${custom_model} \\
+        ${custom_hmm}
 
     for i in \$(find -name '${input.baseName}*' -type f); do
         mv \$i \${i/${input.baseName}/${prefix}};

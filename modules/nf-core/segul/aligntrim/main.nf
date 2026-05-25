@@ -3,7 +3,7 @@ process SEGUL_ALIGNTRIM {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/segul:0.23.2--hc1c3326_0':
         'quay.io/biocontainers/segul:0.23.2--hc1c3326_0' }"
 

@@ -3,7 +3,7 @@ process PHISPY {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/phispy:4.2.21--py310h30d9df9_1':
         'quay.io/biocontainers/phispy:4.2.21--py310h30d9df9_1' }"
 

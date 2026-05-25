@@ -3,7 +3,7 @@ process BEDOPS_GTF2BED {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedops:2.4.42--h9948957_0':
         'quay.io/biocontainers/bedops:2.4.42--h9948957_0' }"
 

@@ -3,7 +3,7 @@ process GRAPHTYPER_GENOTYPE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/graphtyper:2.7.2--h7d7f7ad_0':
         'quay.io/biocontainers/graphtyper:2.7.2--h7d7f7ad_0' }"
 
@@ -16,7 +16,7 @@ process GRAPHTYPER_GENOTYPE {
     output:
     tuple val(meta), path("results/*/*.vcf.gz")    , emit: vcf
     tuple val(meta), path("results/*/*.vcf.gz.tbi"), emit: tbi
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('graphtyper'), eval("graphtyper --help | tail -1 | sed 's/.* //'"), emit: versions_graphtyper, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,30 +32,20 @@ process GRAPHTYPER_GENOTYPE {
     printf "$bam_path_text" > bam_list.txt
     graphtyper \\
         genotype \\
-        $ref \\
-        $args \\
+        ${ref} \\
+        ${args} \\
         --sams bam_list.txt \\
-        --threads $task.cpus \\
-        $region_text
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        graphtyper: \$(graphtyper --help | tail -n 1 | sed 's/^   //')
-    END_VERSIONS
+        --threads ${task.cpus} \\
+        ${region_text}
     """
 
     stub:
     """
     mkdir -p results/test
-    echo | gzip > results/test/region1.vcf.gz
-    echo | gzip > results/test/region2.vcf.gz
+    echo "" | gzip > results/test/region1.vcf.gz
+    echo "" | gzip > results/test/region2.vcf.gz
     touch results/test/region1.vcf.gz.tbi
     touch results/test/region2.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        graphtyper: \$(graphtyper --help | tail -n 1 | sed 's/^   //')
-    END_VERSIONS
     """
 
 }

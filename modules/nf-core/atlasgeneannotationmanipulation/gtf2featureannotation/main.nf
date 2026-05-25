@@ -4,8 +4,8 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/atlas-gene-annotation-manipulation%3A1.1.1--hdfd78af_0':
-        'quay.io/biocontainers/atlas-gene-annotation-manipulation:1.1.1--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0dc845564dcc40319d4b76a9f7298fd83ccd9eb271153c688f41660cda7de0f/data':
+        'community.wave.seqera.io/library/atlas-gene-annotation-manipulation:1.1.1--b9e8c32c92709512' }"
 
     input:
     tuple val(meta), path(gtf)

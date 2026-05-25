@@ -3,7 +3,7 @@ process JELLYFISH_COUNT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kmer-jellyfish:2.3.1--py310h184ae93_5':
         'quay.io/biocontainers/kmer-jellyfish:2.3.1--py310h184ae93_5' }"
 

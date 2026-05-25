@@ -3,7 +3,7 @@ process GAPPA_EXAMINEGRAFT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gappa:0.8.0--h9a82719_0':
         'quay.io/biocontainers/gappa:0.8.0--h9a82719_0' }"
 
@@ -12,7 +12,7 @@ process GAPPA_EXAMINEGRAFT {
 
     output:
     tuple val(meta), path("*.newick"), emit: newick
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('gappa'), eval("gappa --version 2>&1 | sed 's/v//'"), emit: versions_gappa, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,25 +24,15 @@ process GAPPA_EXAMINEGRAFT {
     gappa \\
         examine \\
         graft \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         --file-prefix ${prefix}. \\
-        --jplace-path $jplace
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gappa: \$(echo \$(gappa --version 2>&1 | sed 's/v//' ))
-    END_VERSIONS
+        --jplace-path ${jplace}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.newick
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gappa: \$(echo \$(gappa --version 2>&1 | sed 's/v//' ))
-    END_VERSIONS
     """
 }

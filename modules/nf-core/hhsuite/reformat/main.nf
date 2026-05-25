@@ -3,7 +3,7 @@ process HHSUITE_REFORMAT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hhsuite:3.3.0--py39pl5321h0dd7abe_13':
         'quay.io/biocontainers/hhsuite:3.3.0--py39pl5321h0dd7abe_13' }"
 
@@ -14,7 +14,7 @@ process HHSUITE_REFORMAT {
 
     output:
     tuple val(meta), path("${prefix}.${outformat}.gz"), emit: msa
-    tuple val("${task.process}"), val("hhsuite"), eval("hhblits -h 2>&1 | sed -n '1s/^HHblits \\([0-9.]\\+\\):/\\1/p'"), topic: versions, emit: versions_hhsuite
+    tuple val("${task.process}"), val("hhsuite"), eval("hhblits -h 2>&1 | sed '1!d;s/^HHblits //;s/://'"), topic: versions, emit: versions_hhsuite
 
     when:
     task.ext.when == null || task.ext.when

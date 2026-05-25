@@ -3,7 +3,7 @@ process GOATOOLS_FINDENRICHMENT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d9b75ea2491891521edf480d33b172f2c9ba68b2abae6e0b146ecf0f1d4d3bf/data':
         'community.wave.seqera.io/library/goatools_statsmodels:a6da305ad60b694a' }"
 

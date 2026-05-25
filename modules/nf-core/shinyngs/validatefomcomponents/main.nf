@@ -3,7 +3,7 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d782b4f11adf8f3cad6af74ea585468decd873a171da1dae0e4a24a82bb29020/data' :
         'community.wave.seqera.io/library/r-shinyngs:2.4.0--709fc6932be670a5' }"
 
@@ -42,10 +42,18 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
     stub:
     def prefix = task.ext.prefix ?: meta.id
     """
-    mkdir $prefix
-    touch $prefix/${prefix}.sample_metadata.tsv
-    touch $prefix/${prefix}.feature_metadata.tsv
-    touch $prefix/${prefix}.assay.tsv
-    touch $prefix/${prefix}.contrasts_file.tsv
+    mkdir -p $prefix
+
+    printf 'sample\\tcondition\\nsample1\\tcondition1\\nsample2\\tcondition2\\n' \\
+        > $prefix/${prefix}.sample_metadata.tsv
+
+    printf 'gene_id\\tgene_name\\ngene1\\tname1\\n' \\
+        > $prefix/${prefix}.feature_metadata.tsv
+
+    printf 'gene_id\\tsample1\\tsample2\\ngene1\\t1\\t2\\n' \\
+        > $prefix/${prefix}.assay.tsv
+
+    printf 'id\\tvariable\\treference\\ttarget\\tblocking\\tformula\\tmake_contrasts_str\\ncontrast1\\tcondition\\tcondition1\\tcondition2\\t\\t\\t\\n' \\
+        > $prefix/${prefix}.contrasts_file.tsv
     """
 }

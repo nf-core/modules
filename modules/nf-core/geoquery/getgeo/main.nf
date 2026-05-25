@@ -4,8 +4,8 @@ process GEOQUERY_GETGEO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-geoquery:2.70.0--r43hdfd78af_0' :
-        'quay.io/biocontainers/bioconductor-geoquery:2.70.0--r43hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c367777a9f3947bdfc464c3cec52d33d2862c5e909fa77e13455f8c1d177767b/data' :
+        'community.wave.seqera.io/library/bioconductor-geoquery_r-base:8547a00389cd568a' }"
 
     input:
     tuple val(meta), val(querygse)
@@ -14,7 +14,7 @@ process GEOQUERY_GETGEO {
     tuple val(meta), path("*.rds")            , emit: rds
     tuple val(meta), path("*matrix.tsv")      , emit: expression
     tuple val(meta), path("*annotation.tsv")  , emit: annotation
-    path "versions.yml"                       , emit: versions
+    path "versions.yml"                       , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

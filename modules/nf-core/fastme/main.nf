@@ -3,7 +3,7 @@ process FASTME {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fastme:2.1.6.1--hec16e2b_1':
         'quay.io/biocontainers/fastme:2.1.6.1--hec16e2b_1' }"
 
@@ -15,7 +15,7 @@ process FASTME {
     tuple val(meta), path("*_stat.txt")  , emit: stats
     tuple val(meta), path("*.matrix.phy"), emit: matrix    , optional: true
     tuple val(meta), path("*.bootstrap") , emit: bootstrap , optional: true
-    path "versions.yml" , emit: versions
+    tuple val("${task.process}"), val('fastme'), eval("fastme --version |& sed '1!d ; s/FastME //'"), emit: versions_fastme, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,12 +35,6 @@ process FASTME {
         $matarg \\
         $bootarg \\
         -T $task.cpus
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastme: \$(fastme --version |& sed '1!d ; s/FastME //')
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +46,5 @@ process FASTME {
     touch ${prefix}_stat.txt
     $mat
     $boot
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastme: \$(fastme --version |& sed '1!d ; s/FastME //')
-    END_VERSIONS
     """
 }

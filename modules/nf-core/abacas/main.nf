@@ -3,7 +3,7 @@ process ABACAS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/abacas:1.3.1--pl526_0' :
         'quay.io/biocontainers/abacas:1.3.1--pl526_0' }"
 

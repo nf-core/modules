@@ -19,7 +19,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,b7fb6c70957b2e6b6b810757928d0325"
+                    [
+                        "KRAKENUNIQ_BUILD",
+                        "krakenuniq",
+                        "1.0.4"
+                    ]
                 ],
                 "db": [
                     [
@@ -37,16 +41,20 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,b7fb6c70957b2e6b6b810757928d0325"
+                "versions_krakenuniq": [
+                    [
+                        "KRAKENUNIQ_BUILD",
+                        "krakenuniq",
+                        "1.0.4"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-04-25T13:34:52.419463205",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-03-06T09:45:24.957949175"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 - fasta - nocleanup": {
         "content": [
@@ -57,28 +65,28 @@
                 "database.kdb.counts:md5,a82149480a435210ec1e870f06b6cdb3",
                 "database.kraken.tsv:md5,be9bd0cb3a8bea30989e65aa42a73727",
                 "database0.kdb:md5,46542be19979e867075f9e455a314e00",
-                "library-files.txt:md5,8a9817d2de8465eb436aa3aa8696a717",
-                "genome.fasta:md5,6e9fe4042a72f2345f644f239272b7e6",
-                "seqid2taxid.map:md5,fe738f2333d57dde0db32239c04a93b8",
-                "taxDB:md5,1accaa141403e1fd5be9c79d1e5872b4"
+                "library-files.txt:md5,8a9817d2de8465eb436aa3aa8696a717"
             ],
             [
                 "database-build.log",
                 "database.report.tsv",
-                "names.dmp",
-                "nodes.dmp",
-                "taxdump.tar.gz",
-                "timestamp"
+                "taxDB"
             ],
-            [
-                "versions.yml:md5,b7fb6c70957b2e6b6b810757928d0325"
-            ]
+            {
+                "versions_krakenuniq": [
+                    [
+                        "KRAKENUNIQ_BUILD",
+                        "krakenuniq",
+                        "1.0.4"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-05-13T14:59:07.323282",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-03-06T09:49:11.884850884"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "sarscov2 - fasta": {
         "content": [
@@ -86,20 +94,25 @@
                 "database.idx:md5,f5298aa4215c956d2f737b5988721a24",
                 "database.kdb:md5,46542be19979e867075f9e455a314e00",
                 "database.kdb.counts:md5,a82149480a435210ec1e870f06b6cdb3",
-                "database0.kdb:md5,46542be19979e867075f9e455a314e00",
-                "taxDB:md5,1accaa141403e1fd5be9c79d1e5872b4"
+                "database0.kdb:md5,46542be19979e867075f9e455a314e00"
             ],
             [
-                
+                "taxDB"
             ],
-            [
-                "versions.yml:md5,b7fb6c70957b2e6b6b810757928d0325"
-            ]
+            {
+                "versions_krakenuniq": [
+                    [
+                        "KRAKENUNIQ_BUILD",
+                        "krakenuniq",
+                        "1.0.4"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-05-13T14:57:23.476447",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-03-06T09:48:27.136442441"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }
