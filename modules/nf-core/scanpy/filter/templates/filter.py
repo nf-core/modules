@@ -17,9 +17,17 @@ from threadpoolctl import threadpool_limits
 threadpool_limits(int("${task.cpus}"))
 sc.settings.n_jobs = int("${task.cpus}")
 
-input_file = "${h5ad}"
+input_file = "${anndata}"
 output_file = "${output_file}"
-adata = ad.read_zarr(input_file) if input_file.endswith(".zarr") else sc.read_h5ad(input_file)
+
+match input_file:
+    case _ if input_file.endswith(".h5ad"):
+        adata = ad.read_h5ad(input_file)
+    case _ if input_file.endswith(".zarr"):
+        adata = ad.read_zarr(input_file)
+    case _:
+        raise ValueError(f"Unsupported AnnData input format: {input_file}")
+
 prefix = "${prefix}"
 symbol_col = "${symbol_col}"
 
@@ -39,10 +47,13 @@ sc.pp.filter_genes(adata, min_counts=int("${min_counts_gene}"))
 sc.pp.filter_cells(adata, min_genes=int("${min_genes}"))
 sc.pp.filter_genes(adata, min_cells=int("${min_cells}"))
 
-if output_file.endswith(".zarr"):
-    adata.write_zarr(output_file)
-else:
-    adata.write_h5ad(output_file)
+match output_file:
+    case _ if output_file.endswith(".h5ad"):
+        adata.write_h5ad(output_file)
+    case _ if output_file.endswith(".zarr"):
+        adata.write_zarr(output_file)
+    case _:
+        raise ValueError(f"Unsupported AnnData output format: {output_file}")
 
 # Versions
 

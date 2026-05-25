@@ -15,71 +15,81 @@ tools:
       documentation: https://scanpy.readthedocs.io/en/stable/api/generated/scanpy.pp.filter_cells.html
       tool_dev_url: https://github.com/scverse/scanpy
       doi: 10.1186/s13059-017-1382-0
-      licence: ["BSD-3-Clause"]
-
+      licence:
+        - "BSD-3-Clause"
+      identifier: biotools:scanpy
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - h5ad:
+    - anndata:
         type: file
         description: AnnData object in h5ad or zarr format
         pattern: "*.{h5ad,zarr}"
         ontologies:
-          - edam: "http://edamontology.org/format_3590" # HDF5 format
-          - edam: "http://edamontology.org/format_3915" # Zarr format
-  - - min_genes:
-        type: integer
-        description: Minimum number of genes expressed per cell
-  - - min_cells:
-        type: integer
-        description: Minimum number of cells expressing each gene
-  - - min_counts_gene:
-        type: integer
-        description: Minimum number of counts per gene
-  - - min_counts_cell:
-        type: integer
-        description: Minimum number of counts per cell
-  - - max_mito_percentage:
-        type: integer
-        description: Maximum percentage of mitochondrial genes per cell
-  - - symbol_col:
-        type: string
-        description: Column name of the gene symbols in the `var` of the AnnData object. Use `index` if the gene symbols are the row names.
-
+          - edam: "http://edamontology.org/format_3590"
+          - edam: "http://edamontology.org/format_3915"
+  - min_genes:
+      type: integer
+      description: Minimum number of genes expressed per cell
+  - min_cells:
+      type: integer
+      description: Minimum number of cells expressing each gene
+  - min_counts_gene:
+      type: integer
+      description: Minimum number of counts per gene
+  - min_counts_cell:
+      type: integer
+      description: Minimum number of counts per cell
+  - max_mito_percentage:
+      type: integer
+      description: Maximum percentage of mitochondrial genes per cell
+  - symbol_col:
+      type: string
+      description: Column name of the gene symbols in the `var` of the AnnData
+        object. Use `index` if the gene symbols are the row names.
 output:
   h5ad:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
-    - "*.h5ad":
-        type: file
-        description: Filtered AnnData object
-        pattern: "*.h5ad"
-        ontologies:
-          - edam: "http://edamontology.org/format_3590" # HDF5 format
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.h5ad":
+          type: file
+          description: Filtered AnnData object
+          pattern: "*.h5ad"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590"
+  zarr:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.zarr":
+          type: directory
+          description: Filtered AnnData object
+          pattern: "*.zarr"
+          ontologies:
+            - edam: "http://edamontology.org/format_3915"
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
-  zarr:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
-    - "*.zarr":
-        type: directory
-        description: Filtered AnnData object
-        pattern: "*.zarr"
         ontologies:
-          - edam: "http://edamontology.org/format_3915" # Zarr format
-
+          - edam: http://edamontology.org/format_3750
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@nictru"
 maintainers:

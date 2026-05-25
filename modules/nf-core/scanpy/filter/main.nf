@@ -4,11 +4,11 @@ process SCANPY_FILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bd4462356828eb975a9ae0a3073ec720d19f4918106b696e3c298a556f288480/data'
-        : 'community.wave.seqera.io/library/python_pyyaml_scanpy:ffeb5af98a9a5bde'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/81/8158c8824afb7a57da5327fbd188082d24d205e078103ca249d74e93cc1cd603/data'
+        : 'community.wave.seqera.io/library/python_pyyaml_scanpy:da8fc259e2b95ada'}"
 
     input:
-    tuple val(meta), path(h5ad)
+    tuple val(meta), path(anndata)
     val min_genes
     val min_cells
     val min_counts_gene
@@ -18,24 +18,24 @@ process SCANPY_FILTER {
 
     output:
     tuple val(meta), path("*.h5ad"), optional: true, emit: h5ad
-    path "versions.yml"            , emit: versions, topic: versions
     tuple val(meta), path("*.zarr"), optional: true, emit: zarr
+    path "versions.yml"            , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     prefix     = task.ext.prefix ?: "${meta.id}_filtered"
-    output_file = h5ad.name.endsWith(".zarr") ? "${prefix}.zarr" : "${prefix}.h5ad"
-    if (output_file == h5ad.name) {
+    output_file = anndata.name.endsWith(".zarr") ? "${prefix}.zarr" : "${prefix}.h5ad"
+    if (output_file == anndata.name) {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     template('filter.py')
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_filtered"
-    output_file = h5ad.name.endsWith(".zarr") ? "${prefix}.zarr" : "${prefix}.h5ad"
-    if (output_file == h5ad.name) {
+    output_file = anndata.name.endsWith(".zarr") ? "${prefix}.zarr" : "${prefix}.h5ad"
+    if (output_file == anndata.name) {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     """
