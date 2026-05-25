@@ -6,9 +6,6 @@ description: |
   provide cluster assignments to SoupX, which then estimates per-cluster contamination and adjusts
   counts. The adjusted counts are written to the output H5AD as an `ambient` layer.
 
-  Tunable flags via `ext.args` (space-separated `--key value` pairs):
-    --npcs               Number of principal components (also controls FindNeighbors dims = 1:npcs). Default: 50.
-    --cluster_algorithm  Seurat FindClusters algorithm: louvain | louvain_multilevel | slm | leiden. Default: leiden.
 keywords:
   - single-cell
   - transcriptomics
@@ -42,6 +39,19 @@ input:
         pattern: "*.h5ad"
         ontologies:
           - edam: "http://edamontology.org/format_3590" # HDF5
+  - npcs:
+      type: integer
+      description: |
+        Number of principal components for Seurat PCA (also controls FindNeighbors dims = 1:npcs).
+  - cluster_algorithm:
+      type: integer
+      description: |
+        Seurat FindClusters algorithm identifier passed to `FindClusters(algorithm = ...)`.
+        Valid values:
+          - 1: louvain
+          - 2: louvain_multilevel
+          - 3: slm
+          - 4: leiden
 
 output:
   h5ad:

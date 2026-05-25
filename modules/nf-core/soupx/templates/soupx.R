@@ -10,11 +10,18 @@ suppressPackageStartupMessages({
 set.seed(0)
 
 # Template-interpolated by main.nf
-h5ad_filtered     <- "${h5ad_filtered}"
-h5ad_raw          <- "${h5ad_raw}"
-prefix            <- "${prefix}"
-npcs              <- ${npcs}
-cluster_algorithm <- ${cluster_algorithm}
+h5ad_filtered <- "${h5ad_filtered}"
+h5ad_raw      <- "${h5ad_raw}"
+prefix        <- "${prefix}"
+npcs              <- as.integer(${npcs})
+cluster_algorithm <- as.integer(${cluster_algorithm})
+valid_algorithms  <- c(1L, 2L, 3L, 4L)
+if (!cluster_algorithm %in% valid_algorithms) {
+    stop(paste0(
+        "Invalid cluster_algorithm ", cluster_algorithm,
+        ". Must be one of: 1 (louvain), 2 (louvain_multilevel), 3 (slm), 4 (leiden)."
+    ))
+}
 
 adata     <- read_h5ad(h5ad_filtered)
 adata_raw <- read_h5ad(h5ad_raw)

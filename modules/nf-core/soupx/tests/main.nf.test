@@ -18,6 +18,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_raw_matrix.h5ad', checkIfExists: true)
                 ]
+                input[1] = 50
+                input[2] = 4
                 """
             }
         }
@@ -31,8 +33,6 @@ nextflow_process {
 
     test("scdownstream - h5ad - custom args") {
 
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -41,6 +41,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_raw_matrix.h5ad', checkIfExists: true)
                 ]
+                input[1] = 30
+                input[2] = 1
                 """
             }
         }
@@ -64,6 +66,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_raw_matrix.h5ad', checkIfExists: true)
                 ]
+                input[1] = 50
+                input[2] = 4
                 """
             }
         }

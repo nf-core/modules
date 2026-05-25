@@ -9,6 +9,8 @@ process SOUPX {
 
     input:
     tuple val(meta), path(h5ad_filtered), path(h5ad_raw)
+    val(npcs)              // value: number of principal components for Seurat PCA
+    val(cluster_algorithm) // value: Seurat FindClusters algorithm [ 1 | 2 | 3 | 4 ]
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
@@ -22,10 +24,6 @@ process SOUPX {
     if ("${h5ad_filtered}" == "${prefix}.h5ad" || "${h5ad_raw}" == "${prefix}.h5ad") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
-    def args_map = [:]
-    (task.ext.args ?: '').findAll(/--(\S+)\s+(\S+)/) { full, k, v -> args_map[k] = v }
-    npcs              = (args_map.npcs ?: 50) as Integer
-    cluster_algorithm = [ louvain: 1, louvain_multilevel: 2, slm: 3, leiden: 4 ][args_map.cluster_algorithm ?: 'leiden'] ?: error("Unknown cluster_algorithm '${args_map.cluster_algorithm}'. Must be one of: louvain, louvain_multilevel, slm, leiden.")
     template 'soupx.R'
 
     stub:
