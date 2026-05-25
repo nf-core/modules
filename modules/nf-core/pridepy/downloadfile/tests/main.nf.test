@@ -1,22 +1,24 @@
 nextflow_process {
 
-    name "Test Process VARIANTBAM"
+    name "Test Process PRIDEPY_DOWNLOADFILE"
     script "../main.nf"
-    process "VARIANTBAM"
+    process "PRIDEPY_DOWNLOADFILE"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "variantbam"
+    tag "pridepy"
+    tag "pridepy/downloadfile"
 
-    test("sarscov2 - bam") {
+    test("pride - PXD004684 - sdrf.tsv") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                    ]
+                    [ id:'test' ],
+                    'sdrf.tsv',
+                    'PXD004684'
+                ]
                 """
             }
         }
@@ -24,14 +26,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.file[0][1]).text.contains('Source Name') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
-
             )
         }
 
     }
 
-    test("sarscov2 - bam - stub") {
+    test("pride - PXD004684 - sdrf.tsv - stub") {
 
         options "-stub"
 
@@ -39,9 +41,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                    ]
+                    [ id:'test' ],
+                    'sdrf.tsv',
+                    'PXD004684'
+                ]
                 """
             }
         }
