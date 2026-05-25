@@ -1,6 +1,6 @@
 include { BCFTOOLS_VIEW        } from '../../../modules/nf-core/bcftools/view'
 include { ENSEMBLVEP_FILTERVEP } from '../../../modules/nf-core/ensemblvep/filtervep'
-include { TABIX_BGZIPTABIX     } from '../../../modules/nf-core/tabix/bgziptabix'
+include { HTSLIB_BGZIPTABIX    } from '../../../modules/nf-core/htslib/bgziptabix'
 
 // Please note this subworkflow requires the options for bcftools_view that are included in the nextflow.config
 workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
@@ -35,12 +35,15 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
             ch_filter_vep_feature_file.map { _meta, file -> file },
         )
 
-        TABIX_BGZIPTABIX(
-            ENSEMBLVEP_FILTERVEP.out.output
+        HTSLIB_BGZIPTABIX(
+            ENSEMBLVEP_FILTERVEP.out.output.map { meta, vcf -> [meta, vcf, [], []] },
+            "compress",
+            true,
+            "vcf"
         )
 
-        ch_vcf = TABIX_BGZIPTABIX.out.gz_index.map { meta, vcf, _tbi -> [meta, vcf] }
-        ch_tbi = TABIX_BGZIPTABIX.out.gz_index.map { meta, _vcf, tbi -> [meta, tbi] }
+        ch_vcf = HTSLIB_BGZIPTABIX.out.output
+        ch_tbi = HTSLIB_BGZIPTABIX.out.index
     }
 
     emit:
