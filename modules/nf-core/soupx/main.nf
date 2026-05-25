@@ -9,8 +9,8 @@ process SOUPX {
 
     input:
     tuple val(meta), path(h5ad_filtered), path(h5ad_raw)
-    val(npcs)              // value: number of principal components for Seurat PCA
-    val(cluster_algorithm) // value: Seurat FindClusters algorithm [ 1 | 2 | 3 | 4 ]
+    val(npcs)
+    val(cluster_algorithm)
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
