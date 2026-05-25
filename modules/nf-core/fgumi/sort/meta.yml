@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fgumi_sort"
+description: Sort a BAM file using high-performance external merge-sort
+keywords:
+  - sort
+  - bam
+  - sam
+tools:
+  - "fgumi":
+      description: "High-performance tools for UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi/blob/v0.1.2/README.md"
+      documentation: "https://github.com/fulcrumgenomics/fgumi/blob/v0.1.2/README.md"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Unsorted BAM file
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Sorted BAM file
+          pattern: "*.{bam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam.bai":
+          type: file
+          description: BAM index file
+          pattern: "*.bam.bai"
+          ontologies:
+            - edam: "http://edamontology.org/format_2573" # BAM index
+  versions_fgumi:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "fgumi":
+          type: string
+          description: The name of the tool
+      - "fgumi --version | sed -n 's/^fgumi //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed -n 's/^fgumi //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@matthdsm"
+maintainers:
+  - "@matthdsm"
