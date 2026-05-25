@@ -8,6 +8,7 @@ os.environ["MPLCONFIGDIR"] = "./tmp/mpl"
 os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
 
 import platform
+from pathlib import Path
 
 import anndata as ad
 import scanpy as sc
@@ -20,13 +21,13 @@ sc.settings.n_jobs = int("${task.cpus}")
 input_file = "${anndata}"
 output_file = "${output_file}"
 
-match input_file:
-    case _ if input_file.endswith(".h5ad"):
+match Path(input_file).suffix:
+    case ".h5ad":
         adata = ad.read_h5ad(input_file)
-    case _ if input_file.endswith(".zarr"):
+    case ".zarr":
         adata = ad.read_zarr(input_file)
-    case _:
-        raise ValueError(f"Unsupported AnnData input format: {input_file}")
+    case other:
+        raise ValueError(f"Unsupported AnnData input format: {other}")
 
 prefix = "${prefix}"
 symbol_col = "${symbol_col}"
@@ -47,13 +48,13 @@ sc.pp.filter_genes(adata, min_counts=int("${min_counts_gene}"))
 sc.pp.filter_cells(adata, min_genes=int("${min_genes}"))
 sc.pp.filter_genes(adata, min_cells=int("${min_cells}"))
 
-match output_file:
-    case _ if output_file.endswith(".h5ad"):
+match Path(output_file).suffix:
+    case ".h5ad":
         adata.write_h5ad(output_file)
-    case _ if output_file.endswith(".zarr"):
+    case ".zarr":
         adata.write_zarr(output_file)
-    case _:
-        raise ValueError(f"Unsupported AnnData output format: {output_file}")
+    case other:
+        raise ValueError(f"Unsupported AnnData output format: {other}")
 
 # Versions
 
