@@ -66,10 +66,7 @@ nextflow_process {
                     assert groupedSnps.toSet() == ldScoreSnpsSet
                 },
                 {
-                    assert snapshot(
-                        process.out.ld_scores,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
+                    assert snapshot(sanitizeOutput(process.out)).match()
                 }
             )
         }
@@ -132,10 +129,7 @@ nextflow_process {
                     assert groupedSnps.toSet() == ldScoreSnpsSet
                 },
                 {
-                    assert snapshot(
-                        process.out.ld_scores,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
+                    assert snapshot(sanitizeOutput(process.out)).match()
                 }
             )
         }
