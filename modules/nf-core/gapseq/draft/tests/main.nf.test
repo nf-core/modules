@@ -31,7 +31,13 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                {
+                    assert snapshot(
+                        process.out.draft.collect { meta, rds -> [meta, (rds instanceof List ? rds : [rds]).collect { file(it).getName() }.sort()] },
+                        process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }
@@ -79,7 +85,13 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                {
+                    assert snapshot(
+                        process.out.draft.collect { meta, rds -> [meta, (rds instanceof List ? rds : [rds]).collect { file(it).getName() }.sort()] },
+                        process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }

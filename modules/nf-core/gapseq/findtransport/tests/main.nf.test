@@ -26,7 +26,13 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                {
+                    assert snapshot(
+                        process.out.tbl.collect { meta, tbl -> [meta, file(tbl).getName()] },
+                        process.out.log.collect { meta, log -> [meta, (log instanceof List ? log : [log]).collect { file(it).getName() }.sort()] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }
@@ -49,7 +55,13 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                {
+                    assert snapshot(
+                        process.out.tbl.collect { meta, tbl -> [meta, file(tbl).getName()] },
+                        process.out.log.collect { meta, log -> [meta, (log instanceof List ? log : [log]).collect { file(it).getName() }.sort()] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }

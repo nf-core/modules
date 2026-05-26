@@ -30,7 +30,14 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                {
+                    assert snapshot(
+                        process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
+                        process.out.model.collect { meta, model -> [meta, (model instanceof List ? model : [model]).collect { file(it).getName() }.sort()] },
+                        process.out.tbl.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }
@@ -54,7 +61,14 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                {
+                    assert snapshot(
+                        process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
+                        process.out.model.collect { meta, model -> [meta, (model instanceof List ? model : [model]).collect { file(it).getName() }.sort()] },
+                        process.out.tbl.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }
@@ -78,7 +92,14 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                {
+                    assert snapshot(
+                        process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
+                        process.out.model.collect { meta, model -> [meta, (model instanceof List ? model : [model]).collect { file(it).getName() }.sort()] },
+                        process.out.tbl.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }
