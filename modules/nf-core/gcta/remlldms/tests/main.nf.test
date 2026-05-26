@@ -136,12 +136,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.reml_results.size() == 1 },
                 { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
-                {
-                    assert snapshot(
-                        process.out.reml_results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -169,12 +164,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.reml_results.size() == 1 },
                 { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
-                {
-                    assert snapshot(
-                        process.out.reml_results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -202,12 +192,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.reml_results.size() == 1 },
                 { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
-                {
-                    assert snapshot(
-                        process.out.reml_results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -238,12 +223,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.reml_results.size() == 1 },
                 { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
-                {
-                    assert snapshot(
-                        process.out.reml_results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -271,12 +251,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.reml_results.size() == 1 },
                 { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
-                {
-                    assert snapshot(
-                        process.out.reml_results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -332,12 +307,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.reml_results.size() == 1 },
                 { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
-                {
-                    assert snapshot(
-                        process.out.reml_results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
