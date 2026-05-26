@@ -145,10 +145,7 @@ nextflow_process {
                 { assert file(path(process.out.results.get(0).get(1)).parent.toString() + "/.command.sh").text.contains("--grm-sparse plink_simulated_dense_sp") },
                 { assert file(path(process.out.results.get(0).get(1)).parent.toString() + "/.command.sh").text.contains("--mpheno 1") },
                 {
-                    assert snapshot(
-                        process.out.results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
+                    assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match()
                 }
             )
         }
@@ -194,10 +191,7 @@ nextflow_process {
                 { assert path(process.out.results.get(0).get(1)).readLines().get(0).contains("BETA") },
                 { assert file(path(process.out.results.get(0).get(1)).parent.toString() + "/.command.sh").text.contains("--mpheno 2") },
                 {
-                    assert snapshot(
-                        process.out.results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
+                    assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match()
                 }
             )
         }
@@ -241,10 +235,7 @@ nextflow_process {
                 { assert !file(path(process.out.results.get(0).get(1)).parent.toString() + "/.command.sh").text.contains("--mpheno") },
                 { assert file(path(process.out.results.get(0).get(1)).parent.toString() + "/.command.sh").text.contains("--grm-sparse plink_simulated_dense_sp") },
                 {
-                    assert snapshot(
-                        process.out.results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
+                    assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match()
                 }
             )
         }
@@ -286,10 +277,7 @@ nextflow_process {
                 { assert path(process.out.results.get(0).get(1)).readLines().get(0).contains("BETA") },
                 { assert file(path(process.out.results.get(0).get(1)).parent.toString() + "/.command.sh").text.contains("--grm-sparse plink_simulated_dense_sp") },
                 {
-                    assert snapshot(
-                        process.out.results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
+                    assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match()
                 }
             )
         }
@@ -362,10 +350,7 @@ nextflow_process {
                 { assert process.out.log.size() == 1 },
                 { assert process.out.results.get(0).get(0).id == "plink_simulated" },
                 {
-                    assert snapshot(
-                        process.out.results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
+                    assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match()
                 }
             )
         }
