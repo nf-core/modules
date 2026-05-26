@@ -1,7 +1,6 @@
 process VCONTACT3_PREPAREDDATABASES {
     tag "$meta.id"
     label 'process_low'
-
     
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
@@ -10,7 +9,6 @@ process VCONTACT3_PREPAREDDATABASES {
 
     input:
     tuple val(meta), val(db_version)
-    
 
     output:
     tuple val(meta), path ("${prefix}/"), emit: database
@@ -24,7 +22,7 @@ process VCONTACT3_PREPAREDDATABASES {
     def args = task.ext.args ?: ''
     """
     vcontact3 prepare_databases \\
-        --get-version "latest" \\
+        --get-version "${db_version}" \\
         --set-location "${prefix}"  \\
         $args
 
