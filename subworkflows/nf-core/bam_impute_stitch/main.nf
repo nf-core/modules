@@ -12,6 +12,7 @@ workflow BAM_IMPUTE_STITCH {
     ch_fasta // channel (optional) :   [ [genome], fa, fai ]
     k_val // integer:   k value for STITCH
     n_gen // integer:   number of generations for STITCH
+    buffer // integer:   Buffer size around each chunk for STITCH
     seed // value  :   seed for random number generator
 
     main:
@@ -48,6 +49,7 @@ workflow BAM_IMPUTE_STITCH {
                 chr,
                 start,
                 end,
+                buffer,
                 k_val,
                 n_gen,
             ]

@@ -43,6 +43,7 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = channel.of([[],[],[]]).collect()
+                input[2] = []
                 """
                 }
             }
