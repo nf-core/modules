@@ -244,12 +244,7 @@ nextflow_process {
                     def logText = file(process.out.log_file.get(0).get(1)).text
                     assert logText.contains("--reml-bivar-prevalence 0.3 0.25")
                 },
-                {
-                    assert snapshot(
-                        process.out.bivariate_results,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_file"])).match() }
             )
         }
     }
@@ -318,13 +313,7 @@ nextflow_process {
                 { assert process.out.bivariate_results.get(0).get(0).id == "plink_simulated_ldms" },
                 { assert file(process.out.bivariate_results.get(0).get(1)).name == "plink_simulated_ldms.hsq" },
                 { assert file(process.out.log_file.get(0).get(1)).name == "plink_simulated_ldms.log" },
-                {
-                    assert snapshot(
-                        process.out.bivariate_results,
-                        process.out.log_file,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_file"])).match() }
             )
         }
     }
