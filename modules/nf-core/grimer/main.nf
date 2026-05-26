@@ -22,7 +22,7 @@ process GRIMER {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def m_arg  = sample_metadata        ? "-m ${sample_metadata}" : ''
+    def m_arg  = sample_metadata ? "-m ${sample_metadata}" : ''
     def c_arg  = config          ? "-c ${config}"   : ''
     """
     grimer \\
