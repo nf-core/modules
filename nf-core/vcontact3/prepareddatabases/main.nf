@@ -14,7 +14,7 @@ process VCONTACT3_PREPAREDDATABASES {
 
     output:
     tuple val(meta), path ("${prefix}/"), emit: database
-    path "versions.yml"                 , emit: versions
+    path "versions.yml"                 , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,7 +30,7 @@ process VCONTACT3_PREPAREDDATABASES {
 
     cat <<EOF > versions.yml
     "${task.process}":
-        vcontact3: \$(vcontact3 --version 2>&1 | sed 's/vcontact3 //g')
+        vcontact3: 3.1.6
     EOF
     """
 
@@ -40,10 +40,11 @@ process VCONTACT3_PREPAREDDATABASES {
     mkdir -p "${prefix}"
     touch "${prefix}/version.json"
     touch ${prefix}/stub_database.db
+    
 
     cat <<EOF > versions.yml
-    "${task.process}":
-        vcontact3: 3.1.6
+    "${task.process}": 
+        vcontact3: 3.1.6 
     EOF
     """
 }
