@@ -1,0 +1,168 @@
+nextflow_process {
+
+    name "Test Process REGENIE_RUNL0"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "REGENIE_RUNL0"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "regenie"
+    tag "regenie/splitl0"
+    tag "regenie/runl0"
+
+    setup {
+        run("REGENIE_SPLITL0") {
+            script "../../splitl0/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+
+                input[2] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+
+                input[3] = 100
+                input[4] = 2
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - quantitative plink1 with covariates") {
+
+        when {
+            params {
+                module_args = '--phenoColList QuantitativeTrait'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+
+                input[1] = REGENIE_SPLITL0.out.master
+                    .combine(REGENIE_SPLITL0.out.snplists)
+                    .map { master_meta, master, snplist_meta, snplists ->
+                        [ master_meta, master, snplists.find { snplist -> snplist.getFileName().toString().contains('_job1.snplist') }, 1 ]
+                    }
+
+                input[2] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+
+                input[3] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+
+                input[4] = 100
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.l0_predictions.size() == 1 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.l0_predictions.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
+                {
+                    def predictionFiles = process.out.l0_predictions.get(0).get(1)
+                    predictionFiles = predictionFiles instanceof List ? predictionFiles : [predictionFiles]
+                    assert predictionFiles.size() >= 1
+                    assert predictionFiles.every { path(it).getFileName().toString().contains('_l0_Y') }
+                },
+                { assert path(process.out.log.get(0).get(1)).exists() },
+                {
+                    def stablePredictions = process.out.l0_predictions.collect { prediction ->
+                        def predictionFiles = prediction[1] instanceof List ? prediction[1] : [prediction[1]]
+                        [prediction[0], predictionFiles.collect { path(it).getFileName().toString() }.sort()]
+                    }
+                    assert snapshot(
+                        stablePredictions,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens popgen - plink1 - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--phenoColList QuantitativeTrait'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+
+                input[1] = REGENIE_SPLITL0.out.master
+                    .combine(REGENIE_SPLITL0.out.snplists)
+                    .map { master_meta, master, snplist_meta, snplists ->
+                        [ master_meta, master, snplists.find { snplist -> snplist.getFileName().toString().contains('_job1.snplist') }, 1 ]
+                    }
+
+                input[2] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+
+                input[3] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+
+                input[4] = 100
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def stablePredictions = process.out.l0_predictions.collect { prediction ->
+                        def predictionFiles = prediction[1] instanceof List ? prediction[1] : [prediction[1]]
+                        [prediction[0], predictionFiles.collect { path(it).getFileName().toString() }.sort()]
+                    }
+                    def stableLogs = process.out.log.collect { log ->
+                        [log[0], path(log[1]).getFileName().toString()]
+                    }
+                    assert snapshot(
+                        stablePredictions,
+                        stableLogs,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}
