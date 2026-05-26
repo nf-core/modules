@@ -27,7 +27,6 @@ process GCTA_REMLLDMS {
     """
     gcta \\
         --reml \\
-        --reml-no-constrain \\
         --mgrm ${mgrm_file} \\
         --pheno ${phenotypes_file} \\
         ${qcovar_param} \\
