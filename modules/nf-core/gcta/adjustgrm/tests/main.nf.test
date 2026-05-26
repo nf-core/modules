@@ -82,10 +82,7 @@ nextflow_process {
                     ]
                 },
                 {
-                    assert snapshot(
-                        process.out.grm_files,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
+                    assert snapshot(sanitizeOutput(process.out)).match()
                 }
             )
         }
@@ -164,10 +161,7 @@ nextflow_process {
                     ]
                 },
                 {
-                    assert snapshot(
-                        process.out.grm_files,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
+                    assert snapshot(sanitizeOutput(process.out)).match()
                 }
             )
         }
