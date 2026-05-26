@@ -4,8 +4,8 @@ process OCTOPUSV_STAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/octopusv:0.3.2--pyhdfd78af_0' :
-        'quay.io/biocontainers/octopusv:0.3.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/octopusv:0.3.3--pyhdfd78af_0' :
+        'quay.io/biocontainers/octopusv:0.3.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(svcf)
@@ -24,7 +24,7 @@ process OCTOPUSV_STAT {
     """
     octopusv stat \\
         ${svcf} \\
-        -o ${prefix}.txt \\
+        --output-file ${prefix}.txt \\
         ${args}
     """
 

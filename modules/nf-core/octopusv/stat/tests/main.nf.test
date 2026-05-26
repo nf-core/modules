@@ -3,13 +3,14 @@ nextflow_process {
     name "Test Process OCTOPUSV_STAT"
     script "../main.nf"
     process "OCTOPUSV_STAT"
+    config "./test.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "octopusv"
     tag "octopusv/stat"
 
-    test("homo_sapiens - txt") {
+    test("homo_sapiens - txt + html") {
 
         when {
             process {
@@ -25,8 +26,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.html.get(0).get(1)).name == "test.html" },
                 { assert snapshot(
-                    path(process.out.txt.get(0).get(1)),
+                    process.out.txt,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
