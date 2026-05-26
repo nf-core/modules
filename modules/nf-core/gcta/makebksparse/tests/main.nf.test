@@ -73,8 +73,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.sparse_grm_files.size() == 1 },
                 { assert process.out.sparse_grm_files.get(0).get(0).id == "contract_dense_sp" },
-                { assert snapshot(process.out.sparse_grm_files).match("sparse_grm_files") },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("versions") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -116,8 +115,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.sparse_grm_files.size() == 1 },
                 { assert process.out.sparse_grm_files.get(0).get(0).id == "stub_dense_sp" },
-                { assert snapshot(process.out.sparse_grm_files).match("stub_sparse_grm_files") },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("stub_versions") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
