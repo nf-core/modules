@@ -1,0 +1,148 @@
+nextflow_process {
+
+    name "Test Process REGENIE_SPLITL0"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "REGENIE_SPLITL0"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "regenie"
+    tag "regenie/splitl0"
+
+    test("homo_sapiens popgen - quantitative plink1 with covariates") {
+
+        when {
+            params {
+                module_args = '--phenoColList QuantitativeTrait'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+
+                input[2] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+
+                input[3] = 100
+                input[4] = 2
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.master.size() == 1 },
+                { assert process.out.snplists.size() == 1 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.master.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.snplists.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
+                {
+                    def master = path(process.out.master.get(0).get(1))
+                    def lines = master.text.readLines().findAll { it }
+                    assert master.exists()
+                    assert lines.size() == 3
+                    assert lines[0] ==~ /\d+\s+\d+/
+                    assert lines.drop(1).every { line ->
+                        line.contains('plink_simulated_job') && !line.contains('/')
+                    }
+                },
+                {
+                    def snplists = process.out.snplists.get(0).get(1)
+                    assert snplists.size() == 2
+                    assert snplists.collect { path(it).getFileName().toString() }.sort() == [
+                        'plink_simulated_job1.snplist',
+                        'plink_simulated_job2.snplist'
+                    ]
+                },
+                { assert path(process.out.log.get(0).get(1)).exists() },
+                {
+                    def stableMaster = process.out.master.collect { master ->
+                        [master[0], path(master[1]).getFileName().toString()]
+                    }
+                    def stableSnplists = process.out.snplists.collect { snplist ->
+                        [snplist[0], snplist[1].collect { path(it).getFileName().toString() }.sort()]
+                    }
+                    assert snapshot(
+                        stableMaster,
+                        stableSnplists,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens popgen - plink1 - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--phenoColList QuantitativeTrait'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+
+                input[2] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+
+                input[3] = 100
+                input[4] = 2
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def stableMaster = process.out.master.collect { master ->
+                        [master[0], path(master[1]).getFileName().toString()]
+                    }
+                    def stableSnplists = process.out.snplists.collect { snplist ->
+                        [snplist[0], snplist[1].collect { path(it).getFileName().toString() }.sort()]
+                    }
+                    def stableLogs = process.out.log.collect { log ->
+                        [log[0], path(log[1]).getFileName().toString()]
+                    }
+                    assert snapshot(
+                        stableMaster,
+                        stableSnplists,
+                        stableLogs,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}
