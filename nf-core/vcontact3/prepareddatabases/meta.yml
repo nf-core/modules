@@ -1,20 +1,22 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 # # TODO nf-core: Add a description of the module and list keywords
 name: "vcontact3_prepareddatabases"
-description: write your description here
+description: Prepare and format databases for vCONTACT3 viral taxonomic analysis 
 keywords:
-- sort
-- example
+- virus
+- database
 - genomics
+- clustering 
+- vcontact3
 tools:
 ## TODO nf-core: Add a description and other details for the software below
 - "vcontact3":
-    description: "Viral Contig Automatic Clustering and Taxonomy"
+    description: "Scalable and systematic hierarchical virus taxonomy with vCONTACT3"
     homepage: "https://bitbucket.org/MAVERICLab/vcontact3/src/master/README.md"
     documentation: "https://bitbucket.org/MAVERICLab/vcontact3/src/master/README.md"
     tool_dev_url: "None"
-    doi: ""
-    licence: ['GPL v3']
+    doi: "https://doi.org/10.1101/2025.11.06.686974"
+    licence:https://creativecommons.org/licenses/by/4.0/
     identifier: null
 
 input:
@@ -23,54 +25,28 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-      ontologies:
-      - edam: "http://edamontology.org/format_2572"     # BAM
-      - edam: "http://edamontology.org/format_2573"     # CRAM
-      - edam: "http://edamontology.org/format_3462"     # SAM
+        e.g. `[ id:'test' ]`
+  - db_version:
+      type: integer
+      description: The database version number to download and prepare (e.g., latest) 
 
 output:
   ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - "*.bam":
-        type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-        - edam: "http://edamontology.org/format_2572"     # BAM
-        - edam: "http://edamontology.org/format_2573"     # CRAM
-        - edam: "http://edamontology.org/format_3462"     # SAM
-  versions_vcontact3:
-  - - "${task.process}":
-        type: string
-        description: The name of the process
-    - "vcontact3":
-        type: string
-        description: The name of the tool
-    - "vcontact3 --version":
-        type: eval
-        description: The expression to obtain the version of the tool
-
-topics:
-  versions:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - vcontact3:
-        type: string
-        description: The name of the tool
-    - vcontact3 --version:
-        type: eval
-        description: The expression to obtain the version of the tool
+  - meta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+  - db_dir:
+      - "test/":
+          type: directory
+          description: Directory containing the downloaded and formatted vConTACT3 databases
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
 - "@olawal1001"
 maintainers:
