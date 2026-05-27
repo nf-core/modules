@@ -33,6 +33,7 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
         ENSEMBLVEP_FILTERVEP(
             ch_vcf,
             ch_filter_vep_feature_file.map { _meta, file -> file },
+            "vcf"
         )
 
         HTSLIB_BGZIPTABIX(

@@ -4,8 +4,8 @@ process FUSIONREPORT_DETECT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed32f46746a5b33a1b5d597cfe2f62d3b1cfa54638f57cadc5d5158d6a4959d2/data' :
-        'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:78488bd99166aa9a'}"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73d08e3edb2f4c51bb65c3b43d751f8ddb4c92f49c45659a4a43a3f5e008f937/data' :
+        'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:5d32bf6f226660f1'}"
 
     input:
     tuple val(meta), path(arriba_fusions), path(starfusion_fusions), path(fusioncatcher_fusions)
