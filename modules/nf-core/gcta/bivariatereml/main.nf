@@ -23,7 +23,6 @@ process GCTA_BIVARIATEREML {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def pair_id = prefix
     def qcovar_param = quant_covariates_file ? "--qcovar ${quant_covariates_file}" : ''
     def covar_param = cat_covariates_file ? "--covar ${cat_covariates_file}" : ''
     """
@@ -33,16 +32,15 @@ process GCTA_BIVARIATEREML {
         --pheno "${phenotype_file}" \\
         ${qcovar_param} \\
         ${covar_param} \\
-        --out "${pair_id}" \\
+        --out "${prefix}" \\
         --thread-num ${task.cpus} \\
         ${args}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def pair_id = prefix
     """
-    touch "${pair_id}.hsq"
-    touch "${pair_id}.log"
+    touch "${prefix}.hsq"
+    touch "${prefix}.log"
     """
 }
