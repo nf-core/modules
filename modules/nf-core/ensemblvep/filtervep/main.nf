@@ -34,7 +34,7 @@ process ENSEMBLVEP_FILTERVEP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = extension ? "${extension}" : "vcf"
+    def suffix = extension ?: "vcf"
     """
     touch ${prefix}.${suffix}
     """
