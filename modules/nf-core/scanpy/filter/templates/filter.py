@@ -21,13 +21,13 @@ sc.settings.n_jobs = int("${task.cpus}")
 input_file = "${anndata}"
 output_file = "${output_file}"
 
-match Path(input_file).suffix:
-    case ".h5ad":
-        adata = ad.read_h5ad(input_file)
-    case ".zarr":
-        adata = ad.read_zarr(input_file)
-    case other:
-        raise ValueError(f"Unsupported AnnData input format: {other}")
+input_suffix = Path(input_file).suffix
+if input_suffix == ".h5ad":
+    adata = ad.read_h5ad(input_file)
+elif input_suffix == ".zarr":
+    adata = ad.read_zarr(input_file)
+else:
+    raise ValueError(f"Unsupported AnnData input format: {input_suffix}")
 
 prefix = "${prefix}"
 symbol_col = "${symbol_col}"
@@ -48,13 +48,13 @@ sc.pp.filter_genes(adata, min_counts=int("${min_counts_gene}"))
 sc.pp.filter_cells(adata, min_genes=int("${min_genes}"))
 sc.pp.filter_genes(adata, min_cells=int("${min_cells}"))
 
-match Path(output_file).suffix:
-    case ".h5ad":
-        adata.write_h5ad(output_file)
-    case ".zarr":
-        adata.write_zarr(output_file)
-    case other:
-        raise ValueError(f"Unsupported AnnData output format: {other}")
+output_suffix = Path(output_file).suffix
+if output_suffix == ".h5ad":
+    adata.write_h5ad(output_file)
+elif output_suffix == ".zarr":
+    adata.write_zarr(output_file)
+else:
+    raise ValueError(f"Unsupported AnnData output format: {output_suffix}")
 
 # Versions
 
