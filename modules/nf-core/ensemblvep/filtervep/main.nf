@@ -23,7 +23,7 @@ process ENSEMBLVEP_FILTERVEP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = extension ? "${extension}" : "vcf"
+    def suffix = extension ?: "vcf"
     """
     filter_vep \\
         ${args} \\
