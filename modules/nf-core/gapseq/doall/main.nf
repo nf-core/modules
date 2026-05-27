@@ -3,7 +3,9 @@ process GAPSEQ_DOALL {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container 'community.wave.seqera.io/library/gapseq:2.0.1--5e0dffc1176c5fd2'
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'community.wave.seqera.io/library/gapseq:2.0.1--5e0dffc1176c5fd2' :
+        'community.wave.seqera.io/library/gapseq:2.0.1--5e0dffc1176c5fd2' }"
 
     input:
     tuple val(meta), path(fasta), path(medium)
@@ -53,5 +55,7 @@ process GAPSEQ_DOALL {
     touch ${prefix}_model-filled.RDS
     touch ${prefix}_pathways.tbl
     touch ${prefix}_transporters.tbl
+    touch ${prefix}.fna
+    touch ${prefix}.log
     """
 }
