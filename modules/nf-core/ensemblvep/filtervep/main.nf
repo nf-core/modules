@@ -4,8 +4,8 @@ process ENSEMBLVEP_FILTERVEP {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3d/3da6e21cbf9803529421d7e136d1ebec5ff71ec50e0d996eda2ce11ec2c19bf9/data'
-        : 'community.wave.seqera.io/library/ensembl-vep_perl-math-cdf:1e13f65f931a6954'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/44/44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a/data'
+        : 'community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib:efd9a6d1c5f218a9'}"
 
     input:
     tuple val(meta), path(input)
