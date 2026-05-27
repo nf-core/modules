@@ -17,9 +17,8 @@ process SCANPY_FILTER {
     val symbol_col
 
     output:
-    tuple val(meta), path("*.h5ad"), optional: true, emit: h5ad
-    tuple val(meta), path("*.zarr"), optional: true, emit: zarr
-    path "versions.yml"            , emit: versions, topic: versions
+    tuple val(meta), path("*.{h5ad,zarr}"), emit: anndata
+    path "versions.yml"                     , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

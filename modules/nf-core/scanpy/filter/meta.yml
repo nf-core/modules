@@ -51,29 +51,18 @@ input:
       description: Column name of the gene symbols in the `var` of the AnnData
         object. Use `index` if the gene symbols are the row names.
 output:
-  h5ad:
+  anndata:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.h5ad":
+      - "*.{h5ad,zarr}":
           type: file
-          description: Filtered AnnData object
-          pattern: "*.h5ad"
+          description: Filtered AnnData object in h5ad or zarr format
+          pattern: "*.{h5ad,zarr}"
           ontologies:
             - edam: "http://edamontology.org/format_3590"
-  zarr:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - "*.zarr":
-          type: directory
-          description: Filtered AnnData object
-          pattern: "*.zarr"
-          ontologies:
             - edam: "http://edamontology.org/format_3915"
   versions:
     - versions.yml:

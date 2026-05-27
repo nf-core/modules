@@ -46,8 +46,8 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert process.out.zarr },
-            { assert file(process.out.zarr[0][1]).name == "test_zarr_filtered.zarr" }
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_zarr_filtered.zarr" }
             )
         }
 
@@ -87,9 +87,9 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert process.out.zarr },
-            { assert file(process.out.zarr[0][1]).name == "test_zarr_filtered.zarr" },
-            { assert file(process.out.zarr[0][1] + "/X/.zarray").exists() }
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_zarr_filtered.zarr" },
+            { assert file(process.out.anndata[0][1] + "/X/.zarray").exists() }
             )
         }
 
