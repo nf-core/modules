@@ -2,49 +2,6 @@
     "pyclonevi - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "patient": "HCC1395",
-                            "tumour_sample": "HCC1395_HCC1395T"
-                        },
-                        "test_cluster_table.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "patient": "HCC1395",
-                            "tumour_sample": "HCC1395_HCC1395T"
-                        },
-                        "test.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "patient": "HCC1395",
-                            "tumour_sample": "HCC1395_HCC1395T"
-                        },
-                        "test_all_fits.h5:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "patient": "HCC1395",
-                            "tumour_sample": "HCC1395_HCC1395T"
-                        },
-                        "test_best_fit.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "4": [
-                    "versions.yml:md5,d7a72f90b5e871ad593d6b02ac78abb4"
-                ],
                 "ctree_input": [
                     [
                         {
@@ -88,24 +45,74 @@
                 "versions_pyclonevi": [
                     "versions.yml:md5,d7a72f90b5e871ad593d6b02ac78abb4"
                 ]
+            },
+            {
+                "PYCLONEVI": {
+                    "pyclonevi": "0.1.6"
+                }
             }
         ],
-        "timestamp": "2026-03-06T18:18:08.188467",
+        "timestamp": "2026-05-26T11:01:04.192976421",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.0"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     },
     "pyclonevi": {
         "content": [
-            [
-                "versions.yml:md5,764c065f67a1502d5158a8a018d8a388"
-            ]
+            {
+                "ctree_input": [
+                    [
+                        {
+                            "id": "test",
+                            "patient": "HCC1395",
+                            "tumour_sample": "HCC1395_HCC1395T"
+                        },
+                        "test_cluster_table.csv"
+                    ]
+                ],
+                "pyclone_all_fits": [
+                    [
+                        {
+                            "id": "test",
+                            "patient": "HCC1395",
+                            "tumour_sample": "HCC1395_HCC1395T"
+                        },
+                        "test_all_fits.h5"
+                    ]
+                ],
+                "pyclone_best_fit": [
+                    [
+                        {
+                            "id": "test",
+                            "patient": "HCC1395",
+                            "tumour_sample": "HCC1395_HCC1395T"
+                        },
+                        "test_best_fit.txt"
+                    ]
+                ],
+                "pyclone_input": [
+                    [
+                        {
+                            "id": "test",
+                            "patient": "HCC1395",
+                            "tumour_sample": "HCC1395_HCC1395T"
+                        },
+                        [
+                            "test_pyclone_input.tsv",
+                            "test_pyclone_input_all_samples.tsv"
+                        ]
+                    ]
+                ],
+                "versions_pyclonevi": [
+                    "versions.yml:md5,764c065f67a1502d5158a8a018d8a388"
+                ]
+            }
         ],
-        "timestamp": "2026-03-06T18:40:05.865588",
+        "timestamp": "2026-05-26T11:00:56.527463061",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.0"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     }
 }

@@ -1,5 +1,5 @@
 name: samtools_bgzip
-description: Converts an arbitrary compressed or uncompressed file to BGZIP
+description: DEPRECATED. Use HTSLIB/BGZIPTABIX instead. Converts an arbitrary compressed or uncompressed file to BGZIP
 keywords:
   - compression
   - fasta
@@ -43,7 +43,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${outfile}:
+      - output.gz:
           type: map
           description: |
             A FASTA file compressed with the BGZF algorithm.  It will be
