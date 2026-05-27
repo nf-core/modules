@@ -1,5 +1,5 @@
 process GCTA_REML {
-    tag "gcta_reml_${meta.id}_${meta2.id}"
+    tag "${meta.id}_${meta2.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
