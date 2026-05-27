@@ -1,0 +1,267 @@
+nextflow_process {
+
+    name "Test Process BOLT_REML"
+    script "../main.nf"
+    process "BOLT_REML"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bolt"
+    tag "bolt/reml"
+    tag "plink2/pca"
+    tag "gawk"
+
+    setup {
+        run("PLINK2_PCA", alias: "PLINK2_PCA_EXACT_PC1") {
+            script "../../../plink2/pca/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated_pc1' ],
+                    1,
+                    false,
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_PC1_PHENOTYPE") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = PLINK2_PCA_EXACT_PC1.out.evecfile
+                input[1] = Channel.of('BEGIN { OFS = " "; print "FID IID Y1" } { print \$1, \$2, \$3 }').collectFile(name:'pc1_to_phenotype.awk')
+                input[2] = false
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - quantitative phenotype without covariates") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                generated_pc1_phenotype = GAWK_PC1_PHENOTYPE.out.output.map { meta, phenotype_file ->
+                    [[ id:'generated_pc1', pheno_col:'Y1' ], phenotype_file]
+                }
+
+                input[0] = [
+                    [ id:'plink_simulated_quantitative_nocov' ],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                input[1] = generated_pc1_phenotype
+                input[2] = [
+                    [ id:'covariates_none', covariates_columns:'', covariates_cat_columns:'' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_log.size() == 1 },
+                { assert process.out.reml_log.get(0).get(0).id == "plink_simulated_quantitative_nocov" },
+                { assert file(process.out.reml_log.get(0).get(1)).name == "plink_simulated_quantitative_nocov.bolt.reml.log" },
+                {
+                    def command = path(process.out.reml_log.get(0).get(1)).parent.resolve(".command.sh").text
+                    assert command.contains('--phenoCol="Y1"')
+                    assert !command.contains("--covarFile ")
+                    assert !command.contains("--covarCol=")
+                    assert !command.contains("--qCovarCol=")
+                },
+                {
+                    def logText = file(process.out.reml_log.get(0).get(1)).text
+                    assert logText.contains("=== Reading phenotype and covariate data ===")
+                    assert logText.contains("=== Estimating variance parameters ===")
+                    assert logText.contains("h2 with all VCs:")
+                    assert logText.contains("plink_simulated_pc1.pc1_phenotype.phe")
+                },
+                {
+                    assert snapshot(
+                        process.out.reml_log.collect { meta, log -> [meta, file(log).name] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - quantitative phenotype with quantitative and categorical covariates") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                generated_pc1_phenotype = GAWK_PC1_PHENOTYPE.out.output.map { meta, phenotype_file ->
+                    [[ id:'generated_pc1', pheno_col:'Y1' ], phenotype_file]
+                }
+
+                input[0] = [
+                    [ id:'plink_simulated_quantitative_covar' ],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                input[1] = generated_pc1_phenotype
+                input[2] = [
+                    [ id:'covariates_mixed', covariates_columns:'Sex,Age,PC1,PC2', covariates_cat_columns:'Sex' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_log.size() == 1 },
+                { assert process.out.reml_log.get(0).get(0).id == "plink_simulated_quantitative_covar" },
+                { assert file(process.out.reml_log.get(0).get(1)).name == "plink_simulated_quantitative_covar.bolt.reml.log" },
+                {
+                    def command = path(process.out.reml_log.get(0).get(1)).parent.resolve(".command.sh").text
+                    assert command.contains('--phenoCol="Y1"')
+                    assert command.contains("--covarFile ")
+                    assert command.contains('--covarCol="Sex"')
+                    assert command.contains('--qCovarCol="Age"')
+                    assert command.contains('--qCovarCol="PC1"')
+                    assert command.contains('--qCovarCol="PC2"')
+                },
+                {
+                    def logText = file(process.out.reml_log.get(0).get(1)).text
+                    assert logText.contains("Using categorical covariate: Sex")
+                    assert logText.contains("Using quantitative covariate: Age")
+                    assert logText.contains("Using quantitative covariate: PC1")
+                    assert logText.contains("Using quantitative covariate: PC2")
+                    assert logText.contains("h2 with all VCs:")
+                },
+                {
+                    assert snapshot(
+                        process.out.reml_log.collect { meta, log -> [meta, file(log).name] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - quantitative phenotype without covariates - stub") {
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            params {
+                enable_setup_modules = false
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated_quantitative_stub' ],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'stub_phenotype', pheno_col:'QuantitativeTrait' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'covariates_none', covariates_columns:'', covariates_cat_columns:'' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_log.size() == 1 },
+                { assert process.out.reml_log.get(0).get(0).id == "plink_simulated_quantitative_stub" },
+                { assert file(process.out.reml_log.get(0).get(1)).name == "plink_simulated_quantitative_stub.bolt.reml.log" },
+                {
+                    assert snapshot(
+                        process.out.reml_log.collect { meta, log -> [meta, file(log).name] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - matched multi-pair bed bim inputs") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                generated_pc1_phenotype = GAWK_PC1_PHENOTYPE.out.output.map { meta, phenotype_file ->
+                    [[ id:'generated_pc1', pheno_col:'Y1' ], phenotype_file]
+                }
+
+                source_bed_location = params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed'
+                source_bim_location = params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim'
+                source_bed = file(source_bed_location, checkIfExists: true)
+                source_bim = file(source_bim_location, checkIfExists: true)
+                unique_pair_dir = java.nio.file.Files.createTempDirectory('bolt_reml_multi_pair_')
+                unique_bed = unique_pair_dir.resolve('plink_simulated_part2.bed')
+                unique_bim = unique_pair_dir.resolve('plink_simulated_part2.bim')
+                if (source_bed_location.startsWith('http://') || source_bed_location.startsWith('https://')) {
+                    java.nio.file.Files.copy(new URL(source_bed_location).openStream(), unique_bed, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+                    java.nio.file.Files.copy(new URL(source_bim_location).openStream(), unique_bim, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+                } else {
+                    java.nio.file.Files.copy(java.nio.file.Paths.get(source_bed.toString()), unique_bed, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+                    java.nio.file.Files.copy(java.nio.file.Paths.get(source_bim.toString()), unique_bim, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+                }
+
+                input[0] = [
+                    [ id:'plink_simulated_quantitative_multi_pair' ],
+                    [
+                        source_bed,
+                        file(unique_bed.toString(), checkIfExists: true)
+                    ],
+                    [
+                        source_bim,
+                        file(unique_bim.toString(), checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                input[1] = generated_pc1_phenotype
+                input[2] = [
+                    [ id:'covariates_none', covariates_columns:'', covariates_cat_columns:'' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_log.size() == 1 },
+                { assert process.out.reml_log.get(0).get(0).id == "plink_simulated_quantitative_multi_pair" },
+                { assert file(process.out.reml_log.get(0).get(1)).name == "plink_simulated_quantitative_multi_pair.bolt.reml.log" },
+                {
+                    def command = path(process.out.reml_log.get(0).get(1)).parent.resolve(".command.sh").text
+                    assert command.count('--bed "') == 2
+                    assert command.count('--bim "') == 2
+                    assert command.contains('--fam "')
+                    assert command.contains('plink_simulated_part2.bed')
+                    assert command.contains('plink_simulated_part2.bim')
+                },
+                {
+                    assert snapshot(
+                        process.out.reml_log.collect { meta, log -> [meta, file(log).name] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+}
