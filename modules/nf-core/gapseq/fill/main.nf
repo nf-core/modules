@@ -3,7 +3,9 @@ process GAPSEQ_FILL {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container 'community.wave.seqera.io/library/gapseq:2.0.1--5e0dffc1176c5fd2'
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gapseq:2.0.1--hdfd78af_0' :
+        'quay.io/biocontainers/gapseq:2.0.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(draft), path(medium)

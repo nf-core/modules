@@ -4,8 +4,8 @@ process GAPSEQ_DOALL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'community.wave.seqera.io/library/gapseq:2.0.1--5e0dffc1176c5fd2' :
-        'community.wave.seqera.io/library/gapseq:2.0.1--5e0dffc1176c5fd2' }"
+        'https://depot.galaxyproject.org/singularity/gapseq:2.0.1--hdfd78af_0' :
+        'quay.io/biocontainers/gapseq:2.0.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta), path(medium)
@@ -25,27 +25,12 @@ process GAPSEQ_DOALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def medium_arg = medium ? "-m $medium" : ''
     """
-    gapseq_bin=\$(readlink -f \$(which gapseq))
-    gapseq_root=\$(dirname "\$gapseq_bin")
-
-    mkdir -p gapseq_runtime/dat
-    cp "\$gapseq_bin" gapseq_runtime/gapseq
-    cp -r "\$gapseq_root/src" gapseq_runtime/
-
-    while IFS= read -r -d '' directory; do
-        mkdir -p "gapseq_runtime/dat/\${directory#\$gapseq_root/dat/}"
-    done < <(find "\$gapseq_root/dat" -type d -print0)
-
-    while IFS= read -r -d '' file; do
-        ln -s "\$file" "gapseq_runtime/dat/\${file#\$gapseq_root/dat/}"
-    done < <(find "\$gapseq_root/dat" -type f -print0)
-
-    ./gapseq_runtime/gapseq \\
+    gapseq \\
         doall \\
-        -t Bacteria \
-        $medium_arg \
-        -K ${task.cpus} \
-        $args \
+        -t Bacteria \\
+        $medium_arg \\
+        -K ${task.cpus} \\
+        $args \\
         $fasta
     """
 
