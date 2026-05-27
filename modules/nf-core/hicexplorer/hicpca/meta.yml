@@ -12,7 +12,8 @@ tools:
       documentation: "https://hicexplorer.readthedocs.io"
       tool_dev_url: "https://github.com/deeptools/HiCExplorer"
       doi: "10.1038/s41467-017-02525-w"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:hicexplorer
 input:
   - - meta:
@@ -55,13 +56,27 @@ output:
           type: file
           description: PCA2 file
           ontologies: []
+  versions_hicexplorer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hicexplorer:
+          type: string
+          description: The name of the tool
+      - hicPCA --version 2>&1 | sed 's/hicPCA //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hicexplorer:
+          type: string
+          description: The name of the tool
+      - hicPCA --version 2>&1 | sed 's/hicPCA //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jianhong"
 maintainers:
