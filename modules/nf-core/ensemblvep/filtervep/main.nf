@@ -10,6 +10,7 @@ process ENSEMBLVEP_FILTERVEP {
     input:
     tuple val(meta), path(input)
     path feature_file
+    val extension
 
     output:
     tuple val(meta), path("*.${extension}"), emit: output
@@ -22,19 +23,19 @@ process ENSEMBLVEP_FILTERVEP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    extension = task.ext.suffix ?: "vcf"
+    def suffix = extension ? "${extension}" : "vcf"
     """
     filter_vep \\
         ${args} \\
         --input_file ${input} \\
-        --output_file ${prefix}.${extension} \\
+        --output_file ${prefix}.${suffix} \\
         --only_matched
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    extension = task.ext.suffix ?: "vcf"
+    def suffix = extension ? "${extension}" : "vcf"
     """
-    touch ${prefix}.${extension}
+    touch ${prefix}.${suffix}
     """
 }
