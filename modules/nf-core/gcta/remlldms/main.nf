@@ -1,5 +1,5 @@
 process GCTA_REMLLDMS {
-    tag "gcta_reml_ldms_${meta.id}_${meta2.id}"
+    tag "${meta.id}_${meta2.id}"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
