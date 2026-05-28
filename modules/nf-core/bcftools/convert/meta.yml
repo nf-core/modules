@@ -82,7 +82,8 @@ output:
           type: file
           description: VCF merged output file => when `--output-type v` is used
           pattern: "*.vcf"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   bcf_gz:
     - - meta:
           type: map
@@ -148,7 +149,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.${extension}.{tbi,csi}":
+      - "*.{tbi,csi}":
           type: file
           description: VCF file index
           pattern: "*.{tbi,csi}"

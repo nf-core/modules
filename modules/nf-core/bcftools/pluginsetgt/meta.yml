@@ -92,7 +92,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.${extension}.{tbi,csi}":
+      - "*.{tbi,csi}":
           type: file
           description: VCF file index
           pattern: "*.{tbi,csi}"

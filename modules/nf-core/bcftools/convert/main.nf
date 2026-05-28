@@ -84,7 +84,7 @@ process BCFTOOLS_CONVERT {
                 ? "csi"
                 : ""
 
-    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_cmd = extension.endsWith(".gz") ? "echo \"\" | gzip >" : "touch"
     def create_index = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
 
     if ("${input}" == "${prefix}.${extension}") {
@@ -100,8 +100,8 @@ process BCFTOOLS_CONVERT {
     }
     """
     if [ -n "${hap}" ] ; then
-        ${create_cmd} ${prefix}.hap.gz
-        ${create_cmd} ${prefix}.legend.gz
+        echo "" | gzip > ${prefix}.hap.gz
+        echo "" | gzip > ${prefix}.legend.gz
         touch ${prefix}.samples
     else
         ${create_cmd} ${prefix}.${extension}
