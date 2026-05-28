@@ -28,10 +28,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(
-                        process.out,
-                        unstableKeys: ["ctree_input", "pyclone_input", "pyclone_all_fits", "pyclone_best_fit"]
-                        )).match() }
+                    sanitizeOutput(process.out,
+                        unstableKeys: ["ctree_input", "pyclone_input", "pyclone_all_fits", "pyclone_best_fit"]),
+                    path(process.out.versions_pyclonevi[0]).yaml
+                    ).match() }
             )
         }
 

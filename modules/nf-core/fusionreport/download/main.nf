@@ -4,8 +4,8 @@ process FUSIONREPORT_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed32f46746a5b33a1b5d597cfe2f62d3b1cfa54638f57cadc5d5158d6a4959d2/data' :
-        'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:78488bd99166aa9a'}"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a4/a41e89223340438d7cebca8af469cef9189d177bb44373b1bcb010c8e441a444/data' :
+        'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:4aeac839f8a4fc86'}"
 
     input:
     val(meta)
