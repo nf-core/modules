@@ -1,28 +1,38 @@
-// TODO nf-core: If in doubt look at other nf-core/subworkflows to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/subworkflows
-//               You can also ask for help via your pull request or on the #subworkflows channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
-// TODO nf-core: A subworkflow SHOULD import at least two modules
-
-include { SAMTOOLS_SORT      } from '../../../modules/nf-core/samtools/sort/main'
-include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/main'
+include { HTSLIB_BGZIPTABIX  } from '../../../modules/nf-core/htslib/bgziptabix/main'
+include { SAMTOOLS_DICT      } from '../../../modules/nf-core/samtools/dict/main'
+include { SAMTOOLS_FAIDX     } from '../../../modules/nf-core/samtools/faidx/main'
 
 workflow FASTA_BGZIP_INDEX_DICT_SAMTOOLS {
 
     take:
-    // TODO nf-core: edit input (take) channels
-    ch_bam // channel: [ val(meta), [ bam ] ]
+    ch_fasta // channel: [ val(meta), fasta ]
 
     main:
-    // TODO nf-core: substitute modules here for the modules of your subworkflow
 
-    SAMTOOLS_SORT ( ch_bam )
+    HTSLIB_BGZIPTABIX (
+        ch_fasta.map { meta, fasta -> [meta, fasta, [], []] },
+        'compress',
+        [],
+        []
+    )
 
-    SAMTOOLS_INDEX ( SAMTOOLS_SORT.out.bam )
+    SAMTOOLS_FAIDX (
+        HTSLIB_BGZIPTABIX.out.output.map {meta, fasta -> [meta, fasta, []]},
+        false
+    )
+
+    SAMTOOLS_DICT (
+        HTSLIB_BGZIPTABIX.out.output
+    )
+
+    ch_joined = HTSLIB_BGZIPTABIX.out.output
+        .join(SAMTOOLS_FAIDX.out.fai)
+        .join(SAMTOOLS_FAIDX.out.gzi)
+        .join(SAMTOOLS_DICT.out.dict)
+        .map { meta, fasta, fai, gzi, dict ->
+            [ meta, fasta, fai, gzi, dict ]
+        }
 
     emit:
-    // TODO nf-core: edit emitted channels
-    bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
-    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), [ bai ] ]
-    csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), [ csi ] ]
+    fasta_fai_gzi_dict = ch_joined             // channel: [ val(meta),  fasta.gz, fai, gzi, dict ]
 }

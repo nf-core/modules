@@ -1,50 +1,37 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_bgzip_index_dict_samtools"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: Ensure BGZF compression, index, and extract sequence dictionary for a FASTA file.
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - bgzip
+  - faidx
+  - dict
+  - fasta
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - htslib/bgziptabix
+  - samtools/dict
+  - samtools/faidx
+
 input:
-  - ch_bam:
+  - ch_fasta:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        FASTA file, compressed or not.
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fa,fa.gz,fa.bz2,fa.xz,fasta,fasta.gz,fasta.bz2,fasta.xz}"
+
 output:
-  - bam:
+  - fasta_fai_gzi_dict:
       type: file
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
+        Channel containing:
+          - BGZF-compressed FASTA
+          - FASTA index (.fai)
+          - BGZF index (.gzi)
+          - sequence dictionary (.dict)
+        Structure:
+          [ val(meta), path(fasta_gz), path(fai), path(gzi), path(dict) ]
+      pattern: "*"
+
 authors:
   - "@charles-plessy"
 maintainers:
