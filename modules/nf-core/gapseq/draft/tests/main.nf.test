@@ -20,9 +20,9 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id: 'test' ],
-                    file('test-all-Reactions.tbl'),
-                    file('test-Transporter.tbl'),
-                    file('test-all-Pathways.tbl')
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/proteome-all-Reactions.tbl', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/proteome-Transporter.tbl', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/proteome-all-Pathways.tbl', checkIfExists: true)
                 ])
                 """
             }

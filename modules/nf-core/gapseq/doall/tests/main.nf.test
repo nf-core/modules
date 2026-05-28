@@ -11,7 +11,7 @@ nextflow_process {
     tag "pigz"
     tag "pigz/compress"
 
-    test("gapseq toy myb71 proteome [faa.gz] + MM_glu medium") {
+    test("candidatus_portiera_aleyrodidarum proteome [fasta] + MM_glu medium") {
 
         config "./nextflow.config"
 
@@ -20,8 +20,8 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id: 'test' ],
-                    file('https://raw.githubusercontent.com/jotech/gapseq/master/toy/myb71.faa.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/jotech/gapseq/master/dat/media/MM_glu.csv', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/csv/MM_glu.csv', checkIfExists: true)
                 ])
                 """
             }
@@ -35,14 +35,14 @@ nextflow_process {
                         process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
                         process.out.model.collect { meta, model -> [meta, (model instanceof List ? model : [model]).collect { file(it).getName() }.sort()] },
                         process.out.tbl.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
-                        process.out.findAll { key, val -> key.startsWith('versions') }
+                        [versions: process.out.versions_gapseq.collect()]
                     ).match()
                 }
             )
         }
     }
 
-    test("candidatus_portiera_aleyrodidarum proteome [fasta] - stub") {
+     test("candidatus_portiera_aleyrodidarum proteome [fasta] - stub") {
 
         options "-stub"
 
@@ -61,14 +61,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                {
-                    assert snapshot(
-                        process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
-                        process.out.model.collect { meta, model -> [meta, (model instanceof List ? model : [model]).collect { file(it).getName() }.sort()] },
-                        process.out.tbl.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(process.out.model, process.out.tbl, process.out.log, [versions: process.out.versions_gapseq.collect()]).match() }
             )
         }
     }
@@ -83,7 +76,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/jotech/gapseq/master/dat/media/MM_glu.csv', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/csv/MM_glu.csv', checkIfExists: true)
                 ])
                 """
             }
@@ -92,14 +85,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                {
-                    assert snapshot(
-                        process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
-                        process.out.model.collect { meta, model -> [meta, (model instanceof List ? model : [model]).collect { file(it).getName() }.sort()] },
-                        process.out.tbl.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(process.out.model, process.out.tbl, process.out.log, [versions: process.out.versions_gapseq.collect()]).match() }
             )
         }
     }
