@@ -23,7 +23,7 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - h5ad:
+    - anndata:
         type: file
         description: AnnData object in h5ad or zarr format
         pattern: "*.{h5ad,zarr}"
@@ -36,18 +36,19 @@ input:
         Key to add to obsm with PCA coordinates, usually 'X_pca'
 
 output:
-  h5ad:
+  anndata:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.h5ad":
+      - "*.{h5ad,zarr}":
           type: file
-          description: AnnData object with PCA coordinates added
-          pattern: "*.h5ad"
+          description: AnnData object with PCA coordinates added in h5ad or zarr format
+          pattern: "*.{h5ad,zarr}"
           ontologies:
             - edam: "http://edamontology.org/format_3590" # HDF5 format
+            - edam: "http://edamontology.org/format_3915" # Zarr format
   obsm:
     - - meta:
           type: map
@@ -67,19 +68,6 @@ output:
         pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
-  zarr:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - "*.zarr":
-          type: directory
-          description: AnnData object with PCA coordinates added
-          pattern: "*.zarr"
-          ontologies:
-            - edam: "http://edamontology.org/format_3915" # Zarr format
-
 topics:
   versions:
     - versions.yml:

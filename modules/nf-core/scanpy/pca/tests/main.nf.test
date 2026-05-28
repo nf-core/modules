@@ -41,8 +41,8 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert process.out.zarr },
-            { assert file(process.out.zarr[0][1]).name == "test_zarr_pca.zarr" }
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_zarr_pca.zarr" }
             )
         }
 
@@ -77,9 +77,9 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert process.out.zarr },
-            { assert file(process.out.zarr[0][1]).name == "test_zarr_pca.zarr" },
-            { assert file(process.out.zarr[0][1] + "/obsm/X_pca/.zarray").exists() },
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_zarr_pca.zarr" },
+            { assert file(process.out.anndata[0][1] + "/obsm/X_pca/.zarray").exists() },
             { assert file(process.out.obsm[0][1]).name == "X_test_zarr_pca.pkl" }
             )
         }
@@ -104,12 +104,12 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert process.out.h5ad },
-            { assert file(process.out.h5ad[0][1]).name == "test_pca.h5ad" },
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_pca.h5ad" },
             { assert process.out.obsm },
             { assert file(process.out.obsm[0][1]).name == "X_test_pca.pkl" },
             { assert process.out.versions },
-            { assert "X_pca" in anndata(process.out.h5ad[0][1]).obsm }
+            { assert "X_pca" in anndata(process.out.anndata[0][1]).obsm }
             )
         }
 
