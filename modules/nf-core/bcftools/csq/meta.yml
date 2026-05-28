@@ -16,7 +16,8 @@ tools:
       homepage: http://samtools.github.io/bcftools/bcftools.html
       documentation: http://samtools.github.io/bcftools/bcftools.html#csq
       doi: 10.1093/gigascience/giab008
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -68,28 +69,16 @@ output:
           description: VCF with annotation, bgzipped per default
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
           ontologies: []
-  tbi:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "${prefix}.${extension}.{tbi,csi}":
           type: file
-          description: Alternative VCF file index
-          pattern: "*.tbi"
-          ontologies: []
-  csi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csi":
-          type: file
-          description: Default VCF file index
-          pattern: "*.csi"
-          ontologies: []
+          description: VCF file index
+          pattern: "*.{tbi,csi}"
   versions_bcftools:
     - - ${task.process}:
           type: string
@@ -97,8 +86,8 @@ output:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -108,11 +97,10 @@ topics:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@lindenb"
-
 maintainers:
   - "@lindenb"

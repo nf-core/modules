@@ -97,28 +97,16 @@ output:
           description: VCF output file containing GT fields with modified ploidy
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
           ontologies: []
-  tbi:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "${prefix}.${extension}.{tbi,csi}":
           type: file
-          description: Alternative VCF file index
-          pattern: "*.tbi"
-          ontologies: []
-  csi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csi":
-          type: file
-          description: Default VCF file index
-          pattern: "*.csi"
-          ontologies: []
+          description: VCF file index
+          pattern: "*.{tbi,csi}"
   versions_bcftools:
     - - ${task.process}:
           type: string
@@ -126,7 +114,7 @@ output:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
           type: eval
           description: The command used to generate the version of the tool
 topics:
@@ -137,7 +125,7 @@ topics:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
           type: eval
           description: The command used to generate the version of the tool
 authors:

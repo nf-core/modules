@@ -11,7 +11,8 @@ tools:
       homepage: http://samtools.github.io/bcftools/bcftools.html
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -56,7 +57,8 @@ input:
         ontologies: []
     - targets:
         type: file
-        description: A BED file containing regions to use (but streams rather than index-jumps)
+        description: A BED file containing regions to use (but streams rather than
+          index-jumps)
         pattern: "*.bed"
         ontologies: []
 output:
@@ -71,28 +73,16 @@ output:
           description: The resulting VCF files from the split
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
           ontologies: []
-  tbi:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "${prefix}.${extension}.{tbi,csi}":
           type: file
-          description: TBI file
-          pattern: "*.tbi"
-          ontologies: []
-  csi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csi":
-          type: file
-          description: CSI file
-          pattern: "*.csi"
-          ontologies: []
+          description: VCF file index
+          pattern: "*.{tbi,csi}"
   versions_bcftools:
     - - ${task.process}:
           type: string
@@ -100,8 +90,8 @@ output:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -111,8 +101,8 @@ topics:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@nvnieuwk"
