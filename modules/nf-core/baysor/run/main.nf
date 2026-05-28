@@ -29,7 +29,6 @@ process BAYSOR_RUN {
     def confidence = prior_confidence != null ? "--prior-segmentation-confidence=${prior_confidence}" : ''
     def scaling_factor = scale ? "--scale=${scale}" : ''
     def config_arg = config ? "--config=${config}" : ''
-    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     export JULIA_NUM_THREADS=${task.cpus}
