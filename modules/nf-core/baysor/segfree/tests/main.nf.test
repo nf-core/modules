@@ -5,7 +5,7 @@ nextflow_process {
     process "BAYSOR_SEGFREE"
 
     tag "modules"
-    tag "modules_local"
+    tag "modules_nfcore"
     tag "baysor"
     tag "baysor/segfree"
     tag "segmentation-free"
@@ -34,7 +34,7 @@ nextflow_process {
         }
     }
 
-    test("baysor run stub") {
+    test("baysor segfree stub") {
 
         options "-stub"
 

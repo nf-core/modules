@@ -2,7 +2,10 @@ process BAYSOR_SEGFREE {
     tag "${meta.id}"
     label 'process_high'
 
-    container "khersameesh24/baysor:0.7.1"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e6/e642d48a06693a7bad75c491ddf0d027ffa1450a718a9f3af573645662ebee48/data' :
+        'community.wave.seqera.io/library/baysor_python:55a5c12eda9597fb' }"
 
     input:
     tuple val(meta), path(transcripts), path(config)
@@ -15,11 +18,6 @@ process BAYSOR_SEGFREE {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("BAYSOR_SEGFREE module does not support Conda. Please use Docker / Singularity / Podman instead.")
-    }
-
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
@@ -28,19 +26,15 @@ process BAYSOR_SEGFREE {
 
     mkdir -p ${prefix}
 
-    baysor segfree \\
-    ${transcripts} \\
-    --config ${config} \\
-    --output=${prefix}/ncvs.loom \\
-    ${args}
+    baysor \\
+        segfree \\
+        ${transcripts} \\
+        --config ${config} \\
+        --output=${prefix}/ncvs.loom \\
+        ${args}
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("BAYSOR_SEGFREE module does not support Conda. Please use Docker / Singularity / Podman instead.")
-    }
-
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """

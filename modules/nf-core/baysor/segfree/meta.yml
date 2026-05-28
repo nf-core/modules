@@ -2,54 +2,77 @@ name: "baysor_segfree"
 description: Extract neighborhood composition vectors (NVCs) from a dataset.
 keywords:
   - neighborhood
+  - segmentation-free
+  - ncvs-looms
 tools:
   - "baysor":
-    description: "Baysor is a tool that segments cells using spatial gene expression maps. Optionally, segmentation masks can be given as additional input."
-    homepage: "https://kharchenkolab.github.io/Baysor/dev/"
-    documentation: "https://kharchenkolab.github.io/Baysor/dev/"
-    tool_dev_url: "https://github.com/kharchenkolab/Baysor"
-    doi: "https://doi.org/10.1038/s41587-021-01044-w"
-    licence: ["MIT license"]
-    identifier:
-
-## baysor_segfree requires a transcript map of the data and a configuration file with argument values
+      description: "Baysor is a tool that segments cells using spatial gene expression
+        maps. Optionally, segmentation masks can be given as additional input."
+      homepage: "https://kharchenkolab.github.io/Baysor/dev/"
+      documentation: "https://kharchenkolab.github.io/Baysor/dev/"
+      tool_dev_url: "https://github.com/kharchenkolab/Baysor"
+      doi: "10.1038/s41587-021-01044-w"
+      licence:
+        - "MIT license"
+      identifier: ""
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - transcripts_csv:
+    - transcripts:
         type: file
-        description: CSV file
-        pattern: "*.csv"
-    - config_toml:
-        type: file
-        description: TOML file with config arguments
-        pattern: "*.toml"
-
-## neighborhood composition vectors
-output:
-  - preview_html:
-      - meta:
-        type: map
         description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
-      - "ncvs.loom":
+          Tab-delimited file with transcript information. Must contain the following columns:
+          - x: x-coordinate of the transcript
+          - y: y-coordinate of the transcript
+          - gene: gene name of the transcript
+        pattern: "transcripts.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+    - config:
         type: file
-        description: loom file with neighborhood results
-        pattern: "ncvs.loom"
-
-  - ncvs_log:
-    type: file
-    description: |
-      Log file with summary statistics
-    pattern: "ncvs_segfree_log.log"
-
+        description: |
+          YAML configuration file for Baysor. Must contain the following fields:
+          - baysor_config: Baysor configuration parameters (see Baysor documentation for details)
+        pattern: "xenium.toml"
+        ontologies: []
+output:
+  ncvs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/ncvs.loom:
+          type: file
+          description: loom file with neighborhood results
+          pattern: "ncvs.loom"
+          ontologies:
+            - edam: http://edamontology.org/format_3913
+  versions_baysor:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - baysor:
+          type: string
+          description: The name of the tool
+      - baysor --version 2>&1 | grep -oP '\d+\.\d+\.\d+' || echo unknown:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - baysor:
+          type: string
+          description: The name of the tool
+      - baysor --version 2>&1 | grep -oP '\d+\.\d+\.\d+' || echo unknown:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
-  - "@sebgoti8"
   - "@khersameesh24"
 maintainers:
-  - "@sebgoti8"
   - "@khersameesh24"

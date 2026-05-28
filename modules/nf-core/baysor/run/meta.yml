@@ -7,82 +7,90 @@ keywords:
   - imaging
 tools:
   - "baysor":
-    description: "Baysor is a tool that segments cells using spatial gene expression maps. Optionally, segmentation masks can be given as additional input."
-    homepage: "https://kharchenkolab.github.io/Baysor/dev/"
-    documentation: "https://kharchenkolab.github.io/Baysor/dev/"
-    tool_dev_url: "https://github.com/kharchenkolab/Baysor"
-    doi: "https://doi.org/10.1038/s41587-021-01044-w"
-    licence: ["MIT license"]
-    identifier:
-
-## Baysor requires a transcript map of the data and a configuration file with argument values
+      description: "Baysor is a tool that segments cells using spatial gene expression
+        maps. Optionally, segmentation masks can be given as additional input."
+      homepage: "https://kharchenkolab.github.io/Baysor/dev/"
+      documentation: "https://kharchenkolab.github.io/Baysor/dev/"
+      tool_dev_url: "https://github.com/kharchenkolab/Baysor"
+      doi: "10.1038/s41587-021-01044-w"
+      licence:
+        - "MIT license"
+      identifier: ""
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - transcripts_csv:
+    - transcripts:
         type: file
         description: CSV file
         pattern: "*.csv"
-
-  - config_toml:
-    type: file
-    description: TOML file with config arguments
-    pattern: "*.toml"
-
-## segmentation results
-output:
-  - segmentation:
-      - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
-      - "*segmentation.csv":
+        ontologies:
+          - edam: http://edamontology.org/format_3752
+    - prior_segmentation:
         type: file
-        description: results of segmentation
-        pattern: "segmentation.csv"
-
-  - polygons:
-    type: file
-    description: |
-      File with outlines of segmentation
-    pattern: "*.json"
-
-  - params:
-    type: file
-    description: |
-      File with full list of parameters used for the model
-    pattern: "segmentation_params.dump.toml"
-
-  - log:
-    type: file
-    description: |
-      Output file with metadata of running the workflow
-    pattern: "segmentation_log.log"
-
-  - loom:
-    type: file
-    description: |
-      Loom file with metadata
-    pattern: "segmentation_counts.loom"
-
-  - stats:
-    type: file
-    description: |
-      Statistics of segmented cells
-    pattern: "segmentation_cell_stats.csv"
-
-  - versions:
-    type: file
-    description: File containing software versions
-    pattern: "versions.yml"
-
+        description: CSV file with segmentation mask (optional)
+        pattern: "*_segmentation.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752
+    - config:
+        type: file
+        description: TOML file with config arguments
+        pattern: "*.toml"
+        ontologies: []
+    - scale:
+        type: float
+        description: Scale factor for the segmentation
+  - prior_confidence:
+      type: float
+      description: Confidence of the prior segmentation (optional)
+  - prior_column:
+      type: string
+      description: Column name in the prior segmentation file that contains the
+        segmentation mask (optional)
+output:
+  segmentation:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/segmentation.csv:
+          type: file
+          description: CSV file with segmentation results
+          pattern: "segmentation.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+      - ${prefix}/segmentation_polygons_2d.json:
+          type: file
+          description: JSON file with 2D segmentation polygons
+          pattern: "segmentation_polygons_2d.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3913
+            - edam: http://edamontology.org/format_3464
+  versions_baysor:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - baysor:
+          type: string
+          description: The name of the tool
+      - baysor --version 2>&1 | grep -oP '\d+\.\d+\.\d+' || echo unknown:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - baysor:
+          type: string
+          description: The name of the tool
+      - baysor --version 2>&1 | grep -oP '\d+\.\d+\.\d+' || echo unknown:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
-  - "@sebgoti8"
   - "@khersameesh24"
 maintainers:
-  - "@sebgoti8"
   - "@khersameesh24"

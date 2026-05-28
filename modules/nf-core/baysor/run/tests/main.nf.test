@@ -5,7 +5,7 @@ nextflow_process {
     process "BAYSOR_RUN"
 
     tag "modules"
-    tag "modules_local"
+    tag "modules_nfcore"
     tag "baysor"
     tag "baysor/run"
     tag "segmentation"
@@ -23,6 +23,8 @@ nextflow_process {
                                 file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/config/xenium.toml", checkIfExists: true),
                                 30
                             ])
+                input[1] = 0.5
+                input[2] = "cell_id"
                 """
             }
         }
@@ -53,6 +55,8 @@ nextflow_process {
                                 file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/config/xenium.toml", checkIfExists: true),
                                 30
                             ])
+                input[1] = 0.5
+                input[2] = "cell_id"
                 """
             }
         }

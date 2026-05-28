@@ -1,65 +1,66 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "baysor_preview"
-description: write your description here
+description: Extract neighborhood composition vectors (NVCs) from a dataset.
 keywords:
-  - sort
-  - example
-  - genomics
+  - preview
+  - preview_dataset
+  - preview_html
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "baysor":
-      description: "Bayesian segmentation of imaging-based spatial transcriptomics data"
+      description: "Baysor is a tool that segments cells using spatial gene expression
+        maps. Optionally, segmentation masks can be given as additional input."
       homepage: "https://kharchenkolab.github.io/Baysor/dev/"
       documentation: "https://kharchenkolab.github.io/Baysor/dev/"
       tool_dev_url: "https://github.com/kharchenkolab/Baysor"
-      doi: ""
-      licence: ["MIT"]
-      identifier: null
-
+      doi: "10.1038/s41587-021-01044-w"
+      licence:
+        - "MIT license"
+      identifier: ""
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - bam:
+          e.g. [ id:'test' ]
+    - transcripts:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: |
+          Tab-delimited file with transcript information. Must contain the following columns:
+          - x: x-coordinate of the transcript
+          - y: y-coordinate of the transcript
+          - gene: gene name of the transcript
+        pattern: "transcripts.tsv"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
-
+          - edam: http://edamontology.org/format_3475
+    - config:
+        type: file
+        description: |
+          YAML configuration file for Baysor. Must contain the following fields:
+          - baysor_config: Baysor configuration parameters (see Baysor documentation for details)
+        pattern: "xenium.toml"
+        ontologies: []
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  preview_html:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.bam":
+            e.g. [ id:'test' ]
+      - ${prefix}/preview.html:
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+          description: HTML file with preview results
+          pattern: "preview.html"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+            - edam: http://edamontology.org/format_3475
   versions_baysor:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "baysor":
+      - baysor:
           type: string
           description: The name of the tool
-      - "baysor --version":
+      - baysor --version 2>&1 | grep -oP '\d+\.\d+\.\d+' || echo unknown:
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -68,7 +69,7 @@ topics:
       - baysor:
           type: string
           description: The name of the tool
-      - baysor --version:
+      - baysor --version 2>&1 | grep -oP '\d+\.\d+\.\d+' || echo unknown:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
