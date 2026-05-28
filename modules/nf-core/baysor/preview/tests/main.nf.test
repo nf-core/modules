@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process BAYSOR PREVIEW"
+    script "../main.nf"
+    process "BAYSOR_PREVIEW"
+
+    tag "modules"
+    tag "modules_local"
+    tag "baysor"
+    tag "baysor/preview"
+    tag "preview"
+
+    test("baysor preview - transcripts.parquet") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                                [id: "test_run_baysor"],
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/transcripts.parquet", checkIfExists: true),
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/config/xenium.toml", checkIfExists: true)
+                            ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.preview_html[0][1]).exists() },
+                { assert file(process.out.preview_html[0][1]).name == "preview.html" },
+                { assert snapshot(process.out.versions_baysor).match("versions") }
+            )
+        }
+    }
+
+    test("baysor preview stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                                [id: "test_run_baysor"],
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/transcripts.parquet", checkIfExists: true),
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/config/xenium.toml", checkIfExists: true)
+                            ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions_baysor).match("versions_stub") }
+            )
+        }
+    }
+}

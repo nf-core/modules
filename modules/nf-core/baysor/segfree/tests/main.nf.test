@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process BAYSOR SEGFREE"
+    script "../main.nf"
+    process "BAYSOR_SEGFREE"
+
+    tag "modules"
+    tag "modules_local"
+    tag "baysor"
+    tag "baysor/segfree"
+    tag "segmentation-free"
+
+    test("baysor segfree - transcripts.parquet") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                                [id: "test_run_baysor"],
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/transcripts.parquet", checkIfExists: true),
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/config/xenium.toml", checkIfExists: true)
+                            ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.ncvs[0][1]).exists() },
+                { assert file(process.out.ncvs[0][1]).name == "ncvs.loom" },
+                { assert snapshot(process.out.versions_baysor).match("versions") }
+            )
+        }
+    }
+
+    test("baysor run stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                                [id: "test_run_baysor"],
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/transcripts.parquet", checkIfExists: true),
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/config/xenium.toml", checkIfExists: true)
+                            ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions_baysor).match("versions_stub") }
+            )
+        }
+    }
+}

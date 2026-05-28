@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process BAYSOR RUN"
+    script "../main.nf"
+    process "BAYSOR_RUN"
+
+    tag "modules"
+    tag "modules_local"
+    tag "baysor"
+    tag "baysor/run"
+    tag "segmentation"
+    tag "cell_segmentation"
+
+    test("baysor run - transcripts.parquet") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                                [id: "test_run_baysor"],
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/transcripts.parquet", checkIfExists: true),
+                                [],
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/config/xenium.toml", checkIfExists: true),
+                                30
+                            ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.segmentation[0][1]).exists() },
+                { assert file(process.out.segmentation[0][1]).name == "segmentation.csv" },
+                { assert file(process.out.segmentation[0][2]).exists() },
+                { assert file(process.out.segmentation[0][2]).name == "segmentation_polygons_2d.json" },
+                { assert snapshot(process.out.versions_baysor).match("versions") }
+            )
+        }
+    }
+
+    test("baysor run stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                                [id: "test_run_baysor"],
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/transcripts.parquet", checkIfExists: true),
+                                [],
+                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/config/xenium.toml", checkIfExists: true),
+                                30
+                            ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions_baysor).match("versions_stub") }
+            )
+        }
+    }
+}
