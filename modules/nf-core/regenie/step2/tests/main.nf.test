@@ -1,9 +1,9 @@
 nextflow_process {
 
     name "Test Process REGENIE_STEP2"
-    config "./nextflow.config"
     script "../main.nf"
     process "REGENIE_STEP2"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -34,6 +34,32 @@ nextflow_process {
                 ]
 
                 input[3] = []
+                """
+            }
+        }
+
+        run("REGENIE_STEP1", alias: "REGENIE_STEP1_QUANTITATIVE_PGEN") {
+            script "../../step1/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+
+                input[2] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+
+                input[3] = 256
                 """
             }
         }
@@ -70,7 +96,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--phenoColList QuantitativeTrait'
+                module_args = "--phenoColList QuantitativeTrait"
             }
             process {
                 """
@@ -109,11 +135,31 @@ nextflow_process {
                 { assert path(process.out.results.get(0).get(1)).fileName.toString() == 'plink_simulated_QuantitativeTrait.regenie.gz' },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
+                    def workDir = path(process.out.results.get(0).get(1)).parent
+                    def command = workDir.resolve('.command.sh').text.replaceAll(/\s+/, ' ')
+                    def stagedNames = workDir.toFile().listFiles().collect { it.name }
+
+                    assert command.contains('--bed plink_simulated')
+                    assert command.contains('--pred plink_simulated_pred.list')
+                    assert command.contains('--covarFile plink_simulated_covariates.txt')
+                    assert command.contains('--bsize 400')
+                    assert command.contains('--phenoColList QuantitativeTrait')
+                    assert !command.contains('--pgen plink_simulated')
+                    assert stagedNames.contains('plink_simulated.bed')
+                    assert stagedNames.contains('plink_simulated.bim')
+                    assert stagedNames.contains('plink_simulated.fam')
+                    assert stagedNames.contains('plink_simulated_pred.list')
+                },
+                {
                     def stableResults = process.out.results.collect { result ->
                         [result[0], result[1]]
                     }
+                    def stableLogs = process.out.log.collect { log ->
+                        [log[0], path(log[1]).getFileName().toString()]
+                    }
                     assert snapshot(
                         stableResults,
+                        stableLogs,
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
@@ -126,7 +172,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--phenoColList BinaryTrait --bt'
+                module_args = "--phenoColList BinaryTrait --bt"
             }
             process {
                 """
@@ -165,11 +211,27 @@ nextflow_process {
                 { assert path(process.out.results.get(0).get(1)).fileName.toString() == 'plink_simulated_BinaryTrait.regenie.gz' },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
+                    def workDir = path(process.out.results.get(0).get(1)).parent
+                    def command = workDir.resolve('.command.sh').text.replaceAll(/\s+/, ' ')
+
+                    assert command.contains('--bed plink_simulated')
+                    assert command.contains('--pred plink_simulated_pred.list')
+                    assert command.contains('--covarFile plink_simulated_covariates.txt')
+                    assert command.contains('--bsize 400')
+                    assert command.contains('--phenoColList BinaryTrait')
+                    assert command.contains('--bt')
+                    assert !command.contains('--pgen plink_simulated')
+                },
+                {
                     def stableResults = process.out.results.collect { result ->
                         [result[0], result[1]]
                     }
+                    def stableLogs = process.out.log.collect { log ->
+                        [log[0], path(log[1]).getFileName().toString()]
+                    }
                     assert snapshot(
                         stableResults,
+                        stableLogs,
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
@@ -182,7 +244,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--phenoColList QuantitativeTrait'
+                module_args = "--phenoColList QuantitativeTrait"
             }
             process {
                 """
@@ -218,11 +280,26 @@ nextflow_process {
                 { assert path(process.out.results.get(0).get(1)).fileName.toString() == 'plink_simulated_QuantitativeTrait.regenie.gz' },
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
+                    def workDir = path(process.out.results.get(0).get(1)).parent
+                    def command = workDir.resolve('.command.sh').text.replaceAll(/\s+/, ' ')
+
+                    assert command.contains('--bed plink_simulated')
+                    assert command.contains('--pred plink_simulated_pred.list')
+                    assert command.contains('--bsize 400')
+                    assert command.contains('--phenoColList QuantitativeTrait')
+                    assert !command.contains('--covarFile')
+                    assert !command.contains('--pgen plink_simulated')
+                },
+                {
                     def stableResults = process.out.results.collect { result ->
                         [result[0], result[1]]
                     }
+                    def stableLogs = process.out.log.collect { log ->
+                        [log[0], path(log[1]).getFileName().toString()]
+                    }
                     assert snapshot(
                         stableResults,
+                        stableLogs,
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
@@ -231,13 +308,11 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens popgen - plink2 - stub") {
-
-        options "-stub"
+    test("homo_sapiens popgen - quantitative plink2 with covariates") {
 
         when {
             params {
-                module_args = '--phenoColList QuantitativeTrait'
+                module_args = "--phenoColList QuantitativeTrait"
             }
             process {
                 """
@@ -248,7 +323,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
                 ]
 
-                input[1] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco).map { joined ->
+                input[1] = REGENIE_STEP1_QUANTITATIVE_PGEN.out.predictions.join(REGENIE_STEP1_QUANTITATIVE_PGEN.out.loco).map { joined ->
                     joined.size() == 3 ? joined : [ joined[0], joined[1], joined[4] ]
                 }
 
@@ -270,12 +345,30 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.results.size() == 1 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.results.get(0).get(0).id == 'plink_simulated' },
+                { assert path(process.out.results.get(0).get(1)).fileName.toString() == 'plink_simulated_QuantitativeTrait.regenie.gz' },
+                {
+                    def workDir = path(process.out.results.get(0).get(1)).parent
+                    def command = workDir.resolve('.command.sh').text
+                    def stagedNames = workDir.toFile().listFiles().collect { it.name }
+
+                    assert command.contains('--pgen plink_simulated')
+                    assert !command.contains('--bed plink_simulated')
+                    assert command.contains('--pred plink_simulated_pred.list')
+                    assert command.contains('--covarFile plink_simulated_covariates.txt')
+                    assert command.contains('--phenoColList QuantitativeTrait')
+                    assert stagedNames.contains('plink_simulated.pgen')
+                    assert stagedNames.contains('plink_simulated.pvar')
+                    assert stagedNames.contains('plink_simulated.psam')
+                },
                 {
                     def stableResults = process.out.results.collect { result ->
                         [result[0], result[1]]
                     }
                     def stableLogs = process.out.log.collect { logFile ->
-                        [logFile[0], logFile[1]]
+                        [logFile[0], path(logFile[1]).getFileName().toString()]
                     }
                     assert snapshot(
                         stableResults,
@@ -294,7 +387,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--phenoColList QuantitativeTrait'
+                module_args = "--phenoColList QuantitativeTrait"
             }
             process {
                 """
@@ -335,7 +428,7 @@ nextflow_process {
                         [result[0], result[1]]
                     }
                     def stableLogs = process.out.log.collect { logFile ->
-                        [logFile[0], logFile[1]]
+                        [logFile[0], path(logFile[1]).getFileName().toString()]
                     }
                     assert snapshot(
                         stableResults,
@@ -354,8 +447,8 @@ nextflow_process {
 
         when {
             params {
-                module_args   = '--phenoColList QuantitativeTrait'
-                module_prefix = 'custom_step2'
+                module_args = "--phenoColList QuantitativeTrait"
+                module_prefix = "custom_step2"
             }
             process {
                 """
@@ -395,7 +488,7 @@ nextflow_process {
                         [result[0], result[1]]
                     }
                     def stableLogs = process.out.log.collect { logFile ->
-                        [logFile[0], logFile[1]]
+                        [logFile[0], path(logFile[1]).getFileName().toString()]
                     }
                     assert snapshot(
                         stableResults,
