@@ -21,6 +21,7 @@ process FUSIONREPORT_DOWNLOAD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir -p ${prefix}
     fusion_report download ${args} ${prefix}
     """
 
