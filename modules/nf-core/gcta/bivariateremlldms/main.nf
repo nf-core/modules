@@ -32,8 +32,6 @@ process GCTA_BIVARIATEREMLLDMS {
         --pheno "${phenotype_file}" \\
         ${qcovar_param} \\
         ${covar_param} \\
-        --reml-bivar-no-constrain \\
-        --reml-maxit 500 \\
         --out "${prefix}" \\
         --thread-num ${task.cpus} \\
         ${args}
