@@ -1,0 +1,99 @@
+name: "finaletoolkit_wps"
+description: |
+  Calculate the windowed protection score (WPS; Snyder et al., 2016)
+  from a BAM file and a list of transcription start sites.
+keywords:
+  - windowed_protection-score
+  - genomics
+  - fragmentomics
+tools:
+  - "finaletoolkit":
+      description: "Extract cfDNA fragmentation features from sequencing data."
+      homepage: "https://epifluidlab.github.io/FinaleToolkit/"
+      documentation: "https://epifluidlab.github.io/FinaleToolkit/documentation/index.html"
+      tool_dev_url: "https://github.com/epifluidlab/FinaleToolkit"
+      doi: "10.1093/bioadv/vbaf236"
+      licence:
+        - "MIT"
+      identifier: biotools:finaletoolkit
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAM file index
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - site_bed:
+        type: file
+        pattern: "*.bed"
+        description: |
+          BED file containing transcription start sites (TSS)
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - chromosome_sizes:
+        type: file
+        pattern: "*.sizes"
+        description: |
+          Two-column file containing the size for each chromosome
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+output:
+  bigwig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.bw":
+          type: file
+          pattern: "*.bw"
+          description: |
+            BigWig file containing WPS scores for the observed sites
+          ontologies:
+            - edam: "http://edamontology.org/format_3006"
+  versions_finaletoolkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - finaletoolkit:
+          type: string
+          description: The name of the tool
+      - finaletoolkit --version | sed 's/FinaleToolkit //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - finaletoolkit:
+          type: string
+          description: The name of the tool
+      - finaletoolkit --version | sed 's/FinaleToolkit //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lbeltrame"
+maintainers:
+  - "@lbeltrame"
