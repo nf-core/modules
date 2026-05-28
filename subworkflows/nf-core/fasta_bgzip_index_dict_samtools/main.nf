@@ -18,7 +18,7 @@ workflow FASTA_BGZIP_INDEX_DICT_SAMTOOLS {
 
     SAMTOOLS_FAIDX (
         HTSLIB_BGZIPTABIX.out.output.map {meta, fasta -> [meta, fasta, []]},
-        false
+        true
     )
 
     SAMTOOLS_DICT (
@@ -28,11 +28,9 @@ workflow FASTA_BGZIP_INDEX_DICT_SAMTOOLS {
     ch_joined = HTSLIB_BGZIPTABIX.out.output
         .join(SAMTOOLS_FAIDX.out.fai)
         .join(SAMTOOLS_FAIDX.out.gzi)
+        .join(SAMTOOLS_FAIDX.out.sizes)
         .join(SAMTOOLS_DICT.out.dict)
-        .map { meta, fasta, fai, gzi, dict ->
-            [ meta, fasta, fai, gzi, dict ]
-        }
 
     emit:
-    fasta_fai_gzi_dict = ch_joined             // channel: [ val(meta),  fasta.gz, fai, gzi, dict ]
+    fasta_fai_gzi_dict = ch_joined             // channel: [ val(meta),  fasta.gz, fai, gzi, sizes, dict ]
 }

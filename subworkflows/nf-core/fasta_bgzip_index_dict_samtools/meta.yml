@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_bgzip_index_dict_samtools"
-description: Ensure BGZF compression, index, and extract sequence dictionary for a FASTA file.
+description: Ensure BGZF compression, index, and produce a sequence size summary and a sequence dictionary for each FASTA file.
 keywords:
   - bgzip
   - faidx
@@ -27,9 +27,10 @@ output:
           - BGZF-compressed FASTA
           - FASTA index (.fai)
           - BGZF index (.gzi)
+          - sequence size summary (.sizes)
           - sequence dictionary (.dict)
         Structure:
-          [ val(meta), path(fasta_gz), path(fai), path(gzi), path(dict) ]
+          [ val(meta), path(fasta_gz), path(fai), path(gzi), path(sizes), path(dict) ]
       pattern: "*"
 
 authors:
