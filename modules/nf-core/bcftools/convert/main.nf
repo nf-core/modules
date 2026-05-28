@@ -20,8 +20,7 @@ process BCFTOOLS_CONVERT {
     tuple val(meta), path("*.hap.gz"), emit: hap, optional: true
     tuple val(meta), path("*.legend.gz"), emit: legend, optional: true
     tuple val(meta), path("*.samples"), emit: samples, optional: true
-    tuple val(meta), path("*.tbi"), emit: tbi, optional: true
-    tuple val(meta), path("*.csi"), emit: csi, optional: true
+    tuple val(meta), path("*.{tbi,csi}"), emit: index, optional: true
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:

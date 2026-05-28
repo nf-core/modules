@@ -14,7 +14,7 @@ process BCFTOOLS_MPILEUP {
 
     output:
     tuple val(meta), path("*vcf.gz"), emit: vcf
-    tuple val(meta), path("*vcf.gz.tbi"), emit: tbi
+    tuple val(meta), path("*.{tbi,csi}"), emit: index, optional: true
     tuple val(meta), path("*stats.txt"), emit: stats
     tuple val(meta), path("*.mpileup.gz"), emit: mpileup, optional: true
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
