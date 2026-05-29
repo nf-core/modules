@@ -26,6 +26,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
+                // Validate transporter.tbl structure
+                { assert process.out.tbl.get(0).get(1).size() > 0 : "Transporter file should not be empty" },
+                { assert path(process.out.tbl.get(0).get(1)).readLines().size() > 5 : "Transporter file should have at least 5 lines" },
+                { assert path(process.out.tbl.get(0).get(1)).readLines().get(3) ==~ /^id\ttc\tsub.*/ : "Transporter file should have expected header" },
                 {
                     assert snapshot(
                         process.out.tbl.collect { meta, tbl -> [meta, file(tbl).getName()] },

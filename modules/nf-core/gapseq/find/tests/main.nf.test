@@ -26,6 +26,14 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
+                // Validate reactions.tbl structure
+                { assert process.out.reactions.get(0).get(1).size() > 0 : "Reactions file should not be empty" },
+                { assert path(process.out.reactions.get(0).get(1)).readLines().size() > 50 : "Reactions file should have at least 50 lines" },
+                { assert path(process.out.reactions.get(0).get(1)).readLines().get(3) ==~ /^pathway\trxn\tname\tec.*/ : "Reactions file should have expected header" },
+                // Validate pathways.tbl structure
+                { assert process.out.pathways.get(0).get(1).size() > 0 : "Pathways file should not be empty" },
+                { assert path(process.out.pathways.get(0).get(1)).readLines().size() > 10 : "Pathways file should have at least 10 lines" },
+                { assert path(process.out.pathways.get(0).get(1)).readLines().get(3) ==~ /^ID\tName.*/ : "Pathways file should have expected header" },
                 {
                     assert snapshot(
                         process.out.reactions.collect { meta, reaction -> [meta, file(reaction).getName()] },

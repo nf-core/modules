@@ -30,6 +30,12 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
+                // Validate .tbl files structure (stable output from find/findtransport steps)
+                { assert process.out.tbl.get(0).get(1).size() > 0 : "TBL files should not be empty" },
+                { assert process.out.tbl.get(0).get(1) instanceof List : "TBL output should be a list of files" },
+                { assert process.out.tbl.get(0).get(1).size() >= 2 : "Should have at least 2 .tbl files" },
+                // Validate model file exists (content is unstable so only check filename)
+                { assert process.out.model.get(0).get(1).size() > 0 : "Model file should not be empty" },
                 {
                     assert snapshot(
                         process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
