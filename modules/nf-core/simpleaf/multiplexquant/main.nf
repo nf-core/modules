@@ -44,8 +44,6 @@ process SIMPLEAF_MULTIPLEXQUANT {
     def cell_bc_list_arg   = cell_bc_list   ? "--cell-bc-list ${cell_bc_list}"       : ''
     def t2g_map_arg        = t2g_map        ? "--t2g-map ${t2g_map}"                 : ''
 
-    meta = meta2 + meta3 + meta
-
     """
     export ALEVIN_FRY_HOME=.
     simpleaf set-paths
