@@ -164,7 +164,7 @@ output:
       - simpleaf:
           type: string
           description: The name of the tool
-      - ALEVIN_FRY_HOME=. simpleaf --version | sed 's/simpleaf //':
+      - simpleaf --version | sed 's/simpleaf //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -193,7 +193,7 @@ topics:
       - simpleaf:
           type: string
           description: The name of the tool
-      - ALEVIN_FRY_HOME=. simpleaf --version | sed 's/simpleaf //':
+      - simpleaf --version | sed 's/simpleaf //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
