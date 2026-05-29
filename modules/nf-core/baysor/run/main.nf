@@ -3,9 +3,8 @@ process BAYSOR_RUN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e6/e642d48a06693a7bad75c491ddf0d027ffa1450a718a9f3af573645662ebee48/data' :
-        'community.wave.seqera.io/library/baysor_python:55a5c12eda9597fb' }"
+    // images should be updated with wave containers when the issue of build number change is resolved
+    container "khersameesh24/baysor:0.7.1"
 
     input:
     tuple val(meta), path(transcripts), path(prior_segmentation), path(config), val(scale)
