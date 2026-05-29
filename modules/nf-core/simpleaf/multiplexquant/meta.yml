@@ -31,12 +31,13 @@ input:
     - chemistry:
         type: string
         description: |
-          Chemistry preset name (required). Typical values: `10x-flexv1-gex-3p`,
+          Chemistry preset name. Typical values: `10x-flexv1-gex-3p`,
           `10x-flexv2-gex-3p`. The preset drives auto-resolution of the probe set,
           sample-BC TSV, and cell-BC whitelist (each overridable via the inputs
-          below). Custom geometry / orientation and UMI resolution can be passed
-          through ext.args (e.g. `--geometry '...'`, `--expected-ori fw`,
-          `--resolution cr-like`) without changing the preset.
+          below). Pass `[]` to skip the preset entirely — in that case you must
+          supply geometry / orientation through ext.args (e.g. `--geometry '...'`,
+          `--expected-ori fw`). UMI resolution is also passed via ext.args
+          (e.g. `--resolution cr-like`).
     - reads:
         type: file
         description: |

@@ -38,6 +38,7 @@ process SIMPLEAF_MULTIPLEXQUANT {
     def reads1 = forward.join(',')
     def reads2 = reverse.join(',')
 
+    def chemistry_arg      = chemistry      ? "--chemistry ${chemistry}"             : ''
     def index_arg          = index          ? "--index ${index}"                     : ''
     def probe_set_arg      = probe_set      ? "--probe-set ${probe_set}"             : ''
     def sample_bc_list_arg = sample_bc_list ? "--sample-bc-list ${sample_bc_list}"   : ''
@@ -49,7 +50,7 @@ process SIMPLEAF_MULTIPLEXQUANT {
     simpleaf set-paths
 
     simpleaf multiplex-quant \\
-        --chemistry ${chemistry} \\
+        ${chemistry_arg} \\
         --organism ${organism} \\
         --reads1 ${reads1} \\
         --reads2 ${reads2} \\
