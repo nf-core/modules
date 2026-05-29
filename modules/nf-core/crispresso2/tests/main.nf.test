@@ -47,7 +47,8 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--suppress_plots --auto"
+                // fastp argument added due to https://github.com/pinellolab/CRISPResso2/issues/648
+                module_args = "--suppress_plots --auto --fastp_command 'fastp --merged_out /dev/stdout'"
             }
             process {
                 """
