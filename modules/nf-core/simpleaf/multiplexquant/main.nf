@@ -25,7 +25,7 @@ process SIMPLEAF_MULTIPLEXQUANT {
     tuple val(meta), path("${prefix}/probe_index/index")            , emit: probe_index, optional: true
     tuple val("${task.process}"), val('alevin-fry'), eval("alevin-fry --version | sed 's/alevin-fry //'"),                    topic: versions, emit: versions_alevin_fry
     tuple val("${task.process}"), val('piscem'),     eval("piscem --version | sed 's/piscem //'"),                            topic: versions, emit: versions_piscem
-    tuple val("${task.process}"), val('simpleaf'),   eval("ALEVIN_FRY_HOME=. simpleaf --version | sed 's/simpleaf //'"),      topic: versions, emit: versions_simpleaf
+    tuple val("${task.process}"), val('simpleaf'),   eval("simpleaf --version | sed 's/simpleaf //'"),                          topic: versions, emit: versions_simpleaf
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,8 +34,15 @@ process SIMPLEAF_MULTIPLEXQUANT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    def mapping_args   = mappingArgs(chemistry, reads)
-    def reference_args = referenceArgs(index, probe_set, sample_bc_list, cell_bc_list, t2g_map)
+    def (forward, reverse) = reads.collate(2).transpose()
+    def reads1 = forward.join(',')
+    def reads2 = reverse.join(',')
+
+    def index_arg          = index          ? "--index ${index}"                     : ''
+    def probe_set_arg      = probe_set      ? "--probe-set ${probe_set}"             : ''
+    def sample_bc_list_arg = sample_bc_list ? "--sample-bc-list ${sample_bc_list}"   : ''
+    def cell_bc_list_arg   = cell_bc_list   ? "--cell-bc-list ${cell_bc_list}"       : ''
+    def t2g_map_arg        = t2g_map        ? "--t2g-map ${t2g_map}"                 : ''
 
     meta = meta2 + meta3 + meta
 
@@ -43,10 +50,15 @@ process SIMPLEAF_MULTIPLEXQUANT {
     export ALEVIN_FRY_HOME=.
     simpleaf set-paths
 
-    # run simpleaf multiplex-quant
     simpleaf multiplex-quant \\
-        ${mapping_args} \\
-        ${reference_args} \\
+        --chemistry ${chemistry} \\
+        --reads1 ${reads1} \\
+        --reads2 ${reads2} \\
+        ${index_arg} \\
+        ${probe_set_arg} \\
+        ${sample_bc_list_arg} \\
+        ${cell_bc_list_arg} \\
+        ${t2g_map_arg} \\
         --resolution ${resolution} \\
         --output ${prefix} \\
         --threads ${task.cpus} \\
@@ -72,30 +84,4 @@ process SIMPLEAF_MULTIPLEXQUANT {
     touch ${prefix}/af_quant/alevin/quants.h5ad
     touch ${prefix}/probe_t2g.tsv
     """
-}
-
-// `simpleaf multiplex-quant` requires both reads and a chemistry preset (or, with extra
-// ext.args, a --geometry override + --cell-bc-list). Only the mainstream case is enforced
-// here; non-default geometries can still be set via ext.args.
-def mappingArgs(chemistry, reads) {
-    if (!reads)     error "Missing read files; could not proceed."
-    if (!chemistry) error "Missing chemistry; could not proceed."
-
-    def (forward, reverse) = reads.collate(2).transpose()
-    return """--chemistry ${chemistry} \\
-        --reads1 ${forward.join(',')} \\
-        --reads2 ${reverse.join(',')}"""
-}
-
-// Build optional reference-override flags. With none of these set, simpleaf auto-downloads
-// a probe set + sample BC TSV based on the chemistry preset and (if also provided in ext.args)
-// `--organism`. Any combination of overrides is allowed.
-def referenceArgs(index, probe_set, sample_bc_list, cell_bc_list, t2g_map) {
-    def parts = []
-    if (index)          parts << "--index ${index}"
-    if (probe_set)      parts << "--probe-set ${probe_set}"
-    if (sample_bc_list) parts << "--sample-bc-list ${sample_bc_list}"
-    if (cell_bc_list)   parts << "--cell-bc-list ${cell_bc_list}"
-    if (t2g_map)        parts << "--t2g-map ${t2g_map}"
-    return parts.join(' \\\n        ')
 }
