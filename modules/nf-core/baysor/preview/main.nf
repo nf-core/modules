@@ -38,6 +38,6 @@ process BAYSOR_PREVIEW {
 
     """
     mkdir -p ${prefix}
-    touch ${prefix}/preview.html
+    touch "${prefix}/preview.html"
     """
 }
