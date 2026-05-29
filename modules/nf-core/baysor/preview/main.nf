@@ -4,7 +4,7 @@ process BAYSOR_PREVIEW {
 
     conda "${moduleDir}/environment.yml"
     // images should be updated with wave containers when the issue of build number change is resolved
-    container "khersameesh24/baysor:0.7.1"
+    container "quay.io/khersameesh24/baysor:0.7.1"
 
     input:
     tuple val(meta), path(transcripts), path(config)
