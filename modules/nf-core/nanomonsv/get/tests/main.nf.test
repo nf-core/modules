@@ -1,0 +1,177 @@
+nextflow_process {
+
+    name "Test Process NANOMONSV_GET"
+    script "../main.nf"
+    process "NANOMONSV_GET"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nanomonsv"
+    tag "nanomonsv/get"
+    tag "nanomonsv/parse"
+
+    setup {
+        run("NANOMONSV_PARSE", alias: "NANOMONSV_PARSE_TUMOR") {
+            script "../../parse/main.nf"
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id:'test.tumor'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists:true)
+                    ]
+                )
+                """
+            }
+        }
+        run("NANOMONSV_PARSE", alias: "NANOMONSV_PARSE_CONTROL") {
+            script "../../parse/main.nf"
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id:'test.control'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists:true)
+                    ]
+                )
+                """
+            }
+        }
+    }
+
+    test("homo sapiens - nanopore - tumor-normal - bam") {
+        when {
+            process {
+                """
+                tumor_parse = NANOMONSV_PARSE_TUMOR.out.insertions
+                    .combine(NANOMONSV_PARSE_TUMOR.out.insertions_index, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.deletions, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.deletions_index, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.rearrangements, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.rearrangements_index, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.bp_info, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.bp_info_index, by:0)
+                    .map { meta, ins, ins_tbi, del, del_tbi, rea, rea_tbi, bp, bp_tbi ->
+                        [ meta, [ins, ins_tbi, del, del_tbi, rea, rea_tbi, bp, bp_tbi] ]
+                    }
+
+                control_parse = NANOMONSV_PARSE_CONTROL.out.insertions
+                    .combine(NANOMONSV_PARSE_CONTROL.out.insertions_index, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.deletions, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.deletions_index, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.rearrangements, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.rearrangements_index, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.bp_info, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.bp_info_index, by:0)
+                    .map { meta, ins, ins_tbi, del, del_tbi, rea, rea_tbi, bp, bp_tbi ->
+                        [ meta, [ins, ins_tbi, del, del_tbi, rea, rea_tbi, bp, bp_tbi] ]
+                    }
+
+                tumor_bam = Channel.of([
+                    [id:'test.tumor'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists:true)
+                ])
+
+                control_bam = Channel.of([
+                    [id:'test.control'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists:true)
+                ])
+
+                input[0] = tumor_bam.combine(tumor_parse, by:0).map { meta, bam, bai, parse_files -> [ meta, bam, bai, parse_files ] }
+                input[1] = control_bam.combine(control_parse, by:0).map { meta, bam, bai, parse_files -> [ meta, bam, bai, parse_files ] }
+                input[2] = Channel.of([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ])
+                input[3] = "test.control"
+                input[4] = ""
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.result_txt.get(0).get(1)),
+                    path(process.out.result_vcf.get(0).get(1)).vcf.summary,
+                    file(process.out.supporting_read.get(0).get(1)).name,
+                    file(process.out.sbnd_result_txt.get(0).get(1)),
+                    path(process.out.sbnd_result_vcf.get(0).get(1)).vcf.summary,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - nanopore bam - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                tumor_parse = NANOMONSV_PARSE_TUMOR.out.insertions
+                    .combine(NANOMONSV_PARSE_TUMOR.out.insertions_index, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.deletions, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.deletions_index, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.rearrangements, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.rearrangements_index, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.bp_info, by:0)
+                    .combine(NANOMONSV_PARSE_TUMOR.out.bp_info_index, by:0)
+                    .map { meta, ins, ins_tbi, del, del_tbi, rea, rea_tbi, bp, bp_tbi ->
+                        [ meta, [ins, ins_tbi, del, del_tbi, rea, rea_tbi, bp, bp_tbi] ]
+                    }
+
+                control_parse = NANOMONSV_PARSE_CONTROL.out.insertions
+                    .combine(NANOMONSV_PARSE_CONTROL.out.insertions_index, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.deletions, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.deletions_index, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.rearrangements, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.rearrangements_index, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.bp_info, by:0)
+                    .combine(NANOMONSV_PARSE_CONTROL.out.bp_info_index, by:0)
+                    .map { meta, ins, ins_tbi, del, del_tbi, rea, rea_tbi, bp, bp_tbi ->
+                        [ meta, [ins, ins_tbi, del, del_tbi, rea, rea_tbi, bp, bp_tbi] ]
+                    }
+
+                tumor_bam = Channel.of([
+                    [id:'test.tumor'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists:true)
+                ])
+
+                control_bam = Channel.of([
+                    [id:'test.control'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists:true)
+                ])
+
+                input[0] = tumor_bam.combine(tumor_parse, by:0).map { meta, bam, bai, parse_files -> [ meta, bam, bai, parse_files ] }
+                input[1] = control_bam.combine(control_parse, by:0).map { meta, bam, bai, parse_files -> [ meta, bam, bai, parse_files ] }
+                input[2] = Channel.of([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ])
+                input[3] = "test.control"
+                input[4] = ""
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
