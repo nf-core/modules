@@ -1,0 +1,96 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_calculateldscores"
+description: Calculate LD scores with GCTA and segment variants into LD-based SNP groups
+keywords:
+  - gcta
+  - genome-wide complex trait analysis
+  - ld score
+  - linkage disequilibrium score
+  - ldms
+  - linkage disequilibrium and minor allele frequency stratification
+  - genetics
+tools:
+  - "gcta":
+      description: "GCTA is a tool for genome-wide complex trait analysis."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://github.com/jianyangqt/gcta"
+      licence: ["GPL-3.0-only"]
+      identifier: "biotools:gcta"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing PLINK1 genotype metadata
+          e.g. `[ id:'plink_simulated' ]`
+    - bed:
+        type: file
+        description: PLINK1 genotype primary file
+        pattern: "*.{bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+    - bim:
+        type: file
+        description: PLINK1 variant metadata file
+        pattern: "*.{bim}"
+        ontologies: []
+    - fam:
+        type: file
+        description: PLINK1 sample metadata file
+        pattern: "*.{fam}"
+        ontologies: []
+  - ld_score_region:
+      type: integer
+      description: |
+        LD-score region width passed to `--ld-score-region`.
+        Callers should pass `200` for the default GCTA region width unless they are intentionally overriding it.
+output:
+  ld_scores:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing PLINK1 genotype metadata
+            e.g. `[ id:'plink_simulated' ]`
+      - "*_gcta_ld.score.ld":
+          type: file
+          description: GCTA LD score output file
+          pattern: "*_gcta_ld.score.ld"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  snp_group_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing PLINK1 genotype metadata
+            e.g. `[ id:'plink_simulated' ]`
+      - "*_snp_group*.txt":
+          type: file
+          description: LD-derived SNP-group files
+          pattern: "*_snp_group*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the versions were collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to generate the version of the tool
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"
