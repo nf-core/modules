@@ -34,8 +34,9 @@ input:
           Chemistry preset name (required). Typical values: `10x-flexv1-gex-3p`,
           `10x-flexv2-gex-3p`. The preset drives auto-resolution of the probe set,
           sample-BC TSV, and cell-BC whitelist (each overridable via the inputs
-          below). Custom geometry / orientation can be passed through ext.args
-          (`--geometry '...'`, `--expected-ori fw`) without changing the preset.
+          below). Custom geometry / orientation and UMI resolution can be passed
+          through ext.args (e.g. `--geometry '...'`, `--expected-ori fw`,
+          `--resolution cr-like`) without changing the preset.
     - reads:
         type: file
         description: |
@@ -83,12 +84,14 @@ input:
           Cell barcode whitelist (one barcode per line). Overrides the chemistry-preset
           default. Pass `[]` to use the chemistry-preset default.
         ontologies: []
-  - resolution:
+  - organism:
       type: string
       description: |
-        UMI resolution mode (https://alevin-fry.readthedocs.io/en/latest/quant.html).
-        Possible values: 'cr-like', 'cr-like-em', 'parsimony', 'parsimony-em',
-        'parsimony-gene', 'parsimony-gene-em'.
+        Organism passed to `simpleaf multiplex-quant --organism` for auto-resolution of
+        the chemistry-preset default probe set and sample-BC TSV. Required by simpleaf
+        when no `--probe-set` override is supplied; ignored otherwise. Typical values:
+        `human`, `mouse`. Pass any value (e.g. `human`) when overriding probe_set
+        explicitly.
 output:
   map:
     - - meta:

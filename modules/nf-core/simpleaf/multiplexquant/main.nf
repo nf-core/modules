@@ -15,7 +15,7 @@ process SIMPLEAF_MULTIPLEXQUANT {
     tuple val(meta),  val(chemistry), path(reads)                                                           // chemistry preset and reads
     tuple val(meta2), path(index, stageAs: 'index/*'), path(t2g_map)                                        // optional pre-built piscem probe index and t2g map
     tuple val(meta3), path(probe_set), path(sample_bc_list), path(cell_bc_list)                             // optional probe set / sample-BC TSV / cell-BC whitelist overrides
-    val resolution                                                                                          // UMI resolution (cr-like, cr-like-em, parsimony, ...)
+    val organism                                                                                            // organism for auto-resolution (e.g. 'human', 'mouse'); required by simpleaf
 
     output:
     tuple val(meta), path("${prefix}/af_map")                       , emit: map
@@ -50,6 +50,7 @@ process SIMPLEAF_MULTIPLEXQUANT {
 
     simpleaf multiplex-quant \\
         --chemistry ${chemistry} \\
+        --organism ${organism} \\
         --reads1 ${reads1} \\
         --reads2 ${reads2} \\
         ${index_arg} \\
@@ -57,7 +58,6 @@ process SIMPLEAF_MULTIPLEXQUANT {
         ${sample_bc_list_arg} \\
         ${cell_bc_list_arg} \\
         ${t2g_map_arg} \\
-        --resolution ${resolution} \\
         --output ${prefix} \\
         --threads ${task.cpus} \\
         --anndata-out \\
