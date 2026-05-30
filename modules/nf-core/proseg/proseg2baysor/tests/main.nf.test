@@ -1,23 +1,25 @@
 nextflow_process {
 
-    name "Test Process PROSEG"
+    name "Test Process PROSEG2BAYSOR"
     script "../main.nf"
-    process "PROSEG"
+    process "PROSEG2BAYSOR"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "proseg"
+    tag "proseg/proseg2baysor"
     tag "proseg/proseg"
+    tag "proseg"
     tag "segmentation"
     tag "cell_segmentation"
 
-    test("proseg - transcripts.csv") {
 
-        when {
+    setup {
+        run("PROSEG") {
+            script "../../proseg/main.nf"
             process {
                 """
                 input[0] = [
-                    [id: "test_run_proseg"],
+                    [id: "testrun_proseg"],
                     file(params.modules_testdata_base_path + "spatial_omics/xenium/homo_sapiens/spatial_gene_expression.csv", checkIfExists: true)
                 ]
                 input[1] = 'xenium'
@@ -25,31 +27,37 @@ nextflow_process {
                 """
             }
         }
+    }
+
+    test("proseg-to-baysor - transcripts.csv") {
+
+        when {
+            process {
+                """
+                input[0] = PROSEG.out.zarr
+                """
+            }
+        }
 
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.zarr[0][1]).name == "test_run_proseg.zarr" },
-                { assert file(process.out.cell_polygons[0][1]).name == "test_run_proseg_cell-polygons.geojson.gz" },
-                { assert file(process.out.transcript_metadata[0][1]).name == "test_run_proseg_transcript-metadata.csv.gz" },
+                { assert file(process.out.cell_polygons[0][1]).name == "testrun_proseg_cell-polygons.geojson" },
+                { assert file(process.out.transcript_metadata[0][1]).name == "testrun_proseg_transcript-metadata.csv" },
                 { assert snapshot(process.out.versions_proseg).match("versions") }
             )
         }
+
     }
 
-    test("proseg stub") {
+    test("proseg-to-baysor stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = [
-                    [id: "test_run_proseg"],
-                    file(params.modules_testdata_base_path + "spatial_omics/xenium/homo_sapiens/spatial_gene_expression.csv", checkIfExists: true)
-                ]
-                input[1] = 'xenium'
-                input[2] = ['csv.gz', 'csv.gz', 'csv.gz']
+                input[0] = PROSEG.out.zarr
                 """
             }
         }
