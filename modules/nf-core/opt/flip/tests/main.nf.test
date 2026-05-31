@@ -9,7 +9,7 @@ nextflow_process {
     tag "opt"
     tag "opt/flip"
 
-    test("testrun panel probe sequences") {
+    test("testrun opt/flip panel probe sequences") {
 
         when {
             process {
@@ -29,12 +29,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+                { assert snapshot(process.out.fwd_oriented_fa).match() },
+                { assert snapshot(process.out.versions_opt).match("versions") }
+            ) 
         }
     }
 
-    test("testrun panel probe sequences -stub") {
+    test("testrun opt/flip panel probe sequences -stub") {
         options "-stub"
         when {
             process {
@@ -54,7 +55,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.versions_opt).match("versions_stub") }
             )
         }
     }

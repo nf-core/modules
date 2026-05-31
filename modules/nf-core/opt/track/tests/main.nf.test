@@ -9,7 +9,7 @@ nextflow_process {
     tag "opt"
     tag "opt/track"
 
-    test("testrun panel probe sequences") {
+    test("testrun opt/track panel probe sequences") {
 
         when {
             process {
@@ -33,7 +33,7 @@ nextflow_process {
         }
     }
 
-    test("testrun panel probe sequences -stub") {
+    test("testrun opt/track panel probe sequences -stub") {
         options "-stub"
         when {
             process {
