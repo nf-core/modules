@@ -3,7 +3,7 @@ process OPT_STAT {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "quay.io/nf-core/opt:v0.0.1"
+    container "quay.io/khersameesh24/opt:v0.0.1"
 
     input:
     tuple val(meta), path(probe_targets)
