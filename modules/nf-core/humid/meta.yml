@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "humid"
-description: HUMID is a tool to quickly and easily remove duplicate reads from FastQ
-  files, with or without UMIs.
+description: HUMID is a tool to quickly and easily remove duplicate reads from
+  FastQ files, with or without UMIs.
 keywords:
   - umi
   - fastq
@@ -14,9 +13,9 @@ tools:
       homepage: "https://github.com/jfjlaros/HUMID"
       documentation: "https://humid.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/jfjlaros/HUMID"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -84,6 +83,27 @@ output:
           type: directory
           description: Directory containing statistics file, use for multiqc.
           pattern: "${prefix}/"
+  versions_humid:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - humid:
+          type: string
+          description: The name of the tool
+      - 1.0.4:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - humid:
+          type: string
+          description: The name of the tool
+      - 1.0.4:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@Joon-Klaps"
 maintainers:
