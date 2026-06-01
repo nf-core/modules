@@ -27,9 +27,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.ncvs[0][1]).exists() },
-                { assert file(process.out.ncvs[0][1]).name == "ncvs.loom" },
-                { assert snapshot(process.out.versions_baysor).match("versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["ncvs"])).match() }
             )
         }
     }
@@ -53,7 +51,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions_baysor).match("versions_stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -32,11 +32,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.segmentation[0][1]).exists() },
-                { assert file(process.out.segmentation[0][1]).name == "segmentation.csv" },
-                { assert file(process.out.segmentation[0][2]).exists() },
-                { assert file(process.out.segmentation[0][2]).name == "segmentation_polygons_2d.json" },
-                { assert snapshot(process.out.versions_baysor).match("versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["segmentation"])).match() }
             )
         }
     }
@@ -64,7 +60,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions_baysor).match("versions_stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
