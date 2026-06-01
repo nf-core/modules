@@ -42,9 +42,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.cell_polygons[0][1]).name == "testrun_proseg_cell-polygons.geojson" },
-                { assert file(process.out.transcript_metadata[0][1]).name == "testrun_proseg_transcript-metadata.csv" },
-                { assert snapshot(process.out.versions_proseg).match("versions") }
+                { assert snapshot(sanitizeOutput(
+                                    process.out,
+                                    unstableKeys: [
+                                        "cell_polygons",
+                                        "transcript_metadata",
+                                    ]
+                                )).match()
+                }
             )
         }
 
@@ -65,7 +70,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions_proseg).match("versions_stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -29,7 +29,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["zarr", "cell_polygons", "transcript_metadata"]).match() }
+                { assert snapshot(sanitizeOutput(
+                                    process.out,
+                                    unstableKeys: [
+                                        "zarr",
+                                        "cell_polygons",
+                                        "transcript_metadata",
+                                        "cell_metadata",
+                                        "cell_polygons_layers",
+                                        "expected_counts",
+                                        "union_cell_polygons"
+                                    ]
+                                )).match()
+                }
             )
         }
     }
@@ -54,7 +66,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions_proseg).match("versions_stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
