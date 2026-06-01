@@ -22,7 +22,7 @@ process SAVANA_RUN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = (task.ext.args ?: '').trim()
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     savana run \\
