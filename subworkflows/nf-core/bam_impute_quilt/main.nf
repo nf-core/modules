@@ -79,7 +79,7 @@ workflow BAM_IMPUTE_QUILT {
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
-        BCFTOOLS_INDEX.out.tbi.mix(BCFTOOLS_INDEX.out.csi),
+        BCFTOOLS_INDEX.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
     )

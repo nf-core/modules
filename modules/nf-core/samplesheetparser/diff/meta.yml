@@ -1,0 +1,84 @@
+name: samplesheetparser_diff
+description: |
+  Compare two Illumina SampleSheet.csv files (any combination of V1 and V2)
+  and emit a structured JSON diff covering header changes, added/removed
+  samples, and per-sample field changes. Exits 0 if identical, 1 if
+  differences are detected — useful as a CI pre-run guard.
+keywords:
+  - illumina
+  - samplesheet
+  - diff
+  - comparison
+  - bclconvert
+  - bcl2fastq
+  - genomics
+tools:
+  - samplesheet-parser:
+      description: |
+        Format-agnostic parser for Illumina SampleSheet.csv files.
+        Supports IEM V1 (bcl2fastq) and BCLConvert V2 with auto-detection,
+        bidirectional conversion, index validation, and Hamming distance checking.
+      homepage: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      documentation: https://illumina-samplesheet.readthedocs.io
+      tool_dev_url: https://github.com/chaitanyakasaraneni/samplesheet-parser
+      doi: "10.5281/zenodo.18989694"
+      licence:
+        - "Apache-2.0"
+      identifier: biotools:samplesheet-parser
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          Use [ id:'run_id' ] to identify the sheet pair.
+    - old_sheet:
+        type: file
+        description: Original (reference) SampleSheet.csv (V1 or V2)
+        pattern: "*.{csv,CSV}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+    - new_sheet:
+        type: file
+        description: Updated SampleSheet.csv to compare against the original (V1 or V2)
+        pattern: "*.{csv,CSV}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+output:
+  json:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.diff.json":
+          type: file
+          description: |
+            Structured JSON diff report with has_changes, source_version,
+            target_version, header_changes, samples_added, samples_removed,
+            and sample_changes fields.
+          pattern: "*.diff.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  versions_samplesheetparser:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samplesheet-parser:
+          type: string
+          description: The name of the tool
+      - samplesheet --version | sed 's/samplesheet-parser //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@chaitanyakasaraneni"
+maintainers:
+  - "@chaitanyakasaraneni"

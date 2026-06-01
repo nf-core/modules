@@ -38,7 +38,7 @@ workflow VCF_IMPUTE_BEAGLE5 {
     // Combine VCF files
     ch_ready_vcf = ch_input_branched.vcf.mix(
         BCFTOOLS_VIEW.out.vcf.join(
-            BCFTOOLS_VIEW.out.tbi.mix(BCFTOOLS_VIEW.out.csi),
+            BCFTOOLS_VIEW.out.index,
             failOnMismatch: true,
             failOnDuplicate: true,
         )
@@ -99,7 +99,7 @@ workflow VCF_IMPUTE_BEAGLE5 {
     // Ligate all phased files in one and index it
     ligate_input = BEAGLE5_BEAGLE.out.vcf
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.index,
             failOnMismatch: true,
             failOnDuplicate: true,
         )
@@ -123,7 +123,7 @@ workflow VCF_IMPUTE_BEAGLE5 {
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
-        BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
+        BCFTOOLS_INDEX_LIGATE.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
     )

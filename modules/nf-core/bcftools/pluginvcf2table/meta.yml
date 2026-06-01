@@ -30,7 +30,7 @@ input:
         description: VCF/BCF file to be converted (optionally bgzipped).
         pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3016"
     - tbi:
         type: file
         description: Index of the VCF/BCF file (required when vcf is bgzipped).
@@ -48,8 +48,8 @@ input:
           Relies on a tabix index.
         pattern: "*.{bed,vcf,vcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3003" # BED
-          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_3016"
     - targets:
         type: file
         description: |
@@ -57,8 +57,8 @@ input:
           (does not rely on index files).
         pattern: "*.{bed,vcf,vcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3003" # BED
-          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_3016"
     - samples:
         type: file
         description: |
@@ -78,7 +78,7 @@ output:
           description: Tab-delimited table output from bcftools +vcf2table.
           pattern: "*.txt"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   versions_bcftools:
     - - ${task.process}:
           type: string

@@ -130,7 +130,7 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
     // Ligate all phased files in one and index it
     ligate_input = GLIMPSE2_PHASE.out.phased_variants
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.index,
             failOnMismatch: true,
             failOnDuplicate: true,
         )
@@ -154,12 +154,12 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
-        BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
+        BCFTOOLS_INDEX_LIGATE.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
     )
 
     emit:
     chunks    = ch_chunks // channel: [ val(meta), regionin, regionout ]
-    vcf_index = ch_vcf_index // channel: [ val(meta), vcf, csi ]
+    vcf_index = ch_vcf_index // channel: [ val(meta), vcf, index ]
 }
