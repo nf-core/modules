@@ -12,6 +12,7 @@ workflow BAM_IMPUTE_STITCH {
     ch_fasta // channel (optional) :   [ [genome], fa, fai ]
     k_val // integer:   k value for STITCH
     n_gen // integer:   number of generations for STITCH
+    buffer // integer:   Buffer size around each chunk for STITCH
     seed // value  :   seed for random number generator
 
     main:
@@ -48,6 +49,7 @@ workflow BAM_IMPUTE_STITCH {
                 chr,
                 start,
                 end,
+                buffer,
                 k_val,
                 n_gen,
             ]
@@ -61,7 +63,7 @@ workflow BAM_IMPUTE_STITCH {
     // Ligate all phased files in one and index it
     ligate_input = STITCH.out.vcf
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.index,
             failOnMismatch: true,
             failOnDuplicate: true,
         )
@@ -77,7 +79,7 @@ workflow BAM_IMPUTE_STITCH {
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
-        BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
+        BCFTOOLS_INDEX_LIGATE.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
     )
