@@ -47,8 +47,5 @@ process SAVANA_RUN {
     touch "./outdir/${prefix}.sv_breakpoints.bedpe"
     touch "./outdir/${prefix}.sv_breakpoints_read_support.tsv"
     touch "./outdir/${prefix}.inserted_sequences.fa"
-
-    mv ./outdir/* .
-    rmdir ./outdir
     """
 }
