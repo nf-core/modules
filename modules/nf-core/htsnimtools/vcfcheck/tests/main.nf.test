@@ -9,20 +9,20 @@ nextflow_process {
     tag "htsnimtools"
     tag "htsnimtools/vcfcheck"
 
-    test("sarscov2 - vcf, tbi - background_vcf,background_tbi") {
+    test("homo sapiens - vcf, tbi - background_vcf,background_tbi") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'background' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test2.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz.csi", checkIfExists: true)
                 ]
                 """
             }
@@ -37,7 +37,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - vcf, tbi - background_vcf,background_tbi - stub") {
+    test("homo sapiens - vcf, tbi - background_vcf,background_tbi - stub") {
 
         options "-stub"
 
@@ -46,13 +46,13 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'background' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test2.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz.csi", checkIfExists: true)
                 ]
                 """
             }
