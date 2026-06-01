@@ -132,6 +132,76 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3464
             - edam: http://edamontology.org/format_3989
+  maxpost_counts:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}_maxpost-counts.{csv,csv.gz,parquet}:
+          type: file
+          description: "Path to the max posterior counts file."
+          pattern: "*maxpost-counts.{csv.gz,csv,parquet}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  output_rates:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}_output-rates.{csv,csv.gz,parquet}:
+          type: file
+          description: "Path to the output rates file."
+          pattern: "*output-rates.{csv.gz,csv,parquet}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  cell_hulls:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}_cell-hulls.{csv,csv.gz,parquet}:
+          type: file
+          description: "Path to the cell hulls file."
+          pattern: "*cell-hulls.{csv.gz,csv,parquet}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  gene_metadata:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}_gene-metadata.{csv,csv.gz,parquet}:
+          type: file
+          description: "Path to the gene metadata file."
+          pattern: "*gene-metadata.{csv.gz,csv,parquet}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  metagene_rates:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}_metagene-rates.{csv,csv.gz,parquet}:
+          type: file
+          description: "Path to the metagene rates file."
+          pattern: "*metagene-rates.{csv.gz,csv,parquet}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  metagene_loadings:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}_metagene-loadings.{csv,csv.gz,parquet}:
+          type: file
+          description: "Path to the metagene loadings file."
+          pattern: "*metagene-loadings.{csv.gz,csv,parquet}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  cell_voxels:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}_cell-voxels.{csv,csv.gz,parquet}:
+          type: file
+          description: "Path to the cell voxels file."
+          pattern: "*cell-voxels.{csv.gz,csv,parquet}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   versions_proseg:
     - - ${task.process}:
           type: string

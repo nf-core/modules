@@ -20,13 +20,13 @@ process PROSEG {
     tuple val(meta), path("${prefix}_cell-polygons-layers.geojson.gz"         , arity: '1'), emit: cell_polygons_layers
     tuple val(meta), path("${prefix}_expected-counts.{csv,csv.gz,parquet}"    , arity: '1'), emit: expected_counts
     tuple val(meta), path("${prefix}_cell-polygons-union.geojson.gz"          , arity: '1'), emit: union_cell_polygons
-    tuple val(meta), path("*maxpost-counts.{csv,csv.gz,parquet}"                          ), emit: maxpost_counts      , optional: true
-    tuple val(meta), path("*output-rates.{csv,csv.gz,parquet}"                            ), emit: output_rates        , optional: true
-    tuple val(meta), path("*cell-hulls.{csv,csv.gz,parquet}"                              ), emit: cell_hulls          , optional: true
-    tuple val(meta), path("*gene-metadata.{csv,csv.gz,parquet}"                           ), emit: gene_metadata       , optional: true
-    tuple val(meta), path("*metagene-rates.{csv,csv.gz,parquet}"                          ), emit: metagene_rates      , optional: true
-    tuple val(meta), path("*metagene-loadings.{csv,csv.gz,parquet}"                       ), emit: metagene_loadings   , optional: true
-    tuple val(meta), path("*cell-voxels.{csv,csv.gz,parquet}"                             ), emit: cell_voxels         , optional: true
+    tuple val(meta), path("${prefix}_maxpost-counts.{csv,csv.gz,parquet}"                 ), emit: maxpost_counts      , optional: true
+    tuple val(meta), path("${prefix}_output-rates.{csv,csv.gz,parquet}"                   ), emit: output_rates        , optional: true
+    tuple val(meta), path("${prefix}_cell-hulls.{csv,csv.gz,parquet}"                     ), emit: cell_hulls          , optional: true
+    tuple val(meta), path("${prefix}_gene-metadata.{csv,csv.gz,parquet}"                  ), emit: gene_metadata       , optional: true
+    tuple val(meta), path("${prefix}_metagene-rates.{csv,csv.gz,parquet}"                 ), emit: metagene_rates      , optional: true
+    tuple val(meta), path("${prefix}_metagene-loadings.{csv,csv.gz,parquet}"              ), emit: metagene_loadings   , optional: true
+    tuple val(meta), path("${prefix}_cell-voxels.{csv,csv.gz,parquet}"                    ), emit: cell_voxels         , optional: true
     tuple val("${task.process}"), val('proseg'), eval("proseg --version | sed 's/proseg //'"), topic: versions, emit: versions_proseg
 
     when:
