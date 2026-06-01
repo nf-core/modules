@@ -42,10 +42,9 @@ process SAVANA_RUN {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ./outdir
-    touch "./outdir/${prefix}.sv_breakpoints.vcf"
-    touch "./outdir/${prefix}.sv_breakpoints.bedpe"
-    touch "./outdir/${prefix}.sv_breakpoints_read_support.tsv"
-    touch "./outdir/${prefix}.inserted_sequences.fa"
+    touch "${prefix}.sv_breakpoints.vcf"
+    touch "${prefix}.sv_breakpoints.bedpe"
+    touch "${prefix}.sv_breakpoints_read_support.tsv"
+    touch "${prefix}.inserted_sequences.fa"
     """
 }
