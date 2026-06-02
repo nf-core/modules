@@ -4,8 +4,8 @@ process VCONTACT3_PREPAREDDATABASES {
     
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcontact3:3.1.6--py310h4b81fae_0':
-        'quay.io/biocontainers/vcontact3:3.1.6--py310h4b81fae_0' }"
+        'https://depot.galaxyproject.org/singularity/vcontact3:3.1.6--pyhdfd78af_0':
+        'quay.io/biocontainers/vcontact3:3.1.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), val(db_version)
