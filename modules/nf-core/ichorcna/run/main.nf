@@ -44,6 +44,9 @@ process ICHORCNA_RUN {
     #!/usr/bin/env Rscript
     library("ichorCNA")
     library("yaml")
+    library("GenomeInfoDb")
+
+    options(UCSC.goldenPath.url = "https://hgdownload2.soe.ucsc.edu/goldenPath")
 
     run_ichorCNA(
         tumor_wig='${wig}',
