@@ -40,7 +40,14 @@ process ICHORCNA_CREATEPON {
     write.table(strsplit("${wigs}"," ")[[1]],"filelist.txt", row.names = FALSE, col.names = FALSE)
 
     download.file(
-        "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/chromInfo.txt.gz",
+        "https://hgdownload2.cse.ucsc.edu/goldenPath/hg19/database/chromInfo.txt.gz",
+        "test.gz",
+        quiet = FALSE,
+        method = "libcurl"
+    )
+
+        download.file(
+        "https://hgdownload2.soe.ucsc.edu/goldenPath/hg19/database/chromInfo.txt.gz",
         "test.gz",
         quiet = FALSE,
         method = "libcurl"
