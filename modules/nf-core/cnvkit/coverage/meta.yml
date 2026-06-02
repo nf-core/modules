@@ -1,0 +1,79 @@
+name: "cnvkit_coverage"
+description: Calculate coverage in the given regions from BAM/CRAM or bedGraph
+  files read depths.
+keywords:
+  - cnvkit
+  - coverage
+  - BAM
+  - CRAM
+  - bedGraph
+  - read depth
+  - genomics
+tools:
+  - "cnvkit":
+      description: "Copy number variant detection from high-throughput sequencing."
+      homepage: "https://cnvkit.readthedocs.io/en/stable"
+      documentation: "https://cnvkit.readthedocs.io/en/stable"
+      tool_dev_url: "https://github.com/etal/cnvkit"
+      doi: "10.1371/journal.pcbi.1004873"
+      licence:
+        - "Apache-2.0"
+      identifier: biotools:cnvkit
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - alignment_file:
+        type: file
+        description: Sorted BAM/CRAM, or bedGraph file containing read
+          alignements.
+        pattern: "*.{bam,cram,bed.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3583"
+    - interval:
+        type: file
+        description: bed file containing the target or antitarget regions.
+        pattern: "*.{target,antitarget}.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+output:
+  coverage:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.cnn":
+          type: file
+          description: Coverage bedfile with .cnn extension.
+          pattern: "*.{targetcoverage,antitargetcoverage}.cnn"
+          ontologies: []
+  versions_cnvkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvkit:
+          type: string
+          description: The name of the tool
+      - cnvkit.py version | sed -e "s/cnvkit v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvkit:
+          type: string
+          description: The name of the tool
+      - cnvkit.py version | sed -e "s/cnvkit v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@aadecock"
+maintainers:
+  - "@aadecock"
