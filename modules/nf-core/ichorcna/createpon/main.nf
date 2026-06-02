@@ -39,8 +39,8 @@ process ICHORCNA_CREATEPON {
     write.table(strsplit("${wigs}"," ")[[1]],"filelist.txt", row.names = FALSE, col.names = FALSE)
 
     library(GenomeInfoDb)
-    GenomeInfoDb::Seqinfo(genome="hg19", recache=TRUE)
     options(timeout = 300)
+    GenomeInfoDb:::getChromInfoFromUCSC(genome, recache = TRUE)
 
     createPanelOfNormals(
         gcWig='${gc_wig}',
