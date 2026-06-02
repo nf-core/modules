@@ -35,12 +35,20 @@ process ICHORCNA_CREATEPON {
     #!/usr/bin/env Rscript
     library("ichorCNA")
     library("yaml")
+    options(timeout = 300)
 
     write.table(strsplit("${wigs}"," ")[[1]],"filelist.txt", row.names = FALSE, col.names = FALSE)
 
     download.file(
-        "https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/README.md",
+        "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/chromInfo.txt.gz",
         tempfile()
+    )
+
+    download.file(
+        "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/chromInfo.txt.gz",
+        "test.gz",
+        quiet = FALSE,
+        method = "libcurl"
     )
 
     createPanelOfNormals(
