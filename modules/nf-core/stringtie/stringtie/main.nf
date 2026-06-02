@@ -13,10 +13,10 @@ process STRINGTIE_STRINGTIE {
     val(mode)
 
     output:
-    tuple val(meta), path("${prefix}.ballgown/")         , optional: true, emit: ballgown
-    tuple val(meta), path("${prefix}.coverage.gtf")      , optional: true, emit: coverage_gtf
     tuple val(meta), path("${prefix}.transcripts.gtf")   , emit: transcript_gtf
     tuple val(meta), path("${prefix}.gene.abundance.txt"), emit: abundance
+    tuple val(meta), path("${prefix}.coverage.gtf")      , optional: true, emit: coverage_gtf
+    tuple val(meta), path("${prefix}.ballgown/")         , optional: true, emit: ballgown
     tuple val("${task.process}"), val('stringtie'), eval('stringtie --version'), emit: versions_stringtie, topic: versions
 
     when:
