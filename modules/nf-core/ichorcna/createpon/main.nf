@@ -41,11 +41,6 @@ process ICHORCNA_CREATEPON {
 
     download.file(
         "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/chromInfo.txt.gz",
-        tempfile()
-    )
-
-    download.file(
-        "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/chromInfo.txt.gz",
         "test.gz",
         quiet = FALSE,
         method = "libcurl"
