@@ -13,7 +13,7 @@ process ICOUNTMINI_METAGENE {
 
     output:
     tuple val(meta), path("metagene_*/*plot_data.tsv"), emit: tsv
-    path "versions.yml",                                emit: versions
+    tuple val("${task.process}"), val('iCount-Mini'), eval("iCount-Mini -v"), emit: versions_icount_mini, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,13 +27,8 @@ process ICOUNTMINI_METAGENE {
 
     iCount-Mini metagene \\
         ${prefix}.bed \\
-        $segmentation \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iCount-Mini: \$(iCount-Mini -v)
-    END_VERSIONS
+        ${segmentation} \\
+        ${args}
     """
 
     stub:
@@ -41,10 +36,5 @@ process ICOUNTMINI_METAGENE {
     """
     mkdir -p metagene_${prefix}
     touch metagene_${prefix}/${prefix}_plot_data.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iCount-Mini: \$(iCount-Mini -v)
-    END_VERSIONS
     """
 }
