@@ -25,19 +25,14 @@ process ICOUNTMINI_SUMMARY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     iCount-Mini summary \\
-        $segmentation \\
-        $bed \\
+        ${segmentation} \\
+        ${bed} \\
         . \\
-        $args
+        ${args}
 
     mv summary_type.tsv ${prefix}.summary_type.tsv
     mv summary_subtype.tsv ${prefix}.summary_subtype.tsv
     mv summary_gene.tsv ${prefix}.summary_gene.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iCount-Mini: \$(iCount-Mini -v)
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process ICOUNTMINI_SUMMARY {
     touch ${prefix}.summary_type.tsv
     touch ${prefix}.summary_subtype.tsv
     touch ${prefix}.summary_gene.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iCount-Mini: \$(iCount-Mini -v)
-    END_VERSIONS
     """
 }

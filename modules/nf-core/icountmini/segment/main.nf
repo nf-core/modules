@@ -12,8 +12,8 @@ process ICOUNTMINI_SEGMENT {
     path fai
 
     output:
-    tuple val(meta), path("*_seg.gtf")         ,  emit: gtf
-    tuple val(meta), path("*_regions.gtf.gz")  ,  emit: regions
+    tuple val(meta), path("*_seg.gtf")       ,  emit: gtf
+    tuple val(meta), path("*_regions.gtf.gz"),  emit: regions
     tuple val("${task.process}"), val('iCount-Mini'), eval("iCount-Mini -v"), emit: versions_icount_mini, topic: versions
 
     when:
@@ -30,22 +30,12 @@ process ICOUNTMINI_SEGMENT {
         $fai
 
     mv regions.gtf.gz ${prefix}_regions.gtf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iCount-Mini: \$(iCount-Mini -v)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${gtf.simpleName}"
     """
     touch ${prefix}_seg.gtf
-    echo | gzip > ${prefix}_regions.gtf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iCount-Mini: \$(iCount-Mini -v)
-    END_VERSIONS
+    echo "" | gzip > ${prefix}_regions.gtf.gz
     """
 }
