@@ -10,10 +10,11 @@ process BAYSOR_RUN {
     tuple val(meta), path(transcripts), path(prior_segmentation), path(config), val(scale)
     val(prior_confidence)
     val(prior_column)
+    val(polygon_format)
 
     output:
     tuple val(meta), path("${prefix}/segmentation.csv"), path("${prefix}/segmentation_polygons_2d.json"), emit: segmentation
-    tuple val("${task.process}"), val('baysor'), eval("baysor --version 2>&1 | grep -oP '\\d+\\.\\d+\\.\\d+' || echo unknown"), topic: versions, emit: versions_baysor
+    tuple val("${task.process}"), val('baysor'), eval("baysor --version"), topic: versions, emit: versions_baysor
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,12 +23,17 @@ process BAYSOR_RUN {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     
-    // Column-based prior (e.g. :cell_id) takes precedence over file-based prior
-    def prior_col = prior_column ? ":${prior_column}" : ''
-    def prior_seg = prior_col ?: (prior_segmentation ? prior_segmentation : '')
-    def confidence = prior_confidence != null ? "--prior-segmentation-confidence=${prior_confidence}" : ''
+    def prior_seg = prior_column ? ":${prior_column}" : (prior_segmentation ?: '')
+    def confidence = prior_confidence ? "--prior-segmentation-confidence=${prior_confidence}" : ''
     def scaling_factor = scale ? "--scale=${scale}" : ''
     def config_arg = config ? "--config=${config}" : ''
+
+    // check for valid output polygon format
+    def valid_formats = ['GeometryCollectionLegacy', 'GeometryCollection', 'FeatureCollection']
+    if (!polygon_format in valid_formats) {
+        error "Invalid output polygon format. Valid options: ${valid_formats.join(', ')}"
+    }
+    def polygon_fmt = polygon_format ? "--polygon-format=${polygon_format}" : '--polygon-format=FeatureCollection'
 
     """
     export JULIA_NUM_THREADS=${task.cpus}
@@ -40,10 +46,9 @@ process BAYSOR_RUN {
         ${prior_seg} \\
         ${scaling_factor} \\
         ${confidence} \\
-        --output="${prefix}/segmentation.csv" \\
+        --output ${prefix} \\
         ${config_arg} \\
-        --plot \\
-        --polygon-format=GeometryCollectionLegacy \\
+        ${polygon_fmt} \\
         ${args}
     """
 

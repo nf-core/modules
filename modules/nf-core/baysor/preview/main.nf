@@ -10,8 +10,8 @@ process BAYSOR_PREVIEW {
     tuple val(meta), path(transcripts), path(config)
 
     output:
-    tuple val(meta), path("${prefix}/preview.html"), emit: preview_html
-    tuple val("${task.process}"), val('baysor'), eval("baysor --version 2>&1 | grep -oP '\\d+\\.\\d+\\.\\d+' || echo unknown"), topic: versions, emit: versions_baysor
+    tuple val(meta), path("${prefix}/preview.html"), emit: html
+    tuple val("${task.process}"), val('baysor'), eval("baysor --version"), topic: versions, emit: versions_baysor
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,7 +29,7 @@ process BAYSOR_PREVIEW {
         preview \\
         ${transcripts} \\
         --config ${config} \\
-        --output ${prefix}/preview.html \\
+        --output ${prefix} \\
         ${args}
     """
 

@@ -49,6 +49,14 @@ input:
       type: string
       description: Column name in the prior segmentation file that contains the
         segmentation mask (optional)
+  - polygon_format:
+      type: string
+      description: |
+        Format for output segmentation polygons (default: FeatureCollection)
+      enum:
+        - GeometryCollectionLegacy
+        - GeometryCollection
+        - FeatureCollection
 output:
   segmentation:
     - - meta:
@@ -76,7 +84,7 @@ output:
       - baysor:
           type: string
           description: The name of the tool
-      - baysor --version 2>&1 | grep -oP '\d+\.\d+\.\d+' || echo unknown:
+      - baysor --version:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -87,7 +95,7 @@ topics:
       - baysor:
           type: string
           description: The name of the tool
-      - baysor --version 2>&1 | grep -oP '\d+\.\d+\.\d+' || echo unknown:
+      - baysor --version:
           type: eval
           description: The expression to obtain the version of the tool
 authors:

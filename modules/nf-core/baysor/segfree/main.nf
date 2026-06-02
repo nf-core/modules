@@ -11,7 +11,7 @@ process BAYSOR_SEGFREE {
 
     output:
     tuple val(meta), path("${prefix}/ncvs.loom"), emit: ncvs
-    tuple val("${task.process}"), val('baysor'), eval("baysor --version 2>&1 | grep -oP '\\d+\\.\\d+\\.\\d+' || echo unknown"), topic: versions, emit: versions_baysor
+    tuple val("${task.process}"), val('baysor'), eval("baysor --version"), topic: versions, emit: versions_baysor
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,7 +29,7 @@ process BAYSOR_SEGFREE {
         segfree \\
         ${transcripts} \\
         --config ${config} \\
-        --output=${prefix}/ncvs.loom \\
+        --output ${prefix} \\
         ${args}
     """
 

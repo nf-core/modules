@@ -27,7 +27,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["preview_html"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html"])).match() }
             )
         }
     }
