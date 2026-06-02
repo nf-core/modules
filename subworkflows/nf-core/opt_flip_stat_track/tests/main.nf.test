@@ -1,0 +1,43 @@
+nextflow_workflow {
+
+    name "Test OPT_FLIP_TRACK_STAT"
+    script "../main.nf"
+    workflow "OPT_FLIP_TRACK_STAT"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "opt"
+    tag "opt/flip"
+    tag "opt/stat"
+    tag "opt/track"
+    tag "subworkflows/opt_flip_stat_track"
+
+    test("off-target probe tracker - opt") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                        [
+                            [ id: 'test_probes' ],
+                            file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/probes.fa', checkIfExists: true)
+                        ]
+                    )
+                input[1] = [
+                    [ id:'test_references' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
+                ]
+                input[2] = [file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/gene_synonyms.csv', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() },
+            )
+        }
+    }
+
+}

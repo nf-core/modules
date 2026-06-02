@@ -3,7 +3,9 @@ process OPT_STAT {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "quay.io/khersameesh24/opt:v0.0.1"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64550ef193f98ea294d70e087a80e37bbf0c5c4a5920f0a22414ed8a11c32caa/data' :
+        'community.wave.seqera.io/library/opt:0.0.1--f0b1e63f50e38ab1'}"
 
     input:
     tuple val(meta), path(probe_targets)

@@ -12,6 +12,7 @@ nextflow_process {
     test("testrun opt/stat panel probe sequences") {
 
         when {
+
             process {
                 """
                 input[0] = [
@@ -22,22 +23,23 @@ nextflow_process {
                     [ id:'test_run' ],
                     file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/fwd_oriented.fa', checkIfExists: true)
                 ]
-                input[2] = []
-                // input[2] = [file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/gene_synonyms.csv', checkIfExists: true)]
+                input[2] = [file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/gene_synonyms.csv', checkIfExists: true)]
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.summary).match() },
-                { assert snapshot(process.out.versions_opt).match("versions") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("testrun opt/stat panel probe sequences -stub") {
+        
         options "-stub"
+        
         when {
             process {
                 """
@@ -49,15 +51,15 @@ nextflow_process {
                     [ id:'test_run' ],
                     file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/fwd_oriented.fa', checkIfExists: true)
                 ]
-                input[2] = []
-                // input[2] = [file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/gene_synonyms.csv', checkIfExists: true)]
+                input[2] = [file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/gene_synonyms.csv', checkIfExists: true)]
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions_opt).match("versions_stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
