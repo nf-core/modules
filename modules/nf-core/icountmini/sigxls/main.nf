@@ -4,8 +4,8 @@ process ICOUNTMINI_SIGXLS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/icount-mini:2.0.3--pyh5e36f6f_0' :
-        'quay.io/biocontainers/icount-mini:2.0.3--pyh5e36f6f_0' }"
+        'https://depot.galaxyproject.org/singularity/icount-mini:3.0.1--pyh7cba7a3_0':
+        'quay.io/biocontainers/icount-mini:3.0.1--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bed)
@@ -14,7 +14,7 @@ process ICOUNTMINI_SIGXLS {
     output:
     tuple val(meta), path("*.sigxls.bed.gz"), emit: sigxls
     tuple val(meta), path("*.scores.tsv"),    emit: scores
-    path "versions.yml",                      emit: versions
+    tuple val("${task.process}"), val('iCount-Mini'), eval("iCount-Mini -v"), emit: versions_icount_mini, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

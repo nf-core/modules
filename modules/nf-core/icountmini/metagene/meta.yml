@@ -40,6 +40,27 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_icount_mini:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - iCount-Mini:
+          type: string
+          description: The name of the tool
+      - iCount-Mini -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - iCount-Mini:
+          type: string
+          description: The name of the tool
+      - iCount-Mini -v:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@marc-jones"
   - "@chris-cheshire"
