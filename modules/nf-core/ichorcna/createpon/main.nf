@@ -38,6 +38,13 @@ process ICHORCNA_CREATEPON {
 
     write.table(strsplit("${wigs}"," ")[[1]],"filelist.txt", row.names = FALSE, col.names = FALSE)
 
+    options(download.file.method = "libcurl")
+    download.file(
+        "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/chromInfo.txt.gz",
+        tempfile(),
+        quiet = FALSE
+    )
+
     createPanelOfNormals(
         gcWig='${gc_wig}',
         ${map}
