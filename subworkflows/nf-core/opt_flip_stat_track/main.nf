@@ -25,5 +25,5 @@ workflow OPT_FLIP_TRACK_STAT {
     ch_summary = OPT_STAT.out.summary
 
     emit:
-    summary  = ch_summary  // channel: [ val(meta), ["collapsed_summary.tsv", "other-summary-files"]]
+    summary  = ch_summary  // channel: [ val(meta), ["collapsed_summary.tsv"]]
 }
