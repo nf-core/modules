@@ -35,6 +35,8 @@ process ICHORCNA_CREATEPON {
     #!/usr/bin/env Rscript
     library("ichorCNA")
     library("yaml")
+    library("GenomeInfoDb")
+
     options(UCSC.goldenPath.url = "https://hgdownload2.soe.ucsc.edu/goldenPath")
 
     write.table(strsplit("${wigs}"," ")[[1]],"filelist.txt", row.names = FALSE, col.names = FALSE)
