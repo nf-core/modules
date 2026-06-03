@@ -1,0 +1,120 @@
+name: "trtools_dumpstr"
+description: DumpSTR filters VCF files with TR genotypes, performing call-level
+  and locus-level filtering, and outputs a filtered VCF file.
+keywords:
+  - tandem repeats
+  - str
+  - vcf
+  - filtering
+  - trtools
+tools:
+  - "trtools":
+      description: "Toolkit for genome-wide analysis of tandem repeats"
+      homepage: "https://trtools.readthedocs.io/"
+      documentation: "https://trtools.readthedocs.io/"
+      tool_dev_url: "https://github.com/gymreklab/TRTools"
+      doi: "10.1093/bioinformatics/btaa736"
+      licence:
+        - "MIT"
+      identifier: biotools:trtools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: Tandem repeat VCF file
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+  - - filter_regions:
+        type: file
+        description: bgzip-compressed BED file(s) containing filter regions used
+          by dumpSTR.
+        pattern: "*.bed.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+          - edam: http://edamontology.org/format_3989
+    - filter_regions_tbi:
+        type: file
+        description: Tabix index file(s) for the bgzip-compressed BED filter
+          region file(s).
+        pattern: "*.bed.gz.tbi"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz":
+          type: file
+          description: Filtered tandem repeat VCF file
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3989"
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Tabix index for the filtered VCF file
+          pattern: "*.vcf.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3700"
+  samplog:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.samplog.tab":
+          type: file
+          description: Sample-level dumpSTR filtering log file
+          pattern: "*.samplog.tab"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  loclog:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.loclog.tab":
+          type: file
+          description: Locus-level dumpSTR filtering log file
+          pattern: "*.loclog.tab"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_trtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trtools:
+          type: string
+          description: The name of the tool
+      - dumpSTR --version | sed 's/dumpSTR //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trtools:
+          type: string
+          description: The name of the tool
+      - dumpSTR --version | sed 's/dumpSTR //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@KondratievaOlesya"
+maintainers:
+  - "@KondratievaOlesya"
