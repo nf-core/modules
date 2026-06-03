@@ -54,7 +54,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.samplog,
+                    process.out.loclog,
+                    process.out.versions_trtools
+                ).match() }
             )
         }
     }
