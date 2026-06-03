@@ -2,7 +2,7 @@ process BCLCONVERT {
     tag "${ meta.lane ? meta.id + "." + meta.lane : meta.id }"
     label 'process_high'
 
-    container "quay.io/nf-core/bclconvert:4.4.6"
+    container "quay.io/nf-core/bclconvert:4.5.4"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
@@ -70,8 +70,8 @@ process BCLCONVERT {
     stub:
     """
     mkdir -p output
-    echo "fake fastq file" | gzip > output/Sample1_S1_L001_R1_001.fastq.gz
-    echo "fake fastq file" | gzip > output/Undetermined_S0_L001_R1_001.fastq.gz
+    echo "" | gzip > output/Sample1_S1_L001_R1_001.fastq.gz
+    echo "" | gzip > output/Undetermined_S0_L001_R1_001.fastq.gz
 
     mkdir -p output/Reports
     echo "fake report file" > output/Reports/Adapter_Cycle_Metrics.csv

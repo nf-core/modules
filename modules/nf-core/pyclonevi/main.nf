@@ -24,7 +24,6 @@ process PYCLONEVI {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}_cluster_table.csv
     touch ${prefix}.tsv
