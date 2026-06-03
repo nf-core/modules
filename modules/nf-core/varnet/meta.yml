@@ -1,9 +1,8 @@
 name: "varnet"
-description: DeepSomatic is an extension of deep learning-based variant caller
-  DeepVariant that takes aligned reads (in BAM or CRAM format) from tumor and
-  normal data, produces pileup image tensors from them, classifies each tensor
-  using a convolutional neural network, and finally reports somatic variants in
-  a standard VCF or gVCF file.
+description: VarNet is a deep learning based somatic variant caller that takes aligned
+  reads (in BAM format) from tumor and optionally normal data, produces pileup image
+  tensors from them, classifies each tensor using a convolutional neural network, and
+  finally reports somatic variants in a VCF file.
 keywords:
   - variant calling
   - machine learning
@@ -17,7 +16,7 @@ tools:
       doi: "10.1038/s41467-022-30584-2"
       licence:
         - "Polyform Non-Commercial"
-      identifier: "biotools:deepsomatic"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -73,16 +72,6 @@ input:
         description: Index of reference fasta file
         pattern: "*.fai"
         ontologies: []
-  - - meta5:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - gzi:
-        type: file
-        description: GZI index of reference fasta file
-        pattern: "*.gzi"
-        ontologies: []
 output:
   vcf:
     - - meta:
@@ -96,48 +85,15 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
-  vcf_tbi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}.vcf.gz.tbi:
-          type: file
-          description: Index of compressed VCF file
-          pattern: "*.vcf.gz.tbi"
-          ontologies: []
-  gvcf:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}.g.vcf.gz:
-          type: file
-          description: Compressed GVCF file
-          pattern: "*.g.vcf.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989
-  gvcf_tbi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}.g.vcf.gz.tbi:
-          type: file
-          description: Index of compressed Genotyped VCF file
-          pattern: "*.g.vcf.gz.tbi"
-          ontologies: []
-  versions_deepsomatic:
+
+  versions_varnet:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - deepsomatic:
+      - varnet:
           type: string
           description: The name of the tool
-      - 1.7.0:
+      - "1.5.0":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -145,14 +101,13 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - deepsomatic:
+      - varnet:
           type: string
           description: The name of the tool
-      - 1.7.0:
+      - "1.5.0":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@vaxyzek"
 maintainers:
   - "@vaxyzek"
-

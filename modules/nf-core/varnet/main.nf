@@ -2,7 +2,6 @@ process VARNET {
     tag "$meta.id"
     label 'process_high_memory'
 
-    // Using the official VarNet Docker image
     container "docker.io/kiranchari/varnet:latest"
 
     input:
@@ -12,8 +11,8 @@ process VARNET {
     tuple val(meta4), path(fai)
 
     output:
-    tuple val(meta), path("${prefix}/${prefix}.vcf.gz")    , emit: vcf
-    tuple val("${task.process}"), val("varnet"), val("1.0.0"), emit: versions, topic: versions
+    tuple val(meta), path("${prefix}/${prefix}.vcf.gz"), emit: vcf
+    tuple val("${task.process}"), val("varnet"), val("1.5.0"), emit: versions_varnet, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,11 +45,6 @@ process VARNET {
         --output_dir \$WORKDIR \\
         --processes ${task.cpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > \$WORKDIR/versions.yml
-    "${task.process}":
-        varnet: 1.5.0
-    END_VERSIONS
     """
 
     stub:
@@ -58,11 +52,6 @@ process VARNET {
     """
     mkdir -p ${prefix}
     echo "" | gzip > ${prefix}/${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        varnet: 1.0.0
-    END_VERSIONS
     """
 }
 
