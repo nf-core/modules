@@ -28,11 +28,11 @@ process TRTOOLS_DUMPSTR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def region_names = filter_regions ? filter_regions.collect {
-        it.baseName.replace('.bed.gz', '')
-    }.join(',') : ''
-    def filter_regions_arg = filter_regions ? "--filter-regions ${filter_regions.join(',')}" : ''
-    def filter_regions_names_arg = filter_regions ? "--filter-regions-names ${region_names}" : ''
+
+    def region_files = filter_regions ? (filter_regions instanceof List ? filter_regions : [filter_regions]) : []
+    def region_names = region_files ? region_files.collect { it.name.replaceFirst(/\.bed\.gz$/, '') }.join(',') : ''
+    def filter_regions_arg = region_files ? "--filter-regions ${region_files.join(',')}" : ''
+    def filter_regions_names_arg = region_files ? "--filter-regions-names ${region_names}" : ''
 
     def optional_args = [
         filter_regions_arg,
@@ -53,8 +53,8 @@ process TRTOOLS_DUMPSTR {
 
     """
     echo "" | gzip > ${prefix}.vcf.gz
-    echo "" | gzip > ${prefix}.vcf.gz.tbi
-    echo "" | gzip > ${prefix}.samplog.tab
-    echo "" | gzip > ${prefix}.loclog.tab
+    touch ${prefix}.vcf.gz.tbi
+    touch ${prefix}.samplog.tab
+    touch ${prefix}.loclog.tab
     """
 }

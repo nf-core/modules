@@ -59,7 +59,7 @@ nextflow_process {
                     file(process.out.tbi[0][1]).name,
                     process.out.samplog,
                     process.out.loclog,
-                    process.out.versions_trtools
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

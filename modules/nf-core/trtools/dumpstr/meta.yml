@@ -12,7 +12,7 @@ tools:
       description: "Toolkit for genome-wide analysis of tandem repeats"
       homepage: "https://trtools.readthedocs.io/"
       documentation: "https://trtools.readthedocs.io/"
-      tool_dev_url: "https://github.com/gymreklab/TRTools"
+      tool_dev_url: "https://github.com/gymrek-lab/TRTools"
       doi: "10.1093/bioinformatics/btaa736"
       licence:
         - "MIT"
@@ -36,13 +36,14 @@ input:
         pattern: "*.bed.gz"
         ontologies:
           - edam: "http://edamontology.org/format_3003"
-          - edam: http://edamontology.org/format_3989
+          - edam: "http://edamontology.org/format_3989"
     - filter_regions_tbi:
         type: file
         description: Tabix index file(s) for the bgzip-compressed BED filter
           region file(s).
         pattern: "*.bed.gz.tbi"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3700"
 output:
   vcf:
     - - meta:
@@ -79,8 +80,6 @@ output:
           type: file
           description: Sample-level dumpSTR filtering log file
           pattern: "*.samplog.tab"
-          ontologies:
-            - edam: http://edamontology.org/format_3475
   loclog:
     - - meta:
           type: map
@@ -91,8 +90,7 @@ output:
           type: file
           description: Locus-level dumpSTR filtering log file
           pattern: "*.loclog.tab"
-          ontologies:
-            - edam: http://edamontology.org/format_3475
+
   versions_trtools:
     - - ${task.process}:
           type: string
