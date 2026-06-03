@@ -45,7 +45,7 @@ process IQTREE {
     tuple val(meta), path("*.mlrate")        , emit: mlrate        , optional: true
     tuple val(meta), path("GTRPMIX.nex")     , emit: exch_matrix   , optional: true
     tuple val(meta), path("*.log")           , emit: log
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('iqtree'), eval("iqtree -version 2>&1 | head -n1 | sed 's/^IQ-TREE multicore version //;s/ .*//'"), emit: versions_iqtree, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -88,12 +88,7 @@ process IQTREE {
         -pre $prefix \\
         -nt AUTO \\
         -ntmax $task.cpus \\
-        -mem $memory \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iqtree: \$(echo \$(iqtree -version 2>&1) | sed 's/^IQ-TREE multicore version //;s/ .*//')
-    END_VERSIONS
+        -mem $memory
     """
 
     stub:
@@ -121,11 +116,6 @@ process IQTREE {
     touch "${prefix}.mlrate"
     touch "GTRPMIX.nex"
     touch "${prefix}.log"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iqtree: \$(echo \$(iqtree -version 2>&1) | sed 's/^IQ-TREE multicore version //;s/ .*//')
-    END_VERSIONS
     """
 
 }
