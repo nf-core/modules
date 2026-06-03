@@ -15,7 +15,8 @@ tools:
       documentation: https://bitbucket.org/srouxjgi/iphop/src/main/
       tool_dev_url: https://bitbucket.org/srouxjgi/iphop/src/main/
       doi: "10.1371/journal.pbio.3002083"
-      licence: ["Modified GPL v3"]
+      licence:
+        - "Modified GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -44,7 +45,7 @@ output:
             a minimum score defined by the `--min_score` argument
           pattern: "Host_prediction_to_genus_m*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   iphop_genome:
     - - meta:
           type: map
@@ -57,7 +58,7 @@ output:
             with a minimum score defined by the `--min_score` argument
           pattern: "Host_prediction_to_genome_m*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   iphop_detailed_output:
     - - meta:
           type: map
@@ -69,14 +70,28 @@ output:
           description: File containing each phage's top 5 hits via each method
           pattern: "Detailed_output_by_tool.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
+  versions_iphop:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - iphop:
+          type: string
+          description: The name of the tool
+      - "iphop --version 2>&1 | grep 'iPHoP v' | sed 's/^.*iPHoP v//; s/: integrating.*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - iphop:
+          type: string
+          description: The name of the tool
+      - "iphop --version 2>&1 | grep 'iPHoP v' | sed 's/^.*iPHoP v//; s/: integrating.*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@CarsonJM"
 maintainers:
