@@ -26,7 +26,6 @@ process BWAFASTALIGN_INDEX {
 
     bwa-fastalign index \\
         $args \\
-        -t $task.cpus \\
         -p bwafastalign/$prefix \\
         $fasta
 
