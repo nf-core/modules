@@ -5,10 +5,8 @@ process VARNET {
     container "docker.io/kiranchari/varnet:latest"
 
     input:
-    tuple val(meta), path(input_normal), path(index_normal), path(input_tumor), path(index_tumor)
-    tuple val(meta2), path(intervals)
-    tuple val(meta3), path(fasta)
-    tuple val(meta4), path(fai)
+    tuple val(meta), path(input_normal), path(index_normal), path(input_tumor), path(index_tumor), path(intervals)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("${prefix}/${prefix}.vcf.gz"), emit: vcf
