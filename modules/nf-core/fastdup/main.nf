@@ -39,7 +39,7 @@ process FASTDUP {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def index_command = args.contains("--create-index CSI") ? "touch ${prefix}.csi" 
+    def index_command = args.contains("--index-format CSI") ? "touch ${prefix}.csi" 
                         : args.contains("--create-index")   ? "touch ${prefix}.bai" : ""
 
     """
