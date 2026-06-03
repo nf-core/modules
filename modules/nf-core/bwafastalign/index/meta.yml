@@ -1,0 +1,64 @@
+name: "bwafastalign_index"
+description: Create BWA-FASTALIGN index for reference genome
+keywords:
+  - index
+  - fasta
+  - genome
+  - reference
+tools:
+  - "bwafastalign":
+      description: "Faster and Cheaper Sequence Alignment on Commercial CPUs (A faster
+        version of bwa-mem with identical outputs)."
+      homepage: "https://github.com/zzhofict/BWA-FastAlign"
+      documentation: "https://github.com/zzhofict/BWA-FastAlign"
+      doi: "10.1145/3774934.3786421"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        ontologies: []
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - bwafastalign:
+          type: file
+          description: BWA-FASTALIGN genome index files
+          pattern: "*.{0123,amb,ann,pac,pos_packed,suffixarray_uint64,suffixarray_uint64_L0_PARAMETERS,suffixarray_uint64_L1_PARAMETERS,suffixarray_uint64_L2_PARAMETERS}"
+          ontologies: []
+  versions_bwafastalign:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwafastalign:
+          type: string
+          description: The name of the tool
+      - 1.0.0:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwafastalign:
+          type: string
+          description: The name of the tool
+      - 1.0.0:
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@peterpru"
+maintainers:
+  - "@peterpru"
