@@ -4,8 +4,8 @@ process EKLIPSE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/eklipse:1.8--hdfd78af_1'
-        : 'biocontainers/eklipse:1.8--hdfd78af_1'}"
+        ? 'https://depot.galaxyproject.org/singularity/eklipse:1.8--hdfd78af_5'
+        : 'biocontainers/eklipse:1.8--hdfd78af_5'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
