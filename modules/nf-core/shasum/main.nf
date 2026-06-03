@@ -12,7 +12,7 @@ process SHASUM {
 
     output:
     tuple val(meta), path("*.sha256"), emit: checksum
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('sha256sum'), eval("sha256sum --version 2>&1 | head -n 1 | sed 's/.* //'"), emit: versions_sha256sum, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +24,10 @@ process SHASUM {
         ${args} \\
         ${file} \\
         > ${file}.sha256
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sha256sum: \$(echo \$(sha256sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
-    END_VERSIONS
+    stub:
+    """
+    touch ${file}.sha256
     """
 }

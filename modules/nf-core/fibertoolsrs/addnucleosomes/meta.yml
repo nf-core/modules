@@ -14,9 +14,9 @@ tools:
       documentation: "https://fiberseq.github.io/fibertools/fibertools.html"
       tool_dev_url: "https://github.com/fiberseq/fibertools-rs"
       doi: "10.5281/zenodo.14782951"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -44,14 +44,27 @@ output:
           pattern: "*.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
+  versions_fibertoolsrs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fibertools-rs:
+          type: string
+          description: The name of the tool
+      - ft --version | sed 's/fibertools-rs v//;s/\t.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fibertools-rs:
+          type: string
+          description: The name of the tool
+      - ft --version | sed 's/fibertools-rs v//;s/\t.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@YiJin-Xiong"
 maintainers:

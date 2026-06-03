@@ -12,7 +12,7 @@ process YARA_INDEX {
 
     output:
     tuple val(meta), path("${fasta}*")   , emit: index
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('yara'), eval("yara_indexer --version 2>&1 | grep 'yara_indexer version' | sed 's/^.*yara_indexer version: //; s/ .*\$//'"), topic: versions, emit: versions_yara
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +25,6 @@ process YARA_INDEX {
         $fasta \\
         -o ${fasta} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        yara: \$(echo \$(yara_indexer --version 2>&1) | sed 's/^.*yara_indexer version: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -38,10 +33,5 @@ process YARA_INDEX {
     touch ${fasta}.rid.{concat,limits}
     touch ${fasta}.sa.{ind,len,val}
     touch ${fasta}.txt.{concat,limits,size}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        yara: \$(echo \$(yara_indexer --version 2>&1) | sed 's/^.*yara_indexer version: //; s/ .*\$//')
-    END_VERSIONS
     """
 }
