@@ -110,7 +110,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.outtest_immunedeconv_bulkmat),
+                    sanitizeOutput(process.out),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
