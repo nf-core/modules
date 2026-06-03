@@ -3,9 +3,9 @@ process MULTIVCFANALYZER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/0713bc8b2176da50f1967ae24dd955f913b7288b966408220596e91c5c14aeeb/data' :
-        'community.wave.seqera.io/library/htslib_multivcfanalyzer:6387733614faccad' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/79/7946097c8ad51df09c52ebf0b91d4f2c42ab74fd37ac3c00fd6acab0e3602136/data' :
+        'community.wave.seqera.io/library/htslib_multivcfanalyzer:a64c201b4804e6cd' }"
 
     input:
     tuple val(meta), path(vcfs)

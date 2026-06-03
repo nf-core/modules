@@ -3,7 +3,7 @@ process DESEQ2_DIFFERENTIAL {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a1/a15f5d61792b60b6179afd885db27d3fe60eb4c42e805c8887ed0416d88cb484/data' :
         'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-limma:b56a0c9ddc3e87e1' }"
 

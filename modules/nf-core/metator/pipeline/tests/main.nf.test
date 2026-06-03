@@ -1,0 +1,185 @@
+// nf-core modules test metator/pipeline
+nextflow_process {
+
+    name "Test Process METATOR_PIPELINE"
+    script "../main.nf"
+    process "METATOR_PIPELINE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metator"
+    tag "metator/pipeline"
+
+    config "./nextflow.config"
+
+    test("metator - fastq - nodepths") {
+
+        when {
+
+            params {
+                metator_args = "-s 30000 -e HindIII,DpnII"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa.gz", checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + "delete_me/metator/for_paired.fq.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "delete_me/metator/rev_paired.fq.gz", checkIfExists: true)
+                    ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def bin_summary = file(process.out.bin_summary.get(0).get(1))
+            def contig2bin = file(process.out.contig2bin.get(0).get(1))
+            def network = file(process.out.network.get(0).get(1))
+            def contig_data = file(process.out.contig_data.get(0).get(1))
+
+            assertAll(
+                { assert process.out.bins.get(0).get(1).size() > 0 },
+                { assert process.out.bins.get(0).get(1).collect { f -> file(f).size() > 0 }.every() },
+                { assert([bin_summary, contig2bin, network, contig_data].collect { f -> f.size() > 0 }.every()) },
+                { assert snapshot(
+                    bin_summary.name,
+                    contig2bin.name,
+                    network.name,
+                    contig_data.name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("metator - bam - nodepths") {
+
+        when {
+
+            params {
+                metator_args = "-s 30000 -e HindIII,DpnII"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa.gz", checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + "delete_me/metator/alignment_0_for.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "delete_me/metator/alignment_0_rev.bam", checkIfExists: true)
+                    ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def bin_summary = file(process.out.bin_summary.get(0).get(1))
+            def contig2bin = file(process.out.contig2bin.get(0).get(1))
+            def network = file(process.out.network.get(0).get(1))
+            def contig_data = file(process.out.contig_data.get(0).get(1))
+
+            assertAll(
+                { assert process.out.bins.get(0).get(1).size() > 0 },
+                { assert process.out.bins.get(0).get(1).collect { f -> file(f).size() > 0 }.every() },
+                { assert([bin_summary, contig2bin, network, contig_data].collect { f -> f.size() > 0 }.every()) },
+                { assert snapshot(
+                    bin_summary.name,
+                    contig2bin.name,
+                    network.name,
+                    contig_data.name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
+
+    test("metator - pairs - nodepths") {
+
+        when {
+
+            params {
+                metator_args = "-s 30000 -e HindIII,DpnII"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/metator/alignment.pairs.gz", checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def bin_summary = file(process.out.bin_summary.get(0).get(1))
+            def contig2bin = file(process.out.contig2bin.get(0).get(1))
+            def network = file(process.out.network.get(0).get(1))
+            def contig_data = file(process.out.contig_data.get(0).get(1))
+
+            assertAll(
+                { assert process.out.bins.get(0).get(1).size() > 0 },
+                { assert process.out.bins.get(0).get(1).collect { f -> file(f).size() > 0 }.every() },
+                { assert([bin_summary, contig2bin, network, contig_data].collect { f -> f.size() > 0 }.every()) },
+                { assert snapshot(
+                    bin_summary.name,
+                    contig2bin.name,
+                    network.name,
+                    contig_data.name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
+
+    test("metator - fastq - stub") {
+
+        options "-stub"
+
+        when {
+
+            params {
+                metator_args = "-s 30000 -e HindIII,DpnII"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "delete_me/metator/assembly.fa.gz", checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + "delete_me/metator/for_paired.fq.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "delete_me/metator/rev_paired.fq.gz", checkIfExists: true)
+                    ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

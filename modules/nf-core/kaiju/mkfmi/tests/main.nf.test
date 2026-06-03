@@ -19,7 +19,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                         ]
                 input[1] = file(params.modules_testdata_base_path + 'delete_me/kaiju/nodes.dmp', checkIfExists: true)
-                input[2] = false
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/kaiju/names.dmp', checkIfExists: true)
+                input[3] = false
                 """
             }
         }
@@ -43,7 +44,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                         ]
                 input[1] = file(params.modules_testdata_base_path + 'delete_me/kaiju/nodes.dmp', checkIfExists: true)
-                input[2] = true
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/kaiju/names.dmp', checkIfExists: true)
+                input[3] = true
                 """
             }
         }
@@ -69,7 +71,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                         ]
                 input[1] = file(params.modules_testdata_base_path + 'delete_me/kaiju/nodes.dmp', checkIfExists: true)
-                input[2] = true
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/kaiju/names.dmp', checkIfExists: true)
+                input[3] = true
                 """
             }
         }
