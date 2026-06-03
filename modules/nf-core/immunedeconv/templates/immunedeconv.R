@@ -75,10 +75,12 @@ ggsave(paste0(prefix,'.plot2_points_with_facets.png'), plot = plot2, dpi = 300, 
 ################################################
 
 immunedeconv_version <- as.character(packageVersion('immunedeconv'))
+rbase_version <- paste(R.version[["major"]], R.version[["minor"]], sep = ".")
 
 writeLines(
     c(
         '"${task.process}":',
+        paste('    r-base:', rbase_version),
         paste('    r-immunedeconv:', immunedeconv_version)
     ),
 'versions.yml')
