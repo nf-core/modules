@@ -28,8 +28,6 @@ process BWAFASTALIGN_INDEX {
         $args \\
         -p bwafastalign/$prefix \\
         $fasta
-
-    build_rmis_dna.sh bwafastalign/$prefix
     """
 
     stub:
