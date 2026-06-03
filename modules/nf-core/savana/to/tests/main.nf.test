@@ -1,0 +1,81 @@
+nextflow_process {
+
+    name "Test Process SAVANA_TO"
+    script "../main.nf"
+    process "SAVANA_TO"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "savana"
+    tag "savana/to"
+
+    test("homo_sapiens - nanopore_HG002_ont_telomere - g1000") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa.fai', checkIfExists: true)
+                ]
+                input[2] = []
+                input[3] = []
+                input[4] = "1000g_hg38"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - nanopore_HG002_ont_telomere - g1000 - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa.fai', checkIfExists: true)
+                ]
+                input[2] = []
+                input[3] = []
+                input[4] = "1000g_hg38"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
