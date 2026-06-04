@@ -15,7 +15,7 @@ tools:
       tool_dev_url: "https://github.com/fiberseq/fibertools-rs"
       doi: "10.5281/zenodo.14782951"
       licence:
-      - "MIT"
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -28,8 +28,8 @@ input:
         description: Sorted BAM/CRAM file
         pattern: "*.{bam,cram}"
         ontologies:
-        - edam: "http://edamontology.org/format_2572"
-        - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
 output:
   bam:
     - - meta:
@@ -37,12 +37,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - '*.bam':
+      - "*.bam":
           type: file
           description: bam file with nucleosome calls
           pattern: "*.bam"
           ontologies:
-          - edam: "http://edamontology.org/format_2572"
+            - edam: "http://edamontology.org/format_2572"
   versions_fibertoolsrs:
     - - ${task.process}:
           type: string
