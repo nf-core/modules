@@ -15,8 +15,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test_run' ],
-                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/probes.fa', checkIfExists: true)
+                    [ id:'testrun_opt_flip' ],
+                    file(params.modules_testdata_base_path + 'spatial_omics/probe_detection/probes.fa', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'test_references' ],
@@ -43,8 +43,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test_run' ],
-                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/probes.fa', checkIfExists: true)
+                    [ id:'testrun_opt_stat' ],
+                    file(params.modules_testdata_base_path + 'spatial_omics/probe_detection/probes.fa', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'test_references' ],

@@ -9,14 +9,31 @@ nextflow_process {
     tag "opt"
     tag "opt/track"
 
+    setup {
+        run("OPT_FLIP") {
+            script "../../flip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'testrun_opt_track' ],
+                    file(params.modules_testdata_base_path + 'spatial_omics/probe_detection/probes.fa', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test_references' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
     test("testrun opt/track panel probe sequences") {
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test_run' ], file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/fwd_oriented.fa', checkIfExists: true)
-                ]
+                input[0] = OPT_FLIP.out.fwd_oriented_fa
                 input[1] = [
                     [ id:'test_references' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true),
@@ -41,10 +58,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test_run' ], file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/fwd_oriented.fa', checkIfExists: true)
-                ]
-
+                input[0] = OPT_FLIP.out.fwd_oriented_fa
                 input[1] = [
                     [ id:'test_references' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true),
