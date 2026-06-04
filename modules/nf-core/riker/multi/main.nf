@@ -8,19 +8,17 @@ process RIKER_MULTI {
         'community.wave.seqera.io/library/riker:0.2.0--20857cea9478b433' }"
 
     input:
-    tuple val(meta),  path(bam), path(bai)
+    tuple val(meta),  path(bam), path(bai), path(baits), path(targets)
     tuple val(meta2), path(fasta), path(fai)
-    path baits
-    path targets
 
     output:
     tuple val(meta), path("*.alignment-metrics.txt")             , optional: true, emit: alignment_metrics
     tuple val(meta), path("*.base-distribution-by-cycle.txt")    , optional: true, emit: base_dist
-    tuple val(meta), path("*.mean-quality-by-cycle.txt")          , optional: true, emit: mean_qual
-    tuple val(meta), path("*.quality-score-distribution.txt")     , optional: true, emit: qual_dist
+    tuple val(meta), path("*.mean-quality-by-cycle.txt")         , optional: true, emit: mean_qual
+    tuple val(meta), path("*.quality-score-distribution.txt")    , optional: true, emit: qual_dist
     tuple val(meta), path("*.error-mismatch.txt")                , optional: true, emit: error_mismatch
-    tuple val(meta), path("*.error-overlap.txt")                  , optional: true, emit: error_overlap
-    tuple val(meta), path("*.error-indel.txt")                    , optional: true, emit: error_indel
+    tuple val(meta), path("*.error-overlap.txt")                 , optional: true, emit: error_overlap
+    tuple val(meta), path("*.error-indel.txt")                   , optional: true, emit: error_indel
     tuple val(meta), path("*.gcbias-detail.txt")                 , optional: true, emit: gcbias_detail
     tuple val(meta), path("*.gcbias-summary.txt")                , optional: true, emit: gcbias_summary
     tuple val(meta), path("*.hybcap-metrics.txt")                , optional: true, emit: hybcap_metrics
@@ -40,7 +38,7 @@ process RIKER_MULTI {
     def args        = task.ext.args ?: ''
     def prefix      = task.ext.prefix ?: "${meta.id}"
     def ref         = fasta ? "-r ${fasta}" : ''
-    def hybcap_opts = baits ? "--hybcap::baits ${baits} --hybcap::targets ${targets}" : ''
+    def hybcap_opts = (baits && targets) ? "--hybcap::baits ${baits} --hybcap::targets ${targets}" : ''
     """
     riker multi \\
         -i ${bam} \\

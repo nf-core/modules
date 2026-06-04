@@ -21,11 +21,11 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    [],
+                    []
                 ]
                 input[1] = [[],[],[]]
-                input[2] = []
-                input[3] = []
                 """
             }
         }
@@ -33,16 +33,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.alignment_metrics,
-                    process.out.base_dist,
-                    process.out.mean_qual,
-                    process.out.qual_dist,
-                    process.out.isize_metrics,
-                    process.out.isize_histogram,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() },
-                { assert process.out.pdf[0][1].every { file(it).exists() } }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf"])).match() }
             )
         }
     }
@@ -58,15 +49,15 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    [],
+                    []
                 ]
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[2] = []
-                input[3] = []
                 """
             }
         }
@@ -74,14 +65,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.wgs_metrics,
-                    process.out.wgs_coverage,
-                    process.out.gcbias_detail,
-                    process.out.gcbias_summary,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() },
-                { assert process.out.pdf[0][1].every { file(it).exists() } }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf"])).match() }
             )
         }
     }
@@ -97,15 +81,15 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    [],
+                    []
                 ]
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[2] = []
-                input[3] = []
                 """
             }
         }
@@ -113,20 +97,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.alignment_metrics,
-                    process.out.base_dist,
-                    process.out.mean_qual,
-                    process.out.qual_dist,
-                    process.out.isize_metrics,
-                    process.out.isize_histogram,
-                    process.out.wgs_metrics,
-                    process.out.wgs_coverage,
-                    process.out.gcbias_detail,
-                    process.out.gcbias_summary,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() },
-                { assert process.out.pdf[0][1].every { file(it).exists() } }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf"])).match() }
             )
         }
     }
@@ -142,15 +113,15 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                    [],
+                    []
                 ]
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[2] = []
-                input[3] = []
                 """
             }
         }
@@ -158,16 +129,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.alignment_metrics,
-                    process.out.base_dist,
-                    process.out.mean_qual,
-                    process.out.qual_dist,
-                    process.out.isize_metrics,
-                    process.out.isize_histogram,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() },
-                { assert process.out.pdf[0][1].every { file(it).exists() } }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf"])).match() }
             )
         }
     }
@@ -183,15 +145,15 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/targets.interval_list', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true)
-                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/targets.interval_list', checkIfExists: true)
                 """
             }
         }
@@ -199,10 +161,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.hybcap_metrics,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf"])).match() }
             )
         }
     }
@@ -218,15 +177,15 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    [],
+                    []
                 ]
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[2] = []
-                input[3] = []
                 """
             }
         }
@@ -234,12 +193,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.error_mismatch,
-                    process.out.error_overlap,
-                    process.out.error_indel,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf"])).match() }
             )
         }
     }
@@ -255,15 +209,15 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    [],
+                    []
                 ]
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[2] = []
-                input[3] = []
                 """
             }
         }
@@ -271,16 +225,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.alignment_metrics,
-                    process.out.base_dist,
-                    process.out.mean_qual,
-                    process.out.qual_dist,
-                    process.out.error_mismatch,
-                    process.out.error_overlap,
-                    process.out.error_indel,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf"])).match() }
             )
         }
     }
@@ -296,15 +241,15 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/targets.interval_list', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true)
-                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/targets.interval_list', checkIfExists: true)
                 """
             }
         }
@@ -312,24 +257,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.alignment_metrics,
-                    process.out.base_dist,
-                    process.out.mean_qual,
-                    process.out.qual_dist,
-                    process.out.isize_metrics,
-                    process.out.isize_histogram,
-                    process.out.wgs_metrics,
-                    process.out.wgs_coverage,
-                    process.out.gcbias_detail,
-                    process.out.gcbias_summary,
-                    process.out.hybcap_metrics,
-                    process.out.error_mismatch,
-                    process.out.error_overlap,
-                    process.out.error_indel,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() },
-                { assert process.out.pdf[0][1].every { file(it).exists() } }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf"])).match() }
             )
         }
     }
@@ -347,11 +275,11 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    [],
+                    []
                 ]
                 input[1] = [[],[],[]]
-                input[2] = []
-                input[3] = []
                 """
             }
         }

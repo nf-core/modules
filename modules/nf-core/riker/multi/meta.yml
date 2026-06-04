@@ -31,12 +31,27 @@ input:
         type: file
         description: Aligned reads in BAM, CRAM, or SAM format
         pattern: "*.{bam,cram,sam}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
     - bai:
         type: file
         description: Index for the BAM/CRAM file
         pattern: "*.{bai,crai}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+    - baits:
+        type: file
+        description: Bait interval file (IntervalList or BED). Required when running the hybcap tool. Optional otherwise.
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - targets:
+        type: file
+        description: Target interval file (IntervalList or BED). Required when running the hybcap tool. Optional otherwise.
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
   - - meta2:
         type: map
         description: |
@@ -46,22 +61,14 @@ input:
         type: file
         description: Reference genome FASTA file. Required when running wgs, gcbias, or error tools.
         pattern: "*.{fa,fasta,fna}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
     - fai:
         type: file
         description: Index for the reference FASTA file
         pattern: "*.fai"
-        ontologies: []
-  - baits:
-      type: file
-      description: Bait interval file (IntervalList or BED). Required when running the hybcap tool.
-      pattern: "*.{interval_list,bed}"
-      ontologies: []
-  - targets:
-      type: file
-      description: Target interval file (IntervalList or BED). Required when running the hybcap tool.
-      pattern: "*.{interval_list,bed}"
-      ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3326" # FASTA index
 output:
   alignment_metrics:
     - - meta:
@@ -71,7 +78,8 @@ output:
           type: file
           description: Alignment summary metrics (alignment tool)
           pattern: "*.alignment-metrics.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   base_dist:
     - - meta:
           type: map
@@ -80,7 +88,8 @@ output:
           type: file
           description: Base distribution by cycle (basic tool)
           pattern: "*.base-distribution-by-cycle.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   mean_qual:
     - - meta:
           type: map
@@ -89,7 +98,8 @@ output:
           type: file
           description: Mean quality by cycle (basic tool)
           pattern: "*.mean-quality-by-cycle.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   qual_dist:
     - - meta:
           type: map
@@ -98,7 +108,8 @@ output:
           type: file
           description: Quality score distribution (basic tool)
           pattern: "*.quality-score-distribution.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   error_mismatch:
     - - meta:
           type: map
@@ -107,7 +118,8 @@ output:
           type: file
           description: Base mismatch error metrics (error tool)
           pattern: "*.error-mismatch.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   error_overlap:
     - - meta:
           type: map
@@ -116,7 +128,8 @@ output:
           type: file
           description: Read overlap error metrics (error tool)
           pattern: "*.error-overlap.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   error_indel:
     - - meta:
           type: map
@@ -125,7 +138,8 @@ output:
           type: file
           description: Indel error metrics (error tool)
           pattern: "*.error-indel.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   gcbias_detail:
     - - meta:
           type: map
@@ -134,7 +148,8 @@ output:
           type: file
           description: Per-GC-bin detail metrics (gcbias tool)
           pattern: "*.gcbias-detail.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   gcbias_summary:
     - - meta:
           type: map
@@ -143,7 +158,8 @@ output:
           type: file
           description: GC bias summary metrics (gcbias tool)
           pattern: "*.gcbias-summary.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   hybcap_metrics:
     - - meta:
           type: map
@@ -152,7 +168,8 @@ output:
           type: file
           description: Hybrid capture summary metrics (hybcap tool)
           pattern: "*.hybcap-metrics.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   hybcap_per_target:
     - - meta:
           type: map
@@ -161,7 +178,8 @@ output:
           type: file
           description: Per-target coverage metrics (hybcap tool, optional)
           pattern: "*.hybcap-per-target.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   hybcap_per_base:
     - - meta:
           type: map
@@ -170,7 +188,8 @@ output:
           type: file
           description: Per-base coverage values (hybcap tool, optional)
           pattern: "*.hybcap-per-base.txt{,.gz}"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   isize_metrics:
     - - meta:
           type: map
@@ -179,7 +198,8 @@ output:
           type: file
           description: Insert size summary metrics (isize tool)
           pattern: "*.isize-metrics.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   isize_histogram:
     - - meta:
           type: map
@@ -188,7 +208,8 @@ output:
           type: file
           description: Insert size histogram (isize tool)
           pattern: "*.isize-histogram.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   wgs_metrics:
     - - meta:
           type: map
@@ -197,7 +218,8 @@ output:
           type: file
           description: Whole-genome coverage summary metrics (wgs tool)
           pattern: "*.wgs-metrics.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   wgs_coverage:
     - - meta:
           type: map
@@ -206,7 +228,8 @@ output:
           type: file
           description: Per-depth coverage histogram (wgs tool)
           pattern: "*.wgs-coverage.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   pdf:
     - - meta:
           type: map
@@ -215,7 +238,8 @@ output:
           type: file
           description: PDF plots from any tool that generates them
           pattern: "*.pdf"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
   versions_riker:
     - - ${task.process}:
           type: string
