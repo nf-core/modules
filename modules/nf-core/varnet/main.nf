@@ -12,7 +12,7 @@ process VARNET {
 
     output:
     tuple val(meta), path("${prefix}/${prefix}.vcf.gz"), emit: vcf
-    tuple val("${task.process}"), val("varnet"), env(VARNET_VERSION), emit: versions_varnet, topic: versions
+    tuple val("${task.process}"), val("varnet"), env("VARNET_VERSION"), emit: versions_varnet, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
