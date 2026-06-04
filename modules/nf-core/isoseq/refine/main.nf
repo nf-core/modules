@@ -17,7 +17,7 @@ process ISOSEQ_REFINE {
     tuple val(meta), path("*.consensusreadset.xml")      , emit: consensusreadset
     tuple val(meta), path("*.filter_summary.report.json"), emit: summary
     tuple val(meta), path("*.report.csv")                , emit: report
-    path  "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('isoseq'), eval("isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\\+//'"), emit: versions_isoseq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +33,6 @@ process ISOSEQ_REFINE {
         $bam \\
         $primers \\
         ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        isoseq: \$( isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\\+//' )
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process ISOSEQ_REFINE {
     touch ${prefix}.consensusreadset.xml
     touch ${prefix}.filter_summary.report.json
     touch ${prefix}.report.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        isoseq: \$( isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\\+//' )
-    END_VERSIONS
     """
 }
