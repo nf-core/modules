@@ -4,8 +4,8 @@ process SALTSHAKER_CALL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e9/e93d703b195dd27cd920cee46669d3f51043216c12fd05168c937e93adf170e8/data':
-        'community.wave.seqera.io/library/pip_saltshaker:e08e38a6d45f8f32' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a902cc9f161d602fde9c268a509be2f593cfac7ed4cdc2219f630e02e43b2ec/data':
+        'community.wave.seqera.io/library/pip_saltshaker:be40ca61bbf77cf2' }"
 
     input:
     tuple val(meta), path(breakpoint), path(cluster)
@@ -20,7 +20,7 @@ process SALTSHAKER_CALL {
 
     output:
     tuple val(meta), path("*_call_metadata.tsv"), emit: call
-    tuple val("${task.process}"), val('saltshaker'), val("1.0.0"), topic: versions, emit: versions_saltshaker
+    tuple val("${task.process}"), val('saltshaker'), val("1.1.1"), topic: versions, emit: versions_saltshaker
 
     when:
     task.ext.when == null || task.ext.when
