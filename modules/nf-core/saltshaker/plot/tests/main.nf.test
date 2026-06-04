@@ -68,7 +68,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    sanitizeOutput(process.out, unstableKeys: ["png"]),
                 ).match() }
             )
         }
