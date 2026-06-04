@@ -4,20 +4,20 @@ description: Off-target probe detection
 keywords:
   - opt
   - flip
-  - stat
   - track
+  - stat
   - off-target-probe-detection
   - probes
   - off-target probes
 components:
   - opt/flip
-  - opt/stat
   - opt/track
+  - opt/stat
 input:
   - ch_probe_fasta:
       type: file
       description: |
-        The input channel containing the probes used in spatail experiment
+        The input channel containing the probes used in spatial experiment
         Structure: [ val(meta), path('probes.fasta') ]
       pattern: "*.{fasta,fa}"
   - ch_references:
