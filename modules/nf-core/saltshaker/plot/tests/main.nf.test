@@ -68,8 +68,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["png"]),
-                ).match() }
+                    process.out.versions_saltshaker
+                    ).match()
+                },
+                { assert file(process.out.plot.get(0).get(1)).exists() }
             )
         }
 
