@@ -31,7 +31,7 @@ output:
       - iphop:
           type: string
           description: The name of the tool
-      - "iphop --version 2>&1 | grep 'iPHoP v' | sed 's/^.*iPHoP v//; s/: integrating.*//'":
+      - iphop --version 2>&1 | sed '1!d;s/iPHoP v//;s/:.*//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -42,7 +42,7 @@ topics:
       - iphop:
           type: string
           description: The name of the tool
-      - "iphop --version 2>&1 | grep 'iPHoP v' | sed 's/^.*iPHoP v//; s/: integrating.*//'":
+      - iphop --version 2>&1 | sed '1!d;s/iPHoP v//;s/:.*//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

@@ -45,7 +45,7 @@ output:
             a minimum score defined by the `--min_score` argument
           pattern: "Host_prediction_to_genus_m*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   iphop_genome:
     - - meta:
           type: map
@@ -58,7 +58,7 @@ output:
             with a minimum score defined by the `--min_score` argument
           pattern: "Host_prediction_to_genome_m*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   iphop_detailed_output:
     - - meta:
           type: map
@@ -70,7 +70,7 @@ output:
           description: File containing each phage's top 5 hits via each method
           pattern: "Detailed_output_by_tool.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   versions_iphop:
     - - ${task.process}:
           type: string
@@ -78,7 +78,7 @@ output:
       - iphop:
           type: string
           description: The name of the tool
-      - "iphop --version 2>&1 | grep 'iPHoP v' | sed 's/^.*iPHoP v//; s/: integrating.*//'":
+      - iphop --version 2>&1 | sed '1!d;s/iPHoP v//;s/:.*//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -89,7 +89,7 @@ topics:
       - iphop:
           type: string
           description: The name of the tool
-      - "iphop --version 2>&1 | grep 'iPHoP v' | sed 's/^.*iPHoP v//; s/: integrating.*//'":
+      - iphop --version 2>&1 | sed '1!d;s/iPHoP v//;s/:.*//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
