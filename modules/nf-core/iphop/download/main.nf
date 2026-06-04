@@ -23,7 +23,7 @@ process IPHOP_DOWNLOAD {
         download \\
         --db_dir download_dir \\
         --no_prompt \\
-        $args
+        ${args}
 
     rm download_dir/*.tar.*
     mv download_dir/*/* iphop_db
