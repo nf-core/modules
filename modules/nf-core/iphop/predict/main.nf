@@ -30,7 +30,11 @@ process IPHOP_PREDICT {
         --out_dir iphop_results \\
         --db_dir $iphop_db \\
         --num_threads $task.cpus \\
-        $args
+       --fa_file ${fasta} \\
+       --out_dir iphop_results \\
+       --db_dir ${iphop_db} \\
+       --num_threads ${task.cpus} \\
+       ${args}
 
     mv iphop_results/Host_prediction_to_genus_m*.csv .
     mv iphop_results/Host_prediction_to_genome_m*.csv .
