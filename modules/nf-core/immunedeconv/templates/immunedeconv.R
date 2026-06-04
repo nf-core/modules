@@ -7,6 +7,8 @@ library(immunedeconv)
 library(tibble)
 library(readr)
 
+options(scipen = 999) # Disable scientific notation for better readability
+
 #Load prefix
 prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')
 
@@ -36,7 +38,8 @@ if (!all(abs(column_sums - 1e6) < 1e4)) {
 }
 
 # Generate results
-result <- immunedeconv::${function}(gene_expression_matrix, method = '$method')
+result <- immunedeconv::${function}(gene_expression_matrix, method = '$method') |>
+    mutate(across(where(is.numeric), ~ round(., 13)))
 
 # Save the result to a CSV file
 readr::write_tsv(result, paste0(prefix,'.deconvolution_results.tsv'))
