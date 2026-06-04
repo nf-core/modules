@@ -58,7 +58,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("tagdir") }
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
 
@@ -80,15 +80,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }
 
     test("sarscov2 - tagdir - uniqmap") {
-
-        tag "uniqmap"
-
         when {
             process {
                 """
@@ -101,13 +98,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    // FIXME These are empty?
-                    path(process.out.txt.get(0).get(1)).readLines()[31],
-                    path(process.out.txt.get(0).get(1)).readLines()[33],
-                ).match()
-                }
+               { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }
