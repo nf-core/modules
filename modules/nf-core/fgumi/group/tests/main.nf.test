@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process FGUMI_GROUP"
     script "../main.nf"
     process "FGUMI_GROUP"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -23,7 +24,6 @@ nextflow_process {
                     ]
                     """
                 }
-                config "./nextflow.config"
             }
         }
 
