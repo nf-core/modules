@@ -85,7 +85,7 @@ output:
       - integronfinder:
           type: string
           description: The name of the tool
-      - integron_finder --version 2>&1 | head -n1 | sed 's/^integron_finder version //' | cut -d ' ' -f1:
+      - integron_finder --version 2>&1 | sed '1!d;s/^integron_finder version //;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -96,7 +96,7 @@ topics:
       - integronfinder:
           type: string
           description: The name of the tool
-      - integron_finder --version 2>&1 | head -n1 | sed 's/^integron_finder version //' | cut -d ' ' -f1:
+      - integron_finder --version 2>&1 | sed '1!d;s/^integron_finder version //;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
