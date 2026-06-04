@@ -38,6 +38,9 @@ process RIKER_MULTI {
     def args        = task.ext.args ?: ''
     def prefix      = task.ext.prefix ?: "${meta.id}"
     def ref         = fasta ? "-r ${fasta}" : ''
+    if ((baits as Boolean) ^ (targets as Boolean)) {
+        error "RIKER_MULTI: both 'baits' and 'targets' must be provided together, or neither"
+    }
     def hybcap_opts = (baits && targets) ? "--hybcap::baits ${baits} --hybcap::targets ${targets}" : ''
     """
     riker multi \\
