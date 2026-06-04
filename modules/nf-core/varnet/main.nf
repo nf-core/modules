@@ -5,14 +5,14 @@ process VARNET {
     container "docker.io/kiranchari/varnet:latest"
 
     input:
-    tuple val(meta), path(input_normal), path(index_normal), path(input_tumor), path(index_tumor)
+    tuple val(meta), path(input_tumor), path(index_tumor), path(input_normal), path(index_normal)
     tuple val(meta2), path(intervals)
     tuple val(meta3), path(fasta)
     tuple val(meta4), path(fai)
 
     output:
     tuple val(meta), path("${prefix}/${prefix}.vcf.gz"), emit: vcf
-    tuple val("${task.process}"), val("varnet"), val("1.5.0"), emit: versions_varnet, topic: versions
+    tuple val("${task.process}"), val("varnet"), env(VARNET_VERSION), emit: versions_varnet, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,6 +27,7 @@ process VARNET {
     WORKDIR=\$(pwd)
 
     cd /VarNet
+    export VARNET_VERSION=\$(python -c "from snvs.constants import __VERSION__; print(__VERSION__)")
     TF_CPP_MIN_LOG_LEVEL=3 python /VarNet/filter.py \\
         --sample_name ${prefix} \\
         ${normal} \\
@@ -50,6 +51,7 @@ process VARNET {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export VARNET_VERSION=\$(python -c "from snvs.constants import __VERSION__; print(__VERSION__)")
     mkdir -p ${prefix}
     echo "" | gzip > ${prefix}/${prefix}.vcf.gz
     """
