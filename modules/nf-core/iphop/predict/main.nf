@@ -15,7 +15,7 @@ process IPHOP_PREDICT {
     tuple val(meta), path("Host_prediction_to_genus_m*.csv")    , emit: iphop_genus
     tuple val(meta), path("Host_prediction_to_genome_m*.csv")   , emit: iphop_genome
     tuple val(meta), path("Detailed_output_by_tool.csv")        , emit: iphop_detailed_output
-    tuple val("${task.process}"), val('iphop'), eval("iphop --version 2>&1 | grep 'iPHoP v' | sed 's/^.*iPHoP v//; s/: integrating.*//'"), emit: versions_iphop, topic: versions
+    tuple val("${task.process}"), val('iphop'), eval("iphop --version 2>&1 | sed '1!d;s/iPHoP v//;s/:.*//''"), emit: versions_iphop, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
