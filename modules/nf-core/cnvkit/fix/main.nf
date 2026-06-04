@@ -38,6 +38,5 @@ process CNVKIT_FIX {
     echo $args
 
     touch ${prefix}.cnr
-
     """
 }
