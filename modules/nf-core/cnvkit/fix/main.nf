@@ -24,13 +24,12 @@ process CNVKIT_FIX {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    cnvkit.py \\
-        fix \\
-            ${targetcoverage} \\
-            ${antitargetcoverage} \\
-            ${reference} \\
-            ${args} \\
-            --output ${prefix}.cnr
+    cnvkit.py fix \\
+        ${targetcoverage} \\
+        ${antitargetcoverage} \\
+        ${reference} \\
+        ${args} \\
+        --output ${prefix}.cnr
     """
 
     stub:
