@@ -11,7 +11,8 @@ workflow DEEPVARIANT_WORKFLOW_AND_PROCESS_EQUALITY_TESTER {
 
     main:
 
-    DEEPVARIANT(ch_input, ch_fasta, ch_fai, ch_gzi, ch_par_bed)
+    // WGS model does not use read-phasing when doing rundeepvariant
+    DEEPVARIANT(ch_input, ch_fasta, ch_fai, ch_gzi, ch_par_bed, false)
     DEEPVARIANT_RUNDEEPVARIANT(ch_input, ch_fasta, ch_fai, ch_gzi, ch_par_bed)
 
     emit:
