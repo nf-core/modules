@@ -87,7 +87,7 @@ output:
       - bcftools:
           type: string
           description: The name of the tool
-      - bcftools --version |& sed '1!d;s/.*bcftools //;s/ .*//:
+      - bcftools --version |& sed '1!d;s/bcftools //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -107,7 +107,7 @@ topics:
       - bcftools:
           type: string
           description: The name of the tool
-      - bcftools --version |& sed '1!d;s/.*bcftools //;s/ .*//:
+      - bcftools --version |& sed '1!d;s/bcftools //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

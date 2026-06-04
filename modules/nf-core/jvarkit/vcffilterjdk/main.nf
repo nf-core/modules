@@ -20,7 +20,7 @@ process JVARKIT_VCFFILTERJDK {
     tuple val(meta), path("*.tbi")         , emit: tbi, optional: true
     tuple val(meta), path("*.csi")         , emit: csi, optional: true
     tuple val("${task.process}"), val('jvarkit'), eval("jvarkit -v"), emit: versions_jvarkit, topic: versions
-    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version |& sed '1!d;s/.*bcftools //;s/ .*//"), emit: versions_bcftools, topic: versions
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version |& sed '1!d;s/bcftools //'"), emit: versions_bcftools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
