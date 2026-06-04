@@ -68,7 +68,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.versions_saltshaker,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.plot.collect { meta, plot -> file(plot).name }
                     ).match()
                 }
