@@ -68,10 +68,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.versions_saltshaker
+                    process.out.versions_saltshaker,
+                    process.out.plot.collect { meta, plot -> file(plot).name }
                     ).match()
-                },
-                { assert file(process.out.plot.get(0).get(1)).exists() }
+                }
             )
         }
 
