@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process FGUMI_GROUP"
+    script "../main.nf"
+    process "FGUMI_GROUP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgumi"
+    tag "fgumi/group"
+    tag "fgumi/sort"
+
+    test("sarscov2 - bam") {
+
+        setup {
+            run("FGUMI_SORT") {
+                script "../../sort/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.unsorted_tagged.bam', checkIfExists: true)
+                    ]
+                    """
+                }
+                config "./nextflow.config"
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FGUMI_SORT.out.bam
+                input[1] = 'adjacency'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // bam file is non deterministic in its output order
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['bam'])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.unsorted_tagged.bam', checkIfExists: true)
+                ]
+                input[1] = 'adjacency'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
