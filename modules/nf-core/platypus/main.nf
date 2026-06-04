@@ -8,9 +8,9 @@ process PLATYPUS {
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/platypus-variant:0.8.1--py27_1':
-        'biocontainers/platypus-variant:0.8.1--py27_1' }"
+        'quay.io/biocontainers/platypus-variant:0.8.1--py27_1' }"
 
     input:
 

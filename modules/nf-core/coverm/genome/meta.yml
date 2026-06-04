@@ -31,6 +31,7 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
           - edam: http://edamontology.org/format_2572 # BAM
+
   - - meta2:
         type: map
         description: |
@@ -43,12 +44,15 @@ input:
         pattern: "*.{fasta,fasta.gz,mmi,sti,fna,fna.gz,fa,fa.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
+
   - bam_input:
       type: boolean
       description: True if input is bam files
+
   - interleaved:
       type: boolean
       description: True if input is interleaved fastq file
+
   - ref_mode:
       type: string
       description: |
@@ -58,6 +62,11 @@ input:
           - `"auto"`: Automatically detect based on whether the `reference` path is a directory or file.
         Defaults to `"auto"` if not provided.
       pattern: "^(dir|file|auto)$"
+
+  - enable_bam_output:
+      type: boolean
+      description: True to enable BAM output of aligned reads
+
 output:
   coverage:
     - - meta:
@@ -65,14 +74,26 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.tsv":
+      - "*.depth.tsv":
+          type: map
+          description: Tab-delimited file containing coverage information for each contig and sample.
+          pattern: "*.depth.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.{tsv}"
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: BAM file containing aligned reads.
+          pattern: "*.bam"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_2572 # BAM
+
   versions_coverm:
     - - ${task.process}:
           type: string
@@ -83,6 +104,7 @@ output:
       - coverm --version | sed 's/coverm //':
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -94,6 +116,7 @@ topics:
       - coverm --version | sed 's/coverm //':
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@vinisalazar"
 maintainers:

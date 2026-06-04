@@ -22,7 +22,21 @@ input:
           e.g. [ id:'test' ]
     - map_file:
         type: file
-        description: Genomic map file to process
+        description: |
+          Genomic map file to process.
+          This file should contain the data of only one chromosome.
+          It should be a flat file (comma, semicolon, tab or space delimited) with
+          at least the physical position and its corresponding recombination
+          distance in centiMorgans.
+          The columns names will be normalised (no space, extra character transformed to "_")
+          and then automatically recognise as:
+            - chr: _chr, chrom, chromosome
+            - pos: position, bp
+            - id: snp, marker, rsid
+            - cm: genetic_map_cm
+            - rate: combined_rate, combined_rate_cm_mb, cm_mb
+          If no header present, then it will try for 3 columns table with chr, pos, cm format
+          and for 4 columns table with chr, id, cm, pos format.
         ontologies: []
 output:
   glimpse_map:
@@ -77,18 +91,21 @@ output:
             tab-delimited file with header and columns:
             chr, pos, cM
           pattern: "*.minimac.map"
-  versions_geneticmapconvert:
+  versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
 topics:
   versions:
     - versions.yml:
-        type: string
-        description: The name of the process
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LouisLeNezet"
 maintainers:

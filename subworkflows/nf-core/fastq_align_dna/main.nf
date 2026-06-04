@@ -30,6 +30,7 @@ workflow FASTQ_ALIGN_DNA {
 
     // Align fastq files to reference genome and (optionally) sort
     if (aligner == 'bowtie2') {
+
         BOWTIE2_ALIGN(ch_reads, ch_aligner_index, ch_fasta, false, sort)
         // if aligner is bowtie2
         ch_bam = ch_bam.mix(BOWTIE2_ALIGN.out.bam)

@@ -3,9 +3,9 @@ process LOFREQ_SOMATIC {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4' :
-        'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
+        'quay.io/biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
     input:
     tuple val(meta), path(tumor), path(tumor_index), path(normal), path(normal_index), path(target_bed)
     tuple val(meta2), path(fasta)
