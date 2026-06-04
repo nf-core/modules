@@ -33,7 +33,7 @@ process IPHOP_DOWNLOAD {
         --db_dir iphop_db \\
         --no_prompt \\
         --full_verify \\
-        $args
+        ${args}
     """
 
     stub:
