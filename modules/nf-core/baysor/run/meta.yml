@@ -64,18 +64,18 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - ${prefix}/segmentation.csv:
+      - ${prefix}_segmentation.csv:
           type: file
-          description: CSV file with segmentation results
-          pattern: "segmentation.csv"
+          description: CSV file with segmentation mask
+          pattern: "*_segmentation.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752
-      - ${prefix}/segmentation_polygons_2d.json:
+      - ${prefix}_segmentation_polygons_2d.json:
           type: file
-          description: JSON file with 2D segmentation polygons
-          pattern: "segmentation_polygons_2d.json"
+          description: JSON file with segmentation polygons
+          pattern: "*_segmentation_polygons_2d.json"
           ontologies:
-            - edam: http://edamontology.org/format_3913
+            - edam: http://edamontology.org/format_3752
             - edam: http://edamontology.org/format_3464
   versions_baysor:
     - - ${task.process}:

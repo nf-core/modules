@@ -10,7 +10,7 @@ process BAYSOR_PREVIEW {
     tuple val(meta), path(transcripts), path(config)
 
     output:
-    tuple val(meta), path("${prefix}/preview.html"), emit: html
+    tuple val(meta), path("${prefix}_preview.html"), emit: html
     tuple val("${task.process}"), val('baysor'), eval("baysor --version"), topic: versions, emit: versions_baysor
 
     when:
@@ -23,13 +23,11 @@ process BAYSOR_PREVIEW {
     """
     export JULIA_NUM_THREADS=${task.cpus}
 
-    mkdir -p ${prefix}
-
     baysor \\
         preview \\
         ${transcripts} \\
         --config ${config} \\
-        --output ${prefix} \\
+        --output ${prefix}_preview.html \\
         ${args}
     """
 
@@ -37,7 +35,6 @@ process BAYSOR_PREVIEW {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p ${prefix}
-    touch "${prefix}/preview.html"
+    touch "${prefix}_preview.html"
     """
 }

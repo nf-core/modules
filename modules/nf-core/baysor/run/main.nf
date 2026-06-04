@@ -13,7 +13,7 @@ process BAYSOR_RUN {
     val(polygon_format)
 
     output:
-    tuple val(meta), path("${prefix}/segmentation.csv"), path("${prefix}/segmentation_polygons_2d.json"), emit: segmentation
+    tuple val(meta), path("${prefix}_segmentation.csv"), path("${prefix}_segmentation_polygons_2d.json"), emit: segmentation
     tuple val("${task.process}"), val('baysor'), eval("baysor --version"), topic: versions, emit: versions_baysor
 
     when:
@@ -38,15 +38,13 @@ process BAYSOR_RUN {
     """
     export JULIA_NUM_THREADS=${task.cpus}
 
-    mkdir -p ${prefix}
-
     baysor \\
         run \\
         ${transcripts} \\
         ${prior_seg} \\
         ${scaling_factor} \\
         ${confidence} \\
-        --output ${prefix} \\
+        --output ${prefix}_segmentation.csv \\
         ${config_arg} \\
         ${polygon_fmt} \\
         ${args}
@@ -56,8 +54,7 @@ process BAYSOR_RUN {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p ${prefix}
-    touch "${prefix}/segmentation.csv"
-    touch "${prefix}/segmentation_polygons_2d.json"
+    touch "${prefix}_segmentation.csv"
+    touch "${prefix}_segmentation_polygons_2d.json"
     """
 }

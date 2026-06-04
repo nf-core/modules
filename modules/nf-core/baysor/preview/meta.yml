@@ -45,12 +45,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - ${prefix}/preview.html:
+      - ${prefix}_preview.html:
           type: file
-          description: HTML file with preview results
-          pattern: "preview.html"
+          description: HTML file with the preview of the Baysor segmentation
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_2330
   versions_baysor:
     - - ${task.process}:
           type: string

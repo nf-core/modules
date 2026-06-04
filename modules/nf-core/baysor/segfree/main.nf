@@ -10,7 +10,7 @@ process BAYSOR_SEGFREE {
     tuple val(meta), path(transcripts), path(config)
 
     output:
-    tuple val(meta), path("${prefix}/ncvs.loom"), emit: ncvs
+    tuple val(meta), path("${prefix}_ncvs.loom"), emit: ncvs
     tuple val("${task.process}"), val('baysor'), eval("baysor --version"), topic: versions, emit: versions_baysor
 
     when:
@@ -23,13 +23,11 @@ process BAYSOR_SEGFREE {
     """
     export JULIA_NUM_THREADS=${task.cpus}
 
-    mkdir -p ${prefix}
-
     baysor \\
         segfree \\
         ${transcripts} \\
         --config ${config} \\
-        --output ${prefix} \\
+        --output ${prefix}_ncvs.loom \\
         ${args}
     """
 
@@ -37,7 +35,6 @@ process BAYSOR_SEGFREE {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p ${prefix}
-    touch "${prefix}/ncvs.loom"
+    touch "${prefix}_ncvs.loom"
     """
 }

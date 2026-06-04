@@ -17,8 +17,8 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                                 [id: "test_run_baysor"],
-                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/transcripts.parquet", checkIfExists: true),
-                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/config/xenium.toml", checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/transcripts.parquet', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/xenium.toml', checkIfExists: true)
                             ])
                 """
             }
@@ -41,8 +41,8 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                                 [id: "test_run_baysor"],
-                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/transcripts.parquet", checkIfExists: true),
-                                file("https://raw.githubusercontent.com/khersameesh24/test-datasets/baysor/config/xenium.toml", checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/transcripts.parquet', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/xenium.toml', checkIfExists: true)
                             ])
                 """
             }

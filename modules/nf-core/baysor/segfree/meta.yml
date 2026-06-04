@@ -45,12 +45,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - ${prefix}/ncvs.loom:
+      - ${prefix}_ncvs.loom:
           type: file
-          description: loom file with neighborhood results
-          pattern: "ncvs.loom"
+          description: Loom file containing neighborhood composition vectors
+            (NVCs)
           ontologies:
-            - edam: http://edamontology.org/format_3913
+            - edam: http://edamontology.org/format_3602
   versions_baysor:
     - - ${task.process}:
           type: string
