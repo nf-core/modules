@@ -13,8 +13,6 @@ process GCTA_ADDGRMS {
     tuple val(meta), path("*.grm.*"), emit: combined_grm
     tuple val("${task.process}"), val("gcta"), eval("gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'"), emit: versions_gcta, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

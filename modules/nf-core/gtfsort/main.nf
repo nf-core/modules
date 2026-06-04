@@ -14,8 +14,6 @@ process GTFSORT {
     tuple val(meta), path("*.sorted.${gtf.extension}"), emit: gtf
     tuple val("${task.process}"), val('gtfsort'), eval('gtfsort --version |& sed "s/gtfsort //"'), emit: versions_gtfsort, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

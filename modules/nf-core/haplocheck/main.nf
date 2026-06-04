@@ -15,8 +15,6 @@ process HAPLOCHECK {
     tuple val(meta), path("*.html"), emit: html
     tuple val("${task.process}"), val('haplocheck'), eval("haplocheck --version 2>&1 | sed -n 's/^haplocheck //p'"), emit: versions_haplocheck, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

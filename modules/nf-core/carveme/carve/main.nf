@@ -19,8 +19,6 @@ process CARVEME_CARVE {
     tuple val(meta), path("${prefix}_reaction_scores.tsv"), optional: true, emit: reaction_scores
     tuple val("${task.process}"), val('carveme'), eval("pip show carveme | sed -n 's/^Version: //p'"), topic: versions, emit: versions_carveme
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -17,8 +17,6 @@ process KMCP_INDEX {
     tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('kmcp'), eval("kmcp version 2>&1 | sed 's/^.*kmcp v//'"), emit: versions_kmcp, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

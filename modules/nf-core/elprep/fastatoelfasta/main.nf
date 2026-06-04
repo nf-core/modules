@@ -15,8 +15,6 @@ process ELPREP_FASTATOELFASTA {
     tuple val(meta), path("logs/elprep/elprep*"), emit: log
     tuple val("${task.process}"), val('elprep'), eval('elprep 2>&1 | sed -n \'2s/^.*version //;s/ compiled.*$//p\''), emit: versions_elprep, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

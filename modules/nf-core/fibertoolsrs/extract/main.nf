@@ -15,8 +15,6 @@ process FIBERTOOLSRS_EXTRACT {
     tuple val(meta), path("*.bed.gz"), emit: bed
     tuple val("${task.process}"), val('fibertools-rs'), eval("ft --version | sed 's/fibertools-rs v//;s/\\t.*//'"), topic: versions, emit: versions_fibertoolsrs
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -16,8 +16,6 @@ process AGAT_SPEXTRACTSEQUENCES {
     tuple val(meta), path("*.fasta"), emit: fasta
     tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args   ?: ''

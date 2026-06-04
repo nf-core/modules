@@ -14,8 +14,6 @@ process SVTOOLS_VCFTOBEDPE {
     tuple val(meta), path("*.bedpe"), emit: bedpe
     tuple val("${task.process}"), val('svtools'), eval("svtools --version |& sed 's/svtools //'"), emit: versions_svtools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ""

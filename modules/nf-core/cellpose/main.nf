@@ -20,8 +20,6 @@ process CELLPOSE {
     tuple val("${task.process}"), val('python'), eval("cellpose --version | sed -n 's/python version:[[:space:]]*//p' | tr -d '[:space:]'"), topic: versions, emit: versions_python
     tuple val("${task.process}"), val('torch'), eval("cellpose --version | sed -n 's/torch version:[[:space:]]*//p' | tr -d '[:space:]'"), topic: versions, emit: versions_torch
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

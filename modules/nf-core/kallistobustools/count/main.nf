@@ -21,8 +21,6 @@ process KALLISTOBUSTOOLS_COUNT {
     path "versions.yml"                 , emit: versions
     path "*.count/*/*.mtx"              , emit: matrix //Ensure that kallisto finished and produced outputs
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''

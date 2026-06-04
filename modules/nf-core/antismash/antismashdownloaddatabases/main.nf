@@ -8,8 +8,6 @@ process ANTISMASH_ANTISMASHDOWNLOADDATABASES {
     path "antismash_db", emit: database
     tuple val("${task.process}"), val('antismash'), eval("antismash --version | sed 's/antiSMASH //;s/-.*//g'"), emit: versions_antismash, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

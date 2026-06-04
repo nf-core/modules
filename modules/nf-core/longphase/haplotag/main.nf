@@ -18,8 +18,6 @@ process LONGPHASE_HAPLOTAG {
     tuple val(meta), path("*.log")       , emit: log , optional: true
     tuple val("${task.process}"), val("longphase"), eval("longphase --version | head -n 1 | sed 's/Version: //'"), emit: versions_longphase, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

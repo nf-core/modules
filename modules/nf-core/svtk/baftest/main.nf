@@ -15,8 +15,6 @@ process SVTK_BAFTEST {
     tuple val(meta), path("*.metrics")  , emit: metrics
     tuple val("${task.process}"), val('svtk'), val('0.0.20190615'), topic: versions, emit: versions_svtk
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

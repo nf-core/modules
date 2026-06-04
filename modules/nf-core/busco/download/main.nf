@@ -14,8 +14,6 @@ process BUSCO_DOWNLOAD {
     path "busco_downloads", emit: download_dir
     tuple val("${task.process}"), val('busco'), eval("busco --version 2> /dev/null | sed 's/BUSCO //g'"), emit: versions_busco, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process BOWTIE_BUILD {
     tuple val(meta), path('bowtie'), emit: index
     tuple val("${task.process}"), val('bowtie'), eval("bowtie --version 2>&1 | sed -n 's/.*bowtie-align-s version //p'"), emit: versions_bowtie, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

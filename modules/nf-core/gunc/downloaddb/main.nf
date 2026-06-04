@@ -14,8 +14,6 @@ process GUNC_DOWNLOADDB {
     path "*.dmnd", emit: db
     tuple val("${task.process}"), val('gunc'), eval('gunc --version'), emit: versions_gunc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

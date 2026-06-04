@@ -15,8 +15,6 @@ process MMSEQS_EASYSEARCH {
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

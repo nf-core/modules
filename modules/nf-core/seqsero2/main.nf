@@ -16,8 +16,6 @@ process SEQSERO2 {
     tuple val(meta), path("results/*_result.txt"), emit: txt
     tuple val("${task.process}"), val('seqsero2'), eval('SeqSero2_package.py --version 2>&1 | sed \'s/^.*SeqSero2_package.py //\''), emit: versions_seqsero2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

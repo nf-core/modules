@@ -17,8 +17,6 @@ process FINALETOOLKIT_DELFI {
     tuple val(meta), path("*.bed"), emit: bed
     tuple val("${task.process}"), val('finaletoolkit'), eval("finaletoolkit --version | sed 's/FinaleToolkit //g'"), topic: versions, emit: versions_finaletoolkit
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

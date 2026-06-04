@@ -13,8 +13,6 @@ process SPACERANGER_COUNT {
     tuple val(meta), path("outs/**"), emit: outs
     tuple val("${task.process}"), val('spaceranger'), eval('spaceranger -V | sed "s/spaceranger spaceranger-//"'), emit: versions_spaceranger, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

@@ -16,8 +16,6 @@ process HISAT3N_ALIGN {
     tuple val(meta), path("*.log"), emit: summary
     tuple val("${task.process}"), val('hisat-3n'), eval("hisat-3n --version 2>&1 | head -1 | sed 's/.* //'"), topic: versions, emit: versions_hisat3n
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

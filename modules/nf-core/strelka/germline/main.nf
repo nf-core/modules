@@ -20,8 +20,6 @@ process STRELKA_GERMLINE {
     tuple val(meta), path("*genome.vcf.gz.tbi"),   emit: genome_vcf_tbi
     path "versions.yml",                           emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

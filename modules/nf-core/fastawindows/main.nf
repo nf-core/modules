@@ -18,8 +18,6 @@ process FASTAWINDOWS {
     tuple val(meta), path("fw_out/*_tetranuc_windows.tsv"), emit: tetranuc
     tuple val("${task.process}"), val('fasta_windows'), eval('fasta_windows --version | cut -d" " -f3'), emit: versions_fasta_windows, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

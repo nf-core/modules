@@ -17,8 +17,6 @@ process ESTSFS {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('est-sfs'), val('2.04'), emit: versions_estsfs, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

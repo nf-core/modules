@@ -14,8 +14,6 @@ process CHROMAP_INDEX {
     tuple val(meta), path ("*.index"), emit: index
     tuple val("${task.process}"), val('chromap'), eval("chromap --version 2>&1"), topic: versions, emit: versions_chromap
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

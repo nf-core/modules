@@ -15,8 +15,6 @@ process HHSUITE_HHSEARCH {
     tuple val(meta), path("*.hhr"), emit: hhr
     tuple val("${task.process}"), val("hhsuite"), eval("hhblits -h 2>&1 | sed '1!d;s/^HHblits //;s/://'"), topic: versions, emit: versions_hhsuite
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

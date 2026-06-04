@@ -29,8 +29,6 @@ process NCBIGENOMEDOWNLOAD {
     tuple val(meta), path("*_assembly_stats.txt")     , emit: stats   , optional: true
     tuple val("${task.process}"), val('ncbigenomedownload'), eval('ncbi-genome-download --version'), topic: versions, emit: versions_ncbigenomedownload
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args           = task.ext.args ?: ''

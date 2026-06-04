@@ -16,8 +16,6 @@ process BIOBAMBAM_BAMMERGE {
     tuple val(meta), path("*.md5"), optional: true, emit: checksum
     tuple val("${task.process}"), val('biobambam'), eval("bammerge --version |& sed '1!d; s/.*version //; s/.\$//'"), topic: versions, emit: versions_biobambam
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

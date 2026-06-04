@@ -17,8 +17,6 @@ process VRHYME_VRHYME {
     tuple val(meta), path("**/vRhyme_best_bins.*.summary.tsv")      , emit: summary
     path "versions.yml"                                             , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

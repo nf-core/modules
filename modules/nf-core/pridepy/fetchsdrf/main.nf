@@ -14,8 +14,6 @@ process PRIDEPY_FETCHSDRF {
     tuple val(meta), path("${prefix}.sdrf.tsv"), emit: sdrf
     tuple val("${task.process}"), val('pridepy'), eval('python -c "from importlib.metadata import version; print(version(\'pridepy\'))"'), topic: versions, emit: versions_pridepy
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -19,8 +19,6 @@ process KAT_HIST {
     tuple val(meta), path("*-hash.jf*")               , emit: jellyfish_hash, optional: true
     path "versions.yml"                               , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

@@ -19,8 +19,6 @@ process NONPAREIL_NONPAREIL {
     tuple val(meta), path("*.npo"), emit: npo
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

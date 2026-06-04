@@ -17,8 +17,6 @@ process IPHOP_PREDICT {
     tuple val(meta), path("Detailed_output_by_tool.csv")        , emit: iphop_detailed_output
     path "versions.yml"                                         , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

@@ -15,8 +15,6 @@ process FORCE_CUBE {
     path 'mask/*/*.tif', emit: masks
     tuple val("${task.process}"), val('force'), eval('force-cube -v'), emit: versions_force, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

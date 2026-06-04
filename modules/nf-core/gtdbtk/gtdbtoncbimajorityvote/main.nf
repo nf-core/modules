@@ -17,8 +17,6 @@ process GTDBTK_GTDBTONCBIMAJORITYVOTE {
     tuple val("${task.process}"), val('gtdbtk'), eval("gtdbtk --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -1") , topic: versions, emit: versions_gtdbtk
     tuple val("${task.process}"), val('gtdb_to_ncbi_majority_vote.py'), eval("gtdb_to_ncbi_majority_vote.py -v 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -n 1"), topic: versions, emit: versions_gtdbtoncbimajorityvote
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     if(!bac120_metadata && !ar53_metadata) {

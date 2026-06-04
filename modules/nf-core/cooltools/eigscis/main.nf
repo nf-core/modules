@@ -16,8 +16,6 @@ process COOLTOOLS_EIGSCIS {
     tuple val(meta), path("*.bw"), emit: bigwig, optional: true
     tuple val("${task.process}"), val('cooltools'), eval("cooltools --version | sed -n 's/cooltools, version //p'"), topic: versions, emit: versions_cooltools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

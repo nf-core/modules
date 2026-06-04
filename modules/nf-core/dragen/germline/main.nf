@@ -191,8 +191,6 @@ process DRAGEN {
     path "**"                                                                , emit: all
     tuple val("${task.process}"), val('dragen'), eval("dragen --version 2>&1 | sed 's/^dragen Version //;q'"), emit: versions_dragen, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

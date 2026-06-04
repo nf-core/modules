@@ -15,8 +15,6 @@ process MINIASM {
     tuple val(meta), path("*.fasta.gz"), emit: assembly
     tuple val("${task.process}"), val('miniasm'), eval('miniasm -V 2>&1'), emit: versions_miniasm, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

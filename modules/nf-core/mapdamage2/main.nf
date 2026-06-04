@@ -32,8 +32,6 @@ process MAPDAMAGE2 {
     tuple val(meta), path("*/"), optional: true                                           ,emit: folder
     path "versions.yml",emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

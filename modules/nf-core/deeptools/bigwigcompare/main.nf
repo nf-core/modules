@@ -15,8 +15,6 @@ process DEEPTOOLS_BIGWIGCOMPARE {
     tuple val(meta), path("*.{bigWig,bedgraph}"), emit: output
     tuple val("${task.process}"), val('deeptools'), eval('bigwigCompare --version | sed "s/bigwigCompare //g"') , emit: versions_deeptools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args                                  ?: ""

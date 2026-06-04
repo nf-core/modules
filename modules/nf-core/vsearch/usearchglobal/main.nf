@@ -26,8 +26,6 @@ process VSEARCH_USEARCHGLOBAL {
     tuple val(meta), path('*.uc')     , optional: true, emit: uc
     tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

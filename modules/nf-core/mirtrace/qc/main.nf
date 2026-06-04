@@ -19,8 +19,6 @@ process MIRTRACE_QC {
     tuple val(meta), path ("qc_passed_reads.rnatype_unknown.collapsed/*.{fa,fasta}") , emit: rnatype_unknown_fa
     path "versions.yml"                                                              , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def mirtrace_mode = mirtrace_config ? "--config ${mirtrace_config}": "${reads}"

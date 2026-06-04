@@ -15,8 +15,6 @@ process CONIFER {
     tuple val(meta), path("*.score"), emit: score
     tuple val("${task.process}"), val('conifer'), eval("conifer --version 2>&1 | sed 's/^.*Conifer //'"), topic: versions, emit: versions_conifer
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

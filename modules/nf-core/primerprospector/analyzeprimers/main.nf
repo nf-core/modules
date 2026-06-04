@@ -15,8 +15,6 @@ process PRIMERPROSPECTOR_ANALYZEPRIMERS {
     tuple val(meta), path("*.ps")      , emit: plots
     tuple val("${task.process}"), val('primerprospector'), eval("analyze_primers.py --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | tail -n 1"), topic: versions, emit: versions_primerprospector
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

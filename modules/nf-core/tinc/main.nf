@@ -19,8 +19,6 @@ process TINC {
     tuple val(meta), path("*_qc.csv"),   emit: tinc_csv
     path "versions.yml",                 emit: versions_tinc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template "main_script.R"

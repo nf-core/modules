@@ -20,8 +20,6 @@ process FAST2Q {
     tuple val(meta), path("${prefix}_reads_plot_percentage.png"), emit: reads_plot_percentage
     tuple val("${task.process}"), val('fast2q'), eval('2fast2q -v | sed -n "s/Version: //p"'), emit: versions_fast2q, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args            = task.ext.args ?: ''

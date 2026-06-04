@@ -22,8 +22,6 @@ process PROPR_PROPD {
     path "*.R_sessionInfo.log"                            , emit: session_info
     path "versions.yml"                                   , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'propd.R'

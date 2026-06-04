@@ -13,8 +13,6 @@ process HOSTILE_FETCH {
     tuple val(index_name), path('reference/'), emit: reference
     tuple val("${task.process}"), val('hostile'), eval("hostile --version"), emit: versions_hostile, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

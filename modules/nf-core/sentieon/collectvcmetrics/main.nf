@@ -20,8 +20,6 @@ process SENTIEON_COLLECTVCMETRICS {
     tuple val(meta), path("*.variant_calling_summary_metrics"), emit: summary
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

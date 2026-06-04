@@ -24,8 +24,6 @@ process SENTIEON_QUALCAL {
     tuple val(meta), path("*.pdf"),        emit: pdf, optional: true
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

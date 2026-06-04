@@ -14,8 +14,6 @@ process CNVKIT_GENEMETRICS {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('cnvkit'), eval('cnvkit.py version | sed -e "s/cnvkit v//g"'), emit: versions_cnvkit, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

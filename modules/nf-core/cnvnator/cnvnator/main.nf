@@ -19,8 +19,6 @@ process CNVNATOR_CNVNATOR {
     tuple val(output_meta), path("${prefix}.tab") , emit: tab, optional: true
     tuple val("${task.process}"), val('cnvnator'), eval("cnvnator 2>&1 | sed -n '3s/CNVnator v//p'"), topic: versions, emit: versions_cnvnator
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args      = task.ext.args   ?: ''

@@ -14,8 +14,6 @@ process HUGGINGFACE_DOWNLOAD {
     tuple val(meta), path(hf_file), emit: output
     tuple val("${task.process}"), val("huggingface_hub"), eval("hf --version 2>&1 | tail -n1 | awk '{print \$NF}'"), topic: versions, emit: versions_huggingface_hub
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

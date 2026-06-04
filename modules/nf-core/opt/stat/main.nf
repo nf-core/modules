@@ -13,8 +13,6 @@ process OPT_STAT {
     tuple val(meta), path("${meta.id}/collapsed_summary.tsv"), emit: summary
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

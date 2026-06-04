@@ -15,8 +15,6 @@ process RSEQC_INFEREXPERIMENT {
     tuple val(meta), path("*.infer_experiment.txt"), emit: txt
     tuple val("${task.process}"), val('rseqc'), eval('infer_experiment.py --version | sed "s/infer_experiment.py //"'), emit: versions_rseqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

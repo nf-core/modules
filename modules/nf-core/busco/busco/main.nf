@@ -38,8 +38,6 @@ process BUSCO_BUSCO {
     tuple val(meta), path("*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.fna"), emit: single_copy_fna, optional: true
     tuple val("${task.process}"), val('busco'), eval("busco --version 2> /dev/null | sed 's/BUSCO //g'"), emit: versions_busco, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     if (mode !in ['genome', 'proteins', 'transcriptome']) {

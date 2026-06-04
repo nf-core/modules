@@ -14,8 +14,6 @@ process OPENMS_IDFILTER {
     tuple val(meta), path("*.{idXML,consensusXML}"), emit: filtered
     tuple val("${task.process}"), val('openms'), eval("FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'"), emit: versions_openms, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

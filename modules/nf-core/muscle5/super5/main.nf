@@ -15,8 +15,6 @@ process MUSCLE5_SUPER5 {
     tuple val("${task.process}"), val('muscle'), eval('muscle -version | head -n 1 | cut -d " " -f 2 | sed "s/.linux64//"'), emit: versions_muscle, topic: versions
     tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

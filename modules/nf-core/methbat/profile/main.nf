@@ -16,8 +16,6 @@ process METHBAT_PROFILE {
     tuple val(meta), path("*.bed"), emit: asm_bed, optional: true
     tuple val("${task.process}"), val("methbat"), eval("methbat --version 2>&1 | sed 's/.* //'"), emit: versions_methbat, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

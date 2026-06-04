@@ -25,8 +25,6 @@ process RIBOWALTZ {
     tuple val(meta), path("ribowaltz_qc/*.tsv")               , emit: ribowaltz_qc_data    , optional: true
     path "versions.yml"                                       , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'ribowaltz.r'

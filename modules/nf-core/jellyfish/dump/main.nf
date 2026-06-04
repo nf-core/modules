@@ -14,8 +14,6 @@ process JELLYFISH_DUMP {
     tuple val(meta), path("${prefix}.${extension}"), emit: output
     path "versions.yml"                            , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

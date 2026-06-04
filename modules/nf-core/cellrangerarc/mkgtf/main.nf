@@ -11,8 +11,6 @@ process CELLRANGERARC_MKGTF {
     tuple val(meta), path("${prefix}.gtf"), emit: gtf
     tuple val("${task.process}"), val('cellrangerarc'), eval("cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//'"), emit: versions_cellrangerarc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

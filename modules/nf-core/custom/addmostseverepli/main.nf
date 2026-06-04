@@ -15,8 +15,6 @@ process CUSTOM_ADDMOSTSEVEREPLI {
     tuple val("${task.process}"), val('addmostseverepli'), val("1.2.0"), topic: versions, emit: versions_addmostseverepli
     tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_bgzip
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

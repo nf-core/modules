@@ -14,8 +14,6 @@ process GENMAP_INDEX {
     tuple val(meta), path("${prefix}") , emit: index
     tuple val("${task.process}"), val('genmap'), eval("genmap --version |& sed -n 's/GenMap version: //p'"), emit: versions_genmap, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

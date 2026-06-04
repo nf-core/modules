@@ -22,8 +22,6 @@ process ADAPTERREMOVAL {
     tuple val("${task.process}"), val('AdapterRemoval'), eval('AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g"'), emit: versions_adapterremoval, topic: versions
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

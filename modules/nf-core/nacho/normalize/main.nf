@@ -16,8 +16,6 @@ process NACHO_NORMALIZE {
     tuple val(meta), path("normalized_counts_wo_HKnorm.tsv"), emit: normalized_counts_wo_HK
     path "versions.yml"                                     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

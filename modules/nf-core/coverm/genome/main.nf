@@ -20,8 +20,6 @@ process COVERM_GENOME {
     tuple val(meta), path('*.bam')      , emit: bam, optional: true
     tuple val("${task.process}"), val('coverm'), eval("coverm --version | sed 's/coverm //'"), emit: versions_coverm, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def _ref_mode     = ref_mode ?: 'auto'

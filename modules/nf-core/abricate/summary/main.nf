@@ -14,8 +14,6 @@ process ABRICATE_SUMMARY {
     tuple val(meta), path("*.txt"), emit: report
     tuple val("${task.process}"), val('abricate'), eval("abricate --version 2>&1 | sed 's/^.*abricate //'"), emit: versions_abricate_summary, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

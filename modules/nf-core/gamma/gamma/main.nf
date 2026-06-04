@@ -21,8 +21,6 @@ process GAMMA_GAMMA {
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('gamma'), val("2.1"), emit: versions_gamma, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

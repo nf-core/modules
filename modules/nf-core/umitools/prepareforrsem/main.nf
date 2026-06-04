@@ -15,8 +15,6 @@ process UMITOOLS_PREPAREFORRSEM {
     tuple val(meta), path('*.log'), emit: log
     tuple val("${task.process}"), val('umitools'), eval("umi_tools --version | sed 's/UMI-tools version: //'"), emit: versions_umitools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

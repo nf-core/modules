@@ -15,8 +15,6 @@ process MIRDEEP2_MAPPER {
     tuple val(meta), path('*.fa'), path('*.arf'), emit: outputs
     path "versions.yml"                         , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

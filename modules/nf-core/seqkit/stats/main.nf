@@ -14,8 +14,6 @@ process SEQKIT_STATS {
     tuple val(meta), path("*.tsv"), emit: stats
     tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: '--all'

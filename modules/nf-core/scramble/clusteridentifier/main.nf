@@ -15,8 +15,6 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
     tuple val(meta), path("*.clusters.txt") , emit: clusters
     path "versions.yml"                     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

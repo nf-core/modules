@@ -17,8 +17,6 @@ process SKA_DISTANCE {
     tuple val(meta), path("*.dot")         , emit: dot          , optional: true
     path "versions.yml"                    , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

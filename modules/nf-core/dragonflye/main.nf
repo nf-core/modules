@@ -18,8 +18,6 @@ process DRAGONFLYE {
     tuple val(meta), path("flye-info.txt")                      , emit: txt, optional:true
     tuple val("${task.process}"), val('dragonflye'), eval("dragonflye --version 2>&1 | sed 's/^.*dragonflye //'"), emit: versions_dragonflye, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args   ?: ''

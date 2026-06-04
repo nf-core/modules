@@ -16,8 +16,6 @@ process CONCOCT_CUTUPFASTA {
     tuple val(meta), path("*.bed"), optional: true, emit: bed
     tuple val("${task.process}"), val('concoct'), eval('concoct --version | cut -d " " -f2'), emit: versions_concoct, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

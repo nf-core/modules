@@ -27,8 +27,6 @@ process GLIMPSE2_PHASE {
     tuple val(meta), path("*.txt.gz"), emit: stats_coverage, optional: true
     tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_phase --help | grep -oE 'v[0-9.]+' | cut -c2-"), topic: versions, emit: versions_glimpse2
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def region = input_region ? "${output_region.replace(":", "_")}" : "${reference}"

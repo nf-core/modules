@@ -17,8 +17,6 @@ process ADMIXTURE {
     tuple val(meta), path("*.P"), emit: allele_frequencies
     tuple val("${task.process}"), val('admixture'), eval('admixture --version | tail -n 1'), emit: versions_admixture, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

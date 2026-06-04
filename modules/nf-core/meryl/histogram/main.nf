@@ -15,8 +15,6 @@ process MERYL_HISTOGRAM {
     tuple val(meta), path("*.hist"), emit: hist
     tuple val("${task.process}"), val('meryl'), eval("meryl --version |& sed 's/meryl //'"), emit: versions_meryl, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

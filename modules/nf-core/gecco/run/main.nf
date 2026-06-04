@@ -19,8 +19,6 @@ process GECCO_RUN {
     tuple val(meta), path("*.json")         , optional: true, emit: json
     tuple val("${task.process}"), val('gecco'), eval("gecco -V |& sed 's/gecco //'"), emit: versions_gecco, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

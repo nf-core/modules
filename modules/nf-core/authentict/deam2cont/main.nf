@@ -17,8 +17,6 @@ process AUTHENTICT_DEAM2CONT {
     tuple val("${task.process}"), val('authentict'), eval("echo \$(AuthentiCT --version 2>&1)"), emit: versions_authentict, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -n1 | sed 's/^.*samtools //'"), emit: versions_samtools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

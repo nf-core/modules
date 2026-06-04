@@ -17,8 +17,6 @@ process BWAMETH_ALIGN {
     tuple val("${task.process}"), val('bwameth'), eval("bwameth.py --version | cut -f2 -d ' '"), emit: versions_bwameth, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args       = task.ext.args ?: ''

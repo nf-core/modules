@@ -15,8 +15,6 @@ process CELLRANGERATAC_MKREF {
     path "${reference_name}", emit: reference
     tuple val("${task.process}"), val('cellrangeratac'), eval("cellranger-atac --version 2>&1 | sed 's/.*cellranger-atac-//'"), topic: versions, emit: versions_cellrangeratac
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

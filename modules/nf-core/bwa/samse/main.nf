@@ -16,8 +16,6 @@ process BWA_SAMSE {
     tuple val("${task.process}"), val('bwa'), eval('bwa 2>&1 | sed -n "s/^Version: //p"'), topic: versions, emit: versions_bwa
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args       = task.ext.args   ?: ''

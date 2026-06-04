@@ -14,8 +14,6 @@ process ISMAPPER {
     tuple val(meta), path("results/*"), emit: results
     tuple val("${task.process}"), val('ismapper'), eval("ismap --version 2>&1 | sed -n 's/^.*ismap //p'"), emit: versions_ismapper, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

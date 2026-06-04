@@ -14,8 +14,6 @@ process SNPDISTS {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('snpdists'), eval('snp-dists -v 2>&1 | sed "s/snp-dists //;"'), emit: versions_snpdists, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

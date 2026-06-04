@@ -16,8 +16,6 @@ process METAMDBG_ASM {
     tuple val(meta), path("*.metaMDBG.log")    , emit: log
     tuple val("${task.process}"), val('metamdbg'), eval('metaMDBG | sed -n "s/.*Version: //p"'), emit: versions_metamdbg, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

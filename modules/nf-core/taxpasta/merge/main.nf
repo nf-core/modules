@@ -18,8 +18,6 @@ process TAXPASTA_MERGE {
     tuple val(meta), path("*.{tsv,csv,arrow,parquet,biom}"), emit: merged_profiles
     path "versions.yml", emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

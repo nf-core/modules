@@ -17,8 +17,6 @@ process DEEPSOMATIC {
     tuple val(meta), path("${prefix}.g.vcf.gz.tbi"),  emit: gvcf_tbi
     tuple val("${task.process}"), val("deepsomatic"), val("1.7.0"), emit: versions_deepsomatic, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

@@ -26,8 +26,6 @@ process DASTOOL_DASTOOL {
     tuple val(meta), path("*.seqlength")                , optional: true, emit: seqlength
     tuple val("${task.process}"), val('dastool'), eval('DAS_Tool --version 2>&1 | grep "DAS Tool" | sed "s/DAS Tool //"'), topic: versions, emit: versions_dastool
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

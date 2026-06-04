@@ -14,8 +14,6 @@ process KALLISTO_INDEX {
     tuple val(meta), path("kallisto")  , emit: index
     tuple val("${task.process}"), val('kallisto'), eval('kallisto 2>&1 | head -1 | sed "s/^kallisto //; s/Usage.*//"'), emit: versions_kallisto, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -16,8 +16,6 @@ process MINIPROT_ALIGN {
     tuple val(meta), path("*.gff"), optional: true, emit: gff
     tuple val("${task.process}"), val('miniprot'), eval("miniprot --version"), topic: versions, emit: versions_miniprot
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

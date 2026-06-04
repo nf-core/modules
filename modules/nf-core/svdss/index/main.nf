@@ -15,8 +15,6 @@ process SVDSS_INDEX {
     tuple val(meta), path("${prefix}.${output_format}"), emit: index
     tuple val("${task.process}"), val('svdss'), eval("SVDSS --version 2>&1 | sed 's/SVDSS, v//'"), emit: versions_svdss, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process MINIMAC4_IMPUTE {
     tuple val(meta), path("*.{bcf,sav,vcf.gz,vcf,ubcf,usav}"), emit: vcf
     tuple val("${task.process}"), val('minimac4'), eval("minimac4 --version |& sed '1!d ; s/minimac v//'"), emit: versions_minimac4, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args       = task.ext.args   ?: ''

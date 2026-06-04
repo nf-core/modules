@@ -15,8 +15,6 @@ process COBIONTID_KMERCOUNTER {
     tuple val(meta), path( "*.npy" ) , emit: npy
     tuple val("${task.process}"), val('kmer-counter'), eval('kmer-counter --version | sed -e "s/K-mer counter //g"'), emit: versions_kmercounter, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix          = task.ext.prefix   ?: "${meta.id}"

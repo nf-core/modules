@@ -13,8 +13,6 @@ process KRAKENUNIQ_DOWNLOAD {
     path "${pattern}/", emit: output
     tuple val("${task.process}"), val('krakenuniq'), eval("krakenuniq --version | sed '1!d;s/KrakenUniq version //'"), emit: versions_krakenuniq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

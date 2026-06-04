@@ -17,8 +17,6 @@ process SHASTA {
     tuple val(meta), path("ShastaRun/")                 , emit: results
     tuple val("${task.process}"), val('shasta'), eval("shasta --version | sed -n '1s/.* //p'"), emit: versions_shasta, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

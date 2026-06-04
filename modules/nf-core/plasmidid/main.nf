@@ -23,8 +23,6 @@ process PLASMIDID {
     tuple val("${task.process}"), val('plasmidid'), eval("plasmidID --version 2>&1 | sed 's/^plasmidID //'"), topic: versions, emit: versions_plasmidid
     tuple val("${task.process}"), val('parallel'), eval("parallel --version | sed '1!d;s/GNU parallel //'"), topic: versions, emit: versions_parallel
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

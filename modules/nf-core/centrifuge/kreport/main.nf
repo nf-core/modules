@@ -15,8 +15,6 @@ process CENTRIFUGE_KREPORT {
     tuple val(meta), path('*.txt'), emit: kreport
     tuple val("${task.process}"), val("centrifuge"), eval("centrifuge --version 2>&1 | sed '1!d;s/.* version //'"), emit: versions_centrifuge, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

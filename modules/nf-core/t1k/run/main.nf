@@ -22,8 +22,6 @@ process T1K_RUN {
     tuple val(meta), path("*_aligned_bc.fa")      , optional: true, emit: barcode_aligned
     tuple val("${task.process}"), val('t1k'), eval("run-t1k 2>&1 | head -n 1 | cut -d '-' -f 1 | cut -d v -f 2"), topic: versions, emit: versions_t1k
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

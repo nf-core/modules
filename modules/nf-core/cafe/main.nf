@@ -17,8 +17,6 @@ process CAFE {
     path("$prefix/*_report.cafe") , emit: cafe_report
     path("$prefix/*results.txt") , emit: cafe_results
     tuple val("${task.process}"), val('cafe'), eval('echo 5.1.0'), emit: versions_cafe, topic: versions
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

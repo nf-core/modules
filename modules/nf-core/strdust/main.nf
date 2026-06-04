@@ -19,8 +19,6 @@ process STRDUST {
     tuple val("${task.process}"), val('strdust'), eval("STRdust --version |& sed '1!d ; s/STRdust //'"), topic: versions, emit: versions_strdust
     tuple val("${task.process}"), val('bgzip'), eval("bgzip --version |& sed '1!d ; s/bgzip (htslib) //'"), topic: versions, emit: versions_bgzip
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

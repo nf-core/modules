@@ -22,8 +22,6 @@ process VAMB_BIN {
     tuple val(meta), path("${prefix}/log.txt")                   , emit: log
     tuple val("${task.process}"), val('vamb'), eval("vamb --version | sed 's/Vamb //'"), emit: versions_vamb, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     if(bams && abundance_tsv) {

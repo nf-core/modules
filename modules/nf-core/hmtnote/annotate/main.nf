@@ -14,8 +14,6 @@ process HMTNOTE_ANNOTATE {
     tuple val(meta), path("*_annotated.vcf"), emit: vcf
     tuple val("${task.process}"), val('hmtnote'), eval("hmtnote --version 2>&1 | sed 's/.*version //'"), emit: versions_hmtnote, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

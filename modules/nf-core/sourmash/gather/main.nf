@@ -23,8 +23,6 @@ process SOURMASH_GATHER {
     tuple val(meta), path('*_prefetch.csv.gz'), optional: true, emit: prefetchcsv
     tuple val("${task.process}"), val('sourmash'), eval("sourmash --version 2>&1 | sed 's/^sourmash //'"), emit: versions_sourmash, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

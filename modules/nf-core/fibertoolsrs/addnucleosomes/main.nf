@@ -14,8 +14,6 @@ process FIBERTOOLSRS_ADDNUCLEOSOMES {
     tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('fibertools-rs'), eval("ft --version | sed 's/fibertools-rs v//;s/\\t.*//'"), topic: versions, emit: versions_fibertoolsrs
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

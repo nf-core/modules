@@ -17,8 +17,6 @@ process FASTDUP {
     tuple val(meta), path("*.csi"), emit: csi, optional: true
     tuple val("${task.process}"), val('fastdup'), eval("fastdup --version"), topic: versions, emit: versions_fastdup
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
@@ -33,13 +31,13 @@ process FASTDUP {
         --metrics ${prefix}.metrics.txt \\
         --output ${prefix}.bam \\
         --num-threads $task.cpus
-        
+
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def index_command = args.contains("--index-format CSI") ? "touch ${prefix}.csi" 
+    def index_command = args.contains("--index-format CSI") ? "touch ${prefix}.csi"
                         : args.contains("--create-index")   ? "touch ${prefix}.bai" : ""
 
     """
@@ -47,6 +45,6 @@ process FASTDUP {
     touch ${prefix}.bam
     ${index_command}
     touch ${prefix}.metrics.txt
-    
+
     """
 }

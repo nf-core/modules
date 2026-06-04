@@ -14,8 +14,6 @@ process CELLRANGERARC_MKFASTQ {
     tuple val(meta), path("${prefix}/outs/fastq_path/*.fastq.gz"), emit: fastq
     tuple val("${task.process}"), val('cellrangerarc'), eval("cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//'"), emit: versions_cellrangerarc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
 

@@ -14,8 +14,6 @@ process PIGZ_COMPRESS {
     tuple val(meta), path("$archive"), emit: archive
     tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

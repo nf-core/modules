@@ -16,8 +16,6 @@ process HICEXPLORER_HICPCA {
     tuple val(meta), path("${prefix}_pca2.$format"), emit:pca2
     tuple val("${task.process}"), val("hicexplorer"), eval("hicPCA --version 2>&1 | sed 's/hicPCA //'"), topic: versions, emit: versions_hicexplorer
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

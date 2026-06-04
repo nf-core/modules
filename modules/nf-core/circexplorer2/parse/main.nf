@@ -14,8 +14,6 @@ process CIRCEXPLORER2_PARSE {
     tuple val(meta), path("*.bed"), emit: junction
     tuple val("${task.process}"), val('circexplorer2'), eval("CIRCexplorer2 --version 2>&1; true"), topic: versions, emit: versions_circexplorer2
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

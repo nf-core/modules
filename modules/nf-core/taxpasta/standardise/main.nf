@@ -17,8 +17,6 @@ process TAXPASTA_STANDARDISE {
     tuple val(meta), path("*.{tsv,csv,arrow,parquet,biom}"), emit: standardised_profile
     path "versions.yml", emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

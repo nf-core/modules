@@ -14,8 +14,6 @@ process FASTQUTILS_INFO {
     tuple val(meta), path("*.txt"), emit: info
     tuple val("${task.process}"), val("fastqutils"), eval("fastq_info -h 2>&1 | head -n 1 | sed 's/^fastq_utils //'"), emit: versions_fastqutils, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

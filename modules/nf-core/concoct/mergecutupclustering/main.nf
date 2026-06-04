@@ -14,8 +14,6 @@ process CONCOCT_MERGECUTUPCLUSTERING {
     tuple val(meta), path("*.csv"), emit: csv
     tuple val("${task.process}"), val('concoct'), eval('concoct --version | cut -d " " -f2'), emit: versions_concoct, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

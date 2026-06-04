@@ -18,8 +18,6 @@ process POOLSNP {
     tuple val(meta), path("*BS.txt.gz"), emit: bad_sites, optional: true
     path "versions.yml"                , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''

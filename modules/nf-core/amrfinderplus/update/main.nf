@@ -11,8 +11,6 @@ process AMRFINDERPLUS_UPDATE {
     path "amrfinderdb.tar.gz", emit: db
     tuple val("${task.process}"), val('amrfinder'), eval('amrfinder --version'), emit: versions_amrfinder, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     """

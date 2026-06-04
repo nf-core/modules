@@ -14,8 +14,6 @@ process GRIDSS_ANNOTATE {
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val("${task.process}"), val('gridss'), eval("GeneratePonBedpe --version 2>&1 | sed 's/-gridss//'"), topic: versions, emit: versions_gridss
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

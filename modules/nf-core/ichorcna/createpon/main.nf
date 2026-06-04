@@ -20,8 +20,6 @@ process ICHORCNA_CREATEPON {
     tuple val(meta), path("${prefix}*.txt"), emit: txt
     path "versions.yml", emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

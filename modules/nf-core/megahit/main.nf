@@ -18,8 +18,6 @@ process MEGAHIT {
     tuple val(meta), path('*.log')                                      , emit: log
     tuple val("${task.process}"), val('megahit'), eval("megahit -v | sed 's/MEGAHIT v//'"), topic: versions, emit: versions_megahit
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

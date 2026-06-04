@@ -14,8 +14,6 @@ process RRNATRANSCRIPTS {
     tuple val(meta), path('*_rrna_intervals.gtf')    , emit: rrna_gtf
     path "versions.yml"                              , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

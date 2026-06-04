@@ -35,8 +35,6 @@ process MULTIVCFANALYZER {
     tuple val("${task.process}"), val('multivcfanalyzer'), eval('multivcfanalyzer -h | head -n 1 | cut -f 3 -d " "') , emit: versions_multivcfanalyzer, topic: versions
     tuple val("${task.process}"), val('tabix'),            eval('tabix -h 2>&1 | grep Version | cut -f 2 -d " "')    , emit: versions_tabix           , topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // def args = task.ext.args ?: '' // MultiVCFAnalyzer has strict and input ordering and all are mandatory. Deactivating $args to prevent breakage of input

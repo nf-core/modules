@@ -15,8 +15,6 @@ process JVARKIT_SAM2TSV {
     tuple val(meta), path("*.tsv"), emit: tsv
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args         = task.ext.args ?: ''

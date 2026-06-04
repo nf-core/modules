@@ -19,8 +19,6 @@ process CUSTOM_PCACLUSTERING {
     tuple val(meta), path("*.clustering_info.json"), emit: info
     path "versions.yml"                            , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'clustering.py'

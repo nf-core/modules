@@ -14,8 +14,6 @@ process EMBOSS_REVSEQ {
     tuple val(meta), path("*.${sequences.name - ~/.*\./}"), emit: revseq
     tuple val("${task.process}"), val("emboss"), eval("revseq -version 2>&1 | sed 's/EMBOSS://'"), topic: versions, emit: versions_emboss
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process BAMUTIL_TRIMBAM {
     tuple val(meta), path("*.bam")                                                                       , emit: bam
     tuple val("${task.process}"), val('bamutil'), eval("bam trimBam 2>&1 | head -1 | sed 's/^Version: //;s/;.*//'"), emit: versions_bamutil, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process VCLUST_PREFILTER {
     tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('vclust'), eval("vclust --version | sed 's/v//'"), topic: versions, emit: versions_vclust
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

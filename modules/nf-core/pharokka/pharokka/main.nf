@@ -21,8 +21,6 @@ process PHAROKKA_PHAROKKA {
     tuple val(meta), path("${prefix}_pharokka/${prefix}_genome_terminase_reoriented.fasta") , emit: reoriented              , optional: true
     path "versions.yml"                                                                     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

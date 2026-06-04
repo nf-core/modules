@@ -18,8 +18,6 @@ process PARAPHRASE {
 
     tuple val("${task.process}"), val('paraphrase'), eval("paraphrase --version | sed 's/.* //'"), topic: versions, emit: versions_paraphrase
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

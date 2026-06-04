@@ -14,8 +14,6 @@ process ADAPTERREMOVALFIXPREFIX {
     tuple val(meta), path("*.fq.gz"), emit: fixed_fastq
     tuple val("${task.process}"), val('adapterremovalfixprefix'), eval('echo 0.0.5'), emit: versions_adapterremovalfixprefix, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

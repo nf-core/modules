@@ -14,8 +14,6 @@ process AMPCOMBI2_COMPLETE {
     path("Ampcombi_summary.tsv") , emit: tsv
     path("Ampcombi_complete.log"), emit: log, optional:true
     tuple val("${task.process}"), val('ampcombi'), eval("ampcombi --version | sed 's/ampcombi //'"), emit: versions_ampcombi, topic: versions
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process CAT_FASTQ {
     tuple val(meta), path("*.merged.fastq.gz"), emit: reads
     tuple val("${task.process}"), val("cat"), eval("cat --version 2>&1 | head -n 1 | sed 's/^.*coreutils) //; s/ .*\$//'"), emit: versions_cat, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

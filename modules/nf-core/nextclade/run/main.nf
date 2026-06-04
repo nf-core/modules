@@ -24,8 +24,6 @@ process NEXTCLADE_RUN {
     tuple val(meta), path("${prefix}.nwk")           , optional:true, emit: nwk
     tuple val("${task.process}"), val('nextclade'), eval("nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'"), emit: versions_nextclade, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

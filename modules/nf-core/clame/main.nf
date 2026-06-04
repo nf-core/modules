@@ -19,8 +19,6 @@ process CLAME {
     tuple val(meta), path("*.result") , emit: result
     tuple val("${task.process}"), val('clame'), eval("clame -h 2>&1 | sed '2!d;s/version //;s/ .*//'"), emit: versions_clame, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

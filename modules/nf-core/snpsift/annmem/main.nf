@@ -16,8 +16,6 @@ process SNPSIFT_ANNMEM {
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
     tuple val("${task.process}"), val('snpsift'), eval("SnpSift -version 2>&1 | grep -oE '[0-9]+\\.[0-9]+[a-z]?'"), emit: versions_snpsift, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process FQ_LINT {
     tuple val(meta), path("*.fq_lint.txt"), emit: lint
     tuple val("${task.process}"), val('fq'), eval("fq lint --version | sed 's/fq-lint //; s/ .*//'"), emit: versions_fq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

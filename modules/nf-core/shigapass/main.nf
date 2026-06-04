@@ -15,9 +15,6 @@ process SHIGAPASS {
     tuple val(meta), path("*_ShigaPass_Flex_summary.tsv"),  emit: flex_tsv, optional: true
     tuple val("${task.process}"), val('shigapass'), eval("ShigaPass.sh -v 2>&1 | sed 's/^.*ShigaPass version //'"), topic: versions, emit: versions_shigapass
 
-    when:
-        task.ext.when == null || task.ext.when
-
     script:
     def args   = task.ext.args ?: ''
     prefix    = task.ext.prefix ?: "${meta.id}"

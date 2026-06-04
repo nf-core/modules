@@ -14,8 +14,6 @@ process ARIBA_GETREF {
     tuple val(meta), path("${db_name}.tar.gz"), emit: db
     tuple val("${task.process}"), val('ariba'), eval('ariba version | sed -nE "s/ARIBA version: //p"'), emit: versions_ariba, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     """

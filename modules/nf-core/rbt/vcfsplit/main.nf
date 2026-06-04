@@ -15,8 +15,6 @@ process RBT_VCFSPLIT {
     tuple val(meta), path("*.bcf"), emit: bcfchunks
     tuple val("${task.process}"), val('rbt'), eval("rbt --version | grep -oE '[0-9]+(\\.[0-9]+)+' | head -n 1"), topic: versions, emit: versions_rbt
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // No args because tool does not accept args, only stdin/stdout

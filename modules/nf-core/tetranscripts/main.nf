@@ -20,8 +20,6 @@ process TETRANSCRIPTS {
     tuple val(meta_t), path("*_gene_TE.txt"), emit: sigdiff, optional: true
     tuple val("${task.process}"), val('tetranscripts'), eval("tetranscripts version | sed '1!d;s/.* //'"), emit: versions_tetranscripts, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

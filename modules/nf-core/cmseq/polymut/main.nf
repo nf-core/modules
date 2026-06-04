@@ -15,8 +15,6 @@ process CMSEQ_POLYMUT {
     tuple val(meta), path("*.txt"), emit: polymut
     tuple val("${task.process}"), val('cmseq'), val(VERSION), topic: versions, emit: versions_cmseq
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     VERSION = '1.0.4'

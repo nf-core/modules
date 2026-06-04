@@ -14,8 +14,6 @@ process HMMER_HMMPRESS {
     tuple val(meta), path("*.h3?"), emit: compressed_db
     tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -17,8 +17,6 @@ process RMATS_PREP {
     tuple val(meta), path("*read_outcomes_by_bam.txt"), emit: read_outcomes
     tuple val("${task.process}"), val('rmats'), eval('rmats.py --version | sed -e "s/v//g"'), emit: versions_rmats, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

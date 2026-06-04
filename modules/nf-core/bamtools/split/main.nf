@@ -14,8 +14,6 @@ process BAMTOOLS_SPLIT {
     tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('bamtools'), eval("bamtools --version | sed '2!d;s/bamtools //g'"), emit: versions_bamtools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

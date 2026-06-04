@@ -15,8 +15,6 @@ process ATLAS_SPLITMERGE {
     tuple val(meta), path("*.txt.gz")         , emit: txt
     tuple val("${task.process}"), val('atlas'), eval("atlas | sed -e '2!d;s/.*Atlas //'"), emit: versions_atlas, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def optional = blacklist ? 'blacklist=${blacklist}' : ''

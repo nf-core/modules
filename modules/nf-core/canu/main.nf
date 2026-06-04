@@ -27,8 +27,6 @@ process CANU {
     tuple val("${task.process}"), val("minimap2"), eval("minimap2 --version"), emit: versions_minimap2, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

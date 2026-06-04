@@ -14,8 +14,6 @@ process GT_STAT {
     tuple val(meta), path("${prefix}.yml")  , emit: stats
     tuple val("${task.process}"), val('genometools'), eval("gt --version | sed '1!d;s/.* //'"), emit: versions_gt, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''

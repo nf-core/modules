@@ -18,8 +18,6 @@ process PYRODIGAL {
     tuple val(meta), path("*.score.gz")                 , emit: score
     tuple val("${task.process}"), val('pyrodigal'), eval("pyrodigal --version |& sed 's/pyrodigal v//'"), emit: versions_pyrodigal, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

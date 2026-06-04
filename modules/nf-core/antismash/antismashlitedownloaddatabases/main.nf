@@ -30,8 +30,6 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     path ("antismash_dir"), emit: antismash_dir
     tuple val("${task.process}"), val('antismash-lite'), eval("antismash --version | sed 's/antiSMASH //'"), emit: versions_antismash, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

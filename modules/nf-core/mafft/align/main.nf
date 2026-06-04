@@ -21,8 +21,6 @@ process MAFFT_ALIGN {
     tuple val("${task.process}"), val("mafft"), eval("mafft --version 2>&1 | sed 's/ (.*) //g'"), topic: versions, emit: versions_mafft
     tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'")   , topic: versions, emit: versions_pigz
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args             = task.ext.args   ?: ''

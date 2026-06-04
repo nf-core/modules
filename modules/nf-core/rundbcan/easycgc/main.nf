@@ -24,8 +24,6 @@ process RUNDBCAN_EASYCGC {
     tuple val(meta), path("${prefix}_STP_hmm_results.tsv"), emit: stp_hmm_results
     tuple val("${task.process}"), val('rundbcan'), eval("run_dbcan version | sed 's/dbCAN version: //g'"), emit: versions_rundbcan, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

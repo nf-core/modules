@@ -16,8 +16,6 @@ process ECTYPER {
     tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('ectyper'), eval('ectyper --version 2>&1 | sed \'s/.*ectyper //; s/ .*$//\''), emit: versions_ectyper, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

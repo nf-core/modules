@@ -29,8 +29,6 @@ process STACKS_REFMAP {
     tuple val(meta), path("populations.structure")            , optional: true, emit: structure
     tuple val("${task.process}"), val('stacks_refmap'), eval("populations -v 2>&1 | sed 's/^.* //'"), emit: versions_stacks_refmap, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

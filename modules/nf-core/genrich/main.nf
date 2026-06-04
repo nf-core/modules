@@ -20,8 +20,6 @@ process GENRICH {
     tuple val(meta), path("*.intervals.bed")   , optional:true, emit: bed_intervals
     tuple val(meta), path("*.duplicates.txt")  , optional:true, emit: duplicates
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args       = task.ext.args   ?: ""

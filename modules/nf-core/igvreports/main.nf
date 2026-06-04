@@ -15,8 +15,6 @@ process IGVREPORTS {
     tuple val(meta), path("*.html") , emit: report
     tuple val("${task.process}"), val("igvreports"), eval("python -c 'import igv_reports; print(igv_reports.__version__)'"), topic: versions, emit: versions_igvreports
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -22,8 +22,6 @@ process SVANALYZER_SVBENCHMARK {
     tuple val(meta), path("*.report")               , emit: report
     tuple val("${task.process}"), val('svanalyzer'), val('0.36'), topic: versions, emit: versions_svanalyzer
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

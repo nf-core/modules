@@ -18,8 +18,6 @@ process HAMRONIZATION_RGI {
     tuple val(meta), path("*.tsv"), optional: true, emit: tsv
     tuple val("${task.process}"), val('hamronization'), eval("hamronize --version 2>&1 | sed 's/hamronize //'"), topic: versions, emit: versions_hamronization
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

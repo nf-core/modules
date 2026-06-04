@@ -20,8 +20,6 @@ process SURVIVOR_MERGE {
     tuple val(meta), path("*.vcf")   , emit: vcf
     tuple val("${task.process}"), val('survivor'), eval("SURVIVOR 2>&1 | grep 'Version' | sed 's/Version: //'"), topic: versions, emit: versions_survivor
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

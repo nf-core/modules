@@ -20,8 +20,6 @@ process QUAST {
     tuple val(meta), path("${prefix}_unaligned.tsv")     , optional: true , emit: unaligned
     tuple val("${task.process}"), val('quast'), eval('quast.py --version 2>&1 | grep "QUAST" | sed \'s/^.*QUAST v//; s/ .*\$//\''), emit: versions_quast, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args      = task.ext.args   ?: ''

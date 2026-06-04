@@ -15,8 +15,6 @@ process TABIX_TABIX {
     tuple val(meta), path("output.*gz") , emit: extracted, optional: true
     tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'"), topic: versions, emit: versions_tabix
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

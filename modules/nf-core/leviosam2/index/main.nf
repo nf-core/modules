@@ -15,8 +15,6 @@ process LEVIOSAM2_INDEX {
     tuple val(meta), path("*.clft"), emit: clft
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

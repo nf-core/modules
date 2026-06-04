@@ -15,8 +15,6 @@ process SHAPEIT5_LIGATE {
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants
     tuple val("${task.process}"), val('shapeit5'), eval('SHAPEIT5_ligate | sed "5!d;s/^.*Version *: //; s/ .*$//"'), topic: versions, emit: versions_shapeit5
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

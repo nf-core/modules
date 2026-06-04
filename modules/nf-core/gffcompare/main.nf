@@ -22,8 +22,6 @@ process GFFCOMPARE {
     tuple val(meta), path("*.tracking")     , emit: tracking
     tuple val("${task.process}"), val('gffcompare'), eval('gffcompare --version 2>&1 | sed "s/gffcompare v//"'), emit: versions_gffcompare, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

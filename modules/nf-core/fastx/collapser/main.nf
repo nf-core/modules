@@ -14,8 +14,6 @@ process FASTX_COLLAPSER {
     tuple val(meta), path("${prefix}.fasta"), emit: fasta
     tuple val("${task.process}"), val('fastx'), eval("fastx_collapser -h 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | head -1"), emit: versions_fastx, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

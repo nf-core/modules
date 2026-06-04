@@ -21,8 +21,6 @@ process GATK_UNIFIEDGENOTYPER {
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val("${task.process}"), val('gatk'), eval('gatk3 --version'), emit: versions_gatk, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

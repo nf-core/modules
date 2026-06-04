@@ -14,8 +14,6 @@ process MLST {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('mlst'), eval('mlst --version 2>&1 | sed "s/mlst //"'), emit: versions_mlst, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -16,8 +16,6 @@ process ALLELECOUNTER {
     tuple val(meta), path("*.alleleCount"), emit: allelecount
     tuple val("${task.process}"), val('alleleCounter'), eval('alleleCounter --version'), emit: versions_allelecounter, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

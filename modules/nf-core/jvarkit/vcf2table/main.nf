@@ -14,8 +14,6 @@ process JVARKIT_VCF2TABLE {
     tuple val(meta), path("*.${extension}"), emit: output
     path "versions.yml"                    , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args1        = task.ext.args1 ?: ''

@@ -16,8 +16,6 @@ process WISECONDORX_CONVERT {
     tuple val(meta), path("*.npz"), emit: npz
     tuple val("${task.process}"), val('wisecondorx'), eval("pip list |& sed -n 's/wisecondorx *//p'"), emit: versions_wisecondorx, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

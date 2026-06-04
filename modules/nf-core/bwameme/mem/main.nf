@@ -24,8 +24,6 @@ process BWAMEME_MEM {
     tuple val("${task.process}"), val('bwameme'), val('1.0.6'), topic: versions, emit: versions_bwameme
     tuple val("${task.process}"), val('samtools'), eval('samtools version | sed "1!d;s/.* //"'), topic: versions, emit: versions_samtools    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

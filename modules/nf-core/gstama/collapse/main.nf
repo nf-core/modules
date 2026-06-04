@@ -23,8 +23,6 @@ process GSTAMA_COLLAPSE {
     tuple val(meta), path("*_variants.txt")           , emit: variants, optional: true
     tuple val("${task.process}"), val('gstama'), eval("tama_collapse.py -version | sed -n 's/tc_version_date_//p'"), emit: versions_gstama, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

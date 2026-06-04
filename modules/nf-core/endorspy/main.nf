@@ -14,8 +14,6 @@ process ENDORSPY {
     tuple val(meta), path("*_mqc.json"), emit: json
     tuple val("${task.process}"), val('endorspy'), eval("endorspy --version 2>&1 | sed 's/^endorS.py //'"), emit: versions_endorspy, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

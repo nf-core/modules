@@ -18,8 +18,6 @@ process GFFREAD {
     tuple val(meta), path("*.bed")  , emit: bed             , optional: true
     tuple val("${task.process}"), val('gffread'), eval('gffread --version 2>&1'), topic: versions, emit: versions_gffread
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args             ?: ''

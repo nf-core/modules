@@ -15,8 +15,6 @@ process EMBOSS_SEQRET {
     tuple val(meta), path("*.${out_ext}"), emit: outseq
     tuple val("${task.process}"), val("emboss"), eval("revseq -version 2>&1 | sed 's/EMBOSS://'"), topic: versions, emit: versions_emboss
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

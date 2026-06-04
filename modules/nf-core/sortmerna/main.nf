@@ -18,8 +18,6 @@ process SORTMERNA {
     tuple val(meta2), path("idx")              , emit: index, optional: true
     tuple val("${task.process}"), val('sortmerna'), eval('sortmerna --version 2>&1 | grep -oE "[0-9]+\\.[0-9]+\\.[0-9]+" | head -1'), topic: versions, emit: versions_sortmerna
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args          = task.ext.args  ?: ''

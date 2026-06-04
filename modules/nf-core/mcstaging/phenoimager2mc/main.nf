@@ -11,8 +11,6 @@ process MCSTAGING_PHENOIMAGER2MC {
     tuple val(meta), path("*.tif"), emit: tif
     tuple val("${task.process}"), val('phenoimager2mc'), eval('python /phenoimager2mc/scripts/phenoimager2mc.py --version | sed "s/v//g"'), emit: versions_phenoimager2mc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

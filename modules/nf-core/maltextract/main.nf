@@ -16,8 +16,6 @@ process MALTEXTRACT {
     tuple val(meta), path("results")      , emit: results
     tuple val("${task.process}"), val('maltextract'), eval('MaltExtract --help | head -n 2 | tail -n 1 | sed \'s/MaltExtract version//\''), emit: versions_maltextract, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

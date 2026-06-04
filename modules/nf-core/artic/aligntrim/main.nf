@@ -17,8 +17,6 @@ process ARTIC_ALIGNTRIM {
     tuple val(meta), path("*.amp_depth_report.tsv"),  emit: amp_depth_report
     tuple val("${task.process}"), val('align_trim'), eval("align_trim --version | sed 's/align_trim //'"), emit: versions_align_trim, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

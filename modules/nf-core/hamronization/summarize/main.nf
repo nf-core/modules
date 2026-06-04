@@ -16,8 +16,6 @@ process HAMRONIZATION_SUMMARIZE {
     path ("hamronization_combined_report.html"), optional: true, emit: html
     tuple val("${task.process}"), val('hamronization'), eval("hamronize --version 2>&1 | sed 's/hamronize //'"), topic: versions, emit: versions_hamronization
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

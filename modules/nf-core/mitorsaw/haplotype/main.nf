@@ -28,8 +28,6 @@ process MITORSAW_HAPLOTYPE {
 
     tuple val("${task.process}"), val('mitorsaw'), eval("mitorsaw --version | sed 's/mitorsaw //'"), topic: versions, emit: versions_mitorsaw
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

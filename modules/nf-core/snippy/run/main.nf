@@ -31,8 +31,6 @@ process SNIPPY_RUN {
     tuple val(meta), path("${prefix}/${prefix}.txt")              , emit: txt
     path "versions.yml"                                           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

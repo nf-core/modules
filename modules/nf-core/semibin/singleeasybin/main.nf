@@ -17,8 +17,6 @@ process SEMIBIN_SINGLEEASYBIN {
     tuple val(meta), path("${prefix}/output_bins/*.fa.gz")                  , emit: output_fasta
     tuple val("${task.process}"), val('SemiBin'), eval("SemiBin2 --version"), emit: versions_semibin, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args  = task.ext.args ?: ''

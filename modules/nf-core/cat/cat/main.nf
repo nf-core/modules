@@ -14,8 +14,6 @@ process CAT_CAT {
     tuple val(meta), path("${prefix}"), emit: file_out
     tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'"),  topic: versions, emit: versions_cat
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

@@ -18,8 +18,6 @@ process GATK4_CNNSCOREVARIANTS {
     tuple val(meta), path("*cnn.vcf.gz.tbi"), emit: tbi
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

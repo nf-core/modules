@@ -15,8 +15,6 @@ process CMAPLE {
     tuple val(meta), path("*.log")     , emit: log
     tuple val("${task.process}"), val("cmaple"), eval('cmaple --help | grep -m1 -oE "[0-9]+(\\.[0-9]+)+"'), topic: versions, emit: versions_cmaple
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args             = task.ext.args ?: ''

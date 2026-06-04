@@ -17,8 +17,6 @@ process GEM2_GEM2BEDMAPPABILITY {
     tuple val(meta), path("*.sizes"), emit: sizes
     tuple val("${task.process}"), val('gem2'), val("20200110"), emit: versions_gem2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix  = task.ext.prefix ?: "${meta.id}"

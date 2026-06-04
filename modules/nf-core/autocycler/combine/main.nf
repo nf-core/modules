@@ -16,8 +16,6 @@ process AUTOCYCLER_COMBINE {
     tuple val(meta), path("combine/${prefix}/consensus_assembly.yaml"),  emit: stats
     tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

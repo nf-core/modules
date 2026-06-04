@@ -27,8 +27,6 @@ process CADD {
     tuple val("${task.process}"), val("cadd"), val("1.7.3"), emit: versions_cadd, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

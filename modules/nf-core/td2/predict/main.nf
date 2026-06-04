@@ -15,8 +15,6 @@ process TD2_PREDICT {
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('TD2.Predict'), val("1.0.6"), emit: versions_td2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

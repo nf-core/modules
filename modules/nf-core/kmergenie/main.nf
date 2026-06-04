@@ -19,8 +19,6 @@ process KMERGENIE {
     tuple val("${task.process}"), val('kmergenie'), eval('kmergenie --version |& sed "1!d ; s/KmerGenie //"'), emit: versions_kmergenie, topic: versions
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

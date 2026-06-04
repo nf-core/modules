@@ -12,8 +12,6 @@ process OPT_FLIP {
     tuple val(meta), path("${meta.id}/fwd_oriented.fa"), emit: fwd_oriented_fa
     path "versions.yml"                                , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

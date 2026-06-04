@@ -14,8 +14,6 @@ process BISMARK_REPORT {
     tuple val(meta), path("*report.{html,txt}"), emit: report
     tuple val("${task.process}"), val("bismark"), eval("bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), topic: versions, emit: versions_bismark
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

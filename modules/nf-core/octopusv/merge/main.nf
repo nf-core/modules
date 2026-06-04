@@ -15,8 +15,6 @@ process OCTOPUSV_MERGE {
     tuple val(meta), path("*.png"), emit: upset_plot, optional: true
     tuple val("${task.process}"), val('octopusv'), eval("python -c \"import importlib.metadata as m; print(m.version('octopusv'))\""), emit: versions_octopusv, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = (task.ext.args ?: '').trim()

@@ -16,8 +16,6 @@ process PBMARKDUP {
     tuple val(meta), path("*.pbmarkdup.log")    , emit: log       , optional: true
     tuple val("${task.process}"), val("pbmarkdup"), eval("pbmarkdup --version | cut -d' ' -f2"), emit: versions_pbmarkdup, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args     = task.ext.args  ?: ''

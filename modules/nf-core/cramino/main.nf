@@ -15,8 +15,6 @@ process CRAMINO {
     tuple val(meta), path("*.arrow"), optional: true, emit: arrow
     tuple val("${task.process}"), val('cramino'), eval("cramino -V | sed 's/cramino //'"), emit: versions_cramino, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

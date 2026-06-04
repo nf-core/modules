@@ -17,8 +17,6 @@ process MOBSUITE_RECON {
     tuple val(meta), path("results/mobtyper_results.txt"), emit: mobtyper_results, optional: true
     path "versions.yml"                                  , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

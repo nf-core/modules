@@ -17,8 +17,6 @@ process DEMUXEM {
     tuple val(meta), path("*.out.demuxEM.zarr.zip"), emit: out_zarr
     tuple val("${task.process}"), val('demuxEM'), eval("demuxEM --version"), topic: versions, emit: versions_demuxem
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args               = task.ext.args ?: ''

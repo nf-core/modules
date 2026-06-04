@@ -21,8 +21,6 @@ process ARRIBA_ARRIBA {
     tuple val(meta), path("*.fusions.discarded.tsv"), emit: fusions_fail
     tuple val("${task.process}"), val('arriba'), eval('arriba -h | grep \'Version:\' 2>&1 |  sed \'s/Version:\\s//\''), emit: versions_arriba, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

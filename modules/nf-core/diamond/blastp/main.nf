@@ -23,8 +23,6 @@ process DIAMOND_BLASTP {
     tuple val(meta), path('*.{paf,paf.gz}'), optional: true, emit: paf
     tuple val("${task.process}"), val('diamond'), eval('diamond --version 2>&1 | tail -n 1 | sed "s/^diamond version //"'), emit: versions_diamond, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     meta = meta + [ db: meta2.id ]

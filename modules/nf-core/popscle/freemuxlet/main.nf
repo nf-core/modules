@@ -18,8 +18,6 @@ process POPSCLE_FREEMUXLET {
     tuple val(meta), path('*.clust0.vcf.gz')      , emit: singlet_vcf      , optional: true
     path 'versions.yml'                           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

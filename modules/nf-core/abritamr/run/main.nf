@@ -18,8 +18,6 @@ process ABRITAMR_RUN {
     tuple val(meta), path("*.abritamr.txt")         , emit: txt, optional: true
     tuple val("${task.process}"), val('abritamr'), eval("abritamr --version 2>&1 | sed 's/^.*abritamr \\([0-9.]*\\).*/\\1/'"), emit: versions_abritamr, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args          = task.ext.args   ?: ''

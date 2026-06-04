@@ -14,8 +14,6 @@ process MINIMAC4_COMPRESSREF {
     tuple val(meta), path("*.msav"), emit: msav
     tuple val("${task.process}"), val('minimac4'), eval("minimac4 --version |& sed '1!d ; s/minimac v//'"), emit: versions_minimac4, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

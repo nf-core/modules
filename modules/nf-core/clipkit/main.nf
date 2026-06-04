@@ -20,8 +20,6 @@ process CLIPKIT {
     tuple val(meta), path("${prefix}.${out_extension}.report.json"), emit: json         , optional: true
     tuple val("${task.process}"), val('clipkit'), eval("clipkit --version 2>&1 | sed 's/clipkit //'"), topic: versions, emit: versions_clipkit
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args      = task.ext.args ?: ''

@@ -17,8 +17,6 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     tuple val(meta), path("${prefix}-model"), emit: model, optional: true
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

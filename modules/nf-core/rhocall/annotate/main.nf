@@ -16,8 +16,6 @@ process RHOCALL_ANNOTATE {
     tuple val(meta), path("*_rhocall.vcf"), emit: vcf
     tuple val("${task.process}"), val("rhocall"), eval("rhocall --version | sed 's/rhocall, version //'"), topic: versions, emit: versions_rhocall
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

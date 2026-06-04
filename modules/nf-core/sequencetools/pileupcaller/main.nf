@@ -18,8 +18,6 @@ process SEQUENCETOOLS_PILEUPCALLER {
     tuple val(meta), path("*.freqsum.gz")                        , emit: freqsum   , optional:true
     path "versions.yml"                                          , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

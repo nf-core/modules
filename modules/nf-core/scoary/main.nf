@@ -15,8 +15,6 @@ process SCOARY {
     tuple val(meta), path("*.csv"), emit: csv
     tuple val("${task.process}"), val('scoary'), eval('scoary --version 2>&1'), emit: versions_scoary, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

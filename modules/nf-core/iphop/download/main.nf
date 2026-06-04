@@ -10,8 +10,6 @@ process IPHOP_DOWNLOAD {
     path "iphop_db/"        , emit: iphop_db
     path "versions.yml"     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -19,8 +19,6 @@ process ATLAS_PMD {
     tuple val(meta), path("*_PMD_Table.txt")            , emit: table
     tuple val("${task.process}"), val('atlas'), eval('atlas | sed -e "2!d;s/.*Atlas //"'), emit: versions_atlas, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args   ?: ''

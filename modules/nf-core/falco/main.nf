@@ -15,8 +15,6 @@ process FALCO {
     tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('falco'), eval("falco --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_falco
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

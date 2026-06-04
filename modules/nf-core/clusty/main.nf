@@ -16,8 +16,6 @@ process CLUSTY {
     tuple val(meta), path("*.tsv"), emit: assignments
     tuple val("${task.process}"), val('clusty'), eval('echo $(clusty --version 2>&1)'), topic: versions, emit: versions_clusty
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process SKESA {
     tuple val(meta), path("*.fa"), emit: fasta
     tuple val("${task.process}"), val('skesa'), eval("skesa --version 2>&1 | sed -n 's/^SKESA //p'"), topic: versions, emit: versions_skesa
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

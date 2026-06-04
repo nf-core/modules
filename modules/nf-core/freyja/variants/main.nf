@@ -16,8 +16,6 @@ process FREYJA_VARIANTS {
     tuple val(meta), path("*.variants.tsv"), path("*.depth.tsv"), emit: variants
     tuple val("${task.process}"), val('freyja'), eval("freyja --version | sed 's/.* //'"), topic: versions, emit: versions_freyja
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

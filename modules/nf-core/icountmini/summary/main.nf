@@ -17,8 +17,6 @@ process ICOUNTMINI_SUMMARY {
     tuple val(meta), path("*summary_gene.tsv")   , emit: summary_gene
     tuple val("${task.process}"), val('iCount-Mini'), eval("iCount-Mini -v"), emit: versions_icount_mini, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

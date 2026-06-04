@@ -18,8 +18,6 @@ process RTN_TNI {
     tuple val(meta), path("tni_filtered.rds")      , emit: tni_filtered
     path "versions.yml"                            , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

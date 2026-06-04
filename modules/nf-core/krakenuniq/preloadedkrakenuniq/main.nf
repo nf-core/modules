@@ -23,8 +23,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tuple val(meta), path('*.krakenuniq.report.txt'), emit: report
     tuple val("${task.process}"), val('krakenuniq'), eval("krakenuniq --version | sed '1!d;s/KrakenUniq version //'"), emit: versions_krakenuniq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     assert sequence_type in ['fasta', 'fastq']

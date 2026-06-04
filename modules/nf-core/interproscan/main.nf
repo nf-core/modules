@@ -20,8 +20,6 @@ process INTERPROSCAN {
     tuple val("${task.process}"), val("interproscan"), eval('interproscan.sh --version | sed "1!d; s/.*version //"'), topic: versions, emit: versions_interproscan
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args             = task.ext.args ?: ''

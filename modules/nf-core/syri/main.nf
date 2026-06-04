@@ -18,8 +18,6 @@ process SYRI {
     tuple val(meta), path("*.error.log")    , emit: error       , optional: true
     path "versions.yml"                     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

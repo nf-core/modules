@@ -17,8 +17,6 @@ process MAGUS_ALIGN {
     tuple val("${task.process}"), val('magus'), eval('magus --version'), emit: versions_magus, topic: versions
     tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

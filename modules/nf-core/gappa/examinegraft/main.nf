@@ -14,8 +14,6 @@ process GAPPA_EXAMINEGRAFT {
     tuple val(meta), path("*.newick"), emit: newick
     tuple val("${task.process}"), val('gappa'), eval("gappa --version 2>&1 | sed 's/v//'"), emit: versions_gappa, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

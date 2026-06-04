@@ -21,8 +21,6 @@ process SALMON_QUANT {
     tuple val(meta), path("*lib_format_counts.json"), emit: lib_format_counts, optional: true
     tuple val("${task.process}"), val('salmon'), eval('salmon --version | sed -e "s/salmon //g"'), topic: versions, emit: versions_salmon
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

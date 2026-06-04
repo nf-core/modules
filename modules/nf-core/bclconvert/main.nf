@@ -17,8 +17,6 @@ process BCLCONVERT {
     tuple val(meta), path("output/InterOp/*.bin"), emit: interop, optional: true
     tuple val("${task.process}"), val('bclconvert'), eval("bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //'"), topic: versions, emit: versions_bclconvert
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

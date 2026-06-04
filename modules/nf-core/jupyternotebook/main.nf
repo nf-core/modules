@@ -24,8 +24,6 @@ process JUPYTERNOTEBOOK {
     tuple val("${task.process}"), val('nbconvert'), eval('jupyter nbconvert --version')                            , emit: versions_nbconvert, topic: versions
     tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "')                    , emit: versions_papermill, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

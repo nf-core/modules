@@ -40,8 +40,6 @@ process ANTISMASH_ANTISMASHLITE {
     tuple val(meta), path("${prefix}/knownclusterblastoutput.txt")        , emit: knownclusterblastoutput    , optional: true
     tuple val("${task.process}"), val('antismash-lite'), eval("antismash --version | sed 's/antiSMASH //'"), emit: versions_antismash, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

@@ -14,8 +14,6 @@ process ODGI_DRAW {
     tuple val(meta), path("*.png"), emit: png
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

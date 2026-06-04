@@ -15,8 +15,6 @@ process PROSEG2BAYSOR {
     tuple val(meta), path("${prefix}_transcript-metadata.csv"), emit: transcript_metadata
     tuple val("${task.process}"), val('proseg'), eval("proseg --version | sed 's/proseg //'"), topic: versions, emit: versions_proseg
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

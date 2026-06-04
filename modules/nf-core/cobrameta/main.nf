@@ -27,8 +27,6 @@ process COBRAMETA {
     tuple val(meta), path("${prefix}/log")                                                      , emit: log
     tuple val("${task.process}"), val('cobra'), eval("cobra-meta --version 2>&1 | sed 's/^.*cobra v//'"), emit: versions_cobra, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

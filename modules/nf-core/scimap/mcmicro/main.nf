@@ -13,8 +13,6 @@ process SCIMAP_MCMICRO {
     tuple val(meta), path("*.h5ad")     , emit: h5ad    , optional:true
     path "versions.yml"                 , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

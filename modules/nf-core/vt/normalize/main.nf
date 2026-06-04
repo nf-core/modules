@@ -18,8 +18,6 @@ process VT_NORMALIZE {
     tuple val(meta), path("${fasta}.fai")   , emit: fai, optional: true
     path "versions.yml"                     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -15,8 +15,6 @@ process BIOMFORMAT_CONVERT {
     tuple val(meta), path("*.txt") , optional: true, emit: txt
     tuple val("${task.process}"), val('biom-format'), eval("biom --version | sed 's/biom, version //'"), topic: versions, emit: versions_biomformat
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

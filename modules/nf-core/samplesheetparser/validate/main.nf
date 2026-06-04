@@ -14,8 +14,6 @@ process SAMPLESHEETPARSER_VALIDATE {
     tuple val(meta), path("*.validation.json"), emit: json
     tuple val("${task.process}"), val('samplesheet-parser'), eval("samplesheet --version | sed 's/samplesheet-parser //'"), topic: versions, emit: versions_samplesheetparser
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

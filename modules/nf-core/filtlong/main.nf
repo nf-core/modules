@@ -15,8 +15,6 @@ process FILTLONG {
     tuple val(meta), path("*.log")     , emit: log
     tuple val("${task.process}"), val('filtlong'), eval('filtlong --version | sed -e "s/Filtlong v//g"'), topic: versions, emit: versions_filtlong
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

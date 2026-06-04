@@ -18,8 +18,6 @@ process METAMAPS_MAPDIRECTLY {
     tuple val(meta), path("*classification_res.parameters")               , emit: para_file
     path "versions.yml"                                                                                          , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

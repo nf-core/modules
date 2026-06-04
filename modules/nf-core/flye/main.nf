@@ -20,8 +20,6 @@ process FLYE {
     tuple val(meta), path("*.json")    , emit: json
     tuple val("${task.process}"), val('flye'), eval('flye --version'), emit: versions_flye, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

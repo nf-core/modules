@@ -18,8 +18,6 @@ process TOULLIGQC {
     tuple val(meta), path("*/images/plotly.min.js"), emit: plotly_js
     tuple val("${task.process}"), val('toulligqc'), eval('toulligqc --version'), emit: versions_toulligqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

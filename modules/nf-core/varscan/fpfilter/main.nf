@@ -15,8 +15,6 @@ process VARSCAN_FPFILTER {
     tuple val(meta), path("*.fail.vcf.gz"), emit: fail_vcf
     path "versions.yml"                   , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

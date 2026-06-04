@@ -16,8 +16,6 @@ process NGSCHECKMATE_PATTERNGENERATOR {
     tuple val(meta), path("*.pt"), emit: pt
     tuple val("${task.process}"), val('ngscheckmate'), eval("ncm.py --help | sed '7!d;s/.* v//g'"), topic: versions, emit: versions_ngscheckmate
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

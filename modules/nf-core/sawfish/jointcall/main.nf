@@ -27,8 +27,6 @@ process SAWFISH_JOINTCALL {
     tuple val(meta), path("*/sawfish.log")                                                       , emit: log
     tuple val("${task.process}"), val("sawfish"), eval('sawfish --version | sed "s/.* //g"')     , emit: versions_sawfish          , topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process GOAT_TAXONSEARCH {
     tuple val(meta), path("*.tsv"), emit: taxonsearch
     tuple val("${task.process}"), val('goat'), eval("goat-cli --version | cut -d' ' -f2"), emit: versions_goat, topic: versions
 
-    when:
-        task.ext.when == null || task.ext.when
     script:
         def args = task.ext.args ?: ''
         def prefix = task.ext.prefix ?: "${meta.id}"

@@ -21,8 +21,6 @@ process TELOGATOR2 {
     tuple val(meta), path("${prefix}/qc/rng.txt")           , emit: rng
     tuple val("${task.process}"), val('telogator2'), eval("telogator2 --version | sed 's/telogator2 //'"), emit: versions_telogator2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

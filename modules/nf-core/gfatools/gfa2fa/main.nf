@@ -14,8 +14,6 @@ process GFATOOLS_GFA2FA {
     tuple val(meta), path("*.fasta.gz"), emit: fasta
     tuple val("${task.process}"), val('gfatools'), eval("gfatools version | sed '1!d; s/.* //'"), topic: versions, emit: versions_gfatools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

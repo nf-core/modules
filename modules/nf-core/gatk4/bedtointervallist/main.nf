@@ -15,8 +15,6 @@ process GATK4_BEDTOINTERVALLIST {
     tuple val(meta), path('*.interval_list'), emit: interval_list
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

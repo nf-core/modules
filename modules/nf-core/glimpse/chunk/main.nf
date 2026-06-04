@@ -14,8 +14,6 @@ process GLIMPSE_CHUNK {
     tuple val(meta), path("*.txt"), emit: chunk_chr
     tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_chunk --help | sed -n '/Version/s/.*: //p'"), topic: versions, emit: versions_glimpse
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

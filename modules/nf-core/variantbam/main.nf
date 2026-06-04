@@ -15,8 +15,6 @@ process VARIANTBAM {
     tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('VariantBam'), val('1.4.4a'), emit: versions_variant, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

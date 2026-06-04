@@ -18,8 +18,6 @@ process MIRTOP_EXPORT {
     tuple val(meta), path("export/*.vcf*")            , emit: vcf  , optional: true
     path "versions.yml"                               , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: '--format isomir'

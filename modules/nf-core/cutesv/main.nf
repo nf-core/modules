@@ -15,8 +15,6 @@ process CUTESV {
     tuple val(meta), path("*.vcf"), emit: vcf
     tuple val("${task.process}"), val("cuteSV"), eval("cuteSV --version 2>&1 | sed 's/cuteSV //'"), topic: versions, emit: versions_cutesv
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

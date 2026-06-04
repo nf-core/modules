@@ -19,8 +19,6 @@ process EKLIPSE {
     tuple val(meta), path("*.png")          , emit: circos
     path "versions.yml"                     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

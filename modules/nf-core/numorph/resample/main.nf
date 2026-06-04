@@ -11,8 +11,6 @@ process NUMORPH_RESAMPLE {
     tuple val(meta), path("results/resampled/")                        , emit: resampled
     tuple val("${task.process}"), val('numorph_resample'), val('1.0.0'), emit: versions_numorph_analyze, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
 

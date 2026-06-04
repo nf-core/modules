@@ -13,8 +13,6 @@ process BAMSTATS_GENERALSTATS {
     tuple val(meta), path("*.json"), emit: json
     tuple val("${task.process}"), val("bamstats"), eval('bamstats --version | grep "version: " | sed -e s"/version: //"'), topic: versions, emit: versions_bamstats
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

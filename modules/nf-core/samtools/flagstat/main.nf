@@ -14,8 +14,6 @@ process SAMTOOLS_FLAGSTAT {
     tuple val(meta), path("*.flagstat"), emit: flagstat
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

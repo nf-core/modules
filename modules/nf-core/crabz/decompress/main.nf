@@ -14,8 +14,6 @@ process CRABZ_DECOMPRESS {
     tuple val(meta), path("*.*"), emit: file
     tuple val("${task.process}"), val('crabz'), val('0.10.0'), emit: versions_crabz, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

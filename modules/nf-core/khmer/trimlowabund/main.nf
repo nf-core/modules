@@ -14,8 +14,6 @@ process KHMER_TRIMLOWABUND {
     tuple val(meta), path("${output_path}"), emit: trimmed
     path "versions.yml"                    , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

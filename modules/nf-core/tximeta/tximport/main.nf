@@ -24,8 +24,6 @@ process TXIMETA_TXIMPORT {
     tuple val(meta), path("*tx2gene_augmented.tsv")        , emit: tx2gene_augmented
     path "versions.yml"                                    , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'tximport.r'

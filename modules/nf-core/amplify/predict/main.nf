@@ -15,8 +15,6 @@ process AMPLIFY_PREDICT {
     tuple val(meta), path('*.tsv'), emit: tsv
     tuple val("${task.process}"), val('AMPlify'), eval( "AMPlify --help 2>&1 | sed -n 's/AMPlify v//p'" ), emit: versions_amplify, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

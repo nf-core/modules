@@ -15,8 +15,6 @@ process QCATCH {
     tuple val(meta), path("*_metrics_summary.csv")  , emit: metrics_summary
     path  "versions.yml"                                    , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

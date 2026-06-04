@@ -17,8 +17,6 @@ process TRGT_MERGE {
     tuple val(meta), path("*.{tbi,csi}")              , emit: index, optional: true
     tuple val("${task.process}"), val('trgt'), eval("trgt --version | sed 's/.* //g'"), emit: versions_trgt, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

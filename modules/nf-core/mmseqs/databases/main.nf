@@ -14,8 +14,6 @@ process MMSEQS_DATABASES {
     path "${prefix}/", emit: database
     tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

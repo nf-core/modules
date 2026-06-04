@@ -22,8 +22,6 @@ process GEDI_PRICE {
     tuple val(meta), path("${prefix}.param")                                                    , emit: param, optional: true
     tuple val("${task.process}"), val('gedi'), eval("gedi -e Version 2>&1 | sed -n 's/.*Gedi version \\([^ ]*\\).*/\\1/p' | head -n 1"), topic: versions, emit: versions_gedi
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

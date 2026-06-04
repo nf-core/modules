@@ -19,8 +19,6 @@ process INFERNAL_CMSEARCH {
     tuple val("${task.process}"), val('infernal'), eval("cmsearch -h | sed '2!d;s/.*INFERNAL //;s/ .*//'"), emit: versions_infernal, topic: versions
     tuple val("${task.process}"), val('gzip'), eval("gzip --version |& sed '1!d;s/gzip //'"), topic: versions, emit: versions_gzip
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args   ?: ''

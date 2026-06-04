@@ -16,8 +16,6 @@ process NANOQ {
     tuple val(meta), path("${prefix}.${output_format}"), emit: reads
     tuple val("${task.process}"), val('nanoq'), eval("nanoq --version | sed -e 's/nanoq //g'"), topic: versions, emit: versions_nanoq
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

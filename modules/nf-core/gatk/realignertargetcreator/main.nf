@@ -18,8 +18,6 @@ process GATK_REALIGNERTARGETCREATOR {
     tuple val(meta), path("*.intervals"), emit: intervals
     tuple val("${task.process}"), val('gatk'), eval('gatk3 --version'), emit: versions_gatk, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

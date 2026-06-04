@@ -15,8 +15,6 @@ process BWAMEME_INDEX {
     tuple val("${task.process}"), val('bwameme'), val('1.0.6'), topic: versions, emit: versions_bwameme
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process ARIA2 {
     tuple val(meta), path("$downloaded_file"), emit: downloaded_file
     tuple val("${task.process}"), val("aria2"), eval("aria2c --version 2>&1 | sed -n 's/^aria2 version \\([^ ]*\\).*/\\1/p'"), emit: versions_aria2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args ?: ''

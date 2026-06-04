@@ -14,8 +14,6 @@ process FOLDCOMP_COMPRESS {
     tuple val(meta), path("*fcz")                                                            , emit: fcz
     tuple val("${task.process}"), val('foldcomp'), eval("foldcomp --version | cut -d' ' -f2"), emit: versions_foldcomp, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

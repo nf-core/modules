@@ -21,8 +21,6 @@ process RSEQC_JUNCTIONANNOTATION {
     tuple val(meta), path("*events.pdf")   , optional:true, emit: events_pdf
     tuple val("${task.process}"), val('rseqc'), eval('junction_annotation.py --version | sed "s/junction_annotation.py //"'), emit: versions_rseqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

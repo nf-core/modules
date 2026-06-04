@@ -14,8 +14,6 @@ process RTGTOOLS_PEDFILTER {
     tuple val(meta), path("*.{vcf.gz,ped}") , emit: output
     tuple val("${task.process}"), val('rtgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

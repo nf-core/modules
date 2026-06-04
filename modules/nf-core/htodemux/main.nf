@@ -17,8 +17,6 @@ process HTODEMUX {
     tuple val(meta), path("*_htodemux.rds")               , emit: rds
     path "versions.yml", emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template('HTODemux.R')

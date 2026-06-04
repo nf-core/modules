@@ -10,8 +10,6 @@ process LEARNMSA_ALIGN {
     tuple val(meta), path("*.aln")      , emit: alignment
     path "versions.yml"                 , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

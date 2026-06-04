@@ -18,8 +18,6 @@ process MUDSKIPPER_BULK {
     tuple val(meta), path("${prefix}.rad"), optional:true, emit: rad
     path "versions.yml"                                  , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process FFQ {
     path "*.json"                                                                                              , emit: json
     tuple val("${task.process}"), val('ffq'), eval("ffq --help 2>&1 | sed 's/^.*ffq //; s/: A command.*\$//'") , emit: versions_ffq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

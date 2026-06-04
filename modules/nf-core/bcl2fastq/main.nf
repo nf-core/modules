@@ -18,8 +18,6 @@ process BCL2FASTQ {
     tuple val(meta), path("**/*.xml", includeInputs: true), emit: xml
     tuple val("${task.process}"), val('bcl2fastq'), eval("bcl2fastq -V 2>&1 | grep -m 1 bcl2fastq | sed 's/^.*bcl2fastq v//'"), topic: versions, emit: versions_bcl2fastq
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

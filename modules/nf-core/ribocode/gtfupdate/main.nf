@@ -14,8 +14,6 @@ process RIBOCODE_GTFUPDATE {
     tuple val(meta), path("*.gtf")                                                  , emit: gtf
     tuple val("${task.process}"), val('ribocode'), eval('RiboCode --version  2>&1') , emit: versions_ribocode, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

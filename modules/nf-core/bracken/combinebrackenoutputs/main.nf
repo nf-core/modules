@@ -14,8 +14,6 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
     tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('combine_bracken_outputs'), eval('bracken -v | cut -f2 -d"v"'), emit: versions_combine_bracken_outputs, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

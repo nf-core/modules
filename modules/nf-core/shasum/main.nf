@@ -14,8 +14,6 @@ process SHASUM {
     tuple val(meta), path("*.sha256"), emit: checksum
     tuple val("${task.process}"), val('sha256sum'), eval("sha256sum --version 2>&1 | head -n 1 | sed 's/.* //'"), emit: versions_sha256sum, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

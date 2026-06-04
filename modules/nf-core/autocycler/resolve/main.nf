@@ -16,8 +16,6 @@ process AUTOCYCLER_RESOLVE {
     tuple val(meta), path("resolve/${prefix}/${prefix}_5_final.gfa"),   emit: resolved
     tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

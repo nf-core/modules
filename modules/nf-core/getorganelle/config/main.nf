@@ -14,8 +14,6 @@ process GETORGANELLE_CONFIG {
     tuple val(organelle_type), path("getorganelle"), emit: db
     tuple val("${task.process}"), val('getorganelle'), eval("get_organelle_config.py --version |& sed 's/^GetOrganelle v//'"), topic: versions, emit: versions_getorganelle
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

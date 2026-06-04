@@ -19,8 +19,6 @@ process PURECN_INTERVALFILE {
     tuple val(meta), path("*.bed"), emit: bed, optional: true
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

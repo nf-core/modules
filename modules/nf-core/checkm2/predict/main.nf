@@ -16,8 +16,6 @@ process CHECKM2_PREDICT {
     tuple val(meta), path("${prefix}_checkm2_report.tsv"), emit: checkm2_tsv
     tuple val("${task.process}"), val('checkm2'), eval('checkm2 --version'), topic: versions, emit: versions_checkm2_predict
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

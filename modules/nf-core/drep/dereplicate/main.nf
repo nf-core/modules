@@ -18,8 +18,6 @@ process DREP_DEREPLICATE {
     tuple val(meta), path("logger.log"), emit: log
     tuple val("${task.process}"), val("drep"), eval("dRep | sed '2!d;s/.*v//g;s/ .*//g'"), emit:versions_drep, topic:versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

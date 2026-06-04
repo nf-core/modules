@@ -14,8 +14,6 @@ process EMBOSS_CONS {
     tuple val(meta), path("*.fa") , emit: consensus
     tuple val("${task.process}"), val('emboss'), eval('cons -version 2>&1 | sed "s/EMBOSS://"'), emit: versions_emboss, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

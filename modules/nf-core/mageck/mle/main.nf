@@ -16,8 +16,6 @@ process MAGECK_MLE {
     tuple val(meta), path("*.sgrna_summary.txt"), emit: sgrna_summary
     path "versions.yml"                         , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

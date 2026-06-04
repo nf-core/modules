@@ -18,8 +18,6 @@ process SAMTOOLS_FAIDX {
     tuple val(meta), path("*.gzi"), emit: gzi, optional: true
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

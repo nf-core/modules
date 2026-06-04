@@ -18,8 +18,6 @@ process LTRRETRIEVER_LAI {
     tuple val(meta), path("*.LAI.out")  , emit: lai_out     , optional: true
     path "versions.yml"                 , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args            = task.ext.args     ?: ''

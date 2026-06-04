@@ -19,8 +19,6 @@ process EMU_ABUNDANCE {
     tuple val(meta), path("${prefix}_unmapped.*")                       , emit: unmapped         , optional: true
     tuple val("${task.process}"), val('emu'), eval('emu --version 2>&1 | sed "s/^.*emu //; s/Using.*$//"'), topic: versions, emit: versions_emu
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

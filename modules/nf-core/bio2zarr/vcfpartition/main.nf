@@ -14,8 +14,6 @@ process BIO2ZARR_VCFPARTITION {
     tuple val(meta), path("*.tsv"), emit: partitions
     tuple val("${task.process}"), val('vcfpartition'), eval("vcfpartition --version | sed 's/.* //'"), topic: versions, emit: versions_vcfpartition
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -18,8 +18,6 @@ process MANTA_CONVERTINVERSION {
     tuple val("${task.process}"), val("manta"), eval("configManta.py --version"), topic: versions, emit: versions_manta
     tuple val("${task.process}"), val("samtools"), eval("samtools --version | head -1 | sed -e s'/samtools //'"), topic: versions, emit: versions_samtools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

@@ -16,8 +16,6 @@ process HELITRONSCANNER_DRAW {
     tuple val(meta), path("*.draw"), emit: draw
     tuple val("${task.process}"), val('helitronscanner'), eval("HelitronScanner |& sed -n 's/HelitronScanner V//p'"), topic: versions, emit: versions_helitronscanner
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args     ?: ''

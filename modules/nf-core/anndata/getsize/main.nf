@@ -16,8 +16,6 @@ process ANNDATA_GETSIZE {
     path "versions.yml"           , emit: versions_anndata, topic: versions
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

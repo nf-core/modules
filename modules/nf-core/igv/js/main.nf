@@ -16,8 +16,6 @@ process IGV_JS {
     tuple val(meta), path(index), emit: index_files
     tuple val("${task.process}"), val("cat"), eval("cat --version |& sed '1!d;s/.*coreutils) //'"), topic: versions, emit: versions_cat
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def browser_args = task.ext.args ?: ''

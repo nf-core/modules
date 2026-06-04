@@ -17,8 +17,6 @@ process CIVICPY_ANNOTATE {
     tuple val("${task.process}"), val('civicpy'), eval("civicpy --version | sed 's/.*version //'"), topic: versions, emit: versions_civicpy
     tuple val("${task.process}"), val('htslib'),  eval("bgzip --version 2>&1 | head -1 | sed 's/bgzip (htslib) //'"),  topic: versions, emit: versions_htslib
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args       = task.ext.args   ?: ''

@@ -15,8 +15,6 @@ process ARIBA_RUN {
     tuple val(meta), path("${prefix}/*"), emit: results
     tuple val("${task.process}"), val('ariba'), eval("ariba version 2>&1 | sed '1!d;s/ARIBA version: //'"), emit: versions_ariba, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

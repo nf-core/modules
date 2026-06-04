@@ -24,8 +24,6 @@ process CELLBENDER_REMOVEBACKGROUND {
     tuple val(meta), path("ckpt.tar.gz")                , emit: checkpoint
     tuple val("${task.process}"), val('cellbender'), eval('cellbender --version'), emit: versions_cellbender, topic: versions
 
-    when:
-        task.ext.when == null || task.ext.when
     script:
         prefix = task.ext.prefix ?: "${meta.id}"
         args = task.ext.args ?: ""

@@ -14,8 +14,6 @@ process DIANN_INSILICOLIBRARYGENERATION {
     tuple val(meta), path("*.log"),               emit: log
     tuple val("${task.process}"), val('diann'), eval('diann | grep "DIA-NN" | grep -oP "\\d+\\.\\d+(\\.\\w+)*(\\.[\\d]+)?"'), emit: versions_diann, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

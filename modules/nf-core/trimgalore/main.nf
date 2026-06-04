@@ -19,8 +19,6 @@ process TRIMGALORE {
     tuple val(meta), path("*.zip")                                     , emit: zip     , optional: true
     tuple val("${task.process}"), val("trimgalore"), eval('trim_galore --version | grep -Eo "[0-9]+(\\.[0-9]+)+"'), topic: versions, emit: versions_trimgalore
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

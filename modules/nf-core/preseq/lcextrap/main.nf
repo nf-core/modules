@@ -16,8 +16,6 @@ process PRESEQ_LCEXTRAP {
     tuple val(meta), path("*.log")          , emit: log
     tuple val("${task.process}"), val('preseq'), eval("preseq 2>&1 | sed -n 's/.*Version: \\(.*\\)/\\1/p'"), emit: versions_preseq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

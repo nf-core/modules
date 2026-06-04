@@ -20,8 +20,6 @@ process MTMALIGN_ALIGN {
     tuple val("${task.process}"), val('mtm-align'), eval('mtm-align -h | sed -n "s/.*Version \\([0-9]*\\).*/\\1/p"'), emit: versions_mtmalign, topic: versions
     tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

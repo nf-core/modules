@@ -21,8 +21,6 @@ process GUBBINS {
     path "*.node_labelled.final_tree.tre"   , emit: tree_labelled
     tuple val("${task.process}"), val('gubbins'), eval("run_gubbins.py --version 2>&1"), topic: versions, emit: versions_gubbins
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

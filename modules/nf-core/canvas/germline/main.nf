@@ -18,8 +18,6 @@ process CANVAS_GERMLINE {
     tuple val("${task.process}"), val('canvas'), val('1.40.0'), topic: versions, emit: versions_canvas
     // --version not supported by CLI, please update this manually when updating the tool
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

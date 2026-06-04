@@ -15,8 +15,6 @@ process NUMORPH_INTENSITY {
 
     tuple val("${task.process}"), val('numorph_intensity'), val('1.0.0'), emit: versions_numorph_intensity, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

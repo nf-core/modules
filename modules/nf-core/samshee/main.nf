@@ -19,8 +19,6 @@ process SAMSHEE {
     tuple val("${task.process}"), val('samshee'), val('0.2.13'), emit: versions_samshee, topic: versions
     tuple val("${task.process}"), val('python'), eval('python --version | sed -e "s/Python //g"'), emit: versions_python, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def arg_file_schema_validator = file_schema_validator ? "--schema '{\"\$ref\": \"file:${file_schema_validator}\"}'"   : ""

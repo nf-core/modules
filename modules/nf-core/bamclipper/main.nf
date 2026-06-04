@@ -17,8 +17,6 @@ process BAMCLIPPER {
     tuple val("${task.process}"), val('bamclipper'), val("1.0.0"), emit: versions_bamclipper, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
     // WARN: Version information not provided by tool on CLI
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

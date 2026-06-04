@@ -22,8 +22,6 @@ process HAPPY_SOMPY {
     tuple val(meta), path('*.stats.csv')              , emit: stats
     tuple val("${task.process}"), val('happy'), val('0.3.15'), topic: versions, emit: versions_happy
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

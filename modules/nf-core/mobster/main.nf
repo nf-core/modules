@@ -19,8 +19,6 @@ process MOBSTER {
     tuple val(meta), path("*_mobster_report.png")     , emit: mobster_report_png
     path "versions.yml"                               , emit: versions_mobster       , topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template "main_script.R"

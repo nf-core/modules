@@ -27,8 +27,6 @@ process ARTIC_MINION {
     tuple val(meta), path("*.json")                                   , emit: json, optional:true
     tuple val("${task.process}"), val('artic'), eval("artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//'"), topic: versions, emit: versions_artic
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

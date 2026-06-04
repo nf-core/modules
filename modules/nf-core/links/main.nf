@@ -24,8 +24,6 @@ process LINKS {
     tuple val(meta), path("*.tigpair_checkpoint.tsv"),      emit: tigpair_checkpoint
     tuple val("${task.process}"), val('liftoff'), eval("echo \$(LINKS | grep -o 'LINKS v.*' | sed 's/LINKS v//')"), emit: versions_links, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

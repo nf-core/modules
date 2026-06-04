@@ -16,8 +16,6 @@ process NGMERGE {
     tuple val(meta), path("*_2.fastq.gz")  , emit: unstitched_read2
     path "versions.yml"                    , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
