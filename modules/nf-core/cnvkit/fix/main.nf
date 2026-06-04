@@ -31,7 +31,6 @@ process CNVKIT_FIX {
         ${args} \\
         --output ${prefix}.cnr
     """
-
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
