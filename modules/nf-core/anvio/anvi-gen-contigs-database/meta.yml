@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "anvio_anvi_gen_contigs_database"
+description: Generate an anvi'o contigs database from FASTA sequences.
+keywords:
+  - anvio
+  - contigs
+  - database
+  - metagenomics
+  - fasta
+tools:
+  - "anvio":
+      description: "Anvi'o is an analysis and visualization platform for 'omics data."
+      homepage: "https://merenlab.org/software/anvio/"
+      documentation: "https://anvio.org/help/9/programs/anvi-gen-contigs-database/"
+      tool_dev_url: "https://github.com/merenlab/anvio"
+      doi: "10.1038/s41564-020-00834-3"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: biotools:anvio
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: FASTA file containing contigs or genome sequences.
+        pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - external_gene_calls:
+        type: file
+        optional: true
+        description: Optional TAB-delimited external gene calls file for anvi'o.
+        pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+output:
+  contigs_db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.CONTIGS.db":
+          type: file
+          description: Anvi'o contigs database.
+          pattern: "*.CONTIGS.db"
+          ontologies:
+            - edam: http://edamontology.org/format_3621 # SQLite format
+  versions_anvio:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - anvio:
+          type: string
+          description: The name of the tool
+      - "anvi-gen-contigs-database --version 2>&1 | head -n 1 | cut -f 2 -d : | cut -c 2- | sed 's/.*(v//; s/).*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - anvio:
+          type: string
+          description: The name of the tool
+      - "anvi-gen-contigs-database --version 2>&1 | head -n 1 | cut -f 2 -d : | cut -c 2- | sed 's/.*(v//; s/).*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@telatin"
+maintainers:
+  - "@telatin"
