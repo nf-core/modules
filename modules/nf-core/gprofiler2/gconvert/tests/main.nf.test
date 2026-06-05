@@ -1,0 +1,84 @@
+nextflow_process {
+
+    name "Test Process GPROFILER2_GCONVERT"
+    script "../main.nf"
+    process "GPROFILER2_GCONVERT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gprofiler"
+    tag "gprofiler_gconvert"
+    tag "gconvert"
+    tag "gprofiler2/gconvert"
+    tag "gprofiler2"
+
+    test("test") {
+
+        when {
+            params {
+                gprofiler2_organism = "mmusculus"
+                gprofiler2_filter_na = true
+                gprofiler2_mthreshold = "Inf"
+                gprofiler2_numeric_ns = ""
+
+                module_args = [
+                    "--organism \"${params.gprofiler2_organism}\"",
+                    "--filter_na \"${params.gprofiler2_filter_na}\"",
+                    "--mthreshold \"${params.gprofiler2_mthreshold}\"",
+                    ((params.gprofiler2_numeric_ns == null || params.gprofiler2_numeric_ns == '') ? '' : "--numeric_ns \"${params.gprofiler2_numeric_ns}\"")
+                ].join(' ').trim()
+            }
+            process {
+                """
+                input[0] = [
+                    ['id':'gconvert_test'],
+                    file("${moduleDir}/tests/input_ids.tsv", checkIfExists: true),
+                    "ENSG"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    process.out.converted,
+                    process.out.session_info.collect{ meta,session_info -> file(session_info).name },
+                    path(process.out.versions[0]).yaml
+                ).match()}
+            )
+        }
+    }
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = null
+            }
+            process {
+                """
+                input[0] = [
+                    ['id':'gconvert_test'],
+                    file("${moduleDir}/tests/input_ids.tsv", checkIfExists: true),
+                    "ENSG"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}
