@@ -45,7 +45,7 @@ output:
             a minimum score defined by the `--min_score` argument
           pattern: "Host_prediction_to_genus_m*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   iphop_genome:
     - - meta:
           type: map
@@ -58,7 +58,7 @@ output:
             with a minimum score defined by the `--min_score` argument
           pattern: "Host_prediction_to_genome_m*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   iphop_detailed_output:
     - - meta:
           type: map
@@ -70,7 +70,7 @@ output:
           description: File containing each phage's top 5 hits via each method
           pattern: "Detailed_output_by_tool.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   versions_iphop:
     - - ${task.process}:
           type: string
