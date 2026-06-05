@@ -26,7 +26,12 @@ input:
         The input channel containing the reference fasta and reference gtf/gff files
         Structure: [ val(meta), ["reference_annotations.{gff/gtf}"], ["reference_annotations.fa"]]
       pattern: "*{.gff,.gtf},*{.fa,.fasta}"
-
+  - ch_gene_synonyms:
+      type: file
+      description: |
+        The input channel containing the gene synonyms file
+        Structure: [ path('gene_synonyms.csv') ]
+      pattern: "*.csv"
 output:
   - summary:
       type: file
