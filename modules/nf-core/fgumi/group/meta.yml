@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fgumi_group"
 description: |
   Groups reads together that appear to have come from the same original molecule.
@@ -15,9 +14,9 @@ tools:
       homepage: "https://github.com/fulcrumgenomics/fgumi"
       documentation: "https://docs.rs/fgumi"
       tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -30,14 +29,17 @@ input:
           BAM file containing reads with UMI tags. The file must be coordinate sorted.
         pattern: "*.bam"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2572"
   - strategy:
       type: string
-      enum: ["Identity", "Edit", "Adjacency", "Paired"]
+      enum:
+        - "Identity"
+        - "Edit"
+        - "Adjacency"
+        - "Paired"
       description: |
         Required argument: defines the UMI assignment strategy.
         Must be chosen among: Identity, Edit, Adjacency, Paired.
-
 output:
   bam:
     - - meta:
@@ -50,24 +52,24 @@ output:
           description: UMI-grouped BAM file
           pattern: "*.bam"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-  family_size_histogram:
+            - edam: "http://edamontology.org/format_2572"
+  histogram:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.family_size_histogram.txt":
+      - "*.family_size_histogram.txt":
           type: file
           description: Optional output of tag family size counts
           pattern: "*.family_size_histogram.txt"
-  grouping_metrics:
+  metrics:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.grouping_metrics.txt":
+      - "*.grouping_metrics.txt":
           type: file
           description: Optional output of UMI grouping metrics
           pattern: "*.grouping_metrics.txt"
@@ -78,10 +80,9 @@ output:
       - fgumi:
           type: string
           description: The tool name
-      - 'fgumi --version | sed "s/^fgumi //"':
+      - fgumi --version | sed "s/^fgumi //":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -90,7 +91,7 @@ topics:
       - fgumi:
           type: string
           description: The tool name
-      - 'fgumi --version | sed "s/^fgumi //"':
+      - fgumi --version | sed "s/^fgumi //":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

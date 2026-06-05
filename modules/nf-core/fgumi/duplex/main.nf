@@ -13,9 +13,9 @@ process FGUMI_DUPLEX {
     val keep_rejected
 
     output:
-    tuple val(meta), path("${prefix}.bam"), emit: bam
-    tuple val(meta), path("*.rejects.bam"), emit: rejects, optional: true
-    tuple val(meta), path("*.stats.txt")  , emit: stats
+    tuple val(meta), path("${prefix}.bam")        , emit: bam
+    tuple val(meta), path("${prefix}.rejects.bam"), emit: rejects, optional: true
+    tuple val(meta), path("${prefix}.stats.txt")  , emit: stats
     tuple val("${task.process}"), val('fgumi'), eval('fgumi --version | sed "s/^fgumi //"'), topic: versions, emit: versions_fgumi
 
     when:

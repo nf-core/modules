@@ -13,8 +13,8 @@ process FGUMI_GROUP {
 
     output:
     tuple val(meta), path("*.bam")                      , emit: bam
-    tuple val(meta), path("*.family_size_histogram.txt"), emit: family_size_histogram
-    tuple val(meta), path("*.grouping_metrics.txt")     , emit: grouping_metrics
+    tuple val(meta), path("*.family_size_histogram.txt"), emit: histogram
+    tuple val(meta), path("*.grouping_metrics.txt")     , emit: metrics
     tuple val("${task.process}"), val('fgumi'), eval('fgumi --version | sed "s/^fgumi //"'), topic: versions, emit: versions_fgumi
 
     when:

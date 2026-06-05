@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fgumi_simplex"
 description: |
   Calls simplex consensus sequences from reads with the same unique molecular tag.
@@ -14,9 +13,9 @@ tools:
       homepage: "https://github.com/fulcrumgenomics/fgumi"
       documentation: "https://docs.rs/fgumi"
       tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -29,14 +28,13 @@ input:
           The input SAM or BAM file, grouped by UMIs
         pattern: "*.{bam,sam}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2572"
   - min_reads:
       type: integer
       description: Minimum number of original reads to build each consensus read.
   - keep_rejected:
       type: boolean
       description: If true, output rejected reads to a separate BAM file
-
 output:
   bam:
     - - meta:
@@ -44,13 +42,13 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - "${prefix}.bam":
           type: file
           description: |
             Output SAM or BAM file with simplex consensus reads.
           pattern: "*.{bam,sam}"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2572"
   rejects:
     - - meta:
           type: map
@@ -80,10 +78,9 @@ output:
       - fgumi:
           type: string
           description: The tool name
-      - 'fgumi --version | sed "s/^fgumi //"':
+      - fgumi --version | sed "s/^fgumi //":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -92,7 +89,7 @@ topics:
       - fgumi:
           type: string
           description: The tool name
-      - 'fgumi --version | sed "s/^fgumi //"':
+      - fgumi --version | sed "s/^fgumi //":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

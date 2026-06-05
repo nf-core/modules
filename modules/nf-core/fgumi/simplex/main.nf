@@ -13,9 +13,9 @@ process FGUMI_SIMPLEX {
     val keep_rejected
 
     output:
-    tuple val(meta), path("*.bam")        , emit: bam
-    tuple val(meta), path("*.rejects.bam"), emit: rejects, optional: true
-    tuple val(meta), path("*.stats.txt")  , emit: stats
+    tuple val(meta), path("${prefix}.bam")        , emit: bam
+    tuple val(meta), path("${prefix}.rejects.bam"), emit: rejects, optional: true
+    tuple val(meta), path("${prefix}.stats.txt")  , emit: stats
     tuple val("${task.process}"), val('fgumi'), eval('fgumi --version | sed "s/^fgumi //"'), topic: versions, emit: versions_fgumi
 
     when:
@@ -23,7 +23,7 @@ process FGUMI_SIMPLEX {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_simplex_unmapped"
+    prefix = task.ext.prefix ?: "${meta.id}_simplex_unmapped"
     def rejects_command = keep_rejected ? "--rejects ${prefix}.rejects.bam" : ''
 
     if ("${grouped_bam}" == "${prefix}.bam") {
@@ -42,7 +42,7 @@ process FGUMI_SIMPLEX {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}_simplex_unmapped"
+    prefix = task.ext.prefix ?: "${meta.id}_simplex_unmapped"
     if ("${grouped_bam}" == "${prefix}.bam") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
