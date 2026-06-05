@@ -12,37 +12,38 @@ nextflow_process {
     tag "fgumi/sort"
     tag "fgumi/group"
 
-    test("homo_sapiens - bam") {
-
-        setup {
-            run("FGUMI_SORT") {
-                script "../../sort/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.unsorted_tagged.bam', checkIfExists: true)
-                    ]
-                    """
-                }
-
+    setup {
+        run("FGUMI_SORT") {
+            script "../../sort/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.unsorted_tagged.bam', checkIfExists: true)
+                ]
+                """
             }
-            run("FGUMI_GROUP") {
-                script "../../group/main.nf"
-                process {
-                    """
-                    input[0] = FGUMI_SORT.out.bam
-                    input[1] = 'paired'
-                    """
-                }
+
+        }
+        run("FGUMI_GROUP") {
+            script "../../group/main.nf"
+            process {
+                """
+                input[0] = FGUMI_SORT.out.bam
+                input[1] = 'paired'
+                """
             }
         }
+    }
+
+    test("homo_sapiens - bam") {
 
         when {
             process {
                 """
                 input[0] = FGUMI_GROUP.out.bam
                 input[1] = '1,1,0'
+                input[2] = false
                 """
             }
         }
@@ -52,6 +53,28 @@ nextflow_process {
             assertAll(
                 // bam file is non deterministic in its output order
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['bam'])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - with rejects") {
+
+        when {
+            process {
+                """
+                input[0] = FGUMI_GROUP.out.bam
+                input[1] = '1,1,0'
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // bam file is non deterministic in its output order
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['bam', 'rejects'])).match() }
             )
         }
 
@@ -69,6 +92,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_grouped.bam', checkIfExists: true)
                 ]
                 input[1] = '1,1,0'
+                input[2] = false
                 """
             }
         }

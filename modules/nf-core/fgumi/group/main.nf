@@ -12,7 +12,9 @@ process FGUMI_GROUP {
     val strategy
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bam")                      , emit: bam
+    tuple val(meta), path("*.family_size_histogram.txt"), emit: family_size_histogram
+    tuple val(meta), path("*.grouping_metrics.txt")     , emit: grouping_metrics
     tuple val("${task.process}"), val('fgumi'), eval('fgumi --version | sed "s/^fgumi //"'), topic: versions, emit: versions_fgumi
 
     when:
@@ -31,6 +33,8 @@ process FGUMI_GROUP {
         --input ${bam} \\
         --output ${prefix}.bam \\
         --strategy ${strategy} \\
+        --family-size-histogram ${prefix}.family_size_histogram.txt \\
+        --grouping-metrics ${prefix}.grouping_metrics.txt \\
         ${args}
     """
 
@@ -41,5 +45,7 @@ process FGUMI_GROUP {
     }
     """
     touch ${prefix}.bam
+    touch ${prefix}.family_size_histogram.txt
+    touch ${prefix}.grouping_metrics.txt
     """
 }

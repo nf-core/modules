@@ -51,6 +51,26 @@ output:
           pattern: "*.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
+  family_size_histogram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.family_size_histogram.txt":
+          type: file
+          description: Optional output of tag family size counts
+          pattern: "*.family_size_histogram.txt"
+  grouping_metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.grouping_metrics.txt":
+          type: file
+          description: Optional output of UMI grouping metrics
+          pattern: "*.grouping_metrics.txt"
   versions_fgumi:
     - - ${task.process}:
           type: string

@@ -1,5 +1,5 @@
 {
-    "homo_sapiens - bam": {
+    "homo_sapiens - bam - with rejects": {
         "content": [
             {
                 "bam": [
@@ -7,7 +7,26 @@
                         {
                             "id": "test"
                         },
-                        "test_simplex_unmapped.bam"
+                        [
+                            "test_simplex_unmapped.bam",
+                            "test_simplex_unmapped.rejects.bam"
+                        ]
+                    ]
+                ],
+                "rejects": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_simplex_unmapped.rejects.bam"
+                    ]
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_simplex_unmapped.stats.txt:md5,61bfbca538c809387368c351412732ee"
                     ]
                 ],
                 "versions_fgumi": [
@@ -19,7 +38,44 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-05T08:29:35.499917244",
+        "timestamp": "2026-06-05T09:30:59.615215689",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "homo_sapiens - bam": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_simplex_unmapped.bam"
+                    ]
+                ],
+                "rejects": [
+                    
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_simplex_unmapped.stats.txt:md5,61bfbca538c809387368c351412732ee"
+                    ]
+                ],
+                "versions_fgumi": [
+                    [
+                        "FGUMI_SIMPLEX",
+                        "fgumi",
+                        "0.2.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-05T09:30:50.970124786",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
@@ -33,10 +89,29 @@
                         {
                             "id": "test"
                         },
-                        "test_simplex_unmapped.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test_simplex_unmapped.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_simplex_unmapped.rejects.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_simplex_unmapped.rejects.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_simplex_unmapped.stats.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
                     [
                         "FGUMI_SIMPLEX",
                         "fgumi",
@@ -48,7 +123,26 @@
                         {
                             "id": "test"
                         },
-                        "test_simplex_unmapped.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test_simplex_unmapped.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_simplex_unmapped.rejects.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "rejects": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_simplex_unmapped.rejects.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_simplex_unmapped.stats.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions_fgumi": [
@@ -60,7 +154,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-05T08:26:24.667536654",
+        "timestamp": "2026-06-05T09:31:07.344628876",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"

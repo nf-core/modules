@@ -33,6 +33,9 @@ input:
   - min_reads:
       type: integer
       description: Minimum number of original reads to build each consensus read.
+  - keep_rejected:
+      type: boolean
+      description: If true, output rejected reads to a separate BAM file
 
 output:
   bam:
@@ -48,6 +51,28 @@ output:
           pattern: "*.{bam,sam}"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
+  rejects:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.rejects.bam":
+          type: file
+          description: Optional BAM file containing reads that were rejected
+          pattern: "*.rejects.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.stats.txt":
+          type: file
+          description: Optional text file containing consensus statistics
+          pattern: "*.stats.txt"
   versions_fgumi:
     - - ${task.process}:
           type: string

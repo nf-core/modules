@@ -1,6 +1,6 @@
-process FGUMI_DUPLEX {
+process FGUMI_FILTER {
     tag "${meta.id}"
-    label 'process_single'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -8,14 +8,15 @@ process FGUMI_DUPLEX {
         : 'community.wave.seqera.io/library/fgumi:0.2.0--fe028e7a64e5da27'}"
 
     input:
-    tuple val(meta), path(grouped_bam)
+    tuple val(meta), path(bam)
+    tuple val(meta2), path(fasta)
     val min_reads
     val keep_rejected
 
     output:
-    tuple val(meta), path("${prefix}.bam"), emit: bam
-    tuple val(meta), path("*.rejects.bam"), emit: rejects, optional: true
-    tuple val(meta), path("*.stats.txt")  , emit: stats
+    tuple val(meta), path("${prefix}.bam")        , emit: bam
+    tuple val(meta), path("${prefix}.rejects.bam"), emit: rejects, optional: true
+    tuple val(meta), path("${prefix}.stats.txt")  , emit: stats
     tuple val("${task.process}"), val('fgumi'), eval('fgumi --version | sed "s/^fgumi //"'), topic: versions, emit: versions_fgumi
 
     when:
@@ -23,17 +24,17 @@ process FGUMI_DUPLEX {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}_duplex_unmapped"
+    prefix = task.ext.prefix ?: "${meta.id}_consensus_filtered"
     def rejects_command = keep_rejected ? "--rejects ${prefix}.rejects.bam" : ''
-
-    if ("${grouped_bam}" == "${prefix}.bam") {
+    if ("${bam}" == "${prefix}.bam") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
 
     """
-    fgumi duplex \\
-        --input ${grouped_bam} \\
+    fgumi filter \\
+        --input ${bam} \\
         --output ${prefix}.bam \\
+        --ref ${fasta} \\
         --min-reads ${min_reads} \\
         --threads ${task.cpus} \\
         --stats ${prefix}.stats.txt \\
@@ -42,9 +43,9 @@ process FGUMI_DUPLEX {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}_duplex_unmapped"
+    prefix = task.ext.prefix ?: "${meta.id}_consensus_filtered"
     def rejects_command = keep_rejected ? "touch ${prefix}.rejects.bam" : ''
-    if ("${grouped_bam}" == "${prefix}.bam") {
+    if ("${bam}" == "${prefix}.bam") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     """
