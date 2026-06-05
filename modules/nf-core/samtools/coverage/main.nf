@@ -3,7 +3,7 @@ process SAMTOOLS_COVERAGE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8c5d2818c8b9f58e1fba77ce219fdaf32087ae53e857c4a496402978af26e78c/data'
         : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
 
@@ -39,5 +39,6 @@ process SAMTOOLS_COVERAGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "#rname\tstartpos\tendpos\tnumreads\tcovbases\tcoverage\tmeandepth\tmeanbaseq\tmeanmapq" > ${prefix}.txt
+    echo "chr21\t16570000\t16610000\t8741\t39996\t99.9875\t32.4854\t29.6\t59.8" >> ${prefix}.txt
     """
 }

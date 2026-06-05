@@ -1,0 +1,130 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "gtf_hybridmerge_gffcompare"
+description: |
+  Build a hybrid GTF by classifying a novel-transcript GTF against a reference
+  annotation with gffcompare, filtering the resulting annotated GTF down to a
+  user-supplied set of class codes (e.g. "u" for novel intergenic), optionally
+  subtracting features that overlap a user-supplied blacklist BED, and merging
+  the survivors into an annotation backbone GTF. Gene rows missing from the
+  backbone for surviving novel transcripts are synthesised with coordinates
+  spanning the union of their child transcripts so the output is a
+  self-consistent GTF.
+
+  Input format scope: standard GTF2 with `gene_id` / `transcript_id`
+  attributes in column 9 and `gene` / `transcript` (and child `exon` etc.)
+  feature types in column 3. GFF3 dialects (Parent= / ID= attributes) and
+  prokaryotic GTFs without transcript rows are out of scope.
+
+  Resource sizing: GAWK steps hold the full input in memory under
+  `process_single`. Fine for annotation-scale GTFs; for >~500 MB inputs
+  override `memory` / `cpus` directly via `withName`.
+keywords:
+  - gtf
+  - annotation
+  - novel-transcripts
+  - gffcompare
+  - merge
+  - hybrid
+components:
+  - gffcompare
+  - gawk
+  - bedtools/intersect
+input:
+  - ch_novel_gtf:
+      type: file
+      description: |
+        Channel of novel-transcript GTFs (e.g. output of a StringTie merge or
+        a user-supplied annotation of unannotated transcribed regions) that
+        will be classified against the reference annotation. The subworkflow
+        is designed for a single novel-vs-single-backbone build; if a caller
+        has multiple novel GTFs (one per sample, say) they should be merged
+        before the call - the meta swap at the concat step adopts the
+        backbone meta and would collapse multiple emissions to the same id.
+        Structure: [ val(meta), path(novel_gtf) ]
+      pattern: "*.{gtf,gff,gff3}"
+  - ch_reference_gtf:
+      type: file
+      description: |
+        Channel containing the reference annotation GTF used by gffcompare to
+        compute class codes for every novel transcript. This drives which
+        transcripts survive the class-code filter, so callers usually want
+        the most complete annotation available here (not a subset such as a
+        canonical-only backbone).
+        Structure: [ val(meta), path(reference_gtf) ]
+      pattern: "*.{gtf,gff,gff3}"
+  - ch_backbone_gtf:
+      type: file
+      description: |
+        Channel containing the annotation GTF that surviving novel transcripts
+        are merged into. The output is the concatenation of this backbone and
+        the filtered novel transcripts; missing gene rows are synthesised. For
+        callers that only have one annotation, pass the same channel as
+        ch_reference_gtf; callers that want the novel transcripts grafted onto
+        a reduced annotation (e.g. canonical-only) pass the reduced GTF here.
+        Structure: [ val(meta), path(backbone_gtf) ]
+      pattern: "*.{gtf,gff,gff3}"
+  - val_class_codes:
+      type: string
+      description: |
+        Single-element value channel carrying the gffcompare class codes to
+        keep, either as a comma-separated string ("u" or "u,j,i") or a List
+        (["u", "j"]). Class codes describe how each novel transcript relates
+        to the reference: "u" is intergenic (unknown), "j" is a multi-exon
+        alternative splice junction, "i" is fully within a reference intron,
+        etc. See the gffcompare documentation for the full list.
+  - ch_blacklist_bed:
+      type: file
+      description: |
+        Optional channel containing a BED file of regions to exclude. Novel
+        transcripts overlapping these regions are dropped via `bedtools
+        intersect -v` (the bundled `nextflow.config` sets `ext.args = '-v'`
+        on `BEDTOOLS_INTERSECT`; consumers can override in their own
+        `modules.config` if they want strand-aware subtraction with `-v -s`,
+        or positive overlap, etc.). Useful for rRNA loci, repeats, or any
+        other interval set the caller wants kept out of the final hybrid GTF.
+        Pass `channel.empty()` to skip the intersect step entirely.
+        Structure: [ val(meta), path(blacklist_bed) ]
+      pattern: "*.{bed}"
+output:
+  - hybrid_gtf:
+      type: file
+      description: |
+        The hybrid GTF: the backbone annotation concatenated with surviving
+        novel transcripts, with synthesised gene rows for any novel gene_id
+        not already present in the backbone. Comment lines (`#`) are stripped.
+        The emitted meta is the backbone's meta (`ch_backbone_gtf`), not the
+        novel input's, so downstream channels keyed on the backbone's
+        identity can `.join()` against this output directly.
+        Structure: [ val(meta), path(hybrid_gtf) ]
+      pattern: "*.gtf"
+  - gffcompare_stats:
+      type: file
+      description: |
+        gffcompare summary statistics file. Useful for QC reporting of the
+        classification step.
+        Structure: [ val(meta), path(stats) ]
+      pattern: "*.stats"
+  - gffcompare_tracking:
+      type: file
+      description: |
+        gffcompare per-transcript tracking file, mapping every novel transcript
+        to its best match in the reference annotation.
+        Structure: [ val(meta), path(tracking) ]
+      pattern: "*.tracking"
+  - gffcompare_loci:
+      type: file
+      description: |
+        gffcompare loci file, listing each locus covered by the novel and
+        reference transcripts.
+        Structure: [ val(meta), path(loci) ]
+      pattern: "*.loci"
+  - versions:
+      type: file
+      description: |
+        Software versions are emitted via the `versions` topic channel by the
+        upstream gffcompare, gawk, and bedtools modules; no separate output is
+        emitted from this subworkflow.
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

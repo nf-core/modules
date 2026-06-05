@@ -8,7 +8,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.glimpse.map:md5,05001683f22b2ec9605e813f702ade51"
+                        "test.glimpse.map:md5,a59a4fb7872ed1f88a35c1d57eedc279"
                     ]
                 ],
                 "minimac_map": [
@@ -17,7 +17,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.minimac.map:md5,1c5df03bc2700ce614b4ffa4d07461a9"
+                        "test.minimac.map:md5,c1977bddda3d9efcb28f286041855cc5"
                     ]
                 ],
                 "plink_map": [
@@ -26,7 +26,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.plink.map:md5,0036e04f97766ab4b987424378aa12c5"
+                        "test.plink.map:md5,21f0a2f5803c03c285b172a2cb8b9028"
                     ]
                 ],
                 "stitch_map": [
@@ -35,25 +35,45 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.stitch.map:md5,8535afd2a4bdca098ee9c180497d9cb5"
+                        "test.stitch.map:md5,b2f6729b3c23fb949e06f3e9dcd782c0"
                     ]
                 ],
-                "versions_geneticmapconvert": [
-                    "versions.yml:md5,bf7d372b346eed33795c113d39c875d1"
+                "versions": [
+                    "versions.yml:md5,9e24243bcd40c742e200d57da746a8b9"
                 ]
             },
             {
                 "CUSTOM_GENETICMAPCONVERT": {
                     "r-base": "4.5.3",
                     "r-data.table": "1.17.8",
-                    "r-stringr": "1.6.0"
+                    "r-janitor": "2.2.1"
                 }
-            }
+            },
+            [
+                "pos\tchr\tcM",
+                "12968320\tchr21\t0",
+                "12970435\tchr21\t0.00133"
+            ],
+            [
+                "chr21 . 0 12968320",
+                "chr21 . 0.00133 12970435",
+                "chr21 . 0.005809 12977762"
+            ],
+            [
+                "position COMBINED_rate.cM.Mb. Genetic_Map.cM.",
+                "12968320 0.62884161 0",
+                "12970435 0.61130067 0.00133"
+            ],
+            [
+                "#chr\tposition\tGenetic_Map(cM)",
+                "chr21\t12968320\t0",
+                "chr21\t12970435\t0.00133"
+            ]
         ],
-        "timestamp": "2026-03-23T14:07:35.654718484",
+        "timestamp": "2026-04-21T17:17:09.741694079",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "26.02.0"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
         }
     },
     "Convert map with chr\\tpos\\tcm - with header - meta.chr (minimac format)": {
@@ -65,7 +85,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.glimpse.map:md5,05001683f22b2ec9605e813f702ade51"
+                        "test.glimpse.map:md5,a59a4fb7872ed1f88a35c1d57eedc279"
                     ]
                 ],
                 "minimac_map": [
@@ -74,7 +94,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.minimac.map:md5,1c5df03bc2700ce614b4ffa4d07461a9"
+                        "test.minimac.map:md5,c1977bddda3d9efcb28f286041855cc5"
                     ]
                 ],
                 "plink_map": [
@@ -83,7 +103,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.plink.map:md5,0036e04f97766ab4b987424378aa12c5"
+                        "test.plink.map:md5,21f0a2f5803c03c285b172a2cb8b9028"
                     ]
                 ],
                 "stitch_map": [
@@ -92,25 +112,45 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.stitch.map:md5,8535afd2a4bdca098ee9c180497d9cb5"
+                        "test.stitch.map:md5,b2f6729b3c23fb949e06f3e9dcd782c0"
                     ]
                 ],
-                "versions_geneticmapconvert": [
-                    "versions.yml:md5,bf7d372b346eed33795c113d39c875d1"
+                "versions": [
+                    "versions.yml:md5,9e24243bcd40c742e200d57da746a8b9"
                 ]
             },
             {
                 "CUSTOM_GENETICMAPCONVERT": {
                     "r-base": "4.5.3",
                     "r-data.table": "1.17.8",
-                    "r-stringr": "1.6.0"
+                    "r-janitor": "2.2.1"
                 }
-            }
+            },
+            [
+                "pos\tchr\tcM",
+                "12968320\tchr21\t0",
+                "12970435\tchr21\t0.00133"
+            ],
+            [
+                "chr21 . 0 12968320",
+                "chr21 . 0.00133 12970435",
+                "chr21 . 0.005809 12977762"
+            ],
+            [
+                "position COMBINED_rate.cM.Mb. Genetic_Map.cM.",
+                "12968320 0.62884161 0",
+                "12970435 0.61130067 0.00133"
+            ],
+            [
+                "#chr\tposition\tGenetic_Map(cM)",
+                "chr21\t12968320\t0",
+                "chr21\t12970435\t0.00133"
+            ]
         ],
-        "timestamp": "2026-03-23T14:08:00.759077605",
+        "timestamp": "2026-04-21T17:17:40.527355799",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "26.02.0"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
         }
     },
     "Convert map with pos rate cm - with header - meta.chr (stitch format)": {
@@ -122,7 +162,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.glimpse.map:md5,e52b018a268a38bf26d03dc67818ff68"
+                        "test.glimpse.map:md5,c00f02865a7a19139f7590cd49b8d20e"
                     ]
                 ],
                 "minimac_map": [
@@ -131,7 +171,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.minimac.map:md5,86286dd0705169a28918aad0f28db224"
+                        "test.minimac.map:md5,c2d53e3c73f55fb7590db835f26b1fc8"
                     ]
                 ],
                 "plink_map": [
@@ -140,7 +180,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.plink.map:md5,afb7473d25cd3c79a1273d37d1913eb6"
+                        "test.plink.map:md5,feb793cc9b1f958a3cc5722cef2c3faa"
                     ]
                 ],
                 "stitch_map": [
@@ -149,25 +189,45 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.stitch.map:md5,cef33e9aad8b03f015502617361fed9d"
+                        "test.stitch.map:md5,4123204866241e52e702d30f56ec1bd5"
                     ]
                 ],
-                "versions_geneticmapconvert": [
-                    "versions.yml:md5,bf7d372b346eed33795c113d39c875d1"
+                "versions": [
+                    "versions.yml:md5,9e24243bcd40c742e200d57da746a8b9"
                 ]
             },
             {
                 "CUSTOM_GENETICMAPCONVERT": {
                     "r-base": "4.5.3",
                     "r-data.table": "1.17.8",
-                    "r-stringr": "1.6.0"
+                    "r-janitor": "2.2.1"
                 }
-            }
+            },
+            [
+                "pos\tchr\tcM",
+                "9887804\tchr21\t0",
+                "9928594\tchr21\t0.0418492"
+            ],
+            [
+                "chr21 . 0 9887804",
+                "chr21 . 0.0418492 9928594",
+                "chr21 . 0.041952721 9928786"
+            ],
+            [
+                "position COMBINED_rate.cM.Mb. Genetic_Map.cM.",
+                "9887804 1.0259671 0",
+                "9928594 0.53917044 0.0418492"
+            ],
+            [
+                "#chr\tposition\tGenetic_Map(cM)",
+                "chr21\t9887804\t0",
+                "chr21\t9928594\t0.0418492"
+            ]
         ],
-        "timestamp": "2026-03-23T14:08:09.798871185",
+        "timestamp": "2026-04-21T16:56:42.982751661",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "26.02.0"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
         }
     },
     "Convert map with chr id cm pos - no header - meta.chr (plink format)": {
@@ -179,7 +239,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.glimpse.map:md5,e0106cfa96d41c7ccf2e414adf78ddd9"
+                        "test.glimpse.map:md5,eda05f6e81718e00e83085bb0b07e584"
                     ]
                 ],
                 "minimac_map": [
@@ -188,7 +248,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.minimac.map:md5,48c59c99a759484572da0bb82008680d"
+                        "test.minimac.map:md5,ab83755a9804d27b1086e48e2da64992"
                     ]
                 ],
                 "plink_map": [
@@ -197,7 +257,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.plink.map:md5,62b2af1b90139350cbdd6decc661f0d0"
+                        "test.plink.map:md5,57966816771960670e5149fa5c3cec60"
                     ]
                 ],
                 "stitch_map": [
@@ -206,25 +266,118 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.stitch.map:md5,2c608eedfc6dd2fc039901e86f898be3"
+                        "test.stitch.map:md5,939930334691cc1730c3c322af8c2c32"
                     ]
                 ],
-                "versions_geneticmapconvert": [
-                    "versions.yml:md5,bf7d372b346eed33795c113d39c875d1"
+                "versions": [
+                    "versions.yml:md5,9e24243bcd40c742e200d57da746a8b9"
                 ]
             },
             {
                 "CUSTOM_GENETICMAPCONVERT": {
                     "r-base": "4.5.3",
                     "r-data.table": "1.17.8",
-                    "r-stringr": "1.6.0"
+                    "r-janitor": "2.2.1"
                 }
-            }
+            },
+            [
+                "pos\tchr\tcM",
+                "10326676\tchr21\t0",
+                "12968320\tchr21\t0"
+            ],
+            [
+                "chr21 . 0 10326676",
+                "chr21 . 0 12968320",
+                "chr21 . 0.00133 12970435"
+            ],
+            [
+                "position COMBINED_rate.cM.Mb. Genetic_Map.cM.",
+                "10326676 0 0",
+                "12968320 0.62884161 0"
+            ],
+            [
+                "#chr\tposition\tGenetic_Map(cM)",
+                "chr21\t10326676\t0",
+                "chr21\t12968320\t0"
+            ]
         ],
-        "timestamp": "2026-03-23T14:08:26.953980943",
+        "timestamp": "2026-04-21T17:18:47.986410489",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "26.02.0"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "Test with comma separator and keep id": {
+        "content": [
+            {
+                "glimpse_map": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.glimpse.map:md5,f8436a50a76806347db9e274deac93a4"
+                    ]
+                ],
+                "minimac_map": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.minimac.map:md5,584101d8544bb3c8d0e7ca30307a4a8e"
+                    ]
+                ],
+                "plink_map": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.plink.map:md5,f181dc5717646db4298c174c3642c7f7"
+                    ]
+                ],
+                "stitch_map": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.stitch.map:md5,6caae6ed9b5b3d68229a74f528c3e737"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,9e24243bcd40c742e200d57da746a8b9"
+                ]
+            },
+            {
+                "CUSTOM_GENETICMAPCONVERT": {
+                    "r-base": "4.5.3",
+                    "r-data.table": "1.17.8",
+                    "r-janitor": "2.2.1"
+                }
+            },
+            [
+                "pos\tchr\tcM",
+                "12968320\tchr21\t0",
+                "12970435\tchr21\t0.00133"
+            ],
+            [
+                "chr21 id1 0 12968320",
+                "chr21 id2 0.00133 12970435",
+                "chr21 id3 0.005809 12977762"
+            ],
+            [
+                "position COMBINED_rate.cM.Mb. Genetic_Map.cM.",
+                "12968320 0.62884161 0",
+                "12970435 0.61130067 0.00133"
+            ],
+            [
+                "#chr\tposition\tGenetic_Map(cM)",
+                "chr21\t12968320\t0",
+                "chr21\t12970435\t0.00133"
+            ]
+        ],
+        "timestamp": "2026-04-21T17:19:48.646532306",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
         }
     },
     "Convert map with pos\\tchr\\tcM - with header - meta.chr (glimpse compressed format)": {
@@ -236,7 +389,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.glimpse.map:md5,05001683f22b2ec9605e813f702ade51"
+                        "test.glimpse.map:md5,a59a4fb7872ed1f88a35c1d57eedc279"
                     ]
                 ],
                 "minimac_map": [
@@ -245,7 +398,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.minimac.map:md5,1c5df03bc2700ce614b4ffa4d07461a9"
+                        "test.minimac.map:md5,c1977bddda3d9efcb28f286041855cc5"
                     ]
                 ],
                 "plink_map": [
@@ -254,7 +407,7 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.plink.map:md5,0036e04f97766ab4b987424378aa12c5"
+                        "test.plink.map:md5,21f0a2f5803c03c285b172a2cb8b9028"
                     ]
                 ],
                 "stitch_map": [
@@ -263,25 +416,45 @@
                             "id": "test",
                             "chr": "chr21"
                         },
-                        "test.stitch.map:md5,8535afd2a4bdca098ee9c180497d9cb5"
+                        "test.stitch.map:md5,b2f6729b3c23fb949e06f3e9dcd782c0"
                     ]
                 ],
-                "versions_geneticmapconvert": [
-                    "versions.yml:md5,bf7d372b346eed33795c113d39c875d1"
+                "versions": [
+                    "versions.yml:md5,9e24243bcd40c742e200d57da746a8b9"
                 ]
             },
             {
                 "CUSTOM_GENETICMAPCONVERT": {
                     "r-base": "4.5.3",
                     "r-data.table": "1.17.8",
-                    "r-stringr": "1.6.0"
+                    "r-janitor": "2.2.1"
                 }
-            }
+            },
+            [
+                "pos\tchr\tcM",
+                "12968320\tchr21\t0",
+                "12970435\tchr21\t0.00133"
+            ],
+            [
+                "chr21 . 0 12968320",
+                "chr21 . 0.00133 12970435",
+                "chr21 . 0.005809 12977762"
+            ],
+            [
+                "position COMBINED_rate.cM.Mb. Genetic_Map.cM.",
+                "12968320 0.62884161 0",
+                "12970435 0.61130067 0.00133"
+            ],
+            [
+                "#chr\tposition\tGenetic_Map(cM)",
+                "chr21\t12968320\t0",
+                "chr21\t12970435\t0.00133"
+            ]
         ],
-        "timestamp": "2026-03-23T14:07:51.359075601",
+        "timestamp": "2026-04-21T17:17:25.458379776",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "26.02.0"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
         }
     },
     "Test stub": {
@@ -323,22 +496,22 @@
                         "test.stitch.map:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions_geneticmapconvert": [
-                    "versions.yml:md5,bf7d372b346eed33795c113d39c875d1"
+                "versions": [
+                    "versions.yml:md5,9e24243bcd40c742e200d57da746a8b9"
                 ]
             },
             {
                 "CUSTOM_GENETICMAPCONVERT": {
                     "r-base": "4.5.3",
                     "r-data.table": "1.17.8",
-                    "r-stringr": "1.6.0"
+                    "r-janitor": "2.2.1"
                 }
             }
         ],
-        "timestamp": "2026-03-23T13:58:47.642073787",
+        "timestamp": "2026-04-21T17:20:09.156535388",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "26.02.0"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
         }
     }
 }

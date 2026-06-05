@@ -30,7 +30,7 @@ workflow QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT {
     //
     ch_tx2gene_quants = quant_results
         .first()
-        .map { meta, results -> [ [:], results ] }
+        .map { _meta, results -> [ [:], results ] }
 
     CUSTOM_TX2GENE (
         gtf.map { gtf_file -> [ [:], gtf_file ] },
@@ -97,6 +97,7 @@ workflow QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT {
 
     emit:
     tx2gene                   = CUSTOM_TX2GENE.out.tx2gene                     // channel: [ val(meta), tx2gene.tsv ]
+    tx2gene_augmented         = TXIMETA_TXIMPORT.out.tx2gene_augmented         // channel: [ val(meta), tx2gene_augmented.tsv ]
 
     tpm_gene                  = TXIMETA_TXIMPORT.out.tpm_gene                  //    path: *gene_tpm.tsv
     counts_gene               = TXIMETA_TXIMPORT.out.counts_gene               //    path: *gene_counts.tsv

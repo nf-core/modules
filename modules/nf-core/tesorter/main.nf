@@ -3,9 +3,9 @@ process TESORTER {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tesorter:1.4.7--pyhdfd78af_1':
-        'biocontainers/tesorter:1.4.7--pyhdfd78af_1' }"
+        'quay.io/biocontainers/tesorter:1.4.7--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta)

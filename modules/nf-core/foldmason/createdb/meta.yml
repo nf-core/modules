@@ -12,9 +12,9 @@ tools:
       documentation: "https://github.com/steineggerlab/foldmason"
       tool_dev_url: "https://github.com/steineggerlab/foldmason"
       doi: "10.1101/2024.08.01.606130"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:foldmason
-
 input:
   - - meta:
         type: map
@@ -25,7 +25,6 @@ input:
         type: file
         description: Input protein structures in `PDB` or `mmCIF` format.
         pattern: "*.{pdb,mmcif}"
-
         ontologies: []
 output:
   db:
@@ -39,13 +38,27 @@ output:
           description: All database files created by Foldmason
           pattern: "*"
           ontologies: []
+  versions_foldmason:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - foldmason:
+          type: string
+          description: The name of the tool
+      - foldmason version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - foldmason:
+          type: string
+          description: The name of the tool
+      - foldmason version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
 maintainers:

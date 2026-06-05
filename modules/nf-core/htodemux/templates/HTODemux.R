@@ -160,7 +160,7 @@ writeLines(
     c(
         '"${task.process}":',
         paste('    r-base:', r.version),
-        paste('    seurat:', seurat.version)
+        paste('    r-seurat:', seurat.version)
     ),
 'versions.yml')
 

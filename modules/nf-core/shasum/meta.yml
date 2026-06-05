@@ -9,7 +9,8 @@ tools:
       description: Create an SHA256 (256-bit) checksum.
       homepage: "https://www.gnu.org"
       documentation: "https://linux.die.net/man/1/shasum"
-      licence: ["GPLv3+"]
+      licence:
+        - "GPLv3+"
       identifier: ""
 input:
   - - meta:
@@ -34,13 +35,27 @@ output:
           description: File containing checksum
           pattern: "*.sha256"
           ontologies: []
+  versions_sha256sum:
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - sha256sum:
+          type: string
+          description: Tool name
+      - "sha256sum --version 2>&1 | head -n 1 | sed 's/.* //'":
+          type: eval
+          description: Software version
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - sha256sum:
+          type: string
+          description: Tool name
+      - "sha256sum --version 2>&1 | head -n 1 | sed 's/.* //'":
+          type: eval
+          description: Software version
 authors:
   - "@matthdsm"
 maintainers:

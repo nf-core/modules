@@ -1,0 +1,92 @@
+name: "rmats_prep"
+description: MATS is a computational tool to detect differential alternative
+  splicing events from RNA-Seq data.
+keywords:
+  - splicing
+  - RNA-Seq
+  - alternative splicing
+  - exon
+  - intron
+  - rMATS
+tools:
+  - "rmats":
+      description: "MATS is a computational tool to detect differential alternative
+        splicing events from RNA-Seq data."
+      homepage: "https://github.com/Xinglab/rmats-turbo"
+      documentation: "https://github.com/Xinglab/rmats-turbo/blob/v4.3.0/README.md"
+      doi: "10.1038/s41596-023-00944-2"
+      licence:
+        - "FreeBSD for non-commercial use, see LICENSE file"
+      identifier: biotools:rmats
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1', single_end:false, strandness:'auto']`
+    - genome_bam:
+        type: file
+        description: BAM file aligned to the genome
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+  - - meta2:
+        type: map
+        description: Groovy Map containing genome information
+    - reference_gtf:
+        type: file
+        description: Annotation GTF file
+        pattern: "*.{gtf}"
+        ontologies:
+          - edam: http://edamontology.org/format_2306
+  - read_length:
+      type: integer
+      description: Read length in bases
+output:
+  rmats:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1'single_end:false, strandness:'auto']`
+      - "*.rmats":
+          type: file
+          description: rmats junction count information, after processing the BAM
+            file
+          pattern: "*.rmats"
+          ontologies: []
+  read_outcomes:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1'single_end:false, strandness:'auto']`
+      - "*read_outcomes_by_bam.txt":
+          type: file
+          description: text file detailing number of reads used and not used for
+            various reasons (clipped, not paired, wrong length, etc.)
+          pattern: "*read_outcomes_by_bam.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330
+  versions_rmats:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rmats:
+          type: string
+          description: The tool name
+      - rmats.py --version | sed -e "s/v//g":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rmats:
+          type: string
+          description: The tool name
+      - rmats.py --version | sed -e "s/v//g":
+          type: eval
+          description: The command used to generate the version of the tool
+authors:
+  - "@akaviaLab"
+maintainers:
+  - "@akaviaLab"

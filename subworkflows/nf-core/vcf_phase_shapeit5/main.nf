@@ -76,7 +76,7 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.index,
             failOnMismatch:true, failOnDuplicate:true
         )
         .map{ meta, vcf, index ->
@@ -85,17 +85,17 @@ workflow VCF_PHASE_SHAPEIT5 {
         }
         .groupTuple()
 
-    SHAPEIT5_LIGATE(ch_ligate_input)
+    SHAPEIT5_LIGATE(ch_ligate_input,'')
 
     BCFTOOLS_INDEX_LIGATE(SHAPEIT5_LIGATE.out.merged_variants)
 
     ch_vcf_index = SHAPEIT5_LIGATE.out.merged_variants
         .join(
-            BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
+            BCFTOOLS_INDEX_LIGATE.out.index,
             failOnMismatch:true, failOnDuplicate:true
         )
 
     emit:
     chunks    = ch_chunks    // channel: [ [id, chr], regionout]
-    vcf_index = ch_vcf_index // channel: [ [id, chr], vcf, csi ]
+    vcf_index = ch_vcf_index // channel: [ [id, chr], vcf, index ]
 }

@@ -17,7 +17,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [],
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/minigut_cf.tar.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'delete_me/minigut_cf.tar.gz', checkIfExists: true)
                     ]
                     """
                 }
@@ -48,7 +48,7 @@ nextflow_process {
                     file(process.out.results[0][1]).name,
                     file(process.out.fastq_mapped[0][1][0]).name,
                     file(process.out.fastq_unmapped[0][1][0]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -81,7 +81,7 @@ nextflow_process {
                     file(process.out.results[0][1]).name,
                     file(process.out.fastq_mapped[0][1][0]).name,
                     file(process.out.fastq_unmapped[0][1][0]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -108,7 +108,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -23,7 +23,6 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-
     - input:
         type: file
         description: |
@@ -32,6 +31,8 @@ input:
         pattern: "*.{fa,fq,fa.gz,fq.gz,bam}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_2572 # BAM
+
   - - meta2:
         type: map
         description: |
@@ -40,11 +41,13 @@ input:
 
     - reference:
         type: file
-        description: Reference FASTA file to map reads to, or minimap2/strobealign index.
+        description: |
+          Reference FASTA file to map reads to, or minimap2/strobealign index.
           Not required if using BAM input.
         pattern: "*.{fasta,fasta.gz,mmi,sti}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 
-        ontologies: []
   - bam_input:
       type: boolean
       description: True if input is bam files
@@ -53,20 +56,37 @@ input:
       type: boolean
       description: True if input is interleaved fastq file
 
+  - enable_bam_output:
+      type: boolean
+      description: True to enable BAM output of aligned reads
+
 output:
   coverage:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.depths.{txt}"
-      - "*.depth.txt":
+            e.g. `[ id:'sample1' ]`
+      - "*.depth.tsv":
+          type: file
+          description: Tab-delimited file containing coverage information for each contig and sample.
+          pattern: "*.depth.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.depths.{txt}"
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: BAM file containing aligned reads.
+          pattern: "*.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+
   versions_coverm:
     - - ${task.process}:
           type: string

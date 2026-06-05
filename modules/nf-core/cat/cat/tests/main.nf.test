@@ -9,7 +9,7 @@ nextflow_process {
     tag "cat"
     tag "cat/cat"
 
-    test("sarscov2 - genome - error: name conflict") {
+    test("sarscov2 - genome - error: name conflict - deprecated") {
         when {
             process {
                 """
@@ -26,167 +26,169 @@ nextflow_process {
         }
         then {
             assertAll(
-                { assert !process.success },
-                { assert process.stdout.toString().contains("The name of the input file can't be the same as for the output prefix") },
-                { assert snapshot(process.out).match() }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                // { assert !process.success },
+                // { assert process.stdout.toString().contains("The name of the input file can't be the same as for the output prefix") },
+                // { assert snapshot(process.out).match() }
             )
         }
     }
 
-    test("sarscov2 - [ fasta, sizes ] - unzipped") {
-        when {
-            process {
-                """
-                input[0] =
-                    [
-                        [ id:'test', single_end:true ],
-                        [
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.sizes', checkIfExists: true)
-                        ]
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
+    // test("sarscov2 - [ fasta, sizes ] - unzipped") {
+    //     when {
+    //         process {
+    //             """
+    //             input[0] =
+    //                 [
+    //                     [ id:'test', single_end:true ],
+    //                     [
+    //                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+    //                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.sizes', checkIfExists: true)
+    //                     ]
+    //                 ]
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out).match() }
+    //         )
+    //     }
+    // }
 
 
-    test("sarscov2 - [ gff3_gz, maf_gz ] - zipped") {
-        when {
-            process {
-                """
-                input[0] =
-                    [
-                        [ id:'test', single_end:true ],
-                        [
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
-                        ]
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match()
-                }
-            )
-        }
-    }
+    // test("sarscov2 - [ gff3_gz, maf_gz ] - zipped") {
+    //     when {
+    //         process {
+    //             """
+    //             input[0] =
+    //                 [
+    //                     [ id:'test', single_end:true ],
+    //                     [
+    //                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true),
+    //                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+    //                     ]
+    //                 ]
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out).match()
+    //             }
+    //         )
+    //     }
+    // }
 
-    test("sarscov2 - [ gff3_gz, maf_gz ] - unzipped") {
-        config './nextflow.config'
+    // test("sarscov2 - [ gff3_gz, maf_gz ] - unzipped") {
+    //     config './nextflow.config'
 
-        when {
-            params {
-                cat_prefix = "cat.txt"
-            }
-            process {
-                """
-                input[0] =
-                    [
-                        [ id:'test', single_end:true ],
-                        [
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
-                        ]
-                    ]
-                """
-            }
-        }
+    //     when {
+    //         params {
+    //             cat_prefix = "cat.txt"
+    //         }
+    //         process {
+    //             """
+    //             input[0] =
+    //                 [
+    //                     [ id:'test', single_end:true ],
+    //                     [
+    //                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true),
+    //                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+    //                     ]
+    //                 ]
+    //             """
+    //         }
+    //     }
 
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out).match() }
+    //         )
+    //     }
 
-    }
+    // }
 
-    test("sarscov2 - [ fasta, sizes ] - zipped") {
-        config './nextflow.config'
+    // test("sarscov2 - [ fasta, sizes ] - zipped") {
+    //     config './nextflow.config'
 
-        when {
-            params {
-                cat_prefix = "cat.txt.gz"
-            }
-            process {
-                """
-                input[0] =
-                    [
-                        [ id:'test', single_end:true ],
-                        [
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.sizes', checkIfExists: true)
-                        ]
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
+    //     when {
+    //         params {
+    //             cat_prefix = "cat.txt.gz"
+    //         }
+    //         process {
+    //             """
+    //             input[0] =
+    //                 [
+    //                     [ id:'test', single_end:true ],
+    //                     [
+    //                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+    //                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.sizes', checkIfExists: true)
+    //                     ]
+    //                 ]
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out).match() }
+    //         )
+    //     }
+    // }
 
-    test("sarscov2 - fasta - zipped") {
-        config './nextflow.config'
+    // test("sarscov2 - fasta - zipped") {
+    //     config './nextflow.config'
 
-        when {
-            params {
-                cat_prefix = "cat.txt.gz"
-            }
-            process {
-                """
-                input[0] =
-                    [
-                        [ id:'test', single_end:true ],
-                        [
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                        ]
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
+    //     when {
+    //         params {
+    //             cat_prefix = "cat.txt.gz"
+    //         }
+    //         process {
+    //             """
+    //             input[0] =
+    //                 [
+    //                     [ id:'test', single_end:true ],
+    //                     [
+    //                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+    //                     ]
+    //                 ]
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out).match() }
+    //         )
+    //     }
+    // }
 
-    test("sarscov2 - fasta - unzipped - stub") {
-        options "-stub"
+    // test("sarscov2 - fasta - unzipped - stub") {
+    //     options "-stub"
 
-        when {
-            process {
-                """
-                input[0] =
-                    [
-                        [ id:'test', single_end:true ],
-                        [
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                        ]
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
+    //     when {
+    //         process {
+    //             """
+    //             input[0] =
+    //                 [
+    //                     [ id:'test', single_end:true ],
+    //                     [
+    //                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+    //                     ]
+    //                 ]
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out).match() }
+    //         )
+    //     }
+    // }
 }

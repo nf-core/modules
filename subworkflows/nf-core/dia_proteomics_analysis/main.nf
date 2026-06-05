@@ -339,9 +339,11 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .groupTuple()                                                // [meta_exp_searchdb, [ms_file], [speclib], [diann_quant]]  (clean groupTuple)
         .map{ tuple -> sortListsByPathName(tuple, 1) }
         .combine(ch_initial_mass_settings_by_exp, by: 0)             // [meta_exp_searchdb, [ms_files], [speclib], [quant], mass_settings]
-        .map { meta, ms_files, speclib, diann_quant, mass_settings ->
-            [meta + mass_settings, ms_files, [], [], speclib.unique{ it.name }, diann_quant]
-        }
+        .map { meta, ms_files, speclib, diann_quant, mass_settings -> [
+            meta + mass_settings, ms_files, [], [],
+            speclib.unique{ speclib_file -> speclib_file.name },
+            diann_quant
+        ]}
 
     DIANN_ASSEMBLEEMPIRICALLIBRARY(ch_empirical_input)
 
@@ -392,9 +394,13 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .map { tuple -> [tuple[0].experiment] + tuple.drop(1) }     // [meta_exp_searchdb, ms_file, fasta, empirical_library, diann_quant]
         .groupTuple()                                                // [meta_exp_searchdb, [ms_file], [fasta], [empirical_library], [diann_quant]]
         .map{ tuple -> sortListsByPathName(tuple, 1) }              // [meta_exp_searchdb, [sorted_ms_file], [sorted_fasta], [sorted_empirical_library], [sorted_diann_quant]]
-        .map { meta, ms_files, fasta, empirical_library, diann_quant ->
-            [meta, [], ms_files.collect{ f -> f.name}, fasta.unique{ it.name }, empirical_library.unique{ it.name }, diann_quant] // Use ms_file_names instead of ms_files for final quant; deduplicate shared files
-        }
+        .map { meta, ms_files, fasta, empirical_library, diann_quant -> [
+            meta, [],
+            ms_files.collect{ f -> f.name},
+            fasta.unique{ f -> f.name },
+            empirical_library.unique{ f -> f.name },
+            diann_quant
+        ]} // Use ms_file_names instead of ms_files for final quant; deduplicate shared files
 
     DIANN_FINALQUANTIFICATION(ch_final_quantification_input)
     ch_final_quantification_combined_output = DIANN_FINALQUANTIFICATION.out.main_report
