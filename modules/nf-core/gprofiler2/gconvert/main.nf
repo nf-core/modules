@@ -11,7 +11,7 @@ process GPROFILER2_GCONVERT {
     tuple val(meta), path(ids_tsv), val(target)
 
     output:
-    tuple val(meta), path("*.gprofiler2.gconvert.tsv"), emit: converted_ids
+    tuple val(meta), path("*.gprofiler2.gconvert.tsv"), emit: converted_idsg
     tuple val(meta), path("*R_sessionInfo.log")        , emit: session_info
     path "versions.yml"                                , emit: versions, topic: versions
 
