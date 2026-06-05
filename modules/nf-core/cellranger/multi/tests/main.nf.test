@@ -167,7 +167,7 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = [ [:], [] ]
+                ch_gex_fastqs            = [ [:], [], [] ]
                 ch_vdj_fastqs            = [ [:], [] ]
                 ch_ab_fastqs             = [ [:], [] ]
                 ch_beam_fastqs           = [ [:], [] ]
@@ -388,7 +388,7 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = [ [:], [] ]
+                ch_gex_fastqs            = [ [:], [], [] ]
                 ch_vdj_fastqs            = [ [:], [] ]
                 ch_ab_fastqs             = [ [:], [] ]
                 ch_beam_fastqs           = [ [:], [] ]
@@ -624,7 +624,7 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = [ [:], [] ]
+                ch_gex_fastqs            = [ [:], [], [] ]
                 ch_vdj_fastqs            = [ [:], [] ]
                 ch_ab_fastqs             = [ [:], [] ]
                 ch_beam_fastqs           = [ [:], [] ]
@@ -779,7 +779,7 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = [ [:], [] ]
+                ch_gex_fastqs            = [ [:], [], [] ]
                 ch_vdj_fastqs            = [ [:], [] ]
                 ch_ab_fastqs             = [ [:], [] ]
                 ch_beam_fastqs           = [ [:], [] ]
@@ -806,7 +806,7 @@ nextflow_process {
 
                 ch_crispr_fastqs_sc3_v3_5k_a549 = Channel.of( test_10x_sc3_v3_5k_a549_crispr )
                     .collect()
-                    .map { reads -> [ [ id:test_10x_sc3_v3_5k_a549_crispr_samplename ], reads, [ "expect-cells":"5000" ] ] }
+                    .map { reads -> [ [ id:test_10x_sc3_v3_5k_a549_crispr_samplename ], reads ] }
 
                 ch_crispr_reference_sc3_v3_5k_a549 = Channel.of( test_10x_sc3_v3_5k_a549_crispr_fb_reference )
 
@@ -896,7 +896,7 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = [ [:], [] ]
+                ch_gex_fastqs            = [ [:], [], [] ]
                 ch_vdj_fastqs            = [ [:], [] ]
                 ch_ab_fastqs             = [ [:], [] ]
                 ch_beam_fastqs           = [ [:], [] ]
