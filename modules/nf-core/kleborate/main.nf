@@ -12,7 +12,7 @@ process KLEBORATE {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('kleborate'), eval("kleborate --version | sed 's/Kleborate v//'"), emit: versions_kleborate, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,10 +26,6 @@ process KLEBORATE {
         --outfile ${prefix}.results.txt \\
         --assemblies $fastas
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kleborate: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
-    END_VERSIONS
     """
 
     stub:
@@ -37,9 +33,5 @@ process KLEBORATE {
     """
     touch ${prefix}.results.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kleborate: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
-    END_VERSIONS
     """
 }
