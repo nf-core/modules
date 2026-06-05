@@ -4,9 +4,8 @@ process BWAFASTALIGN_MEM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9d/9ddd41b93c5e182db9d643ca266dd1677e59593a9cb49904b982ff45ad5aa8c3/data':
-        'community.wave.seqera.io/library/bwa-fastalign_mbuffer_samtools:03f3f60b6c289776' }"
-
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f8/f8c975324a12014c8a817c2c1ad0cd68b077cf09c4370717589177b262dcd1dc/data':
+        'community.wave.seqera.io/library/bwa-fastalign_mbuffer_samtools:35f24ce8addcd26b'}"
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(index)
