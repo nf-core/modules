@@ -32,7 +32,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = FGUMI_SORT.out.bam
-                    input[1] = 'adjacency'
+                    input[1] = 'paired'
                     """
                 }
             }
@@ -42,7 +42,7 @@ nextflow_process {
             process {
                 """
                 input[0] = FGUMI_GROUP.out.bam
-                input[1] = '1 1 0'
+                input[1] = '1,1,0'
                 """
             }
         }
@@ -50,10 +50,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                // bam file is non deterministic in its output order
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['bam'])).match() }
             )
         }
 
@@ -70,7 +68,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_grouped.bam', checkIfExists: true)
                 ]
-                input[1] = '1 1 0'
+                input[1] = '1,1,0'
                 """
             }
         }

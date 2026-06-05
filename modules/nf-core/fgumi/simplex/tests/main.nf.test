@@ -49,10 +49,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                // bam file is non deterministic in its output order
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['bam'])).match() }
             )
         }
 
