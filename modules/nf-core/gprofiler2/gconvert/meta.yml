@@ -1,0 +1,73 @@
+name: "gprofiler2_gconvert"
+description: Convert gene and feature identifiers with gProfiler g:Convert
+keywords:
+  - gprofiler2
+  - gconvert
+  - identifier conversion
+  - gene ids
+tools:
+  - "gprofiler2":
+      description: "An R package for gene list functional enrichment analysis and namespace conversion with g:Profiler."
+      homepage: "https://biit.cs.ut.ee/gprofiler/page/r"
+      documentation: "https://cran.r-project.org/package=gprofiler2"
+      tool_dev_url: "https://github.com/gprofiler/gprofiler2"
+      doi: "10.1093/bioinformatics/btab213"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: biotools:gprofiler
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - ids_tsv:
+        type: file
+        description: TSV, TXT, or CSV table containing input IDs in the first column.
+        pattern: "*.{tsv,txt,csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+    - target:
+        type: string
+        description: Target namespace to pass to gprofiler2::gconvert().
+output:
+  converted:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.gprofiler2.gconvert.tsv":
+          type: file
+          description: TSV table returned by gprofiler2::gconvert().
+          pattern: "*.gprofiler2.gconvert.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  session_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*R_sessionInfo.log":
+          type: file
+          description: R session information.
+          pattern: "*R_sessionInfo.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: File containing software versions
+authors:
+  - "@WackerO"
+maintainers:
+  - "@WackerO"
