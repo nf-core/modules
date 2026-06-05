@@ -34,14 +34,13 @@ process BWAFASTALIGN_INDEX {
     def prefix = task.ext.prefix ?: "${fasta}"
     """
     mkdir bwafastalign
-    touch bwafastalign/${prefix}.0123
-    touch bwafastalign/${prefix}.ann
-    touch bwafastalign/${prefix}.pac
     touch bwafastalign/${prefix}.amb
-    touch bwafastalign/${prefix}.pos_packed
-    touch bwafastalign/${prefix}.suffixarray_uint64
-    touch bwafastalign/${prefix}.suffixarray_uint64_L0_PARAMETERS
-    touch bwafastalign/${prefix}.suffixarray_uint64_L1_PARAMETERS
-    touch bwafastalign/${prefix}.suffixarray_uint64_L2_PARAMETERS
+    touch bwafastalign/${prefix}.ann
+    touch bwafastalign/${prefix}.bwt
+    touch bwafastalign/${prefix}.bytesa
+    touch bwafastalign/${prefix}.fmt
+    touch bwafastalign/${prefix}.kmer
+    touch bwafastalign/${prefix}.pac
+    touch bwafastalign/${prefix}.sa
     """
 }
