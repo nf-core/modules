@@ -1,4 +1,4 @@
-process MEMOTE {
+process MEMOTE_RUN {
     tag "$meta.id"
     label 'process_low'
 
@@ -11,8 +11,8 @@ process MEMOTE {
     tuple val(meta), path(model)
 
     output:
-    tuple val(meta), path("*.html"), emit: report
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.json.gz"), emit: json
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,8 +21,9 @@ process MEMOTE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    memote report snapshot \\
-        --filename ${prefix}.html \\
+    memote run \\
+        --filename ${prefix}.json.gz \\
+        --ignore-git \\
         ${args} \\
         ${model}
 
@@ -35,7 +36,7 @@ process MEMOTE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.html
+    echo '{}' | gzip > ${prefix}.json.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
