@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fgumi_duplex"
+description: |
+  Calls duplex consensus sequences from reads generated from the same double-stranded
+  source molecule. This is a high-performance replacement for fgbio CallDuplexConsensusReads.
+keywords:
+  - umi
+  - duplex
+  - consensus
+  - bam
+tools:
+  - "fgumi":
+      description: "High-performance tools for working with UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://docs.rs/fgumi"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - grouped_bam:
+        type: file
+        description: Grouped BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+  - min_reads:
+      type: string
+      description: |
+        Minimum number of raw/original reads to build each consensus read.
+        Can be a space delimited list of 1-3 values.
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.bam":
+          type: file
+          description: Duplex consensus BAM file
+          pattern: "${prefix}.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgumi:
+          type: string
+          description: The tool name
+      - 'fgumi --version | sed "s/^fgumi //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgumi:
+          type: string
+          description: The tool name
+      - 'fgumi --version | sed "s/^fgumi //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sppearce"
+maintainers:
+  - "@sppearce"
