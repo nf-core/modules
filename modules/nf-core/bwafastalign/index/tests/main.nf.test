@@ -31,7 +31,7 @@ nextflow_process {
                     new File(process.out.index[0][1].toString()).listFiles()
                         .sort { it.name }
                         .collect { f -> f.name.endsWith('.kmer') ? f.name : file(f.absolutePath) },
-                    process.out.versions_bwafastalign
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
