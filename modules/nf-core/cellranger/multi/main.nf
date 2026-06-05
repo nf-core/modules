@@ -2,11 +2,11 @@ process CELLRANGER_MULTI {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:10.0.0"
+    container "quay.io/nf-core/cellranger:10.0.0"
 
     input:
     val meta
-    tuple val(meta2)           , path (gex_fastqs   , stageAs: "fastqs/gex/fastq_???/*")
+    tuple val(meta2)           , path (gex_fastqs   , stageAs: "fastqs/gex/fastq_???/*")    , val(gex_options)
     tuple val(meta3)           , path (vdj_fastqs   , stageAs: "fastqs/vdj/fastq_???/*")
     tuple val(meta4)           , path (ab_fastqs    , stageAs: "fastqs/ab/fastq_???/*")
     tuple val(meta5)           , path (beam_fastqs  , stageAs: "fastqs/beam/fastq_???/*")
@@ -40,12 +40,12 @@ process CELLRANGER_MULTI {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    
+
     // Validate mutually exclusive barcode types
     if ([ocm_barcodes, cmo_barcodes, frna_sampleinfo].findAll().size() >= 2) {
         error "The ocm barcodes, cmo barcodes, and frna probes are mutually exclusive features. Please use only one per sample."
     }
-    
+
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: meta.id
 
@@ -65,19 +65,19 @@ process CELLRANGER_MULTI {
         gex_section << '[gene-expression]'
         gex_section << "reference,\$PWD/${gex_reference.name}"
         if (gex_frna_probeset) gex_section << "probe-set,\$PWD/${gex_frna_probeset.name}"
-        
-        // GEX options from meta
-        def gex_has_opts = meta2?.options
-        def chemistry = gex_has_opts?.containsKey("chemistry") ? meta2.options["chemistry"] : "auto"
+
+        // GEX options from a dedicated input channel
+        def gex_has_opts = gex_options ?: [:]
+        def chemistry = gex_has_opts.containsKey("chemistry") ? gex_has_opts["chemistry"] : "auto"
         gex_section << "chemistry,${chemistry}"
-        
-        if (gex_has_opts?.containsKey("expect-cells")) {
-            gex_section << "expect-cells,${meta2.options["expect-cells"]}"
+
+        if (gex_has_opts.containsKey("expect-cells")) {
+            gex_section << "expect-cells,${gex_has_opts["expect-cells"]}"
         }
-        
-        def create_bam = gex_has_opts?.containsKey("create-bam") ? meta2.options["create-bam"] : "true"
+
+        def create_bam = gex_has_opts.containsKey("create-bam") ? gex_has_opts["create-bam"] : "true"
         gex_section << "create-bam,${create_bam}"
-        
+
         if (gex_targetpanel) {
             gex_section << "target-panel,\$PWD/${gex_targetpanel.name}"
         }
@@ -115,7 +115,7 @@ process CELLRANGER_MULTI {
     config_lines.addAll(fb_section)
     config_lines.addAll(vdj_section)
     config_lines.addAll(lib_section)
-    
+
     // Append sample sections if present
     if (has_cmo) {
         config_lines << '[samples]'
@@ -143,9 +143,9 @@ process CELLRANGER_MULTI {
         while IFS= read -r -d '' r1_dir && IFS= read -r -d '' r2_dir; do
             r1=\$(find "\${r1_dir}" -maxdepth 1 -name "*_R1_*.fastq.gz" | head -1)
             r2=\$(find "\${r2_dir}" -maxdepth 1 -name "*_R2_*.fastq.gz" | head -1)
-            
+
             [ -z "\${r1}" ] || [ -z "\${r2}" ] && continue
-            
+
             ln -sf "\$(readlink -f "\${r1}")" "fastq_all/\${modality}/${prefix}_S1_L\$(printf %03d \${lane})_R1_001.fastq.gz"
             ln -sf "\$(readlink -f "\${r2}")" "fastq_all/\${modality}/${prefix}_S1_L\$(printf %03d \${lane})_R2_001.fastq.gz"
             lane=\$((lane + 1))

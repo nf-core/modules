@@ -39,6 +39,11 @@ input:
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989
+    - gex_options:
+        type: map
+        description: |
+          Optional Cell Ranger gene expression section options.
+          Supported keys include chemistry, expect-cells, and create-bam.
   - - meta3:
         type: map
         description: |
