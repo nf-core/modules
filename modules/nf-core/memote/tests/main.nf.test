@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process MEMOTE"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "MEMOTE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "memote"
+
+    test("snapshot from tiny SBML model") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/opencobra/memote/master/tests/test_for_support/data/validation/tiny_FBC.xml', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.report.get(0).get(1) ==~ ".*/test.html" },
+                {
+                    with (path(process.out.versions.get(0)).yaml) {
+                        assert MEMOTE
+                        assert MEMOTE.memote
+                    }
+                }
+            )
+        }
+    }
+
+    test("snapshot from tiny SBML model - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/opencobra/memote/master/tests/test_for_support/data/validation/tiny_FBC.xml', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert sanitizeOutput(process.out).report.get(0).get(1) == "test.html" },
+                {
+                    with (path(process.out.versions.get(0)).yaml) {
+                        assert MEMOTE
+                        assert MEMOTE.memote
+                    }
+                }
+            )
+        }
+    }
+}
