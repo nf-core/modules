@@ -11,35 +11,21 @@ process HOMER_POS2BED {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml", emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('homer'), val("4.11"), emit: versions_homer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     pos2bed.pl ${peaks} > ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        homer: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     touch ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        homer: ${VERSION}
-    END_VERSIONS
     """
 }

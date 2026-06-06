@@ -13,7 +13,11 @@ process HOMER_MAKETAGDIRECTORY {
     output:
     tuple val(meta), path("*_tagdir"), emit: tagdir
     tuple val(meta), path("*_tagdir/tagInfo.txt"), emit: taginfo
-    path "versions.yml", emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('homer'), val("4.11"), emit: versions_homer, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | sed '1!d;s/^.*samtools //'"), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('deseq2'), eval('Rscript -e "cat(as.character(packageVersion(\'DESeq2\')))"'), emit: versions_deseq2, topic: versions
+    tuple val("${task.process}"), val('edger'), eval('Rscript -e "cat(as.character(packageVersion(\'edgeR\')))"'), emit: versions_edger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,26 +25,16 @@ process HOMER_MAKETAGDIRECTORY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     makeTagDirectory \\
         ${prefix}_tagdir \\
         -genome ${fasta} \\
         ${args} \\
         ${bam}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        homer: ${VERSION}
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     mkdir ${prefix}_tagdir/
@@ -50,11 +44,5 @@ process HOMER_MAKETAGDIRECTORY {
     touch ${prefix}_tagdir/tagCountDistribution.txt
     touch ${prefix}_tagdir/tagInfo.txt
     touch ${prefix}_tagdir/tagLengthDistribution.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        homer: ${VERSION}
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }
