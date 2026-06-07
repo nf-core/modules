@@ -45,13 +45,10 @@ process REGENIE_RUNL1 {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def input_prefix = plink_genotype_file.baseName
     def prefix = task.ext.prefix ?: input_prefix
-    def pheno_match = args =~ /--phenoColList\s+(\S+)/
-    def pheno_name = pheno_match.find() ? pheno_match.group(1) : 'Y1'
     """
-    echo "${pheno_name} ${prefix}_1.loco.gz" > ${prefix}_pred.list
+    echo "Y1 ${prefix}_1.loco.gz" > ${prefix}_pred.list
     echo "" | gzip > ${prefix}_1.loco.gz
     touch ${prefix}.log
     """
