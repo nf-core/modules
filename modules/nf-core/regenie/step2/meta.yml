@@ -25,7 +25,8 @@ input:
           Groovy Map containing genotype information
           Keep only the shared genotype analysis identifier in this map
           Multi-chromosome support is represented by emitting multiple PLINK bundles that share `meta.id`
-          REGENIE consumes the staged basename of `plink_genotype_file` as the `--bed` or `--pgen` prefix, so the `.bed/.bim/.fam` or `.pgen/.pvar/.psam` files for each shard must share one basename
+          REGENIE consumes the staged basename of `plink_genotype_file` as the `--bed` or `--pgen` input prefix, so the `.bed/.bim/.fam` or `.pgen/.pvar/.psam` files for each shard must share one basename
+          The module output prefix defaults to `meta.id` unless `task.ext.prefix` is provided
           e.g. `[ id:'cohort' ]`
     - plink_genotype_file:
         type: file

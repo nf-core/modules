@@ -27,7 +27,7 @@ process REGENIE_STEP2 {
     def covar_arg = covar ? "--covarFile ${covar}" : ''
     def genotype_flag = plink_genotype_file.name.endsWith('.pgen') ? '--pgen' : '--bed'
     def input_prefix = plink_genotype_file.baseName
-    def prefix = task.ext.prefix ?: input_prefix
+    def prefix = task.ext.prefix ?: meta.id
 
     """
     regenie \\
@@ -45,8 +45,7 @@ process REGENIE_STEP2 {
 
     stub:
     def args = task.ext.args ?: ''
-    def input_prefix = plink_genotype_file.baseName
-    def prefix = task.ext.prefix ?: input_prefix
+    def prefix = task.ext.prefix ?: meta.id
     def pheno_match = args =~ /--phenoColList\s+(\S+)/
     def pheno_suffix = pheno_match.find() ? "_${pheno_match.group(1)}" : ''
     """
