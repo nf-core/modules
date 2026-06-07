@@ -373,7 +373,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens popgen - basename-driven plink1 prefix - stub") {
+    test("homo_sapiens popgen - meta id output prefix - stub") {
 
         options "-stub"
 
@@ -390,9 +390,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
                 ]
 
-                input[1] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco).map { joined ->
-                    joined.size() == 3 ? joined : [ joined[0], joined[1], joined[4] ]
-                }
+                input[1] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco)
 
                 input[2] = [
                     [ id:'plink_simulated' ],
@@ -413,68 +411,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.results.get(0).get(0).id == 'cohort_alias' },
-                { assert path(process.out.results.get(0).get(1)).fileName.toString() == 'plink_simulated_QuantitativeTrait.regenie.gz' },
-                { assert path(process.out.log.get(0).get(1)).fileName.toString() == 'plink_simulated.log' },
-                {
-                    def stableResults = process.out.results.collect { result ->
-                        [result[0], result[1]]
-                    }
-                    def stableLogs = process.out.log.collect { logFile ->
-                        [logFile[0], path(logFile[1]).getFileName().toString()]
-                    }
-                    assert snapshot(
-                        stableResults,
-                        stableLogs,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
-            )
-        }
-
-    }
-
-    test("homo_sapiens popgen - custom output prefix - stub") {
-
-        options "-stub"
-
-        when {
-            params {
-                module_args = "--phenoColList QuantitativeTrait"
-                module_prefix = "custom_step2"
-            }
-            process {
-                """
-                input[0] = [
-                    [ id:'plink_simulated' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
-                ]
-
-                input[1] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco).map { joined ->
-                    joined.size() == 3 ? joined : [ joined[0], joined[1], joined[4] ]
-                }
-
-                input[2] = [
-                    [ id:'plink_simulated' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
-                ]
-
-                input[3] = [
-                    [ id:'plink_simulated' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
-                ]
-
-                input[4] = 400
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.results.get(0).get(1)).fileName.toString() == 'custom_step2_QuantitativeTrait.regenie.gz' },
-                { assert path(process.out.log.get(0).get(1)).fileName.toString() == 'custom_step2.log' },
+                { assert path(process.out.results.get(0).get(1)).fileName.toString() == 'cohort_alias_QuantitativeTrait.regenie.gz' },
+                { assert path(process.out.log.get(0).get(1)).fileName.toString() == 'cohort_alias.log' },
                 {
                     def stableResults = process.out.results.collect { result ->
                         [result[0], result[1]]
