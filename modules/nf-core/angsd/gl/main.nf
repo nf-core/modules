@@ -8,8 +8,8 @@ process ANGSD_GL {
         'quay.io/biocontainers/angsd:0.940--hce60e53_2' }"
 
     input:
-    tuple val(meta),  path(bam)
-    tuple val(meta2), path(fasta)      //Optionally
+    tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta), path(fai) //Optionally. 
     tuple val(meta3), path(error_file) //Optionally. Used for SYK model only.
 
     output:
