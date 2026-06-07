@@ -100,7 +100,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GCTA_MAKEGRM_DENSE.out.grm_files
-                input[1] = GAWK_BIVARIATE_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_dense' ], phenotype_file] }
+                input[1] = GAWK_BIVARIATE_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_dense' ], phenotype_file, 1, 2] }
                 input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output.map { meta, quant_covariates_file -> [[ id:'plink_simulated_dense' ], quant_covariates_file] }
                 input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { meta, cat_covariates_file -> [[ id:'plink_simulated_dense' ], cat_covariates_file] }
                 """
@@ -126,7 +126,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GCTA_MAKEGRM_DENSE.out.grm_files
-                input[1] = GAWK_BIVARIATE_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_dense' ], phenotype_file] }
+                input[1] = GAWK_BIVARIATE_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_dense' ], phenotype_file, '', ''] }
                 input[2] = [[ id:'plink_simulated_dense' ], []]
                 input[3] = [[ id:'plink_simulated_dense' ], []]
                 """
@@ -153,7 +153,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GCTA_MAKEGRM_DENSE.out.grm_files
-                input[1] = GAWK_BIVARIATE_BINARY_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_dense' ], phenotype_file] }
+                input[1] = GAWK_BIVARIATE_BINARY_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_dense' ], phenotype_file, '', ''] }
                 input[2] = [[ id:'plink_simulated_dense' ], []]
                 input[3] = [[ id:'plink_simulated_dense' ], []]
                 """
@@ -186,7 +186,7 @@ nextflow_process {
                 }
 
                 input[0] = mismatched_dense_grm
-                input[1] = GAWK_BIVARIATE_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_dense_mismatched' ], phenotype_file] }
+                input[1] = GAWK_BIVARIATE_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_dense_mismatched' ], phenotype_file, '', ''] }
                 input[2] = [[ id:'plink_simulated_dense_mismatched' ], []]
                 input[3] = [[ id:'plink_simulated_dense_mismatched' ], []]
                 """
@@ -208,7 +208,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GCTA_MAKEGRM_DENSE.out.grm_files
-                input[1] = GAWK_BIVARIATE_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_dense' ], phenotype_file] }
+                input[1] = GAWK_BIVARIATE_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_dense' ], phenotype_file, '', ''] }
                 input[2] = [[ id:'plink_simulated_dense' ], []]
                 input[3] = [[ id:'plink_simulated_dense' ], []]
                 """
