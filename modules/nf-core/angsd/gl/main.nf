@@ -32,7 +32,7 @@ process ANGSD_GL {
 
     if (GL_model != 3 && GL_model != 4) {
         """
-        ls -1 *.bam > bamlist.txt
+        printf '%s\n' ${bam} > bamlist.txt
 
         angsd \\
             -nThreads ${task.cpus} \\
@@ -46,7 +46,7 @@ process ANGSD_GL {
         // No args for this part.
         // GL is hardcoded to 3 here to avoid passing all other arguments to the calibration step
         """
-        ls -1 *.bam > bamlist.txt
+        printf '%s\n' ${bam} > bamlist.txt
 
         ## SOAPsnp model
         ## First get the calibration matrix. minQ MUST be 0 for this step. Will create the directory angsd_tmpdir/ with the required files for the next step.
@@ -69,7 +69,7 @@ process ANGSD_GL {
         """
     } else if (GL_model == 4) {
         """
-        ls -1 *.bam > bamlist.txt
+        printf '%s\n' ${bam} > bamlist.txt
 
         ## SYK model
         angsd \\
