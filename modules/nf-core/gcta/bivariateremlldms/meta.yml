@@ -51,6 +51,18 @@ input:
         pattern: "*.{phe,pheno,txt,tsv}"
         ontologies:
           - edam: "http://edamontology.org/format_3475"
+    - phenotype_col1:
+        type: integer
+        description: |
+          First phenotype column passed to `--reml-bivar` (for example `1`).
+          Pass an empty value together with `phenotype_col2` to use GCTA's
+          default bivariate phenotype columns.
+    - phenotype_col2:
+        type: integer
+        description: |
+          Second phenotype column passed to `--reml-bivar` (for example `2`).
+          Pass an empty value together with `phenotype_col1` to use GCTA's
+          default bivariate phenotype columns.
   - - meta3:
         type: map
         description: |

@@ -8,7 +8,7 @@ process GCTA_BIVARIATEREMLLDMS {
 
     input:
     tuple val(meta), path(mgrm_file), path(grm_files)
-    tuple val(meta2), path(phenotype_file)
+    tuple val(meta2), path(phenotype_file), val(phenotype_col1), val(phenotype_col2)
     tuple val(meta3), path(quant_covariates_file)
     tuple val(meta4), path(cat_covariates_file)
 
@@ -23,11 +23,12 @@ process GCTA_BIVARIATEREMLLDMS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reml_bivar_param = phenotype_col1 && phenotype_col2 ? "--reml-bivar ${phenotype_col1} ${phenotype_col2}" : "--reml-bivar"
     def qcovar_param = quant_covariates_file ? "--qcovar ${quant_covariates_file}" : ''
     def covar_param = cat_covariates_file ? "--covar ${cat_covariates_file}" : ''
     """
     gcta \\
-        --reml-bivar 1 2 \\
+        ${reml_bivar_param} \\
         --mgrm ${mgrm_file} \\
         --pheno "${phenotype_file}" \\
         ${qcovar_param} \\
