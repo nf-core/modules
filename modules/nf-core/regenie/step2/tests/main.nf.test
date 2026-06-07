@@ -107,9 +107,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
                 ]
 
-                input[1] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco).map { joined ->
-                    joined.size() == 3 ? joined : [ joined[0], joined[1], joined[4] ]
-                }
+                input[1] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco)
 
                 input[2] = [
                     [ id:'plink_simulated' ],
@@ -183,9 +181,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
                 ]
 
-                input[1] = REGENIE_STEP1_BINARY.out.predictions.join(REGENIE_STEP1_BINARY.out.loco).map { joined ->
-                    joined.size() == 3 ? joined : [ joined[0], joined[1], joined[4] ]
-                }
+                input[1] = REGENIE_STEP1_BINARY.out.predictions.join(REGENIE_STEP1_BINARY.out.loco)
 
                 input[2] = [
                     [ id:'plink_simulated' ],
@@ -255,9 +251,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
                 ]
 
-                input[1] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco).map { joined ->
-                    joined.size() == 3 ? joined : [ joined[0], joined[1], joined[4] ]
-                }
+                input[1] = REGENIE_STEP1_QUANTITATIVE.out.predictions.join(REGENIE_STEP1_QUANTITATIVE.out.loco)
 
                 input[2] = [
                     [ id:'plink_simulated' ],
@@ -323,9 +317,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
                 ]
 
-                input[1] = REGENIE_STEP1_QUANTITATIVE_PGEN.out.predictions.join(REGENIE_STEP1_QUANTITATIVE_PGEN.out.loco).map { joined ->
-                    joined.size() == 3 ? joined : [ joined[0], joined[1], joined[4] ]
-                }
+                input[1] = REGENIE_STEP1_QUANTITATIVE_PGEN.out.predictions.join(REGENIE_STEP1_QUANTITATIVE_PGEN.out.loco)
 
                 input[2] = [
                     [ id:'plink_simulated' ],
