@@ -15,7 +15,8 @@ tools:
       documentation: https://bitbucket.org/srouxjgi/iphop/src/main/
       tool_dev_url: https://bitbucket.org/srouxjgi/iphop/src/main/
       doi: "10.1371/journal.pbio.3002083"
-      licence: ["Modified GPL v3"]
+      licence:
+        - "Modified GPL v3"
       identifier: ""
 output:
   iphop_db:
@@ -23,13 +24,27 @@ output:
         type: directory
         description: Directory containing downloaded and md5 checked iPHoP database
         pattern: "iphop_db/"
+  versions_iphop:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - iphop:
+          type: string
+          description: The name of the tool
+      - iphop --version 2>&1 | sed '1!d;s/iPHoP v//;s/:.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - iphop:
+          type: string
+          description: The name of the tool
+      - iphop --version 2>&1 | sed '1!d;s/iPHoP v//;s/:.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@CarsonJM"
 maintainers:
