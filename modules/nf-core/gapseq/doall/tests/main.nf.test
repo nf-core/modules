@@ -1,0 +1,99 @@
+nextflow_process {
+
+    name "Test Process GAPSEQ_DOALL"
+    script "../main.nf"
+    process "GAPSEQ_DOALL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gapseq"
+    tag "gapseq/doall"
+    tag "pigz"
+    tag "pigz/compress"
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta] + MM_glu medium") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/csv/MM_glu.csv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                // Validate .tbl files structure (stable output from find/findtransport steps)
+                { assert process.out.tbl.get(0).get(1).size() > 0 : "TBL files should not be empty" },
+                { assert process.out.tbl.get(0).get(1) instanceof List : "TBL output should be a list of files" },
+                { assert process.out.tbl.get(0).get(1).size() >= 2 : "Should have at least 2 .tbl files" },
+                // Validate model file exists (content is unstable so only check filename)
+                { assert process.out.model.get(0).get(1).size() > 0 : "Model file should not be empty" },
+                {
+                    assert snapshot(
+                        process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
+                        process.out.model.collect { meta, model -> [meta, (model instanceof List ? model : [model]).collect { file(it).getName() }.sort()] },
+                        process.out.tbl.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
+                        [versions: process.out.versions_gapseq.collect()]
+                    ).match()
+                }
+            )
+        }
+    }
+
+     test("candidatus_portiera_aleyrodidarum proteome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
+                    []
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.tbl, process.out.log, [versions: process.out.versions_gapseq.collect()]).match() }
+            )
+        }
+    }
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta] + MM_glu medium - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/csv/MM_glu.csv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.tbl, process.out.log, [versions: process.out.versions_gapseq.collect()]).match() }
+            )
+        }
+    }
+
+}

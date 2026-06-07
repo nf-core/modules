@@ -12,34 +12,42 @@ process HMTNOTE_ANNOTATE {
 
     output:
     tuple val(meta), path("*_annotated.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('hmtnote'), eval("hmtnote --version 2>&1 | sed 's/.*version //'"), emit: versions_hmtnote, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+WARNING: This module has been deprecated.
+
+Reason:
+This tool is no longer maintained by its author and, as its database hosting service has
+been discontinued, it can no longer work with conda.
+"""
+    assert false: deprecation_message
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     hmtnote \\
         annotate \\
-        $vcf \\
+        ${vcf} \\
         ${prefix}_annotated.vcf \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmtnote: \$(echo \$(hmtnote --version 2>&1) | sed 's/^.*hmtnote, version //; s/Using.*\$//' ))
-    END_VERSIONS
+        ${args}
     """
+
     stub:
+        def deprecation_message = """
+WARNING: This module has been deprecated.
+
+Reason:
+This tool is no longer maintained by its author and, as its database hosting service has
+been discontinued, it can no longer work with conda.
+"""
+    assert false: deprecation_message
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_annotated.vcf
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmtnote: \$(echo \$(hmtnote --version 2>&1) | sed 's/^.*hmtnote, version //; s/Using.*\$//' ))
-    END_VERSIONS
     """
 }

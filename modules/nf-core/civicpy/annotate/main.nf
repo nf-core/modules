@@ -22,7 +22,7 @@ process CIVICPY_ANNOTATE {
 
     script:
     def args       = task.ext.args   ?: ''
-    prefix         = task.ext.prefix ?: "${meta.id}"
+    def prefix         = task.ext.prefix ?: "${meta.id}"
     def cache_file = cache            ? "\$PWD/${cache}" : "\$PWD/${prefix}.civicpy_cache.pkl"
     if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
@@ -39,7 +39,7 @@ process CIVICPY_ANNOTATE {
 
     stub:
     def args   = task.ext.args   ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     echo "" | gzip > ${prefix}.vcf.gz
