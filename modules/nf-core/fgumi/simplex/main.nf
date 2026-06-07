@@ -1,6 +1,6 @@
-process FGUMI_GROUP {
+process FGUMI_SIMPLEX {
     tag "${meta.id}"
-    label 'process_low'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -8,13 +8,14 @@ process FGUMI_GROUP {
         : 'community.wave.seqera.io/library/fgumi:0.2.0--fe028e7a64e5da27'}"
 
     input:
-    tuple val(meta), path(bam)
-    val strategy
+    tuple val(meta), path(grouped_bam)
+    val min_reads
+    val keep_rejected
 
     output:
-    tuple val(meta), path("*.bam")                      , emit: bam
-    tuple val(meta), path("*.family_size_histogram.txt"), emit: histogram
-    tuple val(meta), path("*.grouping_metrics.txt")     , emit: metrics
+    tuple val(meta), path("${prefix}.bam")        , emit: bam
+    tuple val(meta), path("${prefix}.rejects.bam"), emit: rejects, optional: true
+    tuple val(meta), path("${prefix}.stats.txt")  , emit: stats
     tuple val("${task.process}"), val('fgumi'), eval('fgumi --version | sed "s/^fgumi //"'), topic: versions, emit: versions_fgumi
 
     when:
@@ -22,30 +23,32 @@ process FGUMI_GROUP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_umi-grouped"
+    prefix = task.ext.prefix ?: "${meta.id}_simplex_unmapped"
+    def rejects_command = keep_rejected ? "--rejects ${prefix}.rejects.bam" : ''
 
-    if ("${bam}" == "${prefix}.bam") {
+    if ("${grouped_bam}" == "${prefix}.bam") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
 
     """
-    fgumi group \\
-        --input ${bam} \\
+    fgumi simplex \\
+        --input ${grouped_bam} \\
         --output ${prefix}.bam \\
-        --strategy ${strategy} \\
-        --family-size-histogram ${prefix}.family_size_histogram.txt \\
-        --grouping-metrics ${prefix}.grouping_metrics.txt \\
+        --min-reads ${min_reads} \\
+        --threads ${task.cpus} \\
+        --stats ${prefix}.stats.txt \\
+        ${rejects_command} \\
         ${args}
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}_umi-grouped"
-    if ("${bam}" == "${prefix}.bam") {
+    prefix = task.ext.prefix ?: "${meta.id}_simplex_unmapped"
+    if ("${grouped_bam}" == "${prefix}.bam") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     """
     touch ${prefix}.bam
-    touch ${prefix}.family_size_histogram.txt
-    touch ${prefix}.grouping_metrics.txt
+    touch ${prefix}.rejects.bam
+    touch ${prefix}.stats.txt
     """
 }

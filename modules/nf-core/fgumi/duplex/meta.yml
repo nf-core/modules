@@ -1,12 +1,12 @@
-name: "fgumi_group"
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fgumi_duplex"
 description: |
-  Groups reads together that appear to have come from the same original molecule.
-  Reads are grouped by template, and then templates are sorted by the 5' mapping positions
-  of the reads from the template. Reads that have the same end positions are then sub-grouped
-  by UMI sequence. This is a high-performance replacement for fgbio GroupReadsByUmi.
+  Calls duplex consensus sequences from reads generated from the same double-stranded
+  source molecule. This is a high-performance replacement for fgbio CallDuplexConsensusReads.
 keywords:
   - umi
-  - groupreads
+  - duplex
+  - consensus
   - bam
 tools:
   - "fgumi":
@@ -14,32 +14,30 @@ tools:
       homepage: "https://github.com/fulcrumgenomics/fgumi"
       documentation: "https://docs.rs/fgumi"
       tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
-      licence:
-        - "MIT"
+      licence: ["MIT"]
       identifier: ""
+
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - bam:
+    - grouped_bam:
         type: file
-        description: |
-          BAM file containing reads with UMI tags. The file must be coordinate sorted.
+        description: Grouped BAM file
         pattern: "*.bam"
         ontologies:
-          - edam: "http://edamontology.org/format_2572"
-  - strategy:
+          - edam: "http://edamontology.org/format_2572" # BAM
+  - min_reads:
       type: string
-      enum:
-        - "Identity"
-        - "Edit"
-        - "Adjacency"
-        - "Paired"
       description: |
-        Required argument: defines the UMI assignment strategy.
-        Must be chosen among: Identity, Edit, Adjacency, Paired.
+        Minimum number of raw/original reads to build each consensus read.
+        Can be 1-3 values, e.g. [3 1 1] or 1
+  - keep_rejected:
+      type: boolean
+      description: If true, output rejected reads to a separate BAM file
+
 output:
   bam:
     - - meta:
@@ -47,32 +45,34 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - "${prefix}.bam":
           type: file
-          description: UMI-grouped BAM file
-          pattern: "*.bam"
+          description: Duplex consensus BAM file
+          pattern: "${prefix}.bam"
           ontologies:
-            - edam: "http://edamontology.org/format_2572"
-  histogram:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  rejects:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.family_size_histogram.txt":
+      - "${prefix}.rejects.bam":
           type: file
-          description: Optional output of tag family size counts
-          pattern: "*.family_size_histogram.txt"
-  metrics:
+          description: Optional BAM file containing reads that were rejected
+          pattern: "*.rejects.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  stats:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.grouping_metrics.txt":
+      - "${prefix}.stats.txt":
           type: file
-          description: Optional output of UMI grouping metrics
-          pattern: "*.grouping_metrics.txt"
+          description: Optional text file containing consensus statistics
+          pattern: "*.stats.txt"
   versions_fgumi:
     - - ${task.process}:
           type: string
@@ -80,9 +80,10 @@ output:
       - fgumi:
           type: string
           description: The tool name
-      - fgumi --version | sed "s/^fgumi //":
+      - 'fgumi --version | sed "s/^fgumi //"':
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -91,7 +92,7 @@ topics:
       - fgumi:
           type: string
           description: The tool name
-      - fgumi --version | sed "s/^fgumi //":
+      - 'fgumi --version | sed "s/^fgumi //"':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

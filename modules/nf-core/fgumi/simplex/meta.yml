@@ -1,12 +1,11 @@
-name: "fgumi_group"
+name: "fgumi_simplex"
 description: |
-  Groups reads together that appear to have come from the same original molecule.
-  Reads are grouped by template, and then templates are sorted by the 5' mapping positions
-  of the reads from the template. Reads that have the same end positions are then sub-grouped
-  by UMI sequence. This is a high-performance replacement for fgbio GroupReadsByUmi.
+  Calls simplex consensus sequences from reads with the same unique molecular tag.
+  This is a high-performance replacement for fgbio CallMolecularConsensusReads.
 keywords:
   - umi
-  - groupreads
+  - consensus
+  - simplex
   - bam
 tools:
   - "fgumi":
@@ -23,23 +22,19 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - bam:
+    - grouped_bam:
         type: file
         description: |
-          BAM file containing reads with UMI tags. The file must be coordinate sorted.
-        pattern: "*.bam"
+          The input SAM or BAM file, grouped by UMIs
+        pattern: "*.{bam,sam}"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
-  - strategy:
-      type: string
-      enum:
-        - "Identity"
-        - "Edit"
-        - "Adjacency"
-        - "Paired"
-      description: |
-        Required argument: defines the UMI assignment strategy.
-        Must be chosen among: Identity, Edit, Adjacency, Paired.
+  - min_reads:
+      type: integer
+      description: Minimum number of original reads to build each consensus read.
+  - keep_rejected:
+      type: boolean
+      description: If true, output rejected reads to a separate BAM file
 output:
   bam:
     - - meta:
@@ -47,32 +42,35 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - "${prefix}.bam":
           type: file
-          description: UMI-grouped BAM file
-          pattern: "*.bam"
+          description: |
+            Output SAM or BAM file with simplex consensus reads.
+          pattern: "*.{bam,sam}"
           ontologies:
             - edam: "http://edamontology.org/format_2572"
-  histogram:
+  rejects:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.family_size_histogram.txt":
+      - "${prefix}.rejects.bam":
           type: file
-          description: Optional output of tag family size counts
-          pattern: "*.family_size_histogram.txt"
-  metrics:
+          description: Optional BAM file containing reads that were rejected
+          pattern: "*.rejects.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  stats:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.grouping_metrics.txt":
+      - "${prefix}.stats.txt":
           type: file
-          description: Optional output of UMI grouping metrics
-          pattern: "*.grouping_metrics.txt"
+          description: Optional text file containing consensus statistics
+          pattern: "*.stats.txt"
   versions_fgumi:
     - - ${task.process}:
           type: string
