@@ -23,8 +23,7 @@ process GCTA_BIVARIATEREML {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def phenotype_columns = [phenotype_col1, phenotype_col2].findAll { column -> column }
-    def reml_bivar_param = phenotype_columns ? "--reml-bivar ${phenotype_columns.join(' ')}" : "--reml-bivar"
+    def reml_bivar_param = phenotype_col1 && phenotype_col2 ? "--reml-bivar ${phenotype_col1} ${phenotype_col2}" : "--reml-bivar"
     def qcovar_param = quant_covariates_file ? "--qcovar ${quant_covariates_file}" : ''
     def covar_param = cat_covariates_file ? "--covar ${cat_covariates_file}" : ''
     """
