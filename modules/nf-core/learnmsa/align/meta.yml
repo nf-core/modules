@@ -25,8 +25,8 @@ input:
         description: Input sequences in FASTA format.
         pattern: "*.{fa,fasta}"
         ontologies:
-          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1919
+          - edam: http://edamontology.org/format_1929
 output:
   alignment:
     - - meta:
@@ -39,9 +39,9 @@ output:
           description: Alignment file, in FASTA format.
           pattern: "*.aln"
           ontologies:
-            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
-            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
-            - edam: http://edamontology.org/format_1984 # FASTA-ALN
+            - edam: http://edamontology.org/format_2554
+            - edam: http://edamontology.org/format_1921
+            - edam: http://edamontology.org/format_1984
   versions_learnmsa:
     - - ${task.process}:
           type: string
@@ -49,7 +49,7 @@ output:
       - learnmsa:
           type: string
           description: The name of the tool
-      - learnMSA -h |& sed -n 's/version //':
+      - learnMSA -h | sed -nE 's/.*version ([0-9.]+).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -60,7 +60,7 @@ topics:
       - learnmsa:
           type: string
           description: The name of the tool
-      - learnMSA -h |& sed -n 's/version //':
+      - learnMSA -h | sed -nE 's/.*version ([0-9.]+).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
