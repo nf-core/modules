@@ -4,14 +4,15 @@ process GAPSEQ_DRAFT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'community.wave.seqera.io/library/gapseq:2.0.1--5e0dffc1176c5fd2' :
-        'quay.io/biocontainers/gapseq:2.0.1--hdfd78af_0' }"
+        'community.wave.seqera.io/library/gapseq:2.1.0--31c8824b3592beaf' :
+        'quay.io/biocontainers/gapseq:2.1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(reactions), path(transporters), path(pathways)
 
     output:
     tuple val(meta), path("*.RDS")  , emit: draft
+    tuple val(meta), path("*.xml")  , emit: xml
     tuple val(meta), path("*.log")  , emit: log      , optional: true
     tuple val("${task.process}"), val('gapseq'), eval('gapseq -v 2>&1 | grep -oP "\\d+\\.\\d+\\.\\d+"'), topic: versions, emit: versions_gapseq
 
@@ -36,5 +37,6 @@ process GAPSEQ_DRAFT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}-draft.RDS
+    touch ${prefix}-draft.xml
     """
 }

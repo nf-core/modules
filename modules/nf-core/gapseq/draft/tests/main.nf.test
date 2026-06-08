@@ -34,6 +34,7 @@ nextflow_process {
                 {
                     assert snapshot(
                         process.out.draft.collect { meta, rds -> [meta, (rds instanceof List ? rds : [rds]).collect { file(it).getName() }.sort()] },
+                        process.out.xml.collect { meta, xml -> [meta, (xml instanceof List ? xml : [xml]).collect { file(it).getName() }.sort()] },
                         process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
@@ -88,6 +89,7 @@ nextflow_process {
                 {
                     assert snapshot(
                         process.out.draft.collect { meta, rds -> [meta, (rds instanceof List ? rds : [rds]).collect { file(it).getName() }.sort()] },
+                        process.out.xml.collect { meta, xml -> [meta, (xml instanceof List ? xml : [xml]).collect { file(it).getName() }.sort()] },
                         process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()

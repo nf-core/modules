@@ -34,6 +34,7 @@ nextflow_process {
                 {
                     assert snapshot(
                         process.out.filled.collect { meta, filled -> [meta, (filled instanceof List ? filled : [filled]).collect { file(it).getName() }.sort()] },
+                        process.out.xml.collect { meta, xml -> [meta, (xml instanceof List ? xml : [xml]).collect { file(it).getName() }.sort()] },
                         process.out.log.collect { meta, log -> [meta, (log instanceof List ? log : [log]).collect { file(it).getName() }.sort()] },
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
@@ -98,6 +99,7 @@ nextflow_process {
                 {
                     assert snapshot(
                         process.out.filled.collect { meta, filled -> [meta, (filled instanceof List ? filled : [filled]).collect { file(it).getName() }.sort()] },
+                        process.out.xml.collect { meta, xml -> [meta, (xml instanceof List ? xml : [xml]).collect { file(it).getName() }.sort()] },
                         process.out.log.collect { meta, log -> [meta, (log instanceof List ? log : [log]).collect { file(it).getName() }.sort()] },
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
