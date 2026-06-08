@@ -6,7 +6,8 @@ keywords:
   - quality control
 tools:
   - memote:
-      description: Benchmark and compare genome-scale metabolic models and generate HTML reports.
+      description: Benchmark and compare genome-scale metabolic models and generate
+        HTML reports.
       homepage: https://github.com/opencobra/memote
       documentation: https://memote.readthedocs.io/
       tool_dev_url: https://github.com/opencobra/memote
@@ -23,7 +24,8 @@ input:
         type: file
         description: SBML model file.
         pattern: "*.{xml,sbml}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2332
 output:
   report:
     - - meta:
@@ -35,14 +37,27 @@ output:
           type: file
           description: Memote HTML report for the provided model.
           pattern: "*.html"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2331
   versions:
     - versions.yml:
         type: file
         description: File containing software versions.
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
+topics:
+  report:
+    - - meta:
+          type: string
+          description: The name of the process
+      - "*.html":
+          type: string
+          description: The name of the tool
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@brovolia"
 maintainers:
