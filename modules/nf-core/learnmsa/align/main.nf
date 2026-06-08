@@ -7,8 +7,8 @@ process LEARNMSA_ALIGN {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.aln")      , emit: alignment
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.aln"), emit: alignment
+    tuple val("${task.process}"), val('learnmsa'), eval("learnMSA -h |& sed -n 's/version //'"), emit: versions_learnmsa, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,24 +21,14 @@ process LEARNMSA_ALIGN {
     }
     """
     learnMSA \\
-        -i $fasta \\
+        -i ${fasta} \\
         -o "${prefix}.aln" \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        learnmsa: \$(learnMSA -h | grep 'version' | awk -F 'version ' '{print \$2}' | awk '{print \$1}' | sed 's/)//g')
-    END_VERSIONS
+        ${args}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.aln
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        learnmsa: \$(if command -v learnMSA &>/dev/null; then learnMSA -h | grep 'version' | awk -F 'version ' '{print \$2}' | awk '{print \$1}' | sed 's/)//g'; else echo "STUB_TEST_HARDCODED_VERSION"; fi)
-    END_VERSIONS
     """
 }

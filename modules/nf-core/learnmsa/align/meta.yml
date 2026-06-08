@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/Gaius-Augustus/learnMSA"
       tool_dev_url: "https://github.com/Gaius-Augustus/learnMSA"
       doi: "10.1093/gigascience/giac104"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:learnMSA
 input:
   - - meta:
@@ -41,13 +42,27 @@ output:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_learnmsa:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - learnmsa:
+          type: string
+          description: The name of the tool
+      - learnMSA -h |& sed -n 's/version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - learnmsa:
+          type: string
+          description: The name of the tool
+      - learnMSA -h |& sed -n 's/version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
   - "@JoseEspinosa"
