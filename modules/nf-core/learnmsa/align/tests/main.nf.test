@@ -2,7 +2,6 @@
 nextflow_process {
 
     name "Test Process LEARNMSA_ALIGN"
-    config "./nextflow.config"
     script "../main.nf"
     process "LEARNMSA_ALIGN"
 
@@ -11,9 +10,27 @@ nextflow_process {
     tag "learnmsa"
     tag "learnmsa/align"
 
-    // The container is overwritten because the original container is 13GB
-    // and it cannot be currently run on the runners.
-    // Only stub test is used
+    test("seatoxin - fa") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
     test("seatoxin - stub") {
         options "-stub"
 
