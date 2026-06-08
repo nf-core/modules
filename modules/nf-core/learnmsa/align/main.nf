@@ -20,9 +20,7 @@ process LEARNMSA_ALIGN {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("LearnMSA align module does not support Conda. Please use Docker / Singularity / Podman instead.")
-    }
+
     """
     learnMSA \\
         -i ${fasta} \\
