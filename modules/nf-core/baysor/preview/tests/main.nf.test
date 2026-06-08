@@ -15,11 +15,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = channel.of([
+                input[0] = [
                                 [id: "test_run_baysor"],
                                 file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/transcripts.parquet', checkIfExists: true),
                                 file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/xenium.toml', checkIfExists: true)
-                            ])
+                            ]
                 """
             }
         }
