@@ -4,7 +4,7 @@ process BUSCO_BUSCO {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c6684133dafc676a4087ca5615907bfdaaba29210f1c8eb2082c4096a009b2cd/data'
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/8645c96aa9c375cfe99c9a6e4a98145d6eaf5f27b42e18ca51c74fd63d0575a4/data'
         : 'community.wave.seqera.io/library/busco:6.1.0--8a3774f2de535526'}"
     // Note: one test had to be disabled when switching to Busco 6.0.0, cf https://github.com/nf-core/modules/pull/8781/files
     // Try to restore it when upgrading Busco to a later version
