@@ -181,11 +181,11 @@ nextflow_workflow {
                     [],
                     "chr22:16570065-16609999"
                 ])
-                input[1] = Channel.of([[id:'test', chr: "22"], []]) // Chunks
+                input[1] = Channel.of([[id:'test', chr: "22"], "chr22:16570065-16597215"]) // Chunks
                 input[2] = Channel.of([[id:'test', chr: "22"], [], []]) // Ref
                 input[3] = Channel.of([[id:'test', chr: "22"], [], []]) // Scaffold
                 input[4] = Channel.of([[id:'test', chr: "22"], []]) // Genetic map
-                input[5] = true // Perform chunks
+                input[5] = false // Perform chunks
                 input[6] = "recursive" // chunk_model
                 """
             }
