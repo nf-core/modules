@@ -12,9 +12,9 @@ tools:
       homepage: "https://github.com/zzhofict/BWA-FastAlign"
       documentation: "https://github.com/zzhofict/BWA-FastAlign"
       doi: "10.1145/3774934.3786421"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -33,7 +33,7 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - bwafastalign:
-          type: file
+          type: string
           description: BWA-FASTALIGN genome index files
           pattern: "*.{0123,amb,ann,pac,pos_packed,suffixarray_uint64,suffixarray_uint64_L0_PARAMETERS,suffixarray_uint64_L1_PARAMETERS,suffixarray_uint64_L2_PARAMETERS}"
           ontologies: []
@@ -42,7 +42,7 @@ output:
           type: string
           description: The name of the process
       - bwafastalign:
-          type: file
+          type: string
           description: BWA-FASTALIGN genome index files
           pattern: "*.{0123,amb,ann,pac,pos_packed,suffixarray_uint64,suffixarray_uint64_L0_PARAMETERS,suffixarray_uint64_L1_PARAMETERS,suffixarray_uint64_L2_PARAMETERS}"
           ontologies: []
@@ -56,6 +56,9 @@ output:
       - samtools:
           type: string
           description: The name of the tool
+      - samtools --version 2>&1 | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
   versions_mbuffer:
     - - ${task.process}:
           type: string
@@ -63,6 +66,9 @@ output:
       - mbuffer:
           type: string
           description: The name of the tool
+      - mbuffer --version 2>&1 | sed -n 's/mbuffer //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -70,7 +76,9 @@ topics:
           description: The name of the process
       - bwafastalign:
           type: string
-          description: The name of the tool
+          description: BWA-FASTALIGN genome index files
+          pattern: "*.{0123,amb,ann,pac,pos_packed,suffixarray_uint64,suffixarray_uint64_L0_PARAMETERS,suffixarray_uint64_L1_PARAMETERS,suffixarray_uint64_L2_PARAMETERS}"
+          ontologies: []
       - 1.0.0:
           type: string
           description: The expression to obtain the version of the tool
