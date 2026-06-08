@@ -1,0 +1,91 @@
+name: "mifaser"
+description: Functional annotation of metagenomic reads by assigning enzyme
+  commission (EC) numbers
+keywords:
+  - metagenomics
+  - functional annotation
+  - EC numbers
+  - fastq
+tools:
+  - "mifaser":
+      description: "mi-faser: microsecond functional annotation of sequences, a massive
+        scalability upgrade"
+      homepage: "https://sourceforge.net/projects/mifaser/"
+      documentation: "https://sourceforge.net/projects/mifaser/"
+      tool_dev_url: "https://sourceforge.net/projects/mifaser/"
+      doi: "10.1093/nar/gkx1209"
+      licence:
+        - "NPOSL-3.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:true ]`
+    - reads:
+        type: file
+        description: |
+          Single-end or paired-end FASTQ files. Use meta.single_end to indicate input type.
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930"
+  - db:
+      type: directory
+      description: Path to the mi-faser database folder
+output:
+  multi_ec:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*multi_ec.tsv":
+          type: file
+          description: TSV file with multi-EC functional assignments per read
+          pattern: "*multi_ec.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  analysis:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*analysis.tsv":
+          type: file
+          description: TSV file with per-sample functional analysis summary
+          pattern: "*analysis.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  ec_counts:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*ec_count.tsv":
+          type: file
+          description: TSV file with EC number counts
+          pattern: "*ec_count.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_mifaser:
+    - - "${task.process}":
+          type: string
+          description: Process name
+      - "mi-faser":
+          type: string
+          description: Tool name
+      - "mifaser --version 2>&1 | sed 's/* v//'":
+          type: eval
+          description: mifaser version string
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: Process name
+      - "mi-faser":
+          type: string
+          description: Tool name
+      - "mifaser --version 2>&1 | sed 's/* v//'":
+          type: eval
+          description: mifaser version string
+authors:
+  - "@nickp60"
+maintainers:
+  - "@nickp60"
