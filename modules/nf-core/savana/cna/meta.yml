@@ -51,21 +51,21 @@ input:
         ontologies: []
     - snp_vcf:
         type: file
-        description: Optional SNP VCF for allele counting
+        description: Optional SNP VCF for allele counting (mutually exclusive with g1000_vcf and allele_counts_het_snps)
         pattern: "*.{vcf,vcf.gz}"
         optional: true
         ontologies:
           - edam: "http://edamontology.org/format_3016" # VCF
     - allele_counts_het_snps:
         type: file
-        description: Optional allele counts for het SNPs
+        description: Optional precomputed allele counts of heterozygous SNPs
         pattern: "*.bed"
         optional: true
         ontologies:
           - edam: "http://edamontology.org/format_3003" # BED
     - breakpoints:
         type: file
-        description: Optional SAVANA VCF with SV breakpoints
+        description: Optional SAVANA breakpoints VCF to be included in CNA analysis
         pattern: "*.{vcf,vcf.gz}"
         optional: true
         ontologies:
@@ -88,16 +88,23 @@ input:
         pattern: "*.fai"
         ontologies: []
 
+  - contigs:
+      type: file
+      description: Optional contigs list file for SAVANA to restrict analysis to specific contigs
+      pattern: "*.txt"
+      optional: true
+      ontologies:
+        - edam: "http://edamontology.org/format_2330" # TXT
   - blacklist:
       type: file
-      description: Optional blacklist BED for read counting
+      description: Optional blacklist BED for CNA analysis
       pattern: "*.bed"
       optional: true
       ontologies:
         - edam: "http://edamontology.org/format_3003" # BED
   - g1000_vcf:
       type: string
-      description: Optional 1000 genomes VCF selector (valid options are 1000g_hg38, 1000g_hg19, 1000g_t2t)
+      description: Optional 1000G preset for allele counting (mutually exclusive with snp_vcf and allele_counts_het_snps)
       optional: true
 
 output:
@@ -107,7 +114,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "cna_out/*segmented_absolute_copy_number.tsv":
+      - ${prefix}_segmented_absolute_copy_number.tsv:
           type: file
           description: Segmented absolute copy number
           pattern: "*.tsv"
@@ -119,10 +126,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "cna_out/*ranked_solutions.tsv":
+      - ${prefix}_ranked_solutions.tsv:
           type: file
           description: Ranked purity/ploidy solutions
-          pattern: "*.tsv"
+          pattern: "*_ranked_solutions.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   fitted_purity_ploidy:
@@ -131,10 +138,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "cna_out/*fitted_purity_ploidy.tsv":
+      - ${prefix}_fitted_purity_ploidy.tsv:
           type: file
           description: Final purity/ploidy fit
-          pattern: "*.tsv"
+          pattern: "*_fitted_purity_ploidy.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   segmented_log2r:
@@ -143,10 +150,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "cna_out/*read_counts_*_log2r_segmented.tsv":
+      - ${prefix}_read_counts_*_log2r_segmented.tsv:
           type: file
           description: Segmented log2R copy number
-          pattern: "*.tsv"
+          pattern: "*_read_counts_*_log2r_segmented.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   raw_read_counts:
@@ -155,10 +162,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "cna_out/*raw_read_counts.tsv":
+      - ${prefix}_raw_read_counts.tsv:
           type: file
           description: Raw binned read counts
-          pattern: "*.tsv"
+          pattern: "*_raw_read_counts.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   binned_ref:
@@ -167,10 +174,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "cna_out/*kbp_bin_ref_*_*.bed":
+      - "*kbp_bin_ref_*_${prefix}*.bed":
           type: file
           description: Binned reference BED (with or without SV breakpoint integration)
-          pattern: "*.bed"
+          pattern: "*kbp_bin_ref_*_*.bed"
           ontologies:
             - edam: "http://edamontology.org/format_3003" # BED
   allele_counts:
@@ -179,10 +186,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "cna_out/*allele_counts_hetSNPs.bed":
+      - ${prefix}_allele_counts_hetSNPs.bed:
           type: file
           description: Allele counts for heterozygous SNPs (optional)
-          pattern: "*.bed"
+          pattern: "*_allele_counts_hetSNPs.bed"
           ontologies:
             - edam: "http://edamontology.org/format_3003" # BED
   versions_savana:
