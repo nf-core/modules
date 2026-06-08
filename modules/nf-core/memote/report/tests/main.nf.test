@@ -10,14 +10,14 @@ nextflow_process {
     tag "memote"
     tag "memote/report"
 
-    test("snapshot report from tiny SBML model") {
+    test("candidatus_portiera - xml - html") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('https://raw.githubusercontent.com/opencobra/memote/master/tests/test_for_support/data/validation/tiny_FBC.xml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/test.xml', checkIfExists: true)
                 ]
                 """
             }
@@ -37,7 +37,7 @@ nextflow_process {
         }
     }
 
-    test("snapshot report from tiny SBML model - stub") {
+    test("candidatus_portiera - xml - html - stub") {
 
         options "-stub"
 
@@ -46,7 +46,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('https://raw.githubusercontent.com/opencobra/memote/master/tests/test_for_support/data/validation/tiny_FBC.xml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/test.xml', checkIfExists: true)
                 ]
                 """
             }
@@ -55,7 +55,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert sanitizeOutput(process.out).report.get(0).get(1) == "test.html" },
+                { assert process.out.report.get(0).get(1) ==~ ".*/test.html" },
                 {
                     with (path(process.out.versions.get(0)).yaml) {
                         assert MEMOTE_REPORT

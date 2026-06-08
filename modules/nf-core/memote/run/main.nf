@@ -11,8 +11,8 @@ process MEMOTE_RUN {
     tuple val(meta), path(model)
 
     output:
-    tuple val(meta), path("*.json.gz"), emit: json
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.json.gz"), emit: json   , topic: json
+    path "versions.yml"               , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,6 +21,9 @@ process MEMOTE_RUN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export HOME=\${PWD}
+    export COBRA_SOLVER=glpk_exact
+
     memote run \\
         --filename ${prefix}.json.gz \\
         --ignore-git \\
@@ -36,11 +39,11 @@ process MEMOTE_RUN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo '{}' | gzip > ${prefix}.json.gz
+    echo "" | gzip > ${prefix}.json.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        memote: \$(memote --version | sed 's/memote, version //')
+        memote: 0.17.0
     END_VERSIONS
     """
 }

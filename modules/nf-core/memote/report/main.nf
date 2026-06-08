@@ -11,8 +11,8 @@ process MEMOTE_REPORT {
     tuple val(meta), path(model)
 
     output:
-    tuple val(meta), path("*.html"), emit: report
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.html"), emit: report , topic: report
+    path "versions.yml"             , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,6 +21,9 @@ process MEMOTE_REPORT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export HOME=\${PWD}
+    export COBRA_SOLVER=glpk_exact
+
     memote report snapshot \\
         --filename ${prefix}.html \\
         ${args} \\
@@ -39,7 +42,7 @@ process MEMOTE_REPORT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        memote: \$(memote --version | sed 's/memote, version //')
+        memote: 0.17.0
     END_VERSIONS
     """
 }
