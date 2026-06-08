@@ -82,6 +82,7 @@ opt <- list(
     contrast_string            = "$comparison",           # Full (complex) contrast expression comparison needed if using formula
     sample_id_col              = "sample",                # Column name for sample IDs
     threads                    = "$task.cpus",            # Number of threads for multithreading
+    blas_threads               = 1,                       # Number of threads for BLAS/OpenMP backends
     subset_to_contrast_samples = FALSE,                   # Whether to subset to contrast samples
     exclude_samples_col        = NULL,                    # Column for excluding samples
     exclude_samples_values     = NULL,                    # Values for excluding samples
@@ -116,6 +117,7 @@ keys <- c("formula", "contrast_string", "contrast_target", "contrast_variable", 
 opt[keys] <- lapply(opt[keys], nullify)
 
 opt\$threads      <- as.numeric(opt\$threads)
+opt\$blas_threads <- as.numeric(opt\$blas_threads)
 opt\$apply_voom   <- as.logical(opt\$apply_voom)
 opt\$proportion   <- as.numeric(opt\$proportion)
 opt\$trend        <- as.logical(opt\$trend)
@@ -134,6 +136,32 @@ if (!is.null(opt\$seed)) {
   RNGkind("L'Ecuyer-CMRG")
   set.seed(opt\$seed)
 }
+
+if (is.na(opt\$blas_threads) || opt\$blas_threads < 1) {
+  stop("'blas_threads' must be a positive integer")
+}
+opt\$blas_threads <- as.integer(opt\$blas_threads)
+
+configure_blas_threads <- function(threads) {
+  thread_env <- c(
+    OPENBLAS_NUM_THREADS = threads,
+    OMP_NUM_THREADS = threads,
+    MKL_NUM_THREADS = threads,
+    BLIS_NUM_THREADS = threads,
+    VECLIB_MAXIMUM_THREADS = threads,
+    NUMEXPR_NUM_THREADS = threads
+  )
+  do.call(Sys.setenv, as.list(thread_env))
+
+  if (requireNamespace("RhpcBLASctl", quietly = TRUE)) {
+    RhpcBLASctl::blas_set_num_threads(threads)
+    RhpcBLASctl::omp_set_num_threads(threads)
+  }
+
+  cat("Configured implicit BLAS/OpenMP threads to", threads, "\n")
+}
+
+configure_blas_threads(opt\$blas_threads)
 
 # Load metadata
 metadata <- read_delim_flexible(opt\$sample_file, header = TRUE, stringsAsFactors = TRUE)

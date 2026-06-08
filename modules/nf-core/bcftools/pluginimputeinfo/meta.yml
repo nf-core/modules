@@ -1,6 +1,7 @@
 name: "bcftools_pluginimputeinfo"
-description: Adds imputation information metrics to the INFO field based on selected
-  FORMAT tags. Only the IMPUTE2 INFO metric from FORMAT/GP tags is currently available.
+description: Adds imputation information metrics to the INFO field based on
+  selected FORMAT tags. Only the IMPUTE2 INFO metric from FORMAT/GP tags is
+  currently available.
 keywords:
   - impute-info
   - bcftools
@@ -20,7 +21,8 @@ tools:
       documentation: "https://samtools.github.io/bcftools/bcftools.html"
       tool_dev_url: "https://github.com/samtools/bcftools"
       doi: "10.1093/bioinformatics/btp352"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       args_id: "$args"
       identifier: biotools:bcftools
   - "bcftools plugin impute-info":
@@ -32,9 +34,9 @@ tools:
       documentation: "https://samtools.github.io/bcftools/bcftools.html#plugin"
       tool_dev_url: "https://github.com/samtools/bcftools"
       doi: "10.1093/bioinformatics/btp352"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       args_id: "$args2"
-
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -78,28 +80,16 @@ output:
           description: VCF output file containing added INFO/INFO field
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
           ontologies: []
-  tbi:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "*.{tbi,csi}":
           type: file
-          description: Alternative VCF file index
-          pattern: "*.tbi"
-          ontologies: []
-  csi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csi":
-          type: file
-          description: Default VCF file index
-          pattern: "*.csi"
-          ontologies: []
+          description: VCF file index
+          pattern: "*.{tbi,csi}"
   versions_bcftools:
     - - ${task.process}:
           type: string
@@ -107,8 +97,8 @@ output:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -118,8 +108,8 @@ topics:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@eweizy"

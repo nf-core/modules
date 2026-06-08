@@ -34,13 +34,16 @@ input:
         "nac", "lamanno" (obsolete)
       pattern: "{standard,lamanno,nac}"
 output:
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_kallistobustools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kallistobustools:
+          type: string
+          description: The name of the tool
+      - kb --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n1:
+          type: eval
+          description: The expression to obtain the version of the tool
   index:
     - kb_ref_out.idx:
         type: file
@@ -77,6 +80,17 @@ output:
         description: Intron transcript to capture file
         pattern: "*intron_t2c.{txt}"
         ontologies: []
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kallistobustools:
+          type: string
+          description: The name of the tool
+      - kb --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@flowuenne"
 maintainers:
