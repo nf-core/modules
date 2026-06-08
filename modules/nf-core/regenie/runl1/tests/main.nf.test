@@ -239,7 +239,6 @@ nextflow_process {
         when {
             params {
                 module_args = "--phenoColList QuantitativeTrait"
-                module_prefix = "plink_simulated_plink2"
             }
             process {
                 """
@@ -283,7 +282,7 @@ nextflow_process {
                 { assert process.out.log.get(0).get(0).id == 'plink_simulated' },
                 {
                     def command = path(process.out.predictions.get(0).get(1)).parent.resolve('.command.sh').text.replaceAll(/\s+/, ' ')
-                    assert command.contains('--run-l1 plink_simulated_plink2.master')
+                    assert command.contains('--run-l1 plink_simulated.master')
                     assert command.contains('--pgen plink_simulated')
                     assert command.contains('--bsize 1000')
                     assert command.contains('--out plink_simulated')
