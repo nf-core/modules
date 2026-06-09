@@ -48,7 +48,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
 
     main:
 
-    ch_versions = channel.empty()
     ch_multiqc_files = channel.empty()
     ch_umi_log = channel.empty()
     ch_adapterremoval_discarded_reads = channel.empty()
@@ -120,7 +119,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         ch_adapterremoval_report = FASTQ_REMOVEADAPTERS_MERGE.out.report
         ch_reads = FASTQ_REMOVEADAPTERS_MERGE.out.processed_reads
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_REMOVEADAPTERS_MERGE.out.multiqc_files)
-        ch_versions = ch_versions.mix(FASTQ_REMOVEADAPTERS_MERGE.out.versions)
     }
 
     // complexity filtering
@@ -221,5 +219,4 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     deacon_index                   = ch_deacon_index
     deacon_summary                 = ch_deacon_summary
     multiqc_files                  = ch_multiqc_files
-    versions                       = ch_versions // channel: [ versions.yml ]
 }
