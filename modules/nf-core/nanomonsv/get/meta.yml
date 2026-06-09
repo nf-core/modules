@@ -70,6 +70,8 @@ input:
           Control nanomonsv parse outputs in order:
           insertion, insertion index, deletion, deletion index,
           rearrangement, rearrangement index, bp_info, bp_info index.
+          The parse prefix defaults to `meta2.id` and can be overridden with
+          `task.ext.prefix2`.
         pattern: "*.{bed.gz,bed.gz.tbi,bedpe.gz,bedpe.gz.tbi}"
         ontologies:
           - edam: "http://edamontology.org/format_3003"
@@ -91,13 +93,6 @@ input:
         description: Reference FASTA index
         pattern: "*.{fai}"
         ontologies: []
-  - control_prefix:
-      type: string
-      description: Control prefix for nanomonsv get (must match control parse
-        prefix)
-  - panel_prefix:
-      type: string
-      description: Optional control panel prefix for nanomonsv get
   - simple_repeat_bed:
       type: file
       description: Simple repeat BED (bgzipped)
@@ -116,6 +111,8 @@ input:
         Optional control panel nanomonsv parse outputs in order:
         insertion, insertion index, deletion, deletion index,
         rearrangement, rearrangement index, bp_info, bp_info index.
+        The optional control panel prefix can be set with `task.ext.args`
+        using `--control_panel_prefix`.
       pattern: "*.{bed.gz,bed.gz.tbi,bedpe.gz,bedpe.gz.tbi}"
       ontologies:
         - edam: "http://edamontology.org/format_3003"

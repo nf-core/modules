@@ -88,11 +88,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
                 ])
-                input[3] = "test.control"
-                input[4] = ""
+                input[3] = []
+                input[4] = []
                 input[5] = []
-                input[6] = []
-                input[7] = []
                 """
             }
         }
@@ -159,11 +157,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
                 ])
-                input[3] = "test.control"
-                input[4] = ""
+                input[3] = []
+                input[4] = []
                 input[5] = []
-                input[6] = []
-                input[7] = []
                 """
             }
         }

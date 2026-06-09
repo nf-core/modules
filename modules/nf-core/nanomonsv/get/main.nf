@@ -11,8 +11,6 @@ process NANOMONSV_GET {
     tuple val(meta), path(tumor_bam), path(tumor_bai), path(tumor_parse_files, arity: '8')
     tuple val(meta2), path(control_bam), path(control_bai), path(control_parse_files, arity: '8')
     tuple val(meta3), path(ref), path(ref_index)
-    val control_prefix
-    val panel_prefix
     path simple_repeat_bed
     path simple_repeat_bed_index
     path control_panel_files, arity: '0..8'
@@ -30,20 +28,18 @@ process NANOMONSV_GET {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix  = task.ext.prefix  ?: "${meta.id}"
+    prefix2 = task.ext.prefix2 ?: "${meta2.id}"
 
     def simple_repeat_arg = simple_repeat_bed ? "--simple_repeat_bed ${simple_repeat_bed[0]}" : ""
     def control_bam_arg = control_bam ? "--control_bam ${control_bam[0]}" : ""
-    def control_prefix_val = control_prefix ?: "${meta2.id}"
-    def control_prefix_arg = control_prefix_val ? "--control_prefix ${control_prefix_val}" : ""
-    def panel_prefix_arg = panel_prefix ? "--control_panel_prefix ${panel_prefix}" : ""
+
     """
     nanomonsv get \\
         ${args} \\
         --processes ${task.cpus} \\
         ${control_bam_arg} \\
-        ${control_prefix_arg} \\
-        ${panel_prefix_arg} \\
+        --control_prefix ${prefix2} \\
         ${simple_repeat_arg} \\
         ${prefix} \\
         ${tumor_bam} \\
