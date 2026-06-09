@@ -9,10 +9,7 @@ process TRTOOLS_DUMPSTR {
 
     input:
     tuple val(meta), path(vcf)
-
-    // Optional inputs
     tuple path(filter_regions), path(filter_regions_tbi)
-
 
     output:
     tuple val(meta), path("*.vcf.gz"),       emit: vcf
@@ -26,30 +23,24 @@ process TRTOOLS_DUMPSTR {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_dumpstr"
 
+    def region_names = filter_regions ? filter_regions.collect { it.name.replaceFirst(/\.bed\.gz$/, '') }.join(',') : ''
+    def filter_regions_arg = filter_regions ? "--filter-regions ${filter_regions.join(',')}" : ''
+    def filter_regions_names_arg = filter_regions ? "--filter-regions-names ${region_names}" : ''
 
-    def region_files = filter_regions ? (filter_regions instanceof List ? filter_regions : [filter_regions]) : []
-    def region_names = region_files ? region_files.collect { it.name.replaceFirst(/\.bed\.gz$/, '') }.join(',') : ''
-    def filter_regions_arg = region_files ? "--filter-regions ${region_files.join(',')}" : ''
-    def filter_regions_names_arg = region_files ? "--filter-regions-names ${region_names}" : ''
-
-    def optional_args = [
-        filter_regions_arg,
-        filter_regions_names_arg,
-        args
-    ].findAll { it }
-    .join(" ")
     """
     dumpSTR \\
         --vcf $vcf \\
         --out $prefix \\
         --zip \\
-        $optional_args
+        ${filter_regions_arg} \\
+        ${filter_regions_names_arg} \\
+        ${args}
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_dumpstr"
 
     """
     echo "" | gzip > ${prefix}.vcf.gz
