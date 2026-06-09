@@ -1,5 +1,10 @@
 #!/usr/bin/env Rscript
 
+# Needed to avoid the error from lubridate in janitor
+# Error: (converted from warning)
+# Your system is mis-configured: ‘/etc/localtime’ is not a symlink
+Sys.setenv(TZ = "UTC")
+
 # Load necessary libraries
 library(data.table)
 library(stringr)
@@ -245,6 +250,5 @@ process_end(
     "r-data.table" = "data.table",
     "r-janitor" = "janitor"
   ),
-  task_name = '"${task.process}":',
-  outdir = "."
+  task_name = "${task.process}"
 )

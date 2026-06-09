@@ -4,8 +4,8 @@ process CUSTOM_GENETICMAPCONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2df9ef33f7170686ac09d8c182f46b3bb10fb5d881a7253c530e8bac09337b50/data':
-        'community.wave.seqera.io/library/r-data.table_r-janitor_r-nfcore.utils_r-r.utils:458c7966e529a0f9' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/af/afe3fd20fa8b3096a9fc6b9b2725d92516a036651545a5f9ec1e6a53b5a365d9/data':
+        'community.wave.seqera.io/library/r-data.table_r-janitor_r-nfcore.utils_r-r.utils:e881939d5868e7db' }"
 
     input:
     tuple val(meta), path(map_file)
@@ -39,12 +39,6 @@ process CUSTOM_GENETICMAPCONVERT {
     touch ${prefix}.minimac.map
     touch ${prefix}.eagle.map
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(R --version | sed '1!d; s/.*version //; s/ .*//')
-        r-data.table: \$(Rscript -e "cat(as.character(packageVersion('data.table')))")
-        r-janitor: \$(Rscript -e "cat(as.character(packageVersion('janitor')))")
-        r-nfcore.utils: \$(Rscript -e "cat(as.character(packageVersion('nfcore.utils')))")
-    END_VERSIONS
+    Rscript -e "nfcore.utils::process_end(packages = list('r-data.table' = 'data.table', 'r-janitor' = 'janitor'), task_name = '${task.process}')"
     """
 }
