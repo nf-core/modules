@@ -15,7 +15,7 @@ process METAPHLAN3_METAPHLAN3 {
     tuple val(meta), path("*_profile.txt")   ,                emit: profile
     tuple val(meta), path("*.biom")          ,                emit: biom
     tuple val(meta), path('*.bowtie2out.txt'), optional:true, emit: bt2out
-    path "versions.yml"                      ,                emit: versions
+    tuple val("${task.process}"), val('metaphlan3'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan3, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,10 +40,6 @@ process METAPHLAN3_METAPHLAN3 {
         --biom ${prefix}.biom \\
         --output_file ${prefix}_profile.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan3: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +52,6 @@ process METAPHLAN3_METAPHLAN3 {
     touch ${prefix}.biom
     touch ${prefix}_profile.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan3: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 
 }
