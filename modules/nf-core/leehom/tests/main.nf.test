@@ -43,7 +43,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -63,14 +63,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot( // Need to discard fail files as empty
-                    process.out.bam,
-                    process.out.fq_pass,
-                    process.out.unmerged_r1_fq_pass,
-                    process.out.unmerged_r2_fq_pass,
-                    process.out.log,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["fq_fail", "unmerged_r1_fq_fail"])).match() } // Fail files are empty
             )
         }
     }
@@ -94,14 +87,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot( // Need to discard fail files as empty
-                    process.out.bam,
-                    process.out.fq_pass,
-                    process.out.unmerged_r1_fq_pass,
-                    process.out.unmerged_r2_fq_pass,
-                    process.out.log,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["fq_fail", "unmerged_r1_fq_fail", "unmerged_r2_fq_fail"])).match() } // Fail files are empty
             )
         }
     }
@@ -124,10 +110,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -148,10 +131,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -176,10 +156,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
