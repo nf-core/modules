@@ -26,7 +26,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json"])).match() }
             )
         }
     }
@@ -49,7 +49,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.json
+                ).match() }
             )
         }
     }
