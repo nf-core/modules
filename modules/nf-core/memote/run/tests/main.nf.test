@@ -26,13 +26,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.json.get(0).get(1) ==~ ".*/test.json.gz" },
-                {
-                    with (path(process.out.versions.get(0)).yaml) {
-                        assert MEMOTE_RUN
-                        assert MEMOTE_RUN.memote
-                    }
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -55,13 +49,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.json.get(0).get(1) ==~ ".*/test.json.gz" },
-                {
-                    with (path(process.out.versions.get(0)).yaml) {
-                        assert MEMOTE_RUN
-                        assert MEMOTE_RUN.memote
-                    }
-                }
+                { snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

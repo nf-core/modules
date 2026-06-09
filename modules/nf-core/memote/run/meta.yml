@@ -41,13 +41,16 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3464
             - edam: http://edamontology.org/format_3989
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+  versions_memote:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - memote:
+          type: string
+          description: The tool name
+      - memote --version | sed 's/memote, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   json:
     - - meta:
@@ -57,9 +60,15 @@ topics:
           type: string
           description: The name of the tool
   versions:
-    - versions.yml:
-        type: string
-        description: The name of the process
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - memote:
+          type: string
+          description: The tool name
+      - memote --version | sed 's/memote, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@brovolia"
 maintainers:

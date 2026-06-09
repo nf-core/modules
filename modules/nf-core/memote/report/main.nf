@@ -12,7 +12,7 @@ process MEMOTE_REPORT {
 
     output:
     tuple val(meta), path("*.html"), emit: report , topic: report
-    path "versions.yml"             , emit: versions, topic: versions
+    tuple val("${task.process}"), val('memote'), eval("memote --version | sed 's/memote, version //'"), topic: versions, emit: versions_memote
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,21 +28,11 @@ process MEMOTE_REPORT {
         --filename ${prefix}.html \\
         ${args} \\
         ${model}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        memote: \$(memote --version | sed 's/memote, version //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        memote: 0.17.0
-    END_VERSIONS
     """
 }
