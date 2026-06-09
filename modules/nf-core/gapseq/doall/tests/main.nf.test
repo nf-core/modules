@@ -40,11 +40,7 @@ nextflow_process {
                 { assert process.out.xml.get(0).get(1).size() > 0 : "XML file should not be empty" },
                 {
                     assert snapshot(
-                        process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
-                        process.out.model.collect { meta, model -> [meta, (model instanceof List ? model : [model]).collect { file(it).getName() }.sort()] },
-                        process.out.xml.collect { meta, xml -> [meta, (xml instanceof List ? xml : [xml]).collect { file(it).getName() }.sort()] },
-                        process.out.tbl.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
-                        [versions: process.out.versions_gapseq.collect()]
+                        sanitizeOutput(process.out, unstableKeys: ["model", "xml", "tbl", "log"])
                     ).match()
                 }
             )
@@ -70,7 +66,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.xml, process.out.tbl, process.out.log, [versions: process.out.versions_gapseq.collect()]).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -94,7 +90,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.xml, process.out.tbl, process.out.log, [versions: process.out.versions_gapseq.collect()]).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
