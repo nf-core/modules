@@ -4,8 +4,8 @@ process GAPSEQ_FINDTRANSPORT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'community.wave.seqera.io/library/gapseq:2.0.1--5e0dffc1176c5fd2' :
-        'quay.io/biocontainers/gapseq:2.0.1--hdfd78af_0' }"
+        'community.wave.seqera.io/library/gapseq:2.1.0--31c8824b3592beaf' :
+        'quay.io/biocontainers/gapseq:2.1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
