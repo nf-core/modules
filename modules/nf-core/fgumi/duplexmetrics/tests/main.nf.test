@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process FGUMI_DUPLEXMETRICS"
+    script "../main.nf"
+    process "FGUMI_DUPLEXMETRICS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgumi"
+    tag "fgumi/duplexmetrics"
+    tag "fgumi/sort"
+    tag "fgumi/group"
+
+    setup {
+        run("FGUMI_SORT") {
+            script "../../sort/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_converted.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("FGUMI_GROUP") {
+            script "../../group/main.nf"
+            process {
+                """
+                input[0] = FGUMI_SORT.out.bam
+                input[1] = 'adjacency'
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - bam - no intervals") {
+
+        when {
+            process {
+                """
+                input[0] = FGUMI_GROUP.out.bam.map { meta, bam -> [ meta, bam, [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - no intervals - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = FGUMI_GROUP.out.bam.map { meta, bam -> [ meta, bam, [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
