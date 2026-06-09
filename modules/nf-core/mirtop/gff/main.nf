@@ -14,7 +14,7 @@ process MIRTOP_GFF {
 
     output:
     tuple val(meta), path("mirtop/*mirtop.gff")           , emit: gff
-    path "versions.yml"                                   , emit: versions
+    tuple val("${task.process}"), val('mirtop'), eval("mirtop --version 2>&1 | tail -n 1 | sed 's/^mirtop //'"), emit: versions_mirtop, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +33,6 @@ process MIRTOP_GFF {
         $bam
 
     mv mirtop/mirtop.gff mirtop/${prefix}_mirtop.gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mirtop: \$(echo \$(mirtop --version 2>&1) | sed 's/^.*mirtop //')
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +40,5 @@ process MIRTOP_GFF {
     """
     mkdir mirtop
     touch mirtop/${prefix}_mirtop.gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mirtop: \$(echo \$(mirtop --version 2>&1) | sed 's/^.*mirtop //')
-    END_VERSIONS
     """
 }
