@@ -110,7 +110,7 @@ output:
       - msisensor-pro:
           type: string
           description: The name of the tool
-      - msisensor-pro --version 2>&1 | sed -nE 's/Version:\s*//p':
+      - msisensor-pro --version 2>&1 | sed -nE 's/Version:\s*v//p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -121,7 +121,7 @@ topics:
       - msisensor-pro:
           type: string
           description: The name of the tool
-      - msisensor-pro --version 2>&1 | sed -nE 's/Version:\s*//p':
+      - msisensor-pro --version 2>&1 | sed -nE 's/Version:\s*v//p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
