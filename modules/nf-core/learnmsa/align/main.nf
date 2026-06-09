@@ -1,14 +1,18 @@
 process LEARNMSA_ALIGN {
     tag "$meta.id"
     label 'process_medium'
-    container "docker.io/felbecker/learnmsa:2.0.14"
+
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/learnmsa:2.0.16--pyhdfd78af_0'
+        : 'quay.io/biocontainers/learnmsa:2.0.16--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.aln")      , emit: alignment
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.aln"), emit: alignment
+    tuple val("${task.process}"), val('learnmsa'), eval("learnMSA -h | sed -nE 's/.*version ([0-9.]+).*/\\1/p'"), emit: versions_learnmsa, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -16,29 +20,17 @@ process LEARNMSA_ALIGN {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("LearnMSA align module does not support Conda. Please use Docker / Singularity / Podman instead.")
-    }
+
     """
     learnMSA \\
-        -i $fasta \\
+        -i ${fasta} \\
         -o "${prefix}.aln" \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        learnmsa: \$(learnMSA -h | grep 'version' | awk -F 'version ' '{print \$2}' | awk '{print \$1}' | sed 's/)//g')
-    END_VERSIONS
+        ${args}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.aln
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        learnmsa: \$(if command -v learnMSA &>/dev/null; then learnMSA -h | grep 'version' | awk -F 'version ' '{print \$2}' | awk '{print \$1}' | sed 's/)//g'; else echo "STUB_TEST_HARDCODED_VERSION"; fi)
-    END_VERSIONS
     """
 }

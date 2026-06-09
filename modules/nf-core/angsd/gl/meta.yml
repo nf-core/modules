@@ -27,6 +27,13 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
           - edam: "http://edamontology.org/format_3462" # CRAM
+    - bai:
+        type: file
+        description: A list of BAM or CRAM indices
+        pattern: "*.{bam.bai,cram.crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+          - edam: "http://edamontology.org/format_3462" # CRAM (no dedicated CRAI term in EDAM)
   - - meta2:
         type: map
         description: |
@@ -38,6 +45,12 @@ input:
         pattern: "*.fasta"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: Index of the reference genome FASTA file
+        pattern: "*.{fasta,fa}.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA (no dedicated FAI term in EDAM)
   - - meta3:
         type: map
         description: |
@@ -87,3 +100,5 @@ authors:
 maintainers:
   - "@apeltzer"
   - "@TCLamnidis"
+contributors:
+  - "@ASendellPrice"
