@@ -10,15 +10,14 @@ process PARABRICKS_MINIMAP2 {
     input:
     tuple val(meta),  path(reads)
     tuple val(meta2), path(fasta)
-    tuple val(meta3), path(intervals)
-    tuple val(meta4), path(known_sites)
+    tuple val(meta3), path(index)
+    tuple val(meta4), path(intervals)
+    tuple val(meta5), path(known_sites)
     val output_fmt
 
     output:
-    tuple val(meta), path("*.bam"),                   emit: bam,                 optional: true
-    tuple val(meta), path("*.bai"),                   emit: bai,                 optional: true
-    tuple val(meta), path("*.cram"),                  emit: cram,                optional: true
-    tuple val(meta), path("*.crai"),                  emit: crai,                optional: true
+    tuple val(meta), path("*.{bam,cram}"),            emit: bam,                 optional: true
+    tuple val(meta), path("*.{bai,crai}"),            emit: index,               optional: true
     tuple val(meta), path("*.table"),                 emit: bqsr_table,          optional: true
     tuple val(meta), path("*_qc_metrics"),            emit: qc_metrics,          optional: true
     tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics,   optional: true
@@ -49,6 +48,7 @@ process PARABRICKS_MINIMAP2 {
     }
     def extension = "${output_fmt}"
 
+    def index_command = index ? "--index ${index}" : ""
     def known_sites_command    = known_sites ? (known_sites instanceof List ? known_sites.collect { knownSite -> "--knownSites ${knownSite}" }.join(' ') : "--knownSites ${known_sites}") : ""
     def known_sites_output_cmd = known_sites ? "--out-recal-file ${prefix}.table" : ""
     def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
@@ -60,11 +60,25 @@ process PARABRICKS_MINIMAP2 {
         --ref ${fasta} \\
         ${in_command} \\
         --out-bam ${prefix}.${extension} \\
+        ${index_command} \\
         ${known_sites_command} \\
         ${known_sites_output_cmd} \\
         ${intervals_command} \\
         ${num_gpus} \\
         ${args}
+
+    # Capture the full version output once and store it in a variable
+    pbrun_version_output=\$(pbrun minimap2 --version 2>&1)
+
+    # We handle this different to the other modules because minimap does not begin with an Uppercase letter
+
+    # Generate compatible_versions.yml
+    cat <<EOF > compatible_versions.yml
+    "${task.process}":
+        pbrun_version: \$(echo "\$pbrun_version_output" | grep "pbrun:" | awk '{print \$2}')
+        compatible_with:
+        \$(echo "\$pbrun_version_output" | tr '\\t' ' ' | awk -F':' '/Compatible With:/,/^---/ { if (\$0 !~ /Compatible With:/ && \$0 !~ /^---\$/ && index(\$0,":")>0) { key=\$1; val=\$2; gsub(/^[ ]+|[ ]+\$/, "", key); gsub(/^[ ]+|[ ]+\$/, "", val); printf "  %s: %s\\n", key, val } }')
+    EOF
     """
 
     stub:
@@ -85,7 +99,6 @@ process PARABRICKS_MINIMAP2 {
     ${known_sites_output}
     ${qc_metrics_output}
     ${duplicate_metrics_output}
-
     # Capture the full version output once and store it in a variable
     pbrun_version_output=\$(pbrun minimap2 --version 2>&1)
 
