@@ -14,7 +14,7 @@ process MIRTOP_GFF {
 
     output:
     tuple val(meta), path("mirtop/*mirtop.gff")           , emit: gff
-    tuple val("${task.process}"), val('mirtop'), eval("mirtop --version 2>&1 | tail -n 1 | sed 's/^mirtop //'"), emit: versions_mirtop, topic: versions
+    tuple val("${task.process}"), val('mirtop'), eval("mirtop --version 2>&1 | sed -n 's/^mirtop //p'"), emit: versions_mirtop, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

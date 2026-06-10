@@ -16,7 +16,7 @@ process MIRTOP_EXPORT {
     tuple val(meta), path("export/*_rawData.tsv")     , emit: tsv, optional: true
     tuple val(meta), path("export/*.fasta")           , emit: fasta, optional: true
     tuple val(meta), path("export/*.vcf*")            , emit: vcf  , optional: true
-    tuple val("${task.process}"), val('mirtop'), eval("mirtop --version 2>&1 | tail -n 1 | sed 's/^mirtop //'"), emit: versions_mirtop, topic: versions
+    tuple val("${task.process}"), val('mirtop'), eval("mirtop --version 2>&1 | sed -n 's/^mirtop //p'"), emit: versions_mirtop, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

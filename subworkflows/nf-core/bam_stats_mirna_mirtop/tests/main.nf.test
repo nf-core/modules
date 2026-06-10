@@ -38,10 +38,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    workflow.out.isomirs,
-                    workflow.out.stats_txt,
-                    workflow.out.stats_log).match() },
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["counts"])).match() },
                 { assert path("${workflow.out.counts[0][1]}").exists() }
             )
         }
