@@ -139,7 +139,13 @@
         "content": [
             {
                 "0": [
-                    
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "1": [
                     [
@@ -147,61 +153,31 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    
-                ],
-                "3": [
-                    
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
                         "test.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "5": [
+                "2": [
                     [
                         "BWAFASTALIGN_MEM",
                         "bwafastalign",
                         "1.0.0"
                     ]
                 ],
-                "6": [
+                "3": [
                     [
                         "BWAFASTALIGN_MEM",
                         "samtools",
                         "1.21"
                     ]
                 ],
-                "7": [
+                "4": [
                     [
                         "BWAFASTALIGN_MEM",
                         "mbuffer",
                         "version 20160228"
                     ]
                 ],
-                "bam": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "crai": [
-                    
-                ],
-                "cram": [
-                    
-                ],
-                "csi": [
+                "index": [
                     [
                         {
                             "id": "test",
@@ -210,8 +186,14 @@
                         "test.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "sam": [
-                    
+                "output": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "versions_bwafastalign": [
                     [
@@ -236,7 +218,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-09T13:11:01.111243085",
+        "timestamp": "2026-06-10T08:58:53.587106762",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
