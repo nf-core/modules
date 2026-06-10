@@ -1,0 +1,90 @@
+name: "rpbp_extractmetageneprofiles"
+description: |
+  Build per-read-length pileups of Ribo-seq read 5'-ends around annotated
+  start codons - the "metagene profile". For each read length, the profile
+  counts how many reads of that length have their 5' end at each position
+  in a window around every annotated start codon, summed across all
+  transcripts. Looking at the profile across the window reveals whether
+  reads of that length show the 3-nucleotide periodicity characteristic
+  of translating ribosomes.
+
+  This per-length view matters because different ribosome footprint
+  lengths place the ribosomal P-site (the codon being decoded) at
+  different offsets from the read's 5' end, so each length needs its
+  own offset calibration. Output is consumed by
+  `rpbp/estimatemetagenebayesfactors`, which scores each (length, offset)
+  combination for periodicity.
+keywords:
+  - rpbp
+  - metagene
+  - orf
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1350"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - bam:
+        type: file
+        description: Sorted Ribo-seq BAM.
+        pattern: "*.bam"
+        ontologies: []
+    - bai:
+        type: file
+        description: BAM index.
+        pattern: "*.bai"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map identifying the reference (e.g. `[ id:'reference' ]`).
+    - transcript_bed:
+        type: file
+        description: Annotated transcripts BED produced by `rpbp/preparegenome`.
+        pattern: "*.annotated.bed.gz"
+        ontologies: []
+output:
+  metagene:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "${prefix}.metagene-profile.csv.gz":
+          type: file
+          description: Per-read-length 5'-end metagene profile counts.
+          pattern: "*.metagene-profile.csv.gz"
+          ontologies: []
+  versions_rpbp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"
