@@ -2,9 +2,9 @@ process DDS_CREATEPROJECT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/97/971f09f84bdc0d023c1ac45905d21bfe4f1a36e4c822edf75325e55b68639a05/data':
-        'community.wave.seqera.io/library/python_pip_dds-cli:c4d21ad6e2eb6702' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/7352a40103ce629fbc72986922a68e8f9cc35630b89ee836a0c03dfd676f2341/data':
+        'community.wave.seqera.io/library/pip_python_dds-cli:4a7daeb54b4c7a8c' }"
 
     input:
     val title
