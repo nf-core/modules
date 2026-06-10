@@ -1,0 +1,71 @@
+name: "rpbp_getperiodiclengthsoffsets"
+description: |
+  Filter the per-read-length P-site offset table down to the
+  (length, offset) pairs that will actually drive ORF-level scoring.
+  Drops read lengths whose metagene profile is too sparsely populated,
+  or whose periodicity Bayes factor is too low / too uncertain, so that
+  downstream P-site counting only uses read lengths with a clean
+  3-nucleotide signal.
+
+  Wraps Rp-Bp's `get_periodic_lengths_and_offsets` Python helper directly
+  rather than reimplementing the filter, so the selection stays byte-
+  identical to the upstream tool. Thresholds are configured via
+  `ext.args` as four space-separated tokens:
+  `<min_metagene_profile_count> <min_metagene_bf_mean> <max_metagene_bf_var> <min_metagene_bf_likelihood>`.
+  Any token may be `None` to defer to upstream's per-slot default.
+  Defaults: `1000 5 None 0.5` (mirrors `rpbp.defaults.metagene_options`).
+keywords:
+  - rpbp
+  - psite
+  - offset
+  - filter
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1350"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - periodic_offsets:
+        type: file
+        description: Selected periodic offsets CSV from `rpbp/selectperiodicoffsets`.
+        pattern: "*.periodic-offsets.csv.gz"
+        ontologies: []
+output:
+  lengths_offsets:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "${prefix}.periodic_lengths_offsets.tsv":
+          type: file
+          description: Per-read-length offsets (length, offset) that pass the periodicity filter.
+          pattern: "*.periodic_lengths_offsets.tsv"
+          ontologies: []
+  versions_rpbp:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"
