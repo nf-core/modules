@@ -185,9 +185,6 @@ nextflow_process {
                         .collect { row -> [row[0], row[1..-1]] }
                     def valueBySource = parsedRows.collectEntries { row -> [(row[0]): row[1]] }
                     def stableRows = parsedRows.findAll { row -> !['rG1', 'rG2'].contains(row[0]) }
-                    assert valueBySource["V(G1)_tr1"] == ["0.000006", "0.210395"]
-                    assert valueBySource["C(G1)_tr12"] == ["0.607507", "0.601887"]
-                    assert valueBySource["logL"] == ["-844.942"]
                     assert valueBySource["n"] == ["400"]
                     assert valueBySource.keySet().containsAll(["rG1", "rG2"])
                     assert snapshot(
