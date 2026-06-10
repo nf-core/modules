@@ -4,14 +4,15 @@ process GAPSEQ_DOALL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'community.wave.seqera.io/library/gapseq:2.0.1--5e0dffc1176c5fd2' :
-        'quay.io/biocontainers/gapseq:2.0.1--hdfd78af_0' }"
+        'community.wave.seqera.io/library/gapseq:2.1.0--31c8824b3592beaf' :
+        'quay.io/biocontainers/gapseq:2.1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta), path(medium)
 
     output:
     tuple val(meta), path("*.RDS")  , emit: model
+    tuple val(meta), path("*.xml")  , emit: xml
     tuple val(meta), path("*.tbl")  , emit: tbl
     tuple val(meta), path("*.fna")  , emit: fna      , optional: true
     tuple val(meta), path("*.log")  , emit: log      , optional: true
@@ -38,6 +39,7 @@ process GAPSEQ_DOALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_model-filled.RDS
+    touch ${prefix}_model-filled.xml
     touch ${prefix}_pathways.tbl
     touch ${prefix}_transporters.tbl
     touch ${prefix}.fna
