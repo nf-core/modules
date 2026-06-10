@@ -23,7 +23,10 @@ process DDS_CREATEPROJECT {
     def args = task.ext.args ?: ''
 
     """
-    dds --token-path $token_file project create --title "$title" --description "$description" --principal-investigator "$pi" > output.log
+    # dds requires 600 permissions on the token file; copy first since Nextflow stages inputs as symlinks
+    cp $token_file token.conf
+    chmod 600 token.conf
+    dds --token-path token.conf project create --title "$title" --description "$description" --principal-investigator "$pi" > output.log
     """
 
     stub:
