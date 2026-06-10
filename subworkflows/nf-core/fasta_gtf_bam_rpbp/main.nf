@@ -59,7 +59,6 @@ workflow FASTA_GTF_BAM_RPBP {
     )
 
     emit:
-    index            = RPBP_PREPAREGENOME.out.index                        // channel: [ val(meta), path(rpbp_index) ]
     transcript_bed   = RPBP_PREPAREGENOME.out.transcript_bed               // channel: [ val(meta), path(*.annotated.bed.gz) ]
     orfs_genomic_bed = RPBP_PREPAREGENOME.out.orfs_genomic_bed             // channel: [ val(meta), path(*.orfs-genomic.annotated.bed.gz) ]
     orfs_exons_bed   = RPBP_PREPAREGENOME.out.orfs_exons_bed               // channel: [ val(meta), path(*.orfs-exons.annotated.bed.gz) ]

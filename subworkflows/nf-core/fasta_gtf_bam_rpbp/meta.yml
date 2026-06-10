@@ -54,10 +54,6 @@ input:
         be canonical or a hybrid (e.g. extended-ORF mode).
         Structure: [ val(meta), path(fasta), path(gtf) ]
 output:
-  - index:
-      description: |
-        Prepared Rp-Bp BED reference directory.
-        Structure: [ val(meta), path(rpbp_index) ]
   - transcript_bed:
       description: |
         Annotated transcripts BED produced by `rpbp/preparegenome`.
