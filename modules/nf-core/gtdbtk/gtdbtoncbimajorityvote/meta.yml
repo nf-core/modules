@@ -89,6 +89,16 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3475
 
+  versions_gtdbtk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gtdbtk:
+          type: string
+          description: The name of the tool
+      - "gtdbtk --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -1":
+          type: eval
+          description: The expression to obtain the version of the tool
   versions_gtdbtoncbimajorityvote:
     - - ${task.process}:
           type: string
@@ -101,6 +111,15 @@ output:
           description: The expression to obtain the version of the tool
 topics:
   versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gtdbtk:
+          type: string
+          description: The name of the tool
+      - "gtdbtk --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -1":
+          type: eval
+          description: The expression to obtain the version of the tool
     - - ${task.process}:
           type: string
           description: The name of the process

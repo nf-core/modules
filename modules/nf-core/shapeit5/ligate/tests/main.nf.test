@@ -37,7 +37,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = BCFTOOLS_VIEW.out.vcf.join(BCFTOOLS_VIEW.out.csi)
+                input[0] = BCFTOOLS_VIEW.out.vcf.join(BCFTOOLS_VIEW.out.index)
                     .map{ meta, vcf, index -> [meta.subMap("id"), vcf, index]}
                     .groupTuple()
                 input[1] = ''
