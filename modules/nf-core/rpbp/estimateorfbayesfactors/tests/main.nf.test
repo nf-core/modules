@@ -30,6 +30,8 @@ nextflow_process {
             def bayes_factors = file(process.out.bayes_factors[0][1])
             def rows = path(process.out.bayes_factors[0][1]).linesGzip
             def header = rows[0].split("\t")
+            // These columns are MCMC estimates whose floats differ between the conda and
+            // container toolchains; exclude them and snapshot only the deterministic columns.
             def mcmc_cols = ["#p_translated_mean", "#p_translated_var", "#p_background_mean", "#p_background_var", "#bayes_factor_mean", "#bayes_factor_var"]
             def stable_idx = (0..<header.size()).findAll { !(header[it] in mcmc_cols) }
             def stable = rows.collect { line -> def fields = line.split("\t"); stable_idx.collect { fields[it] }.join("\t") }.join("\n")
