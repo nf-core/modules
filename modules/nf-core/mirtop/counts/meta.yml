@@ -60,7 +60,7 @@ output:
           description: TSV file
           pattern: "*.{tsv}"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   versions_mirtop:
     - - ${task.process}:
           type: string
@@ -68,7 +68,7 @@ output:
       - mirtop:
           type: string
           description: The name of the tool
-      - mirtop --version 2>&1 | tail -n 1 | sed 's/^mirtop //':
+      - mirtop --version 2>&1 | sed -n 's/^mirtop //p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -79,7 +79,7 @@ topics:
       - mirtop:
           type: string
           description: The name of the tool
-      - mirtop --version 2>&1 | tail -n 1 | sed 's/^mirtop //':
+      - mirtop --version 2>&1 | sed -n 's/^mirtop //p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
