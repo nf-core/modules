@@ -13,11 +13,17 @@ process MYGENE {
     output:
     tuple val(meta), path("*.gmt"), emit: gmt
     tuple val(meta), path("*.tsv"), emit: tsv     , optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('mygene'), val("3.2.2"), emit: versions_mygene, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     template "mygene.py"
+
+    stub:
+    """
+    touch ${meta.id}.gmt
+    touch ${meta.id}.tsv
+    """
 }
