@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process RPBP_SELECTFINALPREDICTIONSET"
+    script "../main.nf"
+    process "RPBP_SELECTFINALPREDICTIONSET"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rpbp"
+    tag "rpbp/selectfinalpredictionset"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "modules/nf-core/gunzip/main.nf"
+            process {
+            """
+            input[0] = [
+                [ id:'reference' ],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
+            ]
+            """
+            }
+        }
+    }
+
+    test("homo_sapiens chr20 - select final prediction set") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.bayes-factors.bed.gz", checkIfExists: true)
+                ])
+                input[1] = GUNZIP.out.gunzip.first()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.predicted[0][1]).name,
+                    file(process.out.dna_fasta[0][1]).name,
+                    file(process.out.protein_fasta[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens chr20 - select final prediction set - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file("https://raw.githubusercontent.com/pinin4fjords/test-datasets/rpbp-test-data/data/genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.bayes-factors.bed.gz", checkIfExists: true)
+                ])
+                input[1] = GUNZIP.out.gunzip.first()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
