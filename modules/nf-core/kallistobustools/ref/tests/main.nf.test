@@ -24,15 +24,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.t2g,
-                    process.out.cdna,
-                    process.out.intron,
-                    process.out.cdna_t2c,
-                    process.out.intron_t2c,
-                    ).match()
-                },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match() },
                 { assert file(process.out.index.get(0)).exists() }
             )
         }
@@ -53,15 +45,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.t2g,
-                    process.out.cdna,
-                    process.out.intron,
-                    process.out.cdna_t2c,
-                    process.out.intron_t2c,
-                    ).match()
-                },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match() },
                 { assert file(process.out.index.get(0)).exists() }
             )
         }
@@ -84,12 +68,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match() }
             )
         }
     }
 
     test("genome.fasta + genome.gtf + 'nac' - stub") {
+
+        options "-stub"
 
         when {
             process {
@@ -104,15 +90,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.t2g,
-                    process.out.cdna,
-                    process.out.intron,
-                    process.out.cdna_t2c,
-                    process.out.intron_t2c,
-                    ).match()
-                },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match() },
                 { assert file(process.out.index.get(0)).exists() }
             )
         }
