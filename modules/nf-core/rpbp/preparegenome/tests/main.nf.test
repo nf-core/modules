@@ -43,7 +43,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.index.collect { [ it[0], file(it[1]).list().sort() ] },
                     file(process.out.transcript_bed[0][1]).name,
                     file(process.out.orfs_genomic_bed[0][1]).name,
                     file(process.out.orfs_exons_bed[0][1]).name,

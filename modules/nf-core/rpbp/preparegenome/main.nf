@@ -11,7 +11,6 @@ process RPBP_PREPAREGENOME {
     tuple val(meta), path(fasta), path(gtf)
 
     output:
-    tuple val(meta), path("${prefix}")                                                       , emit: index
     tuple val(meta), path("${prefix}/${name}.annotated.bed.gz")                              , emit: transcript_bed
     tuple val(meta), path("${prefix}/transcript-index/${name}.orfs-genomic.annotated.bed.gz"), emit: orfs_genomic_bed
     tuple val(meta), path("${prefix}/transcript-index/${name}.orfs-exons.annotated.bed.gz")  , emit: orfs_exons_bed

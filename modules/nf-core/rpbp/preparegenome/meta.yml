@@ -56,13 +56,6 @@ input:
         pattern: "*.gtf"
         ontologies: []
 output:
-  index:
-    - - meta:
-          type: map
-          description: Groovy Map inherited from input meta.
-      - "${prefix}":
-          type: directory
-          description: Rp-Bp prepared BED reference directory.
   transcript_bed:
     - - meta:
           type: map
