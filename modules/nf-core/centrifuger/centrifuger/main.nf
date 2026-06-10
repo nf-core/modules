@@ -3,7 +3,7 @@ process CENTRIFUGER_CENTRIFUGER {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/centrifuger:1.1.0--hf426362_0':
         'quay.io/biocontainers/centrifuger:1.1.0--hf426362_0' }"
 
@@ -16,9 +16,9 @@ process CENTRIFUGER_CENTRIFUGER {
     path umi
 
     output:
-    tuple val(meta), path("${meta.id}.tsv"), emit: classification_file
-    tuple val(meta), path("${meta.id}.classified*"), optional: true, emit: fastq_classified
-    tuple val(meta), path("${meta.id}.unclassified*"), optional: true, emit: fastq_unclassified
+    tuple val(meta), path("*.tsv")                , emit: classification_file
+    tuple val(meta), path("*.classified*.fq.gz")  , emit: fastq_classified  , optional: true
+    tuple val(meta), path("*.unclassified*.fq.gz"), emit: fastq_unclassified, optional: true
     tuple val("${task.process}"), val('centrifuger'), eval("centrifuger -v 2>&1 | sed 's/Centrifuger v//'"),emit: versions_centrifuger,  topic: versions
 
     when:
@@ -35,7 +35,7 @@ process CENTRIFUGER_CENTRIFUGER {
     def umi_arg = umi ? "--UMI ${umi}" : ""
 
     """
-    db_name=`find -L ${db} -name "*.1.cfr" -not -name "._*"  | sed 's/\\.1.cfr\$//'`
+    db_name=`find -L . -name "*.1.cfr" -not -name "._*"  | sed 's/\\.1.cfr\$//'`
 
     centrifuger \\
         -x \$db_name \\
