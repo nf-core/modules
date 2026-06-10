@@ -17,7 +17,8 @@ tools:
       documentation: https://github.com/igvteam/igv.js/wiki
       tool_dev_url: https://github.com/igvteam/igv.js
       doi: 10.1093/bioinformatics/btac830
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:igv
 input:
   - - meta:
@@ -69,13 +70,27 @@ output:
           description: Copy of the input index of sorted BAM/CRAM file
           pattern: "*.{bai,crai}"
           ontologies: []
+  versions_cat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cat:
+          type: string
+          description: The name of the tool
+      - cat --version |& sed '1!d;s/.*coreutils) //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cat:
+          type: string
+          description: The name of the tool
+      - cat --version |& sed '1!d;s/.*coreutils) //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mirpedrol"
 maintainers:

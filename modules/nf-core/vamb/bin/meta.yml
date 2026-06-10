@@ -14,9 +14,9 @@ tools:
       documentation: "https://vamb.readthedocs.io/en/latest"
       tool_dev_url: "https://github.com/RasmussenLab/vamb"
       doi: "10.1038/s41587-020-00777-4"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:vamb
-
 input:
   - - meta:
         type: map
@@ -165,13 +165,27 @@ output:
           pattern: "*.log"
           ontologies:
             - edam: http://edamontology.org/format_3671 # Text
+  versions_vamb:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vamb:
+          type: string
+          description: The name of the tool
+      - vamb --version | sed 's/Vamb //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: versions.yml
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vamb:
+          type: string
+          description: The name of the tool
+      - vamb --version | sed 's/Vamb //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@prototaxites"
 maintainers:

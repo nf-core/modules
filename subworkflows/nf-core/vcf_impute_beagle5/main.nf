@@ -38,7 +38,7 @@ workflow VCF_IMPUTE_BEAGLE5 {
     // Combine VCF files
     ch_ready_vcf = ch_input_branched.vcf.mix(
         BCFTOOLS_VIEW.out.vcf.join(
-            BCFTOOLS_VIEW.out.tbi.mix(BCFTOOLS_VIEW.out.csi),
+            BCFTOOLS_VIEW.out.index,
             failOnMismatch: true,
             failOnDuplicate: true,
         )
@@ -62,9 +62,23 @@ workflow VCF_IMPUTE_BEAGLE5 {
 
     ch_beagle_input = ch_ready_vcf
         .combine(ch_panel_map)
-        .map { metaI, input_vcf, input_index, metaPC, panel_vcf, panel_index, map, regionout, regionsize ->
+        .map { metaI, input_vcf, input_index, metaPC, panel_vcf, panel_index, map, regionout, region_size ->
+            def regionoutPadded
+            if (regionout.contains(':')) {
+                // Handle format like "chr22:1000-2000"
+                def chr = regionout.tokenize(':')[0]
+                def region = regionout.tokenize(':')[1]
+                def start = region.tokenize('-')[0]
+                def end = region.tokenize('-')[1]
+                def paddedStart = String.format('%010d', start as long)
+                def paddedEnd = String.format('%010d', end as long)
+                regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
+            } else {
+                // Handle format like "chr22" (no coordinates)
+                regionoutPadded = regionout
+            }
             [
-                metaI + metaPC + ["regionout": regionout, "regionsize": regionsize],
+                metaI + metaPC + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
                 input_vcf,
                 input_index,
                 panel_vcf,
@@ -85,16 +99,15 @@ workflow VCF_IMPUTE_BEAGLE5 {
     // Ligate all phased files in one and index it
     ligate_input = BEAGLE5_BEAGLE.out.vcf
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.index,
             failOnMismatch: true,
             failOnDuplicate: true,
         )
         .map { meta, vcf, index ->
-            def keysToKeep = meta.keySet() - ['regionout', 'regionsize']
+            def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
             [
-                groupKey(meta.subMap(keysToKeep), meta.regionsize),
-                vcf,
-                index,
+                groupKey(meta.subMap(keysToKeep), meta.regionSize),
+                vcf, index,
             ]
         }
         .groupTuple()
@@ -110,7 +123,7 @@ workflow VCF_IMPUTE_BEAGLE5 {
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
-        BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
+        BCFTOOLS_INDEX_LIGATE.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
     )
