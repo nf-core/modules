@@ -4,8 +4,8 @@ process LLAMACPPPYTHON_RUN {
 
     conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        (task.accelerator ? 'oras://community.wave.seqera.io/library/python_pip_cuda-version_cuda-runtime:8567a5a7378937ee' : 'oras://community.wave.seqera.io/library/python_pip:302ddc13f2e82134') :
-        (task.accelerator ? 'community.wave.seqera.io/library/python_pip_cuda-version_cuda-runtime:64181bfdc0f932b9' : 'community.wave.seqera.io/library/python_pip:af3371aa10dd6d12') }"
+        (task.accelerator ? 'oras://community.wave.seqera.io/library/llama-cpp-python_llama.cpp:5fafadf87c4d2d13' : 'oras://community.wave.seqera.io/library/llama-cpp-python:0.3.28--aff015fe7d46e9ec') :
+        (task.accelerator ? 'community.wave.seqera.io/library/llama-cpp-python_llama.cpp:0842a1eebc13be08' : 'community.wave.seqera.io/library/llama-cpp-python:0.3.28--c4e8129352f64626') }"
 
     input:
     tuple val(meta), path(prompt_file), path(gguf_model)
