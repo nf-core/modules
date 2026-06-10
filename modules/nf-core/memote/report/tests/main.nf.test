@@ -2,7 +2,6 @@ nextflow_process {
 
     name "Test Process MEMOTE_REPORT"
     script "../main.nf"
-    config "./nextflow.config"
     process "MEMOTE_REPORT"
 
     tag "modules"
@@ -50,7 +49,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.report
+                    sanitizeOutput(process.out)
                 ).match() }
             )
         }
