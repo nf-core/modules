@@ -3,7 +3,7 @@ process HIPHASE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a9489e5b2b9b76b7680f06e60aa78f1c323a2e00a3947225ba4ccbb3607f502/data'
         : 'community.wave.seqera.io/library/hiphase:1.6.0--f83f7bc3314ef63b'}"
 

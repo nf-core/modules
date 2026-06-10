@@ -4,8 +4,8 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pandas:1.5.2' :
-        'biocontainers/pandas:1.5.2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b06950ac325030db5976f3d9c536e358eb686503af35c7e6222f86d016b3466f/data' :
+        'community.wave.seqera.io/library/pandas_python:67bda66f0cb8a241' }"
 
     input:
     tuple val(meta), path(input_file)
@@ -13,10 +13,10 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     tuple val(stat_column), val(stat_threshold), val(stat_cardinality)
 
     output:
-    tuple val(meta), path("*_filtered.tsv")         , emit: filtered
-    tuple val(meta), path("*_filtered_up.tsv")      , emit: filtered_up
-    tuple val(meta), path("*_filtered_down.tsv")    , emit: filtered_down
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*_filtered.tsv")     , emit: filtered
+    tuple val(meta), path("*_filtered_up.tsv")  , emit: filtered_up
+    tuple val(meta), path("*_filtered_down.tsv"), emit: filtered_down
+    path "versions.yml"                         , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -75,6 +75,7 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     with open('versions.yml', 'w') as version_file:
         version_file.write('"${task.process}":\\n')
         version_file.write(f"    pandas: {pd.__version__}\\n")
+        version_file.write(f"    python: {sys.version.split()[0]}\\n")
     """
 
     stub:
@@ -83,6 +84,11 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     touch ${prefix}_filtered.tsv
     touch ${prefix}_filtered_up.tsv
     touch ${prefix}_filtered_down.tsv
-    echo '"${task.process}":\\n    pandas: 1.5.2' > versions.yml
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pandas: \$(pip show pandas | sed -n 's/Version: //p')
+        python: \$(python --version | cut -f 2 -d " ")
+    END_VERSIONS
     """
 }

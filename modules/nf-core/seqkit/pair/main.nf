@@ -3,9 +3,9 @@ process SEQKIT_PAIR {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqkit:2.9.0--h9ee0642_0':
-        'biocontainers/seqkit:2.9.0--h9ee0642_0' }"
+        'quay.io/biocontainers/seqkit:2.9.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -25,11 +25,11 @@ process SEQKIT_PAIR {
         pair \\
         -1 ${reads[0]} \\
         -2 ${reads[1]} \\
-        $args \\
-        --threads $task.cpus
+        ${args} \\
+        --threads ${task.cpus}
 
     # gzip fastq
-    find . -maxdepth 1 -name "*.fastq" -exec gzip {} \;
+    find . -maxdepth 1 -name "*.fastq" -exec gzip {} \\;
     """
 
     stub:

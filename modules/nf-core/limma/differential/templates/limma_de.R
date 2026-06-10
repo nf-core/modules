@@ -313,16 +313,14 @@ if (!is.null(opt\$formula)) {
     cat("Column names after make.names():\n   ", paste(colnames(design), collapse = ", "), "\n")
 
 } else {
-    # Build the model formula with blocking variables first
-    model_vars <- c()
+    # Put the contrast variable first in zero-intercept designs so each
+    # contrast level is represented directly in the design matrix.
+    model_vars <- contrast_variable
 
     if (!is.null(opt\$blocking_variables)) {
         # Include blocking variables (including pairing variables if any)
         model_vars <- c(model_vars, blocking.vars)
     }
-
-    # Add the contrast variable at the end
-    model_vars <- c(model_vars, contrast_variable)
 
     # Construct the model formula
     model <- paste('~ 0 +', paste(model_vars, collapse = '+'))

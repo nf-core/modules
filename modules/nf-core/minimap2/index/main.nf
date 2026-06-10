@@ -3,9 +3,9 @@ process MINIMAP2_INDEX {
 
     // Note: the versions here need to match the versions used in minimap2/align
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/minimap2:2.29--h577a1d6_0' :
-        'biocontainers/minimap2:2.29--h577a1d6_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/40a39951375e148d401c77e200777053cb628a4095bda598f7d41db08cbbfa4c/data' :
+        'community.wave.seqera.io/library/minimap2:2.30--dde6b0c5fbc82ebd' }"
 
     input:
     tuple val(meta), path(fasta)
