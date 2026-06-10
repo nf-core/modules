@@ -7,9 +7,9 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "varnet"
+    config './nextflow.config'
 
     test("tumor_normal_pair") {
-        config './nextflow.config'
 
         when {
             process {
@@ -52,7 +52,6 @@ nextflow_process {
     }
 
 test("tumor_only") {
-        config './nextflow.config'
 
         when {
             process {
