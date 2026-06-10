@@ -25,7 +25,9 @@ def chr_names_from_fasta(fasta_path: str, out_path: str) -> None:
         for line in fh:
             if line.startswith(">"):
                 # FASTA header: drop leading '>' and trim at first whitespace.
-                out.write(line[1:].split()[0] + "\\n")
+                parts = line[1:].split()
+                if parts:
+                    out.write(parts[0] + "\\n")
 
 
 prefix = "${prefix}"
