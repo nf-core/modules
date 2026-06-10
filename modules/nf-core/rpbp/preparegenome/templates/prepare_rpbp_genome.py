@@ -1,25 +1,26 @@
 #!/usr/bin/env python3
 """Run rpbp's `get_orfs` reference-prep step.
 
-Drops in for the original bash + heredoc combo that prepares the index
-layout (`chrName.txt` for the STAR stub, the `transcript-index/`
-subdir) and then calls the rpbp Python API.
+Seeds the index layout (`chrName.txt`, the `transcript-index/` subdir) and
+then calls the rpbp Python API, standing in for rpbp's `prepare-rpbp-genome`
+umbrella script (which would also build bowtie2/STAR indices that are not
+consumed here).
 """
 
 import argparse
+import gzip
 import os
 import platform
 import shutil
 
 import rpbp
 import yaml
+from pbiotools.misc import logging_utils
 from rpbp.reference_preprocessing.prepare_rpbp_genome import get_orfs
 
 
 def chr_names_from_fasta(fasta_path: str, out_path: str) -> None:
     """Write one chromosome name per line from a (possibly gzipped) FASTA."""
-    import gzip
-
     opener = gzip.open if fasta_path.endswith(".gz") else open
     with opener(fasta_path, "rt") as fh, open(out_path, "w") as out:
         for line in fh:
@@ -34,38 +35,31 @@ prefix = "${prefix}"
 name = "${name}"
 fasta = "${fasta}"
 gtf = "${gtf}"
-ncpus = int("${task.cpus}")
 
+star_index = os.path.join(prefix, "star")
 os.makedirs(os.path.join(prefix, "transcript-index"), exist_ok=True)
-os.makedirs(os.path.join(prefix, "star"), exist_ok=True)
-
-chr_names_from_fasta(fasta, os.path.join(prefix, "star", "chrName.txt"))
+os.makedirs(star_index, exist_ok=True)
+chr_names_from_fasta(fasta, os.path.join(star_index, "chrName.txt"))
 
 config = {
     "genome_base_path": prefix,
     "genome_name": name,
-    "gtf": gtf,
     "fasta": fasta,
-    "star_index": os.path.join(prefix, "star"),
+    "star_index": star_index,
 }
 
-args = argparse.Namespace(
-    do_not_call=False,
-    overwrite=False,
-    num_cpus=ncpus,
-    log_file="",
-    enable_ext_logging=False,
-    log_stdout=False,
-    no_log_stderr=False,
-    logging_level="WARNING",
-    file_logging_level="NOTSET",
-    stdout_logging_level="NOTSET",
-    stderr_logging_level="NOTSET",
-)
+# get_orfs reads rpbp's standard logging options off `args`; build them from
+# rpbp's own parser, then set the few execution flags it also consults.
+parser = argparse.ArgumentParser()
+logging_utils.add_logging_options(parser)
+args = parser.parse_args([])
+args.do_not_call = False
+args.overwrite = False
+args.num_cpus = int("${task.cpus}")
 
-get_orfs(config["gtf"], args, config, is_annotated=True, is_de_novo=False)
+get_orfs(gtf, args, config, is_annotated=True, is_de_novo=False)
 
-shutil.rmtree(os.path.join(prefix, "star"), ignore_errors=True)
+shutil.rmtree(star_index, ignore_errors=True)
 
 with open("versions.yml", "w") as f:
     yaml.safe_dump(
