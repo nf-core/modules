@@ -26,6 +26,9 @@ nextflow_process {
             def bayes_factors = file(process.out.bayes_factors[0][1])
             def rows = path(process.out.bayes_factors[0][1]).linesGzip
             def header = rows[0].split(",")
+            // The p_periodic_*, p_nonperiodic_*, and bayes_factor_* columns are MCMC
+            // estimates whose floats differ between the conda and container toolchains;
+            // snapshot only the deterministic input-derived columns.
             def stable_cols = ["offset", "profile_sum", "profile_peak", "length"].collect { name -> header.findIndexOf { it == name } }
             def stable = rows.collect { line -> def fields = line.split(","); stable_cols.collect { fields[it] }.join(",") }.join("\n")
             def stable_md5 = java.security.MessageDigest.getInstance("MD5").digest(stable.bytes).encodeHex().toString()
