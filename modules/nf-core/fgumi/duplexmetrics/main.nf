@@ -15,7 +15,7 @@ process FGUMI_DUPLEXMETRICS {
     tuple val(meta), path("*.duplex_family_sizes.txt"), emit: duplex_family_sizes
     tuple val(meta), path("*.duplex_yield_metrics.txt"), emit: duplex_yield_metrics
     tuple val(meta), path("*.umi_counts.txt"), emit: umi_counts
-    tuple val(meta), path("*.duplex_qc.pdf"), emit: duplex_qc, optional: true
+    tuple val(meta), path("*.duplex_qc.pdf"), emit: pdf, optional: true
     tuple val(meta), path("*.duplex_umi_counts.txt"), emit: duplex_umi_counts, optional: true
     tuple val("${task.process}"), val('fgumi'), eval("fgumi --version"), topic: versions, emit: versions_fgumi
 
