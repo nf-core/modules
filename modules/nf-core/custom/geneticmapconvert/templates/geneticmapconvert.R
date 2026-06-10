@@ -250,5 +250,7 @@ process_end(
     "r-data.table" = "data.table",
     "r-janitor" = "janitor"
   ),
-  task_name = "${task.process}"
+  task_name = "${task.process}",
+  versions_path = "versions.yml",
+  log_path = "${prefix}.R_sessionInfo.log"
 )
