@@ -12,27 +12,40 @@ process DEEPMASED_PREDICT {
     tuple val(meta), path(feature_file_table), path(feature_files)
 
     output:
-    tuple val(meta), path("*_deepmased_predictions.tsv"), emit: predictions
-    tuple val("${task.process}"), val('deepmased'), val('0.3.1'), topic: versions, emit: versions_deepmased_predict
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val(meta), path("*_predictions.tsv"), emit: predictions
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: '--cpu-only'
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.3.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     DeepMAsED predict \\
         ${feature_file_table} \\
         --n-procs ${task.cpus} \\
-        --save-name ${prefix}_deepmased \\
+        --save-name ${prefix} \\
         ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deepmased: $VERSION
+        setuptools: 78.1
+    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.3.1'
     """
-    touch ${prefix}_deepmased_predictions.tsv
+    touch ${prefix}_predictions.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deepmased: $VERSION
+        setuptools: 78.1
+    END_VERSIONS
     """
 }
