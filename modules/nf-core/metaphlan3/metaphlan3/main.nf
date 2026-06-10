@@ -9,7 +9,7 @@ process METAPHLAN3_METAPHLAN3 {
 
     input:
     tuple val(meta), path(input)
-    path metaphlan_db
+    path db_metaphlan
 
     output:
     tuple val(meta), path("*_profile.txt")   ,                emit: profile
@@ -28,7 +28,7 @@ process METAPHLAN3_METAPHLAN3 {
     def bowtie2_out = "$input_type" == "--input_type bowtie2out" || "$input_type" == "--input_type sam" ? '' : "--bowtie2out ${prefix}.bowtie2out.txt"
 
     """
-    BT2_DB=`find -L "${metaphlan_db}" -name "*rev.1.bt2" -exec dirname {} \\;`
+    BT2_DB=`find -L "${db_metaphlan}" -name "*rev.1.bt2" -exec dirname {} \\;`
 
     metaphlan \\
         --nproc $task.cpus \\

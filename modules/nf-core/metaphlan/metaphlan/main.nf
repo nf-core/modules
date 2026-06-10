@@ -9,7 +9,7 @@ process METAPHLAN_METAPHLAN {
 
     input:
     tuple val(meta), path(input)
-    path metaphlan_db_latest
+    path db_metaphlan_latest
     val save_samfile
 
     output:
@@ -30,8 +30,8 @@ process METAPHLAN_METAPHLAN {
     def bowtie2_out = "${input_type}" == "--input_type bowtie2out" || "${input_type}" == "--input_type sam" ? '' : "--bowtie2out ${prefix}.bowtie2out.txt"
     def samfile_out = save_samfile ? "-s ${prefix}.sam" : ''
     """
-    BT2_DB=`find -L "${metaphlan_db_latest}" -name "*rev.1.bt2*" -exec dirname {} \\;`
-    BT2_DB_INDEX=`find -L ${metaphlan_db_latest} -name "*.rev.1.bt2*" | sed 's/\\.rev.1.bt2.*\$//' | sed 's/.*\\///'`
+    BT2_DB=`find -L "${db_metaphlan_latest}" -name "*rev.1.bt2*" -exec dirname {} \\;`
+    BT2_DB_INDEX=`find -L ${db_metaphlan_latest} -name "*.rev.1.bt2*" | sed 's/\\.rev.1.bt2.*\$//' | sed 's/.*\\///'`
 
     metaphlan \\
         --nproc ${task.cpus} \\
