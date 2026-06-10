@@ -1,4 +1,4 @@
-process VARLOCIRAPTOR_PREPROCESS {
+process VARLOCIRAPTOR_FILTERFDR {
     tag "${meta.id}"
     label 'process_single'
 
@@ -8,7 +8,7 @@ process VARLOCIRAPTOR_PREPROCESS {
         : 'quay.io/biocontainers/varlociraptor:8.9.5--h24073b4_0'}"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(candidates), path(alignment_json), path(fasta), path(fai)
+    tuple val(meta), path(vcf), val(events), val(fdr)
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
@@ -19,20 +19,21 @@ process VARLOCIRAPTOR_PREPROCESS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def alignment_properties_json = alignment_json ? "--alignment-properties ${alignment_json}" : ""
+    def prefix = task.ext.prefix ?: "${meta.id}.fdr-controlled"
+    def mode = args.contains("--mode global-smart") ? "global-smart" : "local-smart"
+    def args_corrected = args.replace('--mode global-smart', '').replace('--mode local-smart', '').trim()
     """
-    varlociraptor preprocess variants \\
-        ${fasta} \\
-        ${alignment_properties_json} \\
-        --bam ${bam} \\
-        --candidates ${candidates} \\
-        ${args} \\
-        --output ${prefix}.bcf
+    varlociraptor filter-calls control-fdr \\
+        --mode ${mode} \\
+        ${vcf} \\
+        --events ${events} \\
+        --fdr ${fdr}
+        ${args_corrected} \\
+        > ${prefix}.bcf
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.fdr-controlled"
     """
     touch ${prefix}.bcf
     """
