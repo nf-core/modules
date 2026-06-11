@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "whatshap"
     tag "whatshap/phase"
+    tag "seqkit/replace"
     tag "samtools/faidx"
 
     setup {
@@ -37,6 +38,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz.csi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM.ped', checkIfExists: true),
                 ]
 
                 input[1] = Channel.of([
@@ -60,6 +62,148 @@ nextflow_process {
 
     }
 
+    test("whatshap - phase - trio vcf, corresponding bams, pedigree") {
+
+        config "./nextflow.config"
+
+        setup {
+            run("SEQKIT_REPLACE") {
+                script "../../../seqkit/replace/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'no_chr_genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("SAMTOOLS_FAIDX", alias: "SAMTOOLS_FAIDX2") {
+                script "../../../samtools/faidx/main.nf"
+                process {
+                    """
+                    input[0] = SEQKIT_REPLACE.out.fastx
+                                .map { meta, fastx -> [ meta, fastx, [] ] }
+                    input[1] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "--chromosome 21"
+                module_args2 = "--pattern 'chr' --replacement ''"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz.tbi', checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/earlycasualcaiman_sorted_md.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/hugelymodelbat_sorted_md.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/slowlycivilbuck_sorted_md.bam', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/earlycasualcaiman_sorted_md.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/hugelymodelbat_sorted_md.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/slowlycivilbuck_sorted_md.bam.bai', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true),
+                ]
+
+                input[1] = SEQKIT_REPLACE.out.fastx
+                            .join(SAMTOOLS_FAIDX2.out.fai)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith("versions")},
+                    ).match() }
+            )
+        }
+    }
+
+    test("whatshap - phase - trio vcf, corresponding bams, no pedigree") {
+
+        config "./nextflow.config"
+
+        setup {
+            run("SEQKIT_REPLACE") {
+                script "../../../seqkit/replace/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'no_chr_genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("SAMTOOLS_FAIDX", alias: "SAMTOOLS_FAIDX2") {
+                script "../../../samtools/faidx/main.nf"
+                process {
+                    """
+                    input[0] = SEQKIT_REPLACE.out.fastx
+                                .map { meta, fastx -> [ meta, fastx, [] ] }
+                    input[1] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "--chromosome 21"
+                module_args2 = "--pattern 'chr' --replacement ''"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz.tbi', checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/earlycasualcaiman_sorted_md.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/hugelymodelbat_sorted_md.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/slowlycivilbuck_sorted_md.bam', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/earlycasualcaiman_sorted_md.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/hugelymodelbat_sorted_md.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/slowlycivilbuck_sorted_md.bam.bai', checkIfExists: true)
+                    ],
+                    [],
+                ]
+
+                input[1] = SEQKIT_REPLACE.out.fastx
+                            .join(SAMTOOLS_FAIDX2.out.fai)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith("versions")},
+                    ).match() }
+            )
+        }
+    }
+
     test("whatshap - phase - vcf - stub") {
 
         options "-stub"
@@ -73,6 +217,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz.csi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM.ped', checkIfExists: true),
                 ]
 
                 input[1] = Channel.of([

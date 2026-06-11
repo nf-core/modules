@@ -2,7 +2,9 @@
 name: "BAM_IMPUTE_STITCH"
 description: |
   Subworkflow to impute BAM files using STITCH software.
-  Variants location to impute are obtain through the legend file given
+  Variants location to impute are obtain through the legend file given.
+  "regionout", "regionoutPadded", "regionSize" keys will be added to the meta map to distinguish
+  the different files before ligation and therefore should not be used.
 keywords:
   - BAM
   - imputation
@@ -94,6 +96,9 @@ input:
   - n_gen:
       type: integer
       description: Number of generations for STITCH imputation
+  - buffer:
+      type: integer
+      description: Buffer size around each chunk for STITCH imputation
   - seed:
       type: integer
       description: Random seed for STITCH imputation

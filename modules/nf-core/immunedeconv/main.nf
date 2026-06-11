@@ -13,8 +13,8 @@ process IMMUNEDECONV {
 
     output:
     tuple val(meta), path("*.deconvolution_results.tsv"), emit: deconv_table
-    tuple val(meta), path("*.png"),                       emit: deconv_plots, optional: true
-    path "versions.yml",                                  emit: versions
+    tuple val(meta), path("*.png")                      , emit: deconv_plots, optional: true
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,6 +31,7 @@ process IMMUNEDECONV {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
+        r-base: \$(R --version | sed '1!d; s/.*version //; s/ .*//')
         r-immunedeconv: \$(Rscript -e "cat(as.character(packageVersion('immunedeconv')))")
     END_VERSIONS
     """

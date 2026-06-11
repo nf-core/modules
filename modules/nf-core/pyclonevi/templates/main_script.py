@@ -163,9 +163,7 @@ if __name__ == "__main__":
 
     # Version
     version = (
-        subprocess.check_output("pip show pyclone-vi | grep Version | awk '{print \$NF}'", shell=True)
-        .decode()
-        .split("\\n")[0]
+        subprocess.check_output("pyclone-vi --version | sed 's/.*version //g'", shell=True).decode().split("\\n")[0]
     )
 
     f = open("versions.yml", "a")

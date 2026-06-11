@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process GAPSEQ_DRAFT"
+    script "../main.nf"
+    process "GAPSEQ_DRAFT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gapseq"
+    tag "gapseq/draft"
+    tag "gapseq/find"
+    tag "gapseq/findtransport"
+
+    test("test draft model creation - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/proteome-all-Reactions.tbl', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/proteome-Transporter.tbl', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/proteome-all-Pathways.tbl', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta] - real") {
+
+        setup {
+            run("GAPSEQ_FIND") {
+                config "./nextflow.config"
+                script "../../find/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+
+            run("GAPSEQ_FINDTRANSPORT") {
+                config "./nextflow.config"
+                script "../../findtransport/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GAPSEQ_FIND.out.reactions
+                    .join(GAPSEQ_FINDTRANSPORT.out.tbl)
+                    .join(GAPSEQ_FIND.out.pathways)
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                {
+                    assert snapshot(
+                        sanitizeOutput(process.out, unstableKeys: ["draft", "xml", "log"])
+                    ).match()
+                }
+            )
+        }
+    }
+
+}
