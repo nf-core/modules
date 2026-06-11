@@ -20,7 +20,7 @@ process RPBP_PREPAREGENOME {
     task.ext.when == null || task.ext.when
 
     script:
-    def task_ext_args = task.ext.args ?: ''
+    task_ext_args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: meta.id
     template 'prepare_rpbp_genome.py'
 
