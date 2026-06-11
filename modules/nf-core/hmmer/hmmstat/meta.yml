@@ -26,9 +26,10 @@ input:
           e.g. `[ id:'sample1' ]`
     - hmm:
         type: file
-        description: Mandatory. HMM database file containing one or more profile HMMs
-          in plain text format
-        pattern: "*.hmm"
+        description: |
+          HMM database file, optionally compressed,
+          containing one or more profile HMMs
+        pattern: "*.{hmm,hmm.gz}"
         ontologies:
           - edam: http://edamontology.org/data_1364 # HMM
 output:
