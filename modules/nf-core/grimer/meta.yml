@@ -75,7 +75,7 @@ output:
       - grimer:
           type: string
           description: The name of the tool
-      - grimer --version 2>&1 | tail -1:
+      - grimer --version 2>&1 | tail -1 | sed "s/grimer //":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -86,7 +86,7 @@ topics:
       - grimer:
           type: string
           description: The name of the tool
-      - grimer --version 2>&1 | tail -1:
+      - grimer --version 2>&1 | tail -1 | sed "s/grimer //":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
