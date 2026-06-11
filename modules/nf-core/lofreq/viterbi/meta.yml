@@ -50,13 +50,27 @@ output:
           description: Realignment and sorted BAM file
           pattern: "*.{bam}"
           ontologies: []
+  versions_lofreq:
+  - - ${task.process}:
+        type: string
+        description: Process which generated the version
+    - lofreq:
+        type: string
+        description: Tool name
+    - "lofreq version | awk 'NR==1{print \\$2}'":
+        type: eval
+        description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  - - ${task.process}:
+        type: string
+        description: Process which generated the version
+    - lofreq:
+        type: string
+        description: Tool name
+    - "lofreq version | awk 'NR==1{print \\$2}'":
+        type: eval
+        description: The expression to obtain the version of the tool
 authors:
   - "@MarieLataretu"
 maintainers:

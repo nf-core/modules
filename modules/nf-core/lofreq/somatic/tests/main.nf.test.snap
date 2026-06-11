@@ -2,17 +2,6 @@
     "human - bam - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,1794e4641324dc7d748047586b077fe8"
-                ],
                 "vcf": [
                     [
                         {
@@ -21,28 +10,57 @@
                         "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,1794e4641324dc7d748047586b077fe8"
+                "versions_lofreq": [
+                    [
+                        "LOFREQ_SOMATIC",
+                        "lofreq",
+                        "version: 2.1.5"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-06-11T08:48:04.006301108",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
-        },
-        "timestamp": "2024-07-10T10:37:58.931241788"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "human - bam": {
         "content": [
             10,
-            [
-                "versions.yml:md5,1794e4641324dc7d748047586b077fe8"
-            ]
+            {
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "testnormal_relaxed.vcf.gz",
+                            "testnormal_stringent.indels.vcf.gz",
+                            "testnormal_stringent.snvs.vcf.gz",
+                            "testsomatic_final.indels.vcf.gz",
+                            "testsomatic_final.snvs.vcf.gz",
+                            "testsomatic_raw.indels.vcf.gz",
+                            "testsomatic_raw.snvs.vcf.gz",
+                            "testtumor_relaxed.vcf.gz",
+                            "testtumor_stringent.indels.vcf.gz",
+                            "testtumor_stringent.snvs.vcf.gz"
+                        ]
+                    ]
+                ],
+                "versions_lofreq": [
+                    [
+                        "LOFREQ_SOMATIC",
+                        "lofreq",
+                        "version: 2.1.5"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-06-11T08:47:57.015417447",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
-        },
-        "timestamp": "2024-07-10T10:57:24.957448368"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

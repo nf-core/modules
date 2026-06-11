@@ -27,11 +27,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
 					path(process.out.vcf[0][1]).vcf.summary,
-					process.out.versions
+					sanitizeOutput(process.out)
 					).match()
 				}
             )
@@ -59,7 +59,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					path(process.out.vcf[0][1]).vcf.summary,
-					process.out.versions
+					sanitizeOutput(process.out, unstableKeys: ["vcf"])
 					).match()
 				}
             )
@@ -84,9 +84,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
