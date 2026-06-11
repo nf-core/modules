@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) nf-core
-# This software is licensed under the MIT License.
-# SPDX-License-Identifier: MIT
+# Written by Jonathan Manning (@pinin4fjords). Released under the MIT license.
 
 """Run rpbp's `get_orfs` reference-prep step.
 
@@ -15,6 +13,7 @@ import argparse
 import gzip
 import os
 import platform
+import shlex
 import shutil
 
 import rpbp
@@ -52,11 +51,12 @@ config = {
     "star_index": star_index,
 }
 
-# get_orfs reads rpbp's standard logging options off `args`; build them from
-# rpbp's own parser, then set the few execution flags it also consults.
+# get_orfs reads rpbp's logging options and execution flags off `args`.
+# ext.args threads through logging options (--logging-level, --log-file, etc.).
+# start_codons/stop_codons go via the config dict and are not reachable this way.
 parser = argparse.ArgumentParser()
 logging_utils.add_logging_options(parser)
-rpbp_args = parser.parse_args([])
+rpbp_args = parser.parse_args(shlex.split("${args}"))
 rpbp_args.do_not_call = False
 rpbp_args.overwrite = False
 rpbp_args.num_cpus = int("${task.cpus}")
