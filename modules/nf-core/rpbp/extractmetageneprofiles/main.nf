@@ -20,12 +20,12 @@ process RPBP_EXTRACTMETAGENEPROFILES {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.metagene"
     """
     extract-metagene-profiles \\
         ${bam} \\
         ${transcript_bed} \\
-        ${prefix}.metagene.csv.gz \\
+        ${prefix}.csv.gz \\
         --num-cpus ${task.cpus} \\
         ${args}
     """
