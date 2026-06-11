@@ -4,8 +4,8 @@ process HUGGINGFACE_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ff4a498ec5588fa68383dab4723c33f2f0fd1c737cd168a188d42b1bb229ecc5/data' :
-        'community.wave.seqera.io/library/huggingface_hub:1.14.0--bcc2a8f142e78ee0' }"
+        'oras://community.wave.seqera.io/library/huggingface_hub:1.18.0--581812f40aa06159' :
+        'community.wave.seqera.io/library/huggingface_hub:1.18.0--6bb77406fdf79177' }"
 
     input:
     tuple val(meta), val(hf_repo), val(hf_file)
