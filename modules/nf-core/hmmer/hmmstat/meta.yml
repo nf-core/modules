@@ -40,8 +40,29 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}.hmmstat.txt:
           type: file
-          description: Plain text report containing per-profile summary statistics
-            (name, accession, length, alphabet type, etc.) for each HMM in the database
+          description: |
+            Plain text report with one row per profile HMM. Space-delimited columns:
+            - idx: index of the profile in the file, numbered from 1.
+            - name: name of the profile.
+            - accession: optional accession of the profile, or "-" if there is none.
+            - nseq: number of sequences the profile was estimated from.
+            - eff_nseq: effective number of sequences the profile was estimated from,
+            after HMMER applied an effective sequence number calculation such as the
+            default entropy weighting.
+            - M: length of the model in consensus residues (match states).
+            - relent: mean relative entropy per match state, in bits; the expected (mean)
+            score per consensus position. For default HMMER3 models this reflects the
+            default entropy-weighting target.
+            - info: mean information content per match state, in bits. Information content
+            is a slightly different calculation than relative entropy.
+            - p relE: mean positional relative entropy, in bits; a fancier version of
+            relent that takes into account transition (insertion/deletion) probabilities,
+            and may be a more accurate estimate of the average score per consensus position.
+            - compKL: Kullback-Leibler divergence from the background frequency distribution
+            to the average residue composition of the consensus match states, in bits.
+            Higher values indicate greater compositional bias; highly biased profiles can
+            slow the HMMER3 acceleration pipeline by causing too many non-homologous
+            sequences to pass the filters.
           pattern: "*.hmmstat.txt"
           ontologies:
             - edam: http://edamontology.org/format_3671 # Plain text
