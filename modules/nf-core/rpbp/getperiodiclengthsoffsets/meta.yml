@@ -45,10 +45,10 @@ output:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "${prefix}.lengths-offsets.tsv":
+      - "${prefix}.tsv":
           type: file
           description: Per-read-length offsets (length, offset) that pass the periodicity filter.
-          pattern: "*.lengths-offsets.tsv"
+          pattern: "*.tsv"
           ontologies: []
   versions_rpbp:
     - versions.yml:

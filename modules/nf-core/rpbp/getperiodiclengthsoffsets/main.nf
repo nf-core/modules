@@ -11,7 +11,7 @@ process RPBP_GETPERIODICLENGTHSOFFSETS {
     tuple val(meta), path(periodic_offsets)
 
     output:
-    tuple val(meta), path("${prefix}.lengths-offsets.tsv"), emit: lengths_offsets
+    tuple val(meta), path("${prefix}.tsv"), emit: lengths_offsets
     path "versions.yml"                                            , emit: versions_rpbp, topic: versions
 
     when:
@@ -23,7 +23,7 @@ process RPBP_GETPERIODICLENGTHSOFFSETS {
     // Defaults mirror rpbp.defaults.metagene_options. Any token may be "None"
     // to defer to upstream's per-slot default-filter handling.
     def filter_args = (task.ext.args ?: '1000 5 None 0.5').tokenize(' ')
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.lengths-offsets"
     min_count   = filter_args[0]
     min_bf_mean = filter_args[1]
     max_bf_var  = filter_args[2]
@@ -31,9 +31,9 @@ process RPBP_GETPERIODICLENGTHSOFFSETS {
     template 'get_periodic_lengths_and_offsets.py'
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.lengths-offsets"
     """
-    touch ${prefix}.lengths-offsets.tsv
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
