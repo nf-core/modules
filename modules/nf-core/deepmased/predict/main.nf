@@ -13,7 +13,8 @@ process DEEPMASED_PREDICT {
 
     output:
     tuple val(meta), path("*_predictions.tsv"), emit: predictions
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('deepmased'), val('0.3.1'), emit: versions_deepmased, topic: versions
+    tuple val("${task.process}"), val('setuptools'), val('78.1') , emit: versions_setuptools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,23 +30,11 @@ process DEEPMASED_PREDICT {
         --save-name ${prefix} \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepmased: $VERSION
-        setuptools: 78.1
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.3.1'
     """
     touch ${prefix}_predictions.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepmased: $VERSION
-        setuptools: 78.1
-    END_VERSIONS
     """
 }
