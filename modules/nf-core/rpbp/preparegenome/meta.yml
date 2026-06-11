@@ -60,7 +60,7 @@ output:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "${prefix}/${name}.annotated.bed.gz":
+      - "${prefix}.annotated.bed.gz":
           type: file
           description: Annotated transcripts BED used by `extract-metagene-profiles`.
           pattern: "*.annotated.bed.gz"
@@ -69,7 +69,7 @@ output:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "${prefix}/transcript-index/${name}.orfs-genomic.annotated.bed.gz":
+      - "${prefix}.orfs-genomic.annotated.bed.gz":
           type: file
           description: Per-ORF genomic BED used by `extract-orf-profiles` / `estimate-orf-bayes-factors`.
           pattern: "*.orfs-genomic.annotated.bed.gz"
@@ -78,7 +78,7 @@ output:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "${prefix}/transcript-index/${name}.orfs-exons.annotated.bed.gz":
+      - "${prefix}.orfs-exons.annotated.bed.gz":
           type: file
           description: Per-ORF exons BED used by `extract-orf-profiles`.
           pattern: "*.orfs-exons.annotated.bed.gz"

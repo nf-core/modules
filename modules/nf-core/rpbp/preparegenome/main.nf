@@ -11,27 +11,25 @@ process RPBP_PREPAREGENOME {
     tuple val(meta), path(fasta), path(gtf)
 
     output:
-    tuple val(meta), path("${prefix}/${name}.annotated.bed.gz")                              , emit: transcript_bed
-    tuple val(meta), path("${prefix}/transcript-index/${name}.orfs-genomic.annotated.bed.gz"), emit: orfs_genomic_bed
-    tuple val(meta), path("${prefix}/transcript-index/${name}.orfs-exons.annotated.bed.gz")  , emit: orfs_exons_bed
-    path "versions.yml"                                                                      , emit: versions_rpbp, topic: versions
+    tuple val(meta), path("${prefix}.annotated.bed.gz")             , emit: transcript_bed
+    tuple val(meta), path("${prefix}.orfs-genomic.annotated.bed.gz"), emit: orfs_genomic_bed
+    tuple val(meta), path("${prefix}.orfs-exons.annotated.bed.gz")  , emit: orfs_exons_bed
+    path "versions.yml"                                             , emit: versions_rpbp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    name   = meta.id ?: 'reference'
-    prefix = task.ext.prefix ?: 'rpbp_index'
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: meta.id
     template 'prepare_rpbp_genome.py'
 
     stub:
-    name   = meta.id ?: 'reference'
-    prefix = task.ext.prefix ?: 'rpbp_index'
+    prefix = task.ext.prefix ?: meta.id
     """
-    mkdir -p ${prefix}/transcript-index
-    echo "" | gzip > ${prefix}/${name}.annotated.bed.gz
-    echo "" | gzip > ${prefix}/transcript-index/${name}.orfs-genomic.annotated.bed.gz
-    echo "" | gzip > ${prefix}/transcript-index/${name}.orfs-exons.annotated.bed.gz
+    echo "" | gzip > ${prefix}.annotated.bed.gz
+    echo "" | gzip > ${prefix}.orfs-genomic.annotated.bed.gz
+    echo "" | gzip > ${prefix}.orfs-exons.annotated.bed.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
