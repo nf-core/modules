@@ -1,6 +1,6 @@
 process VARIANCEPARTITION_DREAM {
     tag "${meta.id}"
-    label 'process_single'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
@@ -15,7 +15,7 @@ process VARIANCEPARTITION_DREAM {
     tuple val(meta), path("*.dream.results.tsv")        , emit: results
     tuple val(meta), path("*.dream.model.txt")          , emit: model
     tuple val(meta), path("*.normalised_counts.tsv")    , emit: normalised_counts, optional: true
-    path "versions.yml"                                 , emit: versions
+    path "versions.yml"                                 , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

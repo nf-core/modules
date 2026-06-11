@@ -13,7 +13,7 @@ process HTSEQ_COUNT {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('htseq'), eval("htseq-count --version"), emit: versions_htseq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,22 +28,11 @@ process HTSEQ_COUNT {
         ${gtf} \\
         ${args} \\
         > ${prefix}.txt
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        htseq: \$(echo \$(htseq-count --version ) | sed 's/^.*htseq-count //; s/Using.*\$//' ))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        : \$(echo \$(htseq-count --version ) | sed 's/^.*htseq-count //; s/Using.*\$//' ))
-    END_VERSIONS
     """
 }
