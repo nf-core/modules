@@ -55,10 +55,10 @@ output:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "${prefix}.bayes-factors.bed.gz":
+      - "${prefix}.bed.gz":
           type: file
           description: Per-ORF translation Bayes factors (BED).
-          pattern: "*.bayes-factors.bed.gz"
+          pattern: "*.bed.gz"
           ontologies: []
   versions_rpbp:
     - - ${task.process}:

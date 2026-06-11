@@ -12,7 +12,7 @@ process RPBP_ESTIMATEORFBAYESFACTORS {
     tuple val(meta2), path(orfs_genomic_bed)
 
     output:
-    tuple val(meta), path("${prefix}.bayes-factors.bed.gz"), emit: bayes_factors
+    tuple val(meta), path("${prefix}.bed.gz"), emit: bayes_factors
     tuple val("${task.process}"), val('rpbp'), eval('python -c "import rpbp; print(rpbp.__version__)"'), emit: versions_rpbp, topic: versions
 
     when:
@@ -20,7 +20,7 @@ process RPBP_ESTIMATEORFBAYESFACTORS {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.bayes-factors"
     """
     RPBP_MODELS_BASE=\$(python3 -c "import os, inspect, rpbp; print(os.path.join(os.path.dirname(inspect.getfile(rpbp)), 'models'))")
     TRANSLATED=\$(ls "\$RPBP_MODELS_BASE"/translated/*.stan)
@@ -29,7 +29,7 @@ process RPBP_ESTIMATEORFBAYESFACTORS {
     estimate-orf-bayes-factors \\
         ${profiles} \\
         ${orfs_genomic_bed} \\
-        ${prefix}.bayes-factors.bed.gz \\
+        ${prefix}.bed.gz \\
         --translated-models \$TRANSLATED \\
         --untranslated-models \$UNTRANSLATED \\
         --num-cpus ${task.cpus} \\
@@ -37,8 +37,8 @@ process RPBP_ESTIMATEORFBAYESFACTORS {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.bayes-factors"
     """
-    echo "" | gzip > ${prefix}.bayes-factors.bed.gz
+    echo "" | gzip > ${prefix}.bed.gz
     """
 }
