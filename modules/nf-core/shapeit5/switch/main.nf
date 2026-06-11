@@ -39,16 +39,15 @@ process SHAPEIT5_SWITCH {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def create_cmd = "echo '' | gzip >"
     """
-    ${create_cmd} ${prefix}.block.switch.txt.gz
-    ${create_cmd} ${prefix}.calibration.switch.txt.gz
-    ${create_cmd} ${prefix}.flipsAndSwitches.txt.gz
-    ${create_cmd} ${prefix}.frequency.switch.txt.gz
-    ${create_cmd} ${prefix}.sample.switch.txt.gz
-    ${create_cmd} ${prefix}.sample.typing.txt.gz
-    ${create_cmd} ${prefix}.type.switch.txt.gz
-    ${create_cmd} ${prefix}.variant.switch.txt.gz
-    ${create_cmd} ${prefix}.variant.typing.txt.gz
+    echo "" | gzip > ${prefix}.block.switch.txt.gz
+    echo "" | gzip > ${prefix}.calibration.switch.txt.gz
+    echo "" | gzip > ${prefix}.flipsAndSwitches.txt.gz
+    echo "" | gzip > ${prefix}.frequency.switch.txt.gz
+    echo "" | gzip > ${prefix}.sample.switch.txt.gz
+    echo "" | gzip > ${prefix}.sample.typing.txt.gz
+    echo "" | gzip > ${prefix}.type.switch.txt.gz
+    echo "" | gzip > ${prefix}.variant.switch.txt.gz
+    echo "" | gzip > ${prefix}.variant.typing.txt.gz
     """
 }

@@ -44,7 +44,7 @@ process SHAPEIT5_LIGATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = suffix_ ?: "vcf.gz"
     assert suffix in ["vcf", "vcf.gz", "bcf", "bcf.gz"]
-    def create_cmd = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_cmd = suffix.endsWith(".gz") ? 'echo "" | gzip >' : "touch"
     """
     ${create_cmd} ${prefix}.${suffix}
     """

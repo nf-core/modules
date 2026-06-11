@@ -60,7 +60,7 @@ process SHAPEIT5_PHASERARE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = output_suffix ?: "vcf.gz"
 
-    def create_cmd = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_cmd = suffix.endsWith(".gz") ? 'echo "" | gzip >' : "touch"
     """
     ${create_cmd} ${prefix}.${suffix}
     """
