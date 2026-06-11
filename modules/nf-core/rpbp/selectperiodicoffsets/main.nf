@@ -11,7 +11,7 @@ process RPBP_SELECTPERIODICOFFSETS {
     tuple val(meta), path(bayes_factors)
 
     output:
-    tuple val(meta), path("${prefix}.periodic-offsets.csv.gz"), emit: periodic
+    tuple val(meta), path("${prefix}.offsets.csv.gz"), emit: periodic
     tuple val("${task.process}"), val('rpbp'), eval('python -c "import rpbp; print(rpbp.__version__)"'), emit: versions_rpbp, topic: versions
 
     when:
@@ -23,13 +23,13 @@ process RPBP_SELECTPERIODICOFFSETS {
     """
     select-periodic-offsets \\
         ${bayes_factors} \\
-        ${prefix}.periodic-offsets.csv.gz \\
+        ${prefix}.offsets.csv.gz \\
         ${args}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ${prefix}.periodic-offsets.csv.gz
+    echo "" | gzip > ${prefix}.offsets.csv.gz
     """
 }
