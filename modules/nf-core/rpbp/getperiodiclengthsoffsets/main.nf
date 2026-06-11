@@ -11,7 +11,7 @@ process RPBP_GETPERIODICLENGTHSOFFSETS {
     tuple val(meta), path(periodic_offsets)
 
     output:
-    tuple val(meta), path("${prefix}.periodic_lengths_offsets.tsv"), emit: lengths_offsets
+    tuple val(meta), path("${prefix}.lengths-offsets.tsv"), emit: lengths_offsets
     path "versions.yml"                                            , emit: versions_rpbp, topic: versions
 
     when:
@@ -33,7 +33,7 @@ process RPBP_GETPERIODICLENGTHSOFFSETS {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.periodic_lengths_offsets.tsv
+    touch ${prefix}.lengths-offsets.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

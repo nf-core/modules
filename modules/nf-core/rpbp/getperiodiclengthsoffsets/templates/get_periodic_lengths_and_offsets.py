@@ -55,7 +55,7 @@ if len(lengths) == 0:
         "check min_count/min_bf_mean thresholds and metagene Bayes-factor output."
     )
 pd.DataFrame({"length": lengths, "offset": offsets}).to_csv(
-    f"{prefix}.periodic_lengths_offsets.tsv",
+    f"{prefix}.lengths-offsets.tsv",
     sep="\\t",
     index=False,
 )
