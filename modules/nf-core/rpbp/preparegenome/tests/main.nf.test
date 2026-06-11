@@ -47,6 +47,31 @@ nextflow_process {
         }
     }
 
+    test("homo_sapiens chr20 - prepare genome - extended start codons") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                    .map { meta, fa -> [
+                        meta,
+                        fa,
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                    ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
     test("homo_sapiens chr20 - prepare genome - stub") {
 
         options '-stub'

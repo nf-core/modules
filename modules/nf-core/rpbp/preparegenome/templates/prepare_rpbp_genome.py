@@ -51,12 +51,22 @@ config = {
     "star_index": star_index,
 }
 
-# get_orfs reads rpbp's logging options and execution flags off `args`.
-# ext.args threads through logging options (--logging-level, --log-file, etc.).
-# start_codons/stop_codons go via the config dict and are not reachable this way.
+# get_orfs takes config-level options (start_codons, stop_codons) via the config
+# dict, not via argparse. Parse these from ext.args first, inject into config,
+# then pass remaining tokens to rpbp's logging argparse.
+ext_parser = argparse.ArgumentParser(add_help=False)
+ext_parser.add_argument("--start-codons", nargs="+", dest="start_codons")
+ext_parser.add_argument("--stop-codons", nargs="+", dest="stop_codons")
+ext_known, rpbp_raw = ext_parser.parse_known_args(shlex.split("${args}"))
+
+if ext_known.start_codons:
+    config["start_codons"] = ext_known.start_codons
+if ext_known.stop_codons:
+    config["stop_codons"] = ext_known.stop_codons
+
 parser = argparse.ArgumentParser()
 logging_utils.add_logging_options(parser)
-rpbp_args = parser.parse_args(shlex.split("${args}"))
+rpbp_args = parser.parse_args(rpbp_raw)
 rpbp_args.do_not_call = False
 rpbp_args.overwrite = False
 rpbp_args.num_cpus = int("${task.cpus}")
