@@ -12,7 +12,8 @@ tools:
       documentation: http://www.iqtree.org/doc
       tool_dev_url: https://github.com/iqtree/iqtree2
       doi: 10.1093/molbev/msaa015
-      licence: ["GPL v2-or-later"]
+      licence:
+        - "GPL v2-or-later"
       identifier: biotools:iqtree
 input:
   - - meta:
@@ -330,13 +331,27 @@ output:
           description: Log file of entire run
           pattern: "*.{log}"
           ontologies: []
+  versions_iqtree:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - iqtree:
+          type: string
+          description: The name of the tool
+      - iqtree -version 2>&1 | head -n1 | sed 's/^IQ-TREE multicore version //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - iqtree:
+          type: string
+          description: The name of the tool
+      - iqtree -version 2>&1 | head -n1 | sed 's/^IQ-TREE multicore version //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@avantonder"
   - "@aunderwo"
