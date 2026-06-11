@@ -114,9 +114,9 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert path(process.out.bcf[0][1]).size() > 0 },
                 { assert snapshot(
                     file(process.out.bcf[0][1]).name,
+                    "Filesize > 0: "+(path(process.out.bcf[0][1]).size() > 0),
                     //path(process.out.bcf[0][1]).vcf.variantsMD5,
                     // Error: BCF magic header info not found with current version of nf-test htjsk
                     // Might be linked to https://github.com/samtools/htsjdk/issues/946 and block gzipped BCF
