@@ -60,9 +60,6 @@ nextflow_process {
 
                 config "./nextflow.config"
 
-                // HACK: finale writes the sizes of the TSS BED inside the bigwig
-                // Hence using the nf-core `genome.sizes` causes an out-of-bounds error
-                // and a crash, so we create a proper size file on the fly
                 """
                 input[0] = FINALETOOLKIT_ADJUSTWPS.out.bigwig
                 input[1] = [
