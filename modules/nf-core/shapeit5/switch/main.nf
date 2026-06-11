@@ -4,8 +4,8 @@ process SHAPEIT5_SWITCH {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/shapeit5:5.1.1--hb60d31d_0'
-        : 'quay.io/biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa06870e893f9045944461e5b674adffec6deec41e8496b63ec54d44a98d6134/data'
+        : 'community.wave.seqera.io/library/shapeit5:5.1.1--09a6cb254ece8f6e'}"
 
     input:
     tuple val(meta), path(estimate), path(estimate_index), val(region), path(pedigree), path(truth), path(truth_index), path(freq), path(freq_index)
@@ -39,16 +39,15 @@ process SHAPEIT5_SWITCH {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def create_cmd = "echo '' | gzip >"
     """
-    ${create_cmd} ${prefix}.block.switch.txt.gz
-    ${create_cmd} ${prefix}.calibration.switch.txt.gz
-    ${create_cmd} ${prefix}.flipsAndSwitches.txt.gz
-    ${create_cmd} ${prefix}.frequency.switch.txt.gz
-    ${create_cmd} ${prefix}.sample.switch.txt.gz
-    ${create_cmd} ${prefix}.sample.typing.txt.gz
-    ${create_cmd} ${prefix}.type.switch.txt.gz
-    ${create_cmd} ${prefix}.variant.switch.txt.gz
-    ${create_cmd} ${prefix}.variant.typing.txt.gz
+    echo "" | gzip > ${prefix}.block.switch.txt.gz
+    echo "" | gzip > ${prefix}.calibration.switch.txt.gz
+    echo "" | gzip > ${prefix}.flipsAndSwitches.txt.gz
+    echo "" | gzip > ${prefix}.frequency.switch.txt.gz
+    echo "" | gzip > ${prefix}.sample.switch.txt.gz
+    echo "" | gzip > ${prefix}.sample.typing.txt.gz
+    echo "" | gzip > ${prefix}.type.switch.txt.gz
+    echo "" | gzip > ${prefix}.variant.switch.txt.gz
+    echo "" | gzip > ${prefix}.variant.typing.txt.gz
     """
 }
