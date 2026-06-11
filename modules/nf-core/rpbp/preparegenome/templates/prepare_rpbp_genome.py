@@ -57,7 +57,7 @@ config = {
 ext_parser = argparse.ArgumentParser(add_help=False)
 ext_parser.add_argument("--start-codons", nargs="+", dest="start_codons")
 ext_parser.add_argument("--stop-codons", nargs="+", dest="stop_codons")
-ext_known, rpbp_raw = ext_parser.parse_known_args(shlex.split("${args}"))
+ext_known, rpbp_raw = ext_parser.parse_known_args(shlex.split("${task_ext_args}"))
 
 if ext_known.start_codons:
     config["start_codons"] = ext_known.start_codons
