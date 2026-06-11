@@ -34,6 +34,9 @@ process MEMOTE_RUN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export HOME=\${PWD}
+    export COBRA_SOLVER=glpk_exact
+    
     echo "" | gzip > ${prefix}.json.gz
     """
 }

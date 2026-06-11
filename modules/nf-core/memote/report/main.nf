@@ -33,6 +33,9 @@ process MEMOTE_REPORT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export HOME=\${PWD}
+    export COBRA_SOLVER=glpk_exact
+    
     touch ${prefix}.html
     """
 }
