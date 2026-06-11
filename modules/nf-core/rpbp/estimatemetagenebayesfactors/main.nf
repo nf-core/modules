@@ -11,7 +11,7 @@ process RPBP_ESTIMATEMETAGENEBAYESFACTORS {
     tuple val(meta), path(profile_csv)
 
     output:
-    tuple val(meta), path("${prefix}.metagene-periodicity-bayes-factors.csv.gz"), emit: bayes_factors
+    tuple val(meta), path("${prefix}.metagene-bayes.csv.gz"), emit: bayes_factors
     tuple val("${task.process}"), val('rpbp'), eval('python -c "import rpbp; print(rpbp.__version__)"'), emit: versions_rpbp, topic: versions
 
     when:
@@ -27,7 +27,7 @@ process RPBP_ESTIMATEMETAGENEBAYESFACTORS {
 
     estimate-metagene-profile-bayes-factors \\
         ${profile_csv} \\
-        ${prefix}.metagene-periodicity-bayes-factors.csv.gz \\
+        ${prefix}.metagene-bayes.csv.gz \\
         --periodic-models \$PERIODIC \\
         --nonperiodic-models \$NONPERIODIC \\
         --num-cpus ${task.cpus} \\
@@ -37,6 +37,6 @@ process RPBP_ESTIMATEMETAGENEBAYESFACTORS {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ${prefix}.metagene-periodicity-bayes-factors.csv.gz
+    echo "" | gzip > ${prefix}.metagene-bayes.csv.gz
     """
 }
