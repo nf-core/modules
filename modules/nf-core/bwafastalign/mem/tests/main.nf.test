@@ -29,6 +29,11 @@ nextflow_process {
     test("sarscov2 - fastq, index, fasta, false") {
 
         when {
+            params {
+                module_args2 = ""
+                module_args3 = ""
+            }
+
             process {
                 """
                 input[0] = Channel.of([
@@ -92,6 +97,11 @@ nextflow_process {
     test("sarscov2 - [fastq1, fastq2], index, fasta, false") {
 
         when {
+            params {
+                module_args2 = ""
+                module_args3 = ""
+            }
+
             process {
                 """
                 input[0] = Channel.of([
