@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Written by Jonathan Manning (@pinin4fjords). Released under the MIT license.
 """Wrap rpbp's `get_periodic_lengths_and_offsets` helper.
 
 Recreates the `rpbp_work/metagene-profiles/<prefix>-unique.periodic-offsets.csv.gz`
