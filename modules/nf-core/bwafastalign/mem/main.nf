@@ -16,7 +16,7 @@ process BWAFASTALIGN_MEM {
     val   samtools_threads
 
     output:
-    tuple val(meta), path("${prefix}.{sam,bam,cram}"), emit: output, optional: true
+    tuple val(meta), path("${prefix}.{sam,bam,cram}"), emit: output
     tuple val(meta), path("${prefix}.{csi,crai}")    , emit: index , optional: true
     tuple val("${task.process}"), val('bwafastalign'), val('1.0.0'), topic: versions, emit: versions_bwafastalign
     tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | sed '1!d;s/.* //'") , topic: versions, emit: versions_samtools
