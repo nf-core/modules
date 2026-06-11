@@ -14,7 +14,7 @@ process GRIMER {
 
     output:
     tuple val(meta), path("*.html"), emit: report
-    tuple val("${task.process}"), val('grimer'), eval('grimer --version 2>&1 | tail -1'), emit: versions_grimer, topic: versions
+    tuple val("${task.process}"), val('grimer'), eval('grimer --version 2>&1 | tail -1 | sed "s/grimer //"'), emit: versions_grimer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
