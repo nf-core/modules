@@ -13,7 +13,7 @@ process RPBP_EXTRACTORFPROFILES {
     tuple val(meta3), path(exons_bed)
 
     output:
-    tuple val(meta), path("${prefix}.profiles.mtx.gz"), emit: profiles
+    tuple val(meta), path("${prefix}.mtx.gz"), emit: profiles
     tuple val("${task.process}"), val('rpbp'), eval('python -c "import rpbp; print(rpbp.__version__)"'), emit: versions_rpbp, topic: versions
 
     when:
@@ -21,7 +21,7 @@ process RPBP_EXTRACTORFPROFILES {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.profiles"
     """
     LENGTHS=\$(tail -n +2 ${lengths_offsets} | cut -f1 | tr '\\n' ' ')
     OFFSETS=\$(tail -n +2 ${lengths_offsets} | cut -f2 | tr '\\n' ' ')
@@ -30,7 +30,7 @@ process RPBP_EXTRACTORFPROFILES {
         ${bam} \\
         ${orfs_genomic_bed} \\
         ${exons_bed} \\
-        ${prefix}.profiles.mtx.gz \\
+        ${prefix}.mtx.gz \\
         --lengths \$LENGTHS \\
         --offsets \$OFFSETS \\
         --num-cpus ${task.cpus} \\
@@ -38,8 +38,8 @@ process RPBP_EXTRACTORFPROFILES {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.profiles"
     """
-    echo "" | gzip > ${prefix}.profiles.mtx.gz
+    echo "" | gzip > ${prefix}.mtx.gz
     """
 }

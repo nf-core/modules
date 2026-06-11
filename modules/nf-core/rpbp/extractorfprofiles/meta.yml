@@ -72,10 +72,10 @@ output:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "${prefix}.profiles.mtx.gz":
+      - "${prefix}.mtx.gz":
           type: file
           description: Per-ORF P-site profile sparse matrix.
-          pattern: "*.profiles.mtx.gz"
+          pattern: "*.mtx.gz"
           ontologies: []
   versions_rpbp:
     - - ${task.process}:
