@@ -14,7 +14,7 @@ process BWAMEME_MEM {
     val   sort_bam
 
     output:
-    tuple val(meta), path("${prefix}.{sam,bam,cram}"), emit: output, optional: true
+    tuple val(meta), path("${prefix}.{sam,bam,cram}"), emit: output
     tuple val(meta), path("${prefix}.{csi,crai}")    , emit: index , optional: true
     tuple val("${task.process}"), val('bwameme'), val('1.0.6'), topic: versions, emit: versions_bwameme
     tuple val("${task.process}"), val('samtools'), eval('samtools version | sed "1!d;s/.* //"'), topic: versions, emit: versions_samtools    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
