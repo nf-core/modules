@@ -4,8 +4,8 @@ process LAST_SPLIT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0d/0d27a2649f1291ff817dc8f73357ffac206424cd972d3855421e4258acc600f7/data'
-        : 'community.wave.seqera.io/library/last:1611--e1193b3871fa0975'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2eb57450207840a7fba7f60b65239a86679bfcaa79fb5fba652dd41af2b3e1d9/data'
+        : 'community.wave.seqera.io/library/last:1651--c83f04148c23181f'}"
 
     input:
     tuple val(meta), path(maf)
@@ -89,7 +89,7 @@ process LAST_SPLIT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    echo stub | gzip --no-name > ${prefix}.maf.gz
+    echo "" | gzip > ${prefix}.maf.gz
     touch ${prefix}.tsv
     """
 }

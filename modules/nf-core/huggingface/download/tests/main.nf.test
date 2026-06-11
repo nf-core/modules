@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process HUGGINGFACE_DOWNLOAD"
+    script "../main.nf"
+    process "HUGGINGFACE_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "huggingface"
+    tag "huggingface/download"
+
+    test("download config.json - tiny-random-gpt2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_gpt2' ],
+                    "hf-internal-testing/tiny-random-gpt2",
+                    "config.json"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1]).size() > 0,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("download config.json - tiny-random-bert") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_bert' ],
+                    "hf-internal-testing/tiny-random-bert",
+                    "config.json"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1]).size() > 0,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("stub - download config.json - tiny-random-gpt2") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_gpt2' ],
+                    "hf-internal-testing/tiny-random-gpt2",
+                    "config.json"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -19,7 +19,7 @@ process SALSA2 {
     tuple val(meta), path("*_scaffolds_FINAL.fasta")	                , emit: fasta
     tuple val(meta), path("*_scaffolds_FINAL.agp")	                    , emit: agp
     tuple val(meta), path("*/*scaffolds_FINAL.original-coordinates.agp"), emit: agp_original_coordinates, optional: true
-    path "versions.yml"                                                 , emit: versions
+    tuple val("${task.process}"), val('salsa2'), val('2.3'), emit: versions_salsa2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,7 +30,6 @@ process SALSA2 {
     def gfa_opt = gfa ? "--gfa $gfa" : ""
     def dup_opt = dup ? "--dup $dup" : ""
     def filter = filter_bed ? "--filter $filter_bed" : ""
-    def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     run_pipeline.py \\
         $args \\
@@ -43,10 +42,14 @@ process SALSA2 {
 
     mv */scaffolds_FINAL.fasta ${prefix}_scaffolds_FINAL.fasta
     mv */scaffolds_FINAL.agp ${prefix}_scaffolds_FINAL.agp
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        SALSA2: $VERSION
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_scaffolds_FINAL.fasta
+    touch ${prefix}_scaffolds_FINAL.agp
+    mkdir test
+    touch test/test_scaffolds_FINAL.original-coordinates.agp
     """
 }
