@@ -7,13 +7,11 @@ description: |
   downstream P-site counting only uses read lengths with a clean
   3-nucleotide signal.
 
-  Wraps Rp-Bp's `get_periodic_lengths_and_offsets` Python helper directly
-  rather than reimplementing the filter, so the selection stays byte-
-  identical to the upstream tool. Thresholds are configured via
-  `ext.args` as four space-separated tokens:
-  `<min_metagene_profile_count> <min_metagene_bf_mean> <max_metagene_bf_var> <min_metagene_bf_likelihood>`.
-  Any token may be `None` to defer to upstream's per-slot default.
-  Defaults: `1000 5 None 0.5` (mirrors `rpbp.defaults.metagene_options`).
+  Wraps Rp-Bp's `get_periodic_lengths_and_offsets` Python helper directly.
+  Thresholds are configured via named flags in `ext.args`:
+  `--min-count` (default: 1000), `--min-bf-mean` (default: 5),
+  `--max-bf-var` (default: no limit), `--min-bf-likelihood` (default: 0.5).
+  Defaults mirror `rpbp.defaults.metagene_options`.
 keywords:
   - rpbp
   - psite
@@ -51,20 +49,26 @@ output:
           pattern: "*.tsv"
           ontologies: []
   versions_rpbp:
-    - versions.yml:
-        type: file
-        description: File containing software versions.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
 maintainers:

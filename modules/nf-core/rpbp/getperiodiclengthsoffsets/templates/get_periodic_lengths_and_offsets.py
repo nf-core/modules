@@ -7,31 +7,23 @@ layout the helper expects, calls it with thresholds passed in from the
 Nextflow process, and writes the resulting per-read-length offsets to a TSV.
 """
 
+import argparse
 import os
-import platform
+import shlex
 import shutil
 
 import pandas as pd
-import rpbp
-import yaml
 from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
 
 
-def _parse_filter(value):
-    """Parse a filter token to int/float or None."""
-    if value == "None":
-        return None
-    try:
-        return int(value)
-    except ValueError:
-        return float(value)
-
-
 prefix = "${prefix}"
-min_count = _parse_filter("${min_count}")
-min_bf_mean = _parse_filter("${min_bf_mean}")
-max_bf_var = _parse_filter("${max_bf_var}")
-min_bf_lik = _parse_filter("${min_bf_lik}")
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--min-count", type=int, default=1000, dest="min_count")
+parser.add_argument("--min-bf-mean", type=float, default=5.0, dest="min_bf_mean")
+parser.add_argument("--max-bf-var", type=float, default=None, dest="max_bf_var")
+parser.add_argument("--min-bf-likelihood", type=float, default=0.5, dest="min_bf_likelihood")
+args = parser.parse_args(shlex.split("${task_ext_args}"))
 
 work_dir = os.path.join("rpbp_work", "metagene-profiles")
 os.makedirs(work_dir, exist_ok=True)
@@ -42,26 +34,20 @@ shutil.copy(
 
 config = dict(
     riboseq_data="rpbp_work",
-    min_metagene_profile_count=min_count,
-    min_metagene_bf_mean=min_bf_mean,
-    max_metagene_bf_var=max_bf_var,
-    min_metagene_bf_likelihood=min_bf_lik,
+    min_metagene_profile_count=args.min_count,
+    min_metagene_bf_mean=args.min_bf_mean,
+    max_metagene_bf_var=args.max_bf_var,
+    min_metagene_bf_likelihood=args.min_bf_likelihood,
 )
 
 lengths, offsets = get_periodic_lengths_and_offsets(config, prefix, is_unique=True)
 if len(lengths) == 0:
     raise SystemExit(
         "No periodic read lengths passed filters; "
-        "check min_count/min_bf_mean thresholds and metagene Bayes-factor output."
+        "check --min-count/--min-bf-mean thresholds and metagene Bayes-factor output."
     )
 pd.DataFrame({"length": lengths, "offset": offsets}).to_csv(
     f"{prefix}.tsv",
     sep="\\t",
     index=False,
 )
-
-with open("versions.yml", "w") as f:
-    yaml.safe_dump(
-        {"${task.process}": {"python": platform.python_version(), "rpbp": rpbp.__version__}},
-        f,
-    )
