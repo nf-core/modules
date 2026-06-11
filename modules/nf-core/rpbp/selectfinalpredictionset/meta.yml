@@ -52,28 +52,28 @@ output:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "${prefix}.predicted-orfs.filtered.bed.gz":
+      - "${prefix}.predicted-orfs.bed.gz":
           type: file
           description: Final filtered predicted-ORF BED.
-          pattern: "*.predicted-orfs.filtered.bed.gz"
+          pattern: "*.predicted-orfs.bed.gz"
           ontologies: []
   dna_fasta:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "${prefix}.predicted-orfs.filtered.dna.fa":
+      - "${prefix}.predicted-orfs.dna.fa":
           type: file
           description: DNA FASTA of predicted ORFs.
-          pattern: "*.predicted-orfs.filtered.dna.fa"
+          pattern: "*.predicted-orfs.dna.fa"
           ontologies: []
   protein_fasta:
     - - meta:
           type: map
           description: Groovy Map inherited from input meta.
-      - "${prefix}.predicted-orfs.filtered.protein.fa":
+      - "${prefix}.predicted-orfs.protein.fa":
           type: file
           description: Protein FASTA of predicted ORFs.
-          pattern: "*.predicted-orfs.filtered.protein.fa"
+          pattern: "*.predicted-orfs.protein.fa"
           ontologies: []
   versions_rpbp:
     - - ${task.process}:

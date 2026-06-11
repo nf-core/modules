@@ -12,9 +12,9 @@ process RPBP_SELECTFINALPREDICTIONSET {
     tuple val(meta2), path(genome_fasta)
 
     output:
-    tuple val(meta), path("${prefix}.predicted-orfs.filtered.bed.gz")     , emit: predicted
-    tuple val(meta), path("${prefix}.predicted-orfs.filtered.dna.fa")     , emit: dna_fasta
-    tuple val(meta), path("${prefix}.predicted-orfs.filtered.protein.fa") , emit: protein_fasta
+    tuple val(meta), path("${prefix}.predicted-orfs.bed.gz")     , emit: predicted
+    tuple val(meta), path("${prefix}.predicted-orfs.dna.fa")     , emit: dna_fasta
+    tuple val(meta), path("${prefix}.predicted-orfs.protein.fa") , emit: protein_fasta
     tuple val("${task.process}"), val('rpbp'), eval('python -c "import rpbp; print(rpbp.__version__)"'), emit: versions_rpbp, topic: versions
 
     when:
@@ -27,17 +27,17 @@ process RPBP_SELECTFINALPREDICTIONSET {
     select-final-prediction-set \\
         ${bayes_factors} \\
         ${genome_fasta} \\
-        ${prefix}.predicted-orfs.filtered.bed.gz \\
-        ${prefix}.predicted-orfs.filtered.dna.fa \\
-        ${prefix}.predicted-orfs.filtered.protein.fa \\
+        ${prefix}.predicted-orfs.bed.gz \\
+        ${prefix}.predicted-orfs.dna.fa \\
+        ${prefix}.predicted-orfs.protein.fa \\
         ${args}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ${prefix}.predicted-orfs.filtered.bed.gz
-    touch ${prefix}.predicted-orfs.filtered.dna.fa
-    touch ${prefix}.predicted-orfs.filtered.protein.fa
+    echo "" | gzip > ${prefix}.predicted-orfs.bed.gz
+    touch ${prefix}.predicted-orfs.dna.fa
+    touch ${prefix}.predicted-orfs.protein.fa
     """
 }
