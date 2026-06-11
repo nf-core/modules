@@ -1,0 +1,73 @@
+name: memote_report
+description: Generate HTML quality report snapshot for genome-scale metabolic models
+keywords:
+  - metabolic model
+  - sbml
+  - quality control
+tools:
+  - memote:
+      description: Benchmark and compare genome-scale metabolic models and generate
+        HTML reports.
+      homepage: https://github.com/opencobra/memote
+      documentation: https://memote.readthedocs.io/
+      tool_dev_url: https://github.com/opencobra/memote
+      licence:
+        - "Apache-2.0"
+      identifier: biotools:memote
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - model:
+        type: file
+        description: SBML model file.
+        pattern: "*.{xml,sbml}"
+        ontologies:
+          - edam: http://edamontology.org/format_2332
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.html":
+          type: file
+          description: Memote HTML report for the provided model.
+          pattern: "*.html"
+          ontologies:
+            - edam: http://edamontology.org/format_2331
+  versions_memote:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - memote:
+          type: string
+          description: The tool name
+      - memote --version | sed 's/memote, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  report:
+    - - meta:
+          type: string
+          description: The name of the process
+      - "*.html":
+          type: string
+          description: The name of the tool
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - memote:
+          type: string
+          description: The tool name
+      - memote --version | sed 's/memote, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@brovolia"
+maintainers:
+  - "@brovolia"
