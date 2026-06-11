@@ -4,8 +4,8 @@ process NEXTCLADE_DATASETGET {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/936786744b34cf016b948026a6b4e9489011424e15c28dfb2f7d03c31bb4afb5/data' :
-        'community.wave.seqera.io/library/nextclade:3.11.0--155203da8341cfe6' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7a/7acbe1c9567cd9e31fdf974b9fa1d8ed312ed9e1ae22cbe1c4c34d56096635af/data' :
+        'community.wave.seqera.io/library/nextclade:3.21.2--d3538cbe586c0f6c' }"
 
     input:
     val dataset
@@ -13,7 +13,8 @@ process NEXTCLADE_DATASETGET {
 
     output:
     path "$prefix"     , emit: dataset
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('nextclade'), eval("nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'"), emit: versions_nextclade, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,12 +31,6 @@ process NEXTCLADE_DATASETGET {
         --name $dataset \\
         $version \\
         --output-dir $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
-        nextclade-tag: \$(grep "tag" $dataset/pathogen.json | sed -n 's/.*"tag": "\\([0-9-]\\+Z\\)".*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -49,11 +44,6 @@ process NEXTCLADE_DATASETGET {
     touch ${prefix}/reference.fasta
     touch ${prefix}/sequences.fasta
     touch ${prefix}/tree.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
-    END_VERSIONS
     """
 
 }
