@@ -17,9 +17,12 @@ process JUPYTERNOTEBOOK {
     val kernel_
 
     output:
-    tuple val(meta), path("*.html")    , emit: report
-    tuple val(meta), path("artifacts/"), emit: artifacts, optional: true
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("*.html")                                                                                , emit: report
+    tuple val(meta), path("artifacts/")                                                                            , emit: artifacts, optional: true
+    tuple val("${task.process}"), val('jupytext'), eval('jupytext --version')                                      , emit: versions_jupytext, topic: versions
+    tuple val("${task.process}"), val('ipykernel'), eval('python -c "import ipykernel; print(ipykernel.__version__)"'), emit: versions_ipykernel, topic: versions
+    tuple val("${task.process}"), val('nbconvert'), eval('jupyter nbconvert --version')                            , emit: versions_nbconvert, topic: versions
+    tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "')                    , emit: versions_papermill, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -62,14 +65,6 @@ process JUPYTERNOTEBOOK {
     jupytext --to notebook --output - --set-kernel ${kernel} ${notebook} > ${notebook}.ipynb
     papermill -f params.yml ${notebook}.ipynb ${notebook}.executed.ipynb
     jupyter nbconvert --stdin --to html --output ${prefix}.html < ${notebook}.executed.ipynb
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jupytext: \$(jupytext --version)
-        ipykernel: \$(python -c "import ipykernel; print(ipykernel.__version__)")
-        nbconvert: \$(jupyter nbconvert --version)
-        papermill: \$(papermill --version | cut -f1 -d' ')
-    END_VERSIONS
     """
 
     stub:
@@ -77,13 +72,5 @@ process JUPYTERNOTEBOOK {
     """
     touch ${prefix}.html
     mkdir artifacts
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jupytext: \$(jupytext --version)
-        ipykernel: \$(python -c "import ipykernel; print(ipykernel.__version__)")
-        nbconvert: \$(jupyter nbconvert --version)
-        papermill: \$(papermill --version | cut -f1 -d' ')
-    END_VERSIONS
     """
 }

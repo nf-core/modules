@@ -3,7 +3,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     label 'process_medium'
 
     //Conda is not supported at the moment
-    container "docker.io/google/deepvariant:1.9.0"
+    container "docker.io/google/deepvariant:1.10.0"
 
     input:
     tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords), path(small_model_calls), path(intervals)
@@ -57,6 +57,9 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     }
 
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+    mkdir -p \$MPLCONFIGDIR
+
     /opt/deepvariant/bin/postprocess_variants \\
         ${args} \\
         --ref "${fasta}" \\

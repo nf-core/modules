@@ -14,7 +14,8 @@ process HOMER_ANNOTATEPEAKS {
     output:
     tuple val(meta), path("*annotatePeaks.txt"), emit: txt
     tuple val(meta), path("*annStats.txt"), emit: stats, optional: true
-    path "versions.yml", emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('homer'), val("4.11"), emit: versions_homer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,8 +23,6 @@ process HOMER_ANNOTATEPEAKS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     annotatePeaks.pl \\
         ${peak} \\
@@ -32,23 +31,11 @@ process HOMER_ANNOTATEPEAKS {
         -gtf ${gtf} \\
         -cpu ${task.cpus} \\
         > ${prefix}.annotatePeaks.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        homer: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.annotatePeaks.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        homer: ${VERSION}
-    END_VERSIONS
     """
 }

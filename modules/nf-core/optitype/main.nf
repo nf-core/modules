@@ -13,15 +13,15 @@ process OPTITYPE {
     output:
     tuple val(meta), path("${prefix}/*.tsv"), emit: hla_type
     tuple val(meta), path("${prefix}/*.pdf"), emit: coverage_plot
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('optitype'), eval('grep "Version:" $(which OptiTypePipeline.py) | sed "s/Version: //g"'), emit: versions_optitype, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args   ?: ''
-    def args2 = task.ext.args2  ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
+    def args      = task.ext.args   ?: ''
+    def args2     = task.ext.args2  ?: ''
+    prefix        = task.ext.prefix ?: "${meta.id}"
 
     """
     # Create a config for OptiType on a per sample basis with task.ext.args2
@@ -39,12 +39,14 @@ process OPTITYPE {
     echo "use_discordant=false" >> config.ini
 
     # Run the actual OptiType typing with args
-    OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $args --prefix $prefix --outdir $prefix
+    OptiTypePipeline.py -i ${bam} -c config.ini $args --prefix $prefix --outdir $prefix
+    """
 
-    #Couldn't find a nicer way of doing this
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        optitype: \$(cat \$(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g")
-    END_VERSIONS
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p ${prefix}
+    touch ${prefix}/${prefix}_coverage_plot.pdf
+    touch ${prefix}/${prefix}_result.tsv
     """
 }

@@ -85,6 +85,10 @@ write_se_table <- function(params, prefix) {
 #' - `transcript`: A data frame with transcript IDs, gene IDs, and gene names, indexed by transcript IDs.
 #' - `gene`: A data frame with unique gene IDs and gene names.
 #' - `tx2gene`: A data frame mapping transcript IDs to gene IDs.
+#' - `tx2gene_augmented`: The full tx2gene table actually used by tximport (input
+#'   mappings plus self-mappings appended for any transcripts present in the
+#'   quantification output but missing from the input tx2gene), with the input
+#'   column headers preserved.
 #' - `extra`: A character vector of transcript IDs found in quantification output but missing from the tx2gene file.
 
 read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col){
@@ -96,11 +100,15 @@ read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col)
     # Read file with actual header to handle variable column counts correctly
     raw_info <- read.csv(tinfo_path, sep="\t", header = TRUE, check.names = FALSE)
 
-    # Select columns by name, falling back to position if name not found
+    # Resolve column references (use named columns if present, otherwise positional)
+    resolved_tx_col        <- if (tx_col        %in% colnames(raw_info)) tx_col        else colnames(raw_info)[1]
+    resolved_gene_id_col   <- if (gene_id_col   %in% colnames(raw_info)) gene_id_col   else colnames(raw_info)[2]
+    resolved_gene_name_col <- if (gene_name_col %in% colnames(raw_info)) gene_name_col else colnames(raw_info)[3]
+
     transcript_info <- data.frame(
-        tx = raw_info[[if (tx_col %in% colnames(raw_info)) tx_col else 1]],
-        gene_id = raw_info[[if (gene_id_col %in% colnames(raw_info)) gene_id_col else 2]],
-        gene_name = raw_info[[if (gene_name_col %in% colnames(raw_info)) gene_name_col else 3]],
+        tx        = raw_info[[resolved_tx_col]],
+        gene_id   = raw_info[[resolved_gene_id_col]],
+        gene_name = raw_info[[resolved_gene_name_col]],
         check.names = FALSE
     )
 
@@ -118,9 +126,14 @@ read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col)
     transcript_info <- transcript_info[match(rownames(txi[[1]]), transcript_info[["tx"]]), ]
     rownames(transcript_info) <- transcript_info[["tx"]]
 
+    # Restore input column headers so the augmented file can be fed back to tximport
+    tx2gene_augmented <- transcript_info
+    colnames(tx2gene_augmented) <- c(resolved_tx_col, resolved_gene_id_col, resolved_gene_name_col)
+
     list(transcript = transcript_info,
         gene = unique(transcript_info[,2:3]),
         tx2gene = transcript_info[,1:2],
+        tx2gene_augmented = tx2gene_augmented,
         extra = extra)
 }
 
@@ -263,6 +276,10 @@ if ('$task.ext.prefix' != 'null'){
 }
 
 done <- lapply(params, write_se_table, prefix)
+
+write.table(transcript_info\$tx2gene_augmented,
+    paste0(prefix, ".tx2gene_augmented.tsv"),
+    sep = "\t", quote = FALSE, row.names = FALSE)
 
 ################################################
 ################################################
