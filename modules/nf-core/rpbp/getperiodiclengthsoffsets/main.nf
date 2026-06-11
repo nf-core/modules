@@ -12,7 +12,7 @@ process RPBP_GETPERIODICLENGTHSOFFSETS {
 
     output:
     tuple val(meta), path("${prefix}.tsv"), emit: lengths_offsets
-    tuple val("${task.process}"), val('rpbp'), eval('python -c "import rpbp; print(rpbp.__version__)"'), emit: versions_rpbp, topic: versions
+    path "versions.yml"                                            , emit: versions_rpbp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,5 +26,11 @@ process RPBP_GETPERIODICLENGTHSOFFSETS {
     prefix = task.ext.prefix ?: "${meta.id}.lengths-offsets"
     """
     touch ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python --version | sed -e "s/Python //g")
+        rpbp: \$(python -c "import rpbp; print(rpbp.__version__)")
+    END_VERSIONS
     """
 }

@@ -9,10 +9,13 @@ Nextflow process, and writes the resulting per-read-length offsets to a TSV.
 
 import argparse
 import os
+import platform
 import shlex
 import shutil
 
 import pandas as pd
+import rpbp
+import yaml
 from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
 
 
@@ -51,3 +54,9 @@ pd.DataFrame({"length": lengths, "offset": offsets}).to_csv(
     sep="\\t",
     index=False,
 )
+
+with open("versions.yml", "w") as f:
+    yaml.safe_dump(
+        {"${task.process}": {"python": platform.python_version(), "rpbp": rpbp.__version__}},
+        f,
+    )
