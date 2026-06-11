@@ -3,7 +3,7 @@ process VARLOCIRAPTOR_PREPROCESS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/varlociraptor%3A8.9.5--h24073b4_0'
         : 'quay.io/biocontainers/varlociraptor:8.9.5--h24073b4_0'}"
 
