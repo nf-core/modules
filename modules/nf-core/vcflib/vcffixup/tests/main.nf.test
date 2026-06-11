@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process VCFLIB_VCFFIXUP"
     script "../main.nf"
+    config "./nextflow.config"
     process "VCFLIB_VCFFIXUP"
 
     tag "modules"
@@ -9,7 +10,64 @@ nextflow_process {
     tag "vcflib"
     tag "vcflib/vcffixup"
 
-    test("test-vcflib-vcffixup") {
+    test("test-vcflib-vcffixup - vcf.gz - no index") {
+
+        when {
+            params{
+                vcffixup_args = ""
+                bcftools_args = "-Oz"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys:["vcf", "index"]),
+                    path(process.out.vcf[0][1]).vcf.variantsMD5
+                ).match() }
+            )
+        }
+    }
+
+    test("test-vcflib-vcffixup - bcf.gz - csi") {
+
+        when {
+            params{
+                vcffixup_args = ""
+                bcftools_args = "-Ob --write-index=csi"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["vcf", "index"])).match() }
+            )
+        }
+    }
+
+    test("test-vcflib-vcffixup - vcf.gz - no index -- stub") {
+
+        options "-stub"
 
         when {
             process {
@@ -31,11 +89,15 @@ nextflow_process {
         }
     }
 
-    test("test-vcflib-vcffixup-stub") {
+    test("test-vcflib-vcffixup - bcf.gz - csi -- stub") {
 
         options "-stub"
 
         when {
+            params{
+                vcffixup_args = ""
+                bcftools_args = "-Ob --write-index=csi"
+            }
             process {
                 """
                 input[0] = [
