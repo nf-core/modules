@@ -81,7 +81,7 @@ output:
     - lofreq:
         type: string
         description: Tool name
-    - "lofreq version | awk 'NR==1{print \\$2}'":
+    - "lofreq version | sed -n '1s/^.* //p'":
         type: eval
         description: The expression to obtain the version of the tool
 topics:
@@ -92,7 +92,7 @@ topics:
     - lofreq:
         type: string
         description: Tool name
-    - "lofreq version | awk 'NR==1{print \\$2}'":
+    - "lofreq version | sed -n '1s/^.* //p'":
         type: eval
         description: The expression to obtain the version of the tool
 authors:
