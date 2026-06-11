@@ -1,0 +1,81 @@
+name: "cnvkit_fix"
+description: Combine the uncorrected target and antitarget coverage tables (.cnn)
+  and correct for biases in regional coverage and GC content, according to the given reference.
+keywords:
+  - cnvkit
+  - fix
+  - cnn
+  - GC content
+  - bias
+  - RepeatMasker
+  - genomics
+tools:
+  - "cnvkit":
+      description: "Copy number variant detection from high-throughput sequencing."
+      homepage: "https://cnvkit.readthedocs.io/en/stable"
+      documentation: "https://cnvkit.readthedocs.io/en/stable"
+      tool_dev_url: "https://github.com/etal/cnvkit"
+      doi: "10.1371/journal.pcbi.1004873"
+      licence: ["Apache-2.0"]
+      identifier: biotools:cnvkit
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - targetcoverage:
+        type: file
+        description: target coverage table. Output of the cnvkit coverage command.
+        pattern: "*.{targetcoverage.cnn}"
+        ontologies: []
+    - antitargetcoverage:
+        type: file
+        description: antitarget coverage table. Output of the cnvkit coverage command.
+        pattern: "*.{antitargetcoverage.cnn}"
+        ontologies: []
+    - reference:
+        type: file
+        description: copy-number reference.
+        pattern: "*{.cnn}"
+        ontologies: []
+
+output:
+  copy_number_ratio:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.cnr":
+          type: file
+          description: table of bias corrected copy number ratios.
+          pattern: "*.{cnr}"
+          ontologies: []
+  versions_cnvkit:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "cnvkit":
+          type: string
+          description: The name of the tool
+      - cnvkit.py version | sed -e "s/cnvkit v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvkit:
+          type: string
+          description: The name of the tool
+      - cnvkit.py version | sed -e "s/cnvkit v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@aadecock"
+maintainers:
+  - "@aadecock"
