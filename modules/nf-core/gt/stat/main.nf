@@ -12,7 +12,7 @@ process GT_STAT {
 
     output:
     tuple val(meta), path("${prefix}.yml")  , emit: stats
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('genometools'), eval("gt --version | sed '1!d;s/.* //'"), emit: versions_gt, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,24 +23,14 @@ process GT_STAT {
     """
     gt \\
         stat \\
-        $args \\
-        $gff3 \\
+        ${args} \\
+        ${gff3} \\
         > ${prefix}.yml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genometools: \$(gt --version | head -1 | sed 's/gt (GenomeTools) //')
-    END_VERSIONS
     """
 
     stub:
     prefix      = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.yml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genometools: \$(gt --version | head -1 | sed 's/gt (GenomeTools) //')
-    END_VERSIONS
     """
 }

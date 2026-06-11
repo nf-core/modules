@@ -23,30 +23,32 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - h5ad:
+    - anndata:
         type: file
-        description: AnnData object in h5ad format
-        pattern: "*.{h5ad}"
+        description: AnnData object in h5ad or zarr format
+        pattern: "*.{h5ad,zarr}"
         ontologies:
           - edam: "http://edamontology.org/format_3590" # HDF5 format
+          - edam: "http://edamontology.org/format_3915" # Zarr format
   - key_added:
       type: string
       description: |
         Key to add to obsm with PCA coordinates, usually 'X_pca'
 
 output:
-  h5ad:
+  anndata:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.h5ad":
+      - "*.{h5ad,zarr}":
           type: file
-          description: AnnData object with PCA coordinates added
-          pattern: "*.h5ad"
+          description: AnnData object with PCA coordinates added in h5ad or zarr format
+          pattern: "*.{h5ad,zarr}"
           ontologies:
             - edam: "http://edamontology.org/format_3590" # HDF5 format
+            - edam: "http://edamontology.org/format_3915" # Zarr format
   obsm:
     - - meta:
           type: map
@@ -59,6 +61,14 @@ output:
           pattern: "X_*.pkl"
           ontologies:
             - edam: "http://edamontology.org/format_3553" # Pickle format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
   versions:
     - versions.yml:
         type: file

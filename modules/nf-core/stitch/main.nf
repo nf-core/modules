@@ -8,7 +8,7 @@ process STITCH {
         : 'quay.io/biocontainers/r-stitch:1.7.3--r44h64f727c_0'}"
 
     input:
-    tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(genetic_map), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(start), val(end), val(K), val(nGen)
+    tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(genetic_map), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(start), val(end), val(buffer), val(K), val(nGen)
     tuple val(meta2), path(fasta), path(fasta_fai)
     val seed
 
@@ -44,9 +44,15 @@ process STITCH {
     def bamlist_cmd          = cramlist && reads_ext == ["bam" ] ? "--bamlist ${cramlist}"            : ""
 
     def reference_cmd        = fasta                       ? "--reference ${fasta}"                                            : ""
-    def regenerate_input_cmd = input && rdata && !cramlist ? "--regenerateInput FALSE --originalRegionName ${chromosome_name}" : ""
+    def has_region           = start != null && start != [] && end != null && end != []
+    def has_buffer           = buffer != null && buffer != [] && buffer.toString() != ""
+    def original_region_name = has_region ? "${chromosome_name}.${start}.${end}" : "${chromosome_name}"
+    def regenerate_input_cmd = input && rdata && !cramlist ? "--regenerateInput FALSE --originalRegionName ${original_region_name}" : ""
     def samplename_cmd       = samplename                  ? "--sampleNames_file ${samplename}"                                : ""
     def genetic_map_command  = genetic_map                 ? "--genetic_map_file=${genetic_map}"                               : ""
+    def start_command        = has_region                  ? "--regionStart ${start}"                                       : ""
+    def end_command          = has_region                  ? "--regionEnd ${end}"                                           : ""
+    def buffer_command       = has_region && has_buffer    ? "--buffer ${buffer}"                                           : ""
 
     // Rsync and Stitch command to copy RData from previous run if available
     def rsync_cmd            = rdata ? "rsync -rL ${rdata}/ RData" : ""
@@ -68,6 +74,9 @@ process STITCH {
         ${regenerate_input_cmd} \\
         ${samplename_cmd} \\
         ${genetic_map_command} \\
+        ${start_command} \\
+        ${end_command} \\
+        ${buffer_command} \\
         --output_filename ${prefix}.${suffix} \\
         ${args2}
     """
