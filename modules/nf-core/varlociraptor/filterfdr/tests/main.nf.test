@@ -1,8 +1,8 @@
 nextflow_process {
 
-    name "Test Process VARLOCIRAPTOR_CALLVARIANTS"
+    name "Test Process VARLOCIRAPTOR_FILTERFDR"
     script "../main.nf"
-    process "VARLOCIRAPTOR_CALLVARIANTS"
+    process "VARLOCIRAPTOR_FILTERFDR"
 
     tag "modules"
     tag "modules_nfcore"
@@ -10,6 +10,7 @@ nextflow_process {
     tag "varlociraptor/estimatealignmentproperties"
     tag "varlociraptor/preprocess"
     tag "varlociraptor/callvariants"
+    tag "varlociraptor/filterfdr"
 
     setup {
         run("VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES", alias: "VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_NORMAL") {
@@ -81,41 +82,10 @@ nextflow_process {
                 """
             }
         }
-    }
 
-    test("scenario_singlesample") {
+        run("VARLOCIRAPTOR_CALLVARIANTS") {
+            script "../../callvariants/main.nf"
 
-        when {
-            process {
-                """
-                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf
-                    .map { meta, vcf ->
-                        [ meta,
-                          vcf,
-                          file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true),
-                          "normal" ]
-                    }
-                """
-            }
-        }
-        then {
-            assert process.success
-            assertAll(
-                { assert snapshot(
-                    file(process.out.bcf[0][1]).name,
-                    "Filesize > 0: "+(path(process.out.bcf[0][1]).size() > 0),
-                    //path(process.out.bcf[0][1]).vcf.variantsMD5,
-                    // Error: BCF magic header info not found with current version of nf-test htjsk
-                    // Might be linked to https://github.com/samtools/htsjdk/issues/946 and block gzipped BCF
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
-            )
-        }
-    }
-
-    test("normal_multisample") {
-
-        when {
             process {
                 """
                 input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.concat(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf).collect().map{meta1,vcf1,meta2,vcf2->
@@ -126,6 +96,21 @@ nextflow_process {
                 """
             }
         }
+
+    }
+
+    test("normal_multisample") {
+
+        when {
+            process {
+                """
+                input[0] = VARLOCIRAPTOR_CALLVARIANTS.out.bcf.map { meta, vcf ->
+                    [ meta, vcf, "germline", 0.05 ]
+                }
+                """
+            }
+        }
+
         then {
             assert process.success
             assertAll(
@@ -141,29 +126,27 @@ nextflow_process {
         }
     }
 
-    test("scenario_singlesample - stub") {
+    test("normal_multisample - stub") {
 
-        options '-stub'
+        options "-stub"
 
         when {
             process {
                 """
-                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf
-                    .map { meta, vcf ->
-                        [ meta,
-                          vcf,
-                          file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true),
-                          "normal" ]
-                    }
+                input[0] = VARLOCIRAPTOR_CALLVARIANTS.out.bcf.map { meta, vcf ->
+                    [ meta, vcf, "germline", 0.05 ]
+                }
                 """
             }
         }
+
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
+
     }
 
 }
