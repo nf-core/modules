@@ -12,17 +12,17 @@ process CHELAE_TRIM {
     path adapter_fasta
 
     output:
-    tuple val(meta), path('*.chelae.fastq.gz')                                                              , emit: reads
-    tuple val(meta), path('*.chelae.json')                                                                  , emit: json
-    tuple val(meta), path('*.chelae.tsv')                                                                   , emit: metrics
-    tuple val("${task.process}"), val('chelae'), eval("chelae --version 2>&1 | sed 's/chelae //'")           , emit: versions_chelae, topic: versions
+    tuple val(meta), path('*.chelae.fastq.gz'), emit: reads
+    tuple val(meta), path('*.chelae.json')    , emit: json
+    tuple val(meta), path('*.chelae.tsv')     , emit: metrics
+    tuple val("${task.process}"), val('chelae'), eval("chelae --version 2>&1 | sed 's/chelae //'"), emit: versions_chelae, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args            = task.ext.args ?: ''
-    def prefix          = task.ext.prefix ?: "${meta.id}"
+    def args              = task.ext.args ?: ''
+    def prefix            = task.ext.prefix ?: "${meta.id}"
     def adapter_fasta_arg = adapter_fasta ? "--adapter-fasta ${adapter_fasta}" : ''
     if (meta.single_end) {
         """
