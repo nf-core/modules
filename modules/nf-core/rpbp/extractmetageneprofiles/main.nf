@@ -12,7 +12,7 @@ process RPBP_EXTRACTMETAGENEPROFILES {
     tuple val(meta2), path(transcript_bed)
 
     output:
-    tuple val(meta), path("${prefix}.metagene-profile.csv.gz"), emit: metagene
+    tuple val(meta), path("${prefix}.metagene.csv.gz"), emit: metagene
     tuple val("${task.process}"), val('rpbp'), eval('python -c "import rpbp; print(rpbp.__version__)"'), emit: versions_rpbp, topic: versions
 
     when:
@@ -25,7 +25,7 @@ process RPBP_EXTRACTMETAGENEPROFILES {
     extract-metagene-profiles \\
         ${bam} \\
         ${transcript_bed} \\
-        ${prefix}.metagene-profile.csv.gz \\
+        ${prefix}.metagene.csv.gz \\
         --num-cpus ${task.cpus} \\
         ${args}
     """
@@ -33,6 +33,6 @@ process RPBP_EXTRACTMETAGENEPROFILES {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ${prefix}.metagene-profile.csv.gz
+    echo "" | gzip > ${prefix}.metagene.csv.gz
     """
 }
