@@ -1,0 +1,39 @@
+name: calc_inflation
+description: Calculate LDAK inflation diagnostics from full-genome and quarter REML outputs
+keywords:
+  - ldak
+  - inflation
+  - qc
+  - reml
+tools:
+  - r-base:
+      description: R programming language runtime used for statistical post-processing
+      homepage: https://www.r-project.org/
+      documentation: https://www.r-project.org/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing report metadata.
+          Expected keys:
+            - id (string): Output prefix for inflation report (for example, 'inflation_Y1').
+    - ldak_reml_file:
+        type: file
+        description: Full-genome LDAK REML output file (`*.reml`)
+    - quarter_reml_files:
+        type: file
+        description: One or more quarter/chromosome LDAK REML output files used for inflation comparison
+output:
+  inflation_results:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.txt:
+          type: file
+          description: Inflation summary report (`<meta.id>.txt`)
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+authors:
+  - "andongni"

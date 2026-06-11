@@ -1,0 +1,59 @@
+name: thin_predictors
+description: Run LDAK LD pruning to create a thinned predictor list for weighted kinship workflows
+keywords:
+  - ldak
+  - thinning
+  - predictors
+  - kinship
+tools:
+  - ldak6:
+      description: LDAK toolset for kinship, heritability, and association analyses
+      homepage: https://dougspeed.com/ldak/
+      documentation: https://dougspeed.com/ldak/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing genotype-bundle metadata.
+          Expected keys:
+            - id (string): Sample identifier used as thin output prefix (for example, 'chr01.vcf').
+    - bed:
+        type: file
+        description: PLINK BED genotype file
+    - bim:
+        type: file
+        description: PLINK BIM variant file
+    - fam:
+        type: file
+        description: PLINK FAM sample file
+output:
+  thin_predictors:
+    - - meta:
+          type: map
+          description: Metadata map carried forward from input
+      - ${meta.id}.in:
+          type: file
+          description: LDAK thinned predictor list emitted by `--thin`
+  versions_ldak6:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+authors:
+  - "andongni"
