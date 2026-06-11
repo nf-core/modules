@@ -56,12 +56,6 @@ input:
       type: boolean
       description: use samtools sort (true) or samtools view (false)
       pattern: "true or false"
-  - mbuffer:
-      type: integer
-      description: memory for mbuffer in megabytes (default 3072)
-  - samtools_threads:
-      type: integer
-      description: number of threads for samtools (default 2)
 output:
   output:
     - - meta:

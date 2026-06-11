@@ -12,8 +12,6 @@ process BWAFASTALIGN_MEM {
     tuple val(meta2), path(index)
     tuple val(meta3), path(fasta)
     val   sort_bam
-    val   mbuffer
-    val   samtools_threads
 
     output:
     tuple val(meta), path("${prefix}.{sam,bam,cram}"), emit: output, optional: true
@@ -26,26 +24,21 @@ process BWAFASTALIGN_MEM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def samtools_command = sort_bam ? 'sort' : 'view'
-    if (!mbuffer) {
-        log.info '[bwafastalign-mbuffer] Memory for mbuffer is not set - defaulting to 3GB for mbuffer.'
-        mbuffer_mem = 3072
-    } else {
-        mbuffer_mem = mbuffer
-    }
-    if (!samtools_threads) {
-        log.info 'Number of threads for samtools is not set - defaulting to 2 threads.'
-        threads = 2
-    } else {
-        threads = samtools_threads
-    }
-    mbuffer_command   = sort_bam ? "| mbuffer -m ${mbuffer_mem}M" : ""
-    mem_per_thread    = sort_bam ? "-m "+ (mbuffer_mem/threads).intValue()+"M" : ""
+    def args  = task.ext.args   ?: ''
+    def args2 = task.ext.args2  ?: ''
+    def args3 = task.ext.args3  ?: ''
+    prefix    = task.ext.prefix ?: "${meta.id}"
+
+    def samtools_command     = sort_bam ? 'sort' : 'view'
+    // ext.args2 controls mbuffer options; inject default -m if not supplied
+    def mbuffer_args         = args2.contains('-m') ? args2 : "-m 3072M ${args2}"
+    def mbuffer_command      = sort_bam ? "| mbuffer ${mbuffer_args}" : ""
+    // ext.args3 controls samtools options; inject defaults for -@ and -m (sort only) if not supplied
+    def samtools_threads_arg = args3.contains('-@') ? '' : '-@ 3'
+    def samtools_mem_arg     = (sort_bam && !args3.contains('-m')) ? '-m 1024M' : ''
+    def samtools_args        = "${samtools_mem_arg} ${samtools_threads_arg} ${args3}"
     def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
-    def extension_matcher =  (args2 =~ extension_pattern)
+    def extension_matcher =  (args3 =~ extension_pattern)
     def extension = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
     def reference = fasta && extension=="cram"  ? "--reference ${fasta}" : ""
     if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
@@ -59,24 +52,20 @@ process BWAFASTALIGN_MEM {
         \$INDEX \\
         $reads \\
         $mbuffer_command \\
-        | samtools $samtools_command $args2 $mem_per_thread -@ $threads ${reference} -o ${prefix}.${extension} -
+        | samtools $samtools_command $samtools_args ${reference} -o ${prefix}.${extension} -
     """
 
     stub:
 
-    def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
-    def extension_matcher =  (args2 =~ extension_pattern)
+    def extension_matcher =  (args3 =~ extension_pattern)
     def extension = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
     if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
 
-    def create_index = ""
-    if (extension == "cram") {
-        create_index = "touch ${prefix}.crai"
-    } else if (extension == "bam") {
-        create_index = "touch ${prefix}.csi"
-    }
+    def create_index = extension == "cram" ? "touch ${prefix}.crai" :
+                       extension == "bam"  ? "touch ${prefix}.csi"  : ""
     """
     touch ${prefix}.${extension}
     ${create_index}
