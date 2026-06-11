@@ -16,7 +16,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     [],
                     file(
-                        'https://github.com/nf-core/test-datasets/raw/refs/heads/funcprofiler/data/database/mifaser/GS-24-all.tar.gz',
+                        'https://github.com/nickp60/test-datasets/raw/refs/heads/funcprofiler/data/database/mifaser/GS-24-all.tar.gz',
                         checkIfExists: true
                     )
                 ])
@@ -33,7 +33,7 @@ nextflow_process {
                     [ id:'test', single_end:true ],
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 ]
-                input[1] = UNTAR.out.untar.map{ meta, dir -> dir.resolve("database/mifaser/GS-24-all") }
+                input[1] = UNTAR.out.untar.map { it[1] }
                 """
             }
         }
