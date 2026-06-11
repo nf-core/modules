@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process GAPSEQ_FIND"
+    script "../main.nf"
+    process "GAPSEQ_FIND"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gapseq"
+    tag "gapseq/find"
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta]") {
+
+        when {
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                // Validate reactions.tbl structure
+                { assert process.out.reactions.get(0).get(1).size() > 0 : "Reactions file should not be empty" },
+                { assert path(process.out.reactions.get(0).get(1)).readLines().size() > 50 : "Reactions file should have at least 50 lines" },
+                { assert path(process.out.reactions.get(0).get(1)).readLines().get(3) ==~ /^pathway\trxn\tname\tec.*/ : "Reactions file should have expected header" },
+                // Validate pathways.tbl structure
+                { assert process.out.pathways.get(0).get(1).size() > 0 : "Pathways file should not be empty" },
+                { assert path(process.out.pathways.get(0).get(1)).readLines().size() > 10 : "Pathways file should have at least 10 lines" },
+                { assert path(process.out.pathways.get(0).get(1)).readLines().get(3) ==~ /^ID\tName.*/ : "Pathways file should have expected header" },
+                {
+                    assert snapshot(
+                        process.out.reactions.collect { meta, reaction -> [meta, file(reaction).getName()] },
+                        process.out.pathways.collect { meta, pathway -> [meta, file(pathway).getName()] },
+                        process.out.log.collect { meta, log -> [meta, (log instanceof List ? log : [log]).collect { file(it).getName() }.sort()] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.reactions.collect { meta, reaction -> [meta, file(reaction).getName()] },
+                        process.out.pathways.collect { meta, pathway -> [meta, file(pathway).getName()] },
+                        process.out.log.collect { meta, log -> [meta, (log instanceof List ? log : [log]).collect { file(it).getName() }.sort()] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+}

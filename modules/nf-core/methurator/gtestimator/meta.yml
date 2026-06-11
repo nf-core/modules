@@ -43,6 +43,11 @@ input:
         pattern: "*.{fasta,fa}"
         ontologies:
           - edam: "http://edamontology.org/format_1332" # FASTA
+    - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.{fai}"
+        ontologies: []
 output:
   summary_report:
     - - meta:
