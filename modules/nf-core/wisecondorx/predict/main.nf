@@ -19,7 +19,7 @@ process WISECONDORX_PREDICT {
     tuple val(meta), path("*_statistics.txt")       , emit: chr_statistics, optional:true
     tuple val(meta), path("[!genome_wide]*.png")    , emit: chr_plots, optional:true
     tuple val(meta), path("genome_wide.png")        , emit: genome_plot, optional:true
-    tuple val("${task.process}"), val('wisecondorx'), eval("pip list |& sed -n 's/wisecondorx *//p'"), emit: versions_wisecondorx, topic: versions
+    tuple val("${task.process}"), val('wisecondorx'), eval("python -c \"import wisecondorx; print(wisecondorx.__version__)\""), emit: versions_wisecondorx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -13,7 +13,7 @@ process WISECONDORX_GENDER {
 
     output:
     tuple val(meta), stdout, emit: gender
-    tuple val("${task.process}"), val('wisecondorx'), eval("pip list |& sed -n 's/wisecondorx *//p'"), emit: versions_wisecondorx, topic: versions
+    tuple val("${task.process}"), val('wisecondorx'), eval("python -c \"import wisecondorx; print(wisecondorx.__version__)\""), emit: versions_wisecondorx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
