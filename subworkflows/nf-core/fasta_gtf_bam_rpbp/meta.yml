@@ -69,15 +69,15 @@ output:
   - metagene:
       description: |
         Per-sample metagene profiles.
-        Structure: [ val(meta), path(*.metagene-profile.csv.gz) ]
+        Structure: [ val(meta), path(*.metagene.csv.gz) ]
   - metagene_bf:
       description: |
         Per-sample metagene periodicity Bayes factors.
-        Structure: [ val(meta), path(*.metagene-periodicity-bayes-factors.csv.gz) ]
+        Structure: [ val(meta), path(*.metagene-bayes.csv.gz) ]
   - periodic:
       description: |
         Per-sample selected periodic offsets.
-        Structure: [ val(meta), path(*.periodic-offsets.csv.gz) ]
+        Structure: [ val(meta), path(*.offsets.csv.gz) ]
   - orf_profiles:
       description: |
         Per-sample per-ORF P-site profile matrix.
@@ -85,7 +85,7 @@ output:
   - lengths_offsets:
       description: |
         Per-sample selected lengths/offsets actually used by extract-orf-profiles.
-        Structure: [ val(meta), path(*.periodic_lengths_offsets.tsv) ]
+        Structure: [ val(meta), path(*.lengths-offsets.tsv) ]
   - orf_bayes:
       description: |
         Per-sample per-ORF translation Bayes factors.
@@ -93,15 +93,15 @@ output:
   - predicted:
       description: |
         Per-sample final filtered predicted-ORF BED.
-        Structure: [ val(meta), path(*.predicted-orfs.filtered.bed.gz) ]
+        Structure: [ val(meta), path(*.predicted-orfs.bed.gz) ]
   - dna_fasta:
       description: |
         Per-sample predicted-ORF DNA FASTA.
-        Structure: [ val(meta), path(*.predicted-orfs.filtered.dna.fa) ]
+        Structure: [ val(meta), path(*.predicted-orfs.dna.fa) ]
   - protein_fasta:
       description: |
         Per-sample predicted-ORF protein FASTA.
-        Structure: [ val(meta), path(*.predicted-orfs.filtered.protein.fa) ]
+        Structure: [ val(meta), path(*.predicted-orfs.protein.fa) ]
   - versions:
       description: |
         Files containing software versions
