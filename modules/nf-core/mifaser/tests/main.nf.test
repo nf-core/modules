@@ -16,7 +16,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     [],
                     file(
-                        'https://github.com/nickp60/test-datasets/raw/refs/heads/funcprofiler/data/database/mifaser/GS-24-all.tar.gz',
+                        'https://github.com/nf-core/test-datasets/raw/refs/heads/funcprofiler/data/database/mifaser/GS-24-all.tar.gz',
                         checkIfExists: true
                     )
                 ])
