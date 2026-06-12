@@ -50,7 +50,8 @@ nextflow_process {
             def workdir = process.out.preprocess_dir[0][1]
             def prefix  = "test.paired_end.sorted.bam"
             // Picard `# Started on:` and R's PDF `/CreationDate` add per-run timestamps,
-            // and `sv.bam` BGZF blocks are non-reproducible — snapshot only stable parts.
+            // and `sv.bam`/`sv.bam.csi` BGZF blocks differ across conda/docker — snapshot only stable parts.
+            // Presence of `sv.bam` and `sv.bam.csi` is covered by the directory listing snapshot.
             def stripPicardHeaderMd5 = { f -> "${file(f).name}:md5,${listToMD5(path(f).readLines().findAll { !it.startsWith("#") })}" }
 
             assertAll(
@@ -59,7 +60,6 @@ nextflow_process {
                     process.out.preprocess_dir.collect { meta, dir -> [meta, file(dir).list().findAll { it.startsWith(prefix) }.sort()] },
                     path("${workdir}/${prefix}.computesamtags.changes.tsv"),
                     path("${workdir}/${prefix}.coverage.blacklist.bed"),
-                    path("${workdir}/${prefix}.sv.bam.csi"),
                     stripPicardHeaderMd5("${workdir}/${prefix}.cigar_metrics"),
                     stripPicardHeaderMd5("${workdir}/${prefix}.idsv_metrics"),
                     stripPicardHeaderMd5("${workdir}/${prefix}.insert_size_metrics"),
