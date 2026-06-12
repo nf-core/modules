@@ -14,8 +14,6 @@ process TRYCYCLER_SUBSAMPLE {
     tuple val(meta), path("*/*.fastq.gz") , emit: subreads
     path "versions.yml"                   , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

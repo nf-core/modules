@@ -16,8 +16,6 @@ process PYCLONEVI {
     tuple val(meta), path("*_best_fit.txt"),      emit: pyclone_best_fit
     path "versions.yml",                          emit: versions_pyclonevi, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template "main_script.py"

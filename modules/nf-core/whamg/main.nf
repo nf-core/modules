@@ -18,8 +18,6 @@ process WHAMG {
     tuple val(meta), path("*.txt")          , emit: graph, optional: true
     tuple val("${task.process}"), val('whamg'), eval("whamg 2>&1 | sed -n 's/^Version: v\\([^-]*\\).*/\\1/p'"), topic: versions, emit: versions_whamg
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

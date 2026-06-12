@@ -20,8 +20,6 @@ process STRELKA_SOMATIC {
     tuple val(meta), path("*.somatic_snvs.vcf.gz.tbi"),   emit: vcf_snvs_tbi
     path "versions.yml", emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

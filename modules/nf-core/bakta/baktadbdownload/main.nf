@@ -10,8 +10,6 @@ process BAKTA_BAKTADBDOWNLOAD {
     path "db*", emit: db
     tuple val("${task.process}"), val('bakta'), eval("bakta --version 2>&1 | sed 's/bakta //'"), emit: versions_bakta, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -15,8 +15,6 @@ process BAMUTIL_CLIPOVERLAP {
     tuple val(meta), path("*.log"), emit: stats_log, optional: true
     tuple val("${task.process}"), val('bamutil'), eval("bam clipOverlap 2>&1 | grep '^Version:' | sed 's/^Version: //;s/;.*//'"), emit: versions_bamutil, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -15,8 +15,6 @@ process HTSNIMTOOLS_VCFCHECK {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('htsnimtools'), eval("hts_nim_tools | sed -n 's/version: //p'"), emit: versions_htsnimtools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

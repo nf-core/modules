@@ -14,8 +14,6 @@ process BAMTOFASTQ10X {
     tuple val(meta), path("**/*.fastq.gz"), emit: fastq
     tuple val("${task.process}"), val('bamtofastq10x'), eval('bamtofastq --version |& sed "1!d ; s/bamtofastq //"'), emit: versions_bamtofastq10x, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

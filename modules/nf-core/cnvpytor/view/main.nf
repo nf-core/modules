@@ -22,8 +22,6 @@ process CNVPYTOR_VIEW {
     // 2026-03-13 16:14:08,088 - cnvpytor - ERROR - Some reference genome resource files are missing.
     // Run 'cnvpytor -download' as same user who has installed cnvpytor.
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def output_suffix = output_format ?: 'vcf'

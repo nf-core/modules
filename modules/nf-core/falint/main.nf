@@ -15,8 +15,6 @@ process FALINT {
     tuple val(meta), path('*.error.log')    , emit: error_log   , optional: true
     tuple val("${task.process}"), val('falint'), eval('fa-lint --version'), emit: versions_falint, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

@@ -14,8 +14,6 @@ process ASSEMBLYSCAN {
     tuple val(meta), path("*.{json,tsv}"),     emit: report
     tuple val("${task.process}"), val('assemblyscan'), eval("assembly-scan --version 2>&1 | sed 's/^.*assembly-scan //; s/Using.*\$//'"), topic: versions, emit: versions_assemblyscan
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args   ?: ''

@@ -19,8 +19,6 @@ process WHATSHAP_HAPLOTAG {
     tuple val(meta), path("*.{tsv,tsv.gz}"), emit: tsv, optional: true
     tuple val("${task.process}"), val('whatshap'), eval("whatshap --version"), topic: versions, emit: versions_whatshap
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

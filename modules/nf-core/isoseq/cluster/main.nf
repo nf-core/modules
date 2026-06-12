@@ -24,8 +24,6 @@ process ISOSEQ_CLUSTER {
     tuple val(meta), path("*.transcripts.singletons.bam.pbi"), optional: true, emit: singletons_pbi
     tuple val("${task.process}"), val('isoseq'), eval("isoseq cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g'"), emit: versions_isoseq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

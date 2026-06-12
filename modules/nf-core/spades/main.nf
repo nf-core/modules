@@ -22,8 +22,6 @@ process SPADES {
     tuple val(meta), path('*.spades.log')         , emit: log
     tuple val("${task.process}"), val('spades'), eval("spades.py --version 2>&1 | sed -n 's/^.*SPAdes genome assembler v//p'"), topic: versions, emit: versions_spades
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

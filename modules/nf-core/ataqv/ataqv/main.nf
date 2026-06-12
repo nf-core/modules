@@ -20,8 +20,6 @@ process ATAQV_ATAQV {
     tuple val(meta), path("*.problems")  , emit: problems, optional: true
     tuple val("${task.process}"), val('ataqv'), eval("echo \$(ataqv --version)"), emit: versions_ataqv, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

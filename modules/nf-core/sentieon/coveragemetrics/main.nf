@@ -24,8 +24,6 @@ process SENTIEON_COVERAGEMETRICS {
     tuple val(meta), path("${prefix}.${partitions_output}_interval_summary"),                emit: interval_summary,     optional: true
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

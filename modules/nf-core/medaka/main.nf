@@ -14,8 +14,6 @@ process MEDAKA {
     tuple val(meta), path("*.fa.gz"), emit: assembly
     tuple val("${task.process}"), val('medaka'), eval('medaka --version 2>&1 | sed "s/medaka //g"'), topic: versions, emit: versions_medaka
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

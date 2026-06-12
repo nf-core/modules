@@ -15,8 +15,6 @@ process COPTR_MAP {
     tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('coptr'), eval("coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/'"), emit: versions_coptr, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

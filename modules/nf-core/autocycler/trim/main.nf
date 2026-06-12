@@ -15,8 +15,6 @@ process AUTOCYCLER_TRIM {
     tuple val(meta), path("trim/$prefix/*.yaml"), emit: stats
     tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

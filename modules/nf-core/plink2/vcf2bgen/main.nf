@@ -16,8 +16,6 @@ process PLINK2_VCF2BGEN {
     tuple val(meta), path("*.log"), emit: log_file
     path "versions.yml", emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -17,8 +17,6 @@ process UNIVERSC {
     tuple val(meta), path("${prefix}/outs/*"), emit: outs
     path "versions.yml"                      , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

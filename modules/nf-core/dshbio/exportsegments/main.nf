@@ -14,8 +14,6 @@ process DSHBIO_EXPORTSEGMENTS {
     tuple val(meta), path("*.fa.gz"), emit: fasta
     tuple val("${task.process}"), val('dsh-bio'), eval("dsh-bio --version | sed '1!d;s/dsh-bio-tools //'"), emit: versions_dshbio, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

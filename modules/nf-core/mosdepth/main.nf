@@ -27,8 +27,6 @@ process MOSDEPTH {
     tuple val(meta), path('*.thresholds.bed.gz.csi'), optional:true, emit: thresholds_csi
     tuple val("${task.process}"), val('mosdepth'), eval("mosdepth --version | sed 's/mosdepth //g'"), topic: versions, emit: versions_mosdepth
     tuple val("${task.process}"), val('gzip'), eval("gzip -V 2>&1 | sed 's/gzip \\([0-9.]*\\).*/\\1/;q'"), topic: versions, emit: versions_gzip
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

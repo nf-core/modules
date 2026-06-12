@@ -15,8 +15,6 @@ process BIOBAMBAM_BAMMARKDUPLICATES2 {
     tuple val(meta), path("*.metrics.txt"), emit: metrics
     tuple val("${task.process}"), val('biobambam'), eval("bammarkduplicates2 --version |& sed '1!d; s/.*version //; s/.\$//'"), topic: versions, emit: versions_biobambam
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

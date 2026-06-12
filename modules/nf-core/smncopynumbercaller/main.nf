@@ -16,8 +16,6 @@ process SMNCOPYNUMBERCALLER {
     tuple val("${task.process}"), val('smncopynumbercaller'), val('1.1.2'), topic: versions, emit: versions_smncopynumbercaller
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

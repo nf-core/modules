@@ -15,8 +15,6 @@ process QCAT {
     tuple val(meta), path("fastq/*.fastq.gz"), emit: reads
     path "versions.yml"                      , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     """

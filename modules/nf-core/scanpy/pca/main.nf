@@ -16,8 +16,6 @@ process SCANPY_PCA {
     tuple val(meta), path("X_*.pkl")      , emit: obsm
     path "versions.yml"                   , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}_pca"

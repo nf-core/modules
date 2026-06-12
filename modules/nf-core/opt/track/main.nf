@@ -15,8 +15,6 @@ process OPT_TRACK {
     tuple val(meta), path("${prefix}/probe2targets.tsv"), emit: probes2target
     tuple val("${task.process}"), val('opt'), eval("opt --version"), topic: versions, emit: versions_opt
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

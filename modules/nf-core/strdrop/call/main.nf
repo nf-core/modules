@@ -16,8 +16,6 @@ process STRDROP_CALL {
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val("${task.process}"), val('strdrop'), eval("strdrop --version | sed 's/.* //g'"), topic: versions, emit: versions_strdrop
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args         = task.ext.args ?: ''

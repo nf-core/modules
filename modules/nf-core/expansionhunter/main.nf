@@ -20,8 +20,6 @@ process EXPANSIONHUNTER {
     tuple val("${task.process}"), val('expansionhunter'), eval("ExpansionHunter --version | head -1 | sed -n 's/^.*ExpansionHunter v//; s/]//p'"), topic: versions, emit: versions_expansionhunter
     tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_bgzip
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

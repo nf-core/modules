@@ -19,8 +19,6 @@ process PHARMCAT_VCFPREPROCESSOR {
     tuple val(meta), path("*.missing_pgx_var.vcf"),                                                                                 optional: true,     emit: missing_pgx_var
     tuple val("${task.process}"), val('pharmcat_vcf_preprocessor'), eval("pharmcat_vcf_preprocessor --version | cut -f4 -d ' '"),   topic: versions,    emit: versions_pharmcat_vcf_preprocessor
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

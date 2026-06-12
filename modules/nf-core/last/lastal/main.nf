@@ -16,8 +16,6 @@ process LAST_LASTAL {
     tuple val(meta), path("*.tsv")   , emit: multiqc
     tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process PANACUS_VISUALIZE {
     tuple val(meta), path("*.{eps,jpg,jpeg,pdf,pgf,png,ps,raw,rgba,svg,svgz,tif,tiff,webp}"), emit: image
     path "versions.yml", emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

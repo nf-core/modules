@@ -16,8 +16,6 @@ process BISCUIT_QC {
     tuple val(meta), path("*.txt"), emit: reports
     tuple val("${task.process}"), val('biscuit'), eval("biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'"), emit: versions_biscuit, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

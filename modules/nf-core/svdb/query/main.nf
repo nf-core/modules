@@ -20,8 +20,6 @@ process SVDB_QUERY {
     tuple val(meta), path("*_query.vcf")    , emit: vcf
     tuple val("${task.process}"), val('svdb'), eval("svdb | sed -nE 's/.*SVDB-([0-9.]+).*/\\1/p'"), emit: versions_svdb, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args             = task.ext.args ?: ''

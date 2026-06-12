@@ -17,8 +17,6 @@ process HELITRONSCANNER_SCAN {
     tuple val(meta), path("*.$command") , emit: scan
     tuple val("${task.process}"), val('helitronscanner'), eval("HelitronScanner |& sed -n 's/HelitronScanner V//p'"), topic: versions, emit: versions_helitronscanner
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     if ( command !in [ 'head', 'tail' ] ) error "[HELITRONSCANNER_SCAN] command argument should be 'head' or 'tail'"

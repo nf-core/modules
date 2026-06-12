@@ -18,8 +18,6 @@ process BCFTOOLS_ROHVIZ {
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
     tuple val("${task.process}"), val('less'), eval("less --version | head -n1 | sed 's/less //'"), topic: versions, emit: versions_less
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args      = task.ext.args   ?: ''

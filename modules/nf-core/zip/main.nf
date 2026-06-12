@@ -14,8 +14,6 @@ process ZIP {
     tuple val(meta), path("${prefix}.zip"), emit: zipped_archive
     tuple val("${task.process}"), val('zip'), eval("7za i 2>&1 | grep 'p7zip Version' | sed 's/.*p7zip Version //; s/(.*//'"), emit: versions_zip, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

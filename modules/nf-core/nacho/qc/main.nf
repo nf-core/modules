@@ -17,8 +17,6 @@ process NACHO_QC {
     tuple val(meta), path("*_mqc.txt"), emit: nacho_qc_txt
     path "versions.yml"             , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

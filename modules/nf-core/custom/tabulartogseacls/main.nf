@@ -14,8 +14,6 @@ process CUSTOM_TABULARTOGSEACLS {
     tuple val(meta), path("*.cls"), emit: cls
     tuple val("${task.process}"), val('mawk'), eval("mawk --version | sed '1!d;s/mawk //;s/ .*//'"), emit: versions_mawk, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: []

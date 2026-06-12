@@ -20,8 +20,6 @@ process JVARKIT_VCFPOLYX {
     tuple val("${task.process}"), val('jvarkit'), eval("jvarkit -v"), emit: versions_jvarkit, topic: versions
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version |& sed '1!d;s/bcftools //'"), emit: versions_bcftools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args1         = task.ext.args ?: ''

@@ -23,8 +23,6 @@ process BBMAP_BBSPLIT {
     tuple val(meta), path('*.log')            , optional:true, emit: log
     tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), topic: versions, emit: versions_bbmap
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

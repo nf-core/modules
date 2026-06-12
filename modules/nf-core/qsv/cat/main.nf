@@ -17,8 +17,6 @@ process QSV_CAT {
     tuple val(meta), path("${prefix}.${out_format}"), emit: csv
     tuple val("${task.process}"), val('qsv'), eval("qsv --version | cut -d' ' -f2 | cut -d'-' -f1"), topic: versions, emit: versions_qsv
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

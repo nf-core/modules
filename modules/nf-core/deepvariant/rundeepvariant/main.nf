@@ -23,8 +23,6 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     tuple val(meta), path("${prefix}.visual_report.html"), emit: report, optional: true
     tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

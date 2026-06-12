@@ -16,8 +16,6 @@ process ANGSD_GL {
     tuple val(meta), path("*.{glf,beagle}.gz"), emit: genotype_likelihood
     tuple val("${task.process}"), val('angsd'), eval("angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'"), emit: versions_angsd, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

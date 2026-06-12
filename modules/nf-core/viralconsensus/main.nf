@@ -20,8 +20,6 @@ process VIRALCONSENSUS {
     tuple val(meta), path("*.ins_counts.json"), optional: true, emit: ins_counts
     tuple val("${task.process}"), val('viralconsensus'), eval("viral_consensus --version | sed 's/.*v//'"), topic: versions, emit: versions_viralconsensus
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

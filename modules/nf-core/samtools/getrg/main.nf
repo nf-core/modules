@@ -14,8 +14,6 @@ process SAMTOOLS_GETRG {
     tuple val(meta), file("readgroups.txt"), emit: readgroup
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

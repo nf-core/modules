@@ -15,8 +15,6 @@ process BCFTOOLS_PLOTVCFSTATS {
     tuple val(meta), path("*.pdf")  , emit: plot_pdf
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

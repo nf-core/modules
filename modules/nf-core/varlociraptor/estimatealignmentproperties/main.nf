@@ -14,8 +14,6 @@ process VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES {
     tuple val(meta), path("*.alignment-properties.json"), emit: alignment_properties_json
     tuple val("${task.process}"), val('varlociraptor'), eval("varlociraptor --version | sed 's/^varlociraptor //'"), topic: versions, emit: versions_varlociraptor
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -24,8 +24,6 @@ process GLIMPSE2_SPLITREFERENCE {
     tuple val(meta), path("*.bin"), emit: bin_ref
     tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_split_reference --help | grep -oE 'v[0-9.]+' | cut -c2-"), topic: versions, emit: versions_glimpse2
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args   ?: ''

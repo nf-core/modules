@@ -14,8 +14,6 @@ process METASPACE_DOWNLOAD {
     stdout                                      emit: log  // check meta.yml for see how to use!
     path 'versions.yml'                       , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'metaspace_download.py'

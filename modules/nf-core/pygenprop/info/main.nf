@@ -15,8 +15,6 @@ process PYGENPROP_INFO {
     tuple val("${task.process}"), val('pygenprop'), val('1.1'), topic: versions, emit: versions_pygenprop
     tuple val("${task.process}"), val('python'), eval('python -V | sed "s/Python //g"'), topic: versions, emit: versions_python
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

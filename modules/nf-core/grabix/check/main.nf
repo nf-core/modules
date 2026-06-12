@@ -13,8 +13,6 @@ process GRABIX_CHECK {
     tuple val(meta), stdout, emit: compress_bgzip
     tuple val("${task.process}"), val('grabix'), eval("grabix |& sed -n 's/^version: //p'"), topic: versions, emit: versions_grabix
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
 

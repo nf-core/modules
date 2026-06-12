@@ -15,8 +15,6 @@ process DRAGMAP_HASHTABLE {
     tuple val(meta), path("dragmap"), emit: hashmap
     tuple val("${task.process}"), val('dragmap'), eval("dragen-os --version 2>&1"), emit: versions_dragmap, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

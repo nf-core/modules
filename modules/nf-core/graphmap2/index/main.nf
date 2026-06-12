@@ -13,8 +13,6 @@ process GRAPHMAP2_INDEX {
     path "*.gmidx", emit: index
     tuple val("${task.process}"), val('graphmap2'), eval("graphmap2 2>&1 | sed -n 's/Version: v//p'"), emit: versions_graphmap2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

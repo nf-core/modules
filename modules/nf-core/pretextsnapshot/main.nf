@@ -14,8 +14,6 @@ process PRETEXTSNAPSHOT {
     tuple val(meta), path('*.{jpeg,png,bmp}'), emit: image
     tuple val("${task.process}"), val('PretextSnapshot'), eval("PretextSnapshot --version | sed 's/^.*PretextSnapshot Version //g'"), emit: versions_pretextsnapshot, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

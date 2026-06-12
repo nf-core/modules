@@ -16,8 +16,6 @@ process EPANG_SPLIT {
     tuple val("${task.process}"), val('epa-ng'), eval('epa-ng --version | sed "s/EPA-ng v//"'), emit: versions_epang, topic: versions
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

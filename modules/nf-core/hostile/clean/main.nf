@@ -16,8 +16,6 @@ process HOSTILE_CLEAN {
     tuple val(meta), path('*.json')    , emit: json
     tuple val("${task.process}"), val('hostile'), eval("hostile --version"), emit: versions_hostile, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args         = task.ext.args ?: ''

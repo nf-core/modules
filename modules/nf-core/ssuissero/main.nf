@@ -16,8 +16,6 @@ process SSUISSERO {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('ssuissero'), val('1.0.1'), emit: versions_ssuissero, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

@@ -15,8 +15,6 @@ process VARSCAN_SOMATIC {
     tuple val(meta), path("*.indels.vcf.gz"), emit: vcf_indels
     path "versions.yml"                     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

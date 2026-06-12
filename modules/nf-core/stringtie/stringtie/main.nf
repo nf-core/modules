@@ -18,8 +18,6 @@ process STRINGTIE_STRINGTIE {
     tuple val(meta), path("*.ballgown")       , optional: true, emit: ballgown
     tuple val("${task.process}"), val('stringtie'), eval("stringtie --version"), emit: versions_stringtie, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args      = task.ext.args ?: ''

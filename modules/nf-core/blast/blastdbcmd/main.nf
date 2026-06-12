@@ -16,8 +16,6 @@ process BLAST_BLASTDBCMD {
     tuple val(meta), path("*.txt")  , optional: true, emit: text
     tuple val("${task.process}"), val('blastdbcmd'), eval('blastdbcmd -version 2>&1 | head -n1 | sed \'s/^.*blastdbcmd: //; s/ .*\$//\''), topic: versions, emit: versions_blastdbcmd
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

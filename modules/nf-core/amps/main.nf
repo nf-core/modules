@@ -18,8 +18,6 @@ process AMPS {
     path "results/pdf_candidate_profiles/"    , emit: candidate_pdfs
     tuple val("${task.process}"), val('hops'), eval("hops --version 2>&1 | sed 's/HOPS version//' "), emit: versions_hops, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -16,8 +16,6 @@ process TRINITY {
     tuple val(meta), path("*.log")      , emit: log
     tuple val("${task.process}"), val('trinity'), eval("Trinity --version | grep 'Trinity version' | sed 's/.*Trinity-v//'"), topic: versions, emit: versions_trinity
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

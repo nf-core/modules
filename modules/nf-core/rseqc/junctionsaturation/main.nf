@@ -16,8 +16,6 @@ process RSEQC_JUNCTIONSATURATION {
     tuple val(meta), path("*.r")  , emit: rscript
     tuple val("${task.process}"), val('rseqc'), eval('junction_saturation.py --version | sed "s/junction_saturation.py //"'), emit: versions_rseqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

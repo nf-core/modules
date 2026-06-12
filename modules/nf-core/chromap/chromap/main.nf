@@ -24,8 +24,6 @@ process CHROMAP_CHROMAP {
     tuple val("${task.process}"), val('chromap'), eval("chromap --version 2>&1"), topic: versions, emit: versions_chromap
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

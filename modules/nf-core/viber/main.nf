@@ -20,8 +20,6 @@ process VIBER {
     tuple val(meta), path("*_viber_report.png")                  , emit: viber_report_png
     path "versions.yml"                                          , emit: versions_viber            , topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template "viber_main_script.R"

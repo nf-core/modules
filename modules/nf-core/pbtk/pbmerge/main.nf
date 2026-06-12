@@ -15,8 +15,6 @@ process PBTK_PBMERGE {
     tuple val(meta), path("*.pbi"), emit: pbi, optional: true
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

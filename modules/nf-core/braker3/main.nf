@@ -28,8 +28,6 @@ process BRAKER3 {
     tuple val("${task.process}"), val('genemark-etp'), eval("gmetp.pl |& sed -n 's/ETP version \\(.*\\)/\\1/p'"), emit: versions_genemarketp, topic: versions
     tuple val("${task.process}"), val('prothint'), eval("prothint.py --version |& sed 's/prothint.py //1'"), emit: versions_prothint, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args             ?: ''

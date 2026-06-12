@@ -19,8 +19,6 @@ process GENESCOPEFK {
     tuple val(meta), env('KMERCOV')                       , emit: kmer_cov
     tuple val("${task.process}"), val('genescopefk'), eval("R --version | sed '1!d; s/.*version //; s/ .*//'"), emit: versions_genescopefk, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

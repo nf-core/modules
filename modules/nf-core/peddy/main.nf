@@ -25,8 +25,6 @@ process PEDDY {
     tuple val(meta), path("${prefix}.ped_check.rel-difference.csv") , optional: true, emit: ped_check_rel_difference_csv
     tuple val("${task.process}"), val("peddy"), eval("peddy --version | sed 's/peddy, version //'"), topic: versions, emit: versions_peddy
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

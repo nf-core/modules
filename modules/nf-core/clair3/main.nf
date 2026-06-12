@@ -22,8 +22,6 @@ process CLAIR3 {
     tuple val("${task.process}"), val('clair3'), eval('run_clair3.sh --version | sed "s/^Clair3 v//"'), emit: versions_clair3, topic: versions
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def model = ""

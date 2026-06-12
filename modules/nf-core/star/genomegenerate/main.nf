@@ -17,8 +17,6 @@ process STAR_GENOMEGENERATE {
     tuple val("${task.process}"), val('samtools'), eval("samtools --version | sed -n '1s/samtools //p'"), emit: versions_samtools, topic: versions
     tuple val("${task.process}"), val('gawk'), eval("gawk --version | sed -n '1{s/GNU Awk //;s/,.*//;p}'"), emit: versions_gawk, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args ?: ''

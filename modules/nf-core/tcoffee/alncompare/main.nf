@@ -15,8 +15,6 @@ process TCOFFEE_ALNCOMPARE {
     tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | awk \'{gsub("Version_", ""); print \\$3}\''), emit: versions_tcoffee, topic: versions
     tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ? task.ext.prefix : "${msa.baseName}"

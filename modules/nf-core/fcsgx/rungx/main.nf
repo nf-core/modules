@@ -19,8 +19,6 @@ process FCSGX_RUNGX {
     tuple val(meta), path("*.hits.tsv.gz")      , emit: hits, optional: true
     tuple val("${task.process}"), val('fcsgx'), eval("gx --help | sed '/build/!d; s/.*:v//; s/-.*//'"), emit: versions_fcsgx, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

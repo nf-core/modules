@@ -14,8 +14,6 @@ process PAIRTOOLS_MERGE {
     tuple val(meta), path("*pairs.gz"), emit:pairs
     tuple val("${task.process}"), val('pairtools'), eval("pairtools --version | sed 's/.*pairtools.*version //'") , emit: versions_pairtools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

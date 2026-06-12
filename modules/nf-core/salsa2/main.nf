@@ -21,8 +21,6 @@ process SALSA2 {
     tuple val(meta), path("*/*scaffolds_FINAL.original-coordinates.agp"), emit: agp_original_coordinates, optional: true
     tuple val("${task.process}"), val('salsa2'), val('2.3'), emit: versions_salsa2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

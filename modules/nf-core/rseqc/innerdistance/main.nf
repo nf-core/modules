@@ -19,8 +19,6 @@ process RSEQC_INNERDISTANCE {
     tuple val(meta), path("*.r")          , optional:true, emit: rscript
     tuple val("${task.process}"), val('rseqc'), eval('inner_distance.py --version | sed "s/inner_distance.py //"'), emit: versions_rseqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

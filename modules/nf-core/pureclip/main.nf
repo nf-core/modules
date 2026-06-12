@@ -18,8 +18,6 @@ process PURECLIP {
     tuple val(meta), path("${peaks_output_name}")     , emit: peaks
     path "versions.yml"                               , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

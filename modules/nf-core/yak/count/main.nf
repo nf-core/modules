@@ -14,8 +14,6 @@ process YAK_COUNT {
     tuple val(meta), path("*.yak"), emit: yak
     tuple val("${task.process}"), val('yak'), eval("yak version"), emit: versions_yak, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

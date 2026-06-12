@@ -22,8 +22,6 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
     tuple val(meta), path("*.hap2.bw")            , emit: hap2_bigwig       , optional: true
     tuple val("${task.process}"), val("pbcpgtools"), eval("aligned_bam_to_cpg_scores --version | sed 's/.* //'"), emit: versions_pbcpgtools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

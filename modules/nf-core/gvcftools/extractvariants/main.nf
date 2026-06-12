@@ -14,8 +14,6 @@ process GVCFTOOLS_EXTRACTVARIANTS {
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val("${task.process}"), val('gvcftools'), eval("extract_variants --help 2>&1 | sed -n 's/version: //p'"), topic: versions, emit: versions_gvcftools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

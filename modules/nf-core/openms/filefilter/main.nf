@@ -16,8 +16,6 @@ process OPENMS_FILEFILTER {
     tuple val(meta), path("*.consensusXML"), emit: consensusxml, optional: true
     tuple val("${task.process}"), val('openms'), eval("FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'"), emit: versions_openms, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

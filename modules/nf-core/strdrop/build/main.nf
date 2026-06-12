@@ -14,8 +14,6 @@ process STRDROP_BUILD {
     tuple val(meta), path("*.json"), emit: json
     tuple val("${task.process}"), val('strdrop'), eval("strdrop --version | sed 's/.* //g'"), topic: versions, emit: versions_strdrop
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

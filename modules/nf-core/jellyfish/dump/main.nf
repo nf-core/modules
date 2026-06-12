@@ -14,8 +14,6 @@ process JELLYFISH_DUMP {
     tuple val(meta), path("${prefix}.${extension}"), emit: output
     tuple val("${task.process}"), val("jellyfish"), eval("jellyfish --version |& sed '1!d;s/jellyfish //'"), topic: versions, emit: versions_jellyfish
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

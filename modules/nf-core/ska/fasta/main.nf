@@ -14,8 +14,6 @@ process SKA_FASTA {
     tuple val(meta), path("*.skf"), emit: skf
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''

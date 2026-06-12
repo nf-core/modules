@@ -16,8 +16,6 @@ process GAPSEQ_FILL {
     tuple val(meta), path("*.log")  , emit: log      , optional: true
     tuple val("${task.process}"), val('gapseq'), eval('gapseq -v 2>&1 | grep -oP "\\d+\\.\\d+\\.\\d+"'), topic: versions, emit: versions_gapseq
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

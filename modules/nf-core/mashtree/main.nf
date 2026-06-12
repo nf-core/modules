@@ -15,8 +15,6 @@ process MASHTREE {
     tuple val(meta), path("*.tsv"), emit: matrix
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -15,8 +15,6 @@ process FASTQE {
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('fastqe'), val("0.5.2"), emit: versions_fastqe, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

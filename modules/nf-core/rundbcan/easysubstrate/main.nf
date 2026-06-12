@@ -27,8 +27,6 @@ process RUNDBCAN_EASYSUBSTRATE {
     tuple val(meta), path("${prefix}_synteny_pdf/"), optional: true, emit: synteny_pdf
     tuple val("${task.process}"), val('rundbcan'), eval("run_dbcan version | sed 's/dbCAN version: //g'"), emit: versions_rundbcan, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

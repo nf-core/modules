@@ -14,8 +14,6 @@ process FAIRY_SKETCH {
     tuple val(meta), path("${prefix}/*.bcsp"), emit: sketch
     tuple val("${task.process}"), val("fairy"), eval("fairy --version 2>&1 | sed 's/fairy //'"), topic: versions, emit: versions_fairy
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

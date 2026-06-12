@@ -15,8 +15,6 @@ process CNVKIT_ACCESS {
     tuple val(meta), path("*.bed"), emit: bed
     tuple val("${task.process}"), val('cnvkit'), eval('cnvkit.py version | sed -e "s/cnvkit v//g"'), topic: versions, emit: versions_cnvkit
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

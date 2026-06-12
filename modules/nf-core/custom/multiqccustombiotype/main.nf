@@ -16,8 +16,6 @@ process CUSTOM_MULTIQCCUSTOMBIOTYPE {
     tuple val(meta), path("*biotype_counts_rrna_mqc.tsv") , emit: rrna
     path "versions.yml"                                   , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'mqc_features_stat.py'

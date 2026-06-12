@@ -14,8 +14,6 @@ process FASTQSCAN {
     tuple val(meta), path("*.json"), emit: json
     tuple val("${task.process}"), val('fastqscan'), eval('fastq-scan -v 2>&1 | sed \'s/^.*fastq-scan //\''), emit: versions_fastqscan, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

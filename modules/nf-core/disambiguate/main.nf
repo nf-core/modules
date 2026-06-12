@@ -18,8 +18,6 @@ process DISAMBIGUATE {
     tuple val(meta), path("*_summary.txt"),                                                                   emit: summary
     tuple val("${task.process}"), val('ngs-disambiguate'), val('2018.05.03'), topic: versions, emit: versions_ngs_disambiguate
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

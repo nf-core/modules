@@ -14,8 +14,6 @@ process GZRT {
     tuple val(meta), path("${prefix}*.fastq.gz"), emit: recovered
     tuple val("${task.process}"), val('gzrt'), eval("gzrecover -V |& sed '1!d ; s/gzrecover //'"), topic: versions, emit: versions_gzrt
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

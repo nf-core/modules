@@ -15,8 +15,6 @@ process SUBREAD_FEATURECOUNTS {
     tuple val(meta), path("*featureCounts.tsv.summary"), emit: summary
     tuple val("${task.process}"), val('subread'), eval("featureCounts -v 2>&1 | sed 's/featureCounts v//'"), emit: versions_subread, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

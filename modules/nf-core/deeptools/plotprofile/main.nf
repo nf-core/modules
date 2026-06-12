@@ -15,8 +15,6 @@ process DEEPTOOLS_PLOTPROFILE {
     tuple val(meta), path("*.tab"), emit: table
     tuple val("${task.process}"), val('deeptools'), eval('plotProfile --version | sed "s/plotProfile //g"') , emit: versions_deeptools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

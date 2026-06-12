@@ -18,8 +18,6 @@ process CRABS_IMPORT {
     tuple val(meta), path("*.txt"), emit: crabsdb
     tuple val("${task.process}"), val('crabs'), eval("crabs --help 2>/dev/null | grep -oE 'v[0-9.]+' | cut -c2-"), emit: versions_crabs, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args           = task.ext.args ?: ''

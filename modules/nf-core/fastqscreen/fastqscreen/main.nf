@@ -18,8 +18,6 @@ process FASTQSCREEN_FASTQSCREEN {
     tuple val(meta), path("*.fastq.gz"), emit: fastq, optional: true
     tuple val("${task.process}"), val('fastqscreen'), eval('fastq_screen --version 2>&1 | sed "s/^.*FastQ Screen v//;"'), emit: versions_fastqscreen, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ""

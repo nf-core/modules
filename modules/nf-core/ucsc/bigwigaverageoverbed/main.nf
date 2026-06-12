@@ -16,8 +16,6 @@ process UCSC_BIGWIGAVERAGEOVERBED {
     tuple val(meta), path("*.tab"), emit: tab
     tuple val("${task.process}"), val('ucsc'), val('482'), topic: versions, emit: versions_ucsc
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

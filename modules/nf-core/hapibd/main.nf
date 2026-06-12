@@ -19,8 +19,6 @@ process HAPIBD {
     tuple val(meta), path("*.log")   , emit: log
     tuple val("${task.process}"), val('hapibd'), eval("hap-ibd 2>&1 | sed '1!d;s/^.* version //;s/,.*//'"), topic: versions, emit: versions_hapibd
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

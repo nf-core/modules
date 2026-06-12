@@ -15,8 +15,6 @@ process BANDAGE_IMAGE {
     tuple val(meta), path('*.svg'), emit: svg
     tuple val("${task.process}"), val('bandage'), eval('export QT_QPA_PLATFORM=offscreen; Bandage --version 2>&1| grep Version | sed "s/^Version: //"'), emit: versions_bandage, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -18,8 +18,6 @@ process MERQURYFK_PLOIDYPLOT {
     tuple val("${task.process}"), val('fastk'), eval('echo 1.1'), emit: versions_fastk, topic: versions
     tuple val("${task.process}"), val('R'), eval('R --version | sed "1!d; s/.*version //; s/ .*//"'), emit: versions_r, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args            = task.ext.args ?: ''

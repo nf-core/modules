@@ -17,8 +17,6 @@ process MIFASER {
     tuple val(meta), path("*ec_count.tsv"), emit: ec_counts
     tuple val("${task.process}"), val('mi-faser'), eval("mifaser --version 2>&1 | sed 's/* v//'"), emit: versions_mifaser, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args       = task.ext.args   ?: ''

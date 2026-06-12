@@ -17,8 +17,6 @@ process KOFAMSCAN {
     tuple val(meta), path('*.tsv'), optional: true, emit: tsv
     tuple val("${task.process}"), val('kofamscan'), eval("exec_annotation --version 2>&1 | sed 's/exec_annotation //;'"), topic: versions, emit: versions_kofamscan
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

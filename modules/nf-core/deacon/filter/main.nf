@@ -15,8 +15,6 @@ process DEACON_FILTER {
     tuple val(meta), path("${prefix}.json")  , emit: log
     tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_deacon, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

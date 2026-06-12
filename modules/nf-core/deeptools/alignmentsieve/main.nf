@@ -16,8 +16,6 @@ process DEEPTOOLS_ALIGNMENTSIEVE {
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'") , emit: versions_samtools, topic: versions
     path  "*_log.txt"                 , emit: logs
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args      = task.ext.args ?: ''

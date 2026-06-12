@@ -18,8 +18,6 @@ process PREPARECOVANDBAF {
     tuple val(meta), path("*.baf.bed.gz.tbi") , emit: baf_tbi
     tuple val("${task.process}"), val('preparecovandbaf'), eval("generate_cov_and_baf --version"), topic: versions, emit: versions_preparecovandbaf
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

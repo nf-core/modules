@@ -14,8 +14,6 @@ process WGET {
     tuple val(meta), path("${prefix}.${suffix}"), emit: outfile
     tuple val("${task.process}"), val('wget'), eval('wget --version | head -1 | cut -d " " -f 3'), emit: versions_wget, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

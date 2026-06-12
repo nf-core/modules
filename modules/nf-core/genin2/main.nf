@@ -14,8 +14,6 @@ process GENIN2 {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('genin2'), eval("genin2 --version | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'"), topic: versions, emit: versions_genin2
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

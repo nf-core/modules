@@ -21,8 +21,6 @@ process DYSGU_RUN {
     tuple val(meta), path('*.vcf.gz.tbi'), emit: tbi
     tuple val("${task.process}"), val('dysgu'), eval("dysgu --version 2>&1 | sed 's/.*version //'"), emit: versions_dysgu, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

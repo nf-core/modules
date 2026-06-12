@@ -14,8 +14,6 @@ process METHURATOR_GTESTIMATOR {
     tuple val(meta), path("${prefix}.yml"), emit: summary_report
     tuple val("${task.process}"), val('methurator'), eval("methurator --version | sed 's/.* //'"), emit: versions_methurator, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

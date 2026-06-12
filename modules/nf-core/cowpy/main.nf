@@ -15,8 +15,6 @@ process COWPY {
     tuple val("${task.process}"), val('cowpy'), val("1.1.5"), emit: versions_cowpy, topic: versions
     // WARN: Version information not provided by tool on CLI. Plaease update this string when bumping container versions.
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

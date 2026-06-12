@@ -14,8 +14,6 @@ process MUDSKIPPER_INDEX {
     path "index/"      , emit: index
     path "versions.yml", emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     """

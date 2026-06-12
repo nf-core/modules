@@ -17,8 +17,6 @@ process SENTIEON_HSMETRICS {
     tuple val(meta), path('*.txt'), emit: metrics
     tuple val("${task.process}"), val('sentieon'), eval("sentieon driver --version | sed 's/.*-//g'"), topic: versions, emit: versions_sentieon
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

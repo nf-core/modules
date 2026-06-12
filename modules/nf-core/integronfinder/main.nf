@@ -21,8 +21,6 @@ process INTEGRONFINDER {
     tuple val(meta), path("*/integron_finder.out"), emit: out
     tuple val("${task.process}"), val('integronfinder'), eval("integron_finder --version 2>&1 | sed '1!d;s/^integron_finder version //;s/ .*//'"), emit: versions_integronfinder, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args                = task.ext.args ?: ''

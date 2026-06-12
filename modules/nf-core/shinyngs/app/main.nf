@@ -26,8 +26,6 @@ process SHINYNGS_APP {
     tuple val(meta), path("*/data.rds"), path("*/app.R")    , emit: app
     tuple val("${task.process}"), val('shinyngs'), eval('Rscript -e "library(shinyngs); cat(as.character(packageVersion(\'shinyngs\')))"'), emit: versions_shinyngs, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // For full list of available args see

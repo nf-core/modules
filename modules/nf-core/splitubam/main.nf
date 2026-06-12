@@ -14,8 +14,6 @@ process SPLITUBAM {
     tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('splitubam'), eval("splitubam --version | sed 's/.* //'"), emit: versions_splitubam, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

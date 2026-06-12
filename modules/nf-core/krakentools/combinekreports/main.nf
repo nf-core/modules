@@ -14,8 +14,6 @@ process KRAKENTOOLS_COMBINEKREPORTS {
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('krakentools'), val('1.2.1'), topic: versions, emit: versions_krakentools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

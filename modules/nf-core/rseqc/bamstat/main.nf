@@ -14,8 +14,6 @@ process RSEQC_BAMSTAT {
     tuple val(meta), path("*.bam_stat.txt"), emit: txt
     tuple val("${task.process}"), val('rseqc'), eval('bam_stat.py --version | sed "s/bam_stat.py //"'), emit: versions_rseqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

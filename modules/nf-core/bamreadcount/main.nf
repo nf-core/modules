@@ -16,8 +16,6 @@ process BAMREADCOUNT {
     tuple val(meta), path("*.rc"), emit: rc
     tuple val("${task.process}"), val('bamreadcount'), eval("bam-readcount --version | awk -F'version: ' '{print \$2}' | awk -F'-' '{print \$1}'"), emit: versions_bamreadcount, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

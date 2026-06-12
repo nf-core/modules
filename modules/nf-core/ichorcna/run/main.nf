@@ -28,8 +28,6 @@ process ICHORCNA_RUN {
     tuple val(meta), path("**/${prefix}_genomeWide.pdf") , emit: genome_plot
     path "versions.yml", emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args       ?: ''

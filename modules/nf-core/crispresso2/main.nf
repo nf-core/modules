@@ -18,8 +18,6 @@ process CRISPRESSO2 {
     tuple val(meta), path("CRISPResso_on_*/*.txt")  , emit: txt
     tuple val("${task.process}"), val('crispresso2'), eval("CRISPResso --version 2>&1 | sed 's/CRISPResso //'"), emit: versions_crispresso2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

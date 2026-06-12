@@ -10,8 +10,6 @@ process MCSTAGING_IMC2MC {
     tuple val(meta), path("*.tif"), emit: tif
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

@@ -16,8 +16,6 @@ process GEM2_GEMMAPPABILITY {
     tuple val(meta), path("*.mappability")  , emit: map
     tuple val("${task.process}"), val('gem2'), val("20200110"), emit: versions_gem2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args   ?: ''

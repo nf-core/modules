@@ -15,8 +15,6 @@ process PERBASE {
     tuple val(meta), path("*.tsv.gz"), emit: tsv
     tuple val("${task.process}"), val('perbase'), eval('perbase --version |& sed "1!d ; s/perbase //"'), emit: versions_perbase, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args      = task.ext.args ?: ''

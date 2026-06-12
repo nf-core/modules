@@ -15,8 +15,6 @@ process RAW2OMETIFF {
     tuple val("${task.process}"), val('raw2ometiff'), eval('raw2ometiff --version |& sed -n "1s/Version = //p"')            , emit: versions_raw2ometiff, topic: versions
     tuple val("${task.process}"), val('bioformats'), eval('raw2ometiff --version |& sed -n "2s/Bio-Formats version = //p"') , emit: versions_bioformats, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

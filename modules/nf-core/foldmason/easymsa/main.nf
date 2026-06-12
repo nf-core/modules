@@ -19,8 +19,6 @@ process FOLDMASON_EASYMSA {
     tuple val("${task.process}"), val('foldmason'), eval('foldmason version'), emit: versions_foldmason, topic: versions
     tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

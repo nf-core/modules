@@ -19,8 +19,6 @@ process GECCO_CONVERT {
     tuple val(meta), path("${prefix}/*.fna")        , emit: fna     , optional: true
     tuple val("${task.process}"), val('gecco'), eval("gecco -V |& sed 's/gecco //'"), emit: versions_gecco, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

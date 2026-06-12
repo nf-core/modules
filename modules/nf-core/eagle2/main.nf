@@ -14,8 +14,6 @@ process EAGLE2 {
     tuple val(meta), path("*.{vcf,vcf.gz,bcf}"), emit: phased_variants
     tuple val("${task.process}"), val('eagle2'), eval("eagle --help | sed -n 's/.*Eagle v\\([0-9.]\\+\\).*/\\1/p'"), emit: versions_eagle2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

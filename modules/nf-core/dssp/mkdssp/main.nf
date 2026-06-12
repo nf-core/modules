@@ -15,8 +15,6 @@ process DSSP_MKDSSP {
     tuple val(meta), path("*.{dssp,mmcif}"), emit: dssp
     tuple val("${task.process}"), val("dssp"), eval("mkdssp --version | sed -n 's/^mkdssp version //p'"), emit:versions_dssp, topic:versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

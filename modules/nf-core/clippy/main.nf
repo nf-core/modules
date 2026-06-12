@@ -18,8 +18,6 @@ process CLIPPY {
     tuple val(meta), path("*_intergenic_regions.gtf"),emit: intergenic_gtf, optional: true
     tuple val("${task.process}"), val("clippy"), eval("clippy -v"), emit: versions_clippy, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

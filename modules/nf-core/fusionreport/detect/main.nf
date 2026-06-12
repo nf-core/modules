@@ -21,8 +21,6 @@ process FUSIONREPORT_DETECT {
     tuple val(meta), path("*.json")                      , emit: json                 , optional:true
     tuple val("${task.process}"), val('fusion_report'), eval("fusion_report --version |& sed 's/fusion-report //'"), topic: versions, emit: versions_fusionreport
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

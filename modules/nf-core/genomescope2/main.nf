@@ -22,8 +22,6 @@ process GENOMESCOPE2 {
     tuple val(meta), path("*.json")                               , emit: json_report, optional: true
     tuple val("${task.process}"), val('genomescope2'), eval('genomescope2 -v | sed "s/GenomeScope //"'), emit: versions_genomescope2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

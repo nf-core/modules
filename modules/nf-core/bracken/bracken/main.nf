@@ -16,8 +16,6 @@ process BRACKEN_BRACKEN {
     tuple val(meta), path(bracken_kraken_style_report), emit: txt
     tuple val("${task.process}"), val('bracken'), eval('bracken -v | cut -f2 -d"v"'), topic: versions, emit: versions_bracken
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ""

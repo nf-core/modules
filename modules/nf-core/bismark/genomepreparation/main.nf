@@ -14,8 +14,6 @@ process BISMARK_GENOMEPREPARATION {
     tuple val(meta), path("BismarkIndex"), emit: index
     tuple val("${task.process}"), val('bismark'), eval("bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), emit: versions_bismark, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

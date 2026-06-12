@@ -18,8 +18,6 @@ process DEDUP {
     tuple val(meta), path("${prefix}.log"),  emit: log
     tuple val("${task.process}"), val('dedup'), eval("dedup --version | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+'"), emit: versions_dedup, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

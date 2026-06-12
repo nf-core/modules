@@ -15,8 +15,6 @@ process GEM3_GEM3INDEXER {
     tuple val(meta), path("*.info"), emit: info
     tuple val("${task.process}"), val('gem3-indexer'), eval("gem-indexer --version 2>&1 | sed 's/v//'"), emit: versions_gem3, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

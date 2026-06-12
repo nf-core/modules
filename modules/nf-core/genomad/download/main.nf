@@ -10,8 +10,6 @@ process GENOMAD_DOWNLOAD {
     path "genomad_db/" , emit: genomad_db
     tuple val("${task.process}"), val('genomad'), eval("genomad --version 2>&1 | sed 's/^.*geNomad, version //; s/ .*//'"), topic: versions, emit: versions_genomad
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

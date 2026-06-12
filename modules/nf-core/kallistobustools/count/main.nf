@@ -21,8 +21,6 @@ process KALLISTOBUSTOOLS_COUNT {
     path "*.count/*/*.mtx"              , emit: matrix //Ensure that kallisto finished and produced outputs
     tuple val("${task.process}"), val('kallistobustools'), eval("kb --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+' | head -n1"), emit: versions_kallistobustools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''

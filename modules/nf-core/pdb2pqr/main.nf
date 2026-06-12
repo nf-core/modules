@@ -16,8 +16,6 @@ process PDB2PQR {
     tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('pdb2pqr'), eval("pdb2pqr --version | sed 's/^[^ ]* //'"), topic: versions, emit: versions_pdb2pqr
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

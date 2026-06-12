@@ -15,8 +15,6 @@ process CUSTOM_GTFFILTER {
     tuple val(meta), path("${prefix}.${suffix}"), emit: gtf
     path "versions.yml"                         , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

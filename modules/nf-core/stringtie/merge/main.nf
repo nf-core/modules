@@ -16,8 +16,6 @@ process STRINGTIE_MERGE {
     tuple val(meta), path("${prefix}.gtf"), emit: merged_gtf
     tuple val("${task.process}"), val('stringtie'), eval('stringtie --version'), emit: versions_stringtie, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

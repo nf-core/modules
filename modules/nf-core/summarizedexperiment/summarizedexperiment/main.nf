@@ -17,8 +17,6 @@ process SUMMARIZEDEXPERIMENT_SUMMARIZEDEXPERIMENT {
     tuple val(meta), path("*.R_sessionInfo.log"), emit: log
     path "versions.yml"                         , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'summarizedexperiment.r'

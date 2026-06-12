@@ -19,8 +19,6 @@ process MERFIN_HIST {
     tuple val(meta), path("*.hist.stderr.log"), emit: log_stderr
     path "versions.yml"                       , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args                    = task.ext.args ?: ''

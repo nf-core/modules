@@ -17,8 +17,6 @@ process METAPHLAN3_METAPHLAN3 {
     tuple val(meta), path('*.bowtie2out.txt'), optional:true, emit: bt2out
     tuple val("${task.process}"), val('metaphlan3'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan3, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

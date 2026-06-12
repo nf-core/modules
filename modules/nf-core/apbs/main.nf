@@ -16,8 +16,6 @@ process APBS {
     tuple val(meta), path("${prefix}.log"), emit: log
     tuple val("${task.process}"), val('apbs'), eval("apbs --version 2>&1 | sed '6!d;s|^.*Version APBS ||; s| .*\$||'"), topic: versions, emit: versions_apbs
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

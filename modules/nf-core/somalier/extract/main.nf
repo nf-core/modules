@@ -18,8 +18,6 @@ process SOMALIER_EXTRACT {
     tuple val(meta), path("*.somalier") , emit: extract
     tuple val("${task.process}"), val('somalier'), eval('somalier 2>&1 | sed -n \'s/.*version: \\([0-9.]*\\).*/\\1/p\''), emit: versions_somalier, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

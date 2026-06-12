@@ -21,8 +21,6 @@ process HASHEDDROPS {
     tuple val(meta), path("*_params_hasheddrops.csv") , emit: params
     path "versions.yml"                               , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template('HashedDrops.R')

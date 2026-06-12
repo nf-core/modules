@@ -19,8 +19,6 @@ process LONGPHASE_PHASE {
     tuple val(meta), path("${prefix}_mod.vcf.gz"), emit: mod_vcf, optional: true
     tuple val("${task.process}"), val("longphase"), eval("longphase --version | head -n 1 | sed 's/Version: //'"), emit: versions_longphase, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

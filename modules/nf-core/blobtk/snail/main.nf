@@ -17,8 +17,6 @@ process BLOBTK_SNAIL {
     tuple val(meta), path("*.{json,yaml}"), emit: descriptions, optional: true
     tuple val("${task.process}"), val("blobtk"), eval("blobtk --version | cut -d' ' -f2"), topic: versions, emit: versions_blobtk
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix              = task.ext.prefix   ?: "${meta.id}"

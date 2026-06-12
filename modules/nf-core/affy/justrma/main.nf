@@ -17,8 +17,6 @@ process AFFY_JUSTRMA {
     tuple val(meta), path("*.annotation.tsv") , emit: annotation, optional: true
     path "versions.yml", emit: versions_affy, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

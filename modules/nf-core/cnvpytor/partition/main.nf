@@ -15,8 +15,6 @@ process CNVPYTOR_PARTITION {
     tuple val(meta), path("${prefix}.pytor"), emit: pytor
     tuple val("${task.process}"), val('cnvpytor'), eval("cnvpytor --version 2>&1 | sed -n 's/.*CNVpytor //p'"), emit: versions_cnvpytor, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def bins = bin_sizes ?: '1000'

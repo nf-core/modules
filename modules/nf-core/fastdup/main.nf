@@ -17,8 +17,6 @@ process FASTDUP {
     tuple val(meta), path("*.csi"), emit: csi, optional: true
     tuple val("${task.process}"), val('fastdup'), eval("fastdup --version"), topic: versions, emit: versions_fastdup
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

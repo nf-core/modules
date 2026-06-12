@@ -23,8 +23,6 @@ process HLALA_TYPING {
     tuple val(meta), path("${prefix}/remapped_with_a.bam.bai")      , emit: remapped_index
     tuple val("${task.process}"), val('hla-la'), eval('echo 1.0.4'), emit: versions_hlala, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     args   = task.ext.args   ?: ''

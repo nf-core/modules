@@ -20,8 +20,6 @@ process YAHS {
     tuple val(meta), path("${prefix}.log")                   , emit: log
     tuple val("${task.process}"), val('yahs'), eval("yahs --version 2>&1"), emit: versions_yahs, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args      = task.ext.args ?: ''

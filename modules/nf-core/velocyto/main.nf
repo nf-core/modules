@@ -17,8 +17,6 @@ process VELOCYTO {
     tuple val(meta), path("*.loom"), path("*.velocyto.log"), emit: loom
     tuple val("${task.process}"), val('velocyto'), eval("velocyto --version | sed 's/^.*version //'"), topic: versions, emit: versions_velocyto
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -16,8 +16,6 @@ process FASTAVALIDATOR {
     tuple val("${task.process}"), val('py_fasta_validator'), eval('py_fasta_validator --version | cut -d" " -f3'), emit: versions_py_fasta_validator, topic: versions
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

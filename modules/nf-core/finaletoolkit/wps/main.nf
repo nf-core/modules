@@ -16,8 +16,6 @@ process FINALETOOLKIT_WPS {
     tuple val(meta), path("${prefix}.bw"), emit: bigwig
     tuple val("${task.process}"), val('finaletoolkit'), eval("finaletoolkit --version | sed 's/FinaleToolkit //g'"), topic: versions, emit: versions_finaletoolkit
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

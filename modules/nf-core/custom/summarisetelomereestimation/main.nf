@@ -14,8 +14,6 @@ process CUSTOM_SUMMARISETELOMEREESTIMATION {
     tuple val(meta), path("*_telomere_summary.tsv"), emit: summary
     path "versions.yml"                            , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'summarisetelomereestimation.py'

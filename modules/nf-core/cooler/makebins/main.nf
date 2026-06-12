@@ -14,8 +14,6 @@ process COOLER_MAKEBINS {
     tuple val(meta), path("*.bed"), emit: bed
     tuple val("${task.process}"), val('cooler'), eval('cooler --version 2>&1 | sed "s/cooler, version //"'), emit: versions_cooler, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

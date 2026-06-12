@@ -22,8 +22,6 @@ process PURECN_COVERAGE {
     tuple val(meta), path("*_loess.txt.gz"), emit: loess_txt   , optional: true
     path "versions.yml"                    , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

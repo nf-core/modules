@@ -15,8 +15,6 @@ process GALAH {
     tuple val(meta), path("${prefix}/*"), emit: dereplicated_bins
     tuple val("${task.process}"), val('galah'), eval('galah --version | sed "s/galah //"'), emit: versions_galah, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

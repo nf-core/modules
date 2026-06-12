@@ -17,8 +17,6 @@ process HIFIADAPTERFILT_HIFIADAPTERFILT {
     tuple val(meta), path("${prefix}.blocklist")           , emit: blocklist
     tuple val("${task.process}"), val('hifiadapterfilt'), eval("hifiadapterfilt.sh --version 2>&1 | head -1"), topic: versions, emit: versions_hifiadapterfilt
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

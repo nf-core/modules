@@ -19,8 +19,6 @@ process SENTIEON_RSEMPREPAREREFERENCE {
     tuple val("${task.process}"), val('star'), eval('STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_star
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version 2>&1 | sed -e "s/sentieon-genomics-//g"'), topic: versions, emit: versions_sentieon
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

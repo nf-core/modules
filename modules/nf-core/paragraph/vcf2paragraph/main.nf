@@ -16,8 +16,6 @@ process PARAGRAPH_VCF2PARAGRAPH {
     tuple val(meta), path("*.json.gz")  , emit: graph
     path "versions.yml"                 , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

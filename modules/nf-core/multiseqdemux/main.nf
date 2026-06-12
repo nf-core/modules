@@ -16,8 +16,6 @@ process MULTISEQDEMUX {
     tuple val(meta), path("*_multiseqdemux.rds")       , emit: rds
     path "versions.yml"                                , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template('MultiSeqDemux.R')

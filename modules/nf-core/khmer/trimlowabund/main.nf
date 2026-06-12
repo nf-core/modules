@@ -14,8 +14,6 @@ process KHMER_TRIMLOWABUND {
     tuple val(meta), path("${output_path}"), emit: trimmed
     tuple val("${task.process}"), val('khmer'), eval('trim-low-abund.py --version 2>&1 | grep ^khmer | sed "s/^khmer //"'), emit: versions_khmer, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

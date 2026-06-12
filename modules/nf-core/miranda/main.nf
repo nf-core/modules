@@ -15,8 +15,6 @@ process MIRANDA {
     tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('miranda'), eval('miranda -v | grep \'miranda v\' | sed \'s/.*v\\([0-9]\\.[0-9][a-z]\\).*/\\1/\''), emit: versions_miranda, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

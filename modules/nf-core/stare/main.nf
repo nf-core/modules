@@ -19,8 +19,6 @@ process STARE {
     tuple val(meta), path("${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt") , emit: affinities
     path "versions.yml"                                                                    , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

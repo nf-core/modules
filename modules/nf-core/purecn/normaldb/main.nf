@@ -21,8 +21,6 @@ process PURECN_NORMALDB {
     tuple val(meta), path("low_coverage_targets*.bed")   , emit: low_cov_bed, optional: true
     path "versions.yml"                                  , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args            = task.ext.args     ?: ''

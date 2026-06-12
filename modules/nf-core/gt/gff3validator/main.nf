@@ -15,8 +15,6 @@ process GT_GFF3VALIDATOR {
     tuple val(meta), path('*.error.log')    , emit: error_log   , optional: true
     tuple val("${task.process}"), val('genometools'), eval("gt --version | sed '1!d;s/.* //'"), emit: versions_gt, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

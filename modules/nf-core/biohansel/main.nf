@@ -17,8 +17,6 @@ process BIOHANSEL {
     tuple val(meta), path("${prefix}-simple-summary.txt"), emit: simple_summary
     tuple val("${task.process}"), val('biohansel'), eval("hansel --version 2>&1 | sed 's/^.*hansel //'"), topic: versions, emit: versions_biohansel
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

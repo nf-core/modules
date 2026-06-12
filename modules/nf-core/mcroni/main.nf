@@ -16,8 +16,6 @@ process MCRONI {
     tuple val(meta), path("*.fa"), optional: true, emit: fa
     path "versions.yml"                          , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

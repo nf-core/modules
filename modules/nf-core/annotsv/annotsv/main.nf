@@ -23,8 +23,6 @@ process ANNOTSV_ANNOTSV {
     tuple val(meta), path("*.vcf")            , emit: vcf            , optional: true
     tuple val("${task.process}"), val('annotsv'), eval("AnnotSV --version | sed 's/AnnotSV //'"), emit: versions_annotsv, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

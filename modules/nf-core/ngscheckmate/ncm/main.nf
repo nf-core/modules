@@ -19,8 +19,6 @@ process NGSCHECKMATE_NCM {
     tuple val(meta), path("*.vcf"),             emit: vcf, optional: true
     tuple val("${task.process}"), val('ngscheckmate'), eval("ncm.py --help | sed '7!d;s/.* v//g'"), topic: versions, emit: versions_ngscheckmate
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

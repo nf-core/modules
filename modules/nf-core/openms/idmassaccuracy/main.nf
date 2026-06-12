@@ -15,8 +15,6 @@ process OPENMS_IDMASSACCURACY {
     tuple val(meta), path("*prec_mass_err.tsv") , emit: prec_err, optional: true
     path "versions.yml"                         , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

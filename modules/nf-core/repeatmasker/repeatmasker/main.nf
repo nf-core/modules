@@ -18,8 +18,6 @@ process REPEATMASKER_REPEATMASKER {
     tuple val(meta), path("${prefix}.gff")      , emit: gff         , optional: true
     path "versions.yml"                         , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args     ?: ''

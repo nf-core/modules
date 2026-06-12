@@ -20,8 +20,6 @@ process GLIMPSE2_CONCORDANCE {
     tuple val(meta), path("*_r2_sites.txt.gz")   , emit: rsquare_per_site, optional: true
     tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_concordance --help | grep -oE 'v[0-9.]+' | cut -c2-"), topic: versions, emit: versions_glimpse2
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args           = task.ext.args          ?: ''

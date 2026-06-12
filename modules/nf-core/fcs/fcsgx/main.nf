@@ -17,8 +17,6 @@ process FCS_FCSGX {
     tuple val("${task.process}"), val('fcsadaptor'), val("0.4.0"), emit: versions_fcsadaptor, topic: versions
     tuple val("${task.process}"), val('python'), eval("python3 --version |& sed 's/Python //'"), emit: versions_python, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

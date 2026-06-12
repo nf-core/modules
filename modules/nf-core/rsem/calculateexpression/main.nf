@@ -23,8 +23,6 @@ process RSEM_CALCULATEEXPRESSION {
     tuple val(meta), path("${prefix}.genome.bam")    , optional:true, emit: bam_genome
     tuple val(meta), path("${prefix}.transcript.bam"), optional:true, emit: bam_transcript
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

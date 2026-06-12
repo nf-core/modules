@@ -17,8 +17,6 @@ process PRINSEQPLUSPLUS {
     tuple val(meta), path("*.log")                                 , emit: log
     tuple val("${task.process}"), val('prinseqplusplus'), eval("prinseq++ --version | cut -f 2 -d ' '"), topic: versions, emit: versions_prinseqplusplus
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

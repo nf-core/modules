@@ -16,8 +16,6 @@ process CRISPRCLEANR_NORMALIZE {
     tuple val(meta), path("*_norm_table.tsv"), emit: norm_count_file
     path "versions.yml", emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

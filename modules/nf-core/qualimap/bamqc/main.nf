@@ -15,8 +15,6 @@ process QUALIMAP_BAMQC {
     tuple val(meta), path("${prefix}"), emit: results
     tuple val("${task.process}"), val('qualimap'), eval("qualimap -h | sed -n 's/^QualiMap v.//p'"), topic: versions, emit: versions_qualimap
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

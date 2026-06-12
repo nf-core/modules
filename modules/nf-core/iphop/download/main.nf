@@ -10,8 +10,6 @@ process IPHOP_DOWNLOAD {
     path "iphop_db/"        , emit: iphop_db
     tuple val("${task.process}"), val('iphop'), eval("iphop --version 2>&1 | sed '1!d;s/iPHoP v//;s/:.*//'"), emit: versions_iphop, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

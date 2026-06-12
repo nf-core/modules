@@ -26,8 +26,6 @@ process HIFIASM {
     tuple val(meta), path("${prefix}.stderr.log")                    , emit: log
     tuple val("${task.process}"), val('hifiasm'), eval('hifiasm --version 2>&1'), emit: versions_hifiasm, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

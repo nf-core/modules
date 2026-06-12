@@ -15,8 +15,6 @@ process ODGI_STATS {
     tuple val(meta), path("*.og.stats.yaml"), optional: true, emit: yaml
     path "versions.yml"                     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

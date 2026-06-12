@@ -15,8 +15,6 @@ process SMOOTHXG {
     path("*.maf") , optional: true, emit: maf
     tuple val("${task.process}"), val('smoothxg'), eval("smoothxg --version 2>&1 | sed 's/^v//; s/-.*//'"  ), topic: versions, emit: versions_smoothxg
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

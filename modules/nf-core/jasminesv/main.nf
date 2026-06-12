@@ -18,8 +18,6 @@ process JASMINESV {
     tuple val("${task.process}"), val("jasminesv"), eval('jasmine 2>&1 | grep "version" | sed "s/Jasmine version //"'), topic: versions, emit: versions_jasminesv
     tuple val("${task.process}"), val("bgzip"), eval('bgzip --version | head -1 | sed -e "s/bgzip (htslib) //"'), topic: versions, emit: versions_bgzip
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''

@@ -15,8 +15,6 @@ process LOCALCDSEARCH_DOWNLOAD {
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('local-cd-search'), val("0.3.0"), topic: versions, emit: versions_localcdsearch
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

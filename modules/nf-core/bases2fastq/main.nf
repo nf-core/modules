@@ -18,8 +18,6 @@ process BASES2FASTQ {
     tuple val(meta), path("${prefix}/UnassignedSequences.csv") , emit: unassigned
     tuple val("${task.process}"), val('bases2fastq'), eval('bases2fastq --version | sed "s/.*version //;s/,.*//"'), emit: versions_bases2fastq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

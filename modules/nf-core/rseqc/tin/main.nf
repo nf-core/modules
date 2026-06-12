@@ -16,8 +16,6 @@ process RSEQC_TIN {
     tuple val(meta), path("*.xls"), emit: xls
     tuple val("${task.process}"), val('rseqc'), eval('tin.py --version | sed "s/tin.py //"'), emit: versions_rseqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

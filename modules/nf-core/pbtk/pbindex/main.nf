@@ -14,8 +14,6 @@ process PBTK_PBINDEX {
     tuple val(meta), path("*.pbi"), emit: pbi
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     """

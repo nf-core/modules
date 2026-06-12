@@ -16,8 +16,6 @@ process SVTK_RDTEST2VCF {
     tuple val(meta), path("*.vcf.gz.tbi")   , emit: tbi
     tuple val("${task.process}"), val('svtk'), val('0.0.20190615'), topic: versions, emit: versions_svtk
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

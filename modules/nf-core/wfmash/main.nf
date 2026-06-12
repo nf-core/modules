@@ -16,8 +16,6 @@ process WFMASH {
     tuple val(meta), path("*.paf"), emit: paf
     tuple val("${task.process}"), val('wfmash'), eval('wfmash --version 2>&1 | cut -f 1 -d "-" | cut -f 2 -d "v"'), emit: versions_wfmash, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -20,8 +20,6 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     tuple val(meta), path("*_realigned.bam"), emit: bam
     tuple val("${task.process}"), val('circularmapper'), val('1.93.5'), topic: versions, emit: versions_circularmapper
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

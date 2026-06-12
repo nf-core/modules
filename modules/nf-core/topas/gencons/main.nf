@@ -21,8 +21,6 @@ process TOPAS_GENCONS {
     tuple val(meta), path("*.log")     , emit: log
     path "versions.yml"                , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args              = task.ext.args   ?: ''

@@ -17,8 +17,6 @@ process SUSHIE {
     tuple val(meta), path("*.log")                  , emit: log
     tuple val("${task.process}"), val('sushie'), val('0.19'), topic: versions, emit: versions_sushie
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

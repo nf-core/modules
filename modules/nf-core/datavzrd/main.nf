@@ -14,8 +14,6 @@ process DATAVZRD {
     tuple val(meta), path("${prefix}"), emit: report
     tuple val("${task.process}"), val('datavzrd'),  eval("datavzrd --version | sed -e 's/[^0-9.]//g'"), topic: versions, emit: versions_datavzrd
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

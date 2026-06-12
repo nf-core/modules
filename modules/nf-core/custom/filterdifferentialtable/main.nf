@@ -18,8 +18,6 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     tuple val(meta), path("*_filtered_down.tsv"), emit: filtered_down
     path "versions.yml"                         , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

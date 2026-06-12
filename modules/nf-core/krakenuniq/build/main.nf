@@ -15,8 +15,6 @@ process KRAKENUNIQ_BUILD {
     tuple val(meta), path("${prefix}/"), emit: db
     tuple val("${task.process}"), val('krakenuniq'), eval("krakenuniq --version | sed '1!d;s/KrakenUniq version //'"), emit: versions_krakenuniq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

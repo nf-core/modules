@@ -15,8 +15,6 @@ process BRACKEN_BUILD {
     tuple val(meta), path("bracken-database/database*", includeInputs: true), path("bracken-database/*k2d", includeInputs: true), path("bracken-database/*map", includeInputs: true), path("bracken-database/library/added/*", includeInputs: true), path("bracken-database/taxonomy/*", includeInputs: true), emit: db_separated
     tuple val("${task.process}"), val("bracken"), eval("bracken -v | cut -f2 -d'v'"), topic: versions, emit: versions_bracken
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

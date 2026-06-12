@@ -15,8 +15,6 @@ process MACSE_REFINEALIGNMENT {
     tuple val(meta), path("*_AA.{fa,fas,fasta,aln}"), emit: aa
     tuple val("${task.process}"), val("macse"), eval("macse --version | sed -n 's/.*V\\([0-9]*\\.[0-9]*\\).*/\\1/p'"), topic: versions, emit: versions_macse
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

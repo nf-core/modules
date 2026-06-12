@@ -17,8 +17,6 @@ process CUSTOM_GENETICMAPCONVERT {
     tuple val(meta), path("${prefix}.minimac.map"), emit: minimac_map
     path "versions.yml", emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

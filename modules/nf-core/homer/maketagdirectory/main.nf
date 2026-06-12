@@ -19,8 +19,6 @@ process HOMER_MAKETAGDIRECTORY {
     tuple val("${task.process}"), val('deseq2'), eval('Rscript -e "cat(as.character(packageVersion(\'DESeq2\')))"'), emit: versions_deseq2, topic: versions
     tuple val("${task.process}"), val('edger'), eval('Rscript -e "cat(as.character(packageVersion(\'edgeR\')))"'), emit: versions_edger, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process STAPHSCAN {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('staphscan'), eval("staphscan --version | sed 's/staphscan //;'"), emit: versions_staphscan, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

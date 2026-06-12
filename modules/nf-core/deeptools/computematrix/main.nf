@@ -16,8 +16,6 @@ process DEEPTOOLS_COMPUTEMATRIX {
     tuple val(meta), path("*.mat.tab"), emit: table
     tuple val("${task.process}"), val('deeptools'), eval('computeMatrix --version | sed "s/computeMatrix //g"') , emit: versions_deeptools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

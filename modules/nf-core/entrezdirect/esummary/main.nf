@@ -15,8 +15,6 @@ process ENTREZDIRECT_ESUMMARY {
     tuple val(meta), path("*.xml"), emit: xml
     tuple val("${task.process}"), val('ENTREZDIRECT'), eval('esummary -version 2>&1'), emit: versions_esummary, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

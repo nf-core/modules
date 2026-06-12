@@ -17,8 +17,6 @@ process CUSTOM_MATRIXFILTER {
     tuple val(meta), path("*R_sessionInfo.log"), emit: session_info
     path "versions.yml"                        , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Note: params are passed at line 100 of the template like:

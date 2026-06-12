@@ -18,8 +18,6 @@ process SAVANA_CLASSIFY {
     tuple val(meta), path("${prefix}.classified.{strict,lenient}.vcf"), emit: legacy_vcfs     , optional: true
     tuple val("${task.process}"), val('savana'), eval("python -c \"import importlib.metadata as m; print(m.version('savana'))\""), emit: versions_savana, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = (task.ext.args ?: '').trim()

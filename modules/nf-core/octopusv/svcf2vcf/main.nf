@@ -14,8 +14,6 @@ process OCTOPUSV_SVCF2VCF {
     tuple val(meta), path("*.vcf"), emit: vcf
     tuple val("${task.process}"), val('octopusv'), eval("python -c \"import importlib.metadata as m; print(m.version('octopusv'))\""), emit: versions_octopusv, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

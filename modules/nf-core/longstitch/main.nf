@@ -42,8 +42,6 @@ process LONGSTITCH {
     tuple val(meta), path("*.k*.w???.tsv"),                                                 emit: tsv,                                  optional: true
     path "versions.yml",                                                                    emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // defs need to happen before ifs; https://github.com/nextflow-io/nextflow/issues/804

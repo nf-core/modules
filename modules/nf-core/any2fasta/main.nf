@@ -14,8 +14,6 @@ process ANY2FASTA {
     tuple val(meta), path("*.fasta"), emit: fasta
     tuple val("${task.process}"), val('any2fasta'), eval("any2fasta -v 2>&1 | head -1 | sed 's/any2fasta //'"), topic: versions, emit: versions_any2fasta
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

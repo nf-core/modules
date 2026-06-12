@@ -15,8 +15,6 @@ process BWAMETH_INDEX {
     tuple val(meta), path("BwamethIndex"), emit: index
     tuple val("${task.process}"), val('bwameth'), eval("bwameth.py --version | cut -f2 -d' '"), emit: versions_bwameth_index, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def index_cmd = use_mem2 ? "index-mem2" : "index"

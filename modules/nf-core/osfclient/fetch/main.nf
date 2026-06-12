@@ -14,8 +14,6 @@ process OSFCLIENT_FETCH {
     tuple val(meta), path("${outname}"), emit: download_files
     path "versions.yml"                , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

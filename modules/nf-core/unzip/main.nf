@@ -14,8 +14,6 @@ process UNZIP {
     tuple val(meta), path("${prefix}/"), emit: unzipped_archive
     path "versions.yml"                , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -22,8 +22,6 @@ process RIBOTISH_PREDICT {
     tuple val(meta), path("*_transprofile.py") , emit: transprofile
     tuple val("${task.process}"), val('ribotish'), eval("ribotish --version | sed 's/ribotish //'"), topic: versions, emit: versions_ribotish
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

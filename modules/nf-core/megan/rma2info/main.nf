@@ -16,8 +16,6 @@ process MEGAN_RMA2INFO {
     tuple val(meta), path("*.megan"), optional: true, emit: megan_summary
     path "versions.yml"                             , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

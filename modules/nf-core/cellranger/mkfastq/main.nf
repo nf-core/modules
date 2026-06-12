@@ -16,8 +16,6 @@ process CELLRANGER_MKFASTQ {
     tuple val(meta), path("*_outs/outs/interop_path/*.bin")                        , emit: interop
     tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

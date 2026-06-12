@@ -14,8 +14,6 @@ process BISCUIT_INDEX {
     tuple val(meta), path("BiscuitIndex"), emit: index
     tuple val("${task.process}"), val('biscuit'), eval("biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'"), emit: versions_biscuit, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

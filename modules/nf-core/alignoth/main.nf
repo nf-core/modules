@@ -16,8 +16,6 @@ process ALIGNOTH {
     tuple val(meta), path("${prefix}.vl.json"), emit: vl_json, optional: true
     tuple val("${task.process}"), val('alignoth'), eval("alignoth --version | sed 's/alignoth //g'"), topic: versions, emit: versions_alignoth
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

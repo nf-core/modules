@@ -15,8 +15,6 @@ process SAMBAMBA_MARKDUP {
     tuple val(meta), path("*.bai"), emit: bai, optional: true
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

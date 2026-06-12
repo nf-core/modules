@@ -16,8 +16,6 @@ process MIRTOP_GFF {
     tuple val(meta), path("mirtop/*mirtop.gff")           , emit: gff
     tuple val("${task.process}"), val('mirtop'), eval("mirtop --version 2>&1 | sed -n 's/^mirtop //p'"), emit: versions_mirtop, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

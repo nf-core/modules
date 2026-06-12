@@ -19,8 +19,6 @@ process UMITOOLS_DEDUP {
     tuple val(meta), path("*per_position.tsv") , optional:true, emit: tsv_umi_per_position
     tuple val("${task.process}"), val('umitools'), eval("umi_tools --version | sed 's/UMI-tools version: //'"), emit: versions_umitools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

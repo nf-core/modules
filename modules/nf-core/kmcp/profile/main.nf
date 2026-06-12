@@ -16,8 +16,6 @@ process KMCP_PROFILE {
     tuple val(meta), path("*.profile"), emit: profile
     tuple val("${task.process}"), val('kmcp'), eval("kmcp version 2>&1 | sed 's/^.*kmcp v//'"), emit: versions_kmcp, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

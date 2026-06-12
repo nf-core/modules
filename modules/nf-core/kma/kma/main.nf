@@ -23,8 +23,6 @@ process KMA_KMA {
     tuple val(meta), path("*.spa")    , optional: true, emit: spa
     tuple val("${task.process}"), val('kma'), eval('kma -v 2>&1 | sed "s/^KMA-//"'), emit: versions_kma, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

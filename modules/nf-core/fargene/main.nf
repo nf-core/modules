@@ -33,8 +33,6 @@ process FARGENE {
     // make sure to update the line below when there is a new version
     tuple val("${task.process}"), val('fargene'), val("0.1")                                                     , emit: versions_fargene, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

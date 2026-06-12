@@ -17,8 +17,6 @@ process PICRUST2_PIPELINE {
     tuple val(meta), path("${prefix}_pathway_abundances.tsv.gz")     , emit: pathway_abundances
     path 'versions.yml', emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

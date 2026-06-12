@@ -16,8 +16,6 @@ process SIGPROFILER {
     tuple val(meta), path("results/*")    , emit: results_sigprofiler
     path "versions.yml"                   , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template "main_script.py"

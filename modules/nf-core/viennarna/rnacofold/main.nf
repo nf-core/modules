@@ -15,8 +15,6 @@ process VIENNARNA_RNACOFOLD {
     tuple val(meta), path("*.ps")   , emit: rnacofold_ps
     path "versions.yml"             , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

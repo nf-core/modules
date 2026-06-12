@@ -15,8 +15,6 @@ process CRABZ_COMPRESS {
     tuple val(meta), path("*.gz"), emit: archive
     tuple val("${task.process}"), val('crabz'), val('0.10.0'), emit: versions_crabz, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

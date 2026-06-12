@@ -15,8 +15,6 @@ process EIDO_CONVERT {
     path "${prefix}.${format}", emit: samplesheet_converted
     tuple val("${task.process}"), val("eido"), eval("eido --version 2>&1 | sed 's/^.*eido //;s/ .*//'"), topic: versions, emit: versions_eido
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

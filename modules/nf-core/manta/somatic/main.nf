@@ -25,8 +25,6 @@ process MANTA_SOMATIC {
     tuple val(meta), path("*.somatic_sv.vcf.gz.tbi")             , emit: somatic_sv_vcf_tbi
     tuple val("${task.process}"), val("manta"), eval("configManta.py --version"), topic: versions, emit: versions_manta
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

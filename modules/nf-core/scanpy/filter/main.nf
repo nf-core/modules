@@ -20,8 +20,6 @@ process SCANPY_FILTER {
     tuple val(meta), path("*.{h5ad,zarr}"), emit: anndata
     path "versions.yml"                   , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix     = task.ext.prefix ?: "${meta.id}_filtered"

@@ -16,8 +16,6 @@ process GUNC_RUN {
     tuple val(meta), path("*all_levels.tsv")  , optional: true, emit: all_levels_tsv
     tuple val("${task.process}"), val('gunc'), eval('gunc --version'), emit: versions_gunc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

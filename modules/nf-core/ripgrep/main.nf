@@ -17,8 +17,6 @@ process RIPGREP {
     tuple val(meta), path("*.txt{.gz,}"), emit: txt
     tuple val("${task.process}"), val('ripgrep'), eval("rg --version |& sed '1!d ; s/ripgrep // ; s/ .*//'"),  emit: versions_ripgrep, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args         = task.ext.args ?: ''

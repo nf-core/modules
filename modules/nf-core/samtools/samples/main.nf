@@ -15,8 +15,6 @@ process SAMTOOLS_SAMPLES {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

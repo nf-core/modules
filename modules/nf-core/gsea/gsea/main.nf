@@ -37,8 +37,6 @@ process GSEA_GSEA {
     tuple val("${task.process}"), val('gsea'), val('4.3.2')    , emit: versions_gsea, topic: versions // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

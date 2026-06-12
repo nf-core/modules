@@ -16,8 +16,6 @@ process PURGEDUPS_CALCUTS {
     // WARN: Incorrect version printed inside the container, please check this if bumping version ( \$( purge_dups -h |& sed '3!d; s/.*: //' ))
     tuple val("${task.process}"), val('purge_dups'), val('1.2.6'), emit: versions_purgedups, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

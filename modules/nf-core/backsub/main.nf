@@ -14,8 +14,6 @@ process BACKSUB {
     tuple val(meta2), path("*.csv")   , emit: markerout
     tuple val("${task.process}"), val('backsub'), eval('backsub --version'), emit: versions_backsub, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

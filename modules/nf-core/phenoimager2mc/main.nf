@@ -14,8 +14,6 @@ process PHENOIMAGER2MC {
     tuple val("${task.process}"), val('python'), eval('python --version | sed -e "s/Python //g"'), topic: versions, emit: versions_python
     tuple val("${task.process}"), val('ome_types'), eval('python -m pip show ome_types | sed -n "s/Version: //p"'), topic: versions, emit: versions_ome_types
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

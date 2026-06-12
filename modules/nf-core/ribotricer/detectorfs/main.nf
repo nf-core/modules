@@ -24,8 +24,6 @@ process RIBOTRICER_DETECTORFS {
     tuple val(meta), path('*_translating_ORFs.tsv')     , emit: orfs
     path "versions.yml"                                 , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

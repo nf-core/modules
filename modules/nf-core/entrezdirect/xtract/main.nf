@@ -17,8 +17,6 @@ process ENTREZDIRECT_XTRACT {
     tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('xtract'), eval('xtract -version 2>&1'), emit: versions_xtract, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

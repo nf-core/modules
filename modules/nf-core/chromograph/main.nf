@@ -21,8 +21,6 @@ process CHROMOGRAPH {
     tuple val(meta), path("*.png"), emit: plots, optional: true
     tuple val("${task.process}"), val('chromograph'), eval("chromograph --version | sed 's/.* //'")   , topic: versions   , emit: versions_chromograph
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args           = task.ext.args ?: ''

@@ -16,8 +16,6 @@ process IMMUNEDECONV {
     tuple val(meta), path("*.png")                      , emit: deconv_plots, optional: true
     path "versions.yml", emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'immunedeconv.R'

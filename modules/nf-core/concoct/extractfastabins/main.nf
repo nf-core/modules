@@ -14,8 +14,6 @@ process CONCOCT_EXTRACTFASTABINS {
     tuple val(meta), path("${prefix}/*.fa.gz"), emit: fasta
     tuple val("${task.process}"), val('concoct'), eval("concoct --version 2>&1 | sed -n 's/concoct //p'"), topic: versions, emit: versions_concoct
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

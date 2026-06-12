@@ -18,8 +18,6 @@ process PICARD_SPLITSAMBYNUMBEROFREADS {
     tuple val(meta), path("picardsplit/*.{bam,sam,cram}"), emit: bam
     tuple val("${task.process}"), val('picard'), eval("picard SplitSamByNumberOfReads --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -20,8 +20,6 @@ process PARSESDRF_CONVERT {
     tuple val(meta), path("${prefix}.cfg"),             path("${prefix}_design.tsv"),              emit: diann,        optional: true
     tuple val("${task.process}"), val('sdrf-pipelines'), eval("parse_sdrf --version | cut -d ' ' -f 2"), topic: versions, emit: versions_sdrfpipelines
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

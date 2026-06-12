@@ -36,8 +36,6 @@ process SAWFISH_DISCOVER {
     tuple val(meta), path("${prefix}")                              , emit: discover_dir
     tuple val("${task.process}"), val('sawfish'), eval("sawfish --version | sed 's/.* //g'"), emit: versions_sawfish, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ""

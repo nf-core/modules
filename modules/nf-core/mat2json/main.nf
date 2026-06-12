@@ -12,8 +12,6 @@ process MAT2JSON {
     output:
     tuple val(meta), path("${process}/*/*.*"),     emit: converted_file
     tuple val("${task.process}"), val('mat2json'), val('1.0.0'), emit: versions_mat2json, topic: versions
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

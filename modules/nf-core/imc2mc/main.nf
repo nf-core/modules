@@ -12,8 +12,6 @@ process IMC2MC {
     tuple val(meta), path("*.tif"), emit: tif
     tuple val("${task.process}"), val('imc2mc'), eval("imc2mc --version | sed 's/v//g'"), emit: versions_imc2mc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

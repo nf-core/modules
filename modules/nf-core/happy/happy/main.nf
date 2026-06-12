@@ -30,8 +30,6 @@ process HAPPY_HAPPY {
     tuple val(meta), path('*.tbi')                              , emit: tbi, optional:true
     tuple val("${task.process}"), val('happy'), val('0.3.15'), topic: versions, emit: versions_happy
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

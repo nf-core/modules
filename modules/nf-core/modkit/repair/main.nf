@@ -15,8 +15,6 @@ process MODKIT_REPAIR {
     tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('modkit'), eval("modkit --version | sed 's/modkit //'"), emit: versions_modkit, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -21,8 +21,6 @@ process SNIFFLES {
     tuple val(meta), path("*.snf")       , emit: snf, optional: true
     tuple val("${task.process}"), val('sniffles'), eval("sniffles --version | sed 's/.* //g'"), emit: versions_sniffles, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

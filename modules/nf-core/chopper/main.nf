@@ -15,8 +15,6 @@ process CHOPPER {
     tuple val(meta), path("*.fastq.gz") , emit: fastq
     tuple val("${task.process}"), val('chopper'), eval("chopper --version 2>&1 | cut -d ' ' -f 2"), topic: versions, emit: versions_chopper
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

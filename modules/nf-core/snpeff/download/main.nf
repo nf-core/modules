@@ -14,8 +14,6 @@ process SNPEFF_DOWNLOAD {
     tuple val(meta), path('snpeff_cache'), emit: cache
     tuple val("${task.process}"), val('snpeff'), eval("snpEff -version 2>&1 | cut -f 2 -d '\t'"), topic: versions, emit: versions_snpeff
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

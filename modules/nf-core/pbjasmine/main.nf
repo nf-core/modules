@@ -14,8 +14,6 @@ process PBJASMINE {
     tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('pbjasmine'), eval("jasmine --version | head -n 1 | sed 's/jasmine //'"), topic: versions, emit: versions_pbjasmine
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

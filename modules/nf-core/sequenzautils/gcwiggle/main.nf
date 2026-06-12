@@ -14,8 +14,6 @@ process SEQUENZAUTILS_GCWIGGLE {
     tuple val(meta), path("*.wig.gz"), emit: wig
     path "versions.yml"              , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

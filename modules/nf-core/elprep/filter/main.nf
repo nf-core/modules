@@ -30,8 +30,6 @@ process ELPREP_FILTER {
     tuple val(meta), path("*.assembly_regions.igv") , optional: true, emit: assembly_regions
     tuple val("${task.process}"), val('elprep'), eval('elprep 2>&1 | sed -n \'2s/^.*version //;s/ compiled.*$//p\''), emit: versions_elprep, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

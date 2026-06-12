@@ -15,8 +15,6 @@ process AGRVATE {
     path "${fasta.baseName}-results"                                                , emit: results_dir
     tuple val("${task.process}"), val('agrvate'), eval("agrvate --version | sed 's/[^0-9.]//g'"), emit: versions_agrvate, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

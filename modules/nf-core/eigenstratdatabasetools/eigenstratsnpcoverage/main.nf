@@ -15,8 +15,6 @@ process EIGENSTRATDATABASETOOLS_EIGENSTRATSNPCOVERAGE {
     tuple val(meta), path("*.json")                                                                                                                               , emit: json, optional:true
     tuple val("${task.process}"), val('eigenstratdatabasetools'), eval("eigenstrat_snp_coverage --version 2>&1 | sed 's/^.*eigenstrat_snp_coverage //'"), emit: versions_eigenstratdatabasetools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

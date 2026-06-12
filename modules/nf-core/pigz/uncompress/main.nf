@@ -15,8 +15,6 @@ process PIGZ_UNCOMPRESS {
     tuple val(meta), path("${uncompressed_filename}") , emit: file
     tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

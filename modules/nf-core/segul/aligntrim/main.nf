@@ -15,8 +15,6 @@ process SEGUL_ALIGNTRIM {
     tuple val(meta), path("${prefix}/trimming_summary.csv"), emit: summary
     tuple val("${task.process}"), val('segul'), eval("segul --version | sed 's/segul //'"), topic: versions, emit: versions_segul
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args          = task.ext.args ?: ''

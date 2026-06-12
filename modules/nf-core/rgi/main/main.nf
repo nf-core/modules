@@ -20,8 +20,6 @@ process RGI_MAIN {
     env 'DB_VERSION', emit: db_version
     path "versions.yml", emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

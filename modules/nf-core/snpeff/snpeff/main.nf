@@ -19,8 +19,6 @@ process SNPEFF_SNPEFF {
     tuple val(meta), val("${task.process}"), val('snpeff'), path("*.genes.txt"), topic: multiqc_files, emit: genes_txt
     tuple val("${task.process}"), val('snpeff'), eval("snpEff -version 2>&1 | cut -f 2 -d '\t'"), topic: versions, emit: versions_snpeff
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

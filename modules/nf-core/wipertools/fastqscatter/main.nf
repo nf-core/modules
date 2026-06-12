@@ -15,8 +15,6 @@ process WIPERTOOLS_FASTQSCATTER {
     tuple val(meta), path("${out_folder}/*") , emit: fastq_chunks
     path "versions.yml"                      , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args ?: ''

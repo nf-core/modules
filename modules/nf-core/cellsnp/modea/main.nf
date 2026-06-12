@@ -19,8 +19,6 @@ process CELLSNP_MODEA {
     tuple val(meta), path('*.tag.OTH.mtx') , emit: depth_other
     tuple val("${task.process}"), val("cellsnp"), eval("cellsnp-lite --v | cut -f2 -d ' '"), emit: versions_cellsnp, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args         = task.ext.args   ?: ''

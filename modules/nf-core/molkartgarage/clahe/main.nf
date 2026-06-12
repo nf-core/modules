@@ -12,8 +12,6 @@ process MOLKARTGARAGE_CLAHE {
     tuple val("${task.process}"), val('clahe'), eval("python /local/scripts/molkart_clahe.py --version"), emit: versions_clahe, topic: versions
     tuple val("${task.process}"), val('scikit-image'), eval("python -c 'import skimage; print(skimage.__version__)'"), emit: versions_scikitimage, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

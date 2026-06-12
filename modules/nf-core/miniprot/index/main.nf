@@ -14,8 +14,6 @@ process MINIPROT_INDEX {
     tuple val(meta), path("*.mpi"), emit: index
     tuple val("${task.process}"), val('miniprot'), eval("miniprot --version"), topic: versions, emit: versions_miniprot
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

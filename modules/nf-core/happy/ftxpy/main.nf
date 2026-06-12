@@ -18,8 +18,6 @@ process HAPPY_FTXPY {
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('happy'), val('0.3.15'), topic: versions, emit: versions_happy
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

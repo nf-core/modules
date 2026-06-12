@@ -15,8 +15,6 @@ process BLAT {
     tuple val(meta), path("*.psl"), emit: psl
     tuple val("${task.process}"), val("blat"), eval("blat 2>&1 | sed '1!d;s/^.*BLAT v. //;s/ fast.*//'"), topic: versions, emit: versions_blat
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

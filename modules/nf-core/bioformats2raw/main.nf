@@ -16,8 +16,6 @@ process BIOFORMATS2RAW {
     tuple val("${task.process}"), val('bio-formats'), eval('bioformats2raw --version |& sed -n "2s/Bio-Formats version = //p"'), emit: versions_bioformats, topic: versions
     tuple val("${task.process}"), val('ngff'), eval('bioformats2raw --version |& sed -n "3s/NGFF specification version = //p"'), emit: versions_ngff, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -17,8 +17,6 @@ process EKLIPSE {
     tuple val(meta), path("*.png"), emit: circos
     tuple val("${task.process}"), val('eklipse'), eval("eKLIPse.py 2>&1 | sed -n 's/.*\\[v\\([^]]*\\)\\].*/\\1/p' | tr '-' '.'"), emit: versions_eklipse, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

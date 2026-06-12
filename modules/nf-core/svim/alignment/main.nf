@@ -15,8 +15,6 @@ process SVIM_ALIGNMENT {
     tuple val(meta), path("*.vcf"), emit: vcf
     tuple val("${task.process}"), val('svim'), eval('svim --version | sed "s/^.*svim //; s/ .*//"'), emit: versions_svim, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

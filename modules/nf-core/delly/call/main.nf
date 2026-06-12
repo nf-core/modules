@@ -18,8 +18,6 @@ process DELLY_CALL {
     tuple val(meta), path("*.{csi,tbi}")     , emit: csi
     tuple val("${task.process}"), val('delly'), eval("delly --version |& sed -n '1s/Delly version: *v//p'"), emit: versions_delly, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process HISAT2_EXTRACTSPLICESITES {
     tuple val(meta), path("*.splice_sites.txt"), emit: txt
     tuple val("${task.process}"), val('hisat2'), eval('hisat2 --version | grep -o "version [^ ]*" | cut -d " " -f 2'), topic: versions, emit: versions_hisat2
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

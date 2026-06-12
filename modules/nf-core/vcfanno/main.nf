@@ -18,8 +18,6 @@ process VCFANNO {
     tuple val(meta), path("*.vcf.gz.tbi")   , emit: tbi
     tuple val("${task.process}"), val('vcfanno'), eval("vcfanno 2>&1 | sed -n 's/.*version \\([0-9.]\\+\\).*/\\1/p'"), topic: versions, emit: versions_vcfanno
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''

@@ -16,8 +16,6 @@ process SKANI_SKETCH {
     tuple val(meta), path("${prefix}/markers.bin")     , emit: markers
     path "versions.yml"                                , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

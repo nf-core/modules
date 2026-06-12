@@ -34,8 +34,6 @@ process HIPHASE {
     tuple val(meta), path("*.bam.{bai,csi}"), emit: bams_indexes, optional: true
     tuple val("${task.process}"), val('hiphase'), eval("hiphase --version | sed 's/.* //g'"), emit: versions_hiphase, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

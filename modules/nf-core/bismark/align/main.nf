@@ -18,8 +18,6 @@ process BISMARK_ALIGN {
     tuple val(meta), path("*fq.gz")     , emit: unmapped, optional: true
     tuple val("${task.process}"), val("bismark"), eval("bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), topic: versions, emit: versions_bismark
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

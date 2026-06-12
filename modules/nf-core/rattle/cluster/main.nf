@@ -14,8 +14,6 @@ process RATTLE_CLUSTER {
     tuple val(meta), path("clusters.out"), emit: clusters
     path "versions.yml"                  , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

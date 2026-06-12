@@ -20,8 +20,6 @@ process LIMMA_DIFFERENTIAL {
     tuple val(meta), path("*.normalised_counts.tsv")      , emit: normalised_counts, optional: true
     path "versions.yml"                                   , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'limma_de.R'

@@ -14,8 +14,6 @@ process POPSCLE_DEMUXLET {
     tuple val(meta), path('*.best'), emit: demuxlet_result
     path 'versions.yml'            , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

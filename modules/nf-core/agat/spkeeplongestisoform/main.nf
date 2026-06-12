@@ -15,8 +15,6 @@ process AGAT_SPKEEPLONGESTISOFORM {
     tuple val(meta), path("${output}"), emit: gff
     tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args         = task.ext.args   ?: ''

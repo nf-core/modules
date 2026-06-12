@@ -17,8 +17,6 @@ process RSEQC_READDUPLICATION {
     tuple val(meta), path("*.r")             , emit: rscript
     tuple val("${task.process}"), val('rseqc'), eval('read_duplication.py --version | sed "s/read_duplication.py //"'), emit: versions_rseqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

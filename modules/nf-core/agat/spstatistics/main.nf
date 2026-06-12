@@ -14,8 +14,6 @@ process AGAT_SPSTATISTICS {
     tuple val(meta), path("*.txt"), emit: stats_txt
     tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

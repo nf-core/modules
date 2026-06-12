@@ -16,8 +16,6 @@ process ISLANDPATH {
     path "Dimob.log"                      , emit: log
     tuple val("${task.process}"), val('islandpath'), val('1.0.6'), topic: versions, emit: versions_islandpath
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

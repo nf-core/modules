@@ -21,8 +21,6 @@ process FASTPLONG {
     tuple val(meta), path('*.fail.fastq.gz')  , optional:true, emit: reads_fail
     tuple val("${task.process}"), val('fastplong'), eval('fastplong --version 2>&1 | sed -e "s/fastplong //g"'), emit: versions_fastplong, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

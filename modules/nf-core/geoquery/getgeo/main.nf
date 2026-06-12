@@ -16,8 +16,6 @@ process GEOQUERY_GETGEO {
     tuple val(meta), path("*annotation.tsv")  , emit: annotation
     path "versions.yml"                       , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'getgeo.R'

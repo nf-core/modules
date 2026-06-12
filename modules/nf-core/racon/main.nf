@@ -14,8 +14,6 @@ process RACON {
     tuple val(meta), path('*_assembly_consensus.fasta.gz') , emit: improved_assembly
     tuple val("${task.process}"), val('racon'), eval('racon --version 2>&1 | sed "s/^.*v//"'), emit: versions_racon, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

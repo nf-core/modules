@@ -14,8 +14,6 @@ process KMA_INDEX {
     tuple val(meta), path("kmaindex"), emit: index
     tuple val("${task.process}"), val('kma'), eval('kma_index -v 2>&1 | sed "s/^KMA_index-//"'), emit: versions_kma, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix  = task.ext.prefix ?: "${fasta.baseName}"

@@ -21,8 +21,6 @@ process WHATSHAP_STATS {
     tuple val(meta), path("${prefix}.log"),                                    emit: log
     tuple val("${task.process}"), val('whatshap'), eval("whatshap --version"), emit: versions_whatshap, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

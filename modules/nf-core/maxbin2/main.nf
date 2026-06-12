@@ -22,8 +22,6 @@ process MAXBIN2 {
     tuple val(meta), path("*_gene.tar.gz"), emit: marker_genes, optional: true
     tuple val("${task.process}"), val('maxbin2'), eval('run_MaxBin.pl -v | sed "1!d;s/MaxBin //"'), topic: versions, emit: versions_maxbin2
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

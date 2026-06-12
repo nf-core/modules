@@ -15,8 +15,6 @@ process BWA_ALN {
     tuple val(meta), path("*.sai"), emit: sai
     tuple val("${task.process}"), val('bwa'), eval('bwa 2>&1 | sed -n "s/^Version: //p"'), topic: versions, emit: versions_bwa
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

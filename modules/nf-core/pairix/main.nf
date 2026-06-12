@@ -14,8 +14,6 @@ process PAIRIX {
     tuple val(meta), path(pair), path("*.px2"), emit: index
     tuple val("${task.process}"), val('pairix'), eval("pairix --help 2>&1 | sed -n 's/^Version: //p'"), topic: versions, emit: versions_pairix
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

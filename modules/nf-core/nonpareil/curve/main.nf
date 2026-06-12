@@ -14,8 +14,6 @@ process NONPAREIL_CURVE {
     tuple val(meta), path("*.png"), optional: true, emit: png
     tuple val("${task.process}"), val('Nonpareil'), eval('Rscript -e "library(Nonpareil); cat(paste(unlist(packageVersion(\'Nonpareil\')), collapse = \'.\'))"'), emit: versions_nonpareil, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

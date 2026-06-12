@@ -14,8 +14,6 @@ process LEARNMSA_ALIGN {
     tuple val(meta), path("*.aln"), emit: alignment
     tuple val("${task.process}"), val('learnmsa'), eval("learnMSA -h | sed -nE 's/.*version ([0-9.]+).*/\\1/p'"), emit: versions_learnmsa, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

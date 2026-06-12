@@ -18,8 +18,6 @@ process TRIMMOMATIC {
     tuple val(meta), path("*.summary")                 , emit: summary
     tuple val("${task.process}"), val('trimmomatic'), eval("trimmomatic -version"), topic: versions, emit: versions_trimmomatic
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

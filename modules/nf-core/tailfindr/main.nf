@@ -15,8 +15,6 @@ process TAILFINDR {
     tuple val("${task.process}"), val('tailfindr'), eval('Rscript -e "cat(paste(packageVersion(\'tailfindr\'), collapse=\'.\'))"'), topic: versions, emit: versions_tailfindr
     tuple val("${task.process}"), val('ont-fast5-api'), eval('python -c "import ont_fast5_api; print(ont_fast5_api.__version__)"'), topic: versions, emit: versions_ont_fast5_api
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ? ", ${task.ext.args}": ''

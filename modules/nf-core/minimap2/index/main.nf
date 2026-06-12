@@ -14,8 +14,6 @@ process MINIMAP2_INDEX {
     tuple val(meta), path("*.mmi"), emit: index
     tuple val("${task.process}"), val("minimap2"), eval("minimap2 --version"), topic: versions, emit: versions_minimap2
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

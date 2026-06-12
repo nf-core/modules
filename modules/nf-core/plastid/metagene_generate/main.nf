@@ -16,8 +16,6 @@ process PLASTID_METAGENE_GENERATE {
     tuple val(meta), path("*_rois.bed"), emit: rois_bed
     path "versions.yml", emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

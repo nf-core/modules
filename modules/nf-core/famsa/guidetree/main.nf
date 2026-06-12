@@ -15,8 +15,6 @@ process FAMSA_GUIDETREE {
     tuple val(meta), path("*.dnd"), emit: tree
     tuple val("${task.process}"), val('famsa'), eval("famsa -help 2>&1 | sed '2!d;s/.*version //;s/ .*//'"), topic: versions, emit: versions_famsa
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

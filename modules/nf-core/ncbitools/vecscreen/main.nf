@@ -12,8 +12,6 @@ process NCBITOOLS_VECSCREEN {
     tuple val(meta), path("${prefix}.vecscreen.out")    , emit: vecscreen_output
     path "versions.yml"                                  , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

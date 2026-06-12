@@ -14,8 +14,6 @@ process FOLDMASON_CREATEDB {
     tuple val(meta), path("${prefix}*"), emit: db
     tuple val("${task.process}"), val('foldmason'), eval('foldmason version'), emit: versions_foldmason, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

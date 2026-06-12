@@ -17,8 +17,6 @@ process MINIA {
     tuple val(meta), path("*-minia.log")    , emit: log
     tuple val("${task.process}"), val("minia"), eval("minia -v | sed -n 's/Minia version //p'"), topic: versions, emit: versions_minia
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

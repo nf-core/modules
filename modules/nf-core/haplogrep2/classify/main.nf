@@ -15,8 +15,6 @@ process HAPLOGREP2_CLASSIFY {
     tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('haplogrep2'), eval("haplogrep --version 2>&1 | sed '2!d;s/.*v//'"), emit: versions_haplogrep2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

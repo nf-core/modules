@@ -14,8 +14,6 @@ process COPTR_ESTIMATE {
     tuple val(meta), path("*.csv"), emit: ptr
     tuple val("${task.process}"), val('coptr'), eval("coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/'"), emit: versions_coptr, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

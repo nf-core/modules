@@ -19,8 +19,6 @@ process IRESCUE {
     tuple val(meta), path("${prefix}/tmp")        , emit: tmp, optional: true
     tuple val("${task.process}"), val('irescue'), eval("irescue --version 2>&1 | sed '1!d ; s/IRescue //'"), emit: versions_irescue, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -21,8 +21,6 @@ process KALLISTOBUSTOOLS_REF {
     path "intron_t2c.txt" , optional:true, emit: intron_t2c
     tuple val("${task.process}"), val('kallistobustools'), eval("kb --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+' | head -n1"), emit: versions_kallistobustools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     if (workflow_mode == "standard") {

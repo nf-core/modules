@@ -14,8 +14,6 @@ process SNPSIFT_SPLIT {
     tuple val(meta), path("*.vcf"), emit: out_vcfs
     tuple val("${task.process}"), val('snpsift'), eval("SnpSift split -h 2>&1 | sed -n 's/.*version \\([^ ]*\\).*/\\1/p;q'"), topic: versions, emit: versions_snpsift
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
