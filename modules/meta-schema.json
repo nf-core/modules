@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Meta yaml",
     "description": "Validate the meta yaml file for an nf-core module",
     "type": "object",
@@ -57,14 +57,13 @@
                                 "pattern": "^https?://.*$"
                             },
                             "doi": {
+                                "type": "string",
                                 "description": "DOI of the tool",
                                 "anyOf": [
                                     {
-                                        "type": "string",
                                         "pattern": "^10\\.\\d{4,9}\\/[^,]+$"
                                     },
                                     {
-                                        "type": "string",
                                         "enum": ["no DOI available"]
                                     }
                                 ]
@@ -118,39 +117,16 @@
             }
         },
         "input": {
-            "type": "array",
-            "description": "Input channels for the module",
-            "items": {
-                "oneOf": [
-                    {
-                        "$ref": "#/definitions/channelElement"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/channelElement"
-                        }
-                    }
-                ]
-            }
+            "$ref": "#/$defs/channelArray",
+            "description": "Input channels for the module"
         },
         "output": {
-            "type": "object",
-            "description": "Output channels for the module",
-            "patternProperties": {
-                ".*": {
-                    "$ref": "#/definitions/channelArray"
-                }
-            }
+            "$ref": "#/$defs/channelMap",
+            "description": "Output channels for the module"
         },
         "topics": {
-            "type": "object",
-            "description": "Topics of the module",
-            "patternProperties": {
-                ".*": {
-                    "$ref": "#/definitions/channelArray"
-                }
-            }
+            "$ref": "#/$defs/channelMap",
+            "description": "Topics of the module"
         },
         "authors": {
             "type": "array",
@@ -174,44 +150,55 @@
                     "type": "object",
                     "description": "Docker containers for different architectures",
                     "additionalProperties": {
-                        "$ref": "#/definitions/container"
+                        "$ref": "#/$defs/container"
                     }
                 },
                 "singularity": {
                     "type": "object",
                     "description": "Singularity containers for different architectures",
                     "additionalProperties": {
-                        "allOf": [
-                            {
-                                "$ref": "#/definitions/container"
-                            },
-                            {
-                                "properties": {
-                                    "name": {
-                                        "pattern": "^oras://.*$"
-                                    }
-                                },
-                                "required": ["https"]
+                        "$ref": "#/$defs/container",
+                        "properties": {
+                            "name": {
+                                "pattern": "^oras://.*$"
                             }
-                        ]
+                        },
+                        "required": ["https"]
                     }
                 },
                 "conda": {
                     "type": "object",
                     "description": "Conda lock files for different architectures",
                     "additionalProperties": {
-                        "$ref": "#/definitions/condaLockFile"
+                        "type": "object",
+                        "description": "Conda lock file information",
+                        "properties": {
+                            "lock_file": {
+                                "type": "string",
+                                "description": "Path to the conda lock file, relative to the repository root",
+                                "pattern": "^.*\\.conda-lock/.*\\.txt$"
+                            }
+                        },
+                        "required": ["lock_file"]
                     }
                 }
             }
         }
     },
-    "definitions": {
+    "$defs": {
+        "channelMap": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "$ref": "#/$defs/channelArray"
+                }
+            }
+        },
         "channelElement": {
             "type": "object",
             "patternProperties": {
                 ".*": {
-                    "$ref": "#/definitions/elementProperties"
+                    "$ref": "#/$defs/elementProperties"
                 }
             }
         },
@@ -220,12 +207,12 @@
             "items": {
                 "oneOf": [
                     {
-                        "$ref": "#/definitions/channelElement"
+                        "$ref": "#/$defs/channelElement"
                     },
                     {
                         "type": "array",
                         "items": {
-                            "$ref": "#/definitions/channelElement"
+                            "$ref": "#/$defs/channelElement"
                         }
                     }
                 ]
@@ -295,18 +282,6 @@
                 }
             },
             "required": ["name", "build_id"]
-        },
-        "condaLockFile": {
-            "type": "object",
-            "description": "Conda lock file information",
-            "properties": {
-                "lock_file": {
-                    "type": "string",
-                    "description": "Path to the conda lock file, relative to the repository root",
-                    "pattern": "^.*\\.conda-lock/.*\\.txt$"
-                }
-            },
-            "required": ["lock_file"]
         }
     },
     "required": ["name", "description", "keywords", "authors", "output", "tools"]

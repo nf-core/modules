@@ -26,7 +26,7 @@ process ICHORCNA_RUN {
     tuple val(meta), path("${prefix}.params.txt")        , emit: ichorcna_params
     tuple val(meta), path("${prefix}/*.pdf")             , emit: plots
     tuple val(meta), path("**/${prefix}_genomeWide.pdf") , emit: genome_plot
-    path "versions.yml"                                  , emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,27 +44,30 @@ process ICHORCNA_RUN {
     #!/usr/bin/env Rscript
     library("ichorCNA")
     library("yaml")
+    library("GenomeInfoDb")
+
+    options(UCSC.goldenPath.url = "https://hgdownload2.soe.ucsc.edu/goldenPath")
 
     run_ichorCNA(
         tumor_wig='${wig}',
         id='${prefix}',
         cores=${task.cpus},
         gcWig='${gc_wig}',
-        $norm
-        $pon
-        $map
-        $centro
-        $rep
-        $exon
-        $args
+        ${norm}
+        ${pon}
+        ${map}
+        ${centro}
+        ${rep}
+        ${exon}
+        ${args}
         outDir="."
     )
 
 
     ### Make Versions YAML for NF-Core ###
     versions = list()
-    versions["r"]        <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
-    versions["ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
+    versions["r-base"]     <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
+    versions["r-ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
 
     yaml_str <- as.yaml(
         list(
@@ -93,8 +96,8 @@ process ICHORCNA_RUN {
 
     ### Make Versions YAML for NF-Core ###
     versions = list()
-    versions["r"]        <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
-    versions["ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
+    versions["r-base"]     <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
+    versions["r-ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
 
     yaml_str <- as.yaml(
         list(
