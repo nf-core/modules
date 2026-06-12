@@ -12,8 +12,8 @@ description: |
     3. `bedtools/getfasta` + `seqkit/translate` - lifts the merged BED12
        into a catalogue AA FASTA.
 
-  Supports five callers via `meta.caller`: ribocode, ribotish, ribotricer,
-  rpbp, price. Any subset can be supplied. When `ch_orf_tables` is empty
+  Supports five callers via the per-record `caller` val: ribocode, ribotish,
+  ribotricer, rpbp, price. Any subset can be supplied. When `ch_orf_tables` is empty
   the subworkflow short-circuits the merge + FASTA chain and the output
   channels are empty.
 

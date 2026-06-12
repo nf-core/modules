@@ -77,7 +77,7 @@ tools:
       description: |
         Python helper that parses any of five Ribo-seq ORF caller output
         tables and emits a unified BED12 + sidecar TSV. Caller is selected
-        by `meta.caller`.
+        by the `caller` val input.
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/orfnormalise/main.nf"
       licence: ["MIT"]
       identifier: ""
@@ -157,13 +157,13 @@ output:
           type: map
           description: |
             Groovy Map matching the input meta.
-      - ${prefix}.normalised.bed12:
+      - ${prefix}.bed12:
           type: file
           description: |
             Normalised BED12 with genomic ORF blocks. `name` column encodes
             `<caller>|<caller-native-id>`; `score` is the caller's native
             score remapped to 0-1000.
-          pattern: "*.normalised.bed12"
+          pattern: "*.bed12"
           ontologies:
             - edam: http://edamontology.org/format_3586 # BED
   tsv:
@@ -171,13 +171,13 @@ output:
           type: map
           description: |
             Groovy Map matching the input meta.
-      - ${prefix}.normalised.tsv:
+      - ${prefix}.tsv:
           type: file
           description: |
             Per-ORF metadata sidecar with columns: orf_id, caller,
             sample_id, chrom, start, end, strand, gene_id, transcript_id,
             orf_class, aa_length, score (native).
-          pattern: "*.normalised.tsv"
+          pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions:

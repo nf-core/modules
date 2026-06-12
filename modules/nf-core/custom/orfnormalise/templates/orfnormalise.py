@@ -42,6 +42,7 @@ import io
 import math
 import platform
 import re
+import shlex
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -55,8 +56,8 @@ CALLER = "${caller}"
 INPUT = Path("${orfs_table}")
 GTF = Path("${gtf}")
 SAMPLE_ID = "${sample_id}"
-OUT_BED = Path("${prefix}.normalised.bed12")
-OUT_TSV = Path("${prefix}.normalised.tsv")
+OUT_BED = Path("${prefix}.bed12")
+OUT_TSV = Path("${prefix}.tsv")
 
 TSV_HEADER = (
     "orf_id\\tcaller\\tsample_id\\tchrom\\tstart\\tend\\tstrand\\t"
@@ -754,7 +755,7 @@ def parse_ribotricer(path, transcripts, fields):
                     "strand": strand,
                     "aa_length": aa_len,
                     "orf_type": orf_type,
-                    "raw_score": "",
+                    "raw_score": score_raw if score_raw else "",
                     "bed_score": bed_score,
                     "blocks": blocks,
                 }
@@ -964,21 +965,20 @@ def write_versions():
 
 def main():
     if CALLER not in PARSERS:
-        sys.exit(f"orfnormalise: unknown meta.caller='{CALLER}'; expected one of {sorted(PARSERS)}")
+        sys.exit(f"orfnormalise: unknown caller='{CALLER}'; expected one of {sorted(PARSERS)}")
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--score-field", default=None)
     parser.add_argument("--orf-type-field", default=None)
     parser.add_argument("--length-field", default=None)
     parser.add_argument("--aa-length-field", default=None)
-    raw_args = "${args}".split() if "${args}".strip() else []
-    parsed_args = parser.parse_args(raw_args)
+    args = parser.parse_args(shlex.split("${args}"))
 
     fields = {
-        "score": _resolve_chain(CALLER, "score", parsed_args.score_field),
-        "orf_type": _resolve_chain(CALLER, "orf_type", parsed_args.orf_type_field),
-        "length": _resolve_chain(CALLER, "length", parsed_args.length_field),
-        "aa_length": _resolve_chain(CALLER, "aa_length", parsed_args.aa_length_field),
+        "score": _resolve_chain(CALLER, "score", args.score_field),
+        "orf_type": _resolve_chain(CALLER, "orf_type", args.orf_type_field),
+        "length": _resolve_chain(CALLER, "length", args.length_field),
+        "aa_length": _resolve_chain(CALLER, "aa_length", args.aa_length_field),
     }
 
     transcripts = load_transcripts(GTF)

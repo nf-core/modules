@@ -33,6 +33,7 @@ import argparse
 import csv
 import glob
 import platform
+import shlex
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -290,8 +291,7 @@ def main():
         default=0.8,
         help="Reciprocal-overlap fraction for novel_u/smORF clustering (default: 0.8)",
     )
-    raw_args = "${args}".split() if "${args}".strip() else []
-    parsed_args = parser.parse_args(raw_args)
+    args = parser.parse_args(shlex.split("${args}"))
 
     bed_paths = sorted(Path(p) for p in glob.glob("beds/*"))
     tsv_paths = sorted(Path(p) for p in glob.glob("tsvs/*"))
@@ -317,7 +317,7 @@ def main():
         clusters.extend(cluster_by_transcript_position(by_class.get(cls, [])))
     # novel_u / smORF: not transcript-anchored - reciprocal-overlap clustering.
     for cls in ("novel_u", "smORF"):
-        clusters.extend(cluster_by_reciprocal_overlap(by_class.get(cls, []), frac=parsed_args.reciprocal_overlap))
+        clusters.extend(cluster_by_reciprocal_overlap(by_class.get(cls, []), frac=args.reciprocal_overlap))
 
     write_catalogue(prefix, clusters, bed_index)
     write_versions()

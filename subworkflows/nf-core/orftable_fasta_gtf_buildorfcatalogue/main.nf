@@ -1,9 +1,8 @@
 //
 // Build a multi-caller Ribo-seq ORF catalogue from per-sample, per-caller
-// ORF prediction tables. Composes the normaliser (run once per
-// `meta.caller`-tagged input), the merger (one cohort-level invocation),
-// and bedtools/getfasta + seqkit/translate to produce the catalogue AA
-// FASTA.
+// ORF prediction tables. Composes the normaliser (run once per caller-tagged
+// input), the merger (one cohort-level invocation), and bedtools/getfasta +
+// seqkit/translate to produce the catalogue AA FASTA.
 //
 
 include { CUSTOM_ORFNORMALISE } from '../../../modules/nf-core/custom/orfnormalise/main'

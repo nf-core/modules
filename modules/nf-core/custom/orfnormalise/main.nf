@@ -12,24 +12,24 @@ process CUSTOM_ORFNORMALISE {
     tuple val(meta2), path(gtf)
 
     output:
-    tuple val(meta), path("${prefix}.normalised.bed12"), emit: bed12
-    tuple val(meta), path("${prefix}.normalised.tsv")  , emit: tsv
-    path "versions.yml"                                , emit: versions, topic: versions
+    tuple val(meta), path("${prefix}.bed12"), emit: bed12
+    tuple val(meta), path("${prefix}.tsv")  , emit: tsv
+    path "versions.yml"                     , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    prefix    = task.ext.prefix ?: "${meta.id}"
+    prefix    = task.ext.prefix ?: "${meta.id}.normalised"
     sample_id = meta.id ?: 'unknown'
     args      = task.ext.args ?: ''
     template 'orfnormalise.py'
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.normalised"
     """
-    touch ${prefix}.normalised.bed12
-    touch ${prefix}.normalised.tsv
+    touch ${prefix}.bed12
+    touch ${prefix}.tsv
 
     python - <<END
 import platform
