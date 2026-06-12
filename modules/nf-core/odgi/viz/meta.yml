@@ -12,7 +12,8 @@ tools:
       documentation: "https://odgi.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/pangenome/odgi"
       doi: "10.1093/bioinformatics/btac308"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:odgi
 input:
   - - meta:
@@ -25,7 +26,7 @@ input:
         description: Pangenome graph in binary ODGI or in GFA v1.0 format
         pattern: "*.{og,gfa}"
         ontologies:
-          - edam: http://edamontology.org/format_3975 # GFA 1
+          - edam: http://edamontology.org/format_3975
 output:
   png:
     - - meta:
@@ -38,13 +39,27 @@ output:
           description: A 1D visualization of a pangenome graph.
           pattern: "*.{png}"
           ontologies: []
+  versions_odgi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - odgi:
+          type: string
+          description: The name of the tool
+      - odgi version | sed 's/^v//; s|-.*||':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - odgi:
+          type: string
+          description: The name of the tool
+      - odgi version | sed 's/^v//; s|-.*||':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@subwaystation"
 maintainers:

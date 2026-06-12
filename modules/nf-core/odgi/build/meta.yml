@@ -1,5 +1,6 @@
 name: "odgi_build"
-description: Construct a dynamic succinct variation graph in ODGI format from a GFAv1.
+description: Construct a dynamic succinct variation graph in ODGI format from a
+  GFAv1.
 keywords:
   - variation graph
   - pangenome graph
@@ -12,7 +13,8 @@ tools:
       documentation: "https://odgi.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/pangenome/odgi"
       doi: "10.1093/bioinformatics/btac308"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:odgi
 input:
   - - meta:
@@ -25,7 +27,7 @@ input:
         description: Pangenome graph in GFA v1.0 format
         pattern: "*.{gfa}"
         ontologies:
-          - edam: http://edamontology.org/format_3975 # GFA 1
+          - edam: http://edamontology.org/format_3975
 output:
   og:
     - - meta:
@@ -35,17 +37,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.og":
           type: file
-          description: File containing a pangenome graph in ODGI binary format. Usually
-            ends with '.og'
+          description: File containing a pangenome graph in ODGI binary format.
+            Usually ends with '.og'
           pattern: "*.{og}"
           ontologies: []
+  versions_odgi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - odgi:
+          type: string
+          description: The name of the tool
+      - odgi version | sed 's/^v//; s/-.*///':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - odgi:
+          type: string
+          description: The name of the tool
+      - odgi version | sed 's/^v//; s/-.*///':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@subwaystation"
 maintainers:
