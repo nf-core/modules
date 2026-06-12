@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process SAVANA_TO"
+    script "../main.nf"
+    process "SAVANA_TO"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "savana"
+    tag "savana/to"
+
+    test("homo_sapiens - nanopore_HG002_ont_telomere") {
+        when {
+            params {
+                module_args = '--chromosomes 1 2 --allele_min_reads 1 --overwrite --min_support 1 --length 5'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa.fai', checkIfExists: true)
+                ]
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.sv_breakpoints_vcf.get(0).get(1)).vcf.summary,
+                    file(process.out.sv_breakpoints_bedpe.get(0).get(1)).name,
+                    file(process.out.sv_breakpoints_read_support.get(0).get(1)).readLines().size(),
+                    file(process.out.inserted_sequences.get(0).get(1)).name,
+                    path(process.out.classified_vcf.get(0).get(1)).vcf.summary,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - nanopore_HG002_ont_telomere - g1000 - stub") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--chromosomes 1 2 --allele_min_reads 1 --overwrite --min_support 1 --length 5'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa.fai', checkIfExists: true)
+                ]
+                input[2] = []
+                input[3] = []
+                input[4] = "1000g_hg38"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
