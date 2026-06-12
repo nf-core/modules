@@ -81,13 +81,27 @@ output:
           pattern: "*.pdf"
           ontologies:
             - edam: http://edamontology.org/format_3508 # PDF
+  versions_nonpareil:
+  - - ${task.process}:
+        type: string
+        description: Process which generated the version
+    - nonpareil:
+        type: string
+        description: Tool name
+    - nonpareil -V 2>&1 | sed "s/Nonpareil v//":
+        type: eval
+        description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  - - ${task.process}:
+        type: string
+        description: Process which generated the version
+    - nonpareil:
+        type: string
+        description: Tool name
+    - nonpareil -V 2>&1 | sed "s/Nonpareil v//":
+        type: eval
+        description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

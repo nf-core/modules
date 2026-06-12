@@ -1,19 +1,20 @@
 name: prodigal
-description: Prodigal (Prokaryotic Dynamic Programming Genefinding Algorithm) is a
-  microbial (bacterial and archaeal) gene finding program
+description: Prodigal (Prokaryotic Dynamic Programming Genefinding Algorithm) is
+  a microbial (bacterial and archaeal) gene finding program
 keywords:
   - prokaryotes
   - gene finding
   - microbial
 tools:
   - prodigal:
-      description: Prodigal (Prokaryotic Dynamic Programming Genefinding Algorithm)
-        is a microbial (bacterial and archaeal) gene finding program
+      description: Prodigal (Prokaryotic Dynamic Programming Genefinding
+        Algorithm) is a microbial (bacterial and archaeal) gene finding program
       homepage: https://github.com/hyattpd/Prodigal
       documentation: https://github.com/hyattpd/prodigal/wiki
       tool_dev_url: https://github.com/hyattpd/Prodigal
       doi: "10.1186/1471-2105-11-119"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:prodigal
 input:
   - - meta:
@@ -73,13 +74,27 @@ output:
           description: complete starts file
           pattern: "*.{_all.txt}"
           ontologies: []
+  versions_prodigal:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prodigal:
+          type: string
+          description: The name of the tool
+      - prodigal -v 2>&1 | sed -n "s/Prodigal V\(.*\):.*/\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prodigal:
+          type: string
+          description: The name of the tool
+      - prodigal -v 2>&1 | sed -n "s/Prodigal V\(.*\):.*/\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@grst"
 maintainers:
