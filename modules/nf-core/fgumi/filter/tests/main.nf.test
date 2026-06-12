@@ -1,0 +1,103 @@
+nextflow_process {
+
+    name "Test Process FGUMI_FILTER"
+    script "../main.nf"
+    process "FGUMI_FILTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgumi"
+    tag "fgumi/filter"
+    tag "fgumi/sort"
+    tag "fgumi/group"
+    tag "fgumi/simplex"
+
+    setup {
+        run("FGUMI_SORT") {
+            script "../../sort/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.unsorted_tagged.bam', checkIfExists: true)
+                ]
+                """
+            }
+
+        }
+        run("FGUMI_GROUP") {
+            script "../../group/main.nf"
+            process {
+                """
+                input[0] = FGUMI_SORT.out.bam
+                input[1] = 'adjacency'
+                """
+            }
+        }
+        run("FGUMI_SIMPLEX") {
+            script "../../simplex/main.nf"
+            process {
+                """
+                input[0] = FGUMI_GROUP.out.bam
+                input[1] = 1
+                input[2] = false
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - bam") {
+
+        when {
+            process {
+                """
+                input[0] = FGUMI_SIMPLEX.out.bam
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = 1
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // bam file is non deterministic in its output order
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['bam'])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = FGUMI_SIMPLEX.out.bam
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = 1
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

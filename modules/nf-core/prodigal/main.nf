@@ -16,7 +16,7 @@ process PRODIGAL {
     tuple val(meta), path("${prefix}.fna.gz"),                 emit: nucleotide_fasta
     tuple val(meta), path("${prefix}.faa.gz"),                 emit: amino_acid_fasta
     tuple val(meta), path("${prefix}_all.txt.gz"),             emit: all_gene_annotations
-    path "versions.yml",                                       emit: versions
+    tuple val("${task.process}"), val('prodigal'), eval('prodigal -v 2>&1 | sed -n "s/Prodigal V\\(.*\\):.*/\\1/p"'), emit: versions_prodigal, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

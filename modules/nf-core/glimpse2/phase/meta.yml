@@ -102,10 +102,10 @@ input:
         pattern: "*.fai"
         ontologies: []
   - output_suffix:
-        type: string
-        description: |
-          Output file suffix used to choose the GLIMPSE2 output format. Defaults to `vcf.gz` when empty. Supported values: `vcf`, `vcf.gz`, `bcf`, `bgen`.
-        pattern: "vcf|vcf.gz|bcf|bgen"
+      type: string
+      description: |
+        Output file suffix used to choose the GLIMPSE2 output format. Defaults to `vcf.gz` when empty. Supported values: `vcf`, `vcf.gz`, `bcf`, `bgen`.
+      pattern: "vcf|vcf.gz|bcf|bgen"
 output:
   phased_variants:
     - - meta:
