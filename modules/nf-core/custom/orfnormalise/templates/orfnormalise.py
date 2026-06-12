@@ -528,7 +528,7 @@ def parse_ribocode(path, transcripts, fields):
                     "strand": strand,
                     "aa_length": aa_len,
                     "orf_type": orf_type,
-                    "raw_score": pval if pval == pval else "",
+                    "raw_score": pval if not math.isnan(pval) else "",
                     "bed_score": bed_score,
                     "blocks": blocks,
                 }
@@ -602,7 +602,7 @@ def parse_ribotish(path, transcripts, fields):
                 pval = float(score_raw) if score_raw else float("nan")
             except (TypeError, ValueError):
                 pval = float("nan")
-            bed_score = max(0, min(1000, int(round((1.0 - pval) * 1000)))) if pval == pval else 0
+            bed_score = max(0, min(1000, int(round((1.0 - pval) * 1000)))) if not math.isnan(pval) else 0
             if score_col:
                 resolved["score"] = score_col
 
@@ -635,7 +635,7 @@ def parse_ribotish(path, transcripts, fields):
                     "strand": strand,
                     "aa_length": aa_len,
                     "orf_type": orf_type,
-                    "raw_score": pval if pval == pval else "",
+                    "raw_score": pval if not math.isnan(pval) else "",
                     "bed_score": bed_score,
                     "blocks": blocks,
                 }
@@ -811,7 +811,7 @@ def parse_rpbp(path, transcripts, fields):
                 score_val = float(score_raw) if score_raw else float("nan")
             except (TypeError, ValueError):
                 score_val = float("nan")
-            if score_val == score_val:
+            if not math.isnan(score_val):
                 bed_score = max(0, min(1000, int(round(min(score_val, 30.0) * 1000.0 / 30.0))))
             else:
                 bed_score = 0
@@ -832,7 +832,7 @@ def parse_rpbp(path, transcripts, fields):
                     "strand": strand,
                     "aa_length": aa_len,
                     "orf_type": orf_type,
-                    "raw_score": score_val if score_val == score_val else "",
+                    "raw_score": score_val if not math.isnan(score_val) else "",
                     "bed_score": bed_score,
                     "blocks": blocks,
                 }

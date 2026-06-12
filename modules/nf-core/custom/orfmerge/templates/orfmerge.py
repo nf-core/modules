@@ -30,7 +30,6 @@ Outputs:
 """
 
 import argparse
-import csv
 import glob
 import platform
 import shlex
@@ -181,14 +180,7 @@ def load_normalised(tsv_paths, bed_paths):
     for p in tsv_paths:
         if not p.exists() or p.stat().st_size == 0:
             continue
-        with open(p) as fh:
-            # Skip `#`-prefixed comment lines (e.g. the `# parser_columns: ...`
-            # provenance header that custom/orfnormalise writes at the top
-            # of the normalised TSV).
-            uncommented = (line for line in fh if not line.startswith("#"))
-            reader = csv.DictReader(uncommented, delimiter="\\t")
-            for row in reader:
-                rows.append(row)
+        rows.extend(pd.read_csv(p, sep="\\t", comment="#", dtype=str).to_dict("records"))
     for p in bed_paths:
         if not p.exists() or p.stat().st_size == 0:
             continue
