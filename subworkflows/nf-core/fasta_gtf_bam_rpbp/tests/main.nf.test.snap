@@ -7,13 +7,7 @@
                         {
                             "id": "reference"
                         },
-                        [
-                            "reference.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                            [
-                                "reference.orfs-exons.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                                "reference.orfs-genomic.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                            ]
-                        ]
+                        "reference.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
@@ -21,7 +15,7 @@
                         {
                             "id": "reference"
                         },
-                        "reference.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "reference.orfs-genomic.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "10": [
@@ -31,20 +25,10 @@
                             "single_end": true,
                             "strandedness": "forward"
                         },
-                        "test.predicted-orfs.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "11": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true,
-                            "strandedness": "forward"
-                        },
                         "test.predicted-orfs.dna.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "12": [
+                "11": [
                     [
                         {
                             "id": "test",
@@ -59,18 +43,10 @@
                         {
                             "id": "reference"
                         },
-                        "reference.orfs-genomic.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "reference"
-                        },
                         "reference.orfs-exons.annotated.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "4": [
+                "3": [
                     [
                         {
                             "id": "test",
@@ -80,7 +56,7 @@
                         "test.metagene.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "5": [
+                "4": [
                     [
                         {
                             "id": "test",
@@ -90,7 +66,7 @@
                         "test.metagene-bayes.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "6": [
+                "5": [
                     [
                         {
                             "id": "test",
@@ -100,7 +76,7 @@
                         "test.offsets.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "7": [
+                "6": [
                     [
                         {
                             "id": "test",
@@ -110,7 +86,7 @@
                         "test.lengths-offsets.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "8": [
+                "7": [
                     [
                         {
                             "id": "test",
@@ -120,7 +96,7 @@
                         "test.profiles.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "9": [
+                "8": [
                     [
                         {
                             "id": "test",
@@ -128,6 +104,16 @@
                             "strandedness": "forward"
                         },
                         "test.bayes-factors.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "9": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "strandedness": "forward"
+                        },
+                        "test.predicted-orfs.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "dna_fasta": [
@@ -246,11 +232,11 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-20T10:29:33.413340125",
         "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.1"
-        }
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-06-12T16:30:54.993206"
     },
     "homo_sapiens chr20 - end-to-end rpbp": {
         "content": [
@@ -262,10 +248,10 @@
             "reference.orfs-genomic.annotated.bed.gz",
             "reference.orfs-exons.annotated.bed.gz"
         ],
-        "timestamp": "2026-05-20T10:29:22.715089396",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.1"
-        }
+        },
+        "timestamp": "2026-05-20T10:29:22.715089396"
     }
 }
