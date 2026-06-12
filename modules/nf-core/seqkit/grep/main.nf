@@ -11,6 +11,7 @@ process SEQKIT_GREP {
     input:
     tuple val(meta), path(sequence)
     path pattern
+    val out_ext
 
     output:
     tuple val(meta), path("*.{fa,fq,fa.gz,fq.gz}"), emit: filter
@@ -24,7 +25,7 @@ process SEQKIT_GREP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def compression_suffix = sequence.getExtension() == "gz" ? ".gz" : ""
     // fasta or fastq. Exact pattern match .fasta or .fa suffix with optional .gz (gzip) suffix
-    def output_type = task.ext.suffix ?: "${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
+    def output_type = out_ext ?: ("${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq")
     def suffix = output_type + compression_suffix
     def pattern_file = pattern ? "-f ${pattern}" : ""
     """
@@ -42,7 +43,7 @@ process SEQKIT_GREP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def compression_suffix = sequence.getExtension() == "gz" ? ".gz" : ""
     // fasta or fastq. Exact pattern match .fasta or .fa suffix with optional .gz (gzip) suffix
-    def output_type = task.ext.suffix ?: "${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
+    def output_type = out_ext ?: ("${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq")
     def suffix = output_type + compression_suffix
     """
     echo ${args}

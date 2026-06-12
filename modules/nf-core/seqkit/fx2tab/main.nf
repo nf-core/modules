@@ -9,6 +9,7 @@ process SEQKIT_FX2TAB {
 
     input:
     tuple val(meta), path(fastx)
+    val out_ext
 
     output:
     tuple val(meta), path("*.txt*"), emit: text
@@ -20,7 +21,7 @@ process SEQKIT_FX2TAB {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "txt.zst"
+    def suffix = out_ext ?: "txt.zst"
     """
     seqkit \\
         fx2tab \\
@@ -32,7 +33,7 @@ process SEQKIT_FX2TAB {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "txt.zst"
+    def suffix = out_ext ?: "txt.zst"
     """
     touch ${prefix}.${suffix}
     """

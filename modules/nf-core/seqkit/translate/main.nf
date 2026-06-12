@@ -51,6 +51,6 @@ process SEQKIT_TRANSLATE {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     """
-    touch ${prefix}.${extension}
+    echo '' | gzip > ${prefix}.${extension}
     """
 }

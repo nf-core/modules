@@ -17,6 +17,7 @@ nextflow_process {
                 input[0] = [ [ id:'test' ],   // meta map
                        [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true) ]
                      ]
+                     input[1] = 'fa.zst'
                 """
             }
         }
@@ -30,13 +31,13 @@ nextflow_process {
     }
 
     test("fastq") {
-        config "./fq.config"
         when {
             process {
                 """
                 input[0] = [ [ id:'test' ],   // meta map
                        [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.txt.zst', checkIfExists: true) ]
                      ]
+                     input[1] = 'fq.zst'
                 """
             }
         }
@@ -50,13 +51,13 @@ nextflow_process {
     }
 
     test("fasta_gz") {
-        config "./gz.config"
         when {
             process {
                 """
                 input[0] = [ [ id:'test' ],   // meta map
                        [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true) ]
                      ]
+                     input[1] = 'fa.gz'
                 """
             }
         }
@@ -70,13 +71,13 @@ nextflow_process {
     }
 
     test("fastq_gz") {
-        config "./fq_gz.config"
         when {
             process {
                 """
                 input[0] = [ [ id:'test' ],   // meta map
                        [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.txt.zst', checkIfExists: true) ]
                      ]
+                     input[1] = 'fq.gz'
                 """
             }
         }
@@ -99,6 +100,7 @@ nextflow_process {
                 input[0] = [ [ id:'test' ],   // meta map
                        [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true) ]
                      ]
+                     input[1] = 'fa.zst'
                 """
             }
         }

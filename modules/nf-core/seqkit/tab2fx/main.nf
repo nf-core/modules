@@ -9,6 +9,7 @@ process SEQKIT_TAB2FX {
 
     input:
     tuple val(meta), path(text)
+    val out_ext
 
     output:
     tuple val(meta), path("*.f*"), emit: fastx
@@ -20,7 +21,7 @@ process SEQKIT_TAB2FX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "fa.zst"
+    def suffix = out_ext ?: "fa.zst"
     """
     seqkit \\
         tab2fx \\
@@ -32,7 +33,7 @@ process SEQKIT_TAB2FX {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "fa.zst"
+    def suffix = out_ext ?: "fa.zst"
     """
     touch ${prefix}.${suffix}
     """

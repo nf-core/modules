@@ -52,7 +52,7 @@ process SEQKIT_RMDUP {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     """
-    touch ${prefix}.${extension}
+    echo '' | gzip > ${prefix}.${extension}
     echo \\
         '[INFO] 0 duplicated records removed' \\
         > ${prefix}.log
