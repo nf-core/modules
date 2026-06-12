@@ -12,8 +12,8 @@ process DOTSEQ_DOTSEQ {
     tuple val(meta2), path(samplesheet), path(counts), path(annotation)
 
     output:
-    tuple val(meta), path("*.translation.dotseq.results.tsv")    , emit: translation
-    tuple val(meta), path("*.dou.dotseq.results.tsv")            , emit: dou
+    tuple val(meta), path("*.translation.dotseq.results.tsv")    , emit: translation , optional: true
+    tuple val(meta), path("*.dou.dotseq.results.tsv")            , emit: dou         , optional: true
     tuple val(meta), path("*.dou_strategy.dotseq.results.tsv")   , emit: dou_strategy , optional: true
     tuple val(meta), path("*.dte_strategy.dotseq.results.tsv")   , emit: dte_strategy , optional: true
     tuple val(meta), path("*.volcano.png")                       , emit: volcano_plot  , optional: true

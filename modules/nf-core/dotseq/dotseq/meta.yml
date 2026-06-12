@@ -83,7 +83,8 @@ output:
           type: file
           description: |
             Per-ORF differential translation efficiency: DOTSeq's DTE
-            interaction-term results (DESeq2 + ashr shrinkage).
+            interaction-term results (DESeq2 + ashr shrinkage). Emitted only
+            when the DTE module is selected (the default).
           pattern: ".translation.dotseq.results.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
@@ -96,7 +97,8 @@ output:
           description: |
             DOTSeq Differential ORF Usage results (beta-binomial GLM
             modelling Ribo / RNA proportion changes within each gene,
-            shrunk with ashr). DOTSeq-unique.
+            shrunk with ashr). DOTSeq-unique. Emitted only when the DOU
+            module is selected (the default).
           pattern: ".dou.dotseq.results.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475"

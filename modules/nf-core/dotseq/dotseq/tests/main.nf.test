@@ -56,6 +56,44 @@ nextflow_process {
         }
     }
 
+    test("human - count matrix + annotation - DOU module only") {
+
+        config "./dou_only.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cycling_vs_interphase' ],
+                    'condition',
+                    'Interphase',
+                    'Mitotic_Cycling'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/samplesheet.csv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/counts.tsv.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/annotation.tsv.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.dou[0][1]).exists() },
+                { assert process.out.translation.size() == 0 },
+                { assert snapshot(
+                    file(process.out.dou[0][1]).name,
+                    file(process.out.rdata[0][1]).name,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
     test("human - count matrix + annotation - stub") {
 
         options "-stub"

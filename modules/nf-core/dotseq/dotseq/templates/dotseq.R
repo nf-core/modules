@@ -294,21 +294,26 @@ d <- DOTSeq(
     verbose             = FALSE
 )
 
-# testDOU() and the DTE wrap-up in DOTSeq both lift rownames into an `orf_id`
-# column and clear the rownames, so we just coerce to tibble. Interaction
-# contrasts are the module's headline output: let real errors propagate
+# A module dropped from --modules leaves its slot unfitted: DOTSeq() returns a
+# plain DESeqDataSet in the DTE slot and an unfitted DOUData in the DOU slot,
+# and getContrasts() has no method for an unfitted DTE slot, so contrasts are
+# only pulled for the modules that actually ran. For a module that ran,
+# interaction contrasts are its headline output: let real errors propagate
 # rather than catching them and writing an empty TSV that looks like a
 # successful "no significant ORFs". Strategy contrasts can legitimately be
 # absent, so tryCatch is fine there.
+run_dou <- "DOU" %in% modules
+run_dte <- "DTE" %in% modules
+
 dou_d <- getDOU(d)
 dte_d <- getDTE(d)
 contrasts_tibble <- function(res) if (is.null(res)) NULL else as_tibble(as.data.frame(res))
 try_contrasts <- function(x, type) tryCatch(contrasts_tibble(getContrasts(x, type = type)), error = \\(e) NULL)
 
-dou_interaction <- contrasts_tibble(getContrasts(dou_d, "interaction"))
-dte_interaction <- contrasts_tibble(getContrasts(dte_d, "interaction"))
-dou_strategy    <- try_contrasts(dou_d, "strategy")
-dte_strategy    <- try_contrasts(dte_d, "strategy")
+dou_interaction <- if (run_dou) contrasts_tibble(getContrasts(dou_d, "interaction")) else NULL
+dte_interaction <- if (run_dte) contrasts_tibble(getContrasts(dte_d, "interaction")) else NULL
+dou_strategy    <- if (run_dou) try_contrasts(dou_d, "strategy") else NULL
+dte_strategy    <- if (run_dte) try_contrasts(dte_d, "strategy") else NULL
 
 ################################################################################
 ## Write result tables                                                        ##
@@ -317,11 +322,13 @@ dte_strategy    <- try_contrasts(dte_d, "strategy")
 ## is the per-ORF differential translation efficiency contrast.               ##
 ################################################################################
 
-# Always emit the mandatory tables (even empty) so Nextflow channels are
-# consistent; strategy tables are optional and only written when populated.
+# Each module's interaction table is written only when that module ran, so a
+# single-module run does not leave a misleading empty table for the module that
+# was skipped; the matching Nextflow outputs are declared optional. Strategy
+# tables are written only when populated.
 empty_safe <- function(df) if (is.null(df)) tibble() else df
-write_tsv(empty_safe(dte_interaction), paste0(prefix, ".translation.dotseq.results.tsv"))
-write_tsv(empty_safe(dou_interaction), paste0(prefix, ".dou.dotseq.results.tsv"))
+if (run_dte) write_tsv(empty_safe(dte_interaction), paste0(prefix, ".translation.dotseq.results.tsv"))
+if (run_dou) write_tsv(empty_safe(dou_interaction), paste0(prefix, ".dou.dotseq.results.tsv"))
 write_optional <- function(df, suffix) {
     if (!is.null(df) && nrow(df) > 0) write_tsv(df, paste0(prefix, ".", suffix))
 }
