@@ -32,8 +32,8 @@ nextflow_process {
                         file(process.out.npa[0][1]).name,
                         file(process.out.npc[0][1]).name,
                         path(process.out.npo[0][1]).readLines()[0],
-                        path(process.out.npl[0][1]).readLines().last().contains("Everything seems correct"),
-                        sanitizeOutput(process.out, unstableKeys: ["versions_nonpareil"])
+                            path(process.out.npl[0][1]).readLines().last().contains("Everything seems correct"),
+                            sanitizeOutput(process.out, unstableKeys: ["npa", "npc", "npo", "npl"])
                     ).match()
                 }
             )
@@ -76,7 +76,7 @@ nextflow_process {
                         file(process.out.npc[0][1]).name,
                         path(process.out.npo[0][1]).readLines()[0],
                         path(process.out.npl[0][1]).readLines().last().contains("Everything seems correct"),
-                        process.out.findAll { key, val -> key.startsWith('versions') }
+                        sanitizeOutput(process.out, unstableKeys: ["npa", "npc", "npo", "npl"])
                     ).match()
                 }
             )
