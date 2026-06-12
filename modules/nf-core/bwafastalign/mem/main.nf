@@ -18,7 +18,7 @@ process BWAFASTALIGN_MEM {
     tuple val(meta), path("${prefix}.{csi,crai}")    , emit: index , optional: true
     tuple val("${task.process}"), val('bwafastalign'), val('1.0.0'), topic: versions, emit: versions_bwafastalign
     tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | sed '1!d;s/.* //'") , topic: versions, emit: versions_samtools
-    tuple val("${task.process}"), val('mbuffer'), eval("mbuffer --version 2>&1 | sed -n 's/mbuffer //p'") , topic: versions, emit: versions_mbuffer
+    tuple val("${task.process}"), val('mbuffer'), eval("mbuffer --version 2>&1 | sed -n 's/mbuffer version//p'") , topic: versions, emit: versions_mbuffer
 
     when:
     task.ext.when == null || task.ext.when
