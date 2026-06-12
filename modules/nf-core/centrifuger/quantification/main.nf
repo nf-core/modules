@@ -15,7 +15,7 @@ process CENTRIFUGER_QUANTIFICATION {
     path size_table
 
     output:
-    tuple val(meta), path("${meta.id}.tsv"), emit: report_file
+    tuple val(meta), path("*.report.tsv"), emit: report_file
     tuple val("${task.process}"), val('centrifuger'), eval("centrifuger -v 2>&1 | sed 's/Centrifuger v//'"), emit: versions_centrifuger,  topic: versions
 
     when:
@@ -40,7 +40,7 @@ process CENTRIFUGER_QUANTIFICATION {
     centrifuger-quant \\
         ${db_arg} \\
         -c ${classification_file} \\
-        ${args} > ${prefix}.tsv
+        ${args} > ${prefix}.report.tsv
     """
 
     stub:
@@ -51,6 +51,6 @@ process CENTRIFUGER_QUANTIFICATION {
     echo $args
 
     #output
-    echo "" > ${prefix}.tsv
+    echo "" > ${prefix}.report.tsv
     """
 }
