@@ -63,7 +63,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.{sam,bam,cram}":
+      - ${prefix}.{sam,bam,cram}:
           type: file
           description: Output alignment file (SAM, BAM, or CRAM)
           pattern: "*.{sam,bam,cram}"
@@ -74,7 +74,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.{csi,crai}":
+      - ${prefix}.{csi,crai}:
           type: file
           description: Index file for BAM (.csi) or CRAM (.crai) output
           pattern: "*.{csi,crai}"
@@ -106,7 +106,7 @@ output:
       - mbuffer:
           type: string
           description: The name of the tool
-      - mbuffer --version 2>&1 | sed -n 's/mbuffer //p':
+      - mbuffer --version 2>&1 | sed -n 's/mbuffer version//p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -135,7 +135,7 @@ topics:
       - mbuffer:
           type: string
           description: The name of the tool
-      - mbuffer --version 2>&1 | sed -n 's/mbuffer //p':
+      - mbuffer --version 2>&1 | sed -n 's/mbuffer version//p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
