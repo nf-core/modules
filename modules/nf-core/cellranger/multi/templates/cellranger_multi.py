@@ -52,13 +52,15 @@ for modality in ["gex", "vdj", "ab", "beam", "cmo", "crispr"]:
 
         else:
             # double escapes are required because nextflow processes this python 'template'
-            if re.sub(filename_pattern, r"\\1R2\\2", r1.name) != r2.name:
+            if (re.sub(filename_pattern, r"\\1R2\\2", r1.name) != r2.name) and ("${ignore_filename_pattern}" != "true"):
                 raise AssertionError(
                     dedent(
                         f"""\
                         We expect R1 and R2 of the same sample to have the same filename except for R1/R2.
                         This has been checked by replacing "R1" with "R2" in the first filename and comparing it to the second filename.
                         If you believe this check shouldn't have failed on your filenames, please report an issue on GitHub!
+                        If you are confident in your filename structure and file pairing and would like to skip this
+                        check, you can set the parameter `ignore_filename_pattern` to `true`.
 
                         Files involved:
                             - {r1}
