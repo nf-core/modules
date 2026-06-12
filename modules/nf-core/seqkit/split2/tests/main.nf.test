@@ -26,10 +26,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("paired_end - length") {
@@ -50,10 +49,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("single_end - length - stub") {
@@ -74,10 +72,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("single_end - part") {
@@ -96,10 +93,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("paired_end - part") {
@@ -120,10 +116,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("single_end - part - stub") {
@@ -144,10 +139,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("single_end - size") {
@@ -166,10 +160,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("paired_end - size") {
@@ -190,10 +183,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("single_end - size - stub") {
@@ -214,10 +206,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("single_end - length - no_compression") {
@@ -248,9 +239,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 }

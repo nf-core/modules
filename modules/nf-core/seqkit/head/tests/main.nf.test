@@ -28,10 +28,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
-
     }
 
     test("sarscov2 - paired fastq.gz - stub") {
@@ -56,10 +55,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
-
     }
-
 }

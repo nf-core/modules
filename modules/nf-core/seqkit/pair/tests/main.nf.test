@@ -31,7 +31,6 @@ nextflow_process {
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("sarscov2 - bam - stub") {
@@ -58,7 +57,5 @@ nextflow_process {
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }

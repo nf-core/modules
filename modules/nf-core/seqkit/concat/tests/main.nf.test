@@ -15,12 +15,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [   id:'test'   ], // meta map
+                    [ id:'test' ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
                     ]
-                    ]
+                ]
                 """
             }
         }
@@ -50,7 +50,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [   id:'test'   ], // meta map
+                    [ id:'test' ], // meta map
                         [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
@@ -63,7 +63,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match()}
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }

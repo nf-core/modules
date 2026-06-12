@@ -24,10 +24,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("fastq") {
@@ -45,10 +44,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("fasta_gz") {
@@ -66,10 +64,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("fastq_gz") {
@@ -87,10 +84,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("fasta - stub") {
@@ -110,10 +106,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }

@@ -1,18 +1,18 @@
 process SEQKIT_SANA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.10.1--he881be0_0':
-        'quay.io/biocontainers/seqkit:2.10.1--he881be0_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/seqkit:2.10.1--he881be0_0'
+        : 'quay.io/biocontainers/seqkit:2.10.1--he881be0_0'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("${prefix}${extension}"), emit: reads
-    tuple val(meta), path("${prefix}.log")        , emit: log
+    tuple val(meta), path("${prefix}.log"), emit: log
     tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
@@ -24,7 +24,7 @@ process SEQKIT_SANA {
     extension = reads.getName() - reads.getSimpleName()
     """
     seqkit sana \\
-        $args \\
+        ${args} \\
         ${reads} \\
         -o ${prefix}${extension} > ${prefix}.log 2>&1
     """
@@ -34,7 +34,7 @@ process SEQKIT_SANA {
     prefix = task.ext.prefix ?: "${meta.id}"
     extension = reads.getName() - reads.getSimpleName()
     """
-    echo $args
+    echo ${args}
 
     # Create empty output files conditionally based on extension
     if [[ "${extension}" == *.gz ]]; then

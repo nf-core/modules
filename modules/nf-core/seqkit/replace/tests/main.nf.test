@@ -26,10 +26,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
 
@@ -50,10 +49,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("sarscov2 - fasta - uncomp - custom") {
@@ -73,10 +71,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("sarscov2 - fasta - stub") {
@@ -96,10 +93,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }

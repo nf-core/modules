@@ -1,25 +1,25 @@
 {
     "sarscov2 - fastq - stub": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ]
-            ],
             {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "versions_seqkit": [
                     [
                         "SEQKIT_SANA",
@@ -29,40 +29,15 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-12T13:08:51.076381677",
+        "timestamp": "2026-06-12T17:27:38.0232466",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
         }
     },
     "sarscov2 - fastq": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fastq.gz:md5,03b43487ca6aeecc5eb8b55bbc1fe2f3"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.log:md5,ee70599f6d5b5cd642d857a2ec3a399d"
-                    ]
-                ],
-                "2": [
-                    [
-                        "SEQKIT_SANA",
-                        "seqkit",
-                        "2.10.1"
-                    ]
-                ],
                 "log": [
                     [
                         {
@@ -90,10 +65,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-12T13:08:43.883698543",
+        "timestamp": "2026-06-12T17:27:33.234211072",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
         }
     }
 }

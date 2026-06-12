@@ -28,7 +28,6 @@ nextflow_process {
         then {
             assert snapshot(sanitizeOutput(process.out)).match()
         }
-
     }
 
     test("sarscov2 - genome_fasta - proportion") {
@@ -50,7 +49,6 @@ nextflow_process {
         then {
              assert snapshot(sanitizeOutput(process.out)).match()
         }
-
     }
 
     test("file_name_conflict - fail_with_error") {
@@ -73,7 +71,6 @@ nextflow_process {
             assert process.failed
             assert process.errorReport.contains("Input and output names are the same")
         }
-
     }
 
     test("sarscov2 - fastq_gz - proportion - stub") {
@@ -97,7 +94,5 @@ nextflow_process {
         then {
             assert snapshot(sanitizeOutput(process.out)).match()
         }
-
     }
-
 }
