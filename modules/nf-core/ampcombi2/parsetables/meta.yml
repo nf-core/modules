@@ -87,6 +87,18 @@ output:
           description: The output directory that contains the summary output and related
             alignment files for one sample.
           pattern: "/*"
+  tsv:
+    - - meta:
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/${prefix}_ampcombi.tsv:
+          type: file
+          description: A TSV file containing the summary of the AMP detection results for
+            one sample.
+          pattern: "/*_ampcombi.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   full_log:
     - - meta:
           type: map

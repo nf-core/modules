@@ -38,10 +38,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.sample_dir.collect { file(it[1]).getName() } +
-                                    process.out.full_log.collect { file(it[1]).readLines().contains("File downloaded successfully") } +
-                                    process.out.db.collect { file(it[1]).getName() } +
-                                    process.out.findAll { key, val -> key.startsWith('versions') } ).match() }
+                { assert snapshot(
+                    process.out.sample_dir.collect { file(it[1]).getName() },
+                    process.out.tsv.collect { file(it[1])},
+                    process.out.full_log.collect { file(it[1]).readLines().contains("File downloaded successfully") } +
+                    process.out.db.collect { file(it[1]).getName() } +
+                    process.out.findAll { key, val -> key.startsWith('versions') } ).match() }
             )
         }
     }
