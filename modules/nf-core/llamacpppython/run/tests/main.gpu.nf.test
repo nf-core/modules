@@ -61,7 +61,9 @@ nextflow_process {
                     process.out.output[0][0],
                     file(process.out.output[0][1]).name,
                     file(process.out.output[0][1]).size() > 0,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.versions_llama_cpp_python.collect { path(it).yaml.values().first()['llama-cpp-python'] },
+                    process.out.versions_llama_cpp_python.collect { path(it).yaml.values().first()['cuda'] }
                 ).match() }
             )
         }
@@ -107,7 +109,9 @@ nextflow_process {
                     process.out.output.size(),
                     process.out.output[0][0],
                     file(process.out.output[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.versions_llama_cpp_python.collect { path(it).yaml.values().first()['llama-cpp-python'] },
+                    process.out.versions_llama_cpp_python.collect { path(it).yaml.values().first()['cuda'] }
                 ).match() }
             )
         }
