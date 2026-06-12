@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "ciriquant"
+description: CIRIquant; a comprehensive toolkit for circRNA quantification and differential expression analysis
+keywords:
+  - circRNA
+  - quantification
+  - differential expression
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "ciriquant":
+      description: "Circular RNA quantification pipeline."
+      homepage: "https://ciri-cookbook.readthedocs.io/en/latest/CIRIquant_0_home.html"
+      documentation: "https://ciri-cookbook.readthedocs.io/en/latest/CIRIquant_0_home.html"
+      tool_dev_url: "https://github.com/bioinfo-biols/CIRIquant"
+      doi: "10.1038/s41467-019-13840-9"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  ### TODO nf-core: Add a description of all of the variables used as input
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+          - edam: "http://edamontology.org/format_3462" # SAM
+
+output:
+  ### TODO nf-core: Add a description of all of the variables used as output
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Sorted BAM/CRAM/SAM file
+          pattern: "*.{bam,cram,sam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2573" # CRAM
+            - edam: "http://edamontology.org/format_3462" # SAM
+  versions_ciriquant:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "ciriquant":
+          type: string
+          description: The name of the tool
+      - "ciriquant --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ciriquant:
+          type: string
+          description: The name of the tool
+      - ciriquant --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@razmia02"
+maintainers:
+  - "@razmia02"
