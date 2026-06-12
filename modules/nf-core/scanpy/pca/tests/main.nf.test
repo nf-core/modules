@@ -8,6 +8,83 @@ nextflow_process {
     tag "modules_nfcore"
     tag "scanpy"
     tag "scanpy/pca"
+    tag "untar"
+
+    test("Should emit zarr output for zarr input - stub") {
+
+        options '-stub'
+
+        setup {
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test_zarr' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, zarr -> [ meta, zarr ] }
+                input[1] = "X_pca"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_zarr_pca.zarr" }
+            )
+        }
+
+    }
+
+    test("Should run with zarr input") {
+
+        setup {
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test_zarr' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, zarr -> [ meta, zarr ] }
+                input[1] = "X_pca"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_zarr_pca.zarr" },
+            { assert file(process.out.anndata[0][1] + "/obsm/X_pca/.zarray").exists() },
+            { assert file(process.out.obsm[0][1]).name == "X_test_zarr_pca.pkl" }
+            )
+        }
+
+    }
 
     test("Should run without failures") {
 
@@ -27,8 +104,12 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out).match() },
-            { assert "X_pca" in anndata(process.out.h5ad[0][1]).obsm }
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_pca.h5ad" },
+            { assert process.out.obsm },
+            { assert file(process.out.obsm[0][1]).name == "X_test_pca.pkl" },
+            { assert process.out.versions },
+            { assert "X_pca" in anndata(process.out.anndata[0][1]).obsm }
             )
         }
 
