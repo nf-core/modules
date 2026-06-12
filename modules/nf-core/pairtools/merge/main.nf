@@ -27,4 +27,9 @@ process PAIRTOOLS_MERGE {
         -o ${prefix}.pairs.gz \
         ${allpairs}
     """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}_merged"
+    """
+    echo "" | gzip > ${prefix}.pairs.gz
+    """
 }
