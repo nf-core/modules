@@ -60,8 +60,8 @@ output:
         Structure: [ val(meta), path(bed12) ]
   - catalogue_tsv:
       description: |
-        Per-ORF table with `called_by_<caller>` and `score_<caller>`
-        provenance columns.
+        Per-ORF table with `called_by_<caller>` / `score_<caller>` and
+        `n_samples` / `samples` provenance columns.
         Structure: [ val(meta), path(tsv) ]
   - orf_to_gene_tsv:
       description: |

@@ -37,6 +37,12 @@ description: |
                             minimised; Bayes factors / phase scores are
                             maximised).
 
+  Cross-sample recurrence is recorded in two further columns:
+
+    - `n_samples`:          number of distinct samples contributing to the
+                            cluster (a cohort recurrence metric).
+    - `samples`:            sorted, comma-separated list of those sample ids.
+
   Emits a small MultiQC custom-content TSV (per-class counts) for
   inclusion in downstream MultiQC reports.
 keywords:
@@ -97,7 +103,8 @@ output:
           type: file
           description: |
             Per-ORF table with `called_by_<caller>` and `score_<caller>`
-            columns for each supported caller, plus orf_class, aa_length,
+            columns for each supported caller, `n_samples` / `samples`
+            cross-sample recurrence columns, plus orf_class, aa_length,
             and host gene_id / transcript_id.
           pattern: "*.catalogue.tsv"
           ontologies:

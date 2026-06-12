@@ -19,6 +19,11 @@ catalogue TSV:
                           minimised; Bayes factors / phase scores are
                           maximised).
 
+Cross-sample recurrence is recorded in two further columns:
+
+  - `n_samples`: number of distinct samples contributing to the cluster.
+  - `samples`:   sorted, comma-separated list of those sample ids.
+
 Outputs:
 
   ${prefix}.catalogue.bed12      merged catalogue (genomic blocks).
@@ -187,6 +192,7 @@ def write_catalogue(prefix, clusters, bed_index):
         ["orf_id", "chrom", "start", "end", "strand", "gene_id", "transcript_id", "orf_class", "aa_length"]
         + [f"called_by_{c}" for c in CALLERS]
         + [f"score_{c}" for c in CALLERS]
+        + ["n_samples", "samples"]
     )
 
     per_class_counts = defaultdict(int)
@@ -217,6 +223,9 @@ def write_catalogue(prefix, clusters, bed_index):
             ]
             row_out += [caller_cols[f"called_by_{c}"] for c in CALLERS]
             row_out += [caller_cols[f"score_{c}"] for c in CALLERS]
+
+            sample_ids = sorted({r.get("sample_id", "") for r in cluster if r.get("sample_id")})
+            row_out += [str(len(sample_ids)), ",".join(sample_ids)]
             th.write("\\t".join(row_out) + "\\n")
 
             per_class_counts[rep.get("orf_class", "other")] += 1
