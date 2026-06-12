@@ -17,9 +17,9 @@ tools:
       homepage: https://github.com/kaist-ina/BWA-MEME
       documentation: https://github.com/kaist-ina/BWA-MEME#getting-started
       doi: "10.1093/bioinformatics/btac137"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -63,7 +63,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.{sam,bam,cram}":
+      - ${prefix}.{sam,bam,cram}:
           type: file
           description: Output alignment file (SAM, BAM, or CRAM)
           pattern: "*.{sam,bam,cram}"
@@ -74,7 +74,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.{csi,crai}":
+      - ${prefix}.{csi,crai}:
           type: file
           description: Index file for BAM (.csi) or CRAM (.crai) output
           pattern: "*.{csi,crai}"
@@ -92,11 +92,21 @@ output:
   versions_samtools:
     - - ${task.process}:
           type: string
-          description: Name of the process
+          description: The name of the process
       - samtools:
           type: string
           description: Name of the tool
       - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_mbuffer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mbuffer:
+          type: string
+          description: The name of the tool
+      - mbuffer --version 2>&1 | sed -n 's/mbuffer version //p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -112,11 +122,20 @@ topics:
           description: The expression to obtain the version of the tool
     - - ${task.process}:
           type: string
-          description: Name of the process
+          description: The name of the process
       - samtools:
           type: string
           description: Name of the tool
       - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mbuffer:
+          type: string
+          description: The name of the tool
+      - mbuffer --version 2>&1 | sed -n 's/mbuffer version //p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
