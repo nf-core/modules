@@ -14,8 +14,7 @@ process WFMASH {
 
     output:
     tuple val(meta), path("*.paf"), emit: paf
-    path "versions.yml"           , emit: versions
-
+    tuple val("${task.process}"), val('wfmash'), eval('wfmash --version 2>&1 | cut -f 1 -d "-" | cut -f 2 -d "v"'), emit: versions_wfmash, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +33,11 @@ process WFMASH {
         --threads $task.cpus \\
         $paf_mappings \\
         $args > ${prefix}.paf
+    """
 
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wfmash: \$(echo \$(wfmash --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.paf
     """
 }

@@ -1,0 +1,147 @@
+{
+    "gallus_gallus - pacbio hifi fastq.gz - fastq": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.filt.fastq.gz:md5,6c315f427340d65f37f447269634ad29"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.contaminant.blastout:md5,77e33f48902d6e279ad0484060f49cfe"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.blocklist:md5,2501cf5214a7861ba2eda2a9e16d56f9"
+                ]
+            ],
+            [
+                "For the test dataset:",
+                "Removing reads containing adapters a minimum of 44 bp in length and 97% match.",
+                "",
+                "Number of ccs reads: 10",
+                "Number of adapter contaminated ccs reads: 1 (10% of total)",
+                "Number of ccs reads retained: 9 (90% of total)",
+                ""
+            ],
+            {
+                "versions_hifiadapterfilt": [
+                    [
+                        "HIFIADAPTERFILT_HIFIADAPTERFILT",
+                        "hifiadapterfilt",
+                        "3.0.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-10T19:10:58.888783246",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "homo_sapiens - pacbio ccs bam - fastq": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.filt.fastq.gz:md5,ce026e6b05113c474da0ef6570fbb04c"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.contaminant.blastout:md5,0e110eda2d2823f64630fdbfccba6663"
+                ]
+            ],
+            true,
+            [
+                "For the test dataset:",
+                "Removing reads containing adapters a minimum of 44 bp in length and 97% match.",
+                "",
+                "Number of ccs reads: 3365",
+                "Number of adapter contaminated ccs reads: 0 (0% of total)",
+                "Number of ccs reads retained: 3365 (100% of total)",
+                ""
+            ],
+            {
+                "versions_hifiadapterfilt": [
+                    [
+                        "HIFIADAPTERFILT_HIFIADAPTERFILT",
+                        "hifiadapterfilt",
+                        "3.0.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-10T19:08:51.476386711",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "homo_sapiens - pacbio ccs bam - fastq - stub": {
+        "content": [
+            {
+                "blastout": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.contaminant.blastout:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "blocklist": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.blocklist:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "fastq": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filt.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.stats:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_hifiadapterfilt": [
+                    [
+                        "HIFIADAPTERFILT_HIFIADAPTERFILT",
+                        "hifiadapterfilt",
+                        "3.0.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-10T19:09:05.455426232",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    }
+}
