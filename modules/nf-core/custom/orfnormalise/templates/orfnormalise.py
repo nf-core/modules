@@ -47,7 +47,6 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-import pandas as pd
 import yaml
 
 csv.field_size_limit(sys.maxsize)
@@ -101,14 +100,6 @@ DEFAULT_FIELDS = {
     },
 }
 
-SCORE_DIRECTIONS = {
-    "ribocode": "min",
-    "ribotish": "min",
-    "ribotricer": "max",
-    "rpbp": "max",
-    "price": "min",
-}
-
 # RPBP predicted-orfs BED column names (the file ships a `#`-prefixed
 # header but we keep our internal names clean).
 RPBP_COLUMNS = [
@@ -157,8 +148,12 @@ class Transcript:
 
 
 # ----------------------------------------------------------------------------
-# Field resolution helpers
+# Small shared helpers
 # ----------------------------------------------------------------------------
+
+
+def clamp1000(x):
+    return max(0, min(1000, int(round(x))))
 
 
 def _resolve_chain(caller, field_key, override):
@@ -167,15 +162,54 @@ def _resolve_chain(caller, field_key, override):
     return DEFAULT_FIELDS[caller].get(field_key) or []
 
 
-def _pick_value(row, candidates):
-    for col in candidates:
-        if col not in row:
-            continue
+def pick(row, fields, resolved, key):
+    """Return the first usable value for `key` from this row, walking the
+    resolved column chain in `fields[key]`. Records the column actually read
+    in `resolved[key]` for provenance. Returns None if nothing usable."""
+    for col in fields.get(key) or []:
         val = row.get(col)
         if val is None or val == "" or val == "None":
             continue
-        return col, val
-    return None, None
+        resolved[key] = col
+        return val
+    return None
+
+
+def aa_from_length(row, fields, resolved):
+    """Derive aa_length from a nucleotide-length column (ribocode/ribotricer/rpbp)."""
+    raw = pick(row, fields, resolved, "length")
+    try:
+        nt = int(raw) if raw else 0
+    except (TypeError, ValueError):
+        nt = 0
+    return max(0, (nt - 3) // 3) if nt > 0 else 0
+
+
+def parse_intervals(s, seps=("-",)):
+    """Parse comma-separated 1-based inclusive `start<sep>end` tokens into
+    sorted 0-based half-open (start, end) blocks. `seps` is tried in order
+    per token (ribotish blocks use ':' or '-'; ribotricer coords use '-')."""
+    if not s:
+        return []
+    out = []
+    for tok in s.split(","):
+        tok = tok.strip()
+        pair = None
+        for sep in seps:
+            if sep in tok:
+                pair = tok.split(sep, 1)
+                break
+        if pair is None:
+            continue
+        try:
+            a_i, b_i = int(pair[0]), int(pair[1])
+        except ValueError:
+            continue
+        if b_i < a_i:
+            a_i, b_i = b_i, a_i
+        out.append((a_i - 1, b_i))
+    out.sort()
+    return out
 
 
 # ----------------------------------------------------------------------------
@@ -337,132 +371,83 @@ def reclassify_smorf(orf_class, aa_length):
 
 
 # ----------------------------------------------------------------------------
-# Per-caller classifiers
+# ORF-type classification
+#
+# Substring callers: first rule whose any-of keyword set matches the
+# lower-cased orf_type wins. PRICE uses exact (case-sensitive) tokens.
 # ----------------------------------------------------------------------------
 
-
-def classify_ribotish(tis_type):
-    if not tis_type:
-        return "other"
-    t = tis_type.lower()
-    if "5'utr" in t or "uorf" in t:
-        return "uORF"
-    if "3'utr" in t or "dorf" in t:
-        return "dORF"
-    if "annotated" in t and "truncated" not in t and "extended" not in t:
-        return "canonical_cds"
-    if "extended" in t or "truncated" in t:
-        return "canonical_cds"
-    if "novel" in t or "intergenic" in t:
-        return "novel_u"
-    return "other"
-
-
-def classify_ribocode(orf_type):
-    if not orf_type:
-        return "other"
-    t = orf_type.lower()
-    if "uorf" in t or "5'utr" in t:
-        return "uORF"
-    if "dorf" in t or "3'utr" in t:
-        return "dORF"
-    if "annotated" in t or "ccds" in t:
-        return "canonical_cds"
-    if "internal" in t:
-        return "other"
-    if "novel" in t or "intergenic" in t:
-        return "novel_u"
-    return "other"
-
-
-def classify_ribotricer(orf_type):
-    if not orf_type:
-        return "other"
-    t = orf_type.lower()
-    if "uorf" in t:
-        return "uORF"
-    if "dorf" in t:
-        return "dORF"
-    if "annotated" in t or "ccds" in t:
-        return "canonical_cds"
-    if "novel" in t or "intergenic" in t:
-        return "novel_u"
-    return "other"
-
-
-def classify_rpbp(orf_type):
-    if not orf_type:
-        return "other"
-    t = orf_type.lower()
-    if "five_prime" in t or "uorf" in t:
-        return "uORF"
-    if "three_prime" in t or "dorf" in t:
-        return "dORF"
-    if "canonical" in t or "annotated" in t:
-        return "canonical_cds"
-    if "novel" in t or "intergenic" in t:
-        return "novel_u"
-    return "other"
-
-
-def classify_price(orf_type):
-    if not orf_type:
-        return "other"
-    t = orf_type.strip()
-    if t in ("CDS", "Ext", "Trunc", "Variant"):
-        return "canonical_cds"
-    if t in ("uORF", "uoORF"):
-        return "uORF"
-    if t == "dORF":
-        return "dORF"
-    if t == "ncRNA":
-        return "novel_u"
-    return "other"
-
-
-CLASSIFIERS = {
-    "ribocode": classify_ribocode,
-    "ribotish": classify_ribotish,
-    "ribotricer": classify_ribotricer,
-    "rpbp": classify_rpbp,
-    "price": classify_price,
+SUBSTR_RULES = {
+    "ribotish": [
+        (("5'utr", "uorf"), "uORF"),
+        (("3'utr", "dorf"), "dORF"),
+        (("annotated", "extended", "truncated"), "canonical_cds"),
+        (("novel", "intergenic"), "novel_u"),
+    ],
+    "ribocode": [
+        (("uorf", "5'utr"), "uORF"),
+        (("dorf", "3'utr"), "dORF"),
+        (("annotated", "ccds"), "canonical_cds"),
+        (("internal",), "other"),
+        (("novel", "intergenic"), "novel_u"),
+    ],
+    "ribotricer": [
+        (("uorf",), "uORF"),
+        (("dorf",), "dORF"),
+        (("annotated", "ccds"), "canonical_cds"),
+        (("novel", "intergenic"), "novel_u"),
+    ],
+    "rpbp": [
+        (("five_prime", "uorf"), "uORF"),
+        (("three_prime", "dorf"), "dORF"),
+        (("canonical", "annotated"), "canonical_cds"),
+        (("novel", "intergenic"), "novel_u"),
+    ],
 }
+
+PRICE_EXACT = {
+    "CDS": "canonical_cds",
+    "Ext": "canonical_cds",
+    "Trunc": "canonical_cds",
+    "Variant": "canonical_cds",
+    "uORF": "uORF",
+    "uoORF": "uORF",
+    "dORF": "dORF",
+    "ncRNA": "novel_u",
+}
+
+
+def classify(caller, orf_type):
+    if not orf_type:
+        return "other"
+    if caller == "price":
+        return PRICE_EXACT.get(orf_type.strip(), "other")
+    t = orf_type.lower()
+    for keys, cls in SUBSTR_RULES[caller]:
+        if any(k in t for k in keys):
+            return cls
+    return "other"
 
 
 # ----------------------------------------------------------------------------
 # Per-caller parsers
 #
 # Each parser receives (path, transcripts, fields) where `fields` is a dict
-# of resolved column-name chains for this caller. Returns a DataFrame plus
-# a `resolved_fields` dict containing the column actually read for each
-# field on the most recent successful row (for provenance reporting).
+# of resolved column-name chains for this caller. Returns a list of ORF dicts
+# plus a `resolved` dict recording the column actually read for each field
+# (for provenance reporting).
 # ----------------------------------------------------------------------------
-
-EMPTY_PARSED = pd.DataFrame(
-    columns=[
-        "orf_id",
-        "transcript_id",
-        "gene_id",
-        "chrom",
-        "strand",
-        "aa_length",
-        "orf_type",
-        "raw_score",
-        "bed_score",
-        "blocks",
-    ]
-)
 
 
 def parse_ribocode(path, transcripts, fields):
     resolved = {"score": "", "orf_type": "", "length": ""}
-    if not path.exists() or path.stat().st_size == 0:
-        return EMPTY_PARSED.copy(), resolved
     rows = []
+    if not path.exists() or path.stat().st_size == 0:
+        return rows, resolved
     with open(path, newline="") as fh:
         reader = csv.DictReader(fh, delimiter="\\t")
         if reader.fieldnames is None:
-            return EMPTY_PARSED.copy(), resolved
+            return rows, resolved
         for row in reader:
             tid = row.get("transcript_id") or row.get("Transcript_id") or ""
             gid = row.get("gene_id") or row.get("Gene_id") or ""
@@ -474,29 +459,16 @@ def parse_ribocode(path, transcripts, fields):
             except ValueError:
                 continue
 
-            length_col, length_raw = _pick_value(row, fields["length"])
-            try:
-                orf_length_nt = int(length_raw) if length_raw else 0
-            except (TypeError, ValueError):
-                orf_length_nt = 0
-            aa_len = max(0, (orf_length_nt - 3) // 3) if orf_length_nt > 0 else 0
-            if length_col:
-                resolved["length"] = length_col
+            aa_len = aa_from_length(row, fields, resolved)
+            orf_type = pick(row, fields, resolved, "orf_type") or ""
 
-            orf_type_col, orf_type = _pick_value(row, fields["orf_type"])
-            orf_type = orf_type or ""
-            if orf_type_col:
-                resolved["orf_type"] = orf_type_col
-
-            score_col, score_raw = _pick_value(row, fields["score"])
+            score_raw = pick(row, fields, resolved, "score")
             try:
                 pval = float(score_raw) if score_raw else 1.0
-                bed_score = max(0, min(1000, int(round((1.0 - pval) * 1000))))
+                bed_score = clamp1000((1.0 - pval) * 1000)
             except (TypeError, ValueError):
                 pval = float("nan")
                 bed_score = 0
-            if score_col:
-                resolved["score"] = score_col
 
             tx = transcripts.get(tid)
             blocks = []
@@ -533,7 +505,7 @@ def parse_ribocode(path, transcripts, fields):
                     "blocks": blocks,
                 }
             )
-    return (pd.DataFrame(rows) if rows else EMPTY_PARSED.copy()), resolved
+    return rows, resolved
 
 
 _RIBOTISH_GENPOS_RE = re.compile(r"^([^:]+):(\\d+)-(\\d+):([+\\-])\$")
@@ -548,81 +520,44 @@ def _parse_ribotish_genpos(s):
     return m.group(1), int(m.group(2)) - 1, int(m.group(3)), m.group(4)
 
 
-def _parse_ribotish_blocks(s):
-    if not s or s in ("-", "."):
-        return []
-    out = []
-    for tok in s.split(","):
-        tok = tok.strip()
-        if not tok:
-            continue
-        if ":" in tok:
-            a, b = tok.split(":", 1)
-        elif "-" in tok:
-            a, b = tok.split("-", 1)
-        else:
-            continue
-        try:
-            a_i, b_i = int(a), int(b)
-        except ValueError:
-            continue
-        if b_i < a_i:
-            a_i, b_i = b_i, a_i
-        out.append((a_i - 1, b_i))
-    out.sort()
-    return out
-
-
 def parse_ribotish(path, transcripts, fields):
     resolved = {"score": "", "orf_type": "", "aa_length": ""}
-    if not path.exists() or path.stat().st_size == 0:
-        return EMPTY_PARSED.copy(), resolved
     rows = []
+    if not path.exists() or path.stat().st_size == 0:
+        return rows, resolved
     with open(path, newline="") as fh:
         reader = csv.DictReader(fh, delimiter="\\t")
         for row in reader:
             tid = row.get("Tid", "") or ""
             gid = row.get("Gid", "") or (transcripts[tid].gene_id if tid in transcripts else "")
 
-            aa_col, aa_raw = _pick_value(row, fields["aa_length"])
+            aa_raw = pick(row, fields, resolved, "aa_length")
             try:
                 aa_len = int(aa_raw) if aa_raw else 0
             except (TypeError, ValueError):
                 aa_len = 0
-            if aa_col:
-                resolved["aa_length"] = aa_col
 
-            orf_type_col, orf_type = _pick_value(row, fields["orf_type"])
-            orf_type = orf_type or ""
-            if orf_type_col:
-                resolved["orf_type"] = orf_type_col
+            orf_type = pick(row, fields, resolved, "orf_type") or ""
 
-            score_col, score_raw = _pick_value(row, fields["score"])
+            score_raw = pick(row, fields, resolved, "score")
             try:
                 pval = float(score_raw) if score_raw else float("nan")
             except (TypeError, ValueError):
                 pval = float("nan")
-            bed_score = max(0, min(1000, int(round((1.0 - pval) * 1000)))) if not math.isnan(pval) else 0
-            if score_col:
-                resolved["score"] = score_col
+            bed_score = clamp1000((1.0 - pval) * 1000) if not math.isnan(pval) else 0
 
             gp = _parse_ribotish_genpos(row.get("GenomePos", ""))
             if gp is None:
                 continue
             chrom, start, end, strand = gp
 
-            blocks = _parse_ribotish_blocks(row.get("Blocks", ""))
+            blocks = parse_intervals(row.get("Blocks", ""), seps=(":", "-"))
             if not blocks:
                 tx = transcripts.get(tid)
                 if tx is None:
                     blocks = [(start, end)]
                 else:
-                    blocks = []
-                    for gs, ge in tx.exons:
-                        lo = max(start, gs)
-                        hi = min(end, ge)
-                        if hi > lo:
-                            blocks.append((lo, hi))
+                    blocks = [(max(start, gs), min(end, ge)) for gs, ge in tx.exons if min(end, ge) > max(start, gs)]
                     if not blocks:
                         blocks = [(start, end)]
 
@@ -640,27 +575,7 @@ def parse_ribotish(path, transcripts, fields):
                     "blocks": blocks,
                 }
             )
-    return (pd.DataFrame(rows) if rows else EMPTY_PARSED.copy()), resolved
-
-
-def _parse_ribotricer_coord(s):
-    if not s:
-        return []
-    out = []
-    for tok in s.split(","):
-        tok = tok.strip()
-        if not tok or "-" not in tok:
-            continue
-        a, b = tok.split("-", 1)
-        try:
-            a_i, b_i = int(a), int(b)
-        except ValueError:
-            continue
-        if b_i < a_i:
-            a_i, b_i = b_i, a_i
-        out.append((a_i - 1, b_i))
-    out.sort()
-    return out
+    return rows, resolved
 
 
 def _ribotricer_span_from_id(orf_id):
@@ -700,13 +615,13 @@ def _ribotricer_blocks_from_id(orf_id, transcripts):
 
 def parse_ribotricer(path, transcripts, fields):
     resolved = {"score": "", "orf_type": "", "length": ""}
-    if not path.exists() or path.stat().st_size == 0:
-        return EMPTY_PARSED.copy(), resolved
     rows = []
+    if not path.exists() or path.stat().st_size == 0:
+        return rows, resolved
     with open(path, newline="") as fh:
         reader = csv.DictReader(fh, delimiter="\\t")
         if reader.fieldnames is None:
-            return EMPTY_PARSED.copy(), resolved
+            return rows, resolved
         for row in reader:
             status = (row.get("status") or "").lower()
             if status and status != "translating":
@@ -717,30 +632,17 @@ def parse_ribotricer(path, transcripts, fields):
             chrom = row.get("chrom") or ""
             strand = row.get("strand") or "+"
 
-            length_col, length_raw = _pick_value(row, fields["length"])
-            try:
-                length_nt = int(length_raw) if length_raw else 0
-            except (TypeError, ValueError):
-                length_nt = 0
-            aa_len = max(0, (length_nt - 3) // 3) if length_nt > 0 else 0
-            if length_col:
-                resolved["length"] = length_col
+            aa_len = aa_from_length(row, fields, resolved)
+            orf_type = pick(row, fields, resolved, "orf_type") or ""
 
-            orf_type_col, orf_type = _pick_value(row, fields["orf_type"])
-            orf_type = orf_type or ""
-            if orf_type_col:
-                resolved["orf_type"] = orf_type_col
-
-            score_col, score_raw = _pick_value(row, fields["score"])
+            score_raw = pick(row, fields, resolved, "score")
             try:
                 pscore = float(score_raw) if score_raw else 0.0
-                bed_score = max(0, min(1000, int(round(pscore * 1000))))
+                bed_score = clamp1000(pscore * 1000)
             except (TypeError, ValueError):
                 bed_score = 0
-            if score_col:
-                resolved["score"] = score_col
 
-            blocks = _parse_ribotricer_coord(row.get("coordinate") or "")
+            blocks = parse_intervals(row.get("coordinate") or "", seps=("-",))
             if not blocks:
                 blocks = _ribotricer_blocks_from_id(orf_id_raw, transcripts)
             if not blocks:
@@ -760,7 +662,7 @@ def parse_ribotricer(path, transcripts, fields):
                     "blocks": blocks,
                 }
             )
-    return (pd.DataFrame(rows) if rows else EMPTY_PARSED.copy()), resolved
+    return rows, resolved
 
 
 def parse_rpbp(path, transcripts, fields):
@@ -770,9 +672,9 @@ def parse_rpbp(path, transcripts, fields):
     reference columns by name (e.g. --score-field bayes_factor_var).
     """
     resolved = {"score": "", "length": ""}
-    if not path.exists() or path.stat().st_size == 0:
-        return EMPTY_PARSED.copy(), resolved
     rows = []
+    if not path.exists() or path.stat().st_size == 0:
+        return rows, resolved
     with open_text(path) as fh:
         lines = (line for line in fh if line and not line.startswith("#"))
         reader = csv.DictReader(lines, fieldnames=RPBP_COLUMNS, delimiter="\\t")
@@ -797,29 +699,16 @@ def parse_rpbp(path, transcripts, fields):
             blocks = [(start + bs, start + bs + sz) for bs, sz in zip(block_starts, block_sizes)]
             blocks.sort()
 
-            length_col, length_raw = _pick_value(row, fields["length"])
-            try:
-                orf_len_nt = int(length_raw) if length_raw else 0
-            except (TypeError, ValueError):
-                orf_len_nt = 0
-            aa_len = max(0, (orf_len_nt - 3) // 3) if orf_len_nt > 0 else 0
-            if length_col:
-                resolved["length"] = length_col
+            aa_len = aa_from_length(row, fields, resolved)
 
-            score_col, score_raw = _pick_value(row, fields["score"])
+            score_raw = pick(row, fields, resolved, "score")
             try:
                 score_val = float(score_raw) if score_raw else float("nan")
             except (TypeError, ValueError):
                 score_val = float("nan")
-            if not math.isnan(score_val):
-                bed_score = max(0, min(1000, int(round(min(score_val, 30.0) * 1000.0 / 30.0))))
-            else:
-                bed_score = 0
-            if score_col:
-                resolved["score"] = score_col
+            bed_score = clamp1000(min(score_val, 30.0) * 1000.0 / 30.0) if not math.isnan(score_val) else 0
 
             orf_type = "canonical"
-
             tid = name.rsplit("_", 1)[0] if "_" in name else name
             gid = transcripts[tid].gene_id if tid in transcripts else ""
 
@@ -837,7 +726,7 @@ def parse_rpbp(path, transcripts, fields):
                     "blocks": blocks,
                 }
             )
-    return (pd.DataFrame(rows) if rows else EMPTY_PARSED.copy()), resolved
+    return rows, resolved
 
 
 _PRICE_LOCATION_RE = re.compile(r"^(?P<chrom>.+?)(?P<strand>[+-]):(?P<blocks>.+)\$")
@@ -872,19 +761,18 @@ def _price_score_from_p(p):
         return 1000
     if p >= 1:
         return 0
-    s = int(round(min(-math.log10(p) * 100, 1000)))
-    return max(0, min(1000, s))
+    return clamp1000(min(-math.log10(p) * 100, 1000))
 
 
 def parse_price(path, transcripts, fields):
     resolved = {"score": "", "orf_type": ""}
-    if not path.exists() or path.stat().st_size == 0:
-        return EMPTY_PARSED.copy(), resolved
     rows = []
+    if not path.exists() or path.stat().st_size == 0:
+        return rows, resolved
     with open(path, newline="") as fh:
         reader = csv.DictReader(fh, delimiter="\\t")
         if reader.fieldnames is None:
-            return EMPTY_PARSED.copy(), resolved
+            return rows, resolved
         for row in reader:
             orf_id_raw = (row.get("Id") or "").strip()
             if not orf_id_raw:
@@ -893,10 +781,7 @@ def parse_price(path, transcripts, fields):
             if not blocks:
                 continue
 
-            orf_type_col, orf_type = _pick_value(row, fields["orf_type"])
-            orf_type = (orf_type or "").strip()
-            if orf_type_col:
-                resolved["orf_type"] = orf_type_col
+            orf_type = (pick(row, fields, resolved, "orf_type") or "").strip()
 
             tid = orf_id_raw.split("_", 1)[0]
             gid = (row.get("Gene") or "").strip()
@@ -908,14 +793,12 @@ def parse_price(path, transcripts, fields):
             length_nt = sum(b[1] - b[0] for b in blocks)
             aa_len = max(0, (length_nt - 3) // 3) if length_nt > 0 else 0
 
-            score_col, score_raw = _pick_value(row, fields["score"])
+            score_raw = pick(row, fields, resolved, "score")
             try:
                 pval = float(score_raw) if score_raw else None
             except (TypeError, ValueError):
                 pval = None
             bed_score = _price_score_from_p(pval)
-            if score_col:
-                resolved["score"] = score_col
 
             rows.append(
                 {
@@ -931,7 +814,7 @@ def parse_price(path, transcripts, fields):
                     "blocks": blocks,
                 }
             )
-    return (pd.DataFrame(rows) if rows else EMPTY_PARSED.copy()), resolved
+    return rows, resolved
 
 
 PARSERS = {
@@ -951,12 +834,7 @@ PARSERS = {
 def write_versions():
     with open("versions.yml", "w") as fh:
         yaml.safe_dump(
-            {
-                "${task.process}": {
-                    "python": platform.python_version(),
-                    "pandas": pd.__version__,
-                }
-            },
+            {"${task.process}": {"python": platform.python_version()}},
             fh,
             default_flow_style=False,
             sort_keys=False,
@@ -982,19 +860,18 @@ def main():
     }
 
     transcripts = load_transcripts(GTF)
-    df, resolved_columns = PARSERS[CALLER](INPUT, transcripts, fields)
+    rows, resolved_columns = PARSERS[CALLER](INPUT, transcripts, fields)
 
     bed_lines = []
     tsv_rows = []
     seen = set()
-    classify = CLASSIFIERS[CALLER]
 
-    for _, r in df.iterrows():
+    for r in rows:
         orf_id = r["orf_id"]
         if orf_id in seen:
             continue
         seen.add(orf_id)
-        orf_class = reclassify_smorf(classify(r["orf_type"]), int(r["aa_length"]))
+        orf_class = reclassify_smorf(classify(CALLER, r["orf_type"]), int(r["aa_length"]))
         blocks = r["blocks"]
         bed_lines.append(emit_bed12(r["chrom"], blocks, orf_id, int(r["bed_score"]), r["strand"]))
         tsv_rows.append(

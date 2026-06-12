@@ -4,8 +4,8 @@ process CUSTOM_ORFNORMALISE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1019bd22c111267bcb670fdb128829776f0ca6adfa7b0e2d126f91577d08e3/data' :
-        'community.wave.seqera.io/library/python_pandas_pyyaml:75514f9f977be607' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15f690593e9d2bd7ebeb72fff4068eeae9cdfc909103de457b81a25d29cfbef3/data' :
+        'community.wave.seqera.io/library/python_pyyaml:25b0f22c7e7bf847' }"
 
     input:
     tuple val(meta) , path(orfs_table), val(caller)
@@ -31,23 +31,6 @@ process CUSTOM_ORFNORMALISE {
     touch ${prefix}.bed12
     touch ${prefix}.tsv
 
-    python - <<END
-import platform
-import pandas
-import yaml
-
-with open("versions.yml", "w") as fh:
-    yaml.safe_dump(
-        {
-            "${task.process}": {
-                "python": platform.python_version(),
-                "pandas": pandas.__version__,
-            }
-        },
-        fh,
-        default_flow_style=False,
-        sort_keys=False,
-    )
-END
+    python -c "import platform, yaml; yaml.safe_dump({'${task.process}': {'python': platform.python_version()}}, open('versions.yml', 'w'), default_flow_style=False, sort_keys=False)"
     """
 }

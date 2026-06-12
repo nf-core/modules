@@ -30,6 +30,7 @@ Outputs:
 """
 
 import argparse
+import csv
 import glob
 import platform
 import shlex
@@ -37,7 +38,6 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-import pandas as pd
 import yaml
 
 CALLERS = ("ribotish", "ribocode", "ribotricer", "rpbp", "price")
@@ -57,32 +57,12 @@ SCORE_DIRECTIONS = {
 CLASS_ORDER = ("canonical_cds", "uORF", "dORF", "novel_u", "smORF", "other")
 
 
-def cluster_by_transcript(rows):
-    """Collapse by (transcript_id, strand). Correct for canonical CDS
-    (one CDS per transcript by definition), wrong for classes where a
-    transcript can host multiple distinct ORFs (uORF/dORF/other) - use
-    cluster_by_transcript_position for those.
-    """
-    by_tid = defaultdict(list)
+def group_by(rows, keyfn):
+    """Group rows into clusters keyed by ``keyfn(row)``, preserving first-seen order."""
+    groups = defaultdict(list)
     for r in rows:
-        tid = r.get("transcript_id") or ""
-        by_tid[(tid, r["strand"])].append(r)
-    return list(by_tid.values())
-
-
-def cluster_by_transcript_position(rows):
-    """Collapse by (transcript_id, strand, start, end). A single transcript
-    can host multiple distinct uORFs / dORFs / internal ORFs; keying on
-    the outer span keeps them in separate clusters while still merging
-    cross-caller calls of the same biological ORF (which agree on
-    transcript_id and exact coordinates).
-    """
-    by_key = defaultdict(list)
-    for r in rows:
-        tid = r.get("transcript_id") or ""
-        key = (tid, r["strand"], int(r["start"]), int(r["end"]))
-        by_key[key].append(r)
-    return list(by_key.values())
+        groups[keyfn(r)].append(r)
+    return list(groups.values())
 
 
 def cluster_by_reciprocal_overlap(rows, frac=0.8):
@@ -180,7 +160,9 @@ def load_normalised(tsv_paths, bed_paths):
     for p in tsv_paths:
         if not p.exists() or p.stat().st_size == 0:
             continue
-        rows.extend(pd.read_csv(p, sep="\\t", comment="#", dtype=str).to_dict("records"))
+        with open(p, newline="") as fh:
+            data = (line for line in fh if not line.startswith("#"))
+            rows.extend(csv.DictReader(data, delimiter="\\t"))
     for p in bed_paths:
         if not p.exists() or p.stat().st_size == 0:
             continue
@@ -263,12 +245,7 @@ def write_catalogue(prefix, clusters, bed_index):
 def write_versions():
     with open("versions.yml", "w") as fh:
         yaml.safe_dump(
-            {
-                "${task.process}": {
-                    "python": platform.python_version(),
-                    "pandas": pd.__version__,
-                }
-            },
+            {"${task.process}": {"python": platform.python_version()}},
             fh,
             default_flow_style=False,
             sort_keys=False,
@@ -301,12 +278,17 @@ def main():
         by_class[r.get("orf_class", "other")].append(r)
 
     clusters = []
-    # canonical CDS: one per transcript by definition - collapse by tid.
-    clusters.extend(cluster_by_transcript(by_class.get("canonical_cds", [])))
+    # canonical CDS: one per transcript by definition - collapse by (tid, strand).
+    clusters.extend(group_by(by_class.get("canonical_cds", []), lambda r: (r.get("transcript_id") or "", r["strand"])))
     # uORF/dORF/other: a transcript can host multiple distinct ones, so
     # additionally key on the outer span to keep them separate.
     for cls in ("uORF", "dORF", "other"):
-        clusters.extend(cluster_by_transcript_position(by_class.get(cls, [])))
+        clusters.extend(
+            group_by(
+                by_class.get(cls, []),
+                lambda r: (r.get("transcript_id") or "", r["strand"], int(r["start"]), int(r["end"])),
+            )
+        )
     # novel_u / smORF: not transcript-anchored - reciprocal-overlap clustering.
     for cls in ("novel_u", "smORF"):
         clusters.extend(cluster_by_reciprocal_overlap(by_class.get(cls, []), frac=args.reciprocal_overlap))
