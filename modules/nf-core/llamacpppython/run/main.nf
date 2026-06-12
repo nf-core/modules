@@ -4,8 +4,8 @@ process LLAMACPPPYTHON_RUN {
 
     conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        (task.accelerator ? 'oras://community.wave.seqera.io/library/llama-cpp-python_llama.cpp:5cd5637f44dac717' : 'oras://community.wave.seqera.io/library/llama-cpp-python:0.3.28--aff015fe7d46e9ec') :
-        (task.accelerator ? 'community.wave.seqera.io/library/llama-cpp-python_llama.cpp:cf54e45857ab0520' : 'community.wave.seqera.io/library/llama-cpp-python:0.3.28--c4e8129352f64626') }"
+        (task.accelerator ? 'oras://community.wave.seqera.io/library/llama-cpp-python_llama.cpp:d44fd00c4d90dbdb' : 'oras://community.wave.seqera.io/library/llama-cpp-python:0.3.28--50ab38de95fd7615') :
+        (task.accelerator ? 'community.wave.seqera.io/library/llama-cpp-python_llama.cpp:d81eb47f02f98bad' : 'community.wave.seqera.io/library/llama-cpp-python:0.3.28--d6b1d777bf1649d9') }"
 
     input:
     tuple val(meta), path(prompt_file), path(gguf_model)
