@@ -1,0 +1,113 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: leafcutter_clusterregtools
+description: Cluster RNA-seq junction reads extracted by regtools and refine them based on read counts and ratios for alternative splicing analysis
+keywords:
+  - splicing
+  - RNA-seq
+  - clustering
+  - junctions
+tools:
+  - leafcutter:
+      description: Annotation-free quantification of RNA splicing
+      homepage: https://leafcutter2.github.io/leafcutter-ds/
+      documentation: https://leafcutter2.github.io/leafcutter-ds/tutorials/clustering/
+      tool_dev_url: https://github.com/leafcutter2/leafcutter-ds
+      doi: "10.1038/s41588-017-0004-9"
+      licence:
+        - "MIT"
+      identifier: biotools:leafcutter
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'experiment1', single_end:false ]`
+    - juncfiles:
+        type: file
+        description: Text file listing paths to junction files (one per line), where junction files contain chromosome, start, end, strand, and read count information extracted by regtools
+        pattern: "*.{txt,junc}"
+        ontologies: []
+
+output:
+  pooled:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'experiment1' ]`
+      - "*_pooled":
+          type: file
+          description: Initial pooled junction file containing aggregated junction information across all samples
+          pattern: "*_pooled"
+          ontologies: []
+  refined:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'experiment1' ]`
+      - "*_refined":
+          type: file
+          description: Refined cluster definitions after filtering based on minimum reads and junction ratios
+          pattern: "*_refined"
+          ontologies: []
+  sortedlibs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'experiment1' ]`
+      - "*_sortedlibs":
+          type: file
+          description: List of sorted junction files processed during clustering
+          pattern: "*_sortedlibs"
+          ontologies: []
+  counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'experiment1' ]`
+      - "*_perind*.counts.gz":
+          type: file
+          description: Compressed per-individual junction counts matrix (includes constitutive introns if -C flag used)
+          pattern: "*_perind{.const,}counts.gz"
+          ontologies: []
+  numers:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'experiment1' ]`
+      - "*_perind_numers*.counts.gz":
+          type: file
+          description: Compressed numerator counts for junction usage ratios (includes constitutive introns if -C flag used)
+          pattern: "*_perind_numers{.const,}counts.gz"
+          ontologies: []
+  versions_leafcutter:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "leafcutter":
+          type: string
+          description: The name of the tool
+      - "leafcutter-cluster --version 2>&1 | grep -oP 'leafcutter.*' || echo 'leafcutter 2.0.2'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - leafcutter:
+          type: string
+          description: The name of the tool
+      - "leafcutter-cluster --version 2>&1 | grep -oP 'leafcutter.*' || echo 'leafcutter 2.0.2'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@JTL-lab"
+maintainers:
+  - "@JTL-lab"
