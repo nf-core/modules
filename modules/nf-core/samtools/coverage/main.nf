@@ -39,5 +39,6 @@ process SAMTOOLS_COVERAGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "#rname\tstartpos\tendpos\tnumreads\tcovbases\tcoverage\tmeandepth\tmeanbaseq\tmeanmapq" > ${prefix}.txt
+    echo "chr21\t16570000\t16610000\t8741\t39996\t99.9875\t32.4854\t29.6\t59.8" >> ${prefix}.txt
     """
 }

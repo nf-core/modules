@@ -15,6 +15,7 @@ nextflow_process {
         when {
             params {
                 outdir = "test"
+                module_args = '--1 --allow-no-sex'
             }
             process {
                 """
@@ -74,6 +75,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.log.get(0).get(1) ==~ ".*/*.log" },
+                {
+                    def assocFile = path(process.out.assoc.get(0).get(1))
+                    def commandText = assocFile.parent.resolve(".command.sh").text
+                    assert commandText.contains("--pheno-name Phenotype")
+                },
                 { assert snapshot(
                     process.out.assoc,
                     process.out.nosex,
@@ -91,6 +97,7 @@ nextflow_process {
         when {
             params {
                 outdir = "test"
+                module_args = '--1 --allow-no-sex'
             }
             process {
                 """
@@ -120,6 +127,101 @@ nextflow_process {
         }
     }
 
+    test("plink - binary phenotype metadata with bed input") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                outdir = "test"
+                module_args = '--1 --allow-no-sex'
+            }
+            process {
+                """
+                input[0] = [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                input[1] = [ [id:"null"], []]
+                input[2] = [ [id:"null"], []]
+                input[3] = [
+                    [id:"plink_simulated_binary_phenoname"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" },
+                { assert process.out.assoc.size() == 1 },
+                {
+                    def assocFile = path(process.out.assoc.get(0).get(1))
+                    def commandText = assocFile.parent.resolve(".command.sh").text
+                    assert commandText.contains("--pheno ")
+                    assert !commandText.contains("--chr ")
+                },
+                { assert snapshot(
+                    process.out.assoc,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("plink - quantitative phenotype metadata with bed input") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                outdir = "test"
+                module_args = '--pheno-name QuantitativeTrait --allow-no-sex'
+            }
+            process {
+                """
+                input[0] = [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                input[1] = [ [id:"null"], []]
+                input[2] = [ [id:"null"], []]
+                input[3] = [
+                    [id:"plink_simulated_quantitative_phenoname"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" },
+                { assert process.out.assoc.size() == 1 },
+                {
+                    def assocFile = path(process.out.assoc.get(0).get(1))
+                    def commandText = assocFile.parent.resolve(".command.sh").text
+                    assert assocFile.fileName.toString().endsWith(".qassoc")
+                    assert commandText.contains("--pheno ")
+                    assert commandText.contains("--pheno-name QuantitativeTrait")
+                },
+                { assert snapshot(
+                    process.out.assoc,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
     test("plink - BCF") {
 
         config "./nextflow.config"
@@ -127,6 +229,7 @@ nextflow_process {
         when {
             params {
                 outdir = "test"
+                module_args = '--1 --allow-no-sex'
             }
             process {
                 """
