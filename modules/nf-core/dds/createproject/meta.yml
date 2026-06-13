@@ -1,0 +1,90 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "dds_createproject"
+description: This module is used to create a project on the SciLifeLab Data
+  Delivery System (DDS).
+keywords:
+  - DDS
+  - SciLifeLab
+  - data delivery
+tools:
+  - "dds":
+      description: "The Data Delivery System (DDS) is a cloud-based system for the delivery
+        of data from SciLifeLab platforms to their users."
+      homepage: "https://delivery.scilifelab.se"
+      documentation: "https://scilifelabdatacentre.github.io/dds_cli/"
+      tool_dev_url: "https://github.com/ScilifelabDataCentre/dds_cli"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - title:
+      type: string
+      description: The title of the project.
+  - description:
+      type: string
+      description: A description of the project.
+
+  - pi:
+      type: string
+      description: Email of the Principal Investigator.
+  - token_file:
+      type: file
+      description: Path to a DDS CLI token file (created via `dds auth`). Must be
+        readable by the pipeline user.
+      ontologies: []
+output:
+  versions_dds:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dds:
+          type: string
+          description: The name of the tool
+      - dds --version | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  log:
+    - output.log:
+        type: file
+        description: File containing the projectID of the project created.
+        ontologies: []
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dds:
+          type: string
+          description: The name of the tool
+      - dds --version | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@annaasklof"
+maintainers:
+  - "@annaasklof"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/pip_python_dds-cli:4a7daeb54b4c7a8c
+      build_id: bd-4a7daeb54b4c7a8c_1
+      scan_id: sc-175817d0c023f7c1_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/pip_python_dds-cli:ab6efd1ed8af3fea
+      build_id: bd-ab6efd1ed8af3fea_1
+      scan_id: sc-af3babfa6db44fcc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pip_python_dds-cli:a1d1c0e2a13b5df4
+      build_id: bd-a1d1c0e2a13b5df4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/7352a40103ce629fbc72986922a68e8f9cc35630b89ee836a0c03dfd676f2341/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pip_python_dds-cli:6f4fcdba4a36c4ed
+      build_id: bd-6f4fcdba4a36c4ed_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/09/098a7aae2590da026a7b3f0e087492a2c10378a7f3e34f9dc8b80f9281555dd5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/dds/createproject/.conda-lock/linux_amd64-bd-4a7daeb54b4c7a8c_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/dds/createproject/.conda-lock/linux_arm64-bd-ab6efd1ed8af3fea_1.txt
