@@ -4,7 +4,7 @@ process VG_CONSTRUCT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vg:1.73.0--h9ee0642_0':
+        'https://depot.galaxyproject.org/singularity/vg:1.73.0--h9ee0642_0' :
         'quay.io/biocontainers/vg:1.73.0--h9ee0642_0' }"
 
     input:
