@@ -12,7 +12,6 @@ nextflow_process {
     config "./nextflow.config"
 
     test("sarscov2 - fasta - replace") {
-
         when {
             params {
                 modules_args = "-s -p 'A' -r 'N'"
@@ -23,7 +22,6 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
                 ]
-                input[1] = ''
                 """
             }
         }
@@ -37,7 +35,6 @@ nextflow_process {
     }
 
     test("sarscov2 - fasta - replace - uncompressed") {
-
         when {
             params {
                 modules_args = "-s -p 'A' -r 'N'"
@@ -48,32 +45,6 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = ''
-                """
-            }
-        }
-
-        then {
-            assert process.success
-            assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
-            )
-        }
-    }
-
-    test("sarscov2 - fasta - uncomp - custom") {
-
-        when {
-            params {
-                modules_args = "-s -p 'T' -r 'N'"
-            }
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ]
-                input[1] = '.fasta'
                 """
             }
         }
@@ -96,7 +67,6 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = ''
                 """
             }
         }

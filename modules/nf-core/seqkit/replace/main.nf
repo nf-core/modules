@@ -9,7 +9,6 @@ process SEQKIT_REPLACE {
 
     input:
     tuple val(meta), path(fastx)
-    val out_ext
 
     output:
     tuple val(meta), path("*.fast*"), emit: fastx
@@ -21,18 +20,15 @@ process SEQKIT_REPLACE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def endswith = out_ext
-    if (!endswith) {
-        def extension = "fastq"
-        if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.faa|.+\.faa.gz/) {
-            extension = "fasta"
-        }
-        def isgz = ""
-        if ("${fastx}" ==~ /.+\.gz/) {
-            isgz = ".gz"
-        }
-        endswith = "${extension}${isgz}"
+    def extension = "fastq"
+    if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.faa|.+\.faa.gz/) {
+        extension = "fasta"
     }
+    def isgz = ""
+    if ("${fastx}" ==~ /.+\.gz/) {
+        isgz = ".gz"
+    }
+    def endswith = "${extension}${isgz}"
     """
     seqkit \\
         replace \\
@@ -44,18 +40,15 @@ process SEQKIT_REPLACE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def endswith = out_ext
-    if (!endswith) {
-        def extension = "fastq"
-        if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.faa|.+\.faa.gz/) {
-            extension = "fasta"
-        }
-        def isgz = ""
-        if ("${fastx}" ==~ /.+\.gz/) {
-            isgz = ".gz"
-        }
-        endswith = "${extension}${isgz}"
+    def extension = "fastq"
+    if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.faa|.+\.faa.gz/) {
+        extension = "fasta"
     }
+    def isgz = ""
+    if ("${fastx}" ==~ /.+\.gz/) {
+        isgz = ".gz"
+    }
+    def endswith = "${extension}${isgz}"
 
     def output_cmd = endswith.endsWith('.gz')
         ? "echo \"\" | gzip > ${prefix}.${endswith}"
