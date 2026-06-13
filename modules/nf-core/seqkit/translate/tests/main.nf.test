@@ -124,7 +124,7 @@ nextflow_process {
         }
 
         then {
-            assert process.failure
+            assert process.failed
             assertAll(
                 { assert process.stdout.toString().contains("Input and output names are the same") }
             )
@@ -168,7 +168,7 @@ nextflow_process {
         }
 
         then {
-            assert process.failure
+            assert process.failed
             assertAll(
                 { assert process.stdout.toString().contains("Input and output names are the same") }
             )
