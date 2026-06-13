@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process SEQKIT_SPLIT2"
     script "../main.nf"
     process "SEQKIT_SPLIT2"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,218 +12,247 @@ nextflow_process {
     tag "seqkit/split2"
 
     test("single_end - length") {
+        params {
+            modules_args = '--by-length 8K'
+        }
 
-        config "./length.config"
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:true ], // meta map
-                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
-                     ]
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("paired_end - length") {
-
-        config "./length.config"
+        params {
+            modules_args = '--by-length 8K'
+        }
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                               file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
-                     ]
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("single_end - length - stub") {
-
-        options "-stub"
-        config "./length.config"
+        options '-stub'
+        params {
+            modules_args = '--by-length 8K'
+        }
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:true ], // meta map
-                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
-                     ]
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("single_end - part") {
+        params {
+            modules_args = '--by-part 3'
+        }
 
-        config "./part.config"
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:true ], // meta map
-                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
-                     ]
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("paired_end - part") {
-
-        config "./part.config"
+        params {
+            modules_args = '--by-part 3'
+        }
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                               file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
-                     ]
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("single_end - part - stub") {
-
-        options "-stub"
-        config "./part.config"
+        options '-stub'
+        params {
+            modules_args = '--by-part 3'
+        }
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:true ], // meta map
-                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
-                     ]
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("single_end - size") {
+        params {
+            modules_args = '--by-size 50'
+        }
 
-        config "./size.config"
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:true ], // meta map
-                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
-                     ]
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("paired_end - size") {
-
-        config "./size.config"
+        params {
+            modules_args = '--by-size 50'
+        }
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                               file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
-                     ]
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("single_end - size - stub") {
-
-        options "-stub"
-        config "./size.config"
+        options '-stub'
+        params {
+            modules_args = '--by-size 50'
+        }
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:true ], // meta map
-                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
-                     ]
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("single_end - length - no_compression") {
-
-        config "./length.config"
+        params {
+            modules_args = '--by-length 8K'
+        }
 
         setup {
             run("GUNZIP") {
                 script "../../../gunzip/main.nf"
                 process {
                     """
-                    input[0] = [ [ id:'test', single_end:true ], // meta map
-                                 [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
-                         ]
+                    input[0] = [
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
                     """
                 }
             }
@@ -237,8 +267,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

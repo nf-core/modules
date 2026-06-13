@@ -10,42 +10,42 @@ nextflow_process {
     tag "seqkit/fq2fa"
 
     test("sarscov2 - bam") {
-
         when {
             process {
                 """
-                input[0] = [[ id:'test', single_end:false ], // meta map
-                            [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("sarscov2 - bam - stub") {
-
-        options "-stub"
+        options '-stub'
 
         when {
             process {
                 """
-                input[0] = [[ id:'test', single_end:false ], // meta map
-                            [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

@@ -10,21 +10,21 @@ nextflow_process {
     tag "seqkit/tab2fx"
 
     test("fasta") {
-
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ],   // meta map
-                       [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true) ]
-                     ]
-                     input[1] = 'fa.zst'
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true)
+                ]
+                input[1] = 'fa.zst'
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -34,17 +34,18 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ],   // meta map
-                       [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.txt.zst', checkIfExists: true) ]
-                     ]
-                     input[1] = 'fq.zst'
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.txt.zst', checkIfExists: true)
+                ]
+                input[1] = 'fq.zst'
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -54,17 +55,18 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ],   // meta map
-                       [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true) ]
-                     ]
-                     input[1] = 'fa.gz'
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true)
+                ]
+                input[1] = 'fa.gz'
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -74,40 +76,41 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ],   // meta map
-                       [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.txt.zst', checkIfExists: true) ]
-                     ]
-                     input[1] = 'fq.gz'
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.txt.zst', checkIfExists: true)
+                ]
+                input[1] = 'fq.gz'
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("fasta - stub") {
-
-        options "-stub"
+        options '-stub'
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ],   // meta map
-                       [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true) ]
-                     ]
-                     input[1] = 'fa.zst'
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true)
+                ]
+                input[1] = 'fa.zst'
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

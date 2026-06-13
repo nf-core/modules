@@ -11,6 +11,10 @@ nextflow_process {
     tag "seqkit/concat"
 
     test("sarscov2 and human primers - fasta") {
+        params {
+            modules_args = '--full'
+        }
+
         when {
             process {
                 """
@@ -26,16 +30,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.fastx[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
+            // Including headers from both input files
             with(process.out.fastx) {
-                // Including headers from both input files
                 assert path(get(0).get(1)).readLines().any { it.contains('>NEB_Clontech_3p') }
                 assert path(get(0).get(1)).readLines().any { it.contains('>MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome') }
             }
@@ -43,27 +47,29 @@ nextflow_process {
     }
 
     test("sarscov2 and human primers - fasta - stub") {
-
         options '-stub'
+        params {
+            modules_args = '--full'
+        }
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                        [
+                    [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
-                        ]
                     ]
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match()}
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

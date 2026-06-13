@@ -11,6 +11,10 @@ nextflow_process {
     tag "seqkit/seq"
 
     test("sarscov2-genome_fasta") {
+        params {
+            modules_args2 = '-n'
+        }
+
         when {
             process {
                 """
@@ -23,14 +27,18 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("sarscov2-genome_fasta_gz") {
+        params {
+            modules_args2 = '-n'
+        }
+
         when {
             process {
                 """
@@ -43,14 +51,18 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("sarscov2-test_1_fastq_gz") {
+        params {
+            modules_args2 = '-n'
+        }
+
         when {
             process {
                 """
@@ -63,14 +75,18 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("file_name_conflict-fail_with_error") {
+        params {
+            modules_args2 = '-n'
+        }
+
         when {
             process {
                 """
@@ -83,16 +99,18 @@ nextflow_process {
         }
 
         then {
+            assert process.failure
             assertAll(
-                { assert !process.success },
                 { assert process.stdout.toString().contains("Input and output names are the same") }
             )
         }
     }
 
     test("sarscov2-genome_fasta-stub") {
-
         options '-stub'
+        params {
+            modules_args2 = '-n'
+        }
 
         when {
             process {
@@ -106,16 +124,18 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("file_name_conflict-fail_with_error-stub") {
-
         options '-stub'
+        params {
+            modules_args2 = '-n'
+        }
 
         when {
             process {
@@ -129,8 +149,8 @@ nextflow_process {
         }
 
         then {
+            assert process.failure
             assertAll(
-                { assert !process.success },
                 { assert process.stdout.toString().contains("Input and output names are the same") }
             )
         }

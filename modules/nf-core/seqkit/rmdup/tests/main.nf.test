@@ -22,8 +22,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() },
                 { assert path(process.out.log[0][1]).text.contains('0 duplicated records removed') }
             )
@@ -46,8 +46,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() },
                 { assert path(process.out.log[0][1]).text.contains('1 duplicated records removed') }
             )
@@ -67,8 +67,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() },
                 { assert path(process.out.log[0][1]).text.contains('0 duplicated records removed') }
             )
@@ -88,8 +88,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() },
                 { assert path(process.out.log[0][1]).text.contains('0 duplicated records removed') }
             )
@@ -109,15 +109,14 @@ nextflow_process {
         }
 
         then {
+            assert process.failure
             assertAll(
-                { assert !process.success },
                 { assert process.stdout.toString().contains("Input and output names are the same") }
             )
         }
     }
 
     test("sarscov2-genome_fasta-stub") {
-
         options '-stub'
 
         when {
@@ -132,8 +131,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() },
                 { assert path(process.out.log[0][1]).text.contains('0 duplicated records removed') }
             )
@@ -155,8 +154,8 @@ nextflow_process {
         }
 
         then {
+            assert process.failure
             assertAll(
-                { assert !process.success },
                 { assert process.stdout.toString().contains("Input and output names are the same") }
             )
         }
