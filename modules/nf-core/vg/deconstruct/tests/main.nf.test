@@ -32,9 +32,33 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					path(process.out.vcf[0][1]).vcf.summary,
-					process.out.versions
+					sanitizeOutput(process.out, unstableKeys: ['versions_vg'])
 					).match()
 				}
+            )
+        }
+    }
+
+    test("test-vg-deconstruct-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    [ file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.gfaffix.gfa', checkIfExists: true) ]
+				]
+				input[1] = []
+                input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: [])).match() }
             )
         }
     }
