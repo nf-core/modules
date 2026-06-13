@@ -50,10 +50,18 @@ process SEQKIT_REPLACE {
         if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.faa|.+\.faa.gz/) {
             extension = "fasta"
         }
-        endswith = "${extension}.gz"
+        def isgz = ""
+        if ("${fastx}" ==~ /.+\.gz/) {
+            isgz = ".gz"
+        }
+        endswith = "${extension}${isgz}"
     }
 
+    def output_cmd = endswith.endsWith('.gz')
+        ? "echo \"\" | gzip > ${prefix}.${endswith}"
+        : "touch ${prefix}.${endswith}"
+
     """
-    echo "" | gzip > ${prefix}.${endswith}
+    ${output_cmd}
     """
 }
