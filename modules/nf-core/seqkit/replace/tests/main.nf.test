@@ -58,9 +58,10 @@ nextflow_process {
     }
 
     test("sarscov2 - fasta - uncomp - custom") {
-        config "./uncomp.config"
-
         when {
+            params {
+                modules_args = "-s -p 'T' -r 'N'"
+            }
             process {
                 """
                 input[0] = [
