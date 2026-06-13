@@ -38,6 +38,7 @@ nextflow_process {
                 }
             )
             with(process.out.fastx) {
+                // Including headers from both input files
                 assert path(get(0).get(1)).readLines().any { it.contains('>NEB_Clontech_3p') }
                 assert path(get(0).get(1)).readLines().any { it.contains('>MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome') }
             }
