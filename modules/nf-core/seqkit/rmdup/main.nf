@@ -51,8 +51,9 @@ process SEQKIT_RMDUP {
     if ("${prefix}.${extension}" == "${fastx}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
+    def create_cmd = extension.endsWith('.gz') ? "echo '' | gzip >" : "touch"
     """
-    echo '' | gzip > ${prefix}.${extension}
+    ${create_cmd} ${prefix}.${extension}
     echo \\
         '[INFO] 0 duplicated records removed' \\
         > ${prefix}.log
