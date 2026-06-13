@@ -37,7 +37,7 @@ process SEQKIT_HEAD {
     """
     for f in ${fastqs.join(' ')}
     do
-        echo "" | gzip > "${prefix}_subset_\$(basename \$f)"
+       echo "" | gzip > "${prefix}_subset_\$(basename \$f)"
     done
     """
 }
