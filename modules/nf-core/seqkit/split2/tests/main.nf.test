@@ -12,11 +12,10 @@ nextflow_process {
     tag "seqkit/split2"
 
     test("single_end - length") {
-        params {
-            modules_args = '--by-length 8K'
-        }
-
         when {
+            params {
+                modules_args = '--by-length 8K'
+            }
             process {
                 """
                 input[0] = [
@@ -36,11 +35,10 @@ nextflow_process {
     }
 
     test("paired_end - length") {
-        params {
-            modules_args = '--by-length 8K'
-        }
-
         when {
+            params {
+                modules_args = '--by-length 8K'
+            }
             process {
                 """
                 input[0] = [
@@ -64,11 +62,11 @@ nextflow_process {
 
     test("single_end - length - stub") {
         options '-stub'
-        params {
-            modules_args = '--by-length 8K'
-        }
 
         when {
+            params {
+                modules_args = '--by-length 8K'
+            }
             process {
                 """
                 input[0] = [
@@ -88,11 +86,10 @@ nextflow_process {
     }
 
     test("single_end - part") {
-        params {
-            modules_args = '--by-part 3'
-        }
-
         when {
+            params {
+                modules_args = '--by-part 3'
+            }
             process {
                 """
                 input[0] = [
@@ -112,11 +109,10 @@ nextflow_process {
     }
 
     test("paired_end - part") {
-        params {
-            modules_args = '--by-part 3'
-        }
-
         when {
+            params {
+                modules_args = '--by-part 3'
+            }
             process {
                 """
                 input[0] = [
@@ -140,11 +136,11 @@ nextflow_process {
 
     test("single_end - part - stub") {
         options '-stub'
-        params {
-            modules_args = '--by-part 3'
-        }
 
         when {
+            params {
+                modules_args = '--by-part 3'
+            }
             process {
                 """
                 input[0] = [
@@ -164,11 +160,10 @@ nextflow_process {
     }
 
     test("single_end - size") {
-        params {
-            modules_args = '--by-size 50'
-        }
-
         when {
+            params {
+                modules_args = '--by-size 50'
+            }
             process {
                 """
                 input[0] = [
@@ -188,11 +183,10 @@ nextflow_process {
     }
 
     test("paired_end - size") {
-        params {
-            modules_args = '--by-size 50'
-        }
-
         when {
+            params {
+                modules_args = '--by-size 50'
+            }
             process {
                 """
                 input[0] = [
@@ -216,11 +210,11 @@ nextflow_process {
 
     test("single_end - size - stub") {
         options '-stub'
-        params {
-            modules_args = '--by-size 50'
-        }
 
         when {
+            params {
+                modules_args = '--by-size 50'
+            }
             process {
                 """
                 input[0] = [
@@ -240,25 +234,23 @@ nextflow_process {
     }
 
     test("single_end - length - no_compression") {
-        params {
-            modules_args = '--by-length 8K'
-        }
-
-        setup {
-            run("GUNZIP") {
-                script "../../../gunzip/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test', single_end:true ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                    ]
-                    """
+        when {
+            params {
+                modules_args = '--by-length 8K'
+            }
+            setup {
+                run("GUNZIP") {
+                    script "../../../gunzip/main.nf"
+                    process {
+                        """
+                        input[0] = [
+                            [ id:'test', single_end:true ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        ]
+                        """
+                    }
                 }
             }
-        }
-
-        when {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip

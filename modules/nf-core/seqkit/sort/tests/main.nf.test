@@ -11,11 +11,10 @@ nextflow_process {
     tag "seqkit/sort"
 
     test("sarscov2-genome_fasta") {
-        params {
-            modules_args2 = '-n'
-        }
-
         when {
+            params {
+                modules_args2 = '-n'
+            }
             process {
                 """
                 input[0] = [
@@ -35,11 +34,10 @@ nextflow_process {
     }
 
     test("sarscov2-genome_fasta_gz") {
-        params {
-            modules_args2 = '-n'
-        }
-
         when {
+            params {
+                modules_args2 = '-n'
+            }
             process {
                 """
                 input[0] = [
@@ -59,11 +57,10 @@ nextflow_process {
     }
 
     test("sarscov2-test_1_fastq_gz") {
-        params {
-            modules_args2 = '-n'
-        }
-
         when {
+            params {
+                modules_args2 = '-n'
+            }
             process {
                 """
                 input[0] = [
@@ -83,11 +80,10 @@ nextflow_process {
     }
 
     test("file_name_conflict-fail_with_error") {
-        params {
-            modules_args2 = '-n'
-        }
-
         when {
+            params {
+                modules_args2 = '-n'
+            }
             process {
                 """
                 input[0] = [
@@ -108,11 +104,11 @@ nextflow_process {
 
     test("sarscov2-genome_fasta-stub") {
         options '-stub'
-        params {
-            modules_args2 = '-n'
-        }
 
         when {
+            params {
+                modules_args2 = '-n'
+            }
             process {
                 """
                 input[0] = [
@@ -133,11 +129,11 @@ nextflow_process {
 
     test("file_name_conflict-fail_with_error-stub") {
         options '-stub'
-        params {
-            modules_args2 = '-n'
-        }
 
         when {
+            params {
+                modules_args2 = '-n'
+            }
             process {
                 """
                 input[0] = [

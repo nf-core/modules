@@ -11,11 +11,10 @@ nextflow_process {
     tag "seqkit/pair"
 
     test("sarscov2 - bam") {
-        params {
-            modules_args = '-u'
-        }
-
         when {
+            params {
+                modules_args = '-u'
+            }
             process {
                 """
                 input[0] = [
@@ -39,11 +38,11 @@ nextflow_process {
 
     test("sarscov2 - bam - stub") {
         options '-stub'
-        params {
-            modules_args = '-u'
-        }
 
         when {
+            params {
+                modules_args = '-u'
+            }
             process {
                 """
                 input[0] = [

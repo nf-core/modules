@@ -11,11 +11,10 @@ nextflow_process {
     tag "seqkit/sliding"
 
     test("sarscov2 - fasta") {
-        params {
-            modules_args = '-s 2 -W 5'
-        }
-
         when {
+            params {
+                modules_args = '-s 2 -W 5'
+            }
             process {
                 """
                 input[0] = [
@@ -35,11 +34,10 @@ nextflow_process {
     }
 
     test("sarscov2 - fastq") {
-        params {
-            modules_args = '-s 2 -W 5'
-        }
-
         when {
+            params {
+                modules_args = '-s 2 -W 5'
+            }
             process {
                 """
                 input[0] = [
@@ -60,11 +58,11 @@ nextflow_process {
 
     test("sarscov2 - fasta - stub") {
         options '-stub'
-        params {
-            modules_args = '-s 2 -W 5'
-        }
 
         when {
+            params {
+                modules_args = '-s 2 -W 5'
+            }
             process {
                 """
                 input[0] = [

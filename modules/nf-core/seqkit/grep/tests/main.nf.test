@@ -55,11 +55,10 @@ nextflow_process {
     }
 
     test("with_pattern") {
-        params {
-            modules_args = '-p chr22'
-        }
-
         when {
+            params {
+                modules_args = '-p chr22'
+            }
             process {
                 """
                 input[0] = [

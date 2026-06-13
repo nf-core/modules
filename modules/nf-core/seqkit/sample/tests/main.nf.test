@@ -11,11 +11,10 @@ nextflow_process {
     tag "seqkit/sample"
 
     test("sarscov2 - fastq_gz - proportion") {
-        params {
-            modules_args = '--proportion 0.5 --rand-seed 11'
-        }
-
         when {
+            params {
+                modules_args = '--proportion 0.5 --rand-seed 11'
+            }
             process {
                 """
                 input[0] = [
@@ -35,11 +34,10 @@ nextflow_process {
     }
 
     test("sarscov2 - genome_fasta - proportion") {
-        params {
-            modules_args = '--proportion 0.5 --rand-seed 11'
-        }
-
         when {
+            params {
+                modules_args = '--proportion 0.5 --rand-seed 11'
+            }
             process {
                 """
                 input[0] = [
@@ -59,11 +57,10 @@ nextflow_process {
     }
 
     test("file_name_conflict - fail_with_error") {
-        params {
-            modules_args = '--proportion 0.5 --rand-seed 11'
-        }
-
         when {
+            params {
+                modules_args = '--proportion 0.5 --rand-seed 11'
+            }
             process {
                 """
                 input[0] = [
@@ -84,11 +81,11 @@ nextflow_process {
 
     test("sarscov2 - fastq_gz - proportion - stub") {
         options '-stub'
-        params {
-            modules_args = '--proportion 0.5 --rand-seed 11'
-        }
 
         when {
+            params {
+                modules_args = '--proportion 0.5 --rand-seed 11'
+            }
             process {
                 """
                 input[0] = [
