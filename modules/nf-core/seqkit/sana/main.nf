@@ -33,15 +33,11 @@ process SEQKIT_SANA {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     extension = reads.getName() - reads.getSimpleName()
+    def create_cmd = extension.endsWith('.gz') ? "echo -n | gzip >" : "touch"
     """
     echo ${args}
 
-    # Create empty output files conditionally based on extension
-    if [[ "${extension}" == *.gz ]]; then
-        echo -n | gzip -c > ${prefix}${extension}
-    else
-        touch ${prefix}${extension}
-    fi
+    ${create_cmd} ${prefix}${extension}
     touch ${prefix}.log
     """
 }

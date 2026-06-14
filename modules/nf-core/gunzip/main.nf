@@ -20,8 +20,8 @@ process GUNZIP {
     script:
     def args = task.ext.args ?: ''
     def nameWithoutGz = archive.extension == 'gz' ? archive.baseName : archive.name
-	def extension = file(nameWithoutGz).extension
-	def name = file(nameWithoutGz).baseName
+    def extension = file(nameWithoutGz).extension
+    def name = file(nameWithoutGz).baseName
     def prefix = task.ext.prefix ?: name
     gunzip = prefix + ".${extension}"
     """
@@ -37,8 +37,8 @@ process GUNZIP {
 
     stub:
     def nameWithoutGz = archive.extension == 'gz' ? archive.baseName : archive.name
-	def extension = file(nameWithoutGz).extension
-	def name = file(nameWithoutGz).baseName
+    def extension = file(nameWithoutGz).extension
+    def name = file(nameWithoutGz).baseName
     def prefix = task.ext.prefix ?: name
     gunzip = prefix + ".${extension}"
     """
