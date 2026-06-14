@@ -12,7 +12,7 @@ process WIPERTOOLS_REPORTGATHER {
 
     output:
     tuple val(meta), path("${prefix}.report"), emit: gathered_report
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('wipertools'), eval("wipertools reportgather --version"), topic: versions, emit: versions_wipertools
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,14 +29,9 @@ process WIPERTOOLS_REPORTGATHER {
     """
     wipertools \\
         reportgather \\
-        -r $report \\
+        -r ${report} \\
         -f ${prefix}.report \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wipertools reportgather: \$(wipertools reportgather --version)
-    END_VERSIONS
     """
 
     stub:
@@ -49,10 +44,5 @@ process WIPERTOOLS_REPORTGATHER {
 
     """
     touch ${prefix}.report
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wipertools reportgather: \$(wipertools reportgather --version)
-    END_VERSIONS
     """
 }
