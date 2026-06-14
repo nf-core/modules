@@ -120,7 +120,8 @@ workflow FASTQ_REMOVE_RRNA {
 
             // Step 1: Add filename prefixes to sequence headers
             SEQKIT_REPLACE(
-                ch_rrna_with_meta
+                ch_rrna_with_meta,
+                ''
             )
             ch_seqkit_prefixed = SEQKIT_REPLACE.out.fastx
 
@@ -130,7 +131,8 @@ workflow FASTQ_REMOVE_RRNA {
                 .set { ch_prefixed_fastas }
 
             SEQKIT_REPLACE_U2T(
-                ch_prefixed_fastas
+                ch_prefixed_fastas,
+                ''
             )
             ch_seqkit_converted = SEQKIT_REPLACE_U2T.out.fastx
 

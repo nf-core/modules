@@ -44,7 +44,7 @@ workflow FASTQ_PREPROCESS_SEQKIT {
     }
 
     if (!skip_seqkit_replace) {
-        SEQKIT_REPLACE( ch_reads_split )
+        SEQKIT_REPLACE( ch_reads_split, '' )
         ch_reads_split = SEQKIT_REPLACE.out.fastx
     }
 

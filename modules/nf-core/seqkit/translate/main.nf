@@ -4,8 +4,8 @@ process SEQKIT_TRANSLATE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/seqkit:2.9.0--h9ee0642_0'
-        : 'quay.io/biocontainers/seqkit:2.9.0--h9ee0642_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fe272ab9a519cf418160471a485b5ef50ea3f571a8e4555a826f70a4d8243ae/data'
+        : 'community.wave.seqera.io/library/seqkit:2.13.0--05c0a96bf9fb2751'}"
 
     input:
     tuple val(meta), path(fastx)
@@ -50,7 +50,8 @@ process SEQKIT_TRANSLATE {
     if ("${prefix}.${extension}" == "${fastx}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
+    def create_cmd = extension.endsWith('.gz') ? "echo -n | gzip >" : "touch"
     """
-    touch ${prefix}.${extension}
+    ${create_cmd} ${prefix}.${extension}
     """
 }

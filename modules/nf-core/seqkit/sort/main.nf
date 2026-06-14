@@ -1,53 +1,58 @@
 process SEQKIT_SORT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
     // File IO can be a bottleneck. See: https://bioinf.shenwei.me/seqkit/usage/#parallelization-of-cpu-intensive-jobs
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.9.0--h9ee0642_0':
-        'quay.io/biocontainers/seqkit:2.9.0--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fe272ab9a519cf418160471a485b5ef50ea3f571a8e4555a826f70a4d8243ae/data'
+        : 'community.wave.seqera.io/library/seqkit:2.13.0--05c0a96bf9fb2751'}"
 
     input:
     tuple val(meta), path(fastx)
 
     output:
-    tuple val(meta), path("${prefix}.*")    , emit: fastx
+    tuple val(meta), path("${prefix}.*"), emit: fastx
     tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    def args2       = task.ext.args2 ?: ''
-    prefix          = task.ext.prefix ?: "${meta.id}"
-    def extension   = "fastq"
-    if ("$fastx" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/ ) {
-        extension   = "fasta"
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = "fastq"
+    if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/) {
+        extension = "fasta"
     }
-    extension       = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
-    def call_gzip   = extension.endsWith('.gz') ? "| gzip -c $args2 " : ''
-    if("${prefix}.${extension}" == "$fastx") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    extension = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
+    def call_gzip = extension.endsWith('.gz') ? "| gzip -c ${args2} " : ''
+    if ("${prefix}.${extension}" == "${fastx}") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     seqkit \\
         sort \\
-        --threads $task.cpus \\
-        $args \\
-        $fastx \\
-        $call_gzip \\
+        --threads ${task.cpus} \\
+        ${args} \\
+        ${fastx} \\
+        ${call_gzip} \\
         > ${prefix}.${extension}
     """
 
     stub:
-    prefix          = task.ext.prefix ?: "${meta.id}"
-    def extension   = "fastq"
-    if ("$fastx" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/ ) {
-        extension   = "fasta"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = "fastq"
+    if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/) {
+        extension = "fasta"
     }
-    extension       = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
-    if("${prefix}.${extension}" == "$fastx") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    extension = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
+    if ("${prefix}.${extension}" == "${fastx}") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
+    def create_cmd = extension.endsWith('.gz') ? "echo -n | gzip >" : "touch"
     """
-    touch ${prefix}.${extension}
+    ${create_cmd} ${prefix}.${extension}
     """
 }
