@@ -1,0 +1,48 @@
+// nf-core modules test deepmased/predict
+nextflow_process {
+
+    name "Test Process DEEPMASED_PREDICT"
+    script "../main.nf"
+    process "DEEPMASED_PREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deepmased"
+    tag "deepmased/predict"
+    tag "deepmased_predict"
+
+    // NOTE: DeepMAsED is designed for metagenome assemblies with sufficient read
+    // coverage per contig. The standard sarscov2 test data results in 0 contigs
+    // after coverage filtering, causing predict to crash (IndexError).
+    // A full integration test requires metagenome BAM + assembly data.
+    // The stub test below verifies module structure and output file naming.
+
+    test("sarscov2 [fasta] - paired-end sorted bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true), // dummy feature_file_table
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),     // dummy feature_files
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.predictions,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+}
