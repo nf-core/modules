@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+
+# Written by Jonathan Manning and released under the MIT license.
+
 """Expand a BED12 into a BED6 of in-frame mRNA positions.
 
 Walks each record's blocks in mRNA order (5'→3'), emits every --step-th

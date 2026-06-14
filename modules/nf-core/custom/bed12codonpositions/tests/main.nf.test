@@ -30,8 +30,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bed,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    sanitizeOutput(process.out),
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
@@ -56,10 +56,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.bed,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -83,10 +80,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.bed,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -114,10 +108,7 @@ chr_test\t300\t410\tminus_2exon\t20\t-\t300\t410\t0\t2\t10,10\t0,100
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.bed,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -145,10 +136,7 @@ chr_test\t300\t410\tminus_2exon\t20\t-\t300\t410\t0\t2\t10,10\t0,100
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.bed,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -174,10 +162,7 @@ chr_test\t300\t410\tminus_2exon\t20\t-\t300\t410\t0\t2\t10,10\t0,100
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.bed,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
