@@ -19,19 +19,18 @@ process CIRIQUANT_QUANT {
     tag "$meta.id"
     label 'process_single'
 
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/ciriquant:1.1.3--pyhdfd78af_0':
+        'quay.io/biocontainers/ciriquant' }"
 
-    input:// TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    input:
+    tuple val(meta), path(reads)
+    path(config)
+    path(bed) //optional
+    tuple val(meta1), path(bam) //optional
+    tuple val(meta2), path(circ) //optional
+    tuple val(meta3), path(rnaser) //optional
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
