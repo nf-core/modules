@@ -53,7 +53,6 @@ process BAYSOR_RUN {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch "${prefix}_segmentation.csv"
     touch "${prefix}_segmentation_polygons_2d.json"
