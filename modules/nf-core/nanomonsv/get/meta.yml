@@ -1,0 +1,206 @@
+name: nanomonsv_get
+description: |
+  Call somatic structural variants with nanomonsv get using tumor/control
+  parse outputs and a reference genome.
+keywords:
+  - structural variants
+  - nanopore
+  - cancer genome
+  - somatic structural variations
+  - long reads
+tools:
+  - nanomonsv:
+      description: |
+        nanomonsv is a software for detecting somatic structural variations
+        from paired (tumor and matched control) cancer genome sequence data.
+      homepage: https://github.com/friend1ws/nanomonsv
+      documentation: https://github.com/friend1ws/nanomonsv#commands
+      tool_dev_url: https://github.com/friend1ws/nanomonsv
+      doi: "10.1093/nar/gkad526"
+      licence:
+        - "GPL v3"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample.tumor' ]
+    - tumor_bam:
+        type: file
+        description: Tumor aligned BAM file
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - tumor_bai:
+        type: file
+        description: Tumor BAM index file
+        pattern: "*.{bai}"
+        ontologies: []
+    - tumor_parse_files:
+        type: file
+        description: |
+          Tumor nanomonsv parse outputs in order:
+          insertion, insertion index, deletion, deletion index,
+          rearrangement, rearrangement index, bp_info, bp_info index.
+        pattern: "*.{bed.gz,bed.gz.tbi,bedpe.gz,bedpe.gz.tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_3615"
+          - edam: "http://edamontology.org/format_3616"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample.control' ]
+    - control_bam:
+        type: file
+        description: Control aligned BAM file
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - control_bai:
+        type: file
+        description: Control BAM index file
+        pattern: "*.{bai}"
+        ontologies: []
+    - control_parse_files:
+        type: file
+        description: |
+          Control nanomonsv parse outputs in order:
+          insertion, insertion index, deletion, deletion index,
+          rearrangement, rearrangement index, bp_info, bp_info index.
+          The parse prefix defaults to `meta2.id` and can be overridden with
+          `task.ext.prefix2`.
+        pattern: "*.{bed.gz,bed.gz.tbi,bedpe.gz,bedpe.gz.tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_3615"
+          - edam: "http://edamontology.org/format_3616"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - ref:
+        type: file
+        description: Reference FASTA
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - ref_index:
+        type: file
+        description: Reference FASTA index
+        pattern: "*.{fai}"
+        ontologies: []
+  - simple_repeat_bed:
+      type: file
+      description: Simple repeat BED (bgzipped)
+      pattern: "*.{bed.gz}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3003"
+        - edam: "http://edamontology.org/format_3615"
+  - simple_repeat_bed_index:
+      type: file
+      description: Index for simple repeat BED
+      pattern: "*.{bed.gz.tbi}"
+      ontologies: []
+  - control_panel_files:
+      type: file
+      description: |
+        Optional control panel nanomonsv parse outputs in order:
+        insertion, insertion index, deletion, deletion index,
+        rearrangement, rearrangement index, bp_info, bp_info index.
+        The optional control panel prefix can be set with `task.ext.args`
+        using `--control_panel_prefix`.
+      pattern: "*.{bed.gz,bed.gz.tbi,bedpe.gz,bedpe.gz.tbi}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3003"
+        - edam: "http://edamontology.org/format_3615"
+        - edam: "http://edamontology.org/format_3616"
+output:
+  result_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample' ]
+      - "${prefix}.nanomonsv.result.txt":
+          type: file
+          description: Output variants in text format
+          pattern: "*.nanomonsv.result.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  result_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample' ]
+      - "${prefix}.nanomonsv.result.vcf":
+          type: file
+          description: Output variants in VCF format
+          pattern: "*.nanomonsv.result.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+  supporting_read:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample' ]
+      - "${prefix}.nanomonsv.supporting_read.txt":
+          type: file
+          description: Supporting read summary
+          pattern: "*.nanomonsv.supporting_read.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  sbnd_result_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample' ]
+      - "${prefix}.nanomonsv.sbnd.result.txt":
+          type: file
+          description: Optional SBND results (text)
+          pattern: "*.nanomonsv.sbnd.result.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  sbnd_result_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample' ]
+      - "${prefix}.nanomonsv.sbnd.result.vcf":
+          type: file
+          description: Optional SBND results (VCF)
+          pattern: "*.nanomonsv.sbnd.result.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+  versions_nanomonsv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - nanomonsv:
+          type: string
+          description: The name of the tool
+      - nanomonsv --version 2>&1 | sed 's/^nanomonsv //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - nanomonsv:
+          type: string
+          description: The name of the tool
+      - nanomonsv --version 2>&1 | sed 's/^nanomonsv //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"

@@ -27,4 +27,10 @@ process PAIRTOOLS_STATS {
         -o ${prefix}.pairs.stat \\
         ${pairs}
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.pairs.stat
+    """
 }

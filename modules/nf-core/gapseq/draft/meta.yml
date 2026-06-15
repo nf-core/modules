@@ -51,6 +51,18 @@ output:
           description: Draft metabolic model in RDS format
           pattern: "*.RDS"
           ontologies: []
+  xml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.xml":
+          type: file
+          description: Draft metabolic model in SBML XML format
+          pattern: "*.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2585
   log:
     - - meta:
           type: map
@@ -84,6 +96,6 @@ topics:
           type: string
           description: The expression to obtain the version of the tool
 authors:
-  - "@copilot"
+  - "@brovolia"
 maintainers:
-  - "@copilot"
+  - "@brovolia"

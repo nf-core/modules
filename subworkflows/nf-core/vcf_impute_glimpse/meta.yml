@@ -1,6 +1,12 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "vcf_impute_glimpse"
-description: Impute VCF/BCF files with Glimpse
+description: |
+  Subworkflow to impute VCF files using GLIMPSE V1 software. The subworkflow
+  takes VCF files, phased reference panel, and genetic maps to perform imputation
+  and outputs phased and imputed VCF files.
+  Meta map of all channels, except ch_input, will be used to perform joint operations.
+  "regionout", "regionoutPadded", "regionSize" keys will be added to the meta map to distinguish
+  the different files before ligation and therefore should not be used.
 keywords:
   - glimpse
   - chunk
