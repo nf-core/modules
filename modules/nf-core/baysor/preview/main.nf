@@ -34,7 +34,6 @@ process BAYSOR_PREVIEW {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch "${prefix}_preview.html"
     """
