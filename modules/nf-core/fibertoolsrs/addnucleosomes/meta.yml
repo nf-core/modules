@@ -8,7 +8,7 @@ keywords:
   - nucleosome
   - fiberseq
 tools:
-  - "fibertoolsrs":
+  - fibertoolsrs:
       description: "Mitchell Vollger's rust tools for fiberseq data."
       homepage: "https://fiberseq.github.io/fibertools/fibertools.html"
       documentation: "https://fiberseq.github.io/fibertools/fibertools.html"
@@ -28,9 +28,8 @@ input:
         description: Sorted BAM/CRAM file
         pattern: "*.{bam,cram}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
 output:
   bam:
     - - meta:
@@ -43,7 +42,7 @@ output:
           description: bam file with nucleosome calls
           pattern: "*.bam"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2572"
   versions_fibertoolsrs:
     - - ${task.process}:
           type: string
