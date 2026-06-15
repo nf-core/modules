@@ -2,17 +2,6 @@
     "generic [tar] [tar_gz] stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "hello"
-                        },
-                        "hello.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,5568819fdcb4b0b9fffccf6e4c169bf1"
-                ],
                 "files": [
                     [
                         {
@@ -21,31 +10,24 @@
                         "hello.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,5568819fdcb4b0b9fffccf6e4c169bf1"
+                "versions_7za": [
+                    [
+                        "UNZIPFILES",
+                        "7za",
+                        "7-Zip \n16.02 \n\nUsage: 7za <command> [<switches>...] <archive_name> [<file_names>...]\n       [<@listfiles...>]\n\n<Commands>\n  a : Add files to archive\n  b : Benchmark\n  d : Delete files from archive\n  e : Extract files from archive \n  h : Calculate hash values for files\n  i : Show information about supported formats\n  l : List contents of archive\n  rn : Rename files in archive\n  t : Test integrity of archive\n  u : Update files to archive\n  x : eXtract files with full paths\n\n<Switches>\n  -- : Stop switches parsing\n  -ai[r[-|0]]{@listfile|!wildcard} : Include archives\n  -ax[r[-|0]]{@listfile|!wildcard} : eXclude archives\n  -ao{a|s|t|u} : set Overwrite mode\n  -an : disable archive_name field\n  -bb[0-3] : set output log level\n  -bd : disable progress indicator\n  -bs{o|e|p}{0|1|2} : set output stream for output/error/progress line\n  -bt : show execution time statistics\n  -i[r[-|0]]{@listfile|!wildcard} : Include filenames\n  -m{Parameters} : set compression Method\n    -mmt[N] : set number of CPU threads\n  -o{Directory} : set Output directory\n  -p{Password} : set Password\n  -r[-|0] : Recurse subdirectories\n  -sa{a|e|s} : set Archive name mode\n  -scc{UTF-8|WIN|DOS} : set charset for for console input/output\n  -scs{UTF-8|UTF-16LE|UTF-16BE|WIN|DOS|{id}} : set charset for list files\n  -scrc[CRC32|CRC64|SHA1|SHA256|*] : set hash function for x, e, h commands\n  -sdel : delete files after compression\n  -seml[.] : send archive by email\n  -sfx[{name}] : Create SFX archive\n  -si[{name}] : read data from stdin\n  -slp : set Large Pages mode\n  -slt : show technical information for l \n  -snh : store hard links as links\n  -snl : store symbolic links as links\n  -sni : store NT security information\n  -sns[-] : store NTFS alternate streams\n  -so : write data to stdout\n  -spd : disable wildcard matching for file names\n  -spe : eliminate duplication of root folder for extract command\n  -spf : use fully qualified file paths\n  -ssc[-] : set sensitive case mode\n  -ssw : compress shared files\n  -stl : set archive timestamp from the most recently modified file\n  -stm{HexMask} : set CPU thread affinity mask \n  -stx{Type} : exclude archive type\n  -t{Type} : Set type of archive\n  -u[-][p#][q#][r#][x#][y#][z#][!newArchiveName] : Update options\n  -v{Size}[b|k|m|g] : Create volumes\n  -w[{path}] : assign Work directory. Empty path means a temporary directory\n  -x[r[-|0]]{@listfile|!wildcard} : eXclude filenames\n  -y : assume Yes on all queries"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-06-15T13:24:13.553952062",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
-        },
-        "timestamp": "2024-07-01T06:15:21.647332776"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "generic [tar] [tar_gz]": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "hello"
-                        },
-                        "hello.tar:md5,80c66db79a773bc87b3346035ff9593e"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,5568819fdcb4b0b9fffccf6e4c169bf1"
-                ],
                 "files": [
                     [
                         {
@@ -54,15 +36,19 @@
                         "hello.tar:md5,80c66db79a773bc87b3346035ff9593e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,5568819fdcb4b0b9fffccf6e4c169bf1"
+                "versions_7za": [
+                    [
+                        "UNZIPFILES",
+                        "7za",
+                        "7-Zip \n16.02 \n\nUsage: 7za <command> [<switches>...] <archive_name> [<file_names>...]\n       [<@listfiles...>]\n\n<Commands>\n  a : Add files to archive\n  b : Benchmark\n  d : Delete files from archive\n  e : Extract files from archive \n  h : Calculate hash values for files\n  i : Show information about supported formats\n  l : List contents of archive\n  rn : Rename files in archive\n  t : Test integrity of archive\n  u : Update files to archive\n  x : eXtract files with full paths\n\n<Switches>\n  -- : Stop switches parsing\n  -ai[r[-|0]]{@listfile|!wildcard} : Include archives\n  -ax[r[-|0]]{@listfile|!wildcard} : eXclude archives\n  -ao{a|s|t|u} : set Overwrite mode\n  -an : disable archive_name field\n  -bb[0-3] : set output log level\n  -bd : disable progress indicator\n  -bs{o|e|p}{0|1|2} : set output stream for output/error/progress line\n  -bt : show execution time statistics\n  -i[r[-|0]]{@listfile|!wildcard} : Include filenames\n  -m{Parameters} : set compression Method\n    -mmt[N] : set number of CPU threads\n  -o{Directory} : set Output directory\n  -p{Password} : set Password\n  -r[-|0] : Recurse subdirectories\n  -sa{a|e|s} : set Archive name mode\n  -scc{UTF-8|WIN|DOS} : set charset for for console input/output\n  -scs{UTF-8|UTF-16LE|UTF-16BE|WIN|DOS|{id}} : set charset for list files\n  -scrc[CRC32|CRC64|SHA1|SHA256|*] : set hash function for x, e, h commands\n  -sdel : delete files after compression\n  -seml[.] : send archive by email\n  -sfx[{name}] : Create SFX archive\n  -si[{name}] : read data from stdin\n  -slp : set Large Pages mode\n  -slt : show technical information for l \n  -snh : store hard links as links\n  -snl : store symbolic links as links\n  -sni : store NT security information\n  -sns[-] : store NTFS alternate streams\n  -so : write data to stdout\n  -spd : disable wildcard matching for file names\n  -spe : eliminate duplication of root folder for extract command\n  -spf : use fully qualified file paths\n  -ssc[-] : set sensitive case mode\n  -ssw : compress shared files\n  -stl : set archive timestamp from the most recently modified file\n  -stm{HexMask} : set CPU thread affinity mask \n  -stx{Type} : exclude archive type\n  -t{Type} : Set type of archive\n  -u[-][p#][q#][r#][x#][y#][z#][!newArchiveName] : Update options\n  -v{Size}[b|k|m|g] : Create volumes\n  -w[{path}] : assign Work directory. Empty path means a temporary directory\n  -x[r[-|0]]{@listfile|!wildcard} : eXclude filenames\n  -y : assume Yes on all queries"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-06-15T13:24:06.42208635",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
-        },
-        "timestamp": "2024-07-01T06:15:08.983303244"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }
