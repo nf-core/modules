@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process BAYSOR RUN"
+    script "../main.nf"
+    process "BAYSOR_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "baysor"
+    tag "baysor/run"
+    tag "segmentation"
+    tag "cell_segmentation"
+
+    test("baysor run - transcripts.parquet") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                                [id: "test_run_baysor"],
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/transcripts.parquet', checkIfExists: true),
+                                [],
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/xenium.toml', checkIfExists: true),
+                                30
+                            ])
+                input[1] = 0.5
+                input[2] = "cell_id"
+                input[3] = "GeometryCollectionLegacy"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["segmentation"])).match() }
+            )
+        }
+    }
+
+    test("baysor run stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                                [id: "test_run_baysor"],
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/transcripts.parquet', checkIfExists: true),
+                                [],
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/xenium.toml', checkIfExists: true),
+                                30
+                            ])
+                input[1] = 0.5
+                input[2] = "cell_id"
+                input[3] = "GeometryCollectionLegacy"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
