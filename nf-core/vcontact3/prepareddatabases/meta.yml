@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "vcontact3_prepareddatabases"
+description: Prepare and format databases for vCONTACT3 viral taxonomic analysis 
+keywords:
+- virus
+- database
+- genomics
+- clustering 
+- vcontact3
+tools:
+## TODO nf-core: Add a description and other details for the software below
+- "vcontact3":
+    description: "Scalable and systematic hierarchical virus taxonomy with vCONTACT3"
+    homepage: "https://bitbucket.org/MAVERICLab/vcontact3/src/master/README.md"
+    documentation: "https://bitbucket.org/MAVERICLab/vcontact3/src/master/README.md"
+    tool_dev_url: "https://vcontact3.readthedocs.io/en/latest/"
+    doi: "https://doi.org/10.1101/2025.11.06.686974"
+    licence: ["CC-BY-4.0"]
+    identifier: biotools:vcontact3
+
+input:
+  ### TODO nf-core: Add a description of all of the variables used as input
+- - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test' ]`
+  - db_version:
+      type: integer
+      description: The database version number to download and prepare (e.g., latest) 
+
+output:
+  ### TODO nf-core: Add a description of all of the variables used as output
+  - meta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+  - db_dir:
+      - "test/":
+          type: directory
+          description: Directory containing the downloaded and formatted vConTACT3 databases
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+- "@olawal1001"
+maintainers:
+- "@olawal1001"
