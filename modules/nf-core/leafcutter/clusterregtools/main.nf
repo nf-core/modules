@@ -25,8 +25,10 @@ process LEAFCUTTER_CLUSTERREGTOOLS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    printf '%s\\n' ${juncfiles} | sort > juncfiles_list.txt
+
     leafcutter-cluster \\
-        -j $juncfiles \\
+        -j juncfiles_list.txt \\
         -r ./ \\
         -o $prefix \\
         $args
