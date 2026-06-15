@@ -18,17 +18,15 @@ nextflow_workflow {
                 input[0] = Channel.of(
                     [
                         [ id:'sample1', strandedness:'reverse' ],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true)
-                    ],
-                    [
-                        [ id:'sample2', strandedness:'reverse' ],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/pacbio/bam/test.sorted.bam", checkIfExists: true)
                     ]
                 )
                 input[1] = Channel.value([
                     [ id:'annotation' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true)
                 ])
+                input[2] = Channel.of("mix-reads-assembly")
                 """
             }
         }
@@ -37,9 +35,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert workflow.out.stringtie_gtf.size() == 1 },
-                { assert snapshot(
-                    sanitizeOutput(workflow.out)
-                    ).match() },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() },
             )
         }
     }

@@ -5,13 +5,15 @@ include { STRINGTIE_MERGE     } from '../../../modules/nf-core/stringtie/merge/m
 workflow BAM_STRINGTIE_MERGE {
     take:
     bam_sorted // channel: [ meta, bam ]
-    ch_chrgtf // channel: [ meta, gtf ]
+    ch_chrgtf  // channel: [ meta, gtf ]
+    ch_mode    // channel: [ val(mode) ]
 
     main:
 
     STRINGTIE_STRINGTIE(
         bam_sorted,
         ch_chrgtf.map { _meta, gtf -> [gtf] },
+        ch_mode
     )
 
     STRINGTIE_STRINGTIE.out.transcript_gtf

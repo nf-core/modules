@@ -11,7 +11,8 @@ tools:
         Transcript assembly and quantification for RNA-Seq
       homepage: https://ccb.jhu.edu/software/stringtie/index.shtml
       documentation: https://ccb.jhu.edu/software/stringtie/index.shtml?t=manual
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:stringtie
 input:
   - - meta:
@@ -19,16 +20,29 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - bam:
+    - srbam:
         type: file
         description: |
-          Stringtie transcript gtf output(s).
+          Sorted and indexed bam file from short-read alignment.
+        ontologies: []
+    - lrbam:
+        type: file
+        description: |
+          Sorted and indexed bam file from long-read alignment.
         ontologies: []
   - annotation_gtf:
       type: file
       description: |
         Annotation gtf file (optional).
       ontologies: []
+  - mode:
+      type: string
+      description: |
+        StringTie mode (long-read-assembly, mix-read-assembly, expression-estimation).
+      enum:
+        - long-read-assembly
+        - mix-read-assembly
+        - expression-estimation
 output:
   transcript_gtf:
     - - meta:
@@ -36,10 +50,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.transcripts.gtf":
+      - ${prefix}.transcripts.gtf:
           type: file
-          description: transcript gtf
-          pattern: "*.{transcripts.gtf}"
+          description: |
+            Output assembly (transcriptome)
+          pattern: ".gtf"
           ontologies: []
   abundance:
     - - meta:
@@ -47,10 +62,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.abundance.txt":
+      - ${prefix}.gene.abundance.txt:
           type: file
-          description: abundance
-          pattern: "*.{abundance.txt}"
+          description: |
+            Abundance for non-redundand set of transcripts
+          pattern: ".txt"
           ontologies: []
   coverage_gtf:
     - - meta:
@@ -58,10 +74,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.coverage.gtf":
+      - ${prefix}.coverage.gtf:
           type: file
-          description: coverage gtf
-          pattern: "*.{coverage.gtf}"
+          description: |
+            Coverage for the sample
+          pattern: ".txt"
           ontologies: []
   ballgown:
     - - meta:
@@ -69,10 +86,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ballgown":
+      - ${prefix}.ballgown/:
           type: file
-          description: for running ballgown
-          pattern: "*.{ballgown}"
+          description: |
+            Ballgown outputs for visualizations
+          pattern: ".txt"
           ontologies: []
   versions_stringtie:
     - - ${task.process}:
@@ -81,10 +99,9 @@ output:
       - stringtie:
           type: string
           description: The name of the tool
-      - "stringtie --version":
+      - stringtie --version:
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -93,11 +110,12 @@ topics:
       - stringtie:
           type: string
           description: The name of the tool
-      - "stringtie --version":
+      - stringtie --version:
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@drpatelh"
+  - "@khersameesh24"
 maintainers:
   - "@drpatelh"
+  - "@khersameesh24"
