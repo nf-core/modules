@@ -34,12 +34,29 @@ process CIRIQUANT_QUANT {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
-    // TODO nf-core: List additional required output channels/values here
-    // TODO nf-core: Update the command here to obtain the version number of the software used in this module
-    // TODO nf-core: If multiple software packages are used in this module, all MUST be added here
-    //               by copying the line below and replacing the current tool with the extra tool(s)
-    tuple val("${task.process}"), val('ciriquant'), eval("ciriquant --version"), topic: versions, emit: versions_ciriquant
+    tuple val(meta), path("*.gtf"), emit: gtf
+    tuple val(meta), path("*.log"), emit: log
+    tuple val(meta), path("*.bed"), emit: bed
+    tuple val(meta), path("CIRIerror.log"), emit: error_log, optional: true
+
+    // Reference alignment outputs
+
+    tuple val(meta), path("align/*.sorted.bam"), emit: sorted_bam
+    tuple val(meta), path("align/*.sorted.bam.bai"), emit: sorted_bai
+
+    // Circ RNA detection
+
+    tuple val(meta), path("circ/*.ciri"), emit: ciri
+    tuple val(meta), path("circ/*.ciri.bed"), emit: ciri_bed
+
+    // De Novo Back Splice Junction Alignment Tracks
+
+    tuple val(meta), path("circ/*_denovo.sorted.bam"), emit: denovo_sorted_bam
+    tuple val(meta), path("circ/*_denovo.sorted.bam.bai"), emit: denovo_sorted_bai
+
+    // Version Broadcaste
+
+    tuple val("${task.process}"), val('ciriquant'), eval("CIRIquant --version"), topic: versions, emit: versions_ciriquant
 
     when:
     task.ext.when == null || task.ext.when
