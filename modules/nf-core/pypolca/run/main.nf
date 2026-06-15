@@ -26,7 +26,12 @@ process PYPOLCA_RUN {
     def read_files    = reads instanceof List ? reads : [reads]
     def read_file_arg = read_files.size() > 1 ? "-1 ${read_files[0]} -2 ${read_files[1]}" : "-1 ${read_files[0]}"
     """
-    gzip -cdf $contigs > contigs_uncompressed
+
+    if [[ "${contigs}" == *.gz ]]; then
+        gzip -cdf ${contigs} > contigs_uncompressed
+    else
+        cp ${contigs} contigs_uncompressed
+    fi
 
     pypolca \
         run \

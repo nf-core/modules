@@ -49,12 +49,6 @@ output:
         Channel containing log files in JSON format with the same information as stats_txt
         Structure: [ val(meta), path(log) ]
       pattern: "*.log"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@atrigila"
 maintainers:
