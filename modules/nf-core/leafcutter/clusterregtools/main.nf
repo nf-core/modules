@@ -4,8 +4,8 @@ process LEAFCUTTER_CLUSTERREGTOOLS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/leafcutter:2.0.3-pyhd8ed1ab_0':
-        'quay.io/biocontainers/leafcutter:2.0.3-pyhd8ed1ab_0' }"
+        'https://depot.galaxyproject.org/singularity/leafcutter:2.0.3--pyhd8ed1ab_0':
+        'quay.io/biocontainers/leafcutter:2.0.3--pyhd8ed1ab_0' }"
 
     input:
     tuple val(meta), path(juncfiles)
