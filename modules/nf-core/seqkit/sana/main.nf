@@ -33,7 +33,7 @@ process SEQKIT_SANA {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     extension = reads.getName() - reads.getSimpleName()
-    def create_cmd = extension.endsWith('gz') ? "echo -n | gzip >" : "touch"
+    def create_cmd = extension.endsWith('gz') ? "echo '' | gzip >" : "touch"
     """
     echo ${args}
 

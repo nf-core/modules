@@ -52,7 +52,7 @@ process SEQKIT_TRANSLATE {
     if ("${prefix}.${extension}" == "${fastx}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
-    def create_cmd = extension.endsWith('gz') ? "echo -n | gzip >" : "touch"
+    def create_cmd = extension.endsWith('gz') ? "echo '' | gzip >" : "touch"
     """
     echo ${args}
     echo ${args2}
