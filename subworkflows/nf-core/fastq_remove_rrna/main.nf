@@ -17,13 +17,13 @@ include { SORTMERNA as SORTMERNA_INDEX             } from '../../../modules/nf-c
 def getReadLengthFromSeqkitStats(stats_file) {
     def lines = stats_file.text.readLines()
     if (lines.size() < 2) {
-        return 100
+        return 100 // Default fallback
     }
 
     def header = lines[0].split('\t')
     def avgLenIdx = header.findIndexOf { col -> col == 'avg_len' }
     if (avgLenIdx < 0) {
-        return 100
+        return 100 // Default fallback if column not found
     }
 
     // Calculate mean avg_len across all files in the stats output
@@ -152,9 +152,9 @@ workflow FASTQ_REMOVE_RRNA {
         BOWTIE2_ALIGN(
             ch_reads_for_bowtie2.single_end,
             ch_bowtie2_index,
-            [[], []],
-            true,
-            false,
+            [[], []], // No reference fasta needed
+            true,     // save_unaligned - for single-end this works correctly
+            false,    // sort_bam - not needed
         )
 
         ch_bowtie2_log = BOWTIE2_ALIGN.out.log
@@ -166,9 +166,9 @@ workflow FASTQ_REMOVE_RRNA {
         BOWTIE2_ALIGN_PE(
             ch_reads_for_bowtie2.paired_end,
             ch_bowtie2_index,
-            [[], []],
-            false,
-            false,
+            [[], []], // No reference fasta needed for BAM output
+            false,    // save_unaligned - we'll extract from BAM instead
+            false,    // sort_bam - not needed
         )
 
         ch_bowtie2_log = ch_bowtie2_log.mix(BOWTIE2_ALIGN_PE.out.log)
@@ -178,15 +178,18 @@ workflow FASTQ_REMOVE_RRNA {
         // This removes any pair where at least one mate aligned to rRNA
         SAMTOOLS_VIEW_BOWTIE2(
             BOWTIE2_ALIGN_PE.out.bam.map { meta, bam_file -> [meta, bam_file, []] },
-            [[], [], []],
-            [[], []],
-            [[], []],
-            [],
+            [[], [], []], // No reference fasta
+            [[], []],     // No qname file
+            [[], []],     // No bed file
+            []            // No index format
         )
         // Note: samtools/view versions collected via topic
 
         // Convert filtered BAM back to paired FASTQ
-        SAMTOOLS_FASTQ_BOWTIE2(SAMTOOLS_VIEW_BOWTIE2.out.bam, false)
+        SAMTOOLS_FASTQ_BOWTIE2(
+            SAMTOOLS_VIEW_BOWTIE2.out.bam,
+            false, // not interleaved
+        )
 
         // Combine single-end and paired-end results
         BOWTIE2_ALIGN.out.fastq
