@@ -52,8 +52,10 @@ process SEQKIT_REPLACE {
     }
     def endswith = out_ext ?: "${extension}${isgz}"
 
-    def create_cmd = endswith.endsWith('.gz') ? "echo -n | gzip >" : "touch"
+    def create_cmd = endswith.endsWith('gz') ? "echo -n | gzip >" : "touch"
     """
+    echo ${args}
+
     ${create_cmd} ${prefix}.${endswith}
     """
 }

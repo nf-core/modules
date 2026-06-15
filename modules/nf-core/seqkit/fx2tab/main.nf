@@ -32,9 +32,12 @@ process SEQKIT_FX2TAB {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = out_ext ?: "txt.zst"
     """
+    echo ${args}
+
     touch ${prefix}.${suffix}
     """
 }

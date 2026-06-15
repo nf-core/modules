@@ -20,7 +20,6 @@ process SEQKIT_FQ2FA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     seqkit \\
         fq2fa \\
@@ -31,8 +30,11 @@ process SEQKIT_FQ2FA {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
+
     echo "" | gzip > ${prefix}.fa.gz
     """
 }

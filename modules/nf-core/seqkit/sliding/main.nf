@@ -34,11 +34,14 @@ process SEQKIT_SLIDING {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     if ("${fastx}" ==~ /.+\.fasta$|.+\.fa$|.+\.fas$|.+\.fna$/) {
         extension = "fasta"
     }
     """
+    echo ${args}
+
     touch ${prefix}.${extension}
     """
 }

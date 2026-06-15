@@ -43,15 +43,20 @@ process SEQKIT_SPLIT2 {
     }
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         """
+        echo ${args}
+
         mkdir -p ${prefix}
         echo -n | gzip > ${prefix}/${reads[0]}
         """
     }
     else {
         """
+        echo ${args}
+
         mkdir -p ${prefix}
         echo -n | gzip > ${prefix}/${reads[0]}
         echo -n | gzip > ${prefix}/${reads[1]}

@@ -42,6 +42,8 @@ process SEQKIT_SORT {
     """
 
     stub:
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def extension = "fastq"
     if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/) {
@@ -51,8 +53,11 @@ process SEQKIT_SORT {
     if ("${prefix}.${extension}" == "${fastx}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
-    def create_cmd = extension.endsWith('.gz') ? "echo -n | gzip >" : "touch"
+    def create_cmd = extension.endsWith('gz') ? "echo -n | gzip >" : "touch"
     """
+    echo ${args}
+    echo ${args2}
+
     ${create_cmd} ${prefix}.${extension}
     """
 }

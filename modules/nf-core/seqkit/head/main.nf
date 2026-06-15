@@ -18,8 +18,8 @@ process SEQKIT_HEAD {
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     for f in ${fastqs.join(' ')}
     do
@@ -33,8 +33,11 @@ process SEQKIT_HEAD {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
+
     for f in ${fastqs.join(' ')}
     do
         echo -n | gzip > "${prefix}_subset_\$(basename \$f)"

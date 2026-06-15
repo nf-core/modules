@@ -33,8 +33,11 @@ process SEQKIT_PAIR {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
+
     echo "" | gzip > ${prefix}_1.paired.fastq.gz
     echo "" | gzip > ${prefix}_2.paired.fastq.gz
     """
