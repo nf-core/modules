@@ -47,14 +47,14 @@ process SEQKIT_SPLIT2 {
     if (meta.single_end) {
         """
         mkdir -p ${prefix}
-        echo -n | gzip > ${prefix}/${reads[0]}
+        echo '' | gzip > ${prefix}/${reads[0]}
         """
     }
     else {
         """
         mkdir -p ${prefix}
-        echo -n | gzip > ${prefix}/${reads[0]}
-        echo -n | gzip > ${prefix}/${reads[1]}
+        echo '' | gzip > ${prefix}/${reads[0]}
+        echo '' | gzip > ${prefix}/${reads[1]}
         """
     }
 }

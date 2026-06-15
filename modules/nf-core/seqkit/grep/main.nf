@@ -47,6 +47,6 @@ process SEQKIT_GREP {
     def suffix = output_type + compression_suffix
     """
     echo ${args}
-    echo -n | gzip > ${prefix}.${suffix}.gz
+    echo '' | gzip > ${prefix}.${suffix}.gz
     """
 }

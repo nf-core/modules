@@ -35,7 +35,7 @@ process SEQKIT_PAIR {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo -n | gzip > ${prefix}_1.paired.fastq.gz
-    echo -n | gzip > ${prefix}_2.paired.fastq.gz
+    echo '' | gzip > ${prefix}_1.paired.fastq.gz
+    echo '' | gzip > ${prefix}_2.paired.fastq.gz
     """
 }

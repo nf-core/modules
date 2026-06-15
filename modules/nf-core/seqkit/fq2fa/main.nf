@@ -33,6 +33,6 @@ process SEQKIT_FQ2FA {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo -n | gzip > ${prefix}.fa.gz
+    echo '' | gzip > ${prefix}.fa.gz
     """
 }
