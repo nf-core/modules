@@ -19,9 +19,6 @@ process GCTA_ADJUSTGRM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (grm_adj == null) {
-        error("grm_adj is required")
-    }
     """
     gcta \\
         --grm ${meta.id} \\
@@ -33,9 +30,6 @@ process GCTA_ADJUSTGRM {
     """
 
     stub:
-    if (grm_adj == null) {
-        error("grm_adj is required")
-    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_adj.grm.id

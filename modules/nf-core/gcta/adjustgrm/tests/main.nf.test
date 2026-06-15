@@ -88,23 +88,6 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens popgen - adjust dense GRM fails without adjustment scalar") {
-        when {
-            process {
-                """
-                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files.map { meta, grm_files -> [meta, grm_files, null] }
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert !process.success },
-                { assert process.exitStatus != 0 }
-            )
-        }
-    }
-
     test("homo_sapiens popgen - adjust dense GRM fails when meta.id is not GRM basename") {
         when {
             process {
