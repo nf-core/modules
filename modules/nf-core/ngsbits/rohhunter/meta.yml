@@ -1,0 +1,83 @@
+name: "ngsbits_rohhunter"
+description: RohHunter is a tool for run of homozygosity (ROH) detection based
+  on a variant list in VCF format.
+keywords:
+  - roh
+  - homozygosity
+  - allele frequency
+tools:
+  - "ngsbits":
+      description: "Short-read sequencing tools"
+      homepage: "https://github.com/imgag/ngs-bits"
+      documentation: "https://github.com/imgag/ngs-bits"
+      tool_dev_url: "https://github.com/imgag/ngs-bits"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: VCF file containing variants for ROH detection
+        pattern: "*.vcf{,.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+    - exclude_bed:
+        type: file
+        description: BED file with regions to exclude from ROH detection
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. `[ id:'sample1' ]`
+    - annotation_beds:
+        type: file
+        description: BED file with annotation regions for ROH detection
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+output:
+  versions_ngsbits:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngsbits:
+          type: string
+          description: The name of the tool
+      - RohHunter --version | sed 's/RohHunter //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: TSV file containing the detected ROHs
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngsbits:
+          type: string
+          description: The name of the tool
+      - RohHunter --version | sed 's/RohHunter //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"
