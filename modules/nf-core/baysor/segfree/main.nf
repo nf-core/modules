@@ -34,7 +34,6 @@ process BAYSOR_SEGFREE {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch "${prefix}_ncvs.loom"
     """
