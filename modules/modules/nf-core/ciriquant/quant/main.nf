@@ -15,15 +15,15 @@
 // TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
 //               list (`[]`) instead of a file can be used to work around this issue.
 
-process CIRIQUANT {
+process CIRIQUANT_QUANT {
     tag "$meta.id"
     label 'process_single'
 
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ciriquant:1.1.3--pyhdfd78af_0':
-        'quay.io/biocontainers/ciriquant' }"
+        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
+        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
 
     input:// TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
     //               MUST be provided as an input via a Groovy Map called "meta".
