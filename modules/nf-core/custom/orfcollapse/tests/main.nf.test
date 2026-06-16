@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_ORFCOLLAPSE"
+    script "../main.nf"
+    process "CUSTOM_ORFCOLLAPSE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/orfcollapse"
+
+    test("collapse identical small ORFs across loci") {
+
+        when {
+            process {
+                """
+                def dir = params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/orf_catalogue"
+                input[0] = [
+                    [ id: 'cohort' ],
+                    file("\${dir}/cohort.catalogue.bed12",   checkIfExists: true),
+                    file("\${dir}/cohort.catalogue.tsv",     checkIfExists: true),
+                    file("\${dir}/cohort.orf_to_gene.tsv",   checkIfExists: true),
+                    file("\${dir}/cohort.catalogue.aa.fasta",checkIfExists: true),
+                    file("\${dir}/cohort_cluster.tsv",       checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def out  = path(process.out.catalogue_tsv[0][1]).text.readLines()
+            def cols = out[0].split('\t') as List
+            def rows = out.drop(1).collect { it.split('\t') }
+            def byId = rows.collectEntries { [(it[0]): it] }
+            def aa   = path(process.out.aa_fasta[0][1]).text
+            def o2g  = path(process.out.orf_to_gene_tsv[0][1]).text.readLines().drop(1)
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                // The two identical smORFs on different strands/loci collapse to one row.
+                { assert rows.size() == 3 },
+                { assert byId.containsKey('orf_00000001') },
+                { assert !byId.containsKey('orf_00000002') },
+                // The survivor unions both callers' evidence and both samples.
+                { assert byId['orf_00000001'][cols.indexOf('called_by_ribotish')] == '1' },
+                { assert byId['orf_00000001'][cols.indexOf('called_by_ribocode')] == '1' },
+                { assert byId['orf_00000001'][cols.indexOf('n_samples')] == '2' },
+                { assert byId['orf_00000001'][cols.indexOf('samples')] == 'sampleA,sampleB' },
+                // Non-smORF and unique smORF pass through.
+                { assert byId.containsKey('orf_00000003') },
+                { assert byId.containsKey('orf_00000004') },
+                // The dropped member's gene mapping is folded onto the survivor.
+                { assert o2g.any { it == 'orf_00000001\tg5\tt5' } },
+                // AA FASTA loses the dropped member and is keyed by bare orf_id.
+                { assert aa.contains('>orf_00000001') },
+                { assert !aa.contains('>orf_00000002') }
+            )
+        }
+    }
+
+}
