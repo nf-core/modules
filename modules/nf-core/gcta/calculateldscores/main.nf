@@ -30,13 +30,9 @@ process GCTA_CALCULATELDSCORES {
         --thread-num ${task.cpus} \\
         ${args}
 
-    Rscript - ${prefix}_gcta_ld.score.ld ${prefix} <<'EOF'
-    args <- commandArgs(trailingOnly = TRUE)
-    filename <- args[1]
-    out_prefix <- args[2]
-
+    Rscript - <<'EOF'
     lds_seg <- read.table(
-      filename,
+      "${prefix}_gcta_ld.score.ld",
       header = TRUE,
       colClasses = c("character", rep("numeric", 8))
     )
@@ -48,10 +44,10 @@ process GCTA_CALCULATELDSCORES {
     lb3 <- which(lds_seg\$ldscore_SNP > quartiles[3] & lds_seg\$ldscore_SNP <= quartiles[5])
     lb4 <- which(lds_seg\$ldscore_SNP > quartiles[5])
 
-    write.table(lds_seg\$SNP[lb1], paste(out_prefix, "snp_group1.txt", sep = "_"), row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
-    write.table(lds_seg\$SNP[lb2], paste(out_prefix, "snp_group2.txt", sep = "_"), row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
-    write.table(lds_seg\$SNP[lb3], paste(out_prefix, "snp_group3.txt", sep = "_"), row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
-    write.table(lds_seg\$SNP[lb4], paste(out_prefix, "snp_group4.txt", sep = "_"), row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
+    write.table(lds_seg\$SNP[lb1], "${prefix}_snp_group1.txt", row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
+    write.table(lds_seg\$SNP[lb2], "${prefix}_snp_group2.txt", row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
+    write.table(lds_seg\$SNP[lb3], "${prefix}_snp_group3.txt", row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
+    write.table(lds_seg\$SNP[lb4], "${prefix}_snp_group4.txt", row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
     EOF
     """
 
