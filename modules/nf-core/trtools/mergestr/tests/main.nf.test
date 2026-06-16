@@ -1,0 +1,117 @@
+nextflow_process {
+
+    name "Test Process TRTOOLS_MERGESTR"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "TRTOOLS_MERGESTR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gangstr"
+    tag "trtools"
+    tag "trtools/mergestr"
+
+    setup {
+        run("GANGSTR", alias: "GANGSTR1") {
+            script "modules/nf-core/gangstr/main.nf"
+
+            process {
+                """
+                bed1 = Channel.of('chr22\t3000\t3020\t5\tCGCGC')
+                    .collectFile(name: 'genome1.bed', newLine: true)
+
+                input[0] = Channel.of([
+                    [id:'test1'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists:true)
+                ]).combine(bed1)
+
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                """
+            }
+        }
+
+        run("GANGSTR", alias: "GANGSTR2") {
+            script "modules/nf-core/gangstr/main.nf"
+
+            process {
+                """
+                bed2 = Channel.of('chr22\t3000\t3020\t5\tCGCGC')
+                    .collectFile(name: 'genome2.bed', newLine: true)
+
+                input[0] = Channel.of([
+                    [id:'test2'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists:true)
+                ]).combine(bed2)
+
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - gangstr vcfs") {
+
+        when {
+            process {
+                """
+                input[0] = GANGSTR1.out.vcf
+                    .combine(GANGSTR2.out.vcf)
+                    .combine(GANGSTR1.out.index)
+                    .combine(GANGSTR2.out.index)
+                    .map { meta1, vcf1, meta2, vcf2, meta3, tbi1, meta4, tbi2 ->
+                        [
+                            [ id: 'test' ],
+                            [ vcf1, vcf2 ],
+                            [ tbi1, tbi2 ]
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - gangstr vcfs - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GANGSTR1.out.vcf
+                    .combine(GANGSTR2.out.vcf)
+                    .combine(GANGSTR1.out.index)
+                    .combine(GANGSTR2.out.index)
+                    .map { meta1, vcf1, meta2, vcf2, meta3, tbi1, meta4, tbi2 ->
+                        [
+                            [ id: 'test' ],
+                            [ vcf1, vcf2 ],
+                            [ tbi1, tbi2 ]
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
