@@ -92,7 +92,7 @@ output:
       - "leafcutter":
           type: string
           description: The name of the tool
-      - "leafcutter-cluster --version 2>&1 | grep -oP 'leafcutter.*' || echo 'leafcutter 2.0.2'":
+      - "echo '2.0.3'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -104,7 +104,7 @@ topics:
       - leafcutter:
           type: string
           description: The name of the tool
-      - "leafcutter-cluster --version 2>&1 | grep -oP 'leafcutter.*' || echo 'leafcutter 2.0.2'":
+      - "echo '2.0.3'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
