@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gcta_calculateldscores"
-description: Calculate LD scores with GCTA and segment variants into LD-based SNP groups
+description: Calculate LD scores with GCTA and derive GREML-LDMS SNP groups
 keywords:
   - gcta
   - genome-wide complex trait analysis
@@ -65,7 +65,7 @@ output:
             e.g. `[ id:'plink_simulated' ]`
       - "*_snp_group*.txt":
           type: file
-          description: LD-derived SNP-group files
+          description: LD-score SNP-group files for GCTA GREML-LDMS workflows
           pattern: "*_snp_group*.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330"
@@ -79,6 +79,16 @@ output:
       - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
           type: eval
           description: The command used to generate the version of the tool
+  versions_rbase:
+    - - "${task.process}":
+          type: string
+          description: The process the versions were collected from
+      - "r-base":
+          type: string
+          description: The tool name
+      - 'Rscript -e "cat(as.character(getRversion()))"':
+          type: eval
+          description: The command used to generate the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -88,6 +98,15 @@ topics:
           type: string
           description: The tool name
       - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - r-base:
+          type: string
+          description: The tool name
+      - 'Rscript -e "cat(as.character(getRversion()))"':
           type: eval
           description: The command used to generate the version of the tool
 authors:

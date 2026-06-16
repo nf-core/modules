@@ -10,7 +10,7 @@ nextflow_process {
     tag "gcta/calculateldscores"
     tag "plink"
 
-    test("homo_sapiens gsmr - plink1") {
+    test("homo_sapiens gsmr - plink1 - GREML-LDMS SNP groups") {
         when {
             process {
                 """
@@ -66,16 +66,14 @@ nextflow_process {
                     assert groupedSnps.toSet() == ldScoreSnpsSet
                 },
                 {
-                    assert snapshot(
-                        process.out.ld_scores,
-                        process.out.versions_gcta
-                    ).match()
+                    assert snapshot(process.out.ld_scores).match()
+                    assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match("versions")
                 }
             )
         }
     }
 
-    test("homo_sapiens gsmr - plink1 - stub") {
+    test("homo_sapiens gsmr - plink1 - GREML-LDMS SNP groups - stub") {
         options "-stub"
 
         when {
@@ -132,7 +130,8 @@ nextflow_process {
                     assert groupedSnps.toSet() == ldScoreSnpsSet
                 },
                 {
-                    assert snapshot(sanitizeOutput(process.out)).match()
+                    assert snapshot(process.out.ld_scores, process.out.snp_group_files).match()
+                    assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match("versions_stub")
                 }
             )
         }
