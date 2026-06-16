@@ -1,0 +1,85 @@
+nextflow_process {
+    name "Test Process CUSTOM_PCACLUSTERING"
+    script "../main.nf"
+    process "CUSTOM_PCACLUSTERING"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/pcaclustering"
+
+    test("clustering - eigenvec") {
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_features.tsv", checkIfExists: true) ]
+                input[1] = 'kmeans'
+                input[2] = 3
+                input[3] = 0.5
+                input[4] = 5
+                """
+            }
+        }
+        then {
+            // KMeans inertia varies by a few ULPs across CPU instruction sets
+            // (BLAS reduction order), so parse the JSON and round it for the
+            // snapshot. Production output keeps full precision.
+            def info_data = new groovy.json.JsonSlurper().parse(file(process.out.info[0][1]))
+            info_data.inertia = (info_data.inertia as Double).round(4)
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.clusters,
+                    info_data,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("clustering - eigenvec - dbscan") {
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_features.tsv", checkIfExists: true) ]
+                input[1] = 'dbscan'
+                input[2] = 3
+                input[3] = 0.5
+                input[4] = 2
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.clusters,
+                    process.out.info,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("clustering - eigenvec - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_features.tsv", checkIfExists: true) ]
+                input[1] = 'kmeans'
+                input[2] = 3
+                input[3] = 0.5
+                input[4] = 5
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
