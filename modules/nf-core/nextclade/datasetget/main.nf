@@ -14,6 +14,7 @@ process NEXTCLADE_DATASETGET {
     output:
     path "$prefix"     , emit: dataset
     tuple val("${task.process}"), val('nextclade'), eval("nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'"), emit: versions_nextclade, topic: versions
+    tuple val("${task.process}"), val('nextclade-dataset'), eval("grep 'tag' $dataset/pathogen.json | sed -n 's/.*\"tag\": \"\\([0-9-]\\+Z\\)\".*/\\1/p"), emit: versions_nextclade, topic: versions
 
 
     when:
