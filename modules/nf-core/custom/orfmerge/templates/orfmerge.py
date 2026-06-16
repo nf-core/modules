@@ -197,6 +197,22 @@ def write_catalogue(prefix, clusters, bed_index):
 
     per_class_counts = defaultdict(int)
 
+    # Stable genomic ordering so orf_id assignment is deterministic regardless of
+    # the order in which per-caller inputs were collected upstream.
+    def _sort_key(cluster):
+        r = representative(cluster)
+        return (
+            r.get("chrom", ""),
+            int(r.get("start") or 0),
+            int(r.get("end") or 0),
+            r.get("strand", ""),
+            r.get("gene_id") or "",
+            r.get("transcript_id") or "",
+            r.get("orf_class", ""),
+        )
+
+    clusters = sorted(clusters, key=_sort_key)
+
     with open(cat_bed, "w") as bh, open(cat_tsv, "w") as th, open(o2g_tsv, "w") as oh:
         th.write("\\t".join(catalogue_cols) + "\\n")
         oh.write("orf_id\\tgene_id\\ttranscript_id\\n")
