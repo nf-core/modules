@@ -6,12 +6,15 @@
 The coordinate-based merge in custom/orfmerge groups ORFs that overlap on the
 genome, but the same micropeptide is frequently encoded at several distinct,
 non-overlapping genomic loci (typically repetitive regions), and those copies
-survive as separate catalogue rows. Following the GENCODE Ribo-seq ORF catalogue
-convention (Mudge et al. 2022, Nat Biotechnol, doi:10.1038/s41587-022-01369-0;
-gencode-riboseqORFs collapse_cutoff 0.9), small ORFs (orf_class == "smORF", i.e.
-aa_length <= 100) are clustered by amino-acid sequence identity upstream
-(mmseqs/easycluster) and this module folds each multi-member cluster down to one
-representative.
+survive as separate catalogue rows. This adopts the peptide-level deduplication
+and 0.9 amino-acid-similarity threshold of the GENCODE Ribo-seq ORF
+consolidation (Mudge et al. 2022, Nat Biotechnol,
+doi:10.1038/s41587-022-01369-0; gencode-riboseqORFs collapse_cutoff 0.9),
+implemented here with MMseqs2 sequence-identity clustering (--min-seq-id 0.9)
+rather than that tool's longest-shared-string / P-site-overlap metric. Small
+ORFs (orf_class == "smORF", i.e. aa_length <= 100) are clustered by amino-acid
+identity upstream (mmseqs/easycluster) and this module folds each multi-member
+cluster down to one representative.
 
 Only smORF rows are collapsed; larger ORFs and transcript-anchored classes pass
 through untouched, preserving the deterministic coordinate/transcript merge from
