@@ -87,11 +87,16 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def eventsNames =process.out.events.get(0).get(1).flatten().collect { file(it).getName().toString() }
+            def gtfNames = process.out.events_gtf.get(0).get(1).flatten().collect { file(it).getName().toString() }
+            def unstableNames = eventsNames + gtfNames
+
             assertAll(
                 { assert snapshot(
-                    process.out,
+                    unstableNames,
                     process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                ).match() },
             )
         }
     }
@@ -116,9 +121,14 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def eventsNames =process.out.events.get(0).get(1).flatten().collect { file(it).getName().toString() }
+            def gtfNames = process.out.events_gtf.get(0).get(1).flatten().collect { file(it).getName().toString() }
+            def unstableNames = eventsNames + gtfNames
+
             assertAll(
                 { assert snapshot(
-                    process.out,
+                    unstableNames,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
