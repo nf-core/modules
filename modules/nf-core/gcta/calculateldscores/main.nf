@@ -14,6 +14,7 @@ process GCTA_CALCULATELDSCORES {
     tuple val(meta), path("*_gcta_ld.score.ld"), emit: ld_scores
     tuple val(meta), path("*_snp_group*.txt"), emit: snp_group_files
     tuple val("${task.process}"), val("gcta"), eval("gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'"), emit: versions_gcta, topic: versions
+    tuple val("${task.process}"), val("r-base"), eval('Rscript -e "cat(as.character(getRversion()))"'), emit: versions_rbase, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,17 +38,21 @@ process GCTA_CALCULATELDSCORES {
       colClasses = c("character", rep("numeric", 8))
     )
 
-    quartiles <- summary(lds_seg\$ldscore_SNP)
+    ld_score_quantiles <- quantile(lds_seg\$ldscore_SNP, probs = c(0.25, 0.50, 0.75), names = FALSE)
 
-    lb1 <- which(lds_seg\$ldscore_SNP <= quartiles[2])
-    lb2 <- which(lds_seg\$ldscore_SNP > quartiles[2] & lds_seg\$ldscore_SNP <= quartiles[3])
-    lb3 <- which(lds_seg\$ldscore_SNP > quartiles[3] & lds_seg\$ldscore_SNP <= quartiles[5])
-    lb4 <- which(lds_seg\$ldscore_SNP > quartiles[5])
+    snp_group_filters <- list(
+      lds_seg\$ldscore_SNP <= ld_score_quantiles[1],
+      lds_seg\$ldscore_SNP > ld_score_quantiles[1] & lds_seg\$ldscore_SNP <= ld_score_quantiles[2],
+      lds_seg\$ldscore_SNP > ld_score_quantiles[2] & lds_seg\$ldscore_SNP <= ld_score_quantiles[3],
+      lds_seg\$ldscore_SNP > ld_score_quantiles[3]
+    )
 
-    write.table(lds_seg\$SNP[lb1], "${prefix}_snp_group1.txt", row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
-    write.table(lds_seg\$SNP[lb2], "${prefix}_snp_group2.txt", row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
-    write.table(lds_seg\$SNP[lb3], "${prefix}_snp_group3.txt", row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
-    write.table(lds_seg\$SNP[lb4], "${prefix}_snp_group4.txt", row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
+    for (group_index in seq_along(snp_group_filters)) {
+      writeLines(
+        lds_seg\$SNP[snp_group_filters[[group_index]]],
+        sprintf("${prefix}_snp_group%d.txt", group_index)
+      )
+    }
     EOF
     """
 
