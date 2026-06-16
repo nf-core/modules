@@ -33,7 +33,7 @@ process CIRIQUANT_QUANT {
     tuple val(meta3), path(rnaser) //optional
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
+    //
     tuple val(meta), path("*.gtf"), emit: gtf
     tuple val(meta), path("*.log"), emit: log
     tuple val(meta), path("*.bed"), emit: bed
@@ -64,36 +64,48 @@ process CIRIQUANT_QUANT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
-    //               If the software is unable to output a version number on the command-line then it can be manually specified
-    //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
-    //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
-    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
-    // TODO nf-core: Please replace the example samtools command below with your module's command
-    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
+
+    // Optional Inputs
+
+    def bed_option = bed ? "--bed ${bed}" : ""
+    def bam_option = bam ? "--bam ${bam[1]}" : ""
+    def circ_option = circ ? "--circ ${circ[1]}" : ""
+    def rnaser_option = rnaser ? "--RNaseR ${rnaser[1]}" : ""
+
     """
     ciriquant \\
         $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        $bam
+        -1 ${reads[0]} \\
+        -2 ${reads[1]} \\
+        --config $config \\
+        -o ./ \\
+        -p $prefix \\
+        $bed_option \\
+        $bam_option \\
+        $circ_option \\
+        $rnaser_option
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
-    //               Have a look at the following examples:
-    //               Simple example: https://github.com/nf-core/modules/blob/624977dfaf562211e68a8a868ca80acc8461f1ac/modules/nf-core/cutadapt/main.nf#L34-L46
-    //               Complex example: https://github.com/nf-core/modules/blob/88d43dad73a675e66bff49ebb57fe657a5909018/modules/nf-core/bedtools/split/main.nf#L32-L43
-    // TODO nf-core: If the module doesn't use arguments ($args), you SHOULD remove:
-    //               - The definition of args `def args = task.ext.args ?: ''` above.
-    //               - The use of the variable in the script `echo $args ` below.
-    """
-    echo $args
 
-    touch ${prefix}.bam
+    // Create sub directories expected by ciriquant
+    """
+    mkdir -p align circ
+
+    touch ${prefix}.gtf
+    touch ${prefix}.log
+    touch ${prefix}.bed
+    touch ${prefix}.CIRIerror.log
+
+    touch align/${prefix}.sorted.bam
+    touch align/${prefix}.sorted.bam.bai
+
+    touch circ/${prefix}.ciri
+    touch circ/${prefix}.ciri.bed
+
+    touch circ/${prefix}_denovo.sorted.bam
+    touch circ/${prefix}__denovo.sorted.bam.bai
     """
 }
