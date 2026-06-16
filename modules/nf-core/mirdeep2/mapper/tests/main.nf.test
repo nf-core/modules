@@ -45,6 +45,7 @@ nextflow_process {
             process {
             """
             input[0] = SEQKIT_FQ2FA.out.fasta
+            input[1] = 'fasta'
             """
             }
         }
