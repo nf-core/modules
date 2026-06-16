@@ -5,7 +5,7 @@ process SUPPA_GENERATEEVENTS {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
+        'https://depot.galaxyproject.org/singularity/suppa%3A2.4--pyhdfd78af_0':
         'quay.io/biocontainers/suppa:2.4--pyhdfd78af_0' }"
 
     input:
