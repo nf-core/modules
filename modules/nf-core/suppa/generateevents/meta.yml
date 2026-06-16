@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "suppa_generateevents"
+description: |
+  This tool reads an annotation file and generates different alternative
+  splicing(AS) events depending on the user's choice.
+  It outputs a "gtf" file to load on genome browser to visualize the
+  events as well as an "ioe" file to use for the further calculation of
+  the PSI values of each possible event conformation.
+keywords:
+  - rnaseq
+  - alternative splicing
+  - genomics
+  - psi
+tools:
+  - "suppa":
+      description: "Fast, accurate, and uncertainty-aware differential splicing analysis across multiple conditions."
+      homepage: "https://github.com/comprna/SUPPA"
+      documentation: "https://github.com/comprna/SUPPA/wiki/SUPPA2-tutorial"
+      tool_dev_url: "https://github.com/comprna/SUPPA"
+      doi: "10.1186/s13059-018-1417-1"
+      licence: ["MIT"]
+      identifier: biotools:suppa
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing GTF information
+          e.g. `[ id:'human' ]`
+    - gtf:
+        type: file
+        description: GTF file
+        pattern: "*.{gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1948" # GTF
+    - format:
+        type: string
+        description: The format of the output events file. Can be either "ioi" or "ioe"
+        enum: ["ioi", "ioe"]
+    - event_type:
+        type: string
+        description: The type of events to generate. Can be one or more of "SE", "SS", "MX", "RI", "FL"
+        items:
+          type: string
+          enum: ["SE", "SS", "MX", "RI", "FL"]
+    - boundary_type:
+        type: string
+        description: The type of boundaries to use. Can be either "S" (=strict) or "V" (=variable)
+        enum: ["S", "V"]
+    - variability_threshold:
+        type: integer
+        description: The threshold for variability. Only used if boundary_type is "V".
+    - pool_genes:
+        type: boolean
+        description: Whether to pool genes when generating events.
+
+output:
+  events:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing GTF information
+            e.g. `[ id:'human' ]`
+      - "*.events.{format}":
+          type: file
+          description: The output events file in the specified format (ioi or ioe)
+          pattern: "*.{ioi,ioe}"
+  events_gtf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing GTF information
+            e.g. `[ id:'human' ]`
+      - "*.events.gtf":
+          type: file
+          description: The output events file in GTF format for visualization on genome browsers
+          pattern: "*.gtf"
+  versions_suppa:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "suppa":
+          type: string
+          description: The name of the tool
+      - "suppa.py -v | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - suppa:
+          type: string
+          description: The name of the tool
+      - suppa.py -v | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@piplus2"
+maintainers:
+  - "@piplus2"

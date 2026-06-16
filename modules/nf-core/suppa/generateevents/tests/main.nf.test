@@ -1,0 +1,187 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test suppa/generateevents
+nextflow_process {
+
+    name "Test Process SUPPA_GENERATEEVENTS"
+    script "../main.nf"
+    process "SUPPA_GENERATEEVENTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "suppa"
+    tag "suppa/generateevents"
+
+    test("human chr20 [gtf] - ioi") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true),
+                ]
+                input[1] = 'ioi'
+                input[2] = ['SE', 'SS', 'MX', 'RI', 'FL']
+                input[3] = []
+                input[4] = []
+                input[5] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("human chr20 [gtf] - ioi pool genes") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true),
+                ]
+                input[1] = 'ioi'
+                input[2] = ['SE', 'SS', 'MX', 'RI', 'FL']
+                input[3] = []
+                input[4] = []
+                input[5] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("human chr20 [gtf] - ioe") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true),
+                ]
+                input[1] = 'ioe'
+                input[2] = ['SE', 'SS', 'MX', 'RI', 'FL']
+                input[3] = []
+                input[4] = []
+                input[5] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("human chr20 [gtf] - ioe pool genes") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true),
+                ]
+                input[1] = 'ioe'
+                input[2] = ['SE', 'SS', 'MX', 'RI', 'FL']
+                input[3] = []
+                input[4] = []
+                input[5] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("human chr20 [gtf] - ioi - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true),
+                ]
+                input[1] = 'ioi'
+                input[2] = ['SE', 'SS', 'MX', 'RI', 'FL']
+                input[3] = []
+                input[4] = []
+                input[5] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("human chr20 [gtf] - ioe - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true),
+                ]
+                input[1] = 'ioe'
+                input[2] = ['SE', 'SS', 'MX', 'RI', 'FL']
+                input[3] = []
+                input[4] = []
+                input[5] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}
