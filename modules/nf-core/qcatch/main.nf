@@ -4,8 +4,8 @@ process QCATCH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/6233ebf32d1ce85d41398121c4b8c1449779fa13b1529e702e067bfca6f835b7/data':
-        'community.wave.seqera.io/library/pip_qcatch:05d150ed59c3ae84' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a7/a7d0112866550e3bcf97c40104596a3ca2ecbc26c13cf919fe76587554528281/data':
+        'community.wave.seqera.io/library/pip_qcatch:03b88593a5cca75b' }"
     input:
     tuple val(meta), val(chemistry), path(quant_dir)
 
@@ -21,12 +21,13 @@ process QCATCH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def chemistry_arg = chemistry ? "--chemistry ${chemistry}" : ''
 
     """
     qcatch \\
         --input ${quant_dir} \\
         --output ${prefix} \\
-        --chemistry ${chemistry} \\
+        ${chemistry_arg} \\
         --save_filtered_h5ad \\
         --export_summary_table \\
         ${args}
