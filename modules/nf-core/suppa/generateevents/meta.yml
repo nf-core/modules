@@ -33,26 +33,26 @@ input:
         pattern: "*.{gtf}"
         ontologies:
           - edam: "http://edamontology.org/format_1948" # GTF
-    - format:
+  - format:
+      type: string
+      description: The format of the output events file. Can be either "ioi" or "ioe"
+      enum: ["ioi", "ioe"]
+  - event_type:
+      type: string
+      description: The type of events to generate. Can be one or more of "SE", "SS", "MX", "RI", "FL"
+      items:
         type: string
-        description: The format of the output events file. Can be either "ioi" or "ioe"
-        enum: ["ioi", "ioe"]
-    - event_type:
-        type: string
-        description: The type of events to generate. Can be one or more of "SE", "SS", "MX", "RI", "FL"
-        items:
-          type: string
-          enum: ["SE", "SS", "MX", "RI", "FL"]
-    - boundary_type:
-        type: string
-        description: The type of boundaries to use. Can be either "S" (=strict) or "V" (=variable)
-        enum: ["S", "V"]
-    - variability_threshold:
-        type: integer
-        description: The threshold for variability. Only used if boundary_type is "V".
-    - pool_genes:
-        type: boolean
-        description: Whether to pool genes when generating events.
+        enum: ["SE", "SS", "MX", "RI", "FL"]
+  - boundary_type:
+      type: string
+      description: The type of boundaries to use. Can be either "S" (=strict) or "V" (=variable)
+      enum: ["S", "V"]
+  - variability_threshold:
+      type: integer
+      description: The threshold for variability. Only used if boundary_type is "V".
+  - pool_genes:
+      type: boolean
+      description: Whether to pool genes when generating events.
 
 output:
   events:
@@ -61,7 +61,7 @@ output:
           description: |
             Groovy Map containing GTF information
             e.g. `[ id:'human' ]`
-      - "*.events.{format}":
+      - "*.events.${format}":
           type: file
           description: The output events file in the specified format (ioi or ioe)
           pattern: "*.{ioi,ioe}"
