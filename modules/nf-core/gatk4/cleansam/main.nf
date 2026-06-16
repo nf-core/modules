@@ -8,12 +8,8 @@ process GATK4_CLEANSAM {
         : 'community.wave.seqera.io/library/gatk4_gcnvkernel:edb12e4f0bf02cd3'}"
 
     input:
-    tuple val(meta), path(bam)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fasta_index)
-    // input file must be sorted for index to be created
-    val create_index
-    val create_md5
+    tuple val(meta), path(bam) // input file must be sorted for index to be created
+    tuple val(meta2), path(fasta), path(fasta_index)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -27,9 +23,7 @@ process GATK4_CLEANSAM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def index = create_index ? "--CREATE_INDEX true" : ""
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
-    def md5 = create_md5 ? "--CREATE_MD5_FILE true" : ""
     def avail_mem = 3072
     if (!task.memory) {
         log.info('[GATK CleanSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
@@ -47,17 +41,16 @@ process GATK4_CLEANSAM {
         CleanSam \\
         ${args} \\
         ${reference} \\
-        ${index} \\
-        ${md5} \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam
 
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def index = create_index ? "touch ${prefix}.bam.bai" : ""
-    def md5 = create_md5 ? "touch ${prefix}.md5" : ""
+    def index = args.contains('--CREATE_INDEX true') ? "touch ${prefix}.bam.bai" : ""
+    def md5 = args.contains('--CREATE_MD5_FILE true') ? "touch ${prefix}.md5" : ""
     if ("${bam}" == "${prefix}.bam") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
