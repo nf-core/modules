@@ -37,7 +37,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.predictions,
                     sanitizeOutput(process.out)
                 ).match() }
             )

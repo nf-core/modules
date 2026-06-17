@@ -28,7 +28,6 @@ process DEEPMASED_PREDICT {
         --n-procs ${task.cpus} \\
         --save-name ${prefix} \\
         ${args}
-
     """
 
     stub:
