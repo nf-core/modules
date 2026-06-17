@@ -8,7 +8,7 @@ process METHURATOR_GTESTIMATOR {
         : 'quay.io/biocontainers/methurator:2.1.1--pyhdfd78af_0'}"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(fasta)
+    tuple val(meta), path(bam), path(bai), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("${prefix}.yml"), emit: summary_report
@@ -32,7 +32,7 @@ process METHURATOR_GTESTIMATOR {
     """
 
     stub:
-    prefix = task.ext.prefix?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.yml
 
