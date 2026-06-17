@@ -4,8 +4,8 @@ process BAKTA_BAKTA {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/bakta:1.11.4--pyhdfd78af_0'
-        : 'quay.io/biocontainers/bakta:1.11.4--pyhdfd78af_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d5ec418b3aee9c5fd90b21d70e197009da826ff9a39945bb28181fbdc0b42d0b/data'
+        : 'community.wave.seqera.io/library/bakta_diamond:cd8df03e82945085'}"
 
     input:
     tuple val(meta), path(fasta)
