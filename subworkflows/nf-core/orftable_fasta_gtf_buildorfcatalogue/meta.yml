@@ -15,6 +15,12 @@ description: |
        clusters catalogue peptides by amino-acid identity and folds duplicate
        small ORFs to one representative each.
 
+  The collapse identity threshold defaults to `--min-seq-id 0.9` (the GENCODE
+  Ribo-seq ORF catalogue convention; Mudge et al. 2022), set on
+  `MMSEQS_EASYCLUSTER` in this subworkflow's `nextflow.config`. Override it via
+  `ext.args` on `MMSEQS_EASYCLUSTER` in the consuming pipeline's config if a
+  different cutoff is wanted.
+
   Supports five callers via the per-record `caller` val: ribocode, ribotish,
   ribotricer, rpbp, price. Any subset can be supplied. When `ch_orf_tables` is empty
   the subworkflow short-circuits the merge + FASTA chain and the output

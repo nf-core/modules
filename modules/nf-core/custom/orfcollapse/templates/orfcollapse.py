@@ -192,6 +192,7 @@ def main():
                 "${task.process}": {
                     "python": platform.python_version(),
                     "pandas": pd.__version__,
+                    "pyyaml": yaml.__version__,
                 }
             },
             fh,

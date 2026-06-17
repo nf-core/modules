@@ -58,4 +58,32 @@ nextflow_process {
         }
     }
 
+    test("collapse identical small ORFs across loci - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def dir = params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/orf_catalogue"
+                input[0] = [
+                    [ id: 'cohort' ],
+                    file("\${dir}/cohort.catalogue.bed12",   checkIfExists: true),
+                    file("\${dir}/cohort.catalogue.tsv",     checkIfExists: true),
+                    file("\${dir}/cohort.orf_to_gene.tsv",   checkIfExists: true),
+                    file("\${dir}/cohort.catalogue.aa.fasta",checkIfExists: true),
+                    file("\${dir}/cohort_cluster.tsv",       checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
 }

@@ -34,6 +34,7 @@ process CUSTOM_ORFCOLLAPSE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version 2>&1 | sed 's/Python //')
+        pyyaml: \$(python -c "import yaml; print(yaml.__version__)")
     END_VERSIONS
     """
 }
