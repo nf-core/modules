@@ -10,7 +10,8 @@ tools:
       homepage: "https://github.com/gbouras13/pypolca"
       documentation: "https://github.com/gbouras13/pypolca?tab=readme-ov-file#usage"
       doi: "10.1099/mgen.0.001254"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 
 input:
@@ -83,7 +84,7 @@ output:
       - pypolca:
           type: string
           description: The name of the tool
-      - pypolca --version:
+      - pypolca --version | sed 's/^pypolca, version //':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -95,7 +96,7 @@ topics:
       - pypolca:
           type: string
           description: The name of the tool
-      - pypolca --version:
+      - pypolca --version | sed 's/^pypolca, version //':
           type: eval
           description: The expression to obtain the version of the tool
 
