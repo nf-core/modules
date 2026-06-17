@@ -12,7 +12,8 @@ process FIND_UNPIGZ {
 
     output:
     tuple val(meta), path("ungzipped/*"), emit: file_out
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('find'), eval("find --version | sed '1!d; s/.* //'"), emit: versions_find, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,23 +35,11 @@ process FIND_UNPIGZ {
             \$file \\
             > ungzipped/\$( basename \$file .gz )
     done < <( find gzipped/ -name '*.gz' -print0 )
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        find: \$( find --version | sed '1!d; s/.* //' )
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir -p ungzipped
     touch ungzipped/test_file.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        find: \$( find --version | sed '1!d; s/.* //' )
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 }

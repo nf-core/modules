@@ -21,6 +21,7 @@ process TXIMETA_TXIMPORT {
     tuple val(meta), path("*transcript_tpm.tsv")           , emit: tpm_transcript
     tuple val(meta), path("*transcript_counts.tsv")        , emit: counts_transcript
     tuple val(meta), path("*transcript_lengths.tsv")       , emit: lengths_transcript
+    tuple val(meta), path("*tx2gene_augmented.tsv")        , emit: tx2gene_augmented
     path "versions.yml"                                    , emit: versions, topic: versions
 
     when:
@@ -39,6 +40,7 @@ process TXIMETA_TXIMPORT {
     touch ${meta.id}.transcript_tpm.tsv
     touch ${meta.id}.transcript_counts.tsv
     touch ${meta.id}.transcript_lengths.tsv
+    touch ${meta.id}.tx2gene_augmented.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
