@@ -16,7 +16,7 @@ process UMITOOLS_GROUP {
     tuple val(meta), path("*.log")        , emit: log
     tuple val(meta), path("${prefix}.bam"), optional: true, emit: bam
     tuple val(meta), path("*.tsv")        , optional: true, emit: tsv
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('umitools'), eval("umi_tools --version | sed '/version:/!d; s/.*: //'"), emit: versions_umitools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process UMITOOLS_GROUP {
         $group_info \\
         $paired \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        umitools: \$( umi_tools --version | sed '/version:/!d; s/.*: //' )
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process UMITOOLS_GROUP {
     touch ${prefix}.log
     touch ${prefix}.tsv
     $output_bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        umitools: \$( umi_tools --version | sed '/version:/!d; s/.*: //' )
-    END_VERSIONS
     """
 }
