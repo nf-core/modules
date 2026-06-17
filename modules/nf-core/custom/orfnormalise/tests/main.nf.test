@@ -1,0 +1,248 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_ORFNORMALISE"
+    script "../main.nf"
+    process "CUSTOM_ORFNORMALISE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/orfnormalise"
+
+    test("homo_sapiens [chr20] - ribocode") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
+                    'ribocode'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            def aa    = cols.indexOf('aa_length')
+            def score = cols.indexOf('score')
+            def cls   = cols.indexOf('orf_class')
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                { assert rows.every { it[score] && it[score] != '' } },
+                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } },
+                { assert parser_columns_line != null },
+                { assert parser_columns_line.contains('caller=ribocode') },
+                { assert parser_columns_line.contains('score=pval_combined') }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - ribotish") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    'ribotish'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            def aa    = cols.indexOf('aa_length')
+            def score = cols.indexOf('score')
+            def cls   = cols.indexOf('orf_class')
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                { assert rows.every { it[score] && it[score] != '' } },
+                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - ribotricer") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotricer.tsv', checkIfExists: true),
+                    'ribotricer'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines     = all_lines.findAll { !it.startsWith('#') }
+            def cols      = lines[0].split('\t') as List
+            def rows      = lines.drop(1).collect { it.split('\t') }
+            def aa        = cols.indexOf('aa_length')
+            def score     = cols.indexOf('score')
+            def cls       = cols.indexOf('orf_class')
+            // Verify multi-exon recovery: at least one BED12 row should
+            // have blockCount > 1 (parser uses GTF exon intersection so
+            // multi-exon transcripts don't collapse to one intron-spanning
+            // block).
+            def bed_lines = path(process.out.bed12[0][1]).text.readLines()
+            def block_counts = bed_lines.findAll { it.trim() }.collect { it.split('\t')[9].toInteger() }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                { assert rows.every { it[score] && it[score] != '' } },
+                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } },
+                { assert block_counts.any { it > 1 } }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - rpbp") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.rpbp.predicted-orfs.bed.gz', checkIfExists: true),
+                    'rpbp'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            def aa    = cols.indexOf('aa_length')
+            def score = cols.indexOf('score')
+            def cls   = cols.indexOf('orf_class')
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                { assert rows.every { it[score] && it[score] != '' && it[score].toDouble() > 0 } },
+                // Rp-Bp's predicted-orfs BED has no orf_type column; defaulting
+                // to 'canonical' should keep every row out of the 'other' bucket.
+                { assert rows.every { it[cls] != 'other' } }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr19+chr22] - price") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'cohort'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/cohort.price.orfs.tsv', checkIfExists: true),
+                    'price'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    []
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            def aa    = cols.indexOf('aa_length')
+            def cls   = cols.indexOf('orf_class')
+            // Verify PRICE's multi-exon Location decoding: at least one BED12
+            // record should have blockCount > 1 (Location field encodes
+            // intron-spliced blocks via pipe separators).
+            def bed_lines = path(process.out.bed12[0][1]).text.readLines()
+            def block_counts = bed_lines.findAll { it.trim() }.collect { it.split('\t')[9].toInteger() }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } },
+                { assert block_counts.any { it > 1 } }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - ribotish - score-field override") {
+        config "./score_override.config"
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    'ribotish'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            assertAll(
+                { assert process.success },
+                // Override resolves to RiboPvalue (not the default FisherPvalue),
+                // and the provenance header reflects that.
+                { assert parser_columns_line.contains('score=RiboPvalue') }
+            )
+        }
+    }
+
+}
