@@ -11,9 +11,8 @@ tools:
       homepage: "https://pypi.org/project/rami2d/"
       documentation: "https://github.com/VictorDidier/RAMI2D"
       tool_dev_url: "https://github.com/VictorDidier/RAMI2D"
-      doi: ""
-      licence: "['BSD 3-Clause']"
-      identifier: "rami2d"
+      licence: ['BSD 3-Clause']
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -44,46 +43,46 @@ input:
         type: float
         description: Image resolution in micrometers to be used for applying the registration scheme
 output:
-  - registered_image:
-      - - meta:
-            type: map
-            description: |
-              Groovy Map containing sample information
-              e.g. `[ id:'sample1' ]`
-        - "*/*.ome.tif":
-            type: file
-            description: Registered output image in pyramidal OME TIFF format
-            pattern: "*.ome.tif"
-  - csv:
-      - - meta:
-            type: map
-            description: |
-              Groovy Map containing sample information
-              e.g. `[ id:'sample1' ]`
-        - "*/*.csv":
-            type: file
-            description: Output CSV file containing registration metrics
-            pattern: "*.csv"
-  - qc_dir:
-      - - meta:
-            type: map
-            description: |
-              Groovy Map containing sample information
-              e.g. `[ id:'sample1' ]`
-        - "*/qc":
-            type: directory
-            description: Directory containing QC outputs including refchns keypoints and fullres transformations
-            pattern: "qc"
-  - versions_rami2d:
-      - - ${task.process}:
-            type: string
-            description: Name of the task process
-        - rami2d:
-            type: string
-            description: Name of the tool
-        - 'rami2d-register -v | sed "s/rami2d-register //"':
-            type: eval
-            description: The expression to obtain the version of the tool
+  registered_image:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*.ome.tif":
+          type: file
+          description: Registered output image in pyramidal OME TIFF format
+          pattern: "*.ome.tif"
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*.csv":
+          type: file
+          description: Output CSV file containing registration metrics
+          pattern: "*.csv"
+  qc_dir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/qc":
+          type: directory
+          description: Directory containing QC outputs including refchns keypoints and fullres transformations
+          pattern: "qc"
+  versions_rami2d:
+    - - ${task.process}:
+          type: string
+          description: Name of the task process
+      - rami2d:
+          type: string
+          description: Name of the tool
+      - 'rami2d-register -v | sed "s/rami2d-register //"':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
