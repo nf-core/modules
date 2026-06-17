@@ -21,8 +21,6 @@ process PLINK_EPISTASIS {
     tuple val(meta), path("*.nosex")         ,  emit: nosex, optional:true
     tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

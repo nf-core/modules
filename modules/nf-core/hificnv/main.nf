@@ -20,8 +20,6 @@ process HIFICNV {
     tuple val(meta), path("*.vcf.gz")          , emit: vcf
     tuple val("${task.process}"), val('hificnv'), eval("hificnv --version | sed 's/.* //g'"), emit: versions_hificnv, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

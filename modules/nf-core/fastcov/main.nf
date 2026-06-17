@@ -17,8 +17,6 @@ process FASTCOV {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('fastcov'), val('0.1.3')                                                               , emit: versions_fastcov, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ""

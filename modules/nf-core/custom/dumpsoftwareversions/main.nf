@@ -15,8 +15,6 @@ process CUSTOM_DUMPSOFTWAREVERSIONS {
     path "software_versions_mqc.yml", emit: mqc_yml
     path "versions.yml"             , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

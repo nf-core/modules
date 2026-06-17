@@ -14,8 +14,6 @@ process FQ_GENERATE {
     tuple val(meta), path("*.fastq.gz")                                                                      , emit: fastq
     tuple val("${task.process}"), val('fq'), eval("fq generate --version | sed 's/fq-generate //;s/ .*//'"), emit: versions_fq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

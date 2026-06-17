@@ -18,8 +18,6 @@ process ONCOCNV {
     tuple val(meta), path("*.summary.txt"), emit: summary
     path "versions.yml"                   , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def cghseg = task.ext.args2 ?: 'cghseg'

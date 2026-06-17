@@ -14,8 +14,6 @@ process WIPERTOOLS_FASTQGATHER {
     tuple val(meta), path("${prefix}.fastq.gz"), emit: gathered_fastq
     tuple val("${task.process}"), val('wipertools'), eval("wipertools fastqgather --version"), topic: versions, emit: versions_wipertools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

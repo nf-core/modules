@@ -34,8 +34,6 @@ process MITOHIFI_MITOHIFI {
     // old version command: \$(mitohifi.py -v | sed 's/.* //')
     tuple val("${task.process}"), val('mitohifi'), eval('echo 3.2.3'), emit: versions_mitohifi, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

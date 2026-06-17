@@ -20,8 +20,6 @@ process PLINK2_FILTER {
     tuple val(meta), path("*.pvar"),emit: pvar, optional: true
     path "versions.yml",            emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

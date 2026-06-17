@@ -15,8 +15,6 @@ process OPT_FLIP {
     tuple val(meta), path("${prefix}/fwd_oriented.fa"), emit: fwd_oriented_fa
     tuple val("${task.process}"), val('opt'), eval("opt --version"), topic: versions, emit: versions_opt
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

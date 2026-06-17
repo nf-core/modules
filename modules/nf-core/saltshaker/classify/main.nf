@@ -18,8 +18,6 @@ process SALTSHAKER_CLASSIFY {
     tuple val(meta), path("*saltshaker.vcf")        , emit: vcf, optional: true
     tuple val("${task.process}"), val('saltshaker'), val("1.1.1"), topic: versions, emit: versions_saltshaker
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

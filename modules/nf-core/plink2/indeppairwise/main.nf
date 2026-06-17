@@ -18,8 +18,6 @@ process PLINK2_INDEPPAIRWISE {
     tuple val(meta), path("*.prune.out") , emit: prune_out
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

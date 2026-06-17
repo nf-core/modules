@@ -14,8 +14,6 @@ process GNU_SPLIT {
     tuple val(meta), path( "${prefix}.*" )  , emit: split
     tuple val("${task.process}"), val('coreutils'), eval("sort --version |& sed '1!d ; s/sort (GNU coreutils) //'"), emit: versions_coreutils, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args   ?: ''

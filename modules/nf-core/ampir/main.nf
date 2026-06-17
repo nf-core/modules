@@ -18,8 +18,6 @@ process AMPIR {
     tuple val(meta), path("*.tsv"), emit: amps_tsv
     tuple val("${task.process}"), val('ampir'), eval('Rscript -e "library(ampir); cat(paste((unlist(packageVersion(\'ampir\'))), collapse = \'.\'))"'), emit: versions_ampir, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

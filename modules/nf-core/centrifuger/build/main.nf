@@ -17,8 +17,6 @@ process CENTRIFUGER_BUILD {
     tuple val(meta), path("${prefix}"), emit: db
     tuple val("${task.process}"), val("centrifuger"), eval("centrifuger -v 2>&1 | sed 's/Centrifuger v//'"), emit: versions_centrifuger, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

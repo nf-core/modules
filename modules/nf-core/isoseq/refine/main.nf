@@ -19,8 +19,6 @@ process ISOSEQ_REFINE {
     tuple val(meta), path("*.report.csv")                , emit: report
     tuple val("${task.process}"), val('isoseq'), eval("isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\\+//'"), emit: versions_isoseq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

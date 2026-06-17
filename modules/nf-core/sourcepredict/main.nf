@@ -21,8 +21,6 @@ process SOURCEPREDICT {
     tuple val("${task.process}"), val('sklearn'), eval('python -c "import sklearn; print(sklearn.__version__)"'), topic: versions, emit: versions_sklearn
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

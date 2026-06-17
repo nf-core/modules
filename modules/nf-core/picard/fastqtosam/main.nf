@@ -14,8 +14,6 @@ process PICARD_FASTQTOSAM {
     tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('picard'), eval("picard FastqToSam --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

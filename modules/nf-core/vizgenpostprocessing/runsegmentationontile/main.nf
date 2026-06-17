@@ -14,8 +14,6 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     tuple val(meta), path("${prefix}/result_tiles/*.parquet"), emit: segmented_tile
     path  "versions.yml"                                     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

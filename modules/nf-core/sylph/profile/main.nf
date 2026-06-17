@@ -15,8 +15,6 @@ process SYLPH_PROFILE {
     tuple val(meta), path('*.tsv'), emit: profile_out
     tuple val("${task.process}"), val('sylph'), eval('sylph -V | sed "s/sylph //g"'), topic: versions, emit: versions_sylph
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

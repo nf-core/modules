@@ -16,8 +16,6 @@ process TELSEQ {
     tuple val("${task.process}"), val('telseq'), eval('echo 0.0.2'), emit: versions_telseq, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools --version | sed -n '1s/samtools //p'"), emit: versions_samtools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

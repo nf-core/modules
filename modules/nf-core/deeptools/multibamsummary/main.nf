@@ -15,8 +15,6 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
     tuple val(meta), path("*.npz"), emit: matrix
     tuple val("${task.process}"), val('deeptools'), eval('multiBamSummary --version | sed "s/multiBamSummary //g"') , emit: versions_deeptools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

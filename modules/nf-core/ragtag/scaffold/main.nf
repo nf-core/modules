@@ -19,8 +19,6 @@ process RAGTAG_SCAFFOLD {
     tuple val(meta), path("*.stats"),   emit: corrected_stats
     tuple val("${task.process}"), val('ragtag'), eval("ragtag.py -v | sed 's/v//'"), emit: versions_ragtag, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

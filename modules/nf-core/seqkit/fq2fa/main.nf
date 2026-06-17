@@ -14,8 +14,6 @@ process SEQKIT_FQ2FA {
     tuple val(meta), path("*.fa.gz"), emit: fasta
     tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

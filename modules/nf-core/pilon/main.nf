@@ -21,8 +21,6 @@ process PILON {
     tuple val("${task.process}"), val('pilon'), eval("pilon --version | sed 's/^.*version //; s/ .*\$//'"), emit: versions_pilon, topic: versions
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args       = task.ext.args ?: ''

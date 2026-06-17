@@ -16,8 +16,6 @@ process GAWK {
     tuple val(meta), path("*.${suffix}"), emit: output
     tuple val("${task.process}"), val('gawk'), eval("awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//'"), topic: versions, emit: versions_gawk
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args  = task.ext.args  ?: '' // args is used for the main arguments of the tool

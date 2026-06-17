@@ -15,8 +15,6 @@ process PAIRTOOLS_FLIP {
     tuple val(meta), path("*.flip.gz"), emit: flip
     tuple val("${task.process}"), val('pairtools'), eval("pairtools --version | sed 's/.*pairtools.*version //'") , emit: versions_pairtools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

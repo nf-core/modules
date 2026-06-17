@@ -26,8 +26,6 @@ process SEQ2HLA {
     tuple val(meta), path("*.ambiguity")                        , emit: ambiguity, optional: true
     tuple val("${task.process}"), val('seq2hla'), eval("seq2HLA --version | sed 's/seq2HLA.py //'"), topic: versions, emit: versions_seq2hla
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

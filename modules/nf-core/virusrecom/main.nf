@@ -15,8 +15,6 @@ process VIRUSRECOM {
     tuple val(meta), path("${prefix}/"), emit: results
     tuple val("${task.process}"), val('virusrecom'), eval("virusrecom -h 2>&1 | sed -n 's/.*Version: \\([^ ]*\\).*/\\1/p'"), topic: versions, emit: versions_virusrecom
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args         = task.ext.args ?: ''

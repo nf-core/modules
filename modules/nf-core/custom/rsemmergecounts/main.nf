@@ -20,8 +20,6 @@ process CUSTOM_RSEMMERGECOUNTS {
     tuple val(meta), path("${prefix}.isoforms_long.tsv")    , emit: isoforms_long
     tuple val("${task.process}"), val('sed'), eval("sed --version 2>&1 | sed '1!d;s/^.*) //'"), emit: versions_sed, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

@@ -16,8 +16,6 @@ process ATLAS_RECAL {
     tuple val(meta), path("*.txt"), emit:recal_patterns
     tuple val("${task.process}"), val('atlas'), eval('((atlas 2>&1) | grep Atlas | head -n 1 | sed -e \'s/^[ \t]*Atlas //\')'), emit: versions_atlas, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

@@ -14,8 +14,6 @@ process VCF2ZARR_EXPLODE {
     tuple val(meta), path("*.icf"), emit: icf
     tuple val("${task.process}"), val('vcf2zarr'), eval('vcf2zarr --version |& sed -n "s/.* //p"'), emit: versions_vcf2zarr, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

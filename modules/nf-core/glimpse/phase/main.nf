@@ -14,8 +14,6 @@ process GLIMPSE_PHASE {
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variants
     tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_phase --help | sed -n '/Version/s/.*: //p'"), topic: versions, emit: versions_glimpse
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

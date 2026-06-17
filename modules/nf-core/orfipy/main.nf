@@ -14,8 +14,6 @@ process ORFIPY {
     tuple val(meta), path("${prefix}/${prefix}.bed"), emit: bed
     tuple val("${task.process}"), val('orfipy'), eval("orfipy --version | sed 's/.*version //'"), emit: versions_orfipy, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

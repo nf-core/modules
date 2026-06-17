@@ -17,8 +17,6 @@ process FASTME {
     tuple val(meta), path("*.bootstrap") , emit: bootstrap , optional: true
     tuple val("${task.process}"), val('fastme'), eval("fastme --version |& sed '1!d ; s/FastME //'"), emit: versions_fastme, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''

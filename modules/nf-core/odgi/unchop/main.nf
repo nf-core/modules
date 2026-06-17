@@ -14,8 +14,6 @@ process ODGI_UNCHOP {
     tuple val(meta), path("*.og"), emit: unchopped_graph
     tuple val("${task.process}"), val('odgi'), eval("odgi version | sed 's/^v//; s/-.*//'"), emit: versions_odgi, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

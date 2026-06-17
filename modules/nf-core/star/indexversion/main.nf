@@ -10,8 +10,6 @@ process STAR_INDEXVERSION {
     path ("*.txt"), emit: index_version
     tuple val("${task.process}"), val('star'), eval('STAR --version | sed "s/STAR_//"'), emit: versions_star, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "index_version"

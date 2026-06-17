@@ -18,8 +18,6 @@ process PRODIGAL {
     tuple val(meta), path("${prefix}_all.txt.gz"),             emit: all_gene_annotations
     tuple val("${task.process}"), val('prodigal'), eval('prodigal -v 2>&1 | sed -n "s/Prodigal V\\(.*\\):.*/\\1/p"'), emit: versions_prodigal, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

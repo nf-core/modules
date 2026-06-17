@@ -17,8 +17,6 @@ process BEAGLE5_BEAGLE {
     tuple val(meta), path("*.log")   , emit: log
     tuple val("${task.process}"), val('beagle'), eval("beagle 2>&1 | sed -n 's/.*version \\([^)]*\\).*/\\1/p'"), topic: versions, emit: versions_beagle
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

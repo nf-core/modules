@@ -22,8 +22,6 @@ process COMET {
     tuple val(meta), path("${prefix}*.pin"), emit: pin, optional: true
     tuple val("${task.process}"), val('comet'), eval("comet 2>&1 | head -2 | tail -1 | sed 's;.*\"\\(.*\\).*\";\\1;g'"), topic: versions, emit: versions_comet
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

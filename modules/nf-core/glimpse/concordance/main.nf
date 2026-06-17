@@ -21,8 +21,6 @@ process GLIMPSE_CONCORDANCE {
     tuple val(meta), path("*.rsquare.spl.txt.gz"), emit: rsquare_spl
     tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_concordance --help | sed -n '/Version/s/.*: //p'"), topic: versions, emit: versions_glimpse
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args         = task.ext.args   ?: ''

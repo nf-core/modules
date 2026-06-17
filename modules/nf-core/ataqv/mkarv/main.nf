@@ -13,8 +13,6 @@ process ATAQV_MKARV {
     path "html"        , emit: html
     tuple val("${task.process}"), val('ataqv'), eval('echo \$(ataqv --version)'), emit: versions_ataqv, topic: versions
     // tuple val("${task.process}"), val('mkarv'), eval('mkarv --version'), emit: versions_mkarv, topic: versions //Use this when version string has been fixed
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

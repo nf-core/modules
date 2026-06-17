@@ -17,8 +17,6 @@ process GT_LTRHARVEST {
     tuple val(meta), path("$outinner_name") , emit: inner_fasta , optional: true    // When args has -outinner
     tuple val("${task.process}"), val('genometools'), eval("gt --version | sed '1!d;s/.* //'"), emit: versions_gt, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args                 ?: ''

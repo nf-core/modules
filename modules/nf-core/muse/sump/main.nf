@@ -16,8 +16,6 @@ process MUSE_SUMP {
     tuple val("${task.process}"), val('muse'),  eval("MuSE --version | sed -e 's/MuSE, version //g' | sed -e 's/MuSE v//g'"), topic: versions, emit: versions_muse
     tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed -n 's/bgzip (htslib) \\([0-9.]*\\)/\\1/p'"),      topic: versions, emit: versions_bgzip
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // -G for WGS data and -E for WES data

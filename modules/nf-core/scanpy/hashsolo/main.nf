@@ -16,8 +16,6 @@ process SCANPY_HASHSOLO {
     tuple val(meta), path("*_params_hashsolo.csv")    , emit: params
     path "versions.yml"                               , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

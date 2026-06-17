@@ -15,8 +15,6 @@ process PICARD_CROSSCHECKFINGERPRINTS {
     tuple val(meta), path("*.crosscheck_metrics.txt"), emit: crosscheck_metrics
     tuple val("${task.process}"), val('picard'), eval("picard CrosscheckFingerprints --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

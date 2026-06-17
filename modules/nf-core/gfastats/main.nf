@@ -22,8 +22,6 @@ process GFASTATS {
     tuple val(meta), path("*.${out_fmt}.gz")   , emit: assembly        , optional: true
     tuple val("${task.process}"), val('gfastats'), eval("gfastats -v | sed '1!d;s/.*v//'"), emit: versions_gfastats, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

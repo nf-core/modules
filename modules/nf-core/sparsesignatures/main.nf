@@ -20,8 +20,6 @@ process SPARSE_SIGNATURES {
     tuple val(meta), path("*_plot_all.pdf"),              emit: signatures_plot_pdf
     path "versions.yml",                                  emit: versions_sparsesignatures, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template "main_script.R"

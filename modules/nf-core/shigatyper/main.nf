@@ -15,8 +15,6 @@ process SHIGATYPER {
     tuple val(meta), path("${prefix}-hits.tsv"), optional: true, emit: hits
     path "versions.yml"                        , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process BCFTOOLS_SPLIT {
     tuple val(meta), path("*.vcf.gz"), emit: split_vcf
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

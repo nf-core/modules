@@ -18,8 +18,6 @@ process SNAKEMAKE {
     tuple val(meta), path(".snakemake", type: 'dir', hidden: true), emit: snakemake_dir
     tuple val("${task.process}"), val("snakemake"), eval('snakemake --version'), topic: versions, emit: versions_snakemake
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

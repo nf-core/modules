@@ -15,8 +15,6 @@ process TRUVARI_CONSISTENCY {
     tuple val(meta), path("*.{txt,json}") , emit: consistency
     tuple val("${task.process}"), val('truvari'), eval("truvari version | sed 's/Truvari v//'"), topic: versions, emit: versions_truvari
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

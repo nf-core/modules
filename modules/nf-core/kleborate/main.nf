@@ -14,8 +14,6 @@ process KLEBORATE {
     tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('kleborate'), eval("kleborate --version | sed 's/Kleborate v//'"), emit: versions_kleborate, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

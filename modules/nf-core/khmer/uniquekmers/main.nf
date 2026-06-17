@@ -16,8 +16,6 @@ process KHMER_UNIQUEKMERS {
     tuple val(meta), path("*.kmers.txt")   , emit: kmers
     tuple val("${task.process}"), val('khmer'), eval('unique-kmers.py --version 2>&1 | grep ^khmer | sed "s/^khmer //;s/ .*$//"'), emit: versions_khmer, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

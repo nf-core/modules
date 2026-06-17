@@ -18,8 +18,6 @@ process SAM2LCA_ANALYZE {
     tuple val(meta), path("*.bam")  , emit: bam     , optional: true
     path "versions.yml"             , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process KHMER_NORMALIZEBYMEDIAN {
     tuple val(meta), path("*.fastq.gz"), emit: reads
     tuple val("${task.process}"), val('khmer'), eval('normalize-by-median.py --version 2>&1 | grep ^khmer | sed "s/^khmer //"'), emit: versions_khmer, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

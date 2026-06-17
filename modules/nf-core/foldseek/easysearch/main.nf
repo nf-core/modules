@@ -15,8 +15,6 @@ process FOLDSEEK_EASYSEARCH {
     tuple val(meta), path("${prefix}.m8"), emit: aln
     tuple val("${task.process}"), val('foldseek'), eval("foldseek --help |& sed -n 's/.*Version: //p'"), emit: versions_foldseek, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

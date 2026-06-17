@@ -17,8 +17,6 @@ process YARA_MAPPER {
     tuple val("${task.process}"), val('yara'), eval("yara_mapper --version 2>&1 | grep 'yara_mapper version' | sed 's/^.*yara_mapper version: //; s/ .*\$//'"), topic: versions, emit: versions_yara
     tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -n1 | sed 's/^.*samtools //'"), topic: versions, emit: versions_samtools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

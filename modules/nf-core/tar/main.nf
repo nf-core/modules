@@ -15,8 +15,6 @@ process TAR {
     tuple val(meta), path("*.tar${compress_type}"), emit: archive
     path "versions.yml", emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

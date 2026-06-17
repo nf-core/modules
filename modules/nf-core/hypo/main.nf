@@ -19,8 +19,6 @@ process HYPO {
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val("hypo"), val("1.0.3"), topic: versions, emit: versions_hypo
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

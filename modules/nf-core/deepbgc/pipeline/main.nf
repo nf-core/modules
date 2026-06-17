@@ -26,8 +26,6 @@ process DEEPBGC_PIPELINE {
     tuple val("${task.process}"), val('deepbgc'), eval("deepbgc info 2>&1 | sed '6!d;s/.*= version //;s/ .*//'"), emit: versions_deepbgc, topic: versions
     tuple val("${task.process}"), val('prodigal'), eval("prodigal -v 2>&1 | sed '2!d;s/Prodigal V//;s/:.*//'"), emit: versions_prodigal, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

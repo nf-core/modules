@@ -14,8 +14,6 @@ process RIBOTRICER_PREPAREORFS {
     tuple val(meta), path("*_candidate_orfs.tsv"), emit: candidate_orfs
     path "versions.yml"                          , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

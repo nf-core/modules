@@ -15,8 +15,6 @@ process MD5SUM {
     tuple val(meta), path("*.md5"), emit: checksum
     tuple val("${task.process}"), val('md5sum'), eval("md5sum --version | sed '1!d; s/.* //'"), topic: versions, emit: versions_md5sum
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

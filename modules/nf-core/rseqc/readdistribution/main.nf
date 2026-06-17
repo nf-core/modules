@@ -15,8 +15,6 @@ process RSEQC_READDISTRIBUTION {
     tuple val(meta), path("*.read_distribution.txt"), emit: txt
     tuple val("${task.process}"), val('rseqc'), eval('read_distribution.py --version | sed "s/read_distribution.py //"'), emit: versions_rseqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

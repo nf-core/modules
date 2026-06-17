@@ -15,8 +15,6 @@ process FCSGX_CLEANGENOME {
     tuple val(meta), path("*.contaminants.fasta"), emit: contaminants
     tuple val("${task.process}"), val('fcsgx'), eval("gx --help | sed '/build/!d; s/.*:v//; s/-.*//'"), emit: versions_fcsgx, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

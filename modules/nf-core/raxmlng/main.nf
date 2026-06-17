@@ -15,8 +15,6 @@ process RAXMLNG {
     tuple val(meta), path("*.raxml.bootstraps"), emit: phylogeny_bootstrapped, optional:true
     path "versions.yml"                        , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

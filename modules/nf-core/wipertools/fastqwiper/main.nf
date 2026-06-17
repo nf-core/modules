@@ -15,8 +15,6 @@ process WIPERTOOLS_FASTQWIPER {
     tuple val(meta), path("*.report")          , emit: report
     tuple val("${task.process}"), val('wipertools'), eval("wipertools fastqwiper --version"), topic: versions, emit: versions_wipertools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''

@@ -16,8 +16,6 @@ process IDEMUX {
     tuple val(meta), path("demultipexing_stats.tsv")  , emit: stats
     tuple val("${task.process}"), val("idemux"), eval("idemux --version |& sed '1!d ; s/idemux //'"), topic: versions, emit: versions_idemux
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

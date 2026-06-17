@@ -28,8 +28,6 @@ process AMPCOMBI {
 // As the module is deprecated and not run, we're hardcoding the version as instructed in
 // https://nf-co.re/docs/guidelines/components/modules#emission-of-versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

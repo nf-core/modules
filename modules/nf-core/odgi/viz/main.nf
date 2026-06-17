@@ -14,8 +14,6 @@ process ODGI_VIZ {
     tuple val(meta), path("*.png"), emit: png
     tuple val("${task.process}"), val('odgi'), eval("odgi version | sed 's/^v//; s/-.*//'"), emit: versions_odgi, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -15,8 +15,6 @@ process PYCOQC {
     tuple val(meta), path("*.json"), emit: json
     tuple val("${task.process}"), val('pycoqc'), eval('pycoQC --version 2>&1 | sed "s/^.*pycoQC v//; s/ .*\$//"'), emit: versions_pycoqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

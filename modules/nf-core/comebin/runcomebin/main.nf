@@ -18,8 +18,6 @@ process COMEBIN_RUNCOMEBIN {
     tuple val(meta), path("${prefix}/covembeddings.tsv")       , emit: covembeddings
     tuple val("${task.process}"), val('comebin'), eval("run_comebin.sh | sed '2!d;s/COMEBin version: //'"), topic: versions, emit: versions_comebin
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args               = task.ext.args ?: ''

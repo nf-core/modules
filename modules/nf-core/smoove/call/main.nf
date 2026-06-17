@@ -16,8 +16,6 @@ process SMOOVE_CALL {
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val("${task.process}"), val('smoove'), eval("smoove -v |& sed -n 's/smoove version: *//p'"), emit: versions_smoove, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

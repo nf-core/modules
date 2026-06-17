@@ -11,8 +11,6 @@ process XENIUMRANGER_RELABEL {
     tuple val(meta), path("${prefix}"), emit: outs
     tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/.*xenium-//'"), emit: versions_xeniumranger, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
 

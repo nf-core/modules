@@ -18,8 +18,6 @@ process BLAST_BLASTN {
     tuple val(meta), path('*.txt'), emit: txt
     tuple val("${task.process}"), val("blastn"), eval("blastn -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//'"), topic: versions, emit: versions_blastn
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

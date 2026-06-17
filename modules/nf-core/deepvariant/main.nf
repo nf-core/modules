@@ -18,8 +18,6 @@ process DEEPVARIANT {
     tuple val(meta), path("${prefix}.g.vcf.gz.tbi"),  emit: gvcf_tbi
     path "versions.yml"                            ,  emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

@@ -19,8 +19,6 @@ process TRNASCANSE {
     tuple val(meta), path("*.bed")   , emit: bed   , optional: true
     tuple val("${task.process}"), val('tRNAscan-SE'), eval("tRNAscan-SE |& sed '2!d;s/tRNAscan-SE //;s/ .*//'"), topic: versions, emit: versions_trnascanse
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args   ?: ''

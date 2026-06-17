@@ -14,8 +14,6 @@ process GNU_SORT {
     tuple val(meta), path( "${output_file}" )   , emit: sorted
     tuple val("${task.process}"), val('coreutils'), eval("sort --version |& sed '1!d ; s/sort (GNU coreutils) //'"), emit: versions_coreutils, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args     ?: ''

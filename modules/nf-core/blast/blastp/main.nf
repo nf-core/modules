@@ -18,8 +18,6 @@ process BLAST_BLASTP {
     tuple val(meta), path("*.csv*") , emit: csv, optional: true
     tuple val("${task.process}"), val("blastp"), eval("blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\$//'"), topic: versions, emit: versions_blastp
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

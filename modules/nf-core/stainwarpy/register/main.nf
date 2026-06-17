@@ -19,8 +19,6 @@ process STAINWARPY_REGISTER {
     tuple val(meta), path("*_feature_based_transformation_map.npy")                              , emit: tform_map
     tuple val("${task.process}"), val('stainwarpy'), eval("stainwarpy --version | sed 's/.* //'"), emit: versions_stainwarpy, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

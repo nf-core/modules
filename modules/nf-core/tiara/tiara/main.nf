@@ -18,8 +18,6 @@ process TIARA_TIARA {
     tuple val("${task.process}"), val('tiara'), val("1.0.3"), topic: versions, emit: versions_tiara
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

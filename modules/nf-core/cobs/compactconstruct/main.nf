@@ -14,8 +14,6 @@ process COBS_COMPACTCONSTRUCT {
     tuple val(meta), path("*.index.cobs_compact"), emit: index
     tuple val("${task.process}"), val('cobs'), eval("cobs version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'"), emit: versions_cobs, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -17,8 +17,6 @@ process GANON_BUILDCUSTOM {
     tuple val(meta), path("*.info.tsv"), emit: info, optional: true
     tuple val("${task.process}"), val('ganon'), eval("ganon --version 2>1 | sed 's/.*ganon //g'"), emit: versions_ganon, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

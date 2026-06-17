@@ -19,8 +19,6 @@ process RGI_BWT {
     tuple val("${task.process}"), val('rgi'), eval("rgi main --version"),  emit: versions_rgi, topic: versions
     tuple val("${task.process}"), val('rgi-database'), eval("echo \$DB_VERSION"),  emit: versions_db , topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // This customizes the command: rgi load

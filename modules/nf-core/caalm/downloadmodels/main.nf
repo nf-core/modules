@@ -11,8 +11,6 @@ process CAALM_DOWNLOADMODELS {
     tuple val("${task.process}"), val('huggingface_hub'), eval("python -c 'import huggingface_hub; print(huggingface_hub.__version__)'"), topic: versions, emit: versions_huggingface_hub
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     """

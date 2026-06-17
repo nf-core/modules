@@ -15,8 +15,6 @@ process KAIJU_MERGEOUTPUTS {
     tuple val(meta), path("*.tsv"), emit: merged
     tuple val("${task.process}"), val('kaiju'), eval("kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //'"), emit: versions_kaiju, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

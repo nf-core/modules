@@ -15,8 +15,6 @@ process DOUBLETDETECTION {
     tuple val(meta), path("*.pkl") , emit: predictions
     path "versions.yml"            , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

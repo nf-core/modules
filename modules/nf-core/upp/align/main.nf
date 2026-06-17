@@ -16,8 +16,6 @@ process UPP_ALIGN {
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
     tuple val("${task.process}"), val('sepp'), eval('run_upp.py -v | grep "run_upp" | cut -f2 -d" "'), emit: versions_sepp, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ""

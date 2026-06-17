@@ -15,8 +15,6 @@ process DEEPTOOLS_PLOTPCA {
     tuple val(meta), path("*.tab"), emit: tab
     tuple val("${task.process}"), val('deeptools'), eval('plotPCA --version | sed "s/plotPCA //g"') , emit: versions_deeptools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

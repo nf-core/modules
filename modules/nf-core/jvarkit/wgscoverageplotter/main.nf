@@ -16,8 +16,6 @@ process JVARKIT_WGSCOVERAGEPLOTTER {
     tuple val(meta),  path("*.svg"), emit: output
     tuple val("${task.process}"), val('jvarkit'), eval("jvarkit -v"), emit: versions_jvarkit, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args ?: ''

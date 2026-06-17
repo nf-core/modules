@@ -18,8 +18,6 @@ process GRAPHTYPER_GENOTYPE {
     tuple val(meta), path("results/*/*.vcf.gz.tbi"), emit: tbi
     tuple val("${task.process}"), val('graphtyper'), eval("graphtyper --help | tail -1 | sed 's/.* //'"), emit: versions_graphtyper, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args          = task.ext.args ?: ''

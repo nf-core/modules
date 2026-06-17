@@ -15,8 +15,6 @@ process MERYL_UNIONSUM {
     tuple val(meta), path("*.unionsum.meryl"), emit: meryl_db
     tuple val("${task.process}"), val('meryl'), eval("meryl --version |& sed 's/meryl //'"), emit: versions_meryl, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

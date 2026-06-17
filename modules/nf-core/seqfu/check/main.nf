@@ -14,8 +14,6 @@ process SEQFU_CHECK {
     tuple val(meta), path("${prefix}.tsv"), emit: check
     tuple val("${task.process}"), val('seqfu'), eval('seqfu version'), emit: versions_seqfu, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

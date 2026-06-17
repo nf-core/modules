@@ -14,8 +14,6 @@ process GCTA_MAKEGRMPART {
     tuple val(meta), path("*.part_${nparts}_${part}.grm.*"), val(nparts_gcta), val(part_gcta_job), emit: grm_files
     tuple val("${task.process}"), val("gcta"), eval("gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'"), emit: versions_gcta, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     nparts = nparts_gcta ?: 1

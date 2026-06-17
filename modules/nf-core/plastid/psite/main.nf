@@ -18,8 +18,6 @@ process PLASTID_PSITE {
     tuple val(meta), path("*_p_offsets.txt")        , emit: p_offsets
     path "versions.yml"                             , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

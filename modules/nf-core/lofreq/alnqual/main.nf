@@ -15,8 +15,6 @@ process LOFREQ_ALNQUAL {
     tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('lofreq'), eval("lofreq version | sed -n '1s/^.* //p'"), emit: versions_lofreq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

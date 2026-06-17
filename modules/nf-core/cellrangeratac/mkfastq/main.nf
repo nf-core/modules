@@ -12,8 +12,6 @@ process CELLRANGERATAC_MKFASTQ {
     path "${bcl.getSimpleName()}/outs/fastq_path/*.fastq.gz"  , emit: fastq
     tuple val("${task.process}"), val('cellrangeratac'), eval("cellranger-atac --version | sed 's/.*cellranger-atac-//'"), emit: versions_cellrangeratac, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

@@ -18,8 +18,6 @@ process HICAP {
     tuple val(meta), path("*.tsv"), emit: tsv, optional: true
     tuple val("${task.process}"), val('hicap'), eval("hicap --version 2>&1 | sed 's/^.*hicap //'"), emit: versions_hicap, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

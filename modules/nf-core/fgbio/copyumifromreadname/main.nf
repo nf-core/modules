@@ -15,8 +15,6 @@ process FGBIO_COPYUMIFROMREADNAME {
     tuple val(meta), path("*.bai"), emit: bai
     tuple val("${task.process}"), val('fgbio'), eval('fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\\[.*$//"'), topic: versions, emit: versions_fgbio
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

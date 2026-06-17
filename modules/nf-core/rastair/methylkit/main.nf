@@ -13,8 +13,6 @@ process RASTAIR_METHYLKIT {
     tuple val(meta), path("*methylkit.txt.gz"), emit: methylkit
     tuple val("${task.process}"), val('rastair'), eval("rastair --version | sed 's/rastair //'"), topic: versions, emit: versions_rastair
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

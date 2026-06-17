@@ -15,8 +15,6 @@ process SAMBAMBA_MARKDUP {
     tuple val(meta), path("*.bai"), emit: bai, optional: true
     tuple val("${task.process}"), val('sambamba'), eval("sambamba --version 2>&1 | grep -oPm1 'sambamba \\\\K[0-9.]+'"), topic: versions, emit: versions_sambamba
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

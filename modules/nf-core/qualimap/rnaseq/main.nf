@@ -15,8 +15,6 @@ process QUALIMAP_RNASEQ {
     tuple val(meta), path("${prefix}"), emit: results
     tuple val("${task.process}"), val('qualimap'), eval("qualimap 2>&1 | sed -n 's/.*QualiMap v.\\(.*\\)/\\1/p'"), emit: versions_qualimap, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

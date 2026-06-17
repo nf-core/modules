@@ -14,8 +14,6 @@ process MAFFT_GUIDETREE {
     tuple val(meta), path("*.dnd"), emit: tree
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

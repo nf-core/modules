@@ -19,8 +19,6 @@ process METASPACE_CONVERTER {
     path("SpatialData_${ds_id}.zarr"), emit: sdata_object
     path("versions.yml")             , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
 

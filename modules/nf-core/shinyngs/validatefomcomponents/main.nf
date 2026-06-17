@@ -19,8 +19,6 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
     tuple val(meta), path("*/*.contrasts_file.tsv")    , emit: contrasts
     tuple val("${task.process}"), val('shinyngs'), eval('Rscript -e "library(shinyngs); cat(as.character(packageVersion(\'shinyngs\')))"'), emit: versions_shinyngs, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // For full list of available args see

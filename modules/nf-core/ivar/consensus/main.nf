@@ -18,8 +18,6 @@ process IVAR_CONSENSUS {
     tuple val(meta), path("*.mpileup") , optional:true, emit: mpileup
     tuple val("${task.process}"), val('ivar'), eval("ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p'"), emit: versions_ivar, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

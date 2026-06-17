@@ -34,8 +34,6 @@ process SVABA {
     tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('svaba'), eval("svaba --version 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | head -n 1"), topic: versions, emit: versions_svaba
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

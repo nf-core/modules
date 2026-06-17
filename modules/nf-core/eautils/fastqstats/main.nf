@@ -16,8 +16,6 @@ process EAUTILS_FASTQSTATS {
     // tool does not have a version command, update this line on version bump
     tuple val("${task.process}"), val('fastq-stats'), val('1.1.2'), topic: versions, emit: versions_fastqstats
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

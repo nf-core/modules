@@ -19,8 +19,6 @@ process INSTRAIN_COMPARE {
     tuple val(meta), path("*.IS_compare/output/*.IS_compare_pooled_SNV_info.tsv")       , emit: snv_info
     tuple val("${task.process}"), val('instrain'), eval("inStrain compare --version 2>&1 | sed -n 's/.*inStrain version //p'"), emit: versions_instrain, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

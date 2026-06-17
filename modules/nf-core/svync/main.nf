@@ -15,8 +15,6 @@ process SVYNC {
     tuple val(meta), path("*.tbi")   , emit: tbi
     tuple val("${task.process}"), val('svync'), eval("svync --version | sed 's/svync version //'"), emit: versions_svync, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

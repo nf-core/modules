@@ -16,8 +16,6 @@ process SCANPY_SCRUBLET {
     tuple val(meta), path("*.pkl") , emit: predictions
     path "versions.yml"            , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}_scrublet"

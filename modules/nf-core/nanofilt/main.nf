@@ -16,8 +16,6 @@ process NANOFILT {
     path "*.log"                       , optional: true, emit: log_file
     tuple val("${task.process}"), val('nanofilt'), eval('NanoFilt -v | sed "s/NanoFilt //"'), emit: versions_nanofilt, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

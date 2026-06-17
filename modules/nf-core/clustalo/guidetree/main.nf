@@ -14,8 +14,6 @@ process CLUSTALO_GUIDETREE {
     tuple val(meta), path("*.dnd"), emit: tree
     tuple val("${task.process}"), val('clustalo'), eval('clustalo --version'), emit: versions_clustalo, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

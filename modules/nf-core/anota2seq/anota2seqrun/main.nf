@@ -29,8 +29,6 @@ process ANOTA2SEQ_ANOTA2SEQRUN {
     tuple val(meta), path("*.R_sessionInfo.log")                               , emit: session_info
     path "versions.yml", emit: versions_anota2seq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'anota2seqrun.r'

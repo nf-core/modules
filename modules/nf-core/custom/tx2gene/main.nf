@@ -18,8 +18,6 @@ process CUSTOM_TX2GENE {
     tuple val(meta), path("*tx2gene.tsv"), emit: tx2gene
     path "versions.yml"                  , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'tx2gene.py'

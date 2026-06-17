@@ -16,8 +16,6 @@ process PICARD_POSITIONBASEDDOWNSAMPLESAM {
     tuple val(meta), env("ACTUAL_NUM_READS"), emit: num_reads, optional: true
     tuple val("${task.process}"), val('picard'), eval("picard PositionBasedDownsampleSam --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

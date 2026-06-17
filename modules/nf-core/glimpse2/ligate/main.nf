@@ -14,8 +14,6 @@ process GLIMPSE2_LIGATE {
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants
     tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_ligate --help | grep -oE 'v[0-9.]+' | cut -c2-"), topic: versions, emit: versions_glimpse2
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

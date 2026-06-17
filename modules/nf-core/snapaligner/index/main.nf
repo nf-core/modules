@@ -14,8 +14,6 @@ process SNAPALIGNER_INDEX {
     tuple val(meta), path("snap/*") ,emit: index
     tuple val("${task.process}"), val('snap-aligner'), eval("snap-aligner 2>&1 | sed 's/^.*version //;s/.\$//;q'"), topic: versions, emit: versions_snapaligner
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

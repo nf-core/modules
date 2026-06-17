@@ -14,8 +14,6 @@ process HMMER_HMMRANK {
     tuple val(meta), path("*.hmmrank.tsv.gz"), emit: hmmrank
     path "versions.yml", emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

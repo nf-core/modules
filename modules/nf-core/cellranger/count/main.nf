@@ -12,8 +12,6 @@ process CELLRANGER_COUNT {
     tuple val(meta), path("**/outs/**"), emit: outs
     path "versions.yml"                , emit: versions_cellranger, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

@@ -18,8 +18,6 @@ process PICARD_MARKDUPLICATES {
     tuple val(meta), path("*.metrics.txt"), emit: metrics
     tuple val("${task.process}"), val('picard'), eval("picard MarkDuplicates --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

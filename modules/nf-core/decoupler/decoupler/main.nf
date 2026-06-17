@@ -18,8 +18,6 @@ process DECOUPLER_DECOUPLER {
     tuple val(meta), path("*estimate_decoupler_plot.png"), emit: png
     path "versions.yml", emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'decoupler.py'

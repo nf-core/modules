@@ -15,8 +15,6 @@ process VCFEXPRESS {
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
     tuple val("${task.process}"), val('vcfexpress'), eval("vcfexpress --version | sed 's/vcfexpress //'"), topic: versions, emit: versions_vcfexpress
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

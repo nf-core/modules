@@ -16,8 +16,6 @@ process CUSTOM_CATADDITIONALFASTA {
     tuple val(meta), path("out/${prefix}.gtf")  , emit: gtf
     path "versions.yml"                         , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

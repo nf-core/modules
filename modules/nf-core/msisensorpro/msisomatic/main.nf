@@ -19,8 +19,6 @@ process MSISENSORPRO_MSISOMATIC {
     tuple val(meta), path("${prefix}_somatic") , emit: output_somatic,  optional: true
     tuple val("${task.process}"), val('msisensor-pro'), eval("msisensor-pro --version 2>&1 | sed -nE 's/Version:\\s*v//p'") , emit: versions_msisensorpro, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

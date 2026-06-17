@@ -19,8 +19,6 @@ process MULTIQCSAV {
     tuple val("${task.process}"), val('multiqcsav'), eval('python -c "import multiqc_sav; print(multiqc_sav.__version__)"'), emit: versions_multiqcsav
     tuple val("${task.process}"), val('interop'), eval('python -c "import interop; print(interop.__version__)"'), emit: versions_interop
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

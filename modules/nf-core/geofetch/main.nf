@@ -13,8 +13,6 @@ process GEOFETCH {
     tuple val("${geo_accession}"), path("${geo_accession}/*.CEL.gz"), emit: samples
     tuple val("${task.process}"), val('geofetch'), eval("geofetch --version 2>&1 | sed '1!d; s/^geofetch //'"), topic: versions, emit: versions_geofetch
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

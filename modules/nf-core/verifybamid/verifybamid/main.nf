@@ -21,8 +21,6 @@ process VERIFYBAMID_VERIFYBAMID {
     tuple val(meta), path("*.bestRG")                , optional:true, emit: bestrg
     path "versions.yml"                                             , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

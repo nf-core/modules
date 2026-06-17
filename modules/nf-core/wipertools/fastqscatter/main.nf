@@ -15,8 +15,6 @@ process WIPERTOOLS_FASTQSCATTER {
     tuple val(meta), path("${out_folder}/*") , emit: fastq_chunks
     tuple val("${task.process}"), val('wipertools'), eval("wipertools fastqscatter --version"), topic: versions, emit: versions_wipertools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args ?: ''

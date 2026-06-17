@@ -14,8 +14,6 @@ process TIDK_PLOT {
     tuple val(meta), path("*.svg"), emit: svg
     tuple val("${task.process}"), val('tidk'), eval("tidk --version | sed 's/tidk //'"), emit: versions_tidk, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

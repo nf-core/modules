@@ -13,8 +13,6 @@ process MCSTAGING_MACSIMA2MC {
     tuple val(meta), path("${output_dir}/*")    , emit: out_dir
     tuple val("${task.process}"), val('macsima2mc'), eval('python -m pip show macsima2mc | grep "Version" | sed -e "s/Version: //g"'), topic: versions, emit: versions_macsima2mc
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

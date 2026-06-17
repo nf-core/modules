@@ -18,8 +18,6 @@ process CENTRIFUGER_QUANTIFICATION {
     tuple val(meta), path("*.tsv"), emit: report_file
     tuple val("${task.process}"), val('centrifuger'), eval("centrifuger -v 2>&1 | sed 's/Centrifuger v//'"), emit: versions_centrifuger,  topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

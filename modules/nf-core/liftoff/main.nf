@@ -19,8 +19,6 @@ process LIFTOFF {
     tuple val(meta), path("*.unmapped.txt")     , emit: unmapped_txt
     tuple val("${task.process}"), val('liftoff'), eval('liftoff --version | sed "s/v//"'), emit: versions_liftoff, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args     ?:  ''

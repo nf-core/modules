@@ -15,8 +15,6 @@ process SVDB_BUILD {
     tuple val(meta), path("*.db"), emit: db
     tuple val("${task.process}"), val('svdb'), eval("svdb | sed -nE 's/.*SVDB-([0-9.]+).*/\\1/p'"), emit: versions_svdb, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args             = task.ext.args ?: ''

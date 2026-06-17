@@ -16,8 +16,6 @@ process TIDDIT_COV {
     tuple val(meta), path("${prefix}.wig"), optional: true, emit: wig
     tuple val("${task.process}"), val('tiddit'), eval("tiddit | sed -n 's/^usage: tiddit-//; s/ .*//p'"), topic: versions, emit: versions_tiddit
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

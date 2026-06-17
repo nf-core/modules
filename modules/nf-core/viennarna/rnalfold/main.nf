@@ -14,8 +14,6 @@ process VIENNARNA_RNALFOLD {
     path "*.lfold"        , emit: rnalfold_txt
     path "versions.yml"   , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

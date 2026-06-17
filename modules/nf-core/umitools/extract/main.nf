@@ -16,8 +16,6 @@ process UMITOOLS_EXTRACT {
     tuple val(meta), path("*.log")     , emit: log
     tuple val("${task.process}"), val('umitools'), eval("umi_tools --version | sed -n '/version:/s/.*: //p'"), emit: versions_umitools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

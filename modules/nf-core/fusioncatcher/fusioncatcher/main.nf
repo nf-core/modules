@@ -17,8 +17,6 @@ process FUSIONCATCHER_FUSIONCATCHER {
     tuple val(meta), path("*.log")             , emit: log
     tuple val("${task.process}"), val('fusioncatcher'), eval("fusioncatcher --version |& sed 's/.* //'"), topic: versions, emit: versions_fusioncatcher
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -17,8 +17,6 @@ process POPSCLE_DSCPILEUP {
     tuple val(meta), path('*.umi.gz'), emit: umi
     path 'versions.yml'              , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''

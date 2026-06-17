@@ -23,8 +23,6 @@ process PERCOLATOR {
     tuple val(meta), path("${prefix}.protein.decoy.pout"), emit: decoy_proteins, optional: true
     tuple val("${task.process}"), val('percolator'), eval('percolator --help 2>&1 | head -1 | sed "s;Percolator version \\([^,]*\\),.*;\\1;"'), topic: versions, emit: versions_percolator
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

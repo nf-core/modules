@@ -17,8 +17,6 @@ process METACACHE_BUILD {
     tuple val(meta), path('*.meta'), path('*.cache*'), emit: db
     tuple val("${task.process}"), val('metacache'), eval("metacache info |& sed -n 's/^MetaCache version \\+\\([0-9.]\\+\\).*\$/\\1/p'"), emit: versions_metacache, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

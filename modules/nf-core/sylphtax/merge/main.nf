@@ -15,8 +15,6 @@ process SYLPHTAX_MERGE {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('sylph-tax'), eval("sylph-tax --version 2>&1 | tail -1"), emit: versions_sylphtax, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

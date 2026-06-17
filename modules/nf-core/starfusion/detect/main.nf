@@ -17,8 +17,6 @@ process STARFUSION_DETECT {
     tuple val(meta), path("*.coding_effect.tsv")     , emit: coding_effect, optional: true
     path "versions.yml"                              , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix       = task.ext.prefix ?: "${meta.id}.starfusion"

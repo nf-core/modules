@@ -17,8 +17,6 @@ process FGBIO_GROUPREADSBYUMI {
     tuple val(meta), path("*read-metrics.txt"), emit: read_metrics
     tuple val("${task.process}"), val('fgbio'), eval('fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\\[.*$//"'), topic: versions, emit: versions_fgbio
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

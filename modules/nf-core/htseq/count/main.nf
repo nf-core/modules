@@ -15,8 +15,6 @@ process HTSEQ_COUNT {
     tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('htseq'), eval("htseq-count --version"), emit: versions_htseq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

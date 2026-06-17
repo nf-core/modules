@@ -19,8 +19,6 @@ process SENTIEON_TNFILTER {
     tuple val(meta), path("*.vcf.gz.stats"), emit: stats
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: '' // options for the driver

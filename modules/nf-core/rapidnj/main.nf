@@ -17,8 +17,6 @@ process RAPIDNJ {
     tuple val("${task.process}"), val('rapidnj'), eval('echo 2.3.2'), emit: versions_rapidnj, topic: versions
     tuple val("${task.process}"), val('biopython'), eval('python -c "import Bio; print(Bio.__version__)"'), emit: versions_biopython, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

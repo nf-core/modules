@@ -19,8 +19,6 @@ process METAPHLAN_METAPHLAN {
     tuple val(meta), path("*.sam"), optional: true, emit: sam
     tuple val("${task.process}"), val('metaphlan'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

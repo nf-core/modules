@@ -13,8 +13,6 @@ process METAPHLAN_MERGEMETAPHLANTABLES {
     tuple val(meta), path("${prefix}.txt") , emit: txt
     tuple val("${task.process}"), val('metaphlan'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

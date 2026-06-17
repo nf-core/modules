@@ -16,8 +16,6 @@ process OPT_STAT {
     tuple val(meta), path("${prefix}/collapsed_summary.tsv"), emit: summary
     tuple val("${task.process}"), val('opt'), eval("opt --version"), topic: versions, emit: versions_opt
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

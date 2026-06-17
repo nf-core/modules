@@ -24,8 +24,6 @@ process CAALM_CAALM {
     tuple val("${task.process}"), val('torch'), eval("python -c 'import torch; print(torch.__version__)'"), topic: versions, emit: versions_torch
     tuple val("${task.process}"), val('faiss'), eval("python -c 'import faiss; print(faiss.__version__)'"), topic: versions, emit: versions_faiss
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

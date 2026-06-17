@@ -14,8 +14,6 @@ process FGUMI_EXTRACT {
     tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('fgumi'), eval('fgumi --version | sed "s/^fgumi //"'), topic: versions, emit: versions_fgumi
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

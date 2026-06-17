@@ -16,8 +16,6 @@ process VG_CONSTRUCT {
     tuple val(meta), path("*.vg") , emit: graph
     tuple val("${task.process}"), val('vg'), eval("vg 2>&1 | sed -n 's/.*version v\\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_vg
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

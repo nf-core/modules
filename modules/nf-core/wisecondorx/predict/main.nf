@@ -21,8 +21,6 @@ process WISECONDORX_PREDICT {
     tuple val(meta), path("genome_wide.png")        , emit: genome_plot, optional:true
     tuple val("${task.process}"), val('wisecondorx'), eval("python -c \"import wisecondorx; print(wisecondorx.__version__)\""), emit: versions_wisecondorx, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: '--bed --plot'

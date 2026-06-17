@@ -18,8 +18,6 @@ process GSTAMA_MERGE {
     tuple val(meta), path("*_trans_report.txt"), emit: trans_report
     tuple val("${task.process}"), val('gstama'), eval("tama_merge.py -version | sed '1!d'"), emit: versions_gstama, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

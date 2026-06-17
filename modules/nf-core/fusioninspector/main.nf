@@ -22,8 +22,6 @@ process FUSIONINSPECTOR {
     tuple val(meta), path("chckpts_dir")                 , emit: chckpts_dir , optional:true
     tuple val("${task.process}"), val('fusion-inspector'), eval("FusionInspector --version |& sed -n 's/.*version: //p'"), topic: versions, emit: versions_fusioninspector
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

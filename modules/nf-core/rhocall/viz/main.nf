@@ -16,8 +16,6 @@ process RHOCALL_VIZ {
     tuple val(meta), path("${prefix}/${prefix}.wig"), emit: wig
     tuple val("${task.process}"), val("rhocall"), eval("rhocall --version | sed 's/rhocall, version //'"), topic: versions, emit: versions_rhocall
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

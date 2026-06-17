@@ -28,8 +28,6 @@ process SEVERUS {
     tuple val(meta), path("${prefix}/somatic_SVs/breakpoints_clusters.tsv")     , emit: somatic_breakpoints_clusters     , optional: true
     tuple val(meta), path("${prefix}/somatic_SVs/plots/severus*.html")          , emit: somatic_plots                    , optional: true
     tuple val("${task.process}"), val('severus'), eval("severus --version"), emit: versions_severus, topic: versions
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -16,8 +16,6 @@ process PROPR_GREA {
     path "versions.yml",                 emit: versions
     path "*.R_sessionInfo.log",          emit: session_info
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'grea.R'

@@ -16,8 +16,6 @@ process HMMER_ESLREFORMAT {
     tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
     tuple val("${task.process}"), val('easel'), eval("esl-reformat -h | sed '2!d;s/^# Easel *//;s/ .*//'"), emit: versions_easel, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args     = task.ext.args ?: ''

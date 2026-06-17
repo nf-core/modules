@@ -12,8 +12,6 @@ process ILASTIK_PIXELCLASSIFICATION {
     tuple val(meta), path("*.${output_format}") , emit: output
     tuple val("${task.process}"), val('ilastik'), eval("/opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version"), emit: versions_ilastik, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

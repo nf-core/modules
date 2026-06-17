@@ -15,8 +15,6 @@ process CNVPYTOR_CALLCNVS {
     tuple val(meta), path("${pytor.baseName}.pytor")	, emit: pytor
     tuple val("${task.process}"), val('cnvpytor'), eval("cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p'"), emit: versions_cnvpytor, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def bins_cmd = bin_sizes ? "-call $bin_sizes" : '-call 1000'

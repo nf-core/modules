@@ -16,8 +16,6 @@ process GOATOOLS_FINDENRICHMENT {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('goatools'), eval("goatools --version"), topic: versions, emit: versions_goatools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

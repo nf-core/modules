@@ -28,8 +28,6 @@ process BLOBTK_PLOT {
     tuple val(meta), path("*.svg"), optional: true, emit: svg
     tuple val("${task.process}"), val("blobtk"), eval("blobtk --version | cut -d' ' -f2"), topic: versions, emit: versions_blobtk
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''

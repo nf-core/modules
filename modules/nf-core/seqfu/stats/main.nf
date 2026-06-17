@@ -16,8 +16,6 @@ process SEQFU_STATS {
     tuple val(meta), path("*_mqc.txt"), emit: multiqc
     tuple val("${task.process}"), val('seqfu'), eval('seqfu version'), emit: versions_seqfu, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

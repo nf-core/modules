@@ -17,8 +17,6 @@ process PORTELLO {
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi, optional: true
     tuple val("${task.process}"), val('portello'), eval("portello --version | sed -e 's/portello //'"), topic: versions, emit: versions_portello
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

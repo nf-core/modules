@@ -20,8 +20,6 @@ process VCF2DB {
     tuple val("${task.process}"), val('cyvcf2'), eval("python -c 'import cyvcf2; print(cyvcf2.__version__)'"), emit: versions_cyvcf2, topic: versions
     tuple val("${task.process}"), val('python'), eval("python --version 2>&1 | awk '{print \$2}'"), emit: versions_python, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

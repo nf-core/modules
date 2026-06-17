@@ -15,8 +15,6 @@ process MINDAGAP_MINDAGAP {
     tuple val("${task.process}"), val('mindagap'), eval("mindagap.py test -v"), emit: versions_mindagap, topic: versions
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

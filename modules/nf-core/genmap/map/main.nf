@@ -18,8 +18,6 @@ process GENMAP_MAP {
     tuple val(meta), path("*.csv")      , optional:true, emit: csv
     tuple val("${task.process}"), val('genmap'), eval("genmap --version |& sed -n 's/GenMap version: //p'"), emit: versions_genmap, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

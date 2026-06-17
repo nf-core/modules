@@ -16,8 +16,6 @@ process DASTOOL_SCAFFOLDS2BIN {
     tuple val(meta), path("*.tsv"), emit: scaffolds2bin
     path "versions.yml"                         , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

@@ -16,8 +16,6 @@ process SVTYPER_SVTYPERSSO {
     tuple val(meta), path("*.json"), emit: json
     path "versions.yml"            , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

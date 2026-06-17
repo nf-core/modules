@@ -24,8 +24,6 @@ process CATPACK_BINS {
     tuple val(meta), path("*.gff"), optional: true, emit: gff
     tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

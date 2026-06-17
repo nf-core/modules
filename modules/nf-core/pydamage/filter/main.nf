@@ -14,8 +14,6 @@ process PYDAMAGE_FILTER {
     tuple val(meta), path("${prefix}_pydamage_filtered_results.csv"), emit: csv
     path "versions.yml", emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

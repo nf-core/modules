@@ -18,8 +18,6 @@ process GANGSTR {
     tuple val(meta), path("*.samplestats.tab")                                  , emit: samplestats
     tuple val("${task.process}"), val('gangstr'), eval("GangSTR --version 2>&1"), emit: versions_gangstr , topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

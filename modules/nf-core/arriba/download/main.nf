@@ -18,8 +18,6 @@ process ARRIBA_DOWNLOAD {
     tuple val("${task.process}"), val('arriba'), eval('arriba -h | grep "Version:" 2>&1 | sed "s/Version:\\s//"'), emit: versions_arriba, topic: versions
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def arriba_version = '2.5.0'

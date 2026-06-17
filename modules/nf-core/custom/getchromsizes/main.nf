@@ -16,8 +16,6 @@ process CUSTOM_GETCHROMSIZES {
     tuple val(meta), path ("*.gzi")  , emit: gzi, optional: true
     path  "versions.yml"             , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

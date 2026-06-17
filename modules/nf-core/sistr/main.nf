@@ -17,8 +17,6 @@ process SISTR {
     tuple val(meta), path("*-cgmlst.csv")  , emit: cgmlst_csv
     tuple val("${task.process}"), val('sistr'), eval('sistr --version 2>&1 | sed "s/^.*sistr_cmd //; s/ .*\$//"'), emit: versions_sistr, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

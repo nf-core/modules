@@ -18,8 +18,6 @@ process TELESCOPE_ASSIGN {
     tuple val(meta), path("*.log"), emit: log, optional: true
     tuple val("${task.process}"), val('telescope'), eval("telescope --version | sed '1!d;s/.* //'"), emit: versions_telescope, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

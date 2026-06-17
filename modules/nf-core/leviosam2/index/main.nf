@@ -15,8 +15,6 @@ process LEVIOSAM2_INDEX {
     tuple val(meta), path("*.clft"), emit: clft
     tuple val("${task.process}"), val('leviosam2'), eval("leviosam2 --version"), emit: versions_leviosam2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

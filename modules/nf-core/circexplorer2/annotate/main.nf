@@ -16,8 +16,6 @@ process CIRCEXPLORER2_ANNOTATE {
     tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('circexplorer2'), eval("CIRCexplorer2 --version 2>&1; true"), topic: versions, emit: versions_circexplorer2
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -27,8 +27,6 @@ process PROKKA {
     tuple val(meta), path("${prefix}/*.tsv"), emit: tsv
     tuple val("${task.process}"), val('prokka'), eval("prokka --version 2>&1 | sed 's/^.*prokka //'"), topic: versions, emit: versions_prokka
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args             = task.ext.args   ?: ''

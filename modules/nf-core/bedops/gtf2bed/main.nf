@@ -14,8 +14,6 @@ process BEDOPS_GTF2BED {
     tuple val(meta), path('*.bed'), emit: bed
     tuple val("${task.process}"), val("bedops"), eval('bedops --version | sed -n "s/.*version: *\\([^ ]*\\).*/\\1/p"'), emit: versions_bedops, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

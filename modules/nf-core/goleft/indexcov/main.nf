@@ -22,8 +22,6 @@ process GOLEFT_INDEXCOV {
     tuple val("${task.process}"), val('goleft'), eval("goleft --version |& sed '1!d;s/^.*goleft Version: //'"), topic: versions, emit: versions_goleft
     tuple val("${task.process}"), val('tabix'), eval("tabix -h |& sed -n 's/^.*Version: //p'"), topic: versions, emit: versions_tabix
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

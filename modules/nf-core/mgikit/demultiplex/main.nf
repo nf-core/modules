@@ -23,8 +23,6 @@ process MGIKIT_DEMULTIPLEX {
     tuple val(meta), path("${prefix}/*mgikit.{info,general,ambiguous_barcode,undetermined_barcode}") , emit: qc_reports
     tuple val("${task.process}"), val('mgikit'), eval('mgikit --version | sed -n "s/.*kit. //p"'), emit: versions_mgikit, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

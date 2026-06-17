@@ -15,8 +15,6 @@ process QCATCH {
     tuple val(meta), path("*_metrics_summary.csv")  , emit: metrics_summary
     tuple val("${task.process}"), val('qcatch'), eval("qcatch --version | sed -e 's/qcatch //g'"), emit: versions_qcatch, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

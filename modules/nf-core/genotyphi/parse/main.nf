@@ -14,8 +14,6 @@ process GENOTYPHI_PARSE {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('genotyphi'), eval("genotyphi --version |& sed 's/^.*GenoTyphi v//'"), emit: versions_genotyphi, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

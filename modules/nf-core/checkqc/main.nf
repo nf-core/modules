@@ -14,8 +14,6 @@ process CHECKQC {
     tuple val(meta), path("*checkqc_report.json"), emit: report
     tuple val("${task.process}"), val('checkqc'), eval('checkqc --version | sed -e "s/checkqc, version //g"'), emit: versions_checkqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

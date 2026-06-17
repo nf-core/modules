@@ -14,8 +14,6 @@ process DSHBIO_FILTERGFF3 {
     tuple val(meta), path("*.gff3.gz"), emit: gff3
     tuple val("${task.process}"), val('dsh-bio'), eval("dsh-bio --version | sed '1!d;s/dsh-bio-tools //'"), emit: versions_dshbio, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

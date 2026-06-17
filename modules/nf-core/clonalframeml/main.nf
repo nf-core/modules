@@ -19,8 +19,6 @@ process CLONALFRAMEML {
     tuple val(meta), path("*.position_cross_reference.txt"), emit: pos_ref
     tuple val("${task.process}"), val("clonalframeml"), eval("ClonalFrameML -version 2>&1 | sed 's/^.*ClonalFrameML v//'"), topic: versions, emit: versions_clonalframeml
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

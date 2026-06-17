@@ -10,8 +10,6 @@ process METAPHLAN_MAKEDB {
     path "metaphlan_db_latest"      , emit: db
     tuple val("${task.process}"), val('metaphlan'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

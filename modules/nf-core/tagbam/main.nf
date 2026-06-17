@@ -14,8 +14,6 @@ process TAGBAM {
     tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('tagbam'), eval("tagbam --version | sed 's/tagbam //'"), topic: versions, emit: versions_tagbam
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

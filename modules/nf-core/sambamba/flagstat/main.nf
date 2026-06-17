@@ -14,8 +14,6 @@ process SAMBAMBA_FLAGSTAT {
     tuple val(meta), path("*.stats"), emit: stats
     tuple val("${task.process}"), val('sambamba'), eval("sambamba --version 2>&1 | grep -oPm1 'sambamba \\\\K[0-9.]+'"), topic: versions, emit: versions_sambamba
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

@@ -14,8 +14,6 @@ process S4PRED_RUNMODEL {
     tuple val(meta), path("${prefix}"), emit: preds
     path "versions.yml"               , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args   ?: ''

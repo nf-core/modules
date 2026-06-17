@@ -15,8 +15,6 @@ process LSA_COSINE {
     tuple val(meta), path("*_heatmap.png"), emit: heatmap
     path "versions.yml"                   , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     args = task.ext.args ?: ''

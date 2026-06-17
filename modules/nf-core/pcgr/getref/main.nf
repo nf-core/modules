@@ -16,8 +16,6 @@ process PCGR_GETREF {
     tuple val("${task.process}"), val('gzip'),  eval("gzip --version | head -1 | cut -d ' ' -f 2"), topic: versions, emit: versions_gzip
     tuple val("${task.process}"), val('tar'),   eval("tar --version | head -1 | cut -d ' ' -f 4"),  topic: versions, emit: versions_tar
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // no args as this process is only for downloading and unpacking the reference data bundle, which doesn't require any additional arguments

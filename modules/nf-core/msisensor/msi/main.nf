@@ -17,8 +17,6 @@ process MSISENSOR_MSI {
     tuple val(meta), path("${prefix}_somatic") , emit: output_somatic
     path "versions.yml"                        , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def deprecation_message = """

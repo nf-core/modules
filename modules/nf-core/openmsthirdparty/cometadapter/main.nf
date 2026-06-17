@@ -16,8 +16,6 @@ process OPENMSTHIRDPARTY_COMETADAPTER {
     tuple val("${task.process}"), val('CometAdapter'), eval("CometAdapter --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'"), emit: versions_cometadapter, topic: versions
     tuple val("${task.process}"), val('Comet'), eval("comet 2>&1 | sed -n 's/.*Comet version \" *\\(.*\\)\".*/\\1/p'"), emit: versions_comet, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

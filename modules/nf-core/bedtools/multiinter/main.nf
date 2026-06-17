@@ -15,8 +15,6 @@ process BEDTOOLS_MULTIINTER {
     tuple val(meta), path("*.bed"), emit: bed
     tuple val("${task.process}"), val('bedtools'), eval("bedtools --version | sed -e 's/bedtools v//g'"), topic: versions, emit: versions_bedtools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

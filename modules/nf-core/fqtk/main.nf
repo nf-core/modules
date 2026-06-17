@@ -19,8 +19,6 @@ process FQTK {
     tuple val(meta), path('output/unmatched*.fq.gz')                , emit: most_frequent_unmatched
     tuple val("${task.process}"), val('fqtk'), eval('fqtk --version 2>&1 | cut -d " " -f2'), emit: versions_fqtk, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

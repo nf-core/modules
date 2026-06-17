@@ -16,8 +16,6 @@ process BFF {
     tuple val(meta), path("*_params_bff.csv")    , emit: params
     path "versions.yml"                          , emit: versions_bff, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template('bff.R')

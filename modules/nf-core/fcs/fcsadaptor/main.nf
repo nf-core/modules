@@ -32,8 +32,6 @@ process FCS_FCSADAPTOR {
 
     // FCS_FCSGX ( ch_downstream_channel )
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

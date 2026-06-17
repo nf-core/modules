@@ -22,8 +22,6 @@ process VERIFYBAMID_VERIFYBAMID2 {
     tuple val(meta), path("*.Ancestry")        , optional:true, emit: ancestry
     tuple val("${task.process}"), val('verifybamid2'), eval("verifybamid2 --help 2>&1 | sed -n '3s/.*Version://p'"), topic: versions, emit: versions_verifybamid2
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

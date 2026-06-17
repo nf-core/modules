@@ -15,8 +15,6 @@ process EVIGENE_TR2AACDS {
     tuple val(meta), path("okayset")    , emit: okayset
     tuple val("${task.process}"), val('tr2aacds'), eval("\$EVIGENEHOME/scripts/prot/tr2aacds.pl 2>&1 | sed '1!d;s/.*VERSION //'"), emit: versions_tr2aacds, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args     ?: ''

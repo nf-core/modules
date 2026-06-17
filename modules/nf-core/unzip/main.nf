@@ -14,8 +14,6 @@ process UNZIP {
     tuple val(meta), path("${prefix}/"), emit: unzipped_archive
     tuple val("${task.process}"), val('7za'), eval("7za 2>&1 | sed -n '2s/^.* \\([0-9.]*\\) .*/\\1/p'"), topic: versions, emit: versions_7za
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

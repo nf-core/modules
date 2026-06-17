@@ -14,8 +14,6 @@ process LLAMACPPPYTHON_RUN {
     tuple val(meta), path("${prefix}.txt"), emit: output
     path "versions.yml", emit: versions_llama_cpp_python, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     args = task.ext.args ?: ''

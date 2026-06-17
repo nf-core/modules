@@ -17,8 +17,6 @@ process STRVCTVRE_STRVCTVRE {
     tuple val(meta), path("*.bed"), emit: bed, optional: true
     tuple val("${task.process}"), val('strvctvre'), eval("StrVCTVRE.py --help |& sed -n 's/StrVCTVRE: version *//p'"), emit: versions_strvctvre, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

@@ -16,8 +16,6 @@ process RASTAIR_MBIAS {
     tuple val(meta), path("*.rastair_mbias.txt"),   emit: txt
     tuple val("${task.process}"), val('rastair'), eval("rastair --version | sed 's/rastair //'"), topic: versions, emit: versions_rastair
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

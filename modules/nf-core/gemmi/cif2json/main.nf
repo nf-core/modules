@@ -14,8 +14,6 @@ process GEMMI_CIF2JSON {
     tuple val(meta), path("*.json"), emit: json
     tuple val("${task.process}"), val('gemmi'), eval("gemmi --version | sed -E 's/^gemmi ([^ ]+).*/\\1/'"), topic: versions, emit: versions_gemmi
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

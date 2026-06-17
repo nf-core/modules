@@ -16,8 +16,6 @@ process GRIDSS_SOMATICFILTER {
     tuple val(meta), path("*.all_somatic.vcf.bgz"), emit: all_sv
     tuple val("${task.process}"), val('gridss'), eval("GeneratePonBedpe --version 2>&1 | sed 's/-gridss//'"), topic: versions, emit: versions_gridss
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

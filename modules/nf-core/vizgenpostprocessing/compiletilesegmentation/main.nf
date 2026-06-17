@@ -15,8 +15,6 @@ process VIZGENPOSTPROCESSING_COMPILETILESEGMENTATION {
     tuple val(meta), path("${prefix}/*_micron_space.parquet"), emit: micron_space
     path  "versions.yml"                                     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -17,8 +17,6 @@ process FORCE_TILEEXTENT {
     tuple val("${task.process}"), val('force'), eval('force-tile-extent -v'), emit: versions_force, topic: versions
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     """

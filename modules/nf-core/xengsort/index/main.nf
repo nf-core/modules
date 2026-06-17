@@ -19,8 +19,6 @@ process XENGSORT_INDEX {
     path "${index}.info"          , emit: info
     tuple val("${task.process}"), val('xengsort'), eval("xengsort --version"), topic: versions, emit: versions_xengsort
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

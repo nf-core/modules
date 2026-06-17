@@ -18,8 +18,6 @@ process METABULI_BUILD {
     tuple val(meta), path("$prefix"), emit: db
     tuple val("${task.process}"), val('metabuli'), eval('metabuli 2>&1 | awk \'/metabuli Version:/ {print $3}\''), emit: versions_metabuli, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -20,8 +20,6 @@ process RUSTQC {
     tuple val(meta), path("${prefix}/qualimap/**"),                                                     emit: qualimap
     tuple val("${task.process}"), val('rustqc'), eval("rustqc --version 2>&1 | sed -n '1s/rustqc //; 1s/ .*//p'"),  emit: versions_rustqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

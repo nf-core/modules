@@ -18,8 +18,6 @@ process VARDICTJAVA {
     tuple val("${task.process}"), val('var2vcf_valid.pl'), eval('var2vcf_valid.pl -h | sed \'2!d;s/.* //\''), emit: versions_var2vcfvalid, topic: versions
     tuple val("${task.process}"), val('htslib'), eval("tabix -h 2>&1 | sed -n '2s/Version: *//p'"), emit: versions_htslib, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: '-c 1 -S 2 -E 3'

@@ -16,8 +16,6 @@ process FLASH {
     tuple val(meta), path("${prefix}.hist")                  , emit: histogram
     tuple val("${task.process}"), val('flash'), eval("flash --version |& sed '1!d;s/^.*FLASH v//'"), topic: versions, emit: versions_flash
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

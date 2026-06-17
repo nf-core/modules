@@ -14,8 +14,6 @@ process STAPHOPIASCCMEC {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('staphopiasccmec'), eval('staphopia-sccmec --version 2>&1 | sed "s/^.*staphopia-sccmec //"'), emit: versions_staphopiasccmec, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

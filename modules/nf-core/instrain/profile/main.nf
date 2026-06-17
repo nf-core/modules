@@ -23,8 +23,6 @@ process INSTRAIN_PROFILE {
     tuple val(meta), path("*.IS/output/*.IS_scaffold_info.tsv") , emit: scaffold_info
     tuple val("${task.process}"), val('instrain'), eval("inStrain profile --version 2>&1 | sed -n 's/.*inStrain version //p'"), emit: versions_instrain, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

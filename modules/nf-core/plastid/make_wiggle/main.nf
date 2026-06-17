@@ -16,8 +16,6 @@ process PLASTID_MAKE_WIGGLE {
     tuple val(meta), path("*.{wig,bedgraph}"), emit: tracks
     path "versions.yml"                      , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     if (mapping_rule == 'fiveprime_variable' && !p_offsets) {

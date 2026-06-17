@@ -14,8 +14,6 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
     path('*.mkfg'), emit: ncbi_settings
     tuple val("${task.process}"), val('sratools'), eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions, emit: versions_sratools
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     config = "/LIBS/GUID = \\\"${UUID.randomUUID().toString()}\\\"\\n/libs/cloud/report_instance_identity = \\\"true\\\"\\n"

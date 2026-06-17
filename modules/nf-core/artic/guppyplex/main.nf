@@ -14,8 +14,6 @@ process ARTIC_GUPPYPLEX {
     tuple val(meta), path("*.fastq.gz"), emit: fastq
     tuple val("${task.process}"), val('artic'), eval('artic -v 2>&1 | sed "s/^.*artic //; s/ .*$//"')   , emit: versions_artic, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

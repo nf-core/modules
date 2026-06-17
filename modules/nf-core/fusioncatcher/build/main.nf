@@ -14,8 +14,6 @@ process FUSIONCATCHER_BUILD {
     tuple val(meta), path("${prefix}"), emit: reference
     tuple val("${task.process}"), val('fusioncatcher'), eval("fusioncatcher --version |& sed 's/.* //'"), topic: versions, emit: versions_fusioncatcher
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

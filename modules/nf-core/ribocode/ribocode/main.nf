@@ -20,8 +20,6 @@ process RIBOCODE_RIBOCODE {
     tuple val(meta), path("*_psites.hd5")                                           , emit: psites_hd5, optional: true
     tuple val("${task.process}"), val('ribocode'), eval('RiboCode --version  2>&1') , emit: versions_ribocode, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -14,8 +14,6 @@ process GENMOD_ANNOTATE {
     tuple val(meta), path("*_annotate.vcf"), emit: vcf
     tuple val("${task.process}"), val('genmod'), eval("genmod --version | sed 's/^.*genmod version: //'"), emit: versions_genmod, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

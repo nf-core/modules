@@ -22,8 +22,6 @@ process PORTCULLIS_FULL {
     tuple val(meta), path("*.spliced.bam.bai"), emit: spliced_bai, optional: true
     path "versions.yml", emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

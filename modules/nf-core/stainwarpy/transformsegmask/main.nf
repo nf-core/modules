@@ -19,8 +19,6 @@ process STAINWARPY_TRANSFORMSEGMASK {
     tuple val(meta), path("*_transformed_segmentation_mask.ome.tif")                             , emit: transformed_seg_mask
     tuple val("${task.process}"), val('stainwarpy'), eval("stainwarpy --version | sed 's/.* //'"), emit: versions_stainwarpy, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

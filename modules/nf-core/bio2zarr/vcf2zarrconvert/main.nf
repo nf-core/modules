@@ -14,8 +14,6 @@ process BIO2ZARR_VCF2ZARRCONVERT {
     tuple val(meta), path("*.vcz"), emit: vcz
     tuple val("${task.process}"), val('vcf2zarr'), eval('vcf2zarr --version |& sed -n "s/.* //p"'), topic: versions  , emit: versions_vcf2zarr
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

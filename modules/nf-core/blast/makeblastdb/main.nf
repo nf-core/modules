@@ -15,8 +15,6 @@ process BLAST_MAKEBLASTDB {
     tuple val(meta), path("${prefix}"), emit: db
     tuple val("${task.process}"), val("makeblastdb"), eval("makeblastdb -version 2>&1 | sed 's/^.*makeblastdb: //; s/ .*\$//'"), topic: versions, emit: versions_makeblastdb
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args           = task.ext.args ?: ''

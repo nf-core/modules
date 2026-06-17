@@ -23,8 +23,6 @@ process CHEWBBACA_ALLELECALL {
     tuple val(meta), path("*_loci_summary_stats.tsv")  , emit: loci_summary_stats , optional:true
     tuple val("${task.process}"), val("chewbbaca"), eval("chewie --version 2>&1 | sed 's/chewBBACA version: //'"), topic: versions, emit: versions_chewbbaca
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

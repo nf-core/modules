@@ -21,8 +21,6 @@ process METATOR_PIPELINE {
     tuple val("${task.process}"), val('gunzip'), eval('gunzip --version |& sed "1!d;s/^.*(gzip) //;s/ Copyright.*//"'), topic: versions, emit: versions_gunzip
     tuple val("${task.process}"), val("find"), eval("find --version | sed '1!d; s/.* //'"), topic: versions, emit: versions_find
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args  = task.ext.args ?: ''

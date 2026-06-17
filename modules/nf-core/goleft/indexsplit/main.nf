@@ -16,8 +16,6 @@ process GOLEFT_INDEXSPLIT {
     tuple val(meta), path("*.bed") , emit: bed
     tuple val("${task.process}"), val('goleft'), eval("goleft --version 2>&1 | sed '1!d;s/^.*goleft Version: //'"), topic: versions, emit: versions_goleft
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

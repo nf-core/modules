@@ -14,8 +14,6 @@ process FQ_SUBSAMPLE {
     tuple val(meta), path("*.fastq.gz"), emit: fastq
     tuple val("${task.process}"), val('fq'), eval("fq subsample --version | sed 's/fq-subsample //; s/ .*//'"), emit: versions_fq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     /* args requires:

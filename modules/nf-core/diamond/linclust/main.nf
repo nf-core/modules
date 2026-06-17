@@ -14,8 +14,6 @@ process DIAMOND_LINCLUST {
     tuple val(meta), path("${prefix}.tsv"), emit: clusters
     tuple val("${task.process}"), val('diamond'), eval("diamond --version | sed 's/diamond version //g'"), emit: versions_diamond, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

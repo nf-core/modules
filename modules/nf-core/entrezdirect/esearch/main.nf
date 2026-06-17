@@ -15,8 +15,6 @@ process ENTREZDIRECT_ESEARCH {
     tuple val(meta), path("*.xml") , emit: xml
     tuple val("${task.process}"), val('ENTREZDIRECT'), eval('esearch -version 2>&1'), emit: versions_esearch, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

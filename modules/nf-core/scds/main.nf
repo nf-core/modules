@@ -15,8 +15,6 @@ process SCDS {
     tuple val(meta), path("*.csv"), emit: predictions
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

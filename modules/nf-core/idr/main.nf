@@ -17,8 +17,6 @@ process IDR {
     tuple val("${task.process}"), val('idr'), eval("idr --version |& sed '1!d;s/^.*IDR //'"), emit: versions_idr, topic: versions
     tuple val("${task.process}"), val('python'), eval("python --version |& sed 's/Python //'"), emit: versions_python, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

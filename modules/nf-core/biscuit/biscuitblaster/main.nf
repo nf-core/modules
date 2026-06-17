@@ -18,8 +18,6 @@ process BISCUIT_BLASTER {
     tuple val("${task.process}"), val('biscuit'), eval("biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'"), emit: versions_biscuit, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools --version |& sed '1!d; s/^.*samtools //'"), emit: versions_samtools, topic: versions
     tuple val("${task.process}"), val('samblaster'), eval("samblaster --version |& sed 's/^.*samblaster: Version //'"), emit: versions_samblaster, topic: versions
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

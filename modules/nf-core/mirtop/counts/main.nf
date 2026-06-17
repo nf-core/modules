@@ -16,8 +16,6 @@ process MIRTOP_COUNTS {
     tuple val(meta), path("counts/*.tsv"), emit: tsv
     tuple val("${task.process}"), val('mirtop'), eval("mirtop --version 2>&1 | sed -n 's/^mirtop //p'"), emit: versions_mirtop, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

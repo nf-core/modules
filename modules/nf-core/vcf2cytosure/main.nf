@@ -18,8 +18,6 @@ process VCF2CYTOSURE {
     tuple val(meta), path("*.cgh"), emit: cgh
     tuple val("${task.process}"), val('vcf2cytosure'), eval("vcf2cytosure --version 2>&1 | sed -n 's/.*cytosure //p'"), topic: versions, emit: versions_vcf2cytosure
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

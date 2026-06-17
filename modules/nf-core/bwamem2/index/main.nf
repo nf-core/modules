@@ -16,8 +16,6 @@ process BWAMEM2_INDEX {
     tuple val(meta), path("bwamem2"), emit: index
     tuple val("${task.process}"), val('bwamem2'), eval('bwa-mem2 version | grep -o -E "[0-9]+(\\.[0-9]+)+"'), emit: versions_bwamem2, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${fasta}"

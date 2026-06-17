@@ -22,8 +22,6 @@ process SAGEPROTEOMICS_SAGE {
     tuple val(meta), path("tmt.tsv"), optional: true, emit: tmt_tsv
     tuple val(meta), path("lfq.tsv"), optional: true, emit: lfq_tsv
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     """

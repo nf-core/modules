@@ -15,8 +15,6 @@ process MYGENE {
     tuple val(meta), path("*.tsv"), emit: tsv     , optional: true
     tuple val("${task.process}"), val('mygene'), val("3.2.2"), emit: versions_mygene, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template "mygene.py"

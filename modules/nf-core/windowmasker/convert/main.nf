@@ -14,8 +14,6 @@ process WINDOWMASKER_CONVERT {
     tuple val(meta), path("${output}"), emit: converted
     tuple val("${task.process}"), val('windowmasker'), eval("windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//'"), topic: versions, emit: versions_windowmasker
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   =    task.ext.args                       ?: ''

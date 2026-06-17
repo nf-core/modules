@@ -21,8 +21,6 @@ process CENTRIFUGER_CENTRIFUGER {
     tuple val(meta), path("*.unclassified*.fq.gz"), emit: fastq_unclassified, optional: true
     tuple val("${task.process}"), val('centrifuger'), eval("centrifuger -v 2>&1 | sed 's/Centrifuger v//'"),emit: versions_centrifuger,  topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

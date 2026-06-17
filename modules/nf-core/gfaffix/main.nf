@@ -17,8 +17,6 @@ process GFAFFIX {
     tuple val("${task.process}"), val('gfaffix'), eval('gfaffix --version | cut -d" " -f2'), emit: versions_gfaffix, topic: versions
 
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

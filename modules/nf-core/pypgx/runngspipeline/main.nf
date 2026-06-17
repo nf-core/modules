@@ -17,8 +17,6 @@ process PYPGX_RUNNGSPIPELINE {
     tuple val(meta), path("*pypgx_output/consolidated-variants.zip"), emit: consolidated_variants
     tuple val("${task.process}"), val('pypgx'), eval('pypgx -v 2>&1 | grep -oE "[0-9]+\\.[0-9]+\\.[0-9]+" | head -1'), emit: versions_pypgx, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ""

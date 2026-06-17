@@ -24,8 +24,6 @@ process PHISPY {
     tuple val(meta), path("${prefix}_prophage.tsv")            , optional:true, emit: prophage_tsv
     path "versions.yml"                                        , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

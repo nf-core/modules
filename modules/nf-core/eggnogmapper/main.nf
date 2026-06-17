@@ -18,8 +18,6 @@ process EGGNOGMAPPER {
     tuple val(meta), path("*.emapper.hits")          , emit: hits     , optional: true
     tuple val("${task.process}"), val('eggnog-mapper'), eval("emapper.py --version 2>&1 | grep -o 'emapper-[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+' | sed 's/emapper-//'"), topic: versions, emit: versions_eggnogmapper
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args          = task.ext.args   ?: ''

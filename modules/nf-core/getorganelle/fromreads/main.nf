@@ -16,8 +16,6 @@ process GETORGANELLE_FROMREADS {
     tuple val(meta), path("results/*"), emit: etc
     tuple val("${task.process}"), val('getorganelle'), eval("get_organelle_from_reads.py --version |& sed 's/^GetOrganelle v//'"), topic: versions, emit: versions_getorganelle
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

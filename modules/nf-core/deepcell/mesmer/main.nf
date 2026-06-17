@@ -15,8 +15,6 @@ process DEEPCELL_MESMER {
     tuple val("${task.process}"), val('deepcell'), eval("pip show 'DeepCell' | sed '2!d;s/Version: //'"), emit: versions_deepcell, topic: versions
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), emit: versions_python, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba

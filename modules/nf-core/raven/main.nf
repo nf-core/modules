@@ -15,8 +15,6 @@ process RAVEN {
     tuple val(meta), path("*.gfa.gz")  , emit: gfa
     tuple val("${task.process}"), val('raven'), eval('raven --version'), emit: versions_raven, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

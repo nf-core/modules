@@ -19,8 +19,6 @@ process SEGEMEHL_ALIGN {
     tuple val(meta), path("${prefix}/${prefix}.sngl.bed") , emit: single_bed, optional: true
     path "versions.yml"                                   , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

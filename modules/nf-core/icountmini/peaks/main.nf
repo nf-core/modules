@@ -14,8 +14,6 @@ process ICOUNTMINI_PEAKS {
     tuple val(meta), path("*.peaks.bed.gz"), emit: peaks
     tuple val("${task.process}"), val('iCount-Mini'), eval("iCount-Mini -v"), emit: versions_icount_mini, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

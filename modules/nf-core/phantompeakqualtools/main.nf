@@ -17,8 +17,6 @@ process PHANTOMPEAKQUALTOOLS {
     tuple val(meta), path("*.Rdata"), emit: rdata
     path  "versions.yml"            , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

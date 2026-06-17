@@ -47,8 +47,6 @@ process IQTREE {
     tuple val(meta), path("*.log")           , emit: log
     tuple val("${task.process}"), val('iqtree'), eval("iqtree -version 2>&1 | head -n1 | sed 's/^IQ-TREE multicore version //;s/ .*//'"), emit: versions_iqtree, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args                        = task.ext.args           ?: ''

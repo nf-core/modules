@@ -14,8 +14,6 @@ process HMMCOPY_GCCOUNTER {
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('hmmcopy'), val("0.1.1"), topic: versions, emit: versions_hmmcopy
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -15,8 +15,6 @@ process VG_INDEX {
     tuple val(meta), path("*.vgi")      , emit: vg_index, optional: true
     tuple val("${task.process}"), val('vg'), eval("vg 2>&1 | sed -n 's/.*version v\\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_vg
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

@@ -25,8 +25,6 @@ process GMMDEMUX {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('GMM-Demux'), val("0.2.2.3")                                                                 , emit: versions_gmmdemux, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args            = task.ext.args ?: ''

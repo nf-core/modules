@@ -21,8 +21,6 @@ process TESORTER {
     tuple val(meta), path("*.cls.pep") , emit: cls_pep , optional: true
     path "versions.yml"                , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args ?: ''

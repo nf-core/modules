@@ -20,8 +20,6 @@ process MYLOASM {
     tuple val(meta), path("${prefix}/*.log")                                     , emit: log
     tuple val("${task.process}"), val('myloasm'), eval("myloasm --version | sed 's/.* //'"), emit: versions_myloasm, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

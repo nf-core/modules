@@ -15,8 +15,6 @@ process PROOVFRAME_FIX {
     tuple val(meta), path("*.fa"), emit: out_fa
     path "versions.yml"          , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

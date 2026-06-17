@@ -16,8 +16,6 @@ process MAGECK_TEST {
     tuple val(meta), path("*.R")                 , emit: r_script, optional: true
     path "versions.yml"                          , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

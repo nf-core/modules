@@ -17,8 +17,6 @@ process HMMER_HMMSEARCH {
     tuple val(meta), path('*.domtbl.gz'), emit: domain_summary, optional: true
     tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args       = task.ext.args   ?: ''

@@ -24,8 +24,6 @@ process SHINYNGS_STATICEXPLORATORY {
     tuple val(meta), path("*/png/sample_dendrogram.png")        , emit: dendro
     tuple val("${task.process}"), val('shinyngs'), eval('Rscript -e "library(shinyngs); cat(as.character(packageVersion(\'shinyngs\')))"'), emit: versions_shinyngs, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // For full list of available args see

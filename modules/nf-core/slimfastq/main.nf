@@ -15,8 +15,6 @@ process SLIMFASTQ {
     tuple val(meta), path("*.sfq"), emit: sfq
     tuple val("${task.process}"), val('slimfastq'), eval('echo 2.04'), emit: versions_slimfastq, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

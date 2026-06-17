@@ -19,8 +19,6 @@ process OCTOPUSV_PLOT {
     tuple val(meta), path("${prefix}_chromosome_distribution.svg"), emit: chromosome_distribution_svg
     tuple val("${task.process}"), val('octopusv'), eval("python -c \"import importlib.metadata as m; print(m.version('octopusv'))\""), emit: versions_octopusv, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

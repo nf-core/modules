@@ -14,8 +14,6 @@ process VARLOCIRAPTOR_PREPROCESS {
     tuple val(meta), path("*.bcf"), emit: bcf
     tuple val("${task.process}"), val('varlociraptor'), eval("varlociraptor --version | sed 's/^varlociraptor //'"), topic: versions, emit: versions_varlociraptor
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

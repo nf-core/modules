@@ -18,8 +18,6 @@ process CHEWBBACA_CREATESCHEMA {
     path "results/invalid_cds.txt"           , emit: invalid_cds
     tuple val("${task.process}"), val("chewbbaca"), eval("chewie --version 2>&1 | sed 's/chewBBACA version: //'"), topic: versions, emit: versions_chewbbaca
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

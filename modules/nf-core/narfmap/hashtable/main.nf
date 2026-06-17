@@ -14,8 +14,6 @@ process NARFMAP_HASHTABLE {
     tuple val(meta), path("narfmap")    , emit: hashmap
     path "versions.yml"                 , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

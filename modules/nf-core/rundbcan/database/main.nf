@@ -10,8 +10,6 @@ process RUNDBCAN_DATABASE {
     path "dbcan_db", emit: dbcan_db
     tuple val("${task.process}"), val('rundbcan'), eval("run_dbcan version | sed 's/dbCAN version: //g'"), emit: versions_rundbcan, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     """

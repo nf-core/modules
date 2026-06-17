@@ -10,8 +10,6 @@ process SINGLEM_DBDOWNLOAD {
     path("*.smpkg.zb")                                                                                                     , emit: singlem_database
     tuple val("${task.process}"), val('singlem'), eval('singlem --version'), topic: versions                                , emit: versions_singlem
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

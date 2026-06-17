@@ -17,8 +17,6 @@ process IPHOP_PREDICT {
     tuple val(meta), path("Detailed_output_by_tool.csv")        , emit: iphop_detailed_output
     tuple val("${task.process}"), val('iphop'), eval("iphop --version 2>&1 | sed '1!d;s/iPHoP v//;s/:.*//'"), emit: versions_iphop, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

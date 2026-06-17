@@ -15,8 +15,6 @@ process CUSTOM_TABULARTOGSEACHIP {
     tuple val(meta), path("*.chip"), emit: chip
     tuple val("${task.process}"), val('gawk'), eval("gawk --version 2>&1 | sed '1!d;s/^.*GNU Awk //; s/, .*//'"), emit: versions_gawk, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"

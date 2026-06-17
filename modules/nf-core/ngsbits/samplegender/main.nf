@@ -17,8 +17,6 @@ process NGSBITS_SAMPLEGENDER {
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('ngsbits'), eval("SampleGender --version  2>&1 | sed 's/SampleGender //'"), topic: versions, emit: versions_ngsbits
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

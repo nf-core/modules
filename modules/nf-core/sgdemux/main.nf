@@ -20,8 +20,6 @@ process SGDEMUX {
     tuple val(meta), path("${prefix}/sample_barcode_hop_metrics.tsv")  , emit: sample_barcode_hop_metrics
     tuple val("${task.process}"), val('sgdemux'), eval('sgdemux --version | cut -d " " -f2'), emit: versions_sgdemux, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

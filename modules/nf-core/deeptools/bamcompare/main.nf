@@ -16,8 +16,6 @@ process DEEPTOOLS_BAMCOMPARE {
     tuple val(meta), path("*.bedgraph"), emit: bedgraph, optional: true
     tuple val("${task.process}"), val('deeptools'), eval('bamCompare --version | sed "s/bamCompare //g"') , emit: versions_deeptools, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

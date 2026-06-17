@@ -19,8 +19,6 @@ process PARSNP {
     tuple val(meta), path("partition"), emit: partition, optional: true
     tuple val("${task.process}"), val('parsnp'), eval("parsnp --version 2>/dev/null | tail -n 1 | sed 's/parsnp //'"), topic: versions, emit: versions_parsnp
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

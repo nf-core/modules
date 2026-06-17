@@ -14,8 +14,6 @@ process EAUTILS_GTF2BED {
     tuple val(meta), path("${prefix}.bed") , emit: bed
     path "versions.yml"                    , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

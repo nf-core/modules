@@ -14,8 +14,6 @@ process SYLPH_SKETCHSAMPLES {
     tuple val(meta), path('my_sketches/*.sylsp'), emit: sylsp
     tuple val("${task.process}"), val('sylph'), eval('sylph -V | sed "s/sylph //g"'), topic: versions, emit: versions_sylph
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

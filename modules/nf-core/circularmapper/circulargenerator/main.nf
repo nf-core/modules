@@ -20,8 +20,6 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     tuple val(meta), path("*${elongation_factor}_elongated") , emit: elongated
     tuple val("${task.process}"), val('circulargenerator'), eval("circulargenerator -h | sed -n 's/usage: CircularGeneratorv//p'"), topic: versions, emit: versions_circulargenerator
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

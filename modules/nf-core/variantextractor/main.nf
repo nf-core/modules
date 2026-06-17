@@ -14,8 +14,6 @@ process VARIANTEXTRACTOR {
     tuple val(meta), path("*.vcf"), emit: vcf
     path "versions.yml"           , emit: versions_variantextractor, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix       = task.ext.prefix ?: "${meta.id}"

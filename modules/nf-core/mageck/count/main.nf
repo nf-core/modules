@@ -16,8 +16,6 @@ process MAGECK_COUNT {
     tuple val(meta), path("*.count_normalized.txt"), emit: norm
     path "versions.yml"                            , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

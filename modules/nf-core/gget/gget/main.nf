@@ -15,8 +15,6 @@ process GGET_GGET {
     tuple val(meta), path("${prefix}.${extension}")     , emit: output, optional: true
     tuple val("${task.process}"), val('gget'), eval("gget --version |& sed 's/gget version: //'"), topic: versions, emit: versions_gget
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

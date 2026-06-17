@@ -16,8 +16,6 @@ process ICOUNTMINI_SIGXLS {
     tuple val(meta), path("*.scores.tsv")   , emit: scores
     tuple val("${task.process}"), val('iCount-Mini'), eval("iCount-Mini -v"), emit: versions_icount_mini, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args ?: ''

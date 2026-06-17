@@ -16,8 +16,6 @@ process SOUPX {
     tuple val(meta), path("*.h5ad"), emit: h5ad
     path "versions.yml"            , emit: versions_soupx, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}_soupx"

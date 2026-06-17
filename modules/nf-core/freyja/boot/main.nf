@@ -20,8 +20,6 @@ process FREYJA_BOOT {
     tuple val(meta), path("*summarized.csv"), emit: summarized
     tuple val("${task.process}"), val('freyja'), eval("freyja --version | sed 's/.* //'"), topic: versions, emit: versions_freyja
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

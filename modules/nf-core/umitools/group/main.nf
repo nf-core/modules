@@ -18,8 +18,6 @@ process UMITOOLS_GROUP {
     tuple val(meta), path("*.tsv")        , optional: true, emit: tsv
     path "versions.yml"                   , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args   ?: ''

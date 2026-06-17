@@ -18,8 +18,6 @@ process FREYJA_DEMIX {
     tuple val(meta), path("*.tsv"), emit: demix
     tuple val("${task.process}"), val('freyja'), eval("freyja --version | sed 's/.* //'"), topic: versions, emit: versions_freyja
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

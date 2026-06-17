@@ -14,8 +14,6 @@ process YARA_INDEX {
     tuple val(meta), path("${fasta}*")   , emit: index
     tuple val("${task.process}"), val('yara'), eval("yara_indexer --version 2>&1 | grep 'yara_indexer version' | sed 's/^.*yara_indexer version: //; s/ .*\$//'"), topic: versions, emit: versions_yara
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

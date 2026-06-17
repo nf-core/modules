@@ -14,8 +14,6 @@ process ANARCII {
     tuple val(meta), path("*.csv"), emit: anarcii
     tuple val("${task.process}"), val('anarcii'), eval('anarcii --version | sed "s/^anarcii //"'), topic: versions, emit: versions_anarcii
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -17,8 +17,6 @@ process CUSTOM_CLUSTERMETRICS {
     tuple val(meta), path("*.png")          , emit: plots, optional: true
     path "versions.yml"                     , emit: versions, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     template 'cluster_metrics.py'

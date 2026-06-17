@@ -15,8 +15,6 @@ process PANAROO_RUN {
     tuple val(meta), path("results/core_gene_alignment.aln"), optional: true, emit: aln
     path "versions.yml"                                                     , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

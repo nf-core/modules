@@ -15,8 +15,6 @@ process CELLBENDER_MERGE {
     tuple val(meta), path("${prefix}.h5ad"), emit: h5ad
     path "versions.yml"                    , emit: versions_cellbender, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"

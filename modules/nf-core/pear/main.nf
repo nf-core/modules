@@ -16,8 +16,6 @@ process PEAR {
     tuple val(meta), path("*.discarded.fastq.gz")                                                                   , emit: discarded
     tuple val("${task.process}"), val('pear'), eval("pear -h | grep 'PEAR v' | sed 's/PEAR v//' | sed 's/ .*//'")   , topic: versions, emit: versions_pear
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

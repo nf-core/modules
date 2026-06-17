@@ -14,8 +14,6 @@ process PHARMCAT_PHENOTYPER {
     tuple val(meta), path("*.phenotype.json")                                                                   ,   emit: phenotyper_json
     tuple val("${task.process}"), val('pharmcat'), eval("pharmcat --version | cut -f2 -d ' '"), topic: versions ,   emit: versions_pharmcat
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args     ?: ''

@@ -23,8 +23,6 @@ process SALTSHAKER_CALL {
     tuple val(meta), path("*_call_metadata.tsv"), emit: call
     tuple val("${task.process}"), val('saltshaker'), val("1.1.1"), topic: versions, emit: versions_saltshaker
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

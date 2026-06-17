@@ -16,8 +16,6 @@ process MIRDEEP2_MIRDEEP2 {
     tuple val(meta), path("result*.{bed,csv,html}")    , emit: outputs
     path "versions.yml"                                , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

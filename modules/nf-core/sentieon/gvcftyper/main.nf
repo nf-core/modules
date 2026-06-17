@@ -20,8 +20,6 @@ process SENTIEON_GVCFTYPER {
     tuple val(meta), path("*.vcf.gz.tbi"), emit: vcf_gz_tbi
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}_genotyped"

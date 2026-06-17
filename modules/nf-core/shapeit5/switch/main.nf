@@ -14,8 +14,6 @@ process SHAPEIT5_SWITCH {
     tuple val(meta), path("*.txt.gz"), emit: errors
     tuple val("${task.process}"), val('shapeit5'), eval('SHAPEIT5_switch | sed "5!d;s/^.*Version *: //; s/ .*$//"'), topic: versions, emit: versions_shapeit5
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''

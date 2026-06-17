@@ -15,8 +15,6 @@ process KNOTANNOTSV {
     // CHANGE bellow when UPDATE
     tuple val("${task.process}"), val('knotannotsv'), val('1.1.5'), emit: versions_knotannotsv, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

@@ -17,8 +17,6 @@ process SEQUALI {
     tuple val(meta), path("*.json"), emit: json
     tuple val("${task.process}"), val('sequali'), eval('sequali --version |& sed \'1!d ; s/sequali //\''), emit: versions_sequali, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

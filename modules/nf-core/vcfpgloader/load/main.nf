@@ -28,8 +28,6 @@ process VCFPGLOADER_LOAD {
     tuple val(meta), env('ROWS_LOADED'), emit: row_count
     tuple val("${task.process}"), val("vcf-pg-loader"), eval("vcf-pg-loader --version | sed 's/.*version //'"), topic: versions, emit: versions_vcfpgloader
 
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
