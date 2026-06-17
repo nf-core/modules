@@ -23,14 +23,10 @@ process DEEPMASED_FEATURES {
     script:
     def args   = task.ext.args ?: ''
     prefix     = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.3.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    if (prefix == "${meta.id}_file_paths") {
+        error("Input TSV filename matches output filename. Set ext.prefix differently.")
+    }
     """
-    # Check for input/output name collision
-    if [[ "${prefix}_file_paths.tsv" == "${prefix}_feature_file_paths.tsv" ]]; then
-        echo "ERROR: Input TSV filename matches output filename. Set ext.prefix differently." >&2
-        exit 1
-    fi
-
     echo -e "bam\\tfasta" > ${prefix}_file_paths.tsv
     echo -e "${bam}\\t${fasta}" >> ${prefix}_file_paths.tsv
 

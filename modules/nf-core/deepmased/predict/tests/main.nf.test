@@ -38,7 +38,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.predictions,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out)
                 ).match() }
             )
         }

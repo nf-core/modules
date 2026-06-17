@@ -32,7 +32,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.feature_table,
                     process.out.feature_files,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out)
                 ).match() },
                 { assert path(process.out.feature_table[0][1]).exists() },
                 { assert path(process.out.feature_table[0][1]).readLines().size() > 1 }
@@ -64,7 +64,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.feature_table,
                     process.out.feature_files,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out)
                 ).match() }
             )
         }
