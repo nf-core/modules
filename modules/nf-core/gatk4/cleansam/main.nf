@@ -43,7 +43,6 @@ process GATK4_CLEANSAM {
         ${reference} \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam
-
     """
 
     stub:
