@@ -12,7 +12,8 @@ tools:
       documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
       tool_dev_url: "https://github.com/cbcrg/tcoffee"
       doi: "10.1006/jmbi.2000.4042"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -36,13 +37,27 @@ output:
           description: Formatted file
           pattern: "*"
           ontologies: []
+  versions_tcoffee:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tcoffee:
+          type: string
+          description: The name of the tool
+      - t_coffee -version | awk '{gsub("Version_", ""); print \$3}':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tcoffee:
+          type: string
+          description: The name of the tool
+      - t_coffee -version | awk '{gsub("Version_", ""); print \$3}':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
   - "@JoseEspinosa"

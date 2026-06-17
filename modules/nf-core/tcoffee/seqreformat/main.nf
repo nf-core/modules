@@ -12,8 +12,7 @@ process TCOFFEE_SEQREFORMAT {
 
     output:
     tuple val(meta), path("${prefix}.txt"), emit: formatted_file
-    path "versions.yml" , emit: versions
-
+    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | awk \'{gsub("Version_", ""); print \\$3}\''), emit: versions_tcoffee, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +26,6 @@ process TCOFFEE_SEQREFORMAT {
         -in ${infile} \
         $args \
         > "${prefix}.txt"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +34,5 @@ process TCOFFEE_SEQREFORMAT {
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
     touch "${prefix}.txt"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-    END_VERSIONS
     """
 }
