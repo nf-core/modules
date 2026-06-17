@@ -22,10 +22,10 @@ nextflow_process {
                 dummy_markers = Channel.of("marker_name").collectFile(name: "markers.csv", newLine: true)
 
                 input[0] = fullres_trf.map { trf ->
-                    [ 
-                        [ id:'test_imf_he' ], 
-                        file('https://raw.githubusercontent.com/VictorDidier/RAMI2D/sample_data/data/imf_and_he/HE.ome.tif', checkIfExists: true), 
-                        trf 
+                    [
+                        [ id:'test_imf_he' ],
+                        file('https://raw.githubusercontent.com/VictorDidier/RAMI2D/sample_data/data/imf_and_he/HE.ome.tif', checkIfExists: true),
+                        trf
                     ]
                 }
                 input[1] = dummy_markers.map { markers ->
@@ -74,9 +74,9 @@ nextflow_process {
             process {
                 """
                 input[0] = RAMI2D_REGISTER.out.qc_dir.map { meta, qc ->
-                    [ 
-                        meta, 
-                        file('https://raw.githubusercontent.com/VictorDidier/RAMI2D/sample_data/data/imf_and_he/HE.ome.tif', checkIfExists: true), 
+                    [
+                        meta,
+                        file('https://raw.githubusercontent.com/VictorDidier/RAMI2D/sample_data/data/imf_and_he/HE.ome.tif', checkIfExists: true),
                         file("\${qc}/fullres_trf")
                     ]
                 }

@@ -101,15 +101,9 @@ def merge_members(members):
     rep = sorted(members, key=lambda r: (-int(r.get("aa_length") or 0), r["orf_id"]))[0]
     out = dict(rep)
     for c in CALLERS:
-        out[f"called_by_{c}"] = (
-            "1" if any(r.get(f"called_by_{c}") == "1" for r in members) else "0"
-        )
-        out[f"score_{c}"] = best_score(
-            [r.get(f"score_{c}", "") for r in members], SCORE_DIRECTIONS[c]
-        )
-    samples = sorted(
-        {s for r in members for s in (r.get("samples") or "").split(",") if s}
-    )
+        out[f"called_by_{c}"] = "1" if any(r.get(f"called_by_{c}") == "1" for r in members) else "0"
+        out[f"score_{c}"] = best_score([r.get(f"score_{c}", "") for r in members], SCORE_DIRECTIONS[c])
+    samples = sorted({s for r in members for s in (r.get("samples") or "").split(",") if s})
     out["n_samples"] = str(len(samples))
     out["samples"] = ",".join(samples)
     return rep["orf_id"], out
@@ -121,9 +115,7 @@ def main():
 
     prefix = "${prefix}"
 
-    catalogue = pd.read_csv(
-        "${catalogue_tsv}", sep="\\t", comment="#", dtype=str, keep_default_na=False
-    )
+    catalogue = pd.read_csv("${catalogue_tsv}", sep="\\t", comment="#", dtype=str, keep_default_na=False)
     header = list(catalogue.columns)
     rows = catalogue.to_dict("records")
 
