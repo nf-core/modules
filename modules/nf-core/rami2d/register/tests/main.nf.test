@@ -36,7 +36,7 @@ nextflow_process {
                 { assert file(process.out.registered_image[0][1]).exists() },
                 { assert file(process.out.registered_image[0][1]).name == "HE_registered.ome.tif" },
                 { assert file(process.out.qc_dir[0][1]).exists() },
-                { assert file(process.out.qc_dir[0][1]).name == "qc" },                
+                { assert file(process.out.qc_dir[0][1]).name == "qc" },
                 { assert snapshot(process.out.versions_rami2d).match("versions") }
             )
         }
