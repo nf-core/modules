@@ -33,13 +33,23 @@ output:
   versions_nextclade:
     - - ${task.process}:
           type: string
-          description: The process the versions were collected from
+          description: The process the process
       - nextclade:
           type: string
           description: The tool name
-      - "nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'":
+      - nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\:
           type: eval
-          description: The version of the tool
+          description: The expression to obtain the tool version
+  versions_nextclade_dataset:
+    - - ${task.process}:
+          type: string
+          description: The process the process
+      - nextclade-dataset:
+          type: string
+          description: The dataset version used
+      - "grep 'tag' $dataset/pathogen.json | sed -n 's/.*\\\"tag\\\": \\\"\\\\([0-9-]\\\\+Z\\\\":
+          type: eval
+          description: The expression to obtain the dataset version
 topics:
   versions:
     - - ${task.process}:
@@ -48,9 +58,9 @@ topics:
       - nextclade:
           type: string
           description: The tool name
-      - "nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'":
+      - nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\:
           type: eval
-          description: The version of the tool
+          description: The expression to obtain the dataset version
 authors:
   - "@antunderwood"
   - "@drpatelh"
