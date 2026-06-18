@@ -15,7 +15,7 @@ process PYPOLCA_RUN {
     tuple val(meta), path("${prefix}/*_corrected.fasta"), emit: polished
     tuple val(meta), path("${prefix}/*.vcf")            , emit: vcf
     tuple val(meta), path("${prefix}/*.report")         , emit: report
-    tuple val("${task.process}"), val('pypolca'), eval('pypolca --version'), emit: versions_pypolca, topic: versions
+    tuple val("${task.process}"), val('pypolca'), eval("pypolca --version | sed 's/^pypolca, version //'"), emit: versions_pypolca, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
