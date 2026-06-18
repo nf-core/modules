@@ -11,8 +11,8 @@ process VARSCAN_FPFILTER {
     tuple val(meta), path(vcf), path(rc)
 
     output:
-    tuple val(meta), path("*.pass.vcf.gz")                                                                     , emit: pass_vcf
-    tuple val(meta), path("*.fail.vcf.gz")                                                                     , emit: fail_vcf
+    tuple val(meta), path("*.pass.vcf.gz"), emit: pass_vcf
+    tuple val(meta), path("*.fail.vcf.gz"), emit: fail_vcf
     tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n 's/VarScan v\\?\\([0-9.]*\\).*/\\1/p'"), emit: versions_varscan, topic: versions
 
     when:

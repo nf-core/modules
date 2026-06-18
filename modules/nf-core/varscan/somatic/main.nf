@@ -11,8 +11,8 @@ process VARSCAN_SOMATIC {
     tuple val(meta), path(normal_mpileup), path(tumour_mpileup)
 
     output:
-    tuple val(meta), path("*.snvs.vcf.gz")                                                                     , emit: vcf_snvs
-    tuple val(meta), path("*.indels.vcf.gz")                                                                   , emit: vcf_indels
+    tuple val(meta), path("*.snvs.vcf.gz")  , emit: vcf_snvs
+    tuple val(meta), path("*.indels.vcf.gz"), emit: vcf_indels
     tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n 's/VarScan v\\?\\([0-9.]*\\).*/\\1/p'"), emit: versions_varscan, topic: versions
 
     when:

@@ -11,12 +11,12 @@ process VARSCAN_PROCESSSOMATIC {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.Germline.vcf.gz")                                                                     , emit: germline_vcf
-    tuple val(meta), path("*.Germline.hc.vcf.gz")                                                                  , emit: germline_hc_vcf
-    tuple val(meta), path("*.Somatic.vcf.gz")                                                                      , emit: somatic_vcf
-    tuple val(meta), path("*.Somatic.hc.vcf.gz")                                                                   , emit: somatic_hc_vcf
-    tuple val(meta), path("*.LOH.vcf.gz")                                                                          , emit: loh_vcf
-    tuple val(meta), path("*.LOH.hc.vcf.gz")                                                                       , emit: loh_hc_vcf
+    tuple val(meta), path("*.Germline.vcf.gz")   , emit: germline_vcf
+    tuple val(meta), path("*.Germline.hc.vcf.gz"), emit: germline_hc_vcf
+    tuple val(meta), path("*.Somatic.vcf.gz")    , emit: somatic_vcf
+    tuple val(meta), path("*.Somatic.hc.vcf.gz") , emit: somatic_hc_vcf
+    tuple val(meta), path("*.LOH.vcf.gz")        , emit: loh_vcf
+    tuple val(meta), path("*.LOH.hc.vcf.gz")     , emit: loh_hc_vcf
     tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n 's/VarScan v\\?\\([0-9.]*\\).*/\\1/p'"), emit: versions_varscan, topic: versions
 
     when:
