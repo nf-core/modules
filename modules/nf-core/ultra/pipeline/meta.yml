@@ -1,5 +1,6 @@
 name: ultra_pipeline
-description: uLTRA aligner - A wrapper around minimap2 to improve small exon detection
+description: uLTRA aligner - A wrapper around minimap2 to improve small exon
+  detection
 keywords:
   - uLTRA
   - index
@@ -14,7 +15,8 @@ tools:
       documentation: https://github.com/ksahlin/uLTRA
       tool_dev_url: https://github.com/ksahlin/uLTRA
       doi: "10.1093/bioinformatics/btab540"
-      licence: ["GNU GPLV3"]
+      licence:
+        - "GNU GPLV3"
       identifier: ""
 input:
   - - meta:
@@ -27,8 +29,7 @@ input:
         description: A fasta or fastq file of reads to align
         pattern: "*.{fasta,fastq}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
-
+          - edam: http://edamontology.org/format_1930
   - - meta2:
         type: map
         description: |
@@ -39,8 +40,7 @@ input:
         description: fasta file of reference genome
         pattern: "*.fasta"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
-
+          - edam: "http://edamontology.org/format_1929"
   - - meta3:
         type: map
         description: |
@@ -51,8 +51,7 @@ input:
         description: Genome annotation file
         pattern: "*.gtf"
         ontologies:
-          - edam: "http://edamontology.org/format_2306" # GTF
-
+          - edam: "http://edamontology.org/format_2306"
 output:
   sam:
     - - meta:
@@ -65,13 +64,27 @@ output:
           description: The aligned reads in sam format
           pattern: "*.sam"
           ontologies: []
+  versions_ultra:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ultra:
+          type: string
+          description: The name of the tool
+      - uLTRA --version | sed 's/uLTRA //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ultra:
+          type: string
+          description: The name of the tool
+      - uLTRA --version | sed 's/uLTRA //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sguizard"
   - "@lassefolkersen"
