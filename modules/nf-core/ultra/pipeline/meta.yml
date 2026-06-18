@@ -29,7 +29,7 @@ input:
         description: A fasta or fastq file of reads to align
         pattern: "*.{fasta,fastq}"
         ontologies:
-          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - - meta2:
         type: map
         description: |
@@ -40,7 +40,7 @@ input:
         description: fasta file of reference genome
         pattern: "*.fasta"
         ontologies:
-          - edam: "http://edamontology.org/format_1929"
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - meta3:
         type: map
         description: |
@@ -51,7 +51,7 @@ input:
         description: Genome annotation file
         pattern: "*.gtf"
         ontologies:
-          - edam: "http://edamontology.org/format_2306"
+          - edam: "http://edamontology.org/format_2306" # GTF
 output:
   sam:
     - - meta:
