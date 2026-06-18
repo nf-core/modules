@@ -16,7 +16,7 @@ process UMITOOLS_GROUP {
     tuple val(meta), path("*.log")        , emit: log
     tuple val(meta), path("${prefix}.bam"), optional: true, emit: bam
     tuple val(meta), path("*.tsv")        , optional: true, emit: tsv
-    tuple val("${task.process}"), val('umitools'), eval("umi_tools --version | sed '/version:/!d; s/.*: //'"), emit: versions_umitools, topic: versions
+    tuple val("${task.process}"), val('umitools'), eval("umi_tools --version | sed 's/UMI-tools version: //'"), emit: versions_umitools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
