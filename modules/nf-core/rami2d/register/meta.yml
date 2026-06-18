@@ -1,5 +1,7 @@
 name: "rami2d_register"
-description: offers 3 pre-defined registration schemes 1) Rigid, 2) Rigid+Affine 3) Rigid+Affine+Bsplines, each of them providing more geometrical adaptability and thus more control in the final outcome.
+description: offers 3 pre-defined registration schemes 1) Rigid, 2) Rigid+Affine 3)
+  Rigid+Affine+Bsplines, each of them providing more geometrical adaptability and
+  thus more control in the final outcome.
 keywords:
   - registration
   - imaging
@@ -10,8 +12,9 @@ tools:
       description: "Robust Alignment of Multichannel Images in 2D"
       homepage: "https://pypi.org/project/rami2d/"
       documentation: "https://github.com/VictorDidier/RAMI2D"
-      doi: ""
-      licence: ["BSD-3-Clause"]
+      tool_dev_url: "https://github.com/VictorDidier/RAMI2D"
+      licence:
+        - "BSD-3-Clause"
       identifier: ""
 input:
   - - meta:
@@ -23,16 +26,20 @@ input:
         type: file
         description: Absolute path of the image stack containing the fixed image
         pattern: "*.{tif,tiff,ome.tif,ome.tiff,svs,avs,vms,dcm,vmus,ndpi,scn,mrxs,svslide,bif,czi}"
+        ontologies: []
     - moving_img:
         type: file
         description: Absolute path of the image stack containing the moving image
         pattern: "*.{tif,tiff,ome.tif,ome.tiff,svs,avs,vms,dcm,vmus,ndpi,scn,mrxs,svslide,bif,czi}"
+        ontologies: []
   - ifix:
       type: integer
-      description: O-based Index of the channel to be used for the registration in the fixed image stack
+      description: O-based Index of the channel to be used for the registration in the
+        fixed image stack
   - imov:
       type: integer
-      description: O-based Index of the channel to be used for the registration in the moving image stack
+      description: O-based Index of the channel to be used for the registration in the
+        moving image stack
   - mpp_fix:
       type: float
       description: Pixel size of the fixed image in micrometers
@@ -41,7 +48,8 @@ input:
       description: Pixel size of the moving image in micrometers
   - mpp_reg:
       type: float
-      description: Image resolution in micrometers to be used for applying the registration scheme
+      description: Image resolution in micrometers to be used for applying the registration
+        scheme
 output:
   registered_image:
     - - meta:
@@ -53,6 +61,7 @@ output:
           type: file
           description: Registered output image in pyramidal OME TIFF format
           pattern: "*.ome.tif"
+          ontologies: []
   csv:
     - - meta:
           type: map
@@ -63,6 +72,8 @@ output:
           type: file
           description: Output CSV file containing registration metrics
           pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   qc_dir:
     - - meta:
           type: map
@@ -71,7 +82,8 @@ output:
             e.g. [ id:'sample1' ]
       - "${prefix}/qc":
           type: directory
-          description: Directory containing QC outputs including refchns keypoints and fullres transformations
+          description: Directory containing QC outputs including refchns keypoints and
+            fullres transformations
           pattern: "qc"
   versions_rami2d:
     - - ${task.process}:
