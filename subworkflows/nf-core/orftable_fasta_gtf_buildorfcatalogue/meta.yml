@@ -1,0 +1,101 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "orftable_fasta_gtf_buildorfcatalogue"
+description: |
+  Build a multi-caller Ribo-seq ORF catalogue from per-sample, per-caller
+  ORF prediction tables. Chains:
+
+    1. `custom/orfnormalise` (one invocation per caller-tagged input;
+       dispatch by the per-record `caller` val) - reconciles each
+       caller's native output table into a unified BED12 + sidecar TSV.
+    2. `custom/orfmerge` (one cohort-level invocation) - class-aware
+       clustering of normalised calls across callers and samples.
+    3. `bedtools/getfasta` + `seqkit/translate` - lifts the merged BED12
+       into a catalogue AA FASTA.
+    4. `mmseqs/easycluster` + `custom/orfcollapse` (optional, `val_collapse`) -
+       clusters catalogue peptides by amino-acid identity and folds duplicate
+       small ORFs to one representative each.
+
+  The collapse identity threshold defaults to `--min-seq-id 0.9` (the GENCODE
+  Ribo-seq ORF catalogue convention; Mudge et al. 2022), set on
+  `MMSEQS_EASYCLUSTER` in this subworkflow's `nextflow.config`. Override it via
+  `ext.args` on `MMSEQS_EASYCLUSTER` in the consuming pipeline's config if a
+  different cutoff is wanted.
+
+  Supports five callers via the per-record `caller` val: ribocode, ribotish,
+  ribotricer, rpbp, price. Any subset can be supplied. When `ch_orf_tables` is empty
+  the subworkflow short-circuits the merge + FASTA chain and the output
+  channels are empty.
+
+  Output meta is hardcoded to `[ id: 'cohort' ]`; downstream consumers that
+  want a different cohort id should `.map` the emitted channels or
+  override `ext.prefix` on `CUSTOM_ORFMERGE` / `BEDTOOLS_GETFASTA` /
+  `SEQKIT_TRANSLATE` to control output filenames.
+keywords:
+  - orf
+  - ribo-seq
+  - catalogue
+  - merge
+  - translation
+components:
+  - custom/orfnormalise
+  - custom/orfmerge
+  - bedtools/getfasta
+  - seqkit/translate
+  - mmseqs/easycluster
+  - custom/orfcollapse
+input:
+  - ch_orf_tables:
+      description: |
+        Per-sample, per-caller ORF prediction tables. All callers share a
+        single channel; the caller id is carried as a per-record `val`
+        (one of: ribocode, ribotish, ribotricer, rpbp, price) and selects
+        the parser inside the normaliser.
+        Structure: [ val(meta), path(orf_table), val(caller) ]
+  - ch_fasta:
+      description: |
+        Reference genome FASTA used by bedtools/getfasta to extract
+        catalogue nucleotide sequences.
+        Structure: [ val(meta), path(fasta) ]
+  - ch_gtf:
+      description: |
+        Reference annotation GTF. Used by the ribocode and ribotish
+        normalisers to lift transcript coordinates to genomic blocks;
+        ignored by callers that already emit genomic coordinates
+        (ribotricer, rpbp, price). Pass `[ [:], [] ]` if no GTF is
+        available (caller subset must then exclude ribocode and ribotish).
+        Structure: [ val(meta), path(gtf) ]
+  - val_collapse:
+      description: |
+        Cluster catalogue peptides by amino-acid identity (mmseqs/easycluster)
+        and fold each multi-member small-ORF cluster to one representative
+        (custom/orfcollapse). When false the merged catalogue is emitted
+        unchanged and the clustering modules do not run.
+        Structure: val(collapse)
+output:
+  - catalogue_bed12:
+      description: |
+        Merged ORF catalogue as BED12.
+        Structure: [ val(meta), path(bed12) ]
+  - catalogue_tsv:
+      description: |
+        Per-ORF table with `called_by_<caller>` / `score_<caller>` and
+        `n_samples` / `samples` provenance columns.
+        Structure: [ val(meta), path(tsv) ]
+  - orf_to_gene_tsv:
+      description: |
+        One row per (orf_id, gene_id, transcript_id) mapping; an ORF can
+        map to multiple host transcripts/genes.
+        Structure: [ val(meta), path(tsv) ]
+  - catalogue_aa_fasta:
+      description: |
+        Catalogue amino-acid FASTA produced by seqkit translate from the
+        nucleotide extract of the merged BED12.
+        Structure: [ val(meta), path(faa) ]
+  - multiqc:
+      description: |
+        MultiQC custom-content sidecar (per-class ORF counts).
+        Structure: [ val(meta), path(tsv) ]
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

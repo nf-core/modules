@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process SEQKIT_PAIR"
     script "../main.nf"
     process "SEQKIT_PAIR"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -10,12 +11,14 @@ nextflow_process {
     tag "seqkit/pair"
 
     test("sarscov2 - bam") {
-
         when {
+            params {
+                modules_args = '-u'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
+                    [ id:'test' ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -26,23 +29,24 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("sarscov2 - bam - stub") {
-
-        options "-stub"
+        options '-stub'
 
         when {
+            params {
+                modules_args = '-u'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
+                    [ id:'test' ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -53,12 +57,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }
