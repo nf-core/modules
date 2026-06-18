@@ -26,7 +26,7 @@ input:
     - vcfs:
         type: file
         description: List containing 2 or more bgzipped tandem repeat VCF files
-          e.g. [ 'file1.vcf,gz', 'file2.vcf.gz' ]
+          e.g. [ 'file1.vcf.gz', 'file2.vcf.gz' ]
         pattern: "*.{vcf.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_3016"
@@ -35,7 +35,8 @@ input:
         description: List containing the tbi index files corresponding to the vcfs
           input files e.g. [ 'file1.vcf.gz.tbi', 'file2.vcf.gz.tbi' ]
         pattern: "*.{vcf.gz.tbi}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3700"
 output:
   vcf:
     - - meta:
