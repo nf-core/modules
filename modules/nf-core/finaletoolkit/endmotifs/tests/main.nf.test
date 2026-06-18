@@ -15,8 +15,6 @@ nextflow_process {
 
             process {
 
-                config "./nextflow.config"
-
                 """
                 input[0] = [
                     [ id:'test' ],
@@ -48,8 +46,6 @@ nextflow_process {
         when {
 
             process {
-
-                config "./nextflow.config"
 
                 """
                 input[0] = [
