@@ -15,7 +15,9 @@ tools:
       documentation: https://github.com/AnantharamanLab/vRhyme
       tool_dev_url: https://github.com/AnantharamanLab/vRhyme
       doi: 10.1093/nar/gkac341
-      licence: ["GPL v3", "GPL v3 license"]
+      licence:
+        - "GPL v3"
+        - "GPL v3 license"
       identifier: biotools:vrhyme
 input:
   - - meta:
@@ -28,7 +30,7 @@ input:
         description: Preprocessed FASTQ file containing sample reads
         pattern: "*.{fastq}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
   - - meta2:
         type: map
         description: |
@@ -39,7 +41,7 @@ input:
         description: Contigs/scaffolds identified as viral
         pattern: "*.{fna,fasta,fa,fasta.gz,fa.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
 output:
   bins:
     - - meta:
@@ -59,10 +61,11 @@ output:
             e.g. [ id:'test' ]
       - "**/vRhyme_best_bins.*.membership.tsv":
           type: file
-          description: TSV file describing the contig/scaffold membership of each bin
+          description: TSV file describing the contig/scaffold membership of each
+            bin
           pattern: "vRhyme_best_bins.*.membership.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   summary:
     - - meta:
           type: map
@@ -74,14 +77,28 @@ output:
           description: TSV file summarizing the attributes of each bin
           pattern: "vRhyme_best_bins.*.summary.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_vrhyme:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vrhyme:
+          type: string
+          description: The name of the tool
+      - vRhyme --version 2>&1 | sed 's/^.*vRhyme v//; s/Using.*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vrhyme:
+          type: string
+          description: The name of the tool
+      - vRhyme --version 2>&1 | sed 's/^.*vRhyme v//; s/Using.*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@CarsonJM"
 maintainers:
