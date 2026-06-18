@@ -41,6 +41,7 @@ process BAKTA_BAKTA {
 
     """
     export MPLCONFIGDIR=\$PWD/.matplotlib
+    export FONTCONFIG_PATH=\$PWD/.fontconfig
 
     bakta \\
         ${fasta} \\
@@ -58,6 +59,7 @@ process BAKTA_BAKTA {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     export MPLCONFIGDIR=\$PWD/.matplotlib
+    export FONTCONFIG_PATH=\$PWD/.fontconfig
 
     touch ${prefix}.embl
     touch ${prefix}.faa

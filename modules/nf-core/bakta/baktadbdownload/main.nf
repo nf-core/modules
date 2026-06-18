@@ -17,6 +17,7 @@ process BAKTA_BAKTADBDOWNLOAD {
     def args = task.ext.args ?: ''
     """
     export MPLCONFIGDIR=\$PWD/.matplotlib
+    export FONTCONFIG_PATH=\$PWD/.fontconfig
 
     bakta_db \\
         download \\
@@ -27,6 +28,7 @@ process BAKTA_BAKTADBDOWNLOAD {
     def args = task.ext.args ?: ''
     """
     export MPLCONFIGDIR=\$PWD/.matplotlib
+    export FONTCONFIG_PATH=\$PWD/.fontconfig
 
     echo "bakta_db \\
         download \\
