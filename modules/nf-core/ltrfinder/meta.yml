@@ -70,7 +70,7 @@ output:
       - LTR_FINDER_parallel:
           type: string
           description: The name of the tool
-      - "LTR_FINDER_parallel -h 2>&1 | sed -n 's/Version: //p'":
+      - "LTR_FINDER_parallel -h 2>&1 | sed -n 's/Version: v//p'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_ltr_finder:
@@ -80,7 +80,7 @@ output:
       - ltr_finder:
           type: string
           description: The name of the tool
-      - ltr_finder -h 2>&1 | sed -n 's/ltr_finder //p':
+      - ltr_finder -h 2>&1 | sed -n 's/ltr_finder v//p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -91,7 +91,7 @@ topics:
       - LTR_FINDER_parallel:
           type: string
           description: The name of the tool
-      - "LTR_FINDER_parallel -h 2>&1 | sed -n 's/Version: //p'":
+      - "LTR_FINDER_parallel -h 2>&1 | sed -n 's/Version: v//p'":
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -100,7 +100,7 @@ topics:
       - ltr_finder:
           type: string
           description: The name of the tool
-      - ltr_finder -h 2>&1 | sed -n 's/ltr_finder //p':
+      - ltr_finder -h 2>&1 | sed -n 's/ltr_finder v//p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
