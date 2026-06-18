@@ -33,7 +33,7 @@ input:
         pattern: "*.vcf.gz"
         ontologies:
           - edam: "http://edamontology.org/format_3016"
-          - edam: "http://edamontology.org/format_3989"
+          - edam: "http://edamontology.org/format_3989" # GZIP format
     - rc:
         type: file
         description: Read counts file from bam-readcount
@@ -52,7 +52,7 @@ output:
           pattern: "*.pass.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   fail_vcf:
     - - meta:
           type: map
@@ -65,7 +65,7 @@ output:
           pattern: "*.fail.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_varscan:
     - - ${task.process}:
           type: string
@@ -73,9 +73,10 @@ output:
       - varscan:
           type: string
           description: The name of the tool
-      - varscan 2>&1 | sed -n 's/VarScan v\?\([0-9.]*\).*/\1/p':
+      - varscan 2>&1 | sed -n '2s/.*v//p':
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -84,9 +85,10 @@ topics:
       - varscan:
           type: string
           description: The name of the tool
-      - varscan 2>&1 | sed -n 's/VarScan v\?\([0-9.]*\).*/\1/p':
+      - varscan 2>&1 | sed -n '2s/.*v//p':
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@vmelichar"
 maintainers:
