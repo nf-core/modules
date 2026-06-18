@@ -32,8 +32,8 @@ input:
         description: VCF file
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: "http://edamontology.org/format_3016"
-          - edam: "http://edamontology.org/format_3989" # GZIP format
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3989" # GZIP
     - rc:
         type: file
         description: Read counts file from bam-readcount
@@ -51,8 +51,8 @@ output:
           description: VCF file with PASS variants
           pattern: "*.pass.vcf.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016"
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: "http://edamontology.org/format_3989" # GZIP
   fail_vcf:
     - - meta:
           type: map
@@ -64,8 +64,8 @@ output:
           description: VCF file with FAIL variants
           pattern: "*.fail.vcf.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016"
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: "http://edamontology.org/format_3989" # GZIP
   versions_varscan:
     - - ${task.process}:
           type: string
