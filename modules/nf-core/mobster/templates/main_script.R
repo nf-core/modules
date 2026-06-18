@@ -71,10 +71,8 @@ run_mobster_fit = function(joint_table, descr) {
     # remove mutations with VAF < min_VAF
     inp_tb = joint_table %>%
         dplyr::filter(VAF < 1) %>%
-        dplyr::mutate(adj_VAF=VAF/!!purity) %>%
-        dplyr::filter(adj_VAF>=as.numeric(opt[["min_VAF"]])) %>%
-        dplyr::filter(karyotype=="1:1") %>%
-        dplyr::select(-adj_VAF)
+        dplyr::filter(VAF>=as.numeric(opt[["min_VAF"]])) %>%
+        dplyr::filter(karyotype=="1:1")
 
     mobster_fit(x = inp_tb,
                 K = eval(parse(text=opt[["K"]])),
