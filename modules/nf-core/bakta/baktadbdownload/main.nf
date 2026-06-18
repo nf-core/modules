@@ -19,6 +19,7 @@ process BAKTA_BAKTADBDOWNLOAD {
     export MPLCONFIGDIR=\$PWD/.matplotlib
     export FONTCONFIG_PATH=\$PWD/.fontconfig
     export XDG_CACHE_HOME=\$PWD/.cache
+    mkdir .fontconfig .cache
 
     bakta_db \\
         download \\
@@ -30,6 +31,8 @@ process BAKTA_BAKTADBDOWNLOAD {
     """
     export MPLCONFIGDIR=\$PWD/.matplotlib
     export FONTCONFIG_PATH=\$PWD/.fontconfig
+    export XDG_CACHE_HOME=\$PWD/.cache
+    mkdir .fontconfig .cache
 
     echo "bakta_db \\
         download \\

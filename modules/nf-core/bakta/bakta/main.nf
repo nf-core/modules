@@ -43,6 +43,7 @@ process BAKTA_BAKTA {
     export MPLCONFIGDIR=\$PWD/.matplotlib
     export FONTCONFIG_PATH=\$PWD/.fontconfig
     export XDG_CACHE_HOME=\$PWD/.cache
+    mkdir .fontconfig .cache
 
     bakta \\
         ${fasta} \\
@@ -61,6 +62,8 @@ process BAKTA_BAKTA {
     """
     export MPLCONFIGDIR=\$PWD/.matplotlib
     export FONTCONFIG_PATH=\$PWD/.fontconfig
+    export XDG_CACHE_HOME=\$PWD/.cache
+    mkdir .fontconfig .cache
 
     touch ${prefix}.embl
     touch ${prefix}.faa
