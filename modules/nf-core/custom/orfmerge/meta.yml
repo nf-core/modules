@@ -88,10 +88,10 @@ output:
           type: map
           description: |
             Groovy Map matching the input meta.
-      - ${prefix}.catalogue.bed12:
+      - ${prefix}.bed12:
           type: file
           description: Merged ORF catalogue as BED12 (genomic blocks).
-          pattern: "*.catalogue.bed12"
+          pattern: "*.bed12"
           ontologies:
             - edam: http://edamontology.org/format_3586 # BED
   catalogue_tsv:
@@ -99,14 +99,14 @@ output:
           type: map
           description: |
             Groovy Map matching the input meta.
-      - ${prefix}.catalogue.tsv:
+      - ${prefix}.tsv:
           type: file
           description: |
             Per-ORF table with `called_by_<caller>` and `score_<caller>`
             columns for each supported caller, `n_samples` / `samples`
             cross-sample recurrence columns, plus orf_class, aa_length,
             and host gene_id / transcript_id.
-          pattern: "*.catalogue.tsv"
+          pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   orf_to_gene_tsv:
@@ -129,11 +129,11 @@ output:
           type: map
           description: |
             Groovy Map matching the input meta.
-      - ${prefix}.catalogue.mqc.tsv:
+      - ${prefix}.mqc.tsv:
           type: file
           description: |
             MultiQC custom-content TSV (per-class ORF counts).
-          pattern: "*.catalogue.mqc.tsv"
+          pattern: "*.mqc.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions:
