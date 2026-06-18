@@ -1,0 +1,68 @@
+name: fairy_sketch
+description: Sketches FASTQ reads into binary sketch (.bcsp) files for alignment-free coverage estimation.
+keywords:
+  - sketch
+  - coverage
+  - fastq
+  - alignment-free
+  - metagenomics
+tools:
+  - fairy:
+      description: Alignment-free tool for rapidly computing coverage of contigs/genomes from short or long reads using sketching.
+      homepage: https://github.com/bluenote-1577/fairy
+      documentation: https://github.com/bluenote-1577/fairy
+      tool_dev_url: https://github.com/bluenote-1577/fairy
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FASTQ files. For paired-end data provide two files [R1, R2];
+          for single-end or long reads provide a single file [reads].
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+output:
+  sketch:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1', single_end:false ]
+      - ${prefix}/*.bcsp:
+          type: file
+          description: Binary sketch file(s) produced by fairy sketch, used as input for fairy coverage estimation.
+          pattern: "*.bcsp"
+          ontologies: []
+  versions_fairy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fairy:
+          type: string
+          description: The name of the tool
+      - fairy --version 2>&1 | sed 's/fairy //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fairy:
+          type: string
+          description: The name of the tool
+      - fairy --version 2>&1 | sed 's/fairy //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

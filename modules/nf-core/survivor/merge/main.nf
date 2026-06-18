@@ -3,9 +3,9 @@ process SURVIVOR_MERGE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/survivor:1.0.7--h9a82719_1':
-        'biocontainers/survivor:1.0.7--h9a82719_1' }"
+        'quay.io/biocontainers/survivor:1.0.7--h9a82719_1' }"
 
     input:
     tuple val(meta), path(vcfs)
@@ -26,8 +26,8 @@ process SURVIVOR_MERGE {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    vcfs.each{
-        if (it.getExtension() == "gz"){
+    vcfs.each{ vcf_file ->
+        if ( vcf_file.getExtension() == "gz"){
             error "Gzipped files are not supported by Survivor, please gunzip your VCF files first."
             // https://github.com/fritzsedlazeck/SURVIVOR/issues/158
         }
@@ -47,8 +47,8 @@ process SURVIVOR_MERGE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    vcfs.each{
-        if (it.getExtension() == "gz"){
+    vcfs.each{ vcf_file ->
+        if (vcf_file.getExtension() == "gz"){
             error "Gzipped files are not supported by Survivor, please gunzip your VCF files first."
             // https://github.com/fritzsedlazeck/SURVIVOR/issues/158
         }

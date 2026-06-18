@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "merqury_hapmers"
 description: A script to generate hap-mer dbs for trios
 keywords:
@@ -11,9 +10,9 @@ tools:
       description: "Evaluate genome assemblies with k-mers and more."
       tool_dev_url: "https://github.com/marbl/merqury"
       doi: "10.1186/s13059-020-02134-9"
-      licence: ["United States Government Work"]
+      licence:
+        - "United States Government Work"
       identifier: biotools:merqury
-
 input:
   - - meta:
         type: map
@@ -61,8 +60,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_inherited_hapmers.fl.png":
           type: file
-          description: k-mer distribution of the inherited dbs and cutoffs used to generate
-            hap-mer dbs
+          description: k-mer distribution of the inherited dbs and cutoffs used to
+            generate hap-mer dbs
           pattern: "*_inherited_hapmers.fl.png"
           ontologies: []
   inherited_hapmers_ln_png:
@@ -73,8 +72,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_inherited_hapmers.ln.png":
           type: file
-          description: k-mer distribution of the inherited dbs and cutoffs used to generate
-            hap-mer dbs
+          description: k-mer distribution of the inherited dbs and cutoffs used to
+            generate hap-mer dbs
           pattern: "*_inherited_hapmers.ln.png"
           ontologies: []
   inherited_hapmers_st_png:
@@ -85,17 +84,31 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_inherited_hapmers.st.png":
           type: file
-          description: k-mer distribution of the inherited dbs and cutoffs used to generate
-            hap-mer dbs
+          description: k-mer distribution of the inherited dbs and cutoffs used to
+            generate hap-mer dbs
           pattern: "*_inherited_hapmers.st.png"
           ontologies: []
+  versions_merqury:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merqury:
+          type: string
+          description: The name of the tool
+      - '"1.3"':
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merqury:
+          type: string
+          description: The name of the tool
+      - '"1.3"':
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
 maintainers:

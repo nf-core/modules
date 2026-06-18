@@ -25,13 +25,13 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [id: "NA12878"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[1] = Channel.of([
                     [id: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[2] = Channel.of([[id: "1000GP", chr: "chr22"], [], []])
                 input[3] = Channel.of([[id: "1000GP", chr: "chr22"], "chr22"])
@@ -61,28 +61,28 @@ nextflow_workflow {
                 """
                 input[0] = channel.of([
                     [id: "NA12878"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[1] = channel.of(
                 [
                     [id: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
                 ],[
                     [id: "1000GP", chr: "chr21"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[2] = channel.of(
                 [
                     [id: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz.csi", checkIfExists:true)
                 ],[
                     [id: "1000GP", chr: "chr21"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.sites.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.sites.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.sites.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.sites.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[3] = channel.of(
                     [[chr: "chr22", id: "1000GP"], "chr22:16570065-16592216"],
@@ -92,10 +92,10 @@ nextflow_workflow {
                 )
                 input[4] = channel.of([
                     [id: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.minimac.map", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.minimac.map", checkIfExists:true)
                 ],[
                     [id: "1000GP", chr: "chr21"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.minimac.map", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.minimac.map", checkIfExists:true)
                 ])
                 """
             }
@@ -123,18 +123,18 @@ nextflow_workflow {
                 """
                 input[0] = channel.of([
                     [id: "NA12878"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[1] = channel.of(
                 [
                     [id: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
                 ],[
                     [id: "1000GP", chr: "chr21"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[2] = channel.of(
                     [[id: "1000GP", chr: "chr22"],[],[]],
@@ -166,13 +166,13 @@ nextflow_workflow {
                 """
                 input[0] = channel.of([
                     [id: "NA12878"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[1] = channel.of(
                     [
                         [id: "1000GP", chr: "chr22"],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.minimac.map", checkIfExist:true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.minimac.map", checkIfExists:true),
                         []
                     ],
                     [[id: "1000GP", chr: "chr21"],[],[]]
@@ -207,18 +207,18 @@ nextflow_workflow {
                 """
                 input[0] = channel.of([
                     [id: "NA12878"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[1] = channel.of(
                 [
                     [id: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
                 ],[
                     [id: "1000GP", chr: "chr21"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[2] = channel.of(
                     [[id: "1000GP", chr: "chr22"],[],[]],

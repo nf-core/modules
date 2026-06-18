@@ -3,9 +3,9 @@ process PLINK_VCF {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1' :
-        'biocontainers/plink:1.90b6.21--h779adbc_1' }"
+        'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -15,7 +15,7 @@ process PLINK_VCF {
     tuple val(meta), path("*.bim"), emit: bim, optional: true
     tuple val(meta), path("*.fam"), emit: fam, optional: true
 
-    path "versions.yml" , emit: versions
+    tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,25 +30,14 @@ process PLINK_VCF {
         $args \\
         --threads $task.cpus \\
         --out ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version 2>&1) | sed 's/^PLINK v//' | sed 's/..-bit.*//' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}.bed
     touch ${prefix}.bim
     touch ${prefix}.fam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version 2>&1) | sed 's/^PLINK v//' | sed 's/..-bit.*//' )
-    END_VERSIONS
     """
 }

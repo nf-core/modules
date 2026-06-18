@@ -3,7 +3,7 @@ process SEQ2HLA {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5c/5c8c9c11302a03e4f8fc9bbd0ce818e9f798e38f872c3ec099b8bb1c444185e0/data'
         : 'community.wave.seqera.io/library/seq2hla:2.3--26344ebe67dd0e8e'}"
 

@@ -3,9 +3,9 @@ process IVAR_CONSENSUS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ivar:1.4.4--h077b44d_0' :
-        'biocontainers/ivar:1.4.4--h077b44d_0' }"
+        'quay.io/biocontainers/ivar:1.4.4--h077b44d_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -16,7 +16,7 @@ process IVAR_CONSENSUS {
     tuple val(meta), path("*.fa")      , emit: fasta
     tuple val(meta), path("*.qual.txt"), emit: qual
     tuple val(meta), path("*.mpileup") , optional:true, emit: mpileup
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('ivar'), eval("ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p'"), emit: versions_ivar, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +37,6 @@ process IVAR_CONSENSUS {
             consensus \\
             $args \\
             -p $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
-    END_VERSIONS
     """
 
     stub:
@@ -51,10 +46,5 @@ process IVAR_CONSENSUS {
     touch ${prefix}.fa
     touch ${prefix}.qual.txt
     $touch_mpileup
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
-    END_VERSIONS
     """
 }

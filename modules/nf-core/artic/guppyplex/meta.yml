@@ -6,12 +6,13 @@ keywords:
   - demultiplexed reads
 tools:
   - artic:
-      description: ARTIC pipeline - a bioinformatics pipeline for working with virus
-        sequencing data sequenced with nanopore
+      description: ARTIC pipeline - a bioinformatics pipeline for working with
+        virus sequencing data sequenced with nanopore
       homepage: https://artic.readthedocs.io/en/latest/
       documentation: https://artic.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/artic-network/fieldbioinformatics
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:artic
 input:
   - - meta:
@@ -35,13 +36,27 @@ output:
           description: Aggregated FastQ files
           pattern: "*.{fastq.gz}"
           ontologies: []
+  versions_artic:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - artic:
+          type: string
+          description: The name of the tool
+      - artic -v 2>&1 | sed "s/^.*artic //; s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - artic:
+          type: string
+          description: The name of the tool
+      - artic -v 2>&1 | sed "s/^.*artic //; s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@joseespinosa"
   - "@drpatelh"

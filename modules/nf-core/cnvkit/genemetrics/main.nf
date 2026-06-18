@@ -3,16 +3,16 @@ process CNVKIT_GENEMETRICS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/cnvkit:0.9.12--pyhdfd78af_0'
-        : 'biocontainers/cnvkit:0.9.12--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/cnvkit:0.9.12--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(cnr), path(cns)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml",            emit: versions
+    tuple val("${task.process}"), val('cnvkit'), eval('cnvkit.py version | sed -e "s/cnvkit v//g"'), emit: versions_cnvkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process CNVKIT_GENEMETRICS {
         ${segments} \\
         --output ${prefix}.tsv \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-    END_VERSIONS
     """
 
     stub:
@@ -41,9 +36,5 @@ process CNVKIT_GENEMETRICS {
 
     """
     touch ${prefix}.tsv
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-    END_VERSIONS
     """
 }

@@ -3,9 +3,9 @@ process VSEARCH_CLUSTER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:7b3365d778c690ca79bc85aaaeb86bb39a2dec69-0':
-        'biocontainers/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:7b3365d778c690ca79bc85aaaeb86bb39a2dec69-0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c94475a0cc7e44a967584e09e39343c138ce5fa7231ae11c6b5b72b28de58c92/data':
+        'community.wave.seqera.io/library/samtools_vsearch:8a419aba60edb7b2' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -23,7 +23,8 @@ process VSEARCH_CLUSTER {
     tuple val(meta), path('*.clusters.fasta*.gz')    , optional: true, emit: clusters
     tuple val(meta), path('*.profile.txt.gz')        , optional: true, emit: profile
     tuple val(meta), path('*.msa.fasta.gz')          , optional: true, emit: msa
-    path "versions.yml"                              , emit: versions
+    tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -67,11 +68,6 @@ process VSEARCH_CLUSTER {
     else
         samtools view -T $fasta -S -b ${prefix}.${out_ext} > ${prefix}.bam
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -101,10 +97,5 @@ process VSEARCH_CLUSTER {
     """
     echo | gzip > ${output}
     ${non_gz_out}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 }

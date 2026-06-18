@@ -45,12 +45,17 @@ input:
       type: integer
       description: |
         which version of the cache to annotate with
-  - cache:
-      type: file
-      description: |
-        path to VEP cache (optional)
-      ontologies: []
   - - meta2:
+        type: map
+        description: |
+          Groovy Map containing cache information
+          e.g. [ id:'test' ]
+    - cache:
+        type: file
+        description: |
+          path to VEP cache (optional)
+        ontologies: []
+  - - meta3:
         type: map
         description: |
           Groovy Map containing fasta reference information

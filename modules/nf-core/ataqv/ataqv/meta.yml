@@ -14,7 +14,8 @@ tools:
       documentation: https://github.com/ParkerLab/ataqv/blob/master/README.rst
       tool_dev_url: https://github.com/ParkerLab/ataqv
       doi: "10.1016/j.cels.2020.02.009"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:ataqv
 input:
   - - meta:
@@ -90,13 +91,27 @@ output:
             after the BAM file.
           pattern: "*.problems"
           ontologies: []
+  versions_ataqv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ataqv:
+          type: string
+          description: The name of the tool
+      - echo \$(ataqv --version):
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ataqv:
+          type: string
+          description: The name of the tool
+      - echo \$(ataqv --version):
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@i-pletenev"
 maintainers:

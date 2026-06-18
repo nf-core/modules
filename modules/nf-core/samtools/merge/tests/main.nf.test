@@ -22,7 +22,8 @@ nextflow_process {
                     [ id:'test'],
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ],
+                    []
                 ]
                 input[1] = [[],[],[],[]]
                 """
@@ -34,9 +35,8 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.csi[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.cram,
-                    process.out.crai,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
                 }
@@ -55,7 +55,9 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram', checkIfExists: true) ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram.crai', checkIfExists: true) ]
                 ]
                 input[1] = [
                     [ id:'genome' ],
@@ -73,9 +75,8 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     cram(process.out.cram[0][1], fasta).getReadsMD5(),
-                    process.out.csi,
                     process.out.bam,
-                    file(process.out.crai[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
                 }
@@ -94,7 +95,9 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram', checkIfExists: true) ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram.crai', checkIfExists: true) ]
                 ]
                 input[1] = [
                     [ id:'genome' ],
@@ -112,9 +115,8 @@ nextflow_process {
                 { assert snapshot(
                     //nft-bam doesn't like the fasta.gz
                     file(process.out.cram[0][1]).name,
-                    process.out.csi,
                     process.out.bam,
-                    file(process.out.crai[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
                 }
@@ -132,7 +134,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true) ]
                 ]
                 input[1] = [[],[],[],[]]
                 """
@@ -144,9 +147,8 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    process.out.csi,
+                    process.out.index,
                     process.out.cram,
-                    process.out.crai,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
                 }
@@ -168,7 +170,8 @@ nextflow_process {
                     [ id:'test' ],
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ],
+                    []
                 ]
                 input[1] = [[],[],[],[]]
                 """
@@ -197,7 +200,8 @@ nextflow_process {
                     [ id:'test'],
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ],
+                    []
                 ]
                 input[1] = [[],[],[],[]]
                 """

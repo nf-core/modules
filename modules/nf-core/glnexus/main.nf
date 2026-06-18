@@ -3,7 +3,7 @@ process GLNEXUS {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6c/6cf504ad8e4ebda286609fa3c1a5f9af68dbca9ec06bb4428e219e84754bd140/data' :
         'community.wave.seqera.io/library/bcftools_glnexus:cf380f1a6410f606' }"
 
@@ -13,7 +13,7 @@ process GLNEXUS {
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('glnexus'), eval("glnexus_cli 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+'"), topic: versions, emit: versions_glnexus
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,21 +39,11 @@ process GLNEXUS {
         $args \\
         ${input.join(' ')} \\
         > ${prefix}.bcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glnexus: \$( echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glnexus: \$( echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

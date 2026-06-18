@@ -3,9 +3,9 @@ process ULTRA_ALIGN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0':
-        'biocontainers/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0' }"
+        'quay.io/biocontainers/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -14,7 +14,8 @@ process ULTRA_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ultra'), eval("uLTRA --version | sed 's/uLTRA //'"), emit: versions_ultra, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version | sed -n '1s/samtools //p'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,22 +44,11 @@ process ULTRA_ALIGN {
         ${prefix}.sam
 
     rm ${prefix}.sam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

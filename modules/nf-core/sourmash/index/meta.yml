@@ -1,6 +1,6 @@
 name: sourmash_index
-description: Create a database of sourmash signatures (a group of FracMinHash sketches)
-  to be used as references.
+description: Create a database of sourmash signatures (a group of FracMinHash
+  sketches) to be used as references.
 keywords:
   - signatures
   - sourmash
@@ -15,7 +15,8 @@ tools:
       documentation: "https://sourmash.readthedocs.io/"
       tool_dev_url: "https://github.com/sourmash-bio/sourmash"
       doi: "10.21105/joss.00027"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:sourmash
 input:
   - - meta:
@@ -25,7 +26,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - signatures:
         type: file
-        description: Files containing signature (hash sketches) of reference genomes
+        description: Files containing signature (hash sketches) of reference
+          genomes
         pattern: "*.{sig}"
         ontologies: []
   - ksize:
@@ -43,13 +45,27 @@ output:
           description: Database of signatures
           pattern: "*.{sbt.zip}"
           ontologies: []
+  versions_sourmash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourmash:
+          type: string
+          description: The name of the tool
+      - sourmash --version 2>&1 | sed 's/^sourmash //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourmash:
+          type: string
+          description: The name of the tool
+      - sourmash --version 2>&1 | sed 's/^sourmash //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@emnilsson"
 maintainers:

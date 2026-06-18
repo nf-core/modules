@@ -3,16 +3,16 @@ process WIPERTOOLS_REPORTGATHER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/wipertools:1.1.5--pyhdfd78af_0':
-        'biocontainers/wipertools:1.1.5--pyhdfd78af_0' }"
+        'quay.io/biocontainers/wipertools:1.1.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(report)
 
     output:
     tuple val(meta), path("${prefix}.report"), emit: gathered_report
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('wipertools'), eval("wipertools reportgather --version"), topic: versions, emit: versions_wipertools
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,14 +29,9 @@ process WIPERTOOLS_REPORTGATHER {
     """
     wipertools \\
         reportgather \\
-        -r $report \\
+        -r ${report} \\
         -f ${prefix}.report \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wipertools reportgather: \$(wipertools reportgather --version)
-    END_VERSIONS
     """
 
     stub:
@@ -49,10 +44,5 @@ process WIPERTOOLS_REPORTGATHER {
 
     """
     touch ${prefix}.report
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wipertools reportgather: \$(wipertools reportgather --version)
-    END_VERSIONS
     """
 }

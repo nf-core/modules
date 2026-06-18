@@ -2,7 +2,7 @@ process WITTYER {
     tag "$meta.id"
     label 'process_single'
 
-    container "nf-core/wittyer:0.5.2"
+    container "quay.io/nf-core/wittyer:0.5.2"
 
     input:
     tuple val(meta), path(query_vcf), path(truth_vcf), path(bed), path(wittyer_config)
@@ -11,7 +11,7 @@ process WITTYER {
     tuple val(meta),    path("*.json")         , emit: report
     tuple val(meta),    path("*.vcf.gz")       , emit: bench_vcf
     tuple val(meta),    path("*.vcf.gz.tbi")   , emit: bench_vcf_tbi
-    path  "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('wittyer'), eval("dotnet /opt/Wittyer/Wittyer.dll --version | sed '1!d ; s/witty.er //'"), topic: versions, emit: versions_wittyer
 
     when:
     task.ext.when == null || task.ext.when
@@ -51,10 +51,6 @@ process WITTYER {
 
     rm -rf bench
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wittyer: \$(dotnet /opt/Wittyer/Wittyer.dll --version  |& sed '1!d ; s/witty.er //')
-    END_VERSIONS
     """
 
     stub:
@@ -74,9 +70,5 @@ process WITTYER {
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wittyer: \$(dotnet /opt/Wittyer/Wittyer.dll --version  |& sed '1!d ; s/witty.er //')
-    END_VERSIONS
     """
 }

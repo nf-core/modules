@@ -3,9 +3,9 @@ process METAMAPS_CLASSIFY {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metamaps:0.1.633d2e0--h21ec9f0_0':
-        'biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0' }"
+        'quay.io/biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0' }"
 
     input:
     tuple val(meta), path(classification_res), path(meta_file), path(meta_unmappedreadsLengths), path(para_file)
@@ -27,14 +27,13 @@ process METAMAPS_CLASSIFY {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     metamaps \\
         classify \\
-        $args \\
-        --mappings $classification_res \\
-        --threads $task.cpus \\
-        --DB $database_folder
+        ${args} \\
+        --mappings ${classification_res} \\
+        --threads ${task.cpus} \\
+        --DB ${database_folder}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -43,7 +42,6 @@ process METAMAPS_CLASSIFY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_classification_res.EM.WIMP

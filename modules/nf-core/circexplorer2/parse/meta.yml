@@ -1,6 +1,6 @@
 name: "circexplorer2_parse"
-description: CIRCexplorer2 parses fusion junction files from multiple aligners to
-  prepare them for CIRCexplorer2 annotate.
+description: CIRCexplorer2 parses fusion junction files from multiple aligners
+  to prepare them for CIRCexplorer2 annotate.
 keywords:
   - parse
   - circrna
@@ -11,7 +11,8 @@ tools:
       homepage: "https://github.com/YangLab/CIRCexplorer2/"
       documentation: "https://circexplorer2.readthedocs.io/en/latest/"
       doi: "10.1101/gr.202895.115"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: biotools:CIRCexplorer2
 input:
   - - meta:
@@ -21,8 +22,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fusions:
         type: file
-        description: BAM (BWA), BED (Segemehl), TXT (MapSplice), or Junction (STAR)
-          file. Aligner will be autodetected based on file suffix.
+        description: BAM (BWA), BED (Segemehl), TXT (MapSplice), or Junction
+          (STAR) file. Aligner will be autodetected based on file suffix.
         pattern: "*.{bam,junction,bed,txt}"
         ontologies: []
 output:
@@ -37,13 +38,27 @@ output:
           description: BED file
           pattern: "*.bed"
           ontologies: []
+  versions_circexplorer2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circexplorer2:
+          type: string
+          description: The name of the tool
+      - CIRCexplorer2 --version 2>&1; true:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circexplorer2:
+          type: string
+          description: The name of the tool
+      - CIRCexplorer2 --version 2>&1; true:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@BarryDigby"
 maintainers:

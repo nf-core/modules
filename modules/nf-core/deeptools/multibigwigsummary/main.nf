@@ -3,9 +3,9 @@ process DEEPTOOLS_MULTIBIGWIGSUMMARY {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deeptools:3.5.6--pyhdfd78af_0':
-        'biocontainers/deeptools:3.5.6--pyhdfd78af_0' }"
+        'quay.io/biocontainers/deeptools:3.5.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta) , path(bigwigs) , val(labels)
@@ -13,7 +13,7 @@ process DEEPTOOLS_MULTIBIGWIGSUMMARY {
 
     output:
     tuple val(meta), path("*.npz"), emit: matrix
-    path  "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('deeptools'), eval('multiBigwigSummary --version | sed "s/multiBigwigSummary //g"') , emit: versions_deeptools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,21 +31,11 @@ process DEEPTOOLS_MULTIBIGWIGSUMMARY {
         --numberOfProcessors $task.cpus \\
         --outFileName ${prefix}.bigwigSummary.npz \\
         $blacklist_cmd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeptools: \$(multiBigwigSummary --version | sed -e "s/multiBigwigSummary //g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "all_bigwig"
     """
     touch ${prefix}.bigwigSummary.npz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeptools: \$(multiBigwigSummary --version | sed -e "s/multiBigwigSummary //g")
-    END_VERSIONS
     """
 }

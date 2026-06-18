@@ -33,6 +33,9 @@ input:
       description: File containing features on separate lines. To be used with
         --filter option.
       ontologies: []
+  - extension:
+      type: string
+      description: File extension for the output file
 output:
   output:
     - - meta:
@@ -63,7 +66,7 @@ output:
       - perl-math-cdf:
           type: string
           description: The tool name
-      - perl -MMath::CDF -e 'print \$Math::CDF::VERSION':
+      - perl -MMath::CDF -e 'print \\$Math::CDF::VERSION':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -83,7 +86,7 @@ topics:
       - perl-math-cdf:
           type: string
           description: The tool name
-      - perl -MMath::CDF -e 'print \$Math::CDF::VERSION':
+      - perl -MMath::CDF -e 'print \\$Math::CDF::VERSION':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

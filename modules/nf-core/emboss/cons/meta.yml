@@ -15,7 +15,8 @@ tools:
       documentation: "https://emboss.bioinformatics.nl/cgi-bin/emboss/help/seqret"
       tool_dev_url: "http://emboss.open-bio.org/"
       doi: "10.1016/s0168-9525(00)02024-2 "
-      licence: ["GPL"]
+      licence:
+        - "GPL"
       identifier: ""
 input:
   - - meta:
@@ -40,13 +41,27 @@ output:
           description: Consensus sequence calculated from multiple sequence alignment
           pattern: "*.fa"
           ontologies: []
+  versions_emboss:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - emboss:
+          type: string
+          description: The name of the tool
+      - cons -version 2>&1 | sed "s/EMBOSS://":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - emboss:
+          type: string
+          description: The name of the tool
+      - cons -version 2>&1 | sed "s/EMBOSS://":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Joon-Klaps"
 maintainers:

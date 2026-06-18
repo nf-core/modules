@@ -1,11 +1,11 @@
 process SAMTOOLS_CRAMSIZE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
-        'biocontainers/samtools:1.22.1--h96c455f_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8c5d2818c8b9f58e1fba77ce219fdaf32087ae53e857c4a496402978af26e78c/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
 
     input:
     tuple val(meta), path(cram)
@@ -19,17 +19,17 @@ process SAMTOOLS_CRAMSIZE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "$meta.id"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     samtools \\
         cram-size \\
-        $args \\
+        ${args} \\
         -o ${prefix}.size \\
-        $cram
+        ${cram}
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "$meta.id"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.size
     """
