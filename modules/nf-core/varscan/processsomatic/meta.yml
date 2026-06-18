@@ -1,11 +1,10 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "varscan_processsomatic"
 description: VarScan2 is a tool for variant detection in massively parallel
   sequencing data. It can detect SNPs, indels, and copy number variations in
   both somatic and germline samples. It is particularly useful for analyzing
   tumor/normal sample pairs. This subtool divides variants based on status
-  (germline, somatic, loss of heterozygosity) and confidence level (high-confidence
-  or not) and outputs them in separate VCF files.
+  (germline, somatic, loss of heterozygosity) and confidence level
+  (high-confidence or not) and outputs them in separate VCF files.
 keywords:
   - variant calling
   - germline
@@ -20,9 +19,9 @@ tools:
       documentation: "https://dkoboldt.github.io/varscan/"
       tool_dev_url: "https://github.com/dkoboldt/varscan"
       doi: "10.1101/gr.129684.111"
-      licence: ["The Non-Profit Open Software License version 3.0 (NPOSL-3.0)"]
+      licence:
+        - "The Non-Profit Open Software License version 3.0 (NPOSL-3.0)"
       identifier: biotools:varscan
-
 input:
   - - meta:
         type: map
@@ -34,8 +33,8 @@ input:
         description: VCF file
         pattern: "*.{snvs,indels}.vcf.gz"
         ontologies:
-          - edam: "http://edamontology.org/format_3016" # VCF
-          - edam: "http://edamontology.org/format_3989" # GZIP format
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3989"
 output:
   germline_vcf:
     - - meta:
@@ -48,8 +47,8 @@ output:
           description: VCF file with germline variants
           pattern: "*.Germline.vcf.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # VCF
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989
   germline_hc_vcf:
     - - meta:
           type: map
@@ -61,8 +60,8 @@ output:
           description: VCF file with high-confidence germline variants
           pattern: "*.Germline.hc.vcf.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # VCF
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989
   somatic_vcf:
     - - meta:
           type: map
@@ -74,8 +73,8 @@ output:
           description: VCF file with somatic variants
           pattern: "*.Somatic.vcf.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # VCF
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989
   somatic_hc_vcf:
     - - meta:
           type: map
@@ -87,8 +86,8 @@ output:
           description: VCF file with high-confidence somatic variants
           pattern: "*.Somatic.hc.vcf.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # VCF
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989
   loh_vcf:
     - - meta:
           type: map
@@ -100,8 +99,8 @@ output:
           description: VCF file with loss of heterozygosity variants
           pattern: "*.LOH.vcf.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # VCF
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989
   loh_hc_vcf:
     - - meta:
           type: map
@@ -114,15 +113,29 @@ output:
             variants
           pattern: "*.LOH.hc.vcf.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # VCF
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989
+  versions_varscan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - varscan:
+          type: string
+          description: The name of the tool
+      - varscan 2>&1 | sed -n 's/VarScan v\?\([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - varscan:
+          type: string
+          description: The name of the tool
+      - varscan 2>&1 | sed -n 's/VarScan v\?\([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vmelichar"
 maintainers:

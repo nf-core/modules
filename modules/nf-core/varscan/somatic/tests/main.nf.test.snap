@@ -21,7 +21,11 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,29808739574a0ca98904b613207fff2a"
+                    [
+                        "VARSCAN_SOMATIC",
+                        "varscan",
+                        "2.4.6\n\tcopyCaller\t\tGC-adjust and process copy number changes from "
+                    ]
                 ],
                 "vcf_indels": [
                     [
@@ -41,29 +45,57 @@
                         "test.snvs.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,29808739574a0ca98904b613207fff2a"
+                "versions_varscan": [
+                    [
+                        "VARSCAN_SOMATIC",
+                        "varscan",
+                        "2.4.6\n\tcopyCaller\t\tGC-adjust and process copy number changes from "
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-06-18T07:39:22.63028011",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-07-24T16:23:31.848519166"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "human - mpileup": {
         "content": [
             "807221f6df664ddae870cf0e87c351a6",
             "36f3d8a2f25c6e8b9bc5a15518cae5d1",
-            [
-                "versions.yml:md5,29808739574a0ca98904b613207fff2a"
-            ]
+            {
+                "vcf_indels": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.indels.vcf.gz"
+                    ]
+                ],
+                "vcf_snvs": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.snvs.vcf.gz"
+                    ]
+                ],
+                "versions_varscan": [
+                    [
+                        "VARSCAN_SOMATIC",
+                        "varscan",
+                        "2.4.6\n\tcopyCaller\t\tGC-adjust and process copy number changes from "
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-06-18T07:58:54.21195075",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-07-24T16:32:43.644174694"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }
