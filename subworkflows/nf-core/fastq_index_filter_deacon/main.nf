@@ -8,8 +8,8 @@ workflow FASTQ_INDEX_FILTER_DEACON {
 
     main:
 
-    // Check if fastqs are single-end or paired-end and run Deacon accordingly
-    ch_reads = ch_fasta_reads
+    // Check if fastqs are single-end or paired-end
+    ch_fasta_reads = ch_fasta_reads
         .map  { meta, fasta, reads ->
             if (meta.single_end) {
                 if (reads instanceof List && reads.size() != 1) {
@@ -26,7 +26,7 @@ workflow FASTQ_INDEX_FILTER_DEACON {
 
     // Extract unique reference fasta files and create fasta-specific metadata
     // This ensures each unique reference is indexed only once
-    ch_unique_fastas = ch_reads
+    ch_unique_fastas = ch_fasta_reads
         .map { _meta, fasta, _reads -> fasta }
         .unique()
         .map { fasta ->
@@ -37,14 +37,15 @@ workflow FASTQ_INDEX_FILTER_DEACON {
     // Index unique FASTA files only
     DEACON_INDEX ( ch_unique_fastas )
 
-    // Match indexes back to original samples
+    // Match indexes back to original samples using fasta file base name
     ch_indexes = DEACON_INDEX.out.index
         .map { meta_fasta, index -> [ meta_fasta.id, index ] }
-    ch_reads_with_index = ch_reads
+
+    ch_reads_with_index = ch_fasta_reads
         .map { meta, fasta, reads ->
             [ fasta.baseName, meta, reads ]
         }
-        .combine(ch_indexes, by: 0)
+        .join(ch_indexes, by: 0)
         .map { _fasta_id, meta, reads, index ->
             [ meta, index, reads ]
         }
