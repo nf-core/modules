@@ -8,8 +8,8 @@ process PYPOLCA_RUN {
         'quay.io/biocontainers/pypolca:0.4.0--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta) , path(reads)
-    tuple val(meta2), path(contigs)
+    tuple val(meta) , path(contigs)
+    tuple val(meta2), path(reads)
 
     output:
     tuple val(meta), path("${prefix}/*_corrected.fasta"), emit: polished
