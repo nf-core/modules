@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "echtvar_encode"
+description: Make (encode) a new echtvar file from decomposed vcf
+keywords:
+  - vcf
+  - echtvar
+  - encode
+tools:
+  - "echtvar":
+      description: "Using all the bits for echt rapid variant annotation and filtering."
+      homepage: "https://github.com/brentp/echtvar/blob/v0.2.2/README.md"
+      documentation: "https://github.com/brentp/echtvar/blob/v0.2.2/README.md"
+      tool_dev_url: "https://github.com/brentp/echtvar"
+      doi: "10.1093/nar/gkac931"
+      licence: ["MIT"]
+      identifier: biotools:echtvar
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.vcf"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+
+output:
+  db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.zip":
+          type: file
+          description: Encoded ECHTVAR file
+          pattern: "*.zip"
+          ontologies:
+            - edam: "http://edamontology.org/format_3987" # ZIP
+  versions_echtvar:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "echtvar":
+          type: string
+          description: The name of the tool
+      - "echtvar --version | sed 's/echtvar //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - echtvar:
+          type: string
+          description: The name of the tool
+      - "echtvar --version | sed 's/echtvar //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sofiademmou"
+maintainers:
+  - "@sofiademmou"
