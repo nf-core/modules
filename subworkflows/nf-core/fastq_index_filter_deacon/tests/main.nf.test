@@ -97,4 +97,40 @@ nextflow_workflow {
             )
         }
     }
+
+    test("sarscov2 - identical fasta should be indexed only once") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'sample1', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ],
+                    [
+                        [ id:'sample2', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.fastq_filtered.flatten().size() == 2 },
+                { assert workflow.out.index.flatten().size() == 2 },
+                {
+                    def indexRuns = workflow.trace.tasks.count { task ->
+                        task.name.contains('DEACON_INDEX')
+                    }
+                    assert indexRuns == 1
+                }
+            )
+        }
+    }
 }
