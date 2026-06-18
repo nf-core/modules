@@ -26,11 +26,11 @@ Cross-sample recurrence is recorded in two further columns:
 
 Outputs:
 
-  ${prefix}.catalogue.bed12      merged catalogue (genomic blocks).
-  ${prefix}.catalogue.tsv        per-ORF table with caller-tracking cols.
+  ${prefix}.bed12                merged catalogue (genomic blocks).
+  ${prefix}.tsv                  per-ORF table with caller-tracking cols.
   ${prefix}.orf_to_gene.tsv      one row per (orf_id, gene_id, transcript_id);
                                  an ORF can map to multiple host transcripts.
-  ${prefix}.catalogue.mqc.tsv    MultiQC custom-content sidecar
+  ${prefix}.mqc.tsv              MultiQC custom-content sidecar
                                  (per-class counts).
 """
 
@@ -183,10 +183,10 @@ def load_normalised(tsv_paths, bed_paths):
 
 
 def write_catalogue(prefix, clusters, bed_index):
-    cat_bed = Path(f"{prefix}.catalogue.bed12")
-    cat_tsv = Path(f"{prefix}.catalogue.tsv")
+    cat_bed = Path(f"{prefix}.bed12")
+    cat_tsv = Path(f"{prefix}.tsv")
     o2g_tsv = Path(f"{prefix}.orf_to_gene.tsv")
-    mqc_tsv = Path(f"{prefix}.catalogue.mqc.tsv")
+    mqc_tsv = Path(f"{prefix}.mqc.tsv")
 
     catalogue_cols = (
         ["orf_id", "chrom", "start", "end", "strand", "gene_id", "transcript_id", "orf_class", "aa_length"]
@@ -196,6 +196,22 @@ def write_catalogue(prefix, clusters, bed_index):
     )
 
     per_class_counts = defaultdict(int)
+
+    # orf_ids are assigned in iteration order below, so sort first to make the
+    # numbering deterministic.
+    def _sort_key(cluster):
+        r = representative(cluster)
+        return (
+            r.get("chrom", ""),
+            int(r.get("start") or 0),
+            int(r.get("end") or 0),
+            r.get("strand", ""),
+            r.get("gene_id") or "",
+            r.get("transcript_id") or "",
+            r.get("orf_class", ""),
+        )
+
+    clusters = sorted(clusters, key=_sort_key)
 
     with open(cat_bed, "w") as bh, open(cat_tsv, "w") as th, open(o2g_tsv, "w") as oh:
         th.write("\\t".join(catalogue_cols) + "\\n")
