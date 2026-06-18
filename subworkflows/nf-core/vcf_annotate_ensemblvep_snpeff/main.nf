@@ -25,7 +25,6 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     val_sites_per_chunk //   value: the amount of variants per scattered VCF
 
     main:
-    def ch_versions = channel.empty()
     def ch_vep_input = channel.empty()
     def ch_scatter = channel.empty()
 
@@ -186,5 +185,4 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     snpeff_reports = ch_snpeff_reports // channel: [ val(meta), path(csv) ]
     vcf_tbi        = ch_vcf_tbi // channel: [ val(meta), path(vcf), path(tbi) ]
     vep_reports    = ch_vep_reports // channel: [ path(html) ]
-    versions       = ch_versions // channel: [ versions.yml ]
 }
