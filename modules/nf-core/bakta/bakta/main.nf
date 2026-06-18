@@ -42,6 +42,7 @@ process BAKTA_BAKTA {
     """
     export MPLCONFIGDIR=\$PWD/.matplotlib
     export FONTCONFIG_PATH=\$PWD/.fontconfig
+    export XDG_CACHE_HOME=\$PWD/.cache
 
     bakta \\
         ${fasta} \\
