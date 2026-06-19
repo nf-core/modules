@@ -1,7 +1,7 @@
 name: macrel_contigs
-description: A tool that mines antimicrobial peptides (AMPs) from (meta)genomes by
-  predicting peptides from genomes (provided as contigs) and outputs all the predicted
-  anti-microbial peptides found.
+description: A tool that mines antimicrobial peptides (AMPs) from (meta)genomes
+  by predicting peptides from genomes (provided as contigs) and outputs all the
+  predicted anti-microbial peptides found.
 keywords:
   - AMP
   - antimicrobial peptides
@@ -15,7 +15,8 @@ tools:
       documentation: https://macrel.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/BigDataBiology/macrel
       doi: "10.7717/peerj.10555"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:macrel
 input:
   - - meta:
@@ -37,8 +38,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*/*.smorfs.faa.gz":
           type: file
-          description: A zipped fasta file containing aminoacid sequences showing the
-            general gene prediction information in the contigs.
+          description: A zipped fasta file containing aminoacid sequences showing
+            the general gene prediction information in the contigs.
           pattern: "*.smorfs.faa.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -50,8 +51,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*/*.all_orfs.faa.gz":
           type: file
-          description: A zipped fasta file containing amino acid sequences showing the
-            general gene prediction information in the contigs.
+          description: A zipped fasta file containing amino acid sequences showing
+            the general gene prediction information in the contigs.
           pattern: "*.all_orfs.faa.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -75,8 +76,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*/*.md":
           type: file
-          description: A readme file containing tool specific information (e.g. citations,
-            details about the output, etc.).
+          description: A readme file containing tool specific information (e.g.
+            citations, details about the output, etc.).
           pattern: "*.md"
           ontologies: []
   log_file:
@@ -87,16 +88,33 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*/*_log.txt":
           type: file
-          description: A log file containing the information pertaining to the run.
+          description: A log file containing the information pertaining to the
+            run.
           pattern: "*_log.txt"
           ontologies: []
+  versions_macrel:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - macrel:
+          type: string
+          description: The name of the tool
+      - macrel --version | sed 's/macrel //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - macrel:
+          type: string
+          description: The name of the tool
+      - macrel --version | sed 's/macrel //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@darcy220606"
 maintainers:
