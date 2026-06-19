@@ -174,7 +174,7 @@ output:
             type: file
             description: Preprocessed FastQ files
             pattern: "*.{fq,fastq},{,.gz}"
-  - reads_raw:
+  - reads_cat:
       description: Channel snapshot of reads before adapter trimming
       structure:
         - meta:
