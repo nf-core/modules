@@ -22,7 +22,7 @@ process LINKS {
     tuple val(meta), path("*.assembly_correspondence.tsv"), emit: assembly_correspondence
     tuple val(meta), path("*.simplepair_checkpoint.tsv"),   emit: simplepair_checkpoint, optional: true
     tuple val(meta), path("*.tigpair_checkpoint.tsv"),      emit: tigpair_checkpoint
-    tuple val("${task.process}"), val('liftoff'), eval("echo \$(LINKS | grep -o 'LINKS v.*' | sed 's/LINKS v//')"), emit: versions_links, topic: versions
+    tuple val("${task.process}"), val('liftoff'), eval("LINKS | sed -n 's/LINKS v//p'"), emit: versions_links, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -53,14 +53,9 @@ process LINKS {
 
     LINKS -f assembly.fa \\
         -s readfile.fof \\
-        -j $nthreads \\
+        -j ${nthreads} \\
         -b ${prefix} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        LINKS: \$(echo \$(LINKS | grep -o 'LINKS v.*' | sed 's/LINKS v//'))
-    END_VERSIONS
+        ${args}
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -76,10 +71,5 @@ process LINKS {
     touch ${prefix}.assembly_correspondence.tsv
     touch ${prefix}.simplepair_checkpoint.tsv
     touch ${prefix}.tigpair_checkpoint.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        LINKS: \$(echo \$(LINKS | grep -o 'LINKS v.*' | sed 's/LINKS v//'))
-    END_VERSIONS
     """
     }
