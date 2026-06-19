@@ -189,7 +189,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_filtered_reads = ch_filtered_reads.join(FQ_LINT.out.lint.map { meta, _lint -> meta })
     }
 
-    ch_reads_raw = ch_filtered_reads
+    ch_reads_cat = ch_filtered_reads
 
     //
     // SUBWORKFLOW: Read QC, extract UMI and trim adapters with TrimGalore!
