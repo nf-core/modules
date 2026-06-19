@@ -40,22 +40,11 @@ process JELLYFISH_COUNT {
         -t $task.cpus \\
         -o ${prefix}.jf \\
         ${fasta}
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jellyfish: \$(jellyfish --version |& sed '1!d ; s/jellyfish //')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.jf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jellyfish: \$(jellyfish --version |& sed '1!d ; s/jellyfish //')
-    END_VERSIONS
     """
 }
