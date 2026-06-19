@@ -14,7 +14,7 @@ process LAST_MAFCONVERT {
     output:
     tuple val(meta), path("*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"), emit: alignment
     tuple val(meta), path("*.{bai,crai,csi}"), emit: index, optional: true
-    tuple val(meta), path("*.{stats}"),        emit: stats, optional: true
+    tuple val(meta), path("*.stats"),          emit: stats, optional: true
     // last-dotplot has no --version option so let's use lastal from the same suite
     tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
