@@ -9,6 +9,7 @@ process SHASUM {
 
     input:
     tuple val(meta), path(files)
+    val as_separate_files
 
     output:
     tuple val(meta), path("*.sha256"), emit: checksum
@@ -20,15 +21,35 @@ process SHASUM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    find -L * -type f \\
-        ! -name '*.sha256' \\
-        -exec sha256sum ${args} "{}" + \\
-        > ${prefix}.sha256
-    """
+    // will only use when as_separate_files = false
+    if (as_separate_files) {
+        """
+        find -L * -maxdepth 0 -type f \\
+            ! -name '*.sha256' \\
+            -exec sh -c 'sha256sum ${args} "\$1" > "\$1.sha256"' _ "{}" \\;
+        """
+    }
+    else {
+        """
+        find -L * -type f \\
+            ! -name '*.sha256' \\
+            -exec sha256sum ${args} "{}" + \\
+            > ${prefix}.sha256
+        """
+    }
 
     stub:
-    """
-    touch ${file}.sha256
-    """
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if (as_separate_files) {
+        """
+        find -L * -type f \\
+            ! -name '*.sha256' \\
+            -exec sh -c 'touch "\$1.sha256"' _ "{}" \\;
+        """
+    }
+    else {
+        """
+        touch ${prefix}.sha256
+        """
+    }
 }
