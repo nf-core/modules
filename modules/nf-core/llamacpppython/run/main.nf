@@ -4,8 +4,8 @@ process LLAMACPPPYTHON_RUN {
 
     conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9f5c3807fc8d9a8c28cef653f377cec46d26097ad157571001316dd8ca196fb4/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3c/3c1e6f266b077ae89b341bf921b59a3d5d382104c3775725a814bd68f064541e/data') :
-        (task.accelerator ? 'community.wave.seqera.io/library/python_pip_cuda-version_cuda-runtime:202c39541466fecd' : 'community.wave.seqera.io/library/llama-cpp-python:0.3.16--b351398cd0ea7fc5') }"
+        (task.accelerator ? 'oras://community.wave.seqera.io/library/llama-cpp-python_llama.cpp:d44fd00c4d90dbdb' : 'oras://community.wave.seqera.io/library/llama-cpp-python:0.3.28--50ab38de95fd7615') :
+        (task.accelerator ? 'community.wave.seqera.io/library/llama-cpp-python_llama.cpp:d81eb47f02f98bad' : 'community.wave.seqera.io/library/llama-cpp-python:0.3.28--d6b1d777bf1649d9') }"
 
     input:
     tuple val(meta), path(prompt_file), path(gguf_model)
