@@ -1,7 +1,6 @@
 process BAMCMP {
     label 'process_low'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6e5ee3676abe7e65f65eca55e8dbc76f4dd195a44679cd1a785943d7a0d598f1/data' :
@@ -13,7 +12,8 @@ process BAMCMP {
     output:
     tuple val(meta), path("${prefix}.bam") , emit: primary_filtered_bam
     tuple val(meta), path("${prefix2}.bam"), emit: contamination_bam
-    tuple val("${task.process}"), val('bamcmp'), eval('echo 2.2'), topic: versions, emit: versions_bamcmp
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('bamcmp'), val('2.2'), topic: versions, emit: versions_bamcmp
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
