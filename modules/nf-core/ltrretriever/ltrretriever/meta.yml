@@ -126,7 +126,7 @@ output:
       - LTR_retriever:
           type: string
           description: The name of the tool
-      - "LTR_retriever -h 2>&1 | | sed -n '/LTR_retriever/s/### LTR_retriever //;s/ ###//p'":
+      - LTR_retriever -h 2>&1 | sed '/### LTR_retriever v/!d;s/.*v//;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -138,7 +138,7 @@ topics:
       - LTR_retriever:
           type: string
           description: The name of the tool
-      - "LTR_retriever -h 2>&1 | | sed -n '/LTR_retriever/s/### LTR_retriever //;s/ ###//p'":
+      - LTR_retriever -h 2>&1 | sed '/### LTR_retriever v/!d;s/.*v//;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
 
