@@ -23,6 +23,11 @@ input:
         description: Any number of files
         pattern: "*.*"
         ontologies: []
+    - as_separate_files:
+        type: boolean
+        description: |
+          If true, each file will have its own md5sum file. If false, all files will be
+          checksummed into a single md5sum file.
 output:
   checksum:
     - - meta:
