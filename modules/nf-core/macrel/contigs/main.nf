@@ -17,6 +17,7 @@ process MACREL_CONTIGS {
     tuple val(meta), path("*/*.md")             , emit: readme_file
     tuple val(meta), path("*/*_log.txt")        , emit: log_file
     tuple val("${task.process}"), val("macrel"), eval("macrel --version | sed 's/macrel //'"), emit: versions_macrel, topic: versions
+    tuple val("${task.process}"), val("pyrodigal"), eval("pyrodigal --version | sed 's/pyrodigal v//'"), emit: versions_pyrodigal, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
