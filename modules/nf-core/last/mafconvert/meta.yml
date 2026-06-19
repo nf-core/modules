@@ -87,7 +87,7 @@ output:
       - "*.{bai,crai,csi}":
           type: file
           description: |
-            Optional index for the BAM, BCF or CRAM files. Pass `--with-index`
+            Optional index for the BAM, BCF or CRAM files. Pass `--write-index`
             to `samtools` via `task.ext.args2`, or BAM and CRAM, and to
             `bcftools call` via `task.ext.arg4` for BCF.
           pattern: "*.{bai,crai,csi}"
