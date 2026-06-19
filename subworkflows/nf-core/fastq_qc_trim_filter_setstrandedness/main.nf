@@ -431,8 +431,8 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
 
     emit:
     reads             = ch_strand_inferred_fastq
-    reads_raw         = ch_reads_raw
-    reads_pre_bbsplit = ch_reads_pre_bbsplit
+    reads_cat         = ch_reads_cat
+    reads_trimmed     = ch_reads_trimmed
     trim_read_count   = ch_trim_read_count
     multiqc_files     = ch_multiqc_files.transpose()
 
