@@ -98,10 +98,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.{stats}":
+      - "*.stats":
           type: file
           description: Statistics on the BCF files.
-          pattern: "*.{stats}"
+          pattern: "*.stats"
           ontologies: []
   versions_last:
     - - "${task.process}":
