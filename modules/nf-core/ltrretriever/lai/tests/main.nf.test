@@ -95,7 +95,7 @@ nextflow_process {
                 { assert path(process.out.log[0][1]).text.contains("Done!") },
                 { assert path(process.out.log[0][1]).text.contains("Result file:") },
                 { assert Math.abs(Float.parseFloat(path(process.out.lai_out[0][1]).text.split("\n")[1].split("\t")[6]) - 31.29) <= 1.0 },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
             )
         }
 

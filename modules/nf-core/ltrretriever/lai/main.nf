@@ -14,8 +14,8 @@ process LTRRETRIEVER_LAI {
     path monoploid_seqs
 
     output:
-    tuple val(meta), path("*.LAI.log")  , emit: log
-    tuple val(meta), path("*.LAI.out")  , emit: lai_out     , optional: true
+    tuple val(meta), path("*.LAI.log"), emit: log
+    tuple val(meta), path("*.LAI.out"), emit: lai_out, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val("lai"), val("beta3.2"), emit: versions_lai, topic: versions
 
