@@ -71,8 +71,11 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}":
           type: file
-          description: Pairwise alignment exported to Axt, BAM, BCF, BED, BLAST, Chain,
-            CRAM, GFF, HTML PSL, SAM or Tab format.
+          description: |
+            Pairwise alignment exported to Axt, BAM, BCF, BED, BLAST, Chain,
+            CRAM, GFF, HTML PSL, SAM or Tab format.  For BCF generation, pass
+            options to `bcftools merge` with `task.ext.args3` and to `bcftools
+            call` via `task.ext.args4`.
           pattern: "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"
           ontologies: []
   index:
@@ -83,7 +86,10 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.{bai,crai,csi}":
           type: file
-          description: Optional index for the BAM, BCF or CRAM files.
+          description: |
+            Optional index for the BAM, BCF or CRAM files. Pass `--with-index`
+            to `samtools` via `task.ext.args2`, or BAM and CRAM, and to
+            `bcftools call` via `task.ext.arg4` for BCF.
           pattern: "*.{bai,crai,csi}"
           ontologies: []
   stats:
