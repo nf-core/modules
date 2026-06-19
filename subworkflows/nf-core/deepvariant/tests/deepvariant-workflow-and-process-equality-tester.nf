@@ -8,11 +8,12 @@ workflow DEEPVARIANT_WORKFLOW_AND_PROCESS_EQUALITY_TESTER {
     ch_fai     // channel: [ val(meta3), path(fail) ]
     ch_gzi     // channel: [ val(meta4), path(gzi) ]
     ch_par_bed // channel: [ val(meta5), path(par_bed) ]
+    with_phasing //  bool: run with phasing (only for long reads) 
 
     main:
 
     // WGS model does not use read-phasing when doing rundeepvariant
-    DEEPVARIANT(ch_input, ch_fasta, ch_fai, ch_gzi, ch_par_bed, false)
+    DEEPVARIANT(ch_input, ch_fasta, ch_fai, ch_gzi, ch_par_bed, with_phasing)
     DEEPVARIANT_RUNDEEPVARIANT(ch_input, ch_fasta, ch_fai, ch_gzi, ch_par_bed)
 
     emit:
