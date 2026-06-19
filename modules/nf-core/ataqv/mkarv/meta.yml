@@ -7,10 +7,10 @@ keywords:
   - mkarv
 tools:
   - "ataqv":
-      description: "ataqv is a toolkit for measuring and comparing ATAC-seq results.\
-        \ It was written to help understand how well ATAC-seq assays have worked, and\
-        \ to make it easier to spot differences that might be caused by library prep\
-        \ or sequencing."
+      description: "ataqv is a toolkit for measuring and comparing ATAC-seq results.
+        It was written to help understand how well ATAC-seq assays have worked, and
+        to make it easier to spot differences that might be caused by library prep or
+        sequencing."
       homepage: "https://github.com/ParkerLab/ataqv/blob/master/README.rst"
       documentation: "https://github.com/ParkerLab/ataqv/blob/master/README.rst"
       tool_dev_url: "https://github.com/ParkerLab/ataqv"
@@ -23,7 +23,7 @@ input:
       description: JSON files
       pattern: "*.json"
       ontologies:
-        - edam: http://edamontology.org/format_3464
+        - edam: http://edamontology.org/format_3464 # JSON
 output:
   html:
     - html:
@@ -37,9 +37,10 @@ output:
       - ataqv:
           type: string
           description: The name of the tool
-      - echo \$(ataqv --version):
+      - ataqv --version:
           type: eval
           description: The expression to obtain the version of the tool
+
   versions_mkarv:
     - - ${task.process}:
           type: string
@@ -58,9 +59,10 @@ topics:
       - ataqv:
           type: string
           description: The name of the tool
-      - echo \$(ataqv --version):
+      - ataqv --version:
           type: eval
           description: The expression to obtain the version of the tool
+
     - - ${task.process}:
           type: string
           description: The name of the process
