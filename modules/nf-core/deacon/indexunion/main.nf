@@ -9,8 +9,7 @@ process DEACON_INDEX_UNION {
         'biocontainers/deacon:0.13.2--h7ef3eeb_0' }"
 
     input:
-    tuple val(meta), path(index)    // multiple deacon .idx index files to combine
-
+    tuple val(meta), path(indices)    // two or more deacon .idx index files to combine
     // TODO: optionally could accept two inputs similar to index_diff:
     // the first would be the main index to start from, providing meta_index.id
     // the second would be a 1 or more indexes to combine with
@@ -35,7 +34,7 @@ process DEACON_INDEX_UNION {
         index \\
         union \\
         ${args} \\
-        ${index} \\
+        ${indices.join(' ')} \\
         > ${prefix}.idx
     """
 

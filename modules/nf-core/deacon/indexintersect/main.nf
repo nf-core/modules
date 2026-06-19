@@ -9,7 +9,7 @@ process DEACON_INDEX_INTERSECT {
         'biocontainers/deacon:0.13.2--h7ef3eeb_0' }"
 
     input:
-    tuple val(meta), path(index)    // multiple deacon .idx index files to intersect
+    tuple val(meta), path(indices)  // two or more deacon .idx index files to intersect
 
     output:
     tuple val(meta), path("*.idx"), emit: index
@@ -35,7 +35,7 @@ process DEACON_INDEX_INTERSECT {
         index \\
         intersect \\
         ${args} \\
-        ${index} \\
+        ${indices.join(' ')} \\
         > ${prefix}.idx
     """
 

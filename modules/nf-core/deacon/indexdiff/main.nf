@@ -9,7 +9,7 @@ process DEACON_INDEX_DIFF {
         'biocontainers/deacon:0.13.2--h7ef3eeb_0' }"
 
     input:
-    tuple val(meta_index), path(index)      // deacon .idx index file
+    tuple val(meta_index), path(index)      // main deacon .idx index file
     tuple val(meta_genome), path(genome)    // a single fasta or .idx file to subtract from the main index
 
     output:
