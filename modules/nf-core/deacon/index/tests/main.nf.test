@@ -18,8 +18,6 @@ nextflow_process {
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = ''       // should default to 'build'
-                input[2] = [[:], []]  // empty tuple for optional set operation genome input
                 """
             }
         }
@@ -46,8 +44,6 @@ nextflow_process {
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
                 ]
-                input[1] = ''       // should default to 'build'
-                input[2] = [[:], []]  // empty tuple for optional set operation genome input
                 """
             }
         }
@@ -75,8 +71,6 @@ nextflow_process {
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = ''       // should default to 'build'
-                input[2] = [[:], []]  // empty tuple for optional set operation genome input
                 """
             }
         }
