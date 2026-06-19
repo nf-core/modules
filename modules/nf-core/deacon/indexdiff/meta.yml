@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "deacon_index_diff"
-description: Create deacon index for reference genome
+description: Subtract minimizers in deacon index (or fasta file) from another index (A - B)
 keywords:
   - index
   - fasta
@@ -33,12 +33,12 @@ input:
   - - meta_genome:
         type: map
         description: |
-          Groovy Map containing metadata for the genome to subtract from the index (.idx or fasta file).
+          Groovy Map containing metadata for the genome to subtract from the index (deacon .idx index or fasta file).
           e.g. [ id:'genome' ]
     - genome:
         type: file
         description: |
-          A single .idx or fasta file to subtract from the main reference index
+          A single .idx or fasta file to subtract from the main reference index.
         pattern: "*.{idx,fasta,fasta.gz,fas,fas.gz,fa,fa.gz,fna,fna.gz}"
         ontologies:
           - edam: "http://edamontology.org/data_3210" # Genome index

@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "deacon_index_intersect"
-description: Intersect deacon minimizer indexes
+description: Intersect multiple deacon indexes (A ∩ B ...)
 keywords:
   - index
   - fasta
@@ -21,12 +21,12 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing reference index information
+          Groovy Map containing reference index information.
           e.g. [ id:'test', single_end:false ]
     - index:
         type: file
         description: |
-          Deacon .idx index files to intersect
+          One or more deacon .idx index files to intersect
         pattern: "*.idx"
         ontologies:
           - edam: "http://edamontology.org/data_3210" # Genome index
@@ -35,7 +35,7 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing reference index information
+            Groovy Map containing reference index information.
             e.g. [ id:'test', single_end:false ]
       - "*.idx":
           type: file
