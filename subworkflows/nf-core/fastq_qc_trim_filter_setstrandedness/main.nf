@@ -293,7 +293,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_filtered_reads = ch_filtered_reads.join(FQ_LINT_AFTER_TRIMMING.out.lint.map { meta, _lint -> meta })
     }
 
-    ch_reads_pre_bbsplit = ch_filtered_reads
+    ch_reads_trimmed = ch_filtered_reads
 
     //
     // MODULE: Remove genome contaminant reads
