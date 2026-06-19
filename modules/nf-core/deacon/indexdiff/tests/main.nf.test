@@ -1,0 +1,100 @@
+nextflow_process {
+
+    name "Test Process DEACON_INDEX_DIFF"
+    script "../main.nf"
+    process "DEACON_INDEX_DIFF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deacon"
+    tag "deacon/indexdiff"
+
+    test("index diff sarscov2 escherichia_coli - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test-index'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test-diff'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.index,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("index diff sarscov2 escherichia_coli - fasta gzipped") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test-index'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test-diff'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("index diff sarscov2 escherichia_coli - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test-index'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test-diff'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+}
