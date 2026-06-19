@@ -23,6 +23,15 @@ process JELLYFISH_COUNT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    if [[ ${fasta} == *.gz ]]; then
+        zcat ${fasta} > ${fasta.baseName}.fasta
+    fi
+    if [[ ${fasta} == *.fa ]]; then
+        cp ${fasta} ${fasta.baseName}.fasta
+    fi
+    if [[ ${fasta} == *.fastq ]]; then
+        cp ${fasta} ${fasta.baseName}.fasta
+    fi
     jellyfish \\
         count \\
         $args \\
