@@ -60,7 +60,8 @@ process ANGSD_DOSAF {
     }
 
     // Compute -minInd dynamically as a fraction of the population's BAM list size
-    def frac        = (task.ext.args2 ?: '0.5') as Double
+    // Default set to 0 as this mimics angsd default for minInd
+    def frac        = (task.ext.args2 ?: '0') as Double
     def n_samples   = bams instanceof List ? bams.size() : 1
     def min_ind_arg = frac > 0 ? "-minInd ${Math.ceil(n_samples * frac).toInteger()}" : ''
 
