@@ -17,52 +17,24 @@ tools:
       doi: "10.1093/bioinformatics/btae004"
       licence: ["MIT"]
       identifier: "biotools:deacon"
+
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing reference information.
           e.g. [ id:'test', single_end:false ]
-    - reference:
+    - fasta:
         type: file
-        description: |
-          Main input file for deacon index
-          - For 'build': fasta genome file
-          - For 'union'/'intersect'/'diff': .idx index file
-        pattern: "*.{fasta,fasta.gz,fas,fas.gz,fa,fa.gz,fna,fna.gz,idx}"
+        description: Input genome fasta file
+        pattern: "*.{fasta,fasta.gz,fas,fas.gz,fa,fa.gz,fna,fna.gz}"
         ontologies:
           - edam: "http://edamontology.org/data_2044" # Sequence
           - edam: "http://edamontology.org/format_1929" # FASTA
-          - edam: "http://edamontology.org/data_3210" # Genome index
-  - subcommand:
-      type: string
-      description: |
-        Deacon index subcommand to execute: 'build' (default), 'union', 'intersect', or 'diff'.
-        - build: Index minimizers contained within a fastx file
-        - union: Combine multiple minimizer indexes (A ∪ B…)
-        - intersect: Intersect multiple minimizer indexes (A ∩ B…)
-        - diff: SSubtract minimizers in one index from another (A - B)
-      pattern: "build|union|intersect|diff"
-  - - meta_set:
-        type: map
-        description: |
-          Groovy Map containing metadata for set operation genome index/fasta files.
-          e.g. [ id:'genome' ]
-    - set_genomes:
-        type: file
-        description: |
-          Optional input for set operations (union/intersect/diff).
-          - For union/intersect: One or more .idx files to combine/intersect with the main reference index
-          - For diff: A single .idx or fasta file to subtract from the main reference index
-          - Not required for build
-        pattern: "*.{idx,fasta,fasta.gz,fas,fas.gz,fa,fa.gz,fna,fna.gz}"
-        ontologies:
-          - edam: "http://edamontology.org/data_3210" # Genome index
-          - edam: "http://edamontology.org/data_2044" # Sequence
-          - edam: "http://edamontology.org/format_1929" # FASTA
+
 output:
   index:
-    - - meta_out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -83,6 +55,7 @@ output:
       - deacon --version | head -n1 | sed "s/deacon //g":
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -98,4 +71,3 @@ authors:
   - "@mberacochea"
 maintainers:
   - "@mberacochea"
-  - "@pmoris"
