@@ -14,7 +14,7 @@ process JELLYFISH_COUNT {
 
     output:
     tuple val(meta), path("${prefix}.jf"), emit: jf
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('jellyfish'), eval("jellyfish --version sed 's/jellyfish //'"), emit: versions_jellyfish, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
