@@ -184,7 +184,7 @@ output:
             type: file
             description: Pre-trimming FastQ files
             pattern: "*.{fq,fastq},{,.gz}"
-  - reads_pre_bbsplit:
+  - reads_trimmed:
       description: Channel snapshot of reads after adapter trimming but before BBSplit/rRNA removal
       structure:
         - meta:
