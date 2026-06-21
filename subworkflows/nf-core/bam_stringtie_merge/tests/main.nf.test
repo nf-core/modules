@@ -16,15 +16,15 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                                    [ id:'sample1', strandedness:'reverse' ],
-                                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true),
-                                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/pacbio/bam/test.sorted.bam", checkIfExists: true)
+                                [ id:'sample1', strandedness:'reverse' ],
+                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true),
+                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/pacbio/bam/test.sorted.bam", checkIfExists: true)
                             ])
-                input[1] = Channel.of([
+                input[1] = Channel.value("mix-reads-assembly")
+                input[2] = Channel.of([
                                 [ id:'annotation' ],
                                 file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true)
                             ])
-                input[2] = Channel.value("mix-reads-assembly")
                 """
             }
         }
@@ -32,7 +32,6 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert workflow.out.stringtie_gtf.size() == 1 },
                 { assert snapshot(sanitizeOutput(workflow.out)).match() },
             )
         }

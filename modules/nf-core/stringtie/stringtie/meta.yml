@@ -19,37 +19,41 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test', single_end:false, strandedness:'forward' ]
     - srbam:
         type: file
         description: |
           Sorted and indexed bam file from short-read alignment.
+        pattern: ".bam"
         ontologies: []
     - lrbam:
         type: file
         description: |
           Sorted and indexed bam file from long-read alignment.
+        pattern: ".bam"
         ontologies: []
-  - annotation_gtf:
-      type: file
-      description: |
-        Annotation gtf file (optional).
-      ontologies: []
   - mode:
       type: string
       description: |
-        StringTie mode (long-read-assembly, mix-read-assembly, expression-estimation).
+        StringTie mode (long-read-assembly, mix-read-assembly, expression-estimation, nascent-aware-assembly).
       enum:
         - long-read-assembly
         - mix-read-assembly
         - expression-estimation
+        - nascent-aware-assembly
+  - annotation_gtf:
+      type: file
+      description: |
+        Annotation gtf file (optional).
+      pattern: ".gtf"
+      ontologies: []
 output:
   transcript_gtf:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', single_end:false, strandedness:'forward' ]
       - ${prefix}.transcripts.gtf:
           type: file
           description: |
@@ -61,7 +65,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', single_end:false, strandedness:'forward' ]
       - ${prefix}.gene.abundance.txt:
           type: file
           description: |
@@ -73,24 +77,24 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', single_end:false, strandedness:'forward' ]
       - ${prefix}.coverage.gtf:
           type: file
           description: |
             Coverage for the sample
-          pattern: ".txt"
+          pattern: ".gtf"
           ontologies: []
   ballgown:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}.ballgown/:
+            e.g. [ id:'test', single_end:false, strandedness:'forward' ]
+      - ${prefix}.ballgown/*.ctab:
           type: file
           description: |
-            Ballgown outputs for visualizations
-          pattern: ".txt"
+            Ballgown output for the sample
+          pattern: ".ctab"
           ontologies: []
   versions_stringtie:
     - - ${task.process}:
