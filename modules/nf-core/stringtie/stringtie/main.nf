@@ -40,7 +40,7 @@ process STRINGTIE_STRINGTIE {
     if (mode) {
         def valid_modes = ['expression-estimation', 'long-reads-assembly', 'mix-reads-assembly', 'nascent-aware-assembly']
         def modes = (mode instanceof List) ? mode :
-                    (mode instanceof String) ? mode.toString().split(',').collect { it -> it.trim() } : []
+                    (mode instanceof String) ? mode.toString().split(',').collect { x -> x.trim() } : []
         modes.each { m ->
             if (!(m in valid_modes)) {
                 error "Invalid mode: ${m}. Valid options are: ${valid_modes.join(', ')}"
