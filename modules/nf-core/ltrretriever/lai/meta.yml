@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ltrretriever_lai"
 description: |
   Estimates the mean LTR sequence identity in the genome. The input genome fasta should
@@ -13,12 +12,14 @@ keywords:
   - qc
 tools:
   - "lai":
-      description: Assessing genome assembly quality using the LTR Assembly Index (LAI)
+      description: Assessing genome assembly quality using the LTR Assembly Index
+        (LAI)
       homepage: "https://github.com/oushujun/LTR_retriever"
       documentation: "https://github.com/oushujun/LTR_retriever"
       tool_dev_url: "https://github.com/oushujun/LTR_retriever"
       doi: "10.1093/nar/gky730"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -73,13 +74,29 @@ output:
             Output file from LAI if LAI is able to estimate the index from the inputs
           pattern: "*.LAI.out"
           ontologies: []
+  versions_lai:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - lai:
+          type: string
+          description: The name of the tool
+      - beta3.2:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - lai:
+          type: string
+          description: The name of the tool
+      - beta3.2:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@GallVp"
 maintainers:
