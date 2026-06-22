@@ -35,7 +35,7 @@ process PICARD_FILTERSAMREADS {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
 
-    def fasta_command = fasta ? "-R FASTA" : ""
+    def fasta_command = fasta ? "-R ${fasta}" : ""
     def read_list_command = filter.endsWith('ReadList') ? "--READ_LIST_FILE ${readlist}" : ""
     """
     picard \\
