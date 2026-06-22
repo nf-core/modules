@@ -4,6 +4,8 @@ keywords:
   - vcf
   - echtvar
   - encode
+  - annotation
+  - allele-frequency
 tools:
   - "echtvar":
       description: "Using all the bits for echt rapid variant annotation and filtering."
@@ -31,9 +33,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - json_config:
+    - json_filters:
         type: file
-        description: JSON file containing the configuration for the encoding process
+        description: JSON file containing the configuration for the encoding process (which columns are pulled from the input VCF and how they are stored)
         pattern: "*.json"
         ontologies:
           - edam: "http://edamontology.org/format_3464"

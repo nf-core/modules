@@ -9,7 +9,7 @@ process ECHTVAR_ENCODE {
 
     input:
     tuple val(meta), path(vcf)
-    tuple val(meta2), path(json_config)
+    tuple val(meta2), path(json_filters)
 
     output:
     tuple val(meta), path("*.zip"), emit: db
@@ -19,18 +19,23 @@ process ECHTVAR_ENCODE {
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echtvar \\
         encode \\
+        $args \\
         ${prefix}.zip \\
-        ${json_config} \\
+        ${json_filters} \\
         $vcf
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo $args
+
     touch ${prefix}.zip
     """
 }
