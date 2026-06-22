@@ -9,10 +9,12 @@ process PICARD_FILTERSAMREADS {
 
     input:
     tuple val(meta), path(bam), path(readlist)
+    tuple val(meta2), path(fasta)
     val filter
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bai"), emit: bai, optional: true
     tuple val("${task.process}"), val('picard'), eval("picard FilterSamReads --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
@@ -33,29 +35,19 @@ process PICARD_FILTERSAMREADS {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
 
-    if (filter == 'includeAligned' || filter == 'excludeAligned') {
-        """
-        picard \\
-            -Xmx${avail_mem}M \\
-            FilterSamReads \\
-            --INPUT ${bam} \\
-            --OUTPUT ${prefix}.bam \\
-            --FILTER ${filter} \\
-            ${args}
-        """
-    }
-    else if (filter == 'includeReadList' || filter == 'excludeReadList') {
-        """
-        picard \\
-            -Xmx${avail_mem}M \\
-            FilterSamReads \\
-            --INPUT ${bam} \\
-            --OUTPUT ${prefix}.bam \\
-            --FILTER ${filter} \\
-            --READ_LIST_FILE ${readlist} \\
-            ${args}
-        """
-    }
+    def fasta_command = fasta ? "-R FASTA" : ""
+    def read_list_command = filter.endsWith('ReadList') ? "--READ_LIST_FILE ${readlist}" : ""
+    """
+    picard \\
+        -Xmx${avail_mem}M \\
+        ${fasta_command} \\
+        FilterSamReads \\
+        --INPUT ${bam} \\
+        --OUTPUT ${prefix}.bam \\
+        --FILTER ${filter} \\
+        ${read_list_command} \\
+        ${args}
+    """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
