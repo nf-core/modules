@@ -11,7 +11,7 @@ process NUMORPH_3DUNET {
     output:
     tuple val(meta), path("${prefix}/")              , emit: cellcounts
 
-    tuple val("${task.process}"), val('numorph-3dunet'), eval('numorph_3dunet --version'), emit: versions_numorph_3dunet, topic: versions
+    tuple val("${task.process}"), val('numorph_3dunet'), eval('numorph_3dunet --version'), emit: versions_numorph_3dunet, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

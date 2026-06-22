@@ -1,6 +1,6 @@
-
 name: "numorph_3dunet"
-description: "3DUnet for cell nuclei quantification on 3D microscopy images of the numorph toolkit."
+description: "3DUnet for cell nuclei quantification on 3D microscopy images of the
+  numorph toolkit."
 keywords:
   - segmentation
   - cell nuclei
@@ -8,15 +8,14 @@ keywords:
   - numorph
 tools:
   - "numorph_3dunet":
-      description: "This package contains the original 3DUnet for cell nuclei quantification on 3D microscopy images of the numorph toolkit."
+      description: "This package contains the original 3DUnet for cell nuclei quantification
+        on 3D microscopy images of the numorph toolkit."
       homepage: "https://github.com/qbic-pipelines/numorph_3dunet"
       documentation: "https://github.com/qbic-pipelines/numorph_3dunet"
       tool_dev_url: "https://github.com/qbic-pipelines/numorph_3dunet"
-      doi: ""
       licence:
         - "MIT"
-      identifier: null
-
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -36,6 +35,12 @@ input:
         pattern: "*.{csv}"
         ontologies:
           - edam: "http://edamontology.org/format_3752"
+  - model_file:
+      type: file
+      description: File containing the trained model
+      pattern: "*.{h5}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3590"
 output:
   cellcounts:
     - - meta:
@@ -43,24 +48,24 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "${prefix}/":
+      - ${prefix}/:
           type: directory
           description: Directory containing cell count results
           pattern: "${meta.id}/"
-  versions_numorph:
-    - - "${task.process}":
+
+  versions_numorph_3dunet:
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "numorph_3dunet":
+      - numorph_3dunet:
           type: string
           description: The name of the tool
       - "numorph_3dunet --version":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
       - "numorph_3dunet":
