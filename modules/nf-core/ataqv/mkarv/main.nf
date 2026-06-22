@@ -11,7 +11,7 @@ process ATAQV_MKARV {
 
     output:
     path "html"        , emit: html
-    tuple val("${task.process}"), val('ataqv'), eval("ataqv --version"), emit: versions_ataqv, topic: versions
+    tuple val("${task.process}"), val('ataqv'), eval("ataqv --version 2>&1 || true"), emit: versions_ataqv, topic: versions
     // tuple val("${task.process}"), val('mkarv'), eval('mkarv --version'), emit: versions_mkarv, topic: versions //Use this when version string has been fixed
     when:
     task.ext.when == null || task.ext.when

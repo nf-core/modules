@@ -62,7 +62,7 @@ output:
       - clusty:
           type: string
           description: The name of the tool
-      - clusty --version:
+      - clusty --version 2>&1 || true:
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -74,7 +74,7 @@ topics:
       - clusty:
           type: string
           description: The name of the tool
-      - clusty --version:
+      - clusty --version 2>&1 || true:
           type: eval
           description: The expression to obtain the version of the tool
 
