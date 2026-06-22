@@ -1,90 +1,46 @@
-name: "wisecondorx_convert"
-description: Convert and filter aligned reads to .npz
+name: wisecondorx_convert
+description: Converts a BAM file to a WisecondorX-compatible .npz file for downstream copy number variation analysis of cell-free DNA.
 keywords:
-  - bam
-  - cram
-  - copy-number
+  - wisecondorx
+  - cfDNA
+  - copy number
+  - liquid biopsy
+  - cancer
 tools:
-  - "wisecondorx":
-      description: "WIthin-SamplE COpy Number aberration DetectOR, including sex chromosomes"
-      homepage: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
-      documentation: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
-      tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
-      doi: "10.1093/nar/gky1263"
-      licence:
-        - "Attribution-NonCommercial-ShareAlike CC BY-NC-SA"
-      identifier: ""
+  - wisecondorx:
+      description: WIthin-SamplE COpy Number aberration DetectOR for cell-free DNA.
+      homepage: https://github.com/CenterForMedicalGeneticsGhent/WisecondorX
+      documentation: https://github.com/CenterForMedicalGeneticsGhent/WisecondorX
+      tool_dev_url: https://github.com/CenterForMedicalGeneticsGhent/WisecondorX
+      licence: ["MIT"]
+
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - bam:
-        type: file
-        description: Reads in BAM/CRAM format
-        pattern: "*.{bam,cram}"
-        ontologies: []
-    - bai:
-        type: file
-        description: index of the BAM/CRAM file
-        pattern: "*.{bai,crai}"
-        ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing reference fasta meta information
-          e.g. [ id:'test' ]
-    - fasta:
-        type: file
-        description: The reference FASTA file (mandatory when using CRAM files)
-        pattern: "*.{fasta,fa,fna}"
-        ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing reference fasta index meta information
-          e.g. [ id:'test' ]
-    - fasta_fai:
-        type: file
-        description: The index of the reference FASTA file (mandatory when using
-          CRAM files)
-        pattern: "*.fai"
-        ontologies: []
+  - meta:
+      type: map
+      description: Groovy Map containing sample information e.g. [ id:'sample1' ]
+  - bam:
+      type: file
+      description: Sorted BAM file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAM index file
+      pattern: "*.bai"
+
 output:
-  npz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.npz":
-          type: file
-          description: The output NPZ file
-          pattern: "*.npz"
-          ontologies: []
-  versions_wisecondorx:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - wisecondorx:
-          type: string
-          description: The name of the tool
-      - pip list |& sed -n 's/wisecondorx *//p':
-          type: eval
-          description: The expression to obtain the version of the tool
-topics:
-  versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - wisecondorx:
-          type: string
-          description: The name of the tool
-      - pip list |& sed -n 's/wisecondorx *//p':
-          type: eval
-          description: The expression to obtain the version of the tool
+  - meta:
+      type: map
+      description: Groovy Map containing sample information e.g. [ id:'sample1' ]
+  - npz:
+      type: file
+      description: Compressed numpy file for use with WisecondorX newref and predict
+      pattern: "*.npz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
 authors:
-  - "@nvnieuwk"
+  - "@JP-Bro"
 maintainers:
-  - "@nvnieuwk"
+  - "@JP-Bro"
