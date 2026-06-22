@@ -1,37 +1,38 @@
 nextflow_process {
 
-    name "Test Process MAFFT_GUIDETREE"
+    name "Test Process HMMER_HMMEMIT"
     script "../main.nf"
-    process "MAFFT_GUIDETREE"
+    process "HMMER_HMMEMIT"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "mafft"
-    tag "mafft/guidetree"
+    tag "hmmer"
+    tag "hmmer/hmmemit"
 
+    test("sarscov2 - proteome - hmm - consensus") {
 
-    test("sarscov2 - fasta") {
+        config "./nextflow.config"
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.hmm.gz', checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test("sarscov2 - fasta - stub") {
+    test("sarscov2 - proteome - hmm - stub") {
 
         options "-stub"
 
@@ -40,19 +41,18 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.hmm.gz', checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
 }
