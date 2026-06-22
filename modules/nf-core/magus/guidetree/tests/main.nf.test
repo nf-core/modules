@@ -14,9 +14,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
-                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
-                           ]
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                ]
                 """
             }
         }
@@ -32,7 +33,28 @@ nextflow_process {
                 { assert path(process.out.tree[0][1]).getText().contains("1atx") },
                 { assert path(process.out.tree[0][1]).getText().contains("1sh1") },
                 { assert path(process.out.tree[0][1]).getText().contains("1bds") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("setoxin - fasta -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
