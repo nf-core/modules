@@ -3,7 +3,7 @@ process UNTARFILES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88e03525287eaeb8bb74114aaee2c67118c1cdcfb99ee52e3ddc71a1acce35d4/data' :
         'community.wave.seqera.io/library/grep_sed_tar:db2951cd23a1ffde' }"
 

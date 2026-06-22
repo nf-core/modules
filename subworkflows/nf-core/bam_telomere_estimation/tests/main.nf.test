@@ -32,8 +32,9 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] =false
-                input[4] =null
+                input[3] = Channel.value([[]])
+                input[4] =false
+                input[5] =null
                 """
             }
         }
@@ -70,8 +71,9 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] =true
-                input[4] =null
+                input[3] = Channel.value([[]])
+                input[4] =true
+                input[5] =null
                 """
             }
         }
@@ -108,8 +110,9 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.empty()
                 input[2] = Channel.value([ [id:'genome'], [], [] ])
-                input[3] =true
-                input[4] =null
+                input[3] = Channel.value([[]])
+                input[4] =true
+                input[5] =null
                 """
             }
         }
@@ -148,8 +151,9 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] =false
-                input[4] ='short'
+                input[3] = Channel.value([[]])
+                input[4] =false
+                input[5] ='short'
                 """
             }
         }
@@ -185,8 +189,9 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] =false
-                input[4] =null
+                input[3] = Channel.value([[]])
+                input[4] =false
+                input[5] =null
                 """
             }
         }
@@ -215,8 +220,9 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.empty()
                 input[2] = Channel.value([ [id:'genome'], [], [] ])
-                input[3] =false
-                input[4] =null
+                input[3] = Channel.value([[]])
+                input[4] =false
+                input[5] =null
                 """
             }
         }
@@ -247,8 +253,9 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.empty()
                 input[2] = Channel.value([ [id:'genome'], [], [] ])
-                input[3] =false
-                input[4] =null
+                input[3] = Channel.value([[]])
+                input[4] =false
+                input[5] =null
                 """
             }
         }

@@ -1,0 +1,76 @@
+name: "hmmer_hmmemit"
+description: emit sequences from a profile HMM
+keywords:
+  - hidden markov model
+  - HMM
+  - hmmer
+  - sequence emission
+  - simulation
+  - profile
+tools:
+  - "hmmer":
+      description: "Biosequence analysis using profile hidden Markov models"
+      homepage: "http://hmmer.org"
+      documentation: "http://hmmer.org/documentation.html"
+      tool_dev_url: "https://github.com/EddyRivasLab/hmmer"
+      doi: "10.1371/journal.pcbi.1002195"
+      licence:
+        - "BSD"
+      identifier: "biotools:hmmer"
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - hmm:
+        type: file
+        description: |
+          Profile HMM file (e.g. as produced by hmmbuild),
+          containing one or more profile HMMs
+        pattern: "*.{hmm,hmm.gz}"
+        ontologies:
+          - edam: http://edamontology.org/data_1364 # HMM
+output:
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.fasta:
+          type: file
+          description: |
+            Sequences emitted/sampled from the profile HMM in FASTA format.
+            Note: if `-a` is passed via `ext.args`, hmmemit emits a Stockholm
+            alignment instead; the `.fasta` extension is the default-format
+            convention used by this module. -c consensus in test = forced determinism
+          pattern: "*.fasta"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmemit -h | sed '2!d;s/^# HMMER *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmemit -h | sed '2!d;s/^# HMMER *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

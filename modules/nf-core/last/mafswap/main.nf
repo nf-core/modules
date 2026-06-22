@@ -3,9 +3,9 @@ process LAST_MAFSWAP {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0d/0d27a2649f1291ff817dc8f73357ffac206424cd972d3855421e4258acc600f7/data'
-        : 'community.wave.seqera.io/library/last:1611--e1193b3871fa0975'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2eb57450207840a7fba7f60b65239a86679bfcaa79fb5fba652dd41af2b3e1d9/data'
+        : 'community.wave.seqera.io/library/last:1651--c83f04148c23181f'}"
 
     input:
     tuple val(meta), path(maf)
@@ -29,6 +29,6 @@ process LAST_MAFSWAP {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo stub | gzip --no-name > ${prefix}.swapped.maf.gz
+    echo "" | gzip > ${prefix}.swapped.maf.gz
     """
 }

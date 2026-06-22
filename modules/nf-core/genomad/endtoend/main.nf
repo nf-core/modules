@@ -3,7 +3,7 @@ process GENOMAD_ENDTOEND {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9c/9ce142cdc455bfd9d969463e057da9ee362f7274e6c9fbeb0381c0e3234cae89/data'
         : 'community.wave.seqera.io/library/genomad:1.12.0--17634a7f0b465d30'}"
 

@@ -3,7 +3,7 @@ process SEQKIT_SAMPLE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'oras://community.wave.seqera.io/library/seqkit:2.13.0--205358a3675c7775'
         : 'community.wave.seqera.io/library/seqkit:2.13.0--05c0a96bf9fb2751'}"
 
@@ -38,6 +38,7 @@ process SEQKIT_SAMPLE {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     extension = "fastq"
     if ("${fastx}" ==~ /.+\.fasta|.+\.fasta\.gz|.+\.fa|.+\.fa\.gz|.+\.fas|.+\.fas\.gz|.+\.fna|.+\.fna\.gz|.+\.fsa|.+\.fsa\.gz/) {
@@ -47,8 +48,10 @@ process SEQKIT_SAMPLE {
     if ("${prefix}.${extension}" == "${fastx}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
-    def create_cmd = extension.endsWith('.gz') ? "echo '' | gzip >" : "touch"
+    def create_cmd = extension.endsWith('gz') ? "echo '' | gzip >" : "touch"
     """
+    echo ${args}
+
     ${create_cmd} ${prefix}.${extension}
     """
 }

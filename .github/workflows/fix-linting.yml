@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Use the @nf-core-bot token to check out so we can push later
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           token: ${{ secrets.nf_core_bot_auth_token }}
 
@@ -34,7 +34,7 @@ jobs:
 
       - name: Run prek
         id: prek
-        uses: j178/prek-action@53276d8b0d10f8b6672aa85b4588c6921d0370cc # v2.0.1
+        uses: j178/prek-action@bdca6f102f98e2b4c7029491a53dfd366469e33d # v2.0.4
         continue-on-error: true
 
       # indication that the linting has finished

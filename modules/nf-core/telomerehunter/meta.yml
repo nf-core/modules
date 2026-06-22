@@ -62,6 +62,15 @@ input:
         description: Reference FASTA index
         pattern: "*.fai"
         ontologies: []
+    - cytoband:
+        type: file
+        description: |
+          Optional cytoband file for the reference genome.
+          When not provided ([]), telomerehunter uses its bundled hg19 cytoband.
+          Must be supplied for hg38 data to avoid an IndexError caused by
+          chromosomes that are longer in hg38 than hg19.
+        pattern: "*.txt"
+        ontologies: []
 output:
   summary:
     - - meta:

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "dragen"
 description: The DRAGEN DNA Germline Pipeline accelerates the secondary analysis
   of NGS data by harnessing the tremendous power available on the DRAGEN
@@ -36,14 +35,18 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false , sex:'female']`;
-          options for sex: male, female, none, auto
+          e.g. `[ id:'sample1', single_end:false]`
     - input:
         type: file
         description: FASTQ (may be gzipped), ora, BAM or CRAM files
         pattern: "*.{fastq,fq,ora,bam,cram}{,.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
+    - sex:
+        type: string
+        description: |
+          Sample's sex.
+          Recognize options: male, female, none, auto
   - checkfingerprint_expected_vcf:
       type: file
       description: Input expected genotypes (VCF) for checkfingerprint comparison
@@ -54,7 +57,7 @@ input:
       description: Specify combined PON file
       pattern: "*.combined.counts.txt.gz"
       ontologies:
-        - edam: http://edamontology.org/format_3989 # GZIP format
+        - edam: http://edamontology.org/format_3989 # GZIP
   - cnv_exclude_bed:
       type: file
       description: Regions to exclude for CNV processing
@@ -249,8 +252,11 @@ output:
             e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
       - ${prefix}-replay.json:
           type: file
-          description: Contains the exact set of parameters that specifies the analysis
+          description: Contains the exact set of parameters that specifies the
+            analysis
           pattern: "*-replay.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
   coverage_metrics_csv:
     - - meta:
           type: map
@@ -259,8 +265,11 @@ output:
             e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
       - ${prefix}.*_coverage_metrics.csv:
           type: file
-          description: Provides metrics over a region, a target region, or a QC coverage region
+          description: Provides metrics over a region, a target region, or a QC
+            coverage region
           pattern: "*.*_coverage_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   SJ_saturation_txt:
     - - meta:
           type: map
@@ -271,6 +280,8 @@ output:
           type: file
           description: Measures sequencing saturation of the library
           pattern: "*.SJ.saturation.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330
   baf_bedgraph_gz:
     - - meta:
           type: map
@@ -281,6 +292,8 @@ output:
           type: file
           description: Contains b-allele counting
           pattern: "*.baf.bedgraph.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   baf_bw:
     - - meta:
           type: map
@@ -291,6 +304,7 @@ output:
           type: file
           description: BigWig file containing variants
           pattern: "*.baf.bw"
+          ontologies: []
   baf_seg:
     - - meta:
           type: map
@@ -301,6 +315,7 @@ output:
           type: file
           description: Contains segmentation of b-allele loci
           pattern: "*.baf.seg"
+          ontologies: []
   baf_seq_bw:
     - - meta:
           type: map
@@ -311,6 +326,7 @@ output:
           type: file
           description: BigWig representation of the BAF segments
           pattern: "*.baf.seq.bw"
+          ontologies: []
   ballele_counts_gz:
     - - meta:
           type: map
@@ -321,6 +337,8 @@ output:
           type: file
           description: TSV-file containing b-allele counts
           pattern: "*.ballele.counts.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   bam:
     - - meta:
           type: map
@@ -331,6 +349,8 @@ output:
           type: file
           description: Contains aligned reads
           pattern: "*.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
   bam_bai:
     - - meta:
           type: map
@@ -341,6 +361,8 @@ output:
           type: file
           description: Index file for the BAM file
           pattern: "*.bam.bai"
+          ontologies:
+            - edam: http://edamontology.org/format_3327 # BAI
   bam_md5sum:
     - - meta:
           type: map
@@ -351,6 +373,7 @@ output:
           type: file
           description: MD5 checksum file for the BAM file
           pattern: "*.bam.md5sum"
+          ontologies: []
   cnv_excluded_intervals_bed_gz:
     - - meta:
           type: map
@@ -361,6 +384,8 @@ output:
           type: file
           description: Contains excluded intervals from CNV analysis
           pattern: "*.cnv.excluded_intervals.bed.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   cnv_gff3:
     - - meta:
           type: map
@@ -371,6 +396,8 @@ output:
           type: file
           description: GFF3 representation of the CNV events
           pattern: "*.cnv.gff3"
+          ontologies:
+            - edam: http://edamontology.org/format_1975 # GFF3
   cnv_igv_session_xml:
     - - meta:
           type: map
@@ -381,6 +408,8 @@ output:
           type: file
           description: IGV session XML file is prepopulated with track files
           pattern: "*.cnv.igv_session.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
   cnv_pon_correlation_txt_gz:
     - - meta:
           type: map
@@ -391,6 +420,8 @@ output:
           type: file
           description: PON Correlation File
           pattern: "*.cnv.pon_correlation.txt.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   cnv_pon_metrics_tsv_gz:
     - - meta:
           type: map
@@ -401,6 +432,8 @@ output:
           type: file
           description: PON Metrics File
           pattern: "*.cnv.pon_metrics.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   cnv_purity_coverage_models_tsv:
     - - meta:
           type: map
@@ -409,8 +442,11 @@ output:
             e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
       - ${prefix}.cnv.purity.coverage.models.tsv:
           type: file
-          description: Describes the different tested models and their log-likelihood
+          description: Describes the different tested models and their
+            log-likelihood
           pattern: "*.cnv.purity.coverage.models.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   cnv_segdups_joint_coverage_tsv_gz:
     - - meta:
           type: map
@@ -421,6 +457,8 @@ output:
           type: file
           description: Contains normalized joint coverage
           pattern: "*.cnv.segdups.joint_coverage.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   cnv_segdups_rescued_intervals_tsv_gz:
     - - meta:
           type: map
@@ -431,6 +469,8 @@ output:
           type: file
           description: Contains rescued intervals
           pattern: "*.cnv.segdups.rescued_intervals.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   cnv_segdups_site_ratios_tsv_gz:
     - - meta:
           type: map
@@ -439,8 +479,11 @@ output:
             e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
       - ${prefix}.cnv.segdups.site_ratios.tsv.gz:
           type: file
-          description: Contains proportion of coverage to associate to the first and to the second interval
+          description: Contains proportion of coverage to associate to the first
+            and to the second interval
           pattern: "*.cnv.segdups.site_ratios.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   cnv_vcf:
     - - meta:
           type: map
@@ -451,6 +494,8 @@ output:
           type: file
           description: VCF file containing CNV variants
           pattern: "*.cnv.vcf"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
   cnv_vcf_gz:
     - - meta:
           type: map
@@ -461,6 +506,9 @@ output:
           type: file
           description: Gzipped VCF file containing CNV variants
           pattern: "*.cnv.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP
   cnv_vcf_gz_md5sum:
     - - meta:
           type: map
@@ -471,6 +519,7 @@ output:
           type: file
           description: MD5 checksum file for the gzipped CNV VCF
           pattern: "*.cnv.vcf.gz.md5sum"
+          ontologies: []
   cnv_vcf_gz_tbi:
     - - meta:
           type: map
@@ -481,6 +530,8 @@ output:
           type: file
           description: Index file for the gzipped CNV VCF
           pattern: "*.cnv.vcf.gz.tbi"
+          ontologies:
+            - edam: http://edamontology.org/format_3616 # TBI
   cnv_metrics_csv:
     - - meta:
           type: map
@@ -491,6 +542,8 @@ output:
           type: file
           description: Contains CNV metrics
           pattern: "*.cnv_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   cnv_sv_vcf_gz:
     - - meta:
           type: map
@@ -501,6 +554,8 @@ output:
           type: file
           description: Gzipped VCF file containing CNV structural variants
           pattern: "*.cnv_sv.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   combined_counts_txt_gz:
     - - meta:
           type: map
@@ -509,8 +564,11 @@ output:
             e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
       - ${prefix}.combined.counts.txt.gz:
           type: file
-          description: Column-wise concatenation of individual counts used to form the panel of normals
+          description: Column-wise concatenation of individual counts used to form
+            the panel of normals
           pattern: "*.combined.counts.txt.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   cram:
     - - meta:
           type: map
@@ -521,6 +579,8 @@ output:
           type: file
           description: Contains aligned reads in CRAM format
           pattern: "*.cram"
+          ontologies:
+            - edam: http://edamontology.org/format_3462 # CRAM
   cram_crai:
     - - meta:
           type: map
@@ -531,6 +591,7 @@ output:
           type: file
           description: Index file for the CRAM file
           pattern: "*.cram.crai"
+          ontologies: []
   cram_md5sum:
     - - meta:
           type: map
@@ -541,6 +602,7 @@ output:
           type: file
           description: MD5 checksum file for the CRAM file
           pattern: "*.cram.md5sum"
+          ontologies: []
   excluded_intervals_bed_gz:
     - - meta:
           type: map
@@ -551,6 +613,8 @@ output:
           type: file
           description: Gzipped BED file containing excluded intervals
           pattern: "*.excluded_intervals.bed.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   fastqc_metrics_csv:
     - - meta:
           type: map
@@ -561,6 +625,8 @@ output:
           type: file
           description: FastQC metrics file
           pattern: "*.fastqc_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   fragment_length_hist_csv:
     - - meta:
           type: map
@@ -571,6 +637,8 @@ output:
           type: file
           description: Contains insert length distribution
           pattern: "*.fragment_length_hist.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   g_vcf_gz:
     - - meta:
           type: map
@@ -581,6 +649,9 @@ output:
           type: file
           description: Gzipped VCF file containing genomic variants
           pattern: "*.g.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP
   g_vcf_gz_tbi:
     - - meta:
           type: map
@@ -591,6 +662,8 @@ output:
           type: file
           description: Index file for the gzipped VCF
           pattern: "*.g.vcf.gz.tbi"
+          ontologies:
+            - edam: http://edamontology.org/format_3616 # TBI
   gc_metrics_csv:
     - - meta:
           type: map
@@ -601,6 +674,8 @@ output:
           type: file
           description: Contains GC content metrics
           pattern: "*.gc_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   hard_filtered_baf_bw:
     - - meta:
           type: map
@@ -611,6 +686,7 @@ output:
           type: file
           description: BigWig file containing hard-filtered BAF segments
           pattern: "*.hard-filtered.baf.bw"
+          ontologies: []
   hard_filtered_gvcf_gz_md5sum:
     - - meta:
           type: map
@@ -621,6 +697,7 @@ output:
           type: file
           description: MD5 checksum file for the gzipped hard-filtered GVCF
           pattern: "*.hard-filtered.gvcf.gz.md5sum"
+          ontologies: []
   hard_filtered_vcf:
     - - meta:
           type: map
@@ -631,6 +708,8 @@ output:
           type: file
           description: VCF file containing hard-filtered variants
           pattern: "*.hard-filtered.vcf"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
   hard_filtered_vcf_gz:
     - - meta:
           type: map
@@ -641,6 +720,9 @@ output:
           type: file
           description: Gzipped VCF file containing hard-filtered variants
           pattern: "*.hard-filtered.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP
   hard_filtered_vcf_gz_md5sum:
     - - meta:
           type: map
@@ -651,6 +733,7 @@ output:
           type: file
           description: MD5 checksum file for the gzipped hard-filtered VCF
           pattern: "*.hard-filtered.vcf.gz.md5sum"
+          ontologies: []
   hard_filtered_vcf_gz_tbi:
     - - meta:
           type: map
@@ -661,6 +744,8 @@ output:
           type: file
           description: Index file for the gzipped hard-filtered VCF
           pattern: "*.hard-filtered.vcf.gz.tbi"
+          ontologies:
+            - edam: http://edamontology.org/format_3616 # TBI
   improper_pairs_bw:
     - - meta:
           type: map
@@ -671,6 +756,7 @@ output:
           type: file
           description: BigWig file containing improper read pairs
           pattern: "*.improper.pairs.bw"
+          ontologies: []
   impute_chunk_out_txt:
     - - meta:
           type: map
@@ -679,8 +765,10 @@ output:
             e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
       - ${prefix}.impute.chunk.out.txt:
           type: file
-          description: Contains chunk regions to be passed along to the internal phase step
+          description: Contains chunk regions to be passed along to the internal
+            phase step
           pattern: "*.impute.chunk.out.txt"
+          ontologies: []
   impute_phase_out_txt:
     - - meta:
           type: map
@@ -691,6 +779,7 @@ output:
           type: file
           description: List containing all VCF files
           pattern: "*.impute.phase.out.txt"
+          ontologies: []
   impute_vcf_gz:
     - - meta:
           type: map
@@ -701,6 +790,8 @@ output:
           type: file
           description: Gzipped VCF file containing imputed variants
           pattern: "*.impute.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   insert_stats_tab:
     - - meta:
           type: map
@@ -711,6 +802,8 @@ output:
           type: file
           description: Contains insert size statistics
           pattern: "*.insert-stats.tab"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   mapping_metrics_csv:
     - - meta:
           type: map
@@ -721,6 +814,8 @@ output:
           type: file
           description: Contains mapping metrics
           pattern: "*.mapping_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   multiomics_barcodeSummary_tsv:
     - - meta:
           type: map
@@ -731,6 +826,8 @@ output:
           type: file
           description: Contains barcode summary information
           pattern: "*.multiomics.barcodeSummary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   multiomics_barcodes_tsv_gz:
     - - meta:
           type: map
@@ -741,6 +838,8 @@ output:
           type: file
           description: Gzipped File containing barcode summary information
           pattern: "*.multiomics.barcodes.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   multiomics_features_tsv_gz:
     - - meta:
           type: map
@@ -751,6 +850,8 @@ output:
           type: file
           description: Gzipped file containing multiomics features
           pattern: "*.multiomics.features.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   multiomics_filtered_barcodes_tsv_gz:
     - - meta:
           type: map
@@ -761,6 +862,8 @@ output:
           type: file
           description: Gzipped file containing filtered barcode information
           pattern: "*.multiomics.filtered.barcodes.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   multiomics_matrix_mtx_gz:
     - - meta:
           type: map
@@ -771,6 +874,8 @@ output:
           type: file
           description: Gzipped matrix file containing multiomics data
           pattern: "*.multiomics.matrix.mtx.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 #GZIP
   multiomics_metrics_csv:
     - - meta:
           type: map
@@ -781,6 +886,8 @@ output:
           type: file
           description: Contains multiomics metrics
           pattern: "*.multiomics.metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   pcr_model_log:
     - - meta:
           type: map
@@ -791,6 +898,7 @@ output:
           type: file
           description: Log file containing PCR model information
           pattern: "*.pcr-mode*.log"
+          ontologies: []
   ploidy_vcf:
     - - meta:
           type: map
@@ -801,6 +909,7 @@ output:
           type: file
           description: Contains ploidy information in VCF format
           pattern: "*.ploidy.vcf"
+          ontologies: []
   ploidy_vcf_gz:
     - - meta:
           type: map
@@ -811,6 +920,8 @@ output:
           type: file
           description: Gzipped VCF file containing ploidy information
           pattern: "*.ploidy.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   ploidy_vcf_gz_md5sum:
     - - meta:
           type: map
@@ -821,6 +932,7 @@ output:
           type: file
           description: MD5 checksum file for the gzipped ploidy VCF
           pattern: "*.ploidy.vcf.gz.md5sum"
+          ontologies: []
   ploidy_vcf_gz_tbi:
     - - meta:
           type: map
@@ -831,6 +943,7 @@ output:
           type: file
           description: Index file for the gzipped ploidy VCF
           pattern: "*.ploidy.vcf.gz.tbi"
+          ontologies: []
   ploidy_estimation_metrics_csv:
     - - meta:
           type: map
@@ -841,6 +954,8 @@ output:
           type: file
           description: Contains metrics related to ploidy estimation
           pattern: "*.ploidy_estimation_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   preprocess_vcf_gz:
     - - meta:
           type: map
@@ -851,6 +966,8 @@ output:
           type: file
           description: Gzipped VCF file containing preprocessed variants
           pattern: "*.preprocess.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   quant_genes_sf:
     - - meta:
           type: map
@@ -861,6 +978,7 @@ output:
           type: file
           description: Contains gene quantification results in Salmon format
           pattern: "*.quant.genes.sf"
+          ontologies: []
   quant_metrics_csv:
     - - meta:
           type: map
@@ -871,6 +989,8 @@ output:
           type: file
           description: Contains quantification metrics in CSV format
           pattern: "*.quant.metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   quant_sf:
     - - meta:
           type: map
@@ -881,6 +1001,7 @@ output:
           type: file
           description: Contains quantification results in Salmon format
           pattern: "*.quant.sf"
+          ontologies: []
   quant_transcript_coverage_txt:
     - - meta:
           type: map
@@ -891,6 +1012,7 @@ output:
           type: file
           description: Contains transcript coverage information
           pattern: "*.quant.transcript_coverage.txt"
+          ontologies: []
   quant_transcript_fragment_lengths_txt:
     - - meta:
           type: map
@@ -901,6 +1023,7 @@ output:
           type: file
           description: Contains transcript fragment lengths
           pattern: "*.quant.transcript_fragment_lengths.txt"
+          ontologies: []
   realigned_regions_bed:
     - - meta:
           type: map
@@ -911,6 +1034,7 @@ output:
           type: file
           description: Contains regions that have been realigned
           pattern: "*.realigned-regions.bed"
+          ontologies: []
   repeats_bam:
     - - meta:
           type: map
@@ -921,6 +1045,7 @@ output:
           type: file
           description: Contains reads aligned to repeat regions
           pattern: "*.repeats.bam"
+          ontologies: []
   repeats_vcf:
     - - meta:
           type: map
@@ -931,6 +1056,7 @@ output:
           type: file
           description: Contains variants in repeat regions
           pattern: "*.repeats.vcf"
+          ontologies: []
   repeats_vcf_gz:
     - - meta:
           type: map
@@ -941,6 +1067,8 @@ output:
           type: file
           description: Gzipped VCF file with variants in repeat regions
           pattern: "*.repeats.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   repeats_vcf_gz_tbi:
     - - meta:
           type: map
@@ -951,6 +1079,7 @@ output:
           type: file
           description: Index file for the gzipped repeats VCF
           pattern: "*.repeats.vcf.gz.tbi"
+          ontologies: []
   roh_bed:
     - - meta:
           type: map
@@ -961,6 +1090,7 @@ output:
           type: file
           description: Contains regions of homozygosity
           pattern: "*.roh.bed"
+          ontologies: []
   roh_metrics_csv:
     - - meta:
           type: map
@@ -971,6 +1101,8 @@ output:
           type: file
           description: Contains metrics related to regions of homozygosity
           pattern: "*.roh_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   sam:
     - - meta:
           type: map
@@ -981,6 +1113,7 @@ output:
           type: file
           description: Contains aligned read data in SAM format
           pattern: "*.sam"
+          ontologies: []
   seg:
     - - meta:
           type: map
@@ -991,6 +1124,7 @@ output:
           type: file
           description: Contains segmentation of genomic regions
           pattern: "*.seg"
+          ontologies: []
   seg_bw:
     - - meta:
           type: map
@@ -1001,6 +1135,7 @@ output:
           type: file
           description: BigWig file containing segmentation data
           pattern: "*.seg.bw"
+          ontologies: []
   seg_c_partial_y:
     - - meta:
           type: map
@@ -1011,6 +1146,7 @@ output:
           type: file
           description: Contains partial Y chromosome segmentation data
           pattern: "*.seg.c.partial.Y"
+          ontologies: []
   seg_called:
     - - meta:
           type: map
@@ -1021,6 +1157,7 @@ output:
           type: file
           description: Contains called segmentation data
           pattern: "*.seg.called"
+          ontologies: []
   seg_called_merged:
     - - meta:
           type: map
@@ -1031,6 +1168,7 @@ output:
           type: file
           description: Contains merged segmentation data
           pattern: "*.seg.called.merged"
+          ontologies: []
   select_gvcf:
     - - meta:
           type: map
@@ -1041,6 +1179,7 @@ output:
           type: file
           description: Contains selected genomic variants in GVCF format
           pattern: "*.select.gvcf"
+          ontologies: []
   small_indel_dedup:
     - - meta:
           type: map
@@ -1051,6 +1190,7 @@ output:
           type: file
           description: Contains deduplicated small indel variants
           pattern: "*.small_indel_dedup"
+          ontologies: []
   smn_dedup:
     - - meta:
           type: map
@@ -1061,6 +1201,7 @@ output:
           type: file
           description: Contains deduplicated SMN variants
           pattern: "*.smn_dedup"
+          ontologies: []
   snperror_samples_log:
     - - meta:
           type: map
@@ -1071,6 +1212,7 @@ output:
           type: file
           description: Log file containing information about SNP error sampling
           pattern: "*.snperror-sampler.log"
+          ontologies: []
   sv_vcf:
     - - meta:
           type: map
@@ -1081,6 +1223,7 @@ output:
           type: file
           description: VCF file containing structural variants
           pattern: "*.sv.vcf"
+          ontologies: []
   sv_vcf_gz_tbi:
     - - meta:
           type: map
@@ -1091,6 +1234,7 @@ output:
           type: file
           description: Index file for the gzipped SV VCF
           pattern: "*.sv.vcf.gz.tbi"
+          ontologies: []
   sv_metrics_csv:
     - - meta:
           type: map
@@ -1101,6 +1245,8 @@ output:
           type: file
           description: Contains metrics related to structural variants
           pattern: "*.sv_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   target_counts_bw:
     - - meta:
           type: map
@@ -1111,6 +1257,7 @@ output:
           type: file
           description: BigWig file containing target counts
           pattern: "*.target.counts.bw"
+          ontologies: []
   target_counts_diploid_bw:
     - - meta:
           type: map
@@ -1121,6 +1268,7 @@ output:
           type: file
           description: BigWig file containing diploid target counts
           pattern: "*.target.counts.diploid.bw"
+          ontologies: []
   target_counts_gc_corrected_gz:
     - - meta:
           type: map
@@ -1131,6 +1279,8 @@ output:
           type: file
           description: Gzipped file containing GC-corrected target counts
           pattern: "*.target.counts.gc-corrected.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   target_counts_gz:
     - - meta:
           type: map
@@ -1141,6 +1291,8 @@ output:
           type: file
           description: Gzipped file containing target counts
           pattern: "*.target.counts.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   targeted_json:
     - - meta:
           type: map
@@ -1151,6 +1303,8 @@ output:
           type: file
           description: JSON file containing targeted sequencing information
           pattern: "*.targeted.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
   targeted_vcf_gz:
     - - meta:
           type: map
@@ -1161,6 +1315,8 @@ output:
           type: file
           description: Gzipped VCF file containing targeted variants
           pattern: "*.targeted.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   time_metrics_csv:
     - - meta:
           type: map
@@ -1171,6 +1327,8 @@ output:
           type: file
           description: Contains time metrics for the workflow
           pattern: "*.time_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   tn_bw:
     - - meta:
           type: map
@@ -1181,6 +1339,7 @@ output:
           type: file
           description: BigWig file containing TN (Tumor Normal) data
           pattern: "*.tn.bw"
+          ontologies: []
   tn_tsv_gz:
     - - meta:
           type: map
@@ -1191,6 +1350,8 @@ output:
           type: file
           description: Contains TN data in gzipped TSV format
           pattern: "*.tn.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   trimmer_metrics_csv:
     - - meta:
           type: map
@@ -1201,6 +1362,8 @@ output:
           type: file
           description: Contains metrics from the trimmer
           pattern: "*.trimmer_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   vc_hethom_ratio_metrics_csv:
     - - meta:
           type: map
@@ -1211,6 +1374,8 @@ output:
           type: file
           description: Contains heterozygous to homozygous ratio metrics
           pattern: "*.vc_hethom_ratio_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   vc_metrics_csv:
     - - meta:
           type: map
@@ -1221,6 +1386,8 @@ output:
           type: file
           description: Contains variant calling metrics
           pattern: "*.vc_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   vcf_gz:
     - - meta:
           type: map
@@ -1231,6 +1398,8 @@ output:
           type: file
           description: Gzipped VCF file containing genomic variants
           pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   vcf_gz_md5sum:
     - - meta:
           type: map
@@ -1241,6 +1410,7 @@ output:
           type: file
           description: MD5 checksum file for the gzipped VCF
           pattern: "*.vcf.gz.md5sum"
+          ontologies: []
   vcf_gz_tbi:
     - - meta:
           type: map
@@ -1251,6 +1421,7 @@ output:
           type: file
           description: Index file for the gzipped VCF
           pattern: "*.vcf.gz.tbi"
+          ontologies: []
   wgs_contig_mean_cov_csv:
     - - meta:
           type: map
@@ -1261,6 +1432,8 @@ output:
           type: file
           description: Contains WGS contig mean coverage metrics
           pattern: "*.wgs_contig_mean_cov.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   wgs_coverage_metrics_csv:
     - - meta:
           type: map
@@ -1271,6 +1444,8 @@ output:
           type: file
           description: Contains WGS coverage metrics
           pattern: "*.wgs_coverage_metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   wgs_fine_hist_csv:
     - - meta:
           type: map
@@ -1281,6 +1456,8 @@ output:
           type: file
           description: Contains WGS fine histogram data
           pattern: "*.wgs_fine_hist.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   wgs_hist_csv:
     - - meta:
           type: map
@@ -1291,6 +1468,8 @@ output:
           type: file
           description: Contains WGS histogram data
           pattern: "*.wgs_hist.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   wgs_overall_mean_cov_csv:
     - - meta:
           type: map
@@ -1301,6 +1480,8 @@ output:
           type: file
           description: Contains WGS overall mean coverage metrics
           pattern: "*.wgs_overall_mean_cov.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   callability_bed:
     - - meta:
           type: map
@@ -1311,6 +1492,7 @@ output:
           type: file
           description: BED file containing callability regions
           pattern: "*_callability.bed"
+          ontologies: []
   chr_start_end_impute_phase_vcf_gz:
     - - meta:
           type: map
@@ -1321,6 +1503,8 @@ output:
           type: file
           description: Gzipped VCF file containing phased imputed variants
           pattern: "*_chr_start-end.impute.phase.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   contig_mean_cov_csv:
     - - meta:
           type: map
@@ -1331,6 +1515,8 @@ output:
           type: file
           description: Contains WGS contig mean coverage metrics
           pattern: "*_contig_mean_cov.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   cov_report_bed:
     - - meta:
           type: map
@@ -1341,6 +1527,7 @@ output:
           type: file
           description: BED file containing coverage report
           pattern: "*_cov_report.bed"
+          ontologies: []
   evidence:
     - - meta:
           type: map
@@ -1351,6 +1538,10 @@ output:
           type: file
           description: Sorted BAM, CRAM or SAM file containing evidence reads
           pattern: "*_evidence.{b,cr,s}am"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+            - edam: http://edamontology.org/format_3462 # CRAM
+            - edam: http://edamontology.org/format_2573 # SAM
   fine_hist_csv:
     - - meta:
           type: map
@@ -1361,6 +1552,8 @@ output:
           type: file
           description: Contains fine histogram data
           pattern: "*_fine_hist.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   full_res_bed:
     - - meta:
           type: map
@@ -1371,6 +1564,8 @@ output:
           type: file
           description: BED file containing full resolution data
           pattern: "*_full_res.bed"
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
   hist_csv:
     - - meta:
           type: map
@@ -1381,6 +1576,8 @@ output:
           type: file
           description: Contains histogram data
           pattern: "*_hist.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   overall_mean_cov_csv:
     - - meta:
           type: map
@@ -1391,6 +1588,8 @@ output:
           type: file
           description: Contains overall mean coverage metrics
           pattern: "*_overall_mean_cov.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   read_cov_report_bed:
     - - meta:
           type: map
@@ -1401,6 +1600,8 @@ output:
           type: file
           description: BED file containing read coverage report
           pattern: "*_read_cov_report.bed"
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
   partitions_txt:
     - ./sort_spill/partitions.txt:
         type: file
@@ -1462,7 +1663,7 @@ output:
         description: Candidate structural variants (VCF format)
         pattern: "./sv/results/variants/candidateSV.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989 # GZIP
   candidateSV_vcf_gz_tbi:
     - ./sv/results/variants/candidateSV.vcf.gz.tbi:
         type: file
@@ -1475,7 +1676,7 @@ output:
         description: Gzipped VCF file containing diploid structural variants
         pattern: "./sv/results/variants/diploidSV.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989 # GZIP
   diploidSV_vcf_gz_tbi:
     - ./sv/results/variants/diploidSV.vcf.gz.tbi:
         type: file
@@ -1569,13 +1770,27 @@ output:
         description: all output files
         pattern: "**"
         ontologies: []
+  versions_dragen:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dragen:
+          type: string
+          description: The name of the tool
+      - dragen --version 2>&1 | sed 's/^dragen Version //;q':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dragen:
+          type: string
+          description: The name of the tool
+      - dragen --version 2>&1 | sed 's/^dragen Version //;q':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@asr081"
   - "@marrip"

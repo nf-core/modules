@@ -18,9 +18,14 @@ workflow FASTQ_ALIGN_CHROMAP {
     main:
 
     //
+    // Remap ch_fasta_fai to ch_fasta
+    //
+    ch_fasta = ch_fasta_fai.map { meta, fasta , _fai -> [ meta, fasta ] }
+
+    //
     // Map reads with CHROMAP
     //
-    CHROMAP_CHROMAP(ch_reads, ch_fasta_fai, ch_index, ch_barcodes, ch_whitelist, ch_chr_order, ch_pairs_chr_order)
+    CHROMAP_CHROMAP(ch_reads, ch_fasta, ch_index, ch_barcodes, ch_whitelist, ch_chr_order, ch_pairs_chr_order)
 
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats

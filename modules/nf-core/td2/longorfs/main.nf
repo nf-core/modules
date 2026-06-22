@@ -3,7 +3,7 @@ process TD2_LONGORFS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/4155bf3b720e1e32d0615a947696fb0287ee4e8cdbeb4ec784dd4da7bb5b2e86/data'
         : "community.wave.seqera.io/library/td2:1.0.6--ea3e5ac09443b677"}"
 
