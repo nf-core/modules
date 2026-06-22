@@ -61,9 +61,42 @@
             "nextflow": "26.04.4"
         }
     },
-    "sarscov2 - bam - readlist": {
+    "sarscov2 - bam - readlist - fasta - stub": {
         "content": [
-            "3c2a0fcd376bd70060073cb361fe91c1",
+            {
+                "bai": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false,
+                            "strandedness": "forward"
+                        },
+                        "test.filtered.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_picard": [
+                    [
+                        "PICARD_FILTERSAMREADS",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-22T15:16:05.416420132",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "sarscov2 - bam - readlist - fasta": {
+        "content": [
+            [
+                "test.filtered.bam,readsmd5:3c2a0fcd376bd70060073cb361fe91c1"
+            ],
             {
                 "versions_picard": [
                     [
@@ -74,15 +107,38 @@
                 ]
             }
         ],
-        "timestamp": "2026-02-19T17:42:00.798212592",
+        "timestamp": "2026-06-22T15:15:55.526109889",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "sarscov2 - bam - readlist": {
+        "content": [
+            [
+                "test.filtered.bam,readsmd5:3c2a0fcd376bd70060073cb361fe91c1"
+            ],
+            {
+                "versions_picard": [
+                    [
+                        "PICARD_FILTERSAMREADS",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-22T15:15:34.623088232",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
         }
     },
     "sarscov2 - bam": {
         "content": [
-            "b9847fed94d2b7286e18caaa099658ce",
+            [
+                "test.filtered.bam,readsmd5:b9847fed94d2b7286e18caaa099658ce"
+            ],
             {
                 "versions_picard": [
                     [
@@ -93,10 +149,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-02-19T17:41:43.765873812",
+        "timestamp": "2026-06-22T15:15:09.510009023",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
         }
     }
 }

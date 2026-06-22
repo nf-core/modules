@@ -35,13 +35,13 @@ process PICARD_FILTERSAMREADS {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
 
-    def fasta_command = fasta ? "-R ${fasta}" : ""
+    def fasta_command = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
     def read_list_command = filter.endsWith('ReadList') ? "--READ_LIST_FILE ${readlist}" : ""
     """
     picard \\
         -Xmx${avail_mem}M \\
-        ${fasta_command} \\
         FilterSamReads \\
+        ${fasta_command} \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam \\
         --FILTER ${filter} \\
