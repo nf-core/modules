@@ -16,10 +16,9 @@ process BAKTA_BAKTADBDOWNLOAD {
     script:
     def args = task.ext.args ?: ''
     """
-    export MPLCONFIGDIR=\$PWD/.matplotlib
-    export FONTCONFIG_PATH=\$PWD/.fontconfig
-    export XDG_CACHE_HOME=\$PWD/.cache
-    mkdir .fontconfig .cache
+    ## Fake home due to fontconfig 'no writeable cache directory' issue
+    mkdir nxf_home
+    export HOME=\$PWD/nxf_home
 
     bakta_db \\
         download \\
