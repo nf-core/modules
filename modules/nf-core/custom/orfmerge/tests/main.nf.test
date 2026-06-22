@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'sample1', caller: 'ribotish'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
                     'ribotish'
                 ])
                 input[1] = channel.of([
@@ -35,7 +35,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'sample1', caller: 'ribocode'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
                     'ribocode'
                 ])
                 input[1] = channel.of([
@@ -52,7 +52,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'sample2', caller: 'ribotish'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
                     'ribotish'
                 ])
                 input[1] = channel.of([
