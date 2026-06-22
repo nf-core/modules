@@ -22,7 +22,7 @@ process LINKS {
     tuple val(meta), path("*.assembly_correspondence.tsv"), emit: assembly_correspondence
     tuple val(meta), path("*.simplepair_checkpoint.tsv"),   emit: simplepair_checkpoint, optional: true
     tuple val(meta), path("*.tigpair_checkpoint.tsv"),      emit: tigpair_checkpoint
-    tuple val("${task.process}"), val('liftoff'), eval("LINKS | sed -n 's/.*LINKS v//p'"), emit: versions_links, topic: versions
+    tuple val("${task.process}"), val('liftoff'), eval("LINKS | sed '/LINKS/!d;s/.*LINKS v//;s/ .*//'"), emit: versions_links, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
