@@ -1,0 +1,89 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test numorph/3dunet
+nextflow_process {
+
+    name "Test Process NUMORPH_3DUNET"
+    script "../main.nf"
+    process "NUMORPH_3DUNET"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "numorph"
+    tag "numorph/3dunet"
+
+    test("numorph-3DUnet test - tif") {
+
+        setup {
+            run ("UNZIP") {
+                script "../../../unzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                        tuple([ id:'TEST1'],
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/lsmquant/test_data/unet_test_images.zip'))
+                    ])
+                """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = UNZIP.out.unzipped_archive.map { meta, unzipped_archive ->
+                    def image_dir = file(unzipped_archive).listFiles().find { it.isDirectory() }
+                    tuple(
+                        meta,
+                        image_dir ?: unzipped_archive,
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/lsmquant/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
+                }
+                input[1] = file('https://zenodo.org/records/16893708/files/075_121_model.h5')
+                """
+            }
+        }
+
+        then {
+            def cellcounDir = process.out.cellcounts.get(0).get(1)
+            def cellcountFiles = getAllFilesFromDir(cellcounDir, relative: true, includeDir: false)
+            assertAll(
+                {assert process.success },
+                {assert cellcountFiles.size() == 2 },
+                { assert snapshot(
+                    cellcountFiles,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("numorph-3DUnet stub test - tif") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.fromList([
+                    tuple([ id:'TEST1'],
+                    file('https://zenodo.org/records/14916478/files/ctip2_topro.zip'),
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/lsmquant/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
+                ])
+                input[1] = file('https://zenodo.org/records/16893708/files/075_121_model.h5')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
