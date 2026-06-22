@@ -79,6 +79,28 @@
                                 "type": "string",
                                 "description": "bio.tools identifier of the tool",
                                 "pattern": "^(biotools:.*)?$"
+                            },
+                            "publication": {
+                                "type": "object",
+                                "description": "Publication metadata for citation",
+                                "properties": {
+                                    "author": {
+                                        "type": "string",
+                                        "description": "Author(s) of the publication"
+                                    },
+                                    "year": {
+                                        "type": ["string", "integer"],
+                                        "description": "Publication year"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Title of the publication"
+                                    },
+                                    "source": {
+                                        "type": "string",
+                                        "description": "Journal, conference, workshop, or preprint server name"
+                                    }
+                                }
                             }
                         },
                         "required": ["description"],
