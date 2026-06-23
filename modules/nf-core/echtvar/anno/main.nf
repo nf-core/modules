@@ -4,8 +4,8 @@ process ECHTVAR_ANNO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/87b75cb9e32b89261e8cbdca40b219a5d58fc78ebf92d5ca97c7ca23da1b9517/data':
-        'community.wave.seqera.io/library/echtvar:0.2.4--e59eba33636e3aab' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8fbd0fb4d4e5dc62fbec999fb80befec797d83a0b3b70f39b6baaa73714438df/data':
+        'community.wave.seqera.io/library/echtvar_htslib:d37d5e1f4106f9c3' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -38,9 +38,10 @@ process ECHTVAR_ANNO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = output_suffix ?: 'vcf.gz'
+    def create_output = suffix.endsWith('.gz') ? "echo '' | bgzip -c > ${prefix}.${suffix}" : "touch ${prefix}.${suffix}"
     """
     echo $args
 
-    echo "" | gzip > ${prefix}.${suffix}
+    ${create_output}
     """
 }
