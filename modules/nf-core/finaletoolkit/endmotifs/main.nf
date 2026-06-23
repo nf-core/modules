@@ -22,7 +22,6 @@ process FINALETOOLKIT_ENDMOTIFS {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_motifs"
     """
-
     export MPLCONFIGDIR='./tmp'
 
     finaletoolkit \\
