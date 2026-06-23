@@ -87,21 +87,21 @@
                                 "type": "object",
                                 "description": "Publication metadata for citation",
                                 "properties": {
-                                    "author": {
-                                        "type": "string",
-                                        "description": "Author(s) of the publication (recommended: Harvard style 'Last, F. M.' separated by commas, with '& ' before the final author, e.g. 'Einstein, A., Feynman, R. P. & Hawking, S.')"
-                                    },
-                                    "year": {
-                                        "type": "integer",
-                                        "description": "Publication year"
-                                    },
                                     "title": {
                                         "type": "string",
                                         "description": "Title of the publication"
                                     },
+                                    "author": {
+                                        "type": "string",
+                                        "description": "Author(s) of the publication (recommended: Harvard style 'Last, F. M.' separated by commas, with '& ' before the final author, e.g. 'Einstein, A., Feynman, R. P. & Hawking, S.')"
+                                    },
                                     "source": {
                                         "type": "string",
                                         "description": "Journal, conference, workshop, or preprint server name"
+                                    },
+                                    "year": {
+                                        "type": "integer",
+                                        "description": "Publication year"
                                     }
                                 }
                             }
