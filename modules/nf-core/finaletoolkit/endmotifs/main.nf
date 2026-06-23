@@ -26,7 +26,7 @@ process FINALETOOLKIT_ENDMOTIFS {
     export MPLCONFIGDIR='./tmp'
 
     finaletoolkit \\
-        end-motifs\\
+        end-motifs \\
         -w ${task.cpus} \\
         ${bam} \\
         ${genome} \\
