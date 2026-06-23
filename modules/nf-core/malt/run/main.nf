@@ -3,19 +3,19 @@ process MALT_RUN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/malt:0.61--hdfd78af_0' :
-        'quay.io/biocontainers/malt:0.61--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/malt:0.62--hdfd78af_0'
+        : 'quay.io/biocontainers/malt:0.62--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(fastqs)
-    path index
+    tuple val(meta2), path(index)
 
     output:
     tuple val(meta), path("*.rma6")                                , emit: rma6
     tuple val(meta), path("*.{tab,text,sam,tab.gz,text.gz,sam.gz}"), emit: alignments, optional:true
     tuple val(meta), path("*.log")                                 , emit: log
-    tuple val("${task.process}"), val("malt"), eval("malt-run"), topic: versions, emit: versions_malt
+    tuple val("${task.process}"), val("malt"), eval("malt-run --help |& sed '/version/!d;s/.*version //;s/,.*//'"), topic: versions, emit: versions_malt
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,7 +30,7 @@ process MALT_RUN {
         -o . \\
         ${args} \\
         --inFile ${fastqs.join(' ')} \\
-        --index ${index}/ |&tee ${prefix}-malt-run.log
+        --index ${index}/ |& tee ${prefix}-malt-run.log
     """
 
     stub:
