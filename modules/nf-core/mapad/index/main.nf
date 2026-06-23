@@ -12,7 +12,7 @@ process MAPAD_INDEX {
 
     output:
     tuple val(meta), path("mapad/"), emit: index
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val("mapad"), eval("mapad --version | sed 's/^mapAD //'"), topic: versions, emit: versions_mapad
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,13 +22,16 @@ process MAPAD_INDEX {
     """
     mapad \\
         index \\
-        $args \\
-        --reference $fasta \\
-        --threads $task.cpus
+        ${args} \\
+        --reference ${fasta} \\
+        --threads ${task.cpus}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mapad: \$(echo \$(mapad --version) | sed 's/^mapAD //' )
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p mapad
+    touch mapad/${prefix}.fasta
+    touch mapad/${prefix}.fasta.{tbw,tle,toc,tos,tpi,trt,tsa}
     """
 }
