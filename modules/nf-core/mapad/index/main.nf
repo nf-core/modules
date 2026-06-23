@@ -28,10 +28,7 @@ process MAPAD_INDEX {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p mapad
-    touch mapad/${prefix}.fasta
-    touch mapad/${prefix}.fasta.{tbw,tle,toc,tos,tpi,trt,tsa}
+    touch ${fasta}.{tbw,tle,toc,tos,tpi,trt,tsa}
     """
 }
