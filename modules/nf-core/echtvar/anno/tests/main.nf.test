@@ -69,7 +69,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                path(process.out.vcf[0][1]).vcf.variantsMD5,
+                "${file(process.out.vcf[0][1]).name}:md5,${path(process.out.vcf[0][1]).vcf.variantsMD5}",
                 process.out.findAll { key, val -> key.startsWith('versions') }
             ).match()
         }
@@ -99,7 +99,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                path(process.out.vcf[0][1]).vcf.variantsMD5,
+                "${file(process.out.vcf[0][1]).name}:md5,${path(process.out.vcf[0][1]).vcf.variantsMD5}",
                 process.out.findAll { key, val -> key.startsWith('versions') }
             ).match()
         }
