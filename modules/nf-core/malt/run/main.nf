@@ -13,9 +13,9 @@ process MALT_RUN {
 
     output:
     tuple val(meta), path("*.rma6")                                , emit: rma6
-    tuple val(meta), path("*.{tab,text,sam,tab.gz,text.gz,sam.gz}"),  optional:true, emit: alignments
+    tuple val(meta), path("*.{tab,text,sam,tab.gz,text.gz,sam.gz}"), emit: alignments, optional:true
     tuple val(meta), path("*.log")                                 , emit: log
-    path "versions.yml"                                            , emit: versions
+    tuple val("${task.process}"), val("malt"), eval("malt-run"), topic: versions, emit: versions_malt
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,17 +25,12 @@ process MALT_RUN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     malt-run \\
-        -t $task.cpus \\
+        -t ${task.cpus} \\
         -v \\
         -o . \\
-        $args \\
+        ${args} \\
         --inFile ${fastqs.join(' ')} \\
-        --index $index/ |&tee ${prefix}-malt-run.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        malt: \$(malt-run --help  2>&1 | grep -o 'version.* ' | cut -f 1 -d ',' | cut -f2 -d ' ')
-    END_VERSIONS
+        --index ${index}/ |&tee ${prefix}-malt-run.log
     """
 
     stub:
@@ -44,10 +39,5 @@ process MALT_RUN {
     touch ${prefix}-malt-run.log
     touch ${prefix}.rma6
     touch ${prefix}.sam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        malt: \$(malt-run --help  2>&1 | grep -o 'version.* ' | cut -f 1 -d ',' | cut -f2 -d ' ')
-    END_VERSIONS
     """
 }
