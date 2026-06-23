@@ -16,7 +16,7 @@ process MALT_BUILD {
     output:
     tuple val(meta), path("malt_index/")   , emit: index
     tuple val(meta), path("malt-build.log"), emit: log
-    tuple val("${task.process}"), val("malt"), eval("malt-build --help"), emit: versions_malt, topic: versions
+    tuple val("${task.process}"), val("malt"), eval("malt-build --help |& sed '/version/!d;s/.*version //;s/,.*//'"), emit: versions_malt, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,5 +41,9 @@ process MALT_BUILD {
     """
     touch malt-build.log
     mkdir malt_index/
+    touch malt_index/index0.idx
+    touch malt_index/ref.{db,idx,inf}
+    touch malt_index/table0.{db,idx}
+    touch malt_index/taxonomy.{idx,map,tre}
     """
 }

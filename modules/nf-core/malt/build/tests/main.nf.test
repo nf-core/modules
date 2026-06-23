@@ -48,7 +48,16 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log[0][1]).readLines().last().contains("Peak memory") },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    path("${process.out.index[0][1]}/index0.idx"),
+                    path("${process.out.index[0][1]}/ref.db"),
+                    path("${process.out.index[0][1]}/ref.idx"),
+                    path("${process.out.index[0][1]}/ref.inf"),
+                    path("${process.out.index[0][1]}/taxonomy.idx"),
+                    path("${process.out.index[0][1]}/taxonomy.map"),
+                    path("${process.out.index[0][1]}/taxonomy.tre"),
+                    sanitizeOutput(process.out, unstableKeys:["log", "index"])
+                ).match() }
             )
         }
     }
@@ -59,7 +68,7 @@ nextflow_process {
                 script "../../../unzip/main.nf"
                 process {
                     """
-                    input[0] = [[], file("https://software-ab.cs.uni-tuebingen.de/download/megan6/nucl_acc2tax-Jul2019.abin.zip", checkIfExists: true)]
+                    input[0] = [[], file("https://ngi-igenomes.s3.eu-west-1.amazonaws.com/test-data/createtaxdb/taxonomy/nucl_acc2tax-Jul2019.abin.zip", checkIfExists: true)]
                     """
                 }
             }
@@ -90,13 +99,23 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log[0][1]).readLines().last().contains("Peak memory") },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    path("${process.out.index[0][1]}/index0.idx"),
+                    path("${process.out.index[0][1]}/ref.db"),
+                    path("${process.out.index[0][1]}/ref.idx"),
+                    path("${process.out.index[0][1]}/ref.inf"),
+                    path("${process.out.index[0][1]}/taxonomy.idx"),
+                    path("${process.out.index[0][1]}/taxonomy.map"),
+                    path("${process.out.index[0][1]}/taxonomy.tre"),
+                    sanitizeOutput(process.out, unstableKeys:["log", "index"])
+                ).match() }
             )
         }
 
     }
 
     test("sarscov2 - fastq - stub") {
+        tag "stub"
         options "-stub"
 
         when {
