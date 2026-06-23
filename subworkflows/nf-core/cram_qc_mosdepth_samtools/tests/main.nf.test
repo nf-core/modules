@@ -1,0 +1,108 @@
+nextflow_workflow {
+
+    name "Test Workflow CRAM_QC_MOSDEPTH_SAMTOOLS"
+    script "../main.nf"
+    workflow "CRAM_QC_MOSDEPTH_SAMTOOLS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "cram_qc_mosdepth_samtools"
+    tag "subworkflows/cram_qc_mosdepth_samtools"
+    tag "samtools/stats"
+    tag "mosdepth"
+
+    test("homo_sapiens - cram - without intervals") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.cram.crai', checkIfExists: true)
+                ])
+                input[1] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = Channel.empty()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.reports[0][0],
+                    workflow.out.reports.collect { file(it[1]).name }.sort()
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - cram - with intervals") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.cram.crai', checkIfExists: true)
+                ])
+                input[1] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = Channel.of([
+                    [id:'intervals'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.reports[0][0],
+                    workflow.out.reports.collect { file(it[1]).name }.sort()
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - cram - stub") {
+
+        options "-stub-run"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.cram.crai', checkIfExists: true)
+                ])
+                input[1] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = Channel.empty()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.reports.collect { file(it[1]).name }
+                ).match() }
+            )
+        }
+    }
+
+}                                      
