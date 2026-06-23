@@ -14,7 +14,7 @@ process LAST_MAFCONVERT {
     output:
     tuple val(meta), path("*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"), emit: alignment
     tuple val(meta), path("*.{bai,crai,csi}"), emit: index, optional: true
-    tuple val(meta), path("*.{stats}"),        emit: stats, optional: true
+    tuple val(meta), path("*.stats"),          emit: stats, optional: true
     // last-dotplot has no --version option so let's use lastal from the same suite
     tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
@@ -27,6 +27,10 @@ process LAST_MAFCONVERT {
     def args3  = task.ext.args3  ?: ''   // bcftools mpileup
     def args4  = task.ext.args4  ?: ''   // bcftools call
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if( format == 'bcf' ) {
+        // --write-index can not be used when samtools sort outputs to stdout like in the bcf case.
+        args2 = args2?.replaceAll(/\s*--write-index\b/, '')
+    }
     """
     set -o pipefail
 
@@ -68,7 +72,7 @@ process LAST_MAFCONVERT {
             ;;
         bcf)
             maf-convert $args \$DICT_ARGS sam $maf -r 'ID:${meta.id} SM:${meta.id}' |
-                samtools sort $args2 -u | bcftools mpileup $args3 --fasta-ref $fasta -Ou - | bcftools call $args4 -Ob > ${prefix}.bcf
+                samtools sort $args2 -u | bcftools mpileup $args3 --fasta-ref $fasta -Ou - | bcftools call $args4 -Ob -o ${prefix}.bcf
             bcftools stats ${prefix}.bcf > ${prefix}.stats
             ;;
         *)
