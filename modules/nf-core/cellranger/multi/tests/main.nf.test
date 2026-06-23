@@ -167,12 +167,12 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = [ [:], [], [] ]
-                ch_vdj_fastqs            = [ [:], [] ]
-                ch_ab_fastqs             = [ [:], [] ]
-                ch_beam_fastqs           = [ [:], [] ]
-                ch_cmo_fastqs            = [ [:], [] ]
-                ch_crispr_fastqs         = [ [:], [] ]
+                ch_gex_fastqs            = [ [:], [], [:] ]
+                ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_ab_fastqs             = [ [:], [], [:] ]
+                ch_beam_fastqs           = [ [:], [], [:] ]
+                ch_cmo_fastqs            = [ [:], [], [:] ]
+                ch_crispr_fastqs         = [ [:], [], [:] ]
                 ch_gex_frna_probeset     = []
                 ch_gex_targetpanel       = []
                 ch_vdj_primer_index      = []
@@ -192,10 +192,10 @@ nextflow_process {
                 ch_vdj_reference = Channel.of( vdj_reference )
                 ch_bcell_fastqs_10k_pbmc  = Channel.of( bcell_fastqs_10k_pbmc )
                     .collect()
-                    .map { reads -> [ [ id:bcell_fastq_samplename_10k_pbmc ], reads ] }
+                    .map { reads -> [ [ id:bcell_fastq_samplename_10k_pbmc ], reads, [:] ] }
                 ch_ab_fastqs_10k_pbmc  = Channel.of( ab_fastqs_10k_pbmc )
                     .collect()
-                    .map { reads -> [ [ id:fivepab_fastq_samplename_10k_pbmc  ], reads ] }
+                    .map { reads -> [ [ id:fivepab_fastq_samplename_10k_pbmc  ], reads, [:] ] }
                 ch_ab_reference_10k_pbmc = Channel.of( fb_reference_10k_pbmc )
 
                 //
@@ -388,12 +388,12 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = [ [:], [], [] ]
-                ch_vdj_fastqs            = [ [:], [] ]
-                ch_ab_fastqs             = [ [:], [] ]
-                ch_beam_fastqs           = [ [:], [] ]
-                ch_cmo_fastqs            = [ [:], [] ]
-                ch_crispr_fastqs         = [ [:], [] ]
+                ch_gex_fastqs            = [ [:], [], [:] ]
+                ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_ab_fastqs             = [ [:], [], [:] ]
+                ch_beam_fastqs           = [ [:], [], [:] ]
+                ch_cmo_fastqs            = [ [:], [], [:] ]
+                ch_crispr_fastqs         = [ [:], [], [:] ]
                 ch_gex_frna_probeset     = []
                 ch_gex_targetpanel       = []
                 ch_vdj_primer_index      = []
@@ -413,10 +413,10 @@ nextflow_process {
                 ch_vdj_reference = Channel.of( vdj_reference )
                 ch_bcell_fastqs_10k_pbmc  = Channel.of( bcell_fastqs_10k_pbmc )
                     .collect()
-                    .map { reads -> [ [ id:bcell_fastq_samplename_10k_pbmc ], reads ] }
+                    .map { reads -> [ [ id:bcell_fastq_samplename_10k_pbmc ], reads, [:] ] }
                 ch_ab_fastqs_10k_pbmc  = Channel.of( ab_fastqs_10k_pbmc )
                     .collect()
-                    .map { reads -> [ [ id:fivepab_fastq_samplename_10k_pbmc  ], reads ] }
+                    .map { reads -> [ [ id:fivepab_fastq_samplename_10k_pbmc  ], reads, [:] ] }
                 ch_ab_reference_10k_pbmc = Channel.of( fb_reference_10k_pbmc )
 
                 ch_gex_fastqs_10k_pbmc_cmo = Channel.of( threepgex_fastqs_10k_pbmc_cmo )
@@ -425,7 +425,7 @@ nextflow_process {
                 ch_vdj_reference = Channel.of( vdj_reference )
                 ch_cmo_fastqs_10k_pbmc_cmo  = Channel.of( cmo_fastqs_10k_pbmc_cmo )
                     .collect()
-                    .map { reads -> [ [ id:cmo_fastq_samplename_10k_pbmc_cmo ], reads ] }
+                    .map { reads -> [ [ id:cmo_fastq_samplename_10k_pbmc_cmo ], reads, [:] ] }
                 ch_cmo_reference_10k_pbmc_cmo = Channel.of( cmo_reference_10k_pbmc_cmo )
 
                 // empty vdj reference
@@ -624,12 +624,12 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = [ [:], [], [] ]
-                ch_vdj_fastqs            = [ [:], [] ]
-                ch_ab_fastqs             = [ [:], [] ]
-                ch_beam_fastqs           = [ [:], [] ]
-                ch_cmo_fastqs            = [ [:], [] ]
-                ch_crispr_fastqs         = [ [:], [] ]
+                ch_gex_fastqs            = [ [:], [], [:] ]
+                ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_ab_fastqs             = [ [:], [], [:] ]
+                ch_beam_fastqs           = [ [:], [], [:] ]
+                ch_cmo_fastqs            = [ [:], [], [:] ]
+                ch_crispr_fastqs         = [ [:], [], [:] ]
                 ch_gex_frna_probeset     = []
                 ch_gex_targetpanel       = []
                 ch_vdj_primer_index      = []
@@ -649,10 +649,10 @@ nextflow_process {
                 ch_vdj_reference = Channel.of( vdj_reference )
                 ch_bcell_fastqs_10k_pbmc  = Channel.of( bcell_fastqs_10k_pbmc )
                     .collect()
-                    .map { reads -> [ [ id:bcell_fastq_samplename_10k_pbmc ], reads ] }
+                    .map { reads -> [ [ id:bcell_fastq_samplename_10k_pbmc ], reads, [:] ] }
                 ch_ab_fastqs_10k_pbmc  = Channel.of( ab_fastqs_10k_pbmc )
                     .collect()
-                    .map { reads -> [ [ id:fivepab_fastq_samplename_10k_pbmc  ], reads ] }
+                    .map { reads -> [ [ id:fivepab_fastq_samplename_10k_pbmc  ], reads, [:] ] }
                 ch_ab_reference_10k_pbmc = Channel.of( fb_reference_10k_pbmc )
 
                 ch_gex_fastqs_5k_cmvpos_tcells = Channel.of( gex_fastqs_5k_cmvpos_tcells )
@@ -661,11 +661,11 @@ nextflow_process {
                 ch_vdj_reference = Channel.of( vdj_reference )
                 ch_vdj_fastqs_5k_cmvpos_tcells  = Channel.of( vdj_fastqs_5k_cmvpos_tcells )
                     .collect()
-                    .map { reads -> [ [ id:vdj_fastq_samplename_5k_cmvpos_tcells ], reads ] }
+                    .map { reads -> [ [ id:vdj_fastq_samplename_5k_cmvpos_tcells ], reads, [:] ] }
                 ch_fb_reference_5k_cmvpos_tcells = Channel.of( fb_reference_5k_cmvpos_tcells )
                 ch_ab_fastqs_5k_cmvpos_tcells  = Channel.of( ab_fastqs_5k_cmvpos_tcells )
                     .collect()
-                    .map { reads -> [ [ id:ab_fastq_samplename_5k_cmvpos_tcells ], reads ] }
+                    .map { reads -> [ [ id:ab_fastq_samplename_5k_cmvpos_tcells ], reads, [:] ] }
 
                 //
                 // execution
@@ -779,12 +779,12 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = [ [:], [], [] ]
-                ch_vdj_fastqs            = [ [:], [] ]
-                ch_ab_fastqs             = [ [:], [] ]
-                ch_beam_fastqs           = [ [:], [] ]
-                ch_cmo_fastqs            = [ [:], [] ]
-                ch_crispr_fastqs         = [ [:], [] ]
+                ch_gex_fastqs            = [ [:], [], [:] ]
+                ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_ab_fastqs             = [ [:], [], [:] ]
+                ch_beam_fastqs           = [ [:], [], [:] ]
+                ch_cmo_fastqs            = [ [:], [], [:] ]
+                ch_crispr_fastqs         = [ [:], [], [:] ]
                 ch_gex_frna_probeset     = []
                 ch_gex_targetpanel       = []
                 ch_vdj_reference         = []
@@ -806,7 +806,7 @@ nextflow_process {
 
                 ch_crispr_fastqs_sc3_v3_5k_a549 = Channel.of( test_10x_sc3_v3_5k_a549_crispr )
                     .collect()
-                    .map { reads -> [ [ id:test_10x_sc3_v3_5k_a549_crispr_samplename ], reads ] }
+                    .map { reads -> [ [ id:test_10x_sc3_v3_5k_a549_crispr_samplename ], reads, [:] ] }
 
                 ch_crispr_reference_sc3_v3_5k_a549 = Channel.of( test_10x_sc3_v3_5k_a549_crispr_fb_reference )
 
@@ -896,12 +896,12 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = [ [:], [], [] ]
-                ch_vdj_fastqs            = [ [:], [] ]
-                ch_ab_fastqs             = [ [:], [] ]
-                ch_beam_fastqs           = [ [:], [] ]
-                ch_cmo_fastqs            = [ [:], [] ]
-                ch_crispr_fastqs         = [ [:], [] ]
+                ch_gex_fastqs            = [ [:], [], [:] ]
+                ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_ab_fastqs             = [ [:], [], [:] ]
+                ch_beam_fastqs           = [ [:], [], [:] ]
+                ch_cmo_fastqs            = [ [:], [], [:] ]
+                ch_crispr_fastqs         = [ [:], [], [:] ]
                 ch_gex_frna_probeset     = []
                 ch_gex_targetpanel       = []
                 ch_vdj_reference         = []
