@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process BAYSOR SEGFREE"
+    script "../main.nf"
+    process "BAYSOR_SEGFREE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "baysor"
+    tag "baysor/segfree"
+    tag "segmentation-free"
+
+    test("baysor segfree - transcripts.parquet") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                                [id: "test_run_baysor"],
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/transcripts.parquet', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/xenium.toml', checkIfExists: true)
+                            ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["ncvs"])).match() }
+            )
+        }
+    }
+
+    test("baysor segfree stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                                [id: "test_run_baysor"],
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/transcripts.parquet', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/xenium.toml', checkIfExists: true)
+                            ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
