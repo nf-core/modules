@@ -1,0 +1,73 @@
+name: dotmatch_assay_run
+description: Run a DotMatch AssaySpec and emit workflow-facing reports
+keywords:
+  - dotmatch
+  - assayspec
+  - known-target assignment
+tools:
+  - dotmatch:
+      description: Deterministic known-target short-DNA assignment workflows.
+      homepage: https://github.com/Dnncha/dotmatch
+      licence:
+        - Apache-2.0
+input:
+  - meta:
+      type: map
+      description: Sample metadata map containing an id field.
+  - assay_spec:
+      type: file
+      description: DotMatch AssaySpec TOML file.
+      pattern: "*.toml"
+  - assay_inputs:
+      type: file
+      description: Target tables and FASTQ files referenced by the AssaySpec.
+      pattern: "*"
+  - threads:  # via task.cpus / ext.cpus
+      type: integer
+      description: Threads for parallel steps inside the AssaySpec run (DotMatch uses auto CPU count by default for excellent UX on multi-core hardware).
+output:
+  - assay_report:
+      type: file
+      description: Human-readable DotMatch AssaySpec report.
+      pattern: "assay_report.html"
+  - assay_manifest:
+      type: file
+      description: Full DotMatch AssaySpec provenance manifest.
+      pattern: "assay_manifest.json"
+  - assay_manifest_summary:
+      type: file
+      description: Workflow-facing summary TSV for MultiQC custom content.
+      pattern: "assay_manifest.summary.tsv"
+  - sample_qc:
+      type: file
+      description: DotMatch sample-level QC table.
+      pattern: "sample_qc.tsv"
+  - crispr_qc_report:
+      type: file
+      description: Human-readable CRISPR guide-count QC report for CRISPR AssaySpecs.
+      pattern: "crispr_qc.html"
+  - crispr_qc_json:
+      type: file
+      description: Structured CRISPR guide-count QC report for CRISPR AssaySpecs.
+      pattern: "crispr_qc.json"
+  - crispr_qc_summary:
+      type: file
+      description: Workflow-facing CRISPR guide-count QC summary TSV.
+      pattern: "crispr_qc.summary.tsv"
+  - counts:
+      type: file
+      description: MAGeCK-compatible guide-count matrix for CRISPR AssaySpecs.
+      pattern: "counts.mageck.tsv"
+  - summary:
+      type: file
+      description: Native DotMatch JSON assignment and QC summary.
+      pattern: "summary.json"
+  - versions:
+      type: file
+      description: Software versions captured by the process.
+      pattern: "versions.yml"
+authors:
+  - DotMatch contributors
+maintainers:
+  - DotMatch contributors
+license: "Apache-2.0"

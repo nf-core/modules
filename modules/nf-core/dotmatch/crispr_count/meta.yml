@@ -1,0 +1,62 @@
+name: dotmatch_crispr_count
+description: Count CRISPR guides with DotMatch
+keywords:
+  - dotmatch
+  - crispr
+  - guide counting
+  - known-target assignment
+tools:
+  - dotmatch:
+      description: Fast exact matching for short DNA reads against known targets.
+      homepage: https://github.com/Dnncha/dotmatch
+      licence:
+        - Apache-2.0
+input:
+  - meta:
+      type: map
+      description: Sample metadata map containing an id field.
+  - reads:
+      type: file
+      description: FASTQ or FASTQ.gz reads for one CRISPR guide-counting sample.
+      pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+  - library:
+      type: file
+      description: DotMatch or MAGeCK-style guide library.
+      pattern: "*.{tsv,csv}"
+  - guide_start:
+      type: integer
+      description: Zero-based guide start offset in the read.
+  - guide_length:
+      type: integer
+      description: Guide sequence length.
+  - k:
+      type: integer
+      description: Maximum edit distance used for assignment.
+  - metric:
+      type: string
+      description: Assignment metric, hamming or levenshtein.
+  - threads:  # via task.cpus / ext.cpus
+      type: integer
+      description: Threads for parallel read processing (defaults to auto-detect in DotMatch).
+output:
+  - counts:
+      type: file
+      description: MAGeCK-compatible guide-count matrix for the sample.
+      pattern: "*.counts.mageck.tsv"
+  - summary:
+      type: file
+      description: DotMatch JSON assignment and QC summary.
+      pattern: "*.summary.json"
+  - sample_qc:
+      type: file
+      description: DotMatch sample-level QC table suitable for MultiQC custom content.
+      pattern: "*.sample_qc.tsv"
+  - versions:
+      type: file
+      description: Software versions captured by the process.
+      pattern: "versions.yml"
+authors:
+  - DotMatch contributors
+maintainers:
+  - DotMatch contributors
+license: "Apache-2.0"

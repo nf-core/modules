@@ -1,0 +1,30 @@
+schema_version = 1
+status = "ready"
+mode = "count"
+assay_type = "crispr"
+targets = "crispr_library.csv"
+
+[[samples]]
+id = "sample_a"
+fastq = "sample_a.fastq"
+
+[[samples]]
+id = "sample_b"
+fastq = "sample_b.fastq"
+
+[run]
+out_dir = "assay_out"
+threads = 1
+
+[extract]
+start = 0
+length = 4
+
+[assignment]
+k = 1
+metric = "hamming"
+ambiguity_policy = "radius"
+ambiguous = "discard"
+
+[outputs]
+format = "mageck"
