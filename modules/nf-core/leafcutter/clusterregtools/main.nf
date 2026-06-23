@@ -16,7 +16,8 @@ process LEAFCUTTER_CLUSTERREGTOOLS {
     tuple val(meta), path("*_sortedlibs")                  , emit: sortedlibs
     tuple val(meta), path("*_perind*.counts.gz")           , emit: counts
     tuple val(meta), path("*_perind_numers*.counts.gz")    , emit: numers
-    tuple val("${task.process}"), val('leafcutter'), eval("echo 'leafcutter 2.0.3'"), topic: versions, emit: versions_leafcutter
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('leafcutter'), val("2.0.3"), topic: versions, emit: versions_leafcutter
 
     when:
     task.ext.when == null || task.ext.when
