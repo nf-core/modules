@@ -26,7 +26,7 @@ RUN pip install --upgrade pip
 RUN pip install git+https://github.com/keras-team/keras-contrib.git
 
 # Install the package
-RUN pip install numorph-3dunet
+RUN pip install numorph-3dunet==$NUMORPH_3DUNET_VERSION
 
 # Create directory for models
 RUN mkdir -p /models

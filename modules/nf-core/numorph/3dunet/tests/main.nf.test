@@ -54,7 +54,7 @@ nextflow_process {
                 {assert cellcountFiles.size() == 2 },
                 { assert snapshot(
                     cellcountFiles,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
