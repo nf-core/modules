@@ -104,6 +104,17 @@
                                         "description": "Publication year"
                                     }
                                 }
+                                "if": {
+							        "anyOf": [
+							            { "required": ["title"] },
+							            { "required": ["author"] },
+							            { "required": ["source"] },
+							            { "required": ["year"] }
+							        ]
+							    },
+							    "then": {
+							        "required": ["title", "author", "source", "year"]
+							    }
                             }
                         },
                         "required": ["description"],
