@@ -802,7 +802,7 @@ nextflow_process {
 
                 ch_gex_fastqs_sc3_v3_5k_a549 = Channel.of( test_10x_sc3_v3_5k_a549_gex )
                     .collect()
-                    .map { reads -> [ [ id:test_10x_sc3_v3_5k_a549_gex_samplename ], reads, [ "expect-cells":"5000", chemistry:"SC3Pv3", "create-bam":false, "no-secondary":true ] ] }
+                    .map { reads -> [ [ id:test_10x_sc3_v3_5k_a549_gex_samplename ], reads, [ "expect-cells":"5000", chemistry:"SC3Pv3", "create-bam":false ] ] }
 
                 ch_crispr_fastqs_sc3_v3_5k_a549 = Channel.of( test_10x_sc3_v3_5k_a549_crispr )
                     .collect()
