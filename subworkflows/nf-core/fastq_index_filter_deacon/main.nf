@@ -45,7 +45,7 @@ workflow FASTQ_INDEX_FILTER_DEACON {
         .map { meta, fasta, reads ->
             [ fasta.baseName, meta, reads ]
         }
-        .join(ch_indexes, by: 0)
+        .combine(ch_indexes, by: 0)
         .map { _fasta_id, meta, reads, index ->
             [ meta, index, reads ]
         }
