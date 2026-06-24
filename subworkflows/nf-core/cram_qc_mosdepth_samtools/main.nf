@@ -20,7 +20,7 @@ workflow CRAM_QC_MOSDEPTH_SAMTOOLS {
     fasta = fasta_fai.map { meta2, fasta_file, fai -> [ meta2, fasta_file ] }
 
     ch_mosdepth_in = cram
-        .combine(intervals.map { item -> item[1] }.ifEmpty([ [] ]))
+        .combine(intervals.map { meta, interval -> interval }.ifEmpty([ [] ]))
         .map { meta, cram_file, crai, bed -> [ meta, cram_file, crai, bed ?: [] ] }
     
     MOSDEPTH(ch_mosdepth_in, fasta, [])
