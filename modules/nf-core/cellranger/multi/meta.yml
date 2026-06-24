@@ -178,6 +178,9 @@ input:
   - skip_renaming:
       type: boolean
       description: Skip renaming
+  - ignore_filename_pattern:
+      type: boolean
+      description: Skip checking if the input files follow the expected file name pattern.
 output:
   config:
     - - meta:

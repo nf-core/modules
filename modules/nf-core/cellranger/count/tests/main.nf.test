@@ -48,6 +48,8 @@ nextflow_process {
                     ]
                 ]
                 input[1] = CELLRANGER_MKREF.out.reference
+                input[2] = false
+                input[3] = false
                 """
             }
         }
@@ -90,6 +92,8 @@ nextflow_process {
                     ]
                 ]
                 input[1] = CELLRANGER_MKREF.out.reference
+                input[2] = false
+                input[3] = false
                 """
             }
         }
@@ -102,5 +106,82 @@ nextflow_process {
         }
 
     }
+    test("10x example file - nonstandard filename renaming fails") {
+        config "./nextflow.config"
+        tag "cellranger_rename_logic"
 
+        when {
+            process {
+                """
+                original_r1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true)
+                original_r2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+
+                new_r1_loc = "${workDir}/fastqs/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1.fastq.gz"
+                new_r2_loc = "${workDir}/fastqs/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_2.fastq.gz"
+
+                original_r1.copyTo(new_r1_loc)
+                original_r2.copyTo(new_r2_loc)
+
+                input[0] =  [
+                    [ id:'test_10x', single_end:false, strandedness:'auto'  ], // meta map
+                    [ file(new_r1_loc), file(new_r2_loc) ]
+                ]
+                input[1] = CELLRANGER_MKREF.out.reference
+                input[2] = false
+                input[3] = false
+                """
+            }
+        }
+
+        then { assert process.failed }
+    }
+    test("10x example file - nonstandard filename, rename succeeds with skipped validation") {
+        config "./nextflow.config"
+        tag "cellranger_rename_logic"
+
+        when {
+            process {
+                """
+                original_r1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true)
+                original_r2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+
+                new_r1_loc = "${workDir}/fastqs/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1.fastq.gz"
+                new_r2_loc = "${workDir}/fastqs/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_2.fastq.gz"
+
+                original_r1.copyTo(new_r1_loc)
+                original_r2.copyTo(new_r2_loc)
+
+                input[0] =  [
+                    [ id:'test_10x', single_end:false, strandedness:'auto'  ], // meta map
+                    [ file(new_r1_loc), file(new_r2_loc) ]
+                ]
+                input[1] = CELLRANGER_MKREF.out.reference
+                input[2] = false
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.versions_cellranger,
+                        process.out.outs[0][1].findAll { file(it).name !in [
+                            'web_summary.html', // unstable checksum
+                            'possorted_genome_bam.bam.bai', // unstable checksum despite identical content, verified with samtools idxstats
+                            'possorted_genome_bam.bam', // unstable checksum due to header
+                            'barcodes.tsv.gz' // empty file in test data -> would raise linting error
+                        ]} + [
+                            "possorted_genome_bam_samlines:" + sam(process.out.outs.get(0).get(1).find { file(it).name == "possorted_genome_bam.bam" }).getSamLinesMD5()  // checksum is unstable when header is included
+                        ],
+                    ).match()
+                },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'web_summary.html' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'possorted_genome_bam.bam.bai' }).exists() },
+            )
+        }
+    }
 }
