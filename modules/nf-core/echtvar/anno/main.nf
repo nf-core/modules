@@ -13,7 +13,7 @@ process ECHTVAR_ANNO {
     val(output_suffix)
 
     output:
-    tuple val(meta), path("*.{vcf.gz,bcf}"), emit: vcf
+    tuple val(meta), path("*.{vcf.gz,bcf,bcf.gz}"), emit: vcf
     tuple val("${task.process}"), val('echtvar'), eval("echtvar --version | sed 's/echtvar //g'"), topic: versions, emit: versions_echtvar
 
     when:
