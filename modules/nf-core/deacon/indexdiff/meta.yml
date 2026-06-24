@@ -18,7 +18,7 @@ tools:
       licence: ["MIT"]
       identifier: "biotools:deacon"
 input:
-  - - meta_index:
+  - - meta:
         type: map
         description: |
           Groovy Map containing reference index information.
@@ -30,7 +30,7 @@ input:
         pattern: "*.idx"
         ontologies:
           - edam: "http://edamontology.org/data_3210" # Genome index
-  - - meta_genome:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing metadata for the genome to subtract from the index (deacon .idx index or fasta file).
@@ -46,7 +46,7 @@ input:
           - edam: "http://edamontology.org/format_1929" # FASTA
 output:
   index:
-    - - meta_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference index information.

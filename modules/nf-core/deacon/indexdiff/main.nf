@@ -9,11 +9,11 @@ process DEACON_INDEXDIFF {
         'quay.io/biocontainers/deacon:0.15.0--hdd79491_0' }"
 
     input:
-    tuple val(meta_index), path(index)      // main deacon .idx index file
-    tuple val(meta_genome), path(genome)    // a single fasta or .idx file to subtract from the main index
+    tuple val(meta), path(index)      // main deacon .idx index file
+    tuple val(meta2), path(genome)    // a single fasta or .idx file to subtract from the main index
 
     output:
-    tuple val(meta_index), path("*.idx"), emit: index
+    tuple val(meta), path("*.idx"), emit: index
     tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_deacon, topic: versions
 
     when:
@@ -21,7 +21,7 @@ process DEACON_INDEXDIFF {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta_index.id}.diff"
+    def prefix = task.ext.prefix ?: "${meta.id}.diff"
 
     """
     deacon \\
@@ -34,7 +34,7 @@ process DEACON_INDEXDIFF {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta_index.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.idx
     """
