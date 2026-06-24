@@ -20,15 +20,7 @@ process DEACON_INDEX_INTERSECT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO: constructing a new meta.id would be more tricky here since there can be many input genomes
-    // def meta_out = meta_index + [
-    //     id: meta_index.id + '__' +
-    //         meta_genome.collect{ it.id }.sort().join('_')
-    // ]
-    // def meta_out = meta + [
-    //     id: meta.collect{ it.id }.sort().join('_')
-    // ]
+    def prefix = task.ext.prefix ?: "${meta.id}.intersect"
 
     """
     deacon \\

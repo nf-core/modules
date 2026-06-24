@@ -21,12 +21,7 @@ process DEACON_INDEX_DIFF {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta_index.id}"
-    // TODO: we could optionally construct a new prefix + meta_out.id based on the two input meta.ids, but just using the original id of the main index file seems more straightforward since it can always be modified in a custom config
-    // def prefix = task.ext.prefix ?: "${meta_index.id}_diff_${meta_genome.id}"
-    // def meta_out = meta_index + [ id: "${prefix}" ]
-    // def meta_out = meta.clone()
-    // meta_out.id = "${prefix}"
+    def prefix = task.ext.prefix ?: "${meta_index.id}.diff"
 
     """
     deacon \\
@@ -40,10 +35,6 @@ process DEACON_INDEX_DIFF {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta_index.id}"
-    // TODO: we could optionally construct a new meta_out.id based on the two input meta.ids instead
-    // def prefix = task.ext.prefix ?: "${meta_index.id}_diff_${meta_genome.id}"
-    // def meta_out = meta.clone()
-    // meta_out.id = "${prefix}"
     """
     touch ${prefix}.idx
     """

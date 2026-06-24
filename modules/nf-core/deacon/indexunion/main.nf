@@ -10,9 +10,6 @@ process DEACON_INDEX_UNION {
 
     input:
     tuple val(meta), path(indices)    // two or more deacon .idx index files to combine
-    // TODO: optionally could accept two inputs similar to index_diff:
-    // the first would be the main index to start from, providing meta_index.id
-    // the second would be a 1 or more indexes to combine with
 
     output:
     tuple val(meta), path("*.idx"), emit: index
@@ -23,11 +20,7 @@ process DEACON_INDEX_UNION {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO: constructing a new meta.id would be more tricky here since there can be many input genomes
-    // def meta_out = meta + [
-    //     id: meta.collect{ it.id }.sort().join('_')
-    // ]
+    def prefix = task.ext.prefix ?: "${meta.id}.union"
 
     """
     deacon \\
