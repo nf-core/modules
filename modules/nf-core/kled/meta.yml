@@ -8,7 +8,6 @@ keywords:
   - structural
   - variants
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "kled":
       description: "An ultra-fast and sensitive structural variant detection tool for
         long-read sequencing data."
@@ -20,7 +19,6 @@ tools:
       identifier: biotools:kled
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
@@ -32,7 +30,7 @@ input:
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
-    - bam:
+    - bai:
         type: file
         description: Sorted BAM index file
         pattern: "*.bai"
@@ -57,7 +55,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.vcf":
+      - vcf:
           type: file
           description: VCF file containing called variants from Kled
           pattern: "*.vcf"
@@ -70,7 +68,7 @@ output:
       - "kled":
           type: string
           description: The name of the tool
-      - "kled --version":
+      - "kled --version 2>&1 | sed 's/Kled version //'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -82,7 +80,7 @@ topics:
       - kled:
           type: string
           description: The name of the tool
-      - kled --version:
+      - kled --version 2>&1 | sed 's/Kled version //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
