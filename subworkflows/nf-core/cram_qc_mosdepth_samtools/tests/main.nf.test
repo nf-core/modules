@@ -26,7 +26,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[2] = Channel.empty()
+                input[2] = channel.empty()
                 """
             }
         }
