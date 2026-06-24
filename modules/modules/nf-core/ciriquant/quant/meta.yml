@@ -1,0 +1,196 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "ciriquant_quant"
+description: CIRIquant; comprehensive toolkit for circRNA quantification and differential expression analysis
+keywords:
+  - ciriquant
+  - quantification
+  - circRNA
+  - transcriptomics
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "ciriquant":
+      description: "Circular RNA quantification pipeline."
+      homepage: "https://ciri-cookbook.readthedocs.io/en/latest/CIRIquant_0_home.html"
+      documentation: "https://ciri-cookbook.readthedocs.io/en/latest/CIRIquant_0_home.html"
+      tool_dev_url: "https://github.com/bioinfo-biols/CIRIquant"
+      doi: "10.1038/s41467-019-13840-9"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  ### TODO nf-core: Add a description of all of the variables used as input
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', singe_end:false ]`
+    - reads:
+        type: file
+        description: List of input paired-end fastq files.
+        pattern: "*.{fastq.gz,fq.gz}"
+
+  - - config:
+        type: file
+        description: CIRIquant configuration file in YAML format.
+        pattern: "*.{yaml}"
+
+  - - bed:
+        type: file
+        description: Optional BED files.
+        pattern: "*.{bed}"
+
+  - - meta1:
+        type: map
+        description: Groovy Map containing sample information
+    - bam:
+        type: file
+        description: BAM file format.
+        pattern: "*.{bam}"
+
+  - - meta2:
+        type: map
+        description: Groovy Map containing sample information
+    - circ:
+        type: file
+        description: circRNA prediction results from other softwares
+        pattern: "*.{txt,gtf,bed}"
+
+  - - meta3:
+        type: map
+        description: Groovy Map containing sample information
+
+    - rnaser:
+        type: file
+        description: CIRIquant result of RNase R sample
+        pattern: "*.{gtf}"
+
+output:
+  gtf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.gtf":
+          type: file
+          description: Main CIRIquant output file containing information about BSJ and FSJ reads of circRNA.
+          pattern: "*.{gtf}"
+
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.log":
+          type: file
+          description: Standard log file generated from CIRIquant
+          pattern: "*.{log}"
+
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.bed":
+          type: file
+          description: BED format file of predicte circRNA
+          pattern: "*.{bed}"
+
+  error_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "CIRIerror.log":
+          type: file
+          description: Error and warning log generated during execution
+          pattern: "CIRIerror.log"
+
+  sorted_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "align/*.sorted.bam":
+          type: file
+          description: Coordinate-sorted primary genomic alignments from HISAT2
+          pattern: "*.{sorted_bam}"
+
+  sorted_bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "align/*.sorted.bam.bai":
+          type: file
+          description: Index file for the coordinate-sorted primary alignments
+          pattern: "*.{sorted_bam_bai}"
+
+  ciri:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "circ/*.ciri":
+          type: file
+          description: Raw circular RNA identification table from the core CIRI engine
+          pattern: "*.{ciri}"
+
+  ciri_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "circ/*.ciri.bed":
+          type: file
+          description: BED format file containing individual back-splice junction structural elements
+          pattern: "*.{ciri.bed}"
+
+  denovo_sorted_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "circ/*_denovo.sorted.bam":
+          type: file
+          description: Coordinate-sorted alignments mapped directly against dynamically generated pseudo-reference junction indices
+          pattern: "*_{denovo.sorted.bam}"
+
+  denovo_sorted_bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "circ/*_denovo.sorted.bam.bai":
+          type: file
+          description: Index file for the coordinate-sorted de-novo alignment BAM
+          pattern: "*_{denovo.sorted.bam.bai}"
+
+  versions_ciriquant:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "ciriquant":
+          type: string
+          description: The name of the tool
+      - "ciriquant --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ciriquant:
+          type: string
+          description: The name of the tool
+      - ciriquant --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@razmia02"
+maintainers:
+  - "@razmia02"
