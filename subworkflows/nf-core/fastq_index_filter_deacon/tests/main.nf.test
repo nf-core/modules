@@ -34,7 +34,7 @@ nextflow_workflow {
                     workflow.out.index,
                     workflow.out.fastq_filtered,
                     file(workflow.out.summary[0][1]).name
-                ).match()}
+                ).match() }
             )
         }
     }
@@ -65,7 +65,7 @@ nextflow_workflow {
                     workflow.out.index,
                     workflow.out.fastq_filtered,
                     file(workflow.out.summary[0][1]).name
-                ).match()}
+                ).match() }
             )
         }
     }
@@ -93,7 +93,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out
-                ).match()}
+                ).match() }
             )
         }
     }
@@ -122,14 +122,19 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert workflow.out.fastq_filtered.flatten().size() == 2 },
-                { assert workflow.out.index.flatten().size() == 2 },
+                { assert workflow.out.fastq_filtered.size() == 2 },
+                { assert workflow.out.index.size() == 2 },
                 {
                     def indexRuns = workflow.trace.tasks.count { task ->
                         task.name.contains('DEACON_INDEX')
                     }
                     assert indexRuns == 1
-                }
+                },
+                { assert snapshot(
+                    workflow.out.index,
+                    workflow.out.fastq_filtered,
+                    workflow.out.summary
+                ).match() }
             )
         }
     }

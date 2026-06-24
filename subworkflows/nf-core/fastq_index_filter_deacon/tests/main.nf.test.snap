@@ -126,5 +126,64 @@
             "nf-test": "0.9.4",
             "nextflow": "25.10.2"
         }
+    },
+    "sarscov2 - identical fasta should be indexed only once": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "sample1",
+                        "single_end": true,
+                        "index_id": "genome"
+                    },
+                    "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
+                ],
+                [
+                    {
+                        "id": "sample2",
+                        "single_end": true,
+                        "index_id": "genome"
+                    },
+                    "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "sample1",
+                        "single_end": true
+                    },
+                    "sample1.fq.gz:md5,2250e99ec61fca0e28e2dcb5124d1a16"
+                ],
+                [
+                    {
+                        "id": "sample2",
+                        "single_end": true
+                    },
+                    "sample2.fq.gz:md5,fd26c42f54e3316dfc8d082d9b6ed209"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "sample1",
+                        "single_end": true
+                    },
+                    "sample1.json:md5,71ce0f1890a75ba31fed431d6d5755a6"
+                ],
+                [
+                    {
+                        "id": "sample2",
+                        "single_end": true
+                    },
+                    "sample2.json:md5,1ac9fd2b4b440bcefc0daf5c53b385a7"
+                ]
+            ]
+        ],
+        "timestamp": "2026-06-24T17:32:13.513695241",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     }
 }
