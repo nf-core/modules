@@ -1,6 +1,5 @@
 process DEACON_INDEXINTERSECT {
-    tag "fasta"
-
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
