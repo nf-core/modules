@@ -1,0 +1,191 @@
+nextflow_process {
+
+    name "Test Process DORADO_BASECALLER"
+    script "../main.nf"
+    process "DORADO_BASECALLER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dorado"
+    tag "dorado/basecaller"
+
+    // -------------------------------------------------------------------------
+    // Stub tests — run in CI without GPU or real basecalling
+    // -------------------------------------------------------------------------
+
+    test("homo sapiens - pod5, sup,5mCG_5hmCG@latest, no models_dir, no reference - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file("${projectDir}/modules/nf-core/dorado/basecaller/tests/data/test.pod5", checkIfExists: true)
+                ]
+                input[1] = "sup,5mCG_5hmCG@latest"
+                input[2] = [[], []]
+                input[3] = [[], [], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - pod5, sup,5mCG_5hmCG@latest, no models_dir, with reference - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args    = '--mm2-opts "-Y"'
+                test_reference = '/data1/greenbab/database/hg38/v0/Homo_sapiens_assembly38.fasta'
+                test_fai       = '/data1/greenbab/database/hg38/v0/Homo_sapiens_assembly38.fasta.fai'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_aligned' ],
+                    file("${projectDir}/modules/nf-core/dorado/basecaller/tests/data/test.pod5", checkIfExists: true)
+                ]
+                input[1] = "sup,5mCG_5hmCG@latest"
+                input[2] = [[], []]
+                input[3] = [
+                    [ id: 'hg38' ],
+                    file(params.test_reference, checkIfExists: true),
+                    file(params.test_fai, checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Track 2 stub test — uses public GIAB HG002 pod5 from nf-core/test-datasets
+    // Pending: nf-core/test-datasets#1968 merge before this URL resolves
+    // -------------------------------------------------------------------------
+
+    test("homo sapiens - GIAB HG002 pod5, sup,5mCG_5hmCG@latest, no models_dir, no reference - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002' ],
+                    file("${params.modules_testdata_base_path}genomics/homo_sapiens/nanopore/pod5/HG002_PAW70337_giab_10reads.pod5",
+                         checkIfExists: true)
+                ]
+                input[1] = "sup,5mCG_5hmCG@latest"
+                input[2] = [[], []]
+                input[3] = [[], [], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Real GPU tests — require --tag "gpu" and componc_gpu_batch partition
+    // Run via SLURM: nf-test test ... --profile singularity,gpu --tag gpu
+    // -------------------------------------------------------------------------
+
+    test("homo sapiens - pod5, sup,5mCG_5hmCG@latest, with models_dir, no reference") {
+
+        tag "gpu"
+
+        when {
+            params {
+                module_args = ''
+                models_dir  = "${projectDir}/modules/nf-core/dorado/basecaller/tests/data/models"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file("${projectDir}/modules/nf-core/dorado/basecaller/tests/data/test.pod5", checkIfExists: true)
+                ]
+                input[1] = "sup,5mCG_5hmCG@latest"
+                input[2] = [
+                    [ id: 'dorado_models' ],
+                    file(params.models_dir, checkIfExists: true)
+                ]
+                input[3] = [[], [], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - pod5, sup,5mCG_5hmCG@latest, with models_dir, with reference") {
+
+        tag "gpu"
+
+        when {
+            params {
+                module_args    = '--mm2-opts "-Y"'
+                models_dir     = "${projectDir}/modules/nf-core/dorado/basecaller/tests/data/models"
+                test_reference = '/data1/greenbab/database/hg38/v0/Homo_sapiens_assembly38.fasta'
+                test_fai       = '/data1/greenbab/database/hg38/v0/Homo_sapiens_assembly38.fasta.fai'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_aligned' ],
+                    file("${projectDir}/modules/nf-core/dorado/basecaller/tests/data/test.pod5", checkIfExists: true)
+                ]
+                input[1] = "sup,5mCG_5hmCG@latest"
+                input[2] = [
+                    [ id: 'dorado_models' ],
+                    file(params.models_dir, checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id: 'hg38' ],
+                    file(params.test_reference, checkIfExists: true),
+                    file(params.test_fai, checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

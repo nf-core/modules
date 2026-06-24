@@ -1,0 +1,100 @@
+name: modkit_localize_plot
+description: Composite visualization of modkit localize results overlaying multiple
+  samples colored by condition with configurable smoothing
+keywords:
+  - methylation
+  - ont
+  - long-read
+  - localize
+  - visualization
+  - plot
+tools:
+  - "r-ggplot2":
+      description: An implementation of the Grammar of Graphics in R
+      homepage: https://ggplot2.tidyverse.org
+      documentation: https://ggplot2.tidyverse.org/reference
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing analysis information
+          e.g. `[ id:'CpG_islands_5mC' ]`
+    - tsvs:
+        type: file
+        description: One or more TSV files from modkit localize, each containing
+          columns mod_code, offset, n_valid, n_mod, percent_modified
+        pattern: "*.tsv"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing samplesheet information
+          e.g. `[ id:'samplesheet' ]`
+    - samplesheet:
+        type: file
+        description: CSV or TSV with columns sample_id and condition. sample_id must
+          match substrings in the TSV filenames to assign conditions
+        pattern: "*.{csv,tsv}"
+        ontologies: []
+output:
+  png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+      - "figures/png/*.png":
+          type: file
+          description: PNG format composite plots
+          pattern: "*.png"
+          ontologies: []
+  pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+      - "figures/pdf/*.pdf":
+          type: file
+          description: PDF format composite plots
+          pattern: "*.pdf"
+          ontologies: []
+  svg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+      - "figures/svg/*.svg":
+          type: file
+          description: SVG format composite plots
+          pattern: "*.svg"
+          ontologies: []
+  combined_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+      - "*_combined.tsv":
+          type: file
+          description: Combined TSV with all samples annotated with condition
+          pattern: "*_combined.tsv"
+          ontologies: []
+  summary_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+      - "*_summary.tsv":
+          type: file
+          description: Per-condition summary TSV with mean and SE at each offset
+          pattern: "*_summary.tsv"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+authors:
+  - "@sahuno"
+maintainers:
+  - "@sahuno"
