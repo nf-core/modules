@@ -3,17 +3,16 @@
 This is the AI agent context file for the nf-core modules repository. All AI agents and coding assistants **MUST** read and strictly follow the rules contained in this document.
 
 ## Natural language
-All comments and documentation **MUST** be written in English with British spelling. Documentation files **SHOULD** additionally follow the style guide at https://nf-co.re/docs/developing/documentation/style-guide.
+All comments and documentation **MUST** be written in English with British spelling.
 
 ## Repository structure
 You are working in a copy of the nf-core modules repository. Repository structure:
 
 ```
 .
-├── AGENTS.md // this file
 ├── modules
-│   ├── environment-schema.json // schema for module environment.yaml
-│   ├── meta-schema.json        // schema for module meta.yaml 
+│   ├── environment-schema.json // schema for module's environment.yml
+│   ├── meta-schema.json        // schema for module's meta.yml 
 │   └── nf-core                 // directory containing nf-core modules, described below
 ├── nf-test.config // configuration for nf-test
 ├── subworkflows
