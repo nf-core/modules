@@ -41,32 +41,22 @@ input:
           compressed it must be done in BGZF format (like with the bgzip tool).
         pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
     - fai:
         type: file
         description: Genome index file needed for CRAM conversion.
         pattern: "*.fai"
         ontologies: []
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
     - gzi:
         type: file
         description: Genome index file needed for CRAM conversion when the genome
           file was compressed with the BGZF algorithm.
         pattern: "*.gzi"
         ontologies: []
-  - - meta5:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+    - sizes:
+        type: file
+        description: File listing sequence names and lenghts in that genome
+        pattern: "*.sizes"
+        ontologies: []
     - dict:
         type: file
         description: Samtools dictionary of the genome file.
@@ -79,11 +69,39 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.{axt.gz,bam,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}":
+      - "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}":
           type: file
-          description: Pairwise alignment exported to Axt, BAM, BED, BLAST, Chain,
-            CRAM, GFF, HTML PSL, SAM or Tab format.
-          pattern: "*.{axt.gz,bam,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"
+          description: |
+            Pairwise alignment exported to Axt, BAM, BCF, BED, BLAST, Chain,
+            CRAM, GFF, HTML PSL, SAM or Tab format.  For BCF generation, pass
+            options to `bcftools merge` with `task.ext.args3` and to `bcftools
+            call` via `task.ext.args4`.
+          pattern: "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"
+          ontologies: []
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{bai,crai,csi}":
+          type: file
+          description: |
+            Optional index for the BAM, BCF or CRAM files. Pass `--write-index`
+            to `samtools` via `task.ext.args2`, or BAM and CRAM, and to
+            `bcftools call` via `task.ext.arg4` for BCF.
+          pattern: "*.{bai,crai,csi}"
+          ontologies: []
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.stats":
+          type: file
+          description: Statistics on the BCF files.
+          pattern: "*.stats"
           ontologies: []
   versions_last:
     - - "${task.process}":
