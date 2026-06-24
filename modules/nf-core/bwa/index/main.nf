@@ -2,7 +2,7 @@ process BWA_INDEX {
     tag "$fasta"
     // NOTE requires 5.37N memory where N is the size of the database
     // source: https://bio-bwa.sourceforge.net/bwa.shtml#8
-    memory { 7.B * fasta.size() }
+    memory { Math.max(7 * fasta.size(), 1.GB.toBytes()).B }
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
