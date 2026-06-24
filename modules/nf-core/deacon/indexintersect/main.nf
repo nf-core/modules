@@ -1,4 +1,4 @@
-process DEACON_INDEX_INTERSECT {
+process DEACON_INDEXINTERSECT {
     tag "fasta"
 
     label 'process_low'

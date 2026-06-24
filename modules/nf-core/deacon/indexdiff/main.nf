@@ -1,4 +1,4 @@
-process DEACON_INDEX_DIFF {
+process DEACON_INDEXDIFF {
     tag "fasta"
 
     label 'process_low'

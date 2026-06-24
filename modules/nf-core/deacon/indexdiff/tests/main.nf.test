@@ -1,12 +1,13 @@
 nextflow_process {
 
-    name "Test Process DEACON_INDEX_DIFF"
+    name "Test Process DEACON_INDEXDIFF"
     script "../main.nf"
-    process "DEACON_INDEX_DIFF"
+    process "DEACON_INDEXDIFF"
 
     tag "modules"
     tag "modules_nfcore"
     tag "deacon"
+    tag "deacon/index"
     tag "deacon/indexdiff"
 
     test("index diff sarscov2 - fasta") {

@@ -1,4 +1,4 @@
-process DEACON_INDEX_UNION {
+process DEACON_INDEXUNION {
     tag "fasta"
 
     label 'process_low'
