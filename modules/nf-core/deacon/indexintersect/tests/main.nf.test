@@ -1,0 +1,127 @@
+nextflow_process {
+
+    name "Test Process DEACON_INDEX_INTERSECT"
+    script "../main.nf"
+    process "DEACON_INDEX_INTERSECT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deacon"
+    tag "deacon/indexintersect"
+
+    setup {
+        run("DEACON_INDEX", alias: "DEACON_INDEX_1") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test-1'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("DEACON_INDEX", alias: "DEACON_INDEX_2") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test-2'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("DEACON_INDEX", alias: "DEACON_INDEX_3") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test-3'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("index intersect sarscov2 - 2 indexes") {
+
+        when {
+            process {
+                """
+                input[0] = DEACON_INDEX_1.out.index.map { meta, idx -> [[id: 'test-intersect'], idx] }
+                    .mix(DEACON_INDEX_2.out.index.map { meta, idx -> [[id: 'test-intersect'], idx] })
+                    .groupTuple()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.index,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()
+                }
+            )
+        }
+    }
+
+    test("index intersect sarscov2 - 3 indexes") {
+
+        when {
+            process {
+                """
+                input[0] = DEACON_INDEX_1.out.index.map { meta, idx -> [[id: 'test-intersect'], idx] }
+                    .mix(DEACON_INDEX_2.out.index.map { meta, idx -> [[id: 'test-intersect'], idx] })
+                    .mix(DEACON_INDEX_3.out.index.map { meta, idx -> [[id: 'test-intersect'], idx] })
+                    .groupTuple()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.index,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()
+                }
+            )
+        }
+    }
+
+    test("index intersect - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test-intersect' ],
+                    [
+                        file('index1.idx'),
+                        file('index2.idx')
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+}

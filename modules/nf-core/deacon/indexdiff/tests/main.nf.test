@@ -9,18 +9,29 @@ nextflow_process {
     tag "deacon"
     tag "deacon/indexdiff"
 
-    test("index diff sarscov2 escherichia_coli - fasta") {
+    test("index diff sarscov2 - fasta") {
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test-index'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ]
+                input[0] = DEACON_INDEX.out.index
                 input[1] = [
-                    [ id:'test-diff'],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -39,18 +50,29 @@ nextflow_process {
 
     }
 
-    test("index diff sarscov2 escherichia_coli - fasta gzipped") {
+    test("index diff sarscov2 - fasta gzipped") {
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test-index'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
-                ]
+                input[0] = DEACON_INDEX.out.index
                 input[1] = [
-                    [ id:'test-diff'],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa.gz', checkIfExists: true)
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -68,7 +90,56 @@ nextflow_process {
 
     }
 
-    test("index diff sarscov2 escherichia_coli - fasta - stub") {
+    test("index diff sarscov2 - idx ") {
+
+        setup {
+            run("DEACON_INDEX", alias: "DEACON_INDEX_1") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test-idx' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+
+            run("DEACON_INDEX", alias: "DEACON_INDEX_2") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test-diff' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = DEACON_INDEX_1.out.index
+                input[1] = DEACON_INDEX_2.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("index diff sarscov2 - fasta - stub") {
 
         options "-stub"
 
@@ -81,7 +152,7 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id:'test-diff'],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
             }
