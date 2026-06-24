@@ -1,0 +1,475 @@
+nextflow_process {
+
+    name "Test Process ANGSD_DOSAF"
+    script "../main.nf"
+    process "ANGSD_DOSAF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "angsd"
+    tag "angsd/dosaf"
+
+
+    // -------------------------------------------------------------------------
+    // SUCCESS CASE 1: GL 1; doSAF 1; no ancestral
+    // -------------------------------------------------------------------------
+
+    test("angsd - GL 1 - doSAF 1") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                angsd_args   = '-GL 1 -doSAF 1'
+                min_ind_frac = 0
+            }
+            process {
+                """
+                input[0] = [
+                    [
+                        id: "FIN",
+                        population: "FIN",
+                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam")
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam.bai")
+                    ]
+                ]
+                input[1] = [
+                    [ id:'reference_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa.fai')
+                ]
+                input[2] = [ [], [], [] ]
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.saf },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    
+    // -------------------------------------------------------------------------
+    // SUCCESS CASE 2: GL 3; doSAF 1; no ancestral
+    // -------------------------------------------------------------------------
+
+    test("angsd - GL3 - two steps") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                angsd_args   = '-GL 3 -doSAF 1'
+                min_ind_frac = 0
+            }
+            
+            process {
+                """
+                input[0] = [
+                    [
+                        id: "FIN",
+                        population: "FIN",
+                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam")
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam.bai")
+                    ]
+                ]
+                input[1] = [
+                    [ id:'reference_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa.fai')
+                ]
+                input[2] = [ [], [], [] ]
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.saf },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+
+    // -------------------------------------------------------------------------
+    // SUCCESS CASE 3: GL 4 (requires error file)
+    // -------------------------------------------------------------------------
+
+    test("angsd - GL4") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                angsd_args   = '-GL 4 -doSAF 1'
+                min_ind_frac = 0
+            }
+            
+            process {
+                """
+                input[0] = [
+                    [
+                        id: "FIN",
+                        population: "FIN",
+                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam")
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam.bai")
+                    ]
+                ]
+                input[1] = [
+                    [ id:'reference_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa.fai')
+                ]
+                input[2] = [ [], [], [] ]
+                input[3] = [
+                    [ id: 'errors' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/resources/angsd/angsd_syk.errors')
+                ]
+                input[4] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.saf },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+
+    // -------------------------------------------------------------------------
+    // FAILURE CASE 1: Missing inbreeding coefficients file (needed for doSAF 2)
+    // -------------------------------------------------------------------------
+
+    test("angsd - GL1 - doSAF2 - missing inbreeding coefficients") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                angsd_args   = '-GL 1 -doSAF 2'
+                min_ind_frac = 0
+            }
+            process {
+                """
+                input[0] = [
+                    [
+                        id: "FIN",
+                        population: "FIN",
+                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam")
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam.bai")
+                    ]
+                ]
+                input[1] = [
+                    [ id:'reference_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa.fai')
+                ]
+                input[2] = [ [], [], [] ]
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            def caused = process.errorReport
+                .split("Source block:")[0]
+                .split("Caused by:")[1]
+                .trim()
+
+            assertAll(
+                { assert process.failed },
+                { assert caused.contains("-doSAF 2 requires inbreeding coefficients") }
+            )
+        }
+    }
+
+
+    // -------------------------------------------------------------------------
+    // FAILURE CASE 2: Missing doSAF flag
+    // -------------------------------------------------------------------------
+
+    test("angsd - missing -doSAF flag") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                angsd_args   = '-GL 1'
+                min_ind_frac = 0
+            }
+            process {
+                """
+                input[0] = [
+                    [
+                        id: "FIN",
+                        population: "FIN",
+                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam")
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam.bai")
+                    ]
+                ]
+                input[1] = [
+                    [ id:'reference_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa.fai')
+                ]
+                input[2] = [ [], [], [] ]
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            def caused = process.errorReport
+                .split("Source block:")[0]
+                .split("Caused by:")[1]
+                .trim()
+
+            assertAll(
+                { assert process.failed },
+                { assert caused.contains("No valid doSAF mode selected") }
+            )
+        }
+    }
+
+
+    // -------------------------------------------------------------------------
+    // FAILURE CASE 3: Missing GL flag
+    // -------------------------------------------------------------------------
+
+    test("angsd - missing -GL flag") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                angsd_args   = '-doSAF 1'
+                min_ind_frac = 0
+            }
+            process {
+                """
+                input[0] = [
+                    [
+                        id: "FIN",
+                        population: "FIN",
+                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam")
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam.bai")
+                    ]
+                ]
+                input[1] = [
+                    [ id:'reference_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa.fai')
+                ]
+                input[2] = [ [], [], [] ]
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            def caused = process.errorReport
+                .split("Source block:")[0]
+                .split("Caused by:")[1]
+                .trim()
+
+            assertAll(
+                { assert process.failed },
+                { assert caused.contains("No valid GL model selected") }
+            )
+        }
+    }
+
+
+    // -------------------------------------------------------------------------
+    // FAILURE CASE 4: Invalid GL value
+    // -------------------------------------------------------------------------
+
+    test("angsd - invalid -GL value") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                angsd_args   = '-GL 5 -doSAF 1'
+                min_ind_frac = 0
+            }
+            process {
+                """
+                input[0] = [
+                    [
+                        id: "FIN",
+                        population: "FIN",
+                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam")
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam.bai")
+                    ]
+                ]
+                input[1] = [
+                    [ id:'reference_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa.fai')
+                ]
+                input[2] = [ [], [], [] ]
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            def caused = process.errorReport
+                .split("Source block:")[0]
+                .split("Caused by:")[1]
+                .trim()
+
+            assertAll(
+                { assert process.failed },
+                { assert caused.contains("No valid GL model selected") }
+            )
+        }
+    }
+
+    
+    // -------------------------------------------------------------------------
+    // FAILURE CASE 5: Missing error file (required by -GL 4)
+    // -------------------------------------------------------------------------
+
+    test("angsd - GL4 - missing error file") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                angsd_args   = '-GL 4 -doSAF 1'
+                min_ind_frac = 0
+            }
+            process {"""
+                input[0] = [
+                    [
+                        id: "FIN",
+                        population: "FIN",
+                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam")
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.FIN.chr20.test.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.FIN.chr20.test.bam.bai")
+                    ]
+                ]
+                input[1] = [
+                    [ id:'reference_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20.fa.fai')
+                ]
+                input[2] = [ [], [], [] ]
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                """}
+        }
+
+        then {
+            def caused = process.errorReport
+                .split("Source block:")[0]
+                .split("Caused by:")[1]
+                .trim()
+
+            assertAll(
+                { assert process.failed },
+                { assert caused.contains("-GL 4 (SYK model) requires an error file") }
+            )
+        }
+    }
+
+}
