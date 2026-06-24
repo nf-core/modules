@@ -24,7 +24,8 @@ process KLED {
     """
     kled \
         ${args} \\
-        -R ${fasta} \\
+        --Ref=${fasta} \\
+        --threads=${task.cpus} \\
         ${bam} \\
         > ${prefix}.vcf
     """

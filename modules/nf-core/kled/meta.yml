@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "kled"
-description: "An ultra-fast and sensitive structural variant detection tool for long-read sequencing data"
+description: "An ultra-fast and sensitive structural variant detection tool for
+  long-read sequencing data."
 keywords:
   - sort
   - genomics
@@ -55,20 +56,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - vcf:
+      - "*.vcf":
           type: file
           description: VCF file containing called variants from Kled
           pattern: "*.vcf"
           ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
   versions_kled:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "kled":
+      - kled:
           type: string
           description: The name of the tool
-      - "kled --version 2>&1 | sed 's/Kled version //'":
+      - kled --version 2>&1 | sed 's/Kled version //':
           type: eval
           description: The expression to obtain the version of the tool
 
