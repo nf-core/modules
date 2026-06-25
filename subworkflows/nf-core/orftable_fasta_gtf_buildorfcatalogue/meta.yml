@@ -97,9 +97,10 @@ output:
         Structure: [ val(meta), path(tsv) ]
   - consensus_bed12:
       description: |
-        Consensus view of the merged catalogue as BED12 (ORFs meeting the
-        merger's --min-callers / --min-samples thresholds; identical to the
-        full catalogue at the defaults of 1/1).
+        Consensus view of the catalogue as BED12 (ORFs meeting the
+        --min-callers / --min-samples thresholds; identical to the full
+        catalogue at the defaults of 1/1). Taken from the amino-acid collapse
+        when it runs, otherwise from the merger.
         Structure: [ val(meta), path(bed12) ]
   - consensus_tsv:
       description: |
