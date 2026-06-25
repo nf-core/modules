@@ -33,7 +33,7 @@ process DEACON_INDEXDIFF {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.diff"
     """
     touch ${prefix}.idx
     """

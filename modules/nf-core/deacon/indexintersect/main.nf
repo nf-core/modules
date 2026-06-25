@@ -31,7 +31,7 @@ process DEACON_INDEXINTERSECT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.intersect"
     """
     touch ${prefix}.idx
     """
