@@ -41,7 +41,6 @@ import platform
 import shlex
 import sys
 from collections import defaultdict
-from contextlib import ExitStack
 from pathlib import Path
 
 import yaml
@@ -220,18 +219,15 @@ def write_catalogue(prefix, clusters, bed_index, min_callers=1, min_samples=1):
 
     clusters = sorted(clusters, key=_sort_key)
 
-    with ExitStack() as stack:
-        bh = stack.enter_context(open(cat_bed, "w"))
-        th = stack.enter_context(open(cat_tsv, "w"))
-        oh = stack.enter_context(open(o2g_tsv, "w"))
-        cbh = stack.enter_context(open(con_bed, "w"))
-        cth = stack.enter_context(open(con_tsv, "w"))
-        coh = stack.enter_context(open(con_o2g, "w"))
-        header = "\\t".join(catalogue_cols) + "\\n"
+    header = "\\t".join(catalogue_cols) + "\\n"
+    o2g_header = "orf_id\\tgene_id\\ttranscript_id\\n"
+
+    # First pass: write the full catalogue, recording which rows qualify for the
+    # consensus view (>= min_callers distinct callers and >= min_samples samples).
+    consensus_rows = []
+    with open(cat_bed, "w") as bh, open(cat_tsv, "w") as th, open(o2g_tsv, "w") as oh:
         th.write(header)
-        cth.write(header)
-        oh.write("orf_id\\tgene_id\\ttranscript_id\\n")
-        coh.write("orf_id\\tgene_id\\ttranscript_id\\n")
+        oh.write(o2g_header)
         for idx, cluster in enumerate(clusters):
             rep = representative(cluster)
             stable_id = f"orf_{idx + 1:08d}"
@@ -265,15 +261,7 @@ def write_catalogue(prefix, clusters, bed_index, min_callers=1, min_samples=1):
 
             per_class_counts[rep.get("orf_class", "other")] += 1
 
-            # Consensus membership: distinct callers that flagged the cluster
-            # and distinct contributing samples must each meet the threshold.
-            n_callers = sum(1 for c in CALLERS if caller_cols[f"called_by_{c}"] == "1")
-            in_consensus = n_callers >= min_callers and len(sample_ids) >= min_samples
-            if in_consensus:
-                cth.write(row_line)
-                if bed_out:
-                    cbh.write(bed_out)
-
+            o2g_pairs = []
             seen_gt = set()
             for r in cluster:
                 key = (r.get("gene_id", ""), r.get("transcript_id", ""))
@@ -281,8 +269,25 @@ def write_catalogue(prefix, clusters, bed_index, min_callers=1, min_samples=1):
                     continue
                 seen_gt.add(key)
                 oh.write(f"{stable_id}\\t{key[0]}\\t{key[1]}\\n")
-                if in_consensus:
-                    coh.write(f"{stable_id}\\t{key[0]}\\t{key[1]}\\n")
+                o2g_pairs.append(key)
+
+            # Consensus membership: distinct callers that flagged the cluster
+            # and distinct contributing samples must each meet the threshold.
+            n_callers = sum(1 for c in CALLERS if caller_cols[f"called_by_{c}"] == "1")
+            if n_callers >= min_callers and len(sample_ids) >= min_samples:
+                consensus_rows.append((bed_out, row_line, stable_id, o2g_pairs))
+
+    # Second pass: the consensus view is the full catalogue restricted to the
+    # qualifying rows.
+    with open(con_bed, "w") as cbh, open(con_tsv, "w") as cth, open(con_o2g, "w") as coh:
+        cth.write(header)
+        coh.write(o2g_header)
+        for bed_out, row_line, stable_id, o2g_pairs in consensus_rows:
+            if bed_out:
+                cbh.write(bed_out)
+            cth.write(row_line)
+            for gid, tid in o2g_pairs:
+                coh.write(f"{stable_id}\\t{gid}\\t{tid}\\n")
 
     with open(mqc_tsv, "w") as mh:
         mh.write("# id: orf_catalogue\\n")
