@@ -4,8 +4,8 @@ process RIKER_MULTI {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9b1fa220679fac2077935260a88165214d8625b813ecb39cf129aecfba982c65/data' :
-        'community.wave.seqera.io/library/riker:0.2.0--aa377939e8395424' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/62ce363fc85eaa178522adfc3ddbc4a145d7a4136981e060151886e34e7a55d5/data' :
+        'community.wave.seqera.io/library/riker:0.3.0--56fa17ae2be0828f' }"
 
     input:
     tuple val(meta),  path(bam), path(bai), path(baits), path(targets)

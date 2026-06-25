@@ -1,5 +1,5 @@
-process DEACON_INDEX {
-    tag "$fasta"
+process DEACON_INDEXDIFF {
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -8,7 +8,8 @@ process DEACON_INDEX {
         'quay.io/biocontainers/deacon:0.15.0--hdd79491_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(index)      // main deacon .idx index file
+    tuple val(meta2), path(genome)    // a single fasta or .idx file to subtract from the main index
 
     output:
     tuple val(meta), path("*.idx"), emit: index
@@ -19,18 +20,20 @@ process DEACON_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.diff"
+
     """
     deacon \\
         index \\
-        build \\
-        --threads ${task.cpus} \\
-        $args \\
-        $fasta > ${prefix}.idx
+        diff \\
+        ${args} \\
+        ${index} \\
+        ${genome} \\
+        > ${prefix}.idx
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${fasta.baseName}"
+    def prefix = task.ext.prefix ?: "${meta.id}.diff"
     """
     touch ${prefix}.idx
     """
