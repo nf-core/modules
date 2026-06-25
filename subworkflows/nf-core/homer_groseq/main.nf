@@ -17,16 +17,13 @@ workflow HOMER_GROSEQ {
 
     main:
 
-    ch_versions = Channel.empty()
-
-    ch_uniqmap = Channel.empty()
+    ch_uniqmap = channel.empty()
 
     if (!uniqmap) {
         ch_uniqmap = []
     }
     else if (uniqmap.endsWith('.zip')) {
-        ch_uniqmap = UNZIP([[:], uniqmap]).unzipped_archive.map { it[1] }
-        ch_versions = ch_versions.mix(UNZIP.out.versions)
+        ch_uniqmap = UNZIP([[:], uniqmap]).unzipped_archive.map { index -> index[1] }
     }
     else {
         ch_uniqmap = uniqmap
@@ -36,30 +33,25 @@ workflow HOMER_GROSEQ {
     * Create a Tag Directory From The GRO-Seq experiment
     */
     HOMER_MAKETAGDIRECTORY(bam, fasta)
-    ch_versions = ch_versions.mix(HOMER_MAKETAGDIRECTORY.out.versions)
 
     /*
     * Creating UCSC Visualization Files
     */
     HOMER_MAKEUCSCFILE(HOMER_MAKETAGDIRECTORY.out.tagdir)
-    ch_versions = ch_versions.mix(HOMER_MAKEUCSCFILE.out.versions)
 
     /*
     * Find transcripts directly from GRO-Seq
     */
     HOMER_FINDPEAKS(HOMER_MAKETAGDIRECTORY.out.tagdir, ch_uniqmap)
-    ch_versions = ch_versions.mix(HOMER_FINDPEAKS.out.versions)
 
     /*
     * Convert peak file to bed file
     */
     HOMER_POS2BED(HOMER_FINDPEAKS.out.txt)
-    ch_versions = ch_versions.mix(HOMER_POS2BED.out.versions)
 
     emit:
     tagdir    = HOMER_MAKETAGDIRECTORY.out.tagdir // channel: [ val(meta), [ tagdir ] ]
     bed_graph = HOMER_MAKEUCSCFILE.out.bedGraph // channel: [ val(meta), [ tag_dir/*ucsc.bedGraph.gz ] ]
     peaks     = HOMER_FINDPEAKS.out.txt // channel: [ val(meta), [ *peaks.txt ] ]
     bed       = HOMER_POS2BED.out.bed // channel: [ val(meta), [ *peaks.txt ] ]
-    versions  = ch_versions // channel: [ versions.yml ]
 }

@@ -3,9 +3,9 @@ process TAXONKIT_LINEAGE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/taxonkit:0.18.0--h9ee0642_0':
-        'biocontainers/taxonkit:0.18.0--h9ee0642_0' }"
+        'quay.io/biocontainers/taxonkit:0.18.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), val(taxid), path(taxidfile)
@@ -38,7 +38,6 @@ process TAXONKIT_LINEAGE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv

@@ -3,9 +3,9 @@ process OPENMS_IDMASSACCURACY {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/openms:3.4.1--h81ffffe_1' :
-        'biocontainers/openms:3.4.1--h81ffffe_1' }"
+        'quay.io/biocontainers/openms:3.4.1--h81ffffe_1' }"
 
     input:
     tuple val(meta), path(mzmls), path(idxmls)
@@ -52,8 +52,6 @@ process OPENMS_IDMASSACCURACY {
     This module is no longer fit for purpose because not part of openms 3.5.0 version anymore
     """
     assert false: deprecation_message
-
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

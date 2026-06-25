@@ -81,7 +81,7 @@ output:
       - picard:
           type: string
           description: The tool name
-      - "picard CollectMultipleMetrics --version 2>&1 | sed -n 's/^Version:*//p'":
+      - "picard CollectMultipleMetrics --version 2>&1 | sed -n 's/.*Version://p'":
           type: string
           description: The command used to generate the version of the tool
 
@@ -93,7 +93,7 @@ topics:
       - picard:
           type: string
           description: The tool name
-      - "picard CollectMultipleMetrics --version 2>&1 | sed -n 's/^Version:*//p'":
+      - "picard CollectMultipleMetrics --version 2>&1 | sed -n 's/.*Version://p'":
           type: string
           description: The command used to generate the version of the tool
 

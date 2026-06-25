@@ -1,6 +1,6 @@
 include { BCFTOOLS_CONCAT } from '../../../modules/nf-core/bcftools/concat/main'
 include { BCFTOOLS_SORT   } from '../../../modules/nf-core/bcftools/sort/main'
-include { TABIX_TABIX     } from '../../../modules/nf-core/tabix/tabix/main'
+include { HTSLIB_BGZIPTABIX     } from '../../../modules/nf-core/htslib/bgziptabix/main'
 
 workflow VCF_GATHER_BCFTOOLS {
     take:
@@ -17,7 +17,7 @@ workflow VCF_GATHER_BCFTOOLS {
 
     ch_concat_input = ch_vcfs
         .map { meta, vcf, index, count ->
-            def missingKeys = arr_common_meta.findAll { key -> !(key in meta) }
+            def missingKeys = arr_common_meta.findAll { key -> !(key in meta.keySet()) }
             if (missingKeys) {
                 error("ERROR: Keys ${missingKeys} from arr_common_meta not found in meta. Available keys: ${meta.keySet()}")
             }
@@ -27,12 +27,9 @@ workflow VCF_GATHER_BCFTOOLS {
             [groupKey(newMeta, count), meta, vcf, index]
         }
         .groupTuple()
-        .ifEmpty {
-            error("ERROR: grouping operation resulted in an empty channel.")
-        }
         .branch { key, meta, vcf, index ->
             def cleanedMetas = meta.collect { m ->
-                m.findAll { k, v -> !(k in arr_common_meta) }
+                m.findAll { k, _v -> !(k in arr_common_meta) }
             }
             def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : meta[0]
             def out_tuple = [newMeta, vcf, index]
@@ -57,13 +54,17 @@ workflow VCF_GATHER_BCFTOOLS {
         ch_tabix_input = ch_vcf_concat
     }
 
-    TABIX_TABIX(ch_tabix_input)
+    HTSLIB_BGZIPTABIX(
+        ch_tabix_input.map { meta, vcf -> [meta, vcf, [], []] },
+        "compress",
+        true,
+        "vcf"
+    )
 
-    ch_vcf_index = ch_tabix_input
-        .join(TABIX_TABIX.out.index)
+    ch_vcf_index = HTSLIB_BGZIPTABIX.out.output.join(HTSLIB_BGZIPTABIX.out.index)
 
     emit:
-    vcf       = ch_vcf_concat         // channel: [ val(meta), [ vcf ] ]
-    index     = TABIX_TABIX.out.index // channel: [ val(meta), [ tbi or csi ] ]
-    vcf_index = ch_vcf_index          // channel: [ val(meta), [ vcf ], [ tbi or csi ] ]
+    vcf       = HTSLIB_BGZIPTABIX.out.output // channel: [ val(meta), [ vcf ] ]
+    index     = HTSLIB_BGZIPTABIX.out.index  // channel: [ val(meta), [ tbi or csi ] ]
+    vcf_index = ch_vcf_index                 // channel: [ val(meta), [ vcf ], [ tbi or csi ] ]
 }

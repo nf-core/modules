@@ -65,7 +65,7 @@ nextflow_process {
                 .combine(GAWK_NAME.out.output.map{ it[1] })
                 .combine(channel.of([
                     [], "chr22", "16570000", "16610000", "100", "10000",
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExists:true)
                 ]))
                 input[1] = [
                     [id: 'GRCh38'],

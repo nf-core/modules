@@ -3,7 +3,7 @@ process FORCE_TILEEXTENT {
     label 'process_single'
     stageInMode 'copy' // needed by the module to work properly when aoi is a shapefile
 
-    container "nf-core/force:3.8.01"
+    container "quay.io/nf-core/force:3.8.01"
 
     input:
     path aoi
@@ -21,14 +21,12 @@ process FORCE_TILEEXTENT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     """
     force-tile-extent -d tmp/ -a tile_allow.txt $aoi
     rm -r tmp
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch tile_allow.txt
     """

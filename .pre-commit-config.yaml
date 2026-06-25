@@ -3,60 +3,80 @@ repos:
     rev: "v3.1.0"
     hooks:
       - id: prettier
+        priority: 0
         entry: prettier --experimental-cli --write --ignore-unknown --no-cache
         exclude: |
           (?x)^(
               .*\.snap$
           )$
         additional_dependencies:
-          - prettier@3.8.1
+          - prettier@3.8.3
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
+        priority: 10
         args: [--markdown-linebreak-ext=md]
         exclude: |
           (?x)^(
               .*\.snap$
           )$
       - id: end-of-file-fixer
+        priority: 10
         exclude: |
           (?x)^(
               .*\.snap$
           )$
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.35.0
+    rev: 0.37.2
     hooks:
       - id: check-jsonschema
+        priority: 20
         name: "Match meta.ymls in one of the subdirectories of modules/nf-core"
         files: ^modules/nf-core/.*/meta\.yml$
         types: [yaml]
         args: ["--schemafile", "modules/yaml-schema.json"]
       - id: check-jsonschema
+        priority: 20
         name: "Validate environment.ymls against schema"
         files: ^modules/nf-core/.*/environment\.yml$
         types: [yaml]
         args: ["--schemafile", "modules/environment-schema.json"]
       - id: check-jsonschema
+        priority: 20
         name: "Match meta.ymls in one of the subdirectories of subworkflows/nf-core"
         files: ^subworkflows/nf-core/.*/meta\.yml$
         types: [yaml]
         args: ["--schemafile", "subworkflows/yaml-schema.json"]
       - id: check-github-workflows
+        priority: 20
 
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.14
+    rev: v0.15.13
     hooks:
-      - id: ruff
+      - id: ruff-check
+        priority: 10
         files: \.py$
         args: [--fix, --exit-non-zero-on-fix, "--select", "I,E1,E4,E7,E9,F,UP,N"] # sort imports and fix (rules taken from nf-core/tools)
       - id: ruff-format # formatter
-    # NOTE This runs with Docker instead of the binary. Hoping anyone messing with Dockerfiles has Docker installed
+        priority: 0
+  # NOTE This runs with Docker instead of the binary. Hoping anyone messing with Dockerfiles has Docker installed
   - repo: https://github.com/hadolint/hadolint
     rev: v2.14.0
     hooks:
       - id: hadolint-docker
+        priority: 0
         args: ["--failure-threshold", "error"]
+
+  - repo: https://github.com/seqeralabs/nf-lint-pre-commit
+    rev: v0.3.0
+    hooks:
+      - id: nextflow-lint
+        priority: 0
+        files: '\.nf$|nextflow\.config$'
+        args: ["-output", "json"]
+        # TODO add formatting at a later stage
+        # args: ["-format", "-sort-declarations", "-spaces", "4", "-harshil-alignment", "-output", "concise"]

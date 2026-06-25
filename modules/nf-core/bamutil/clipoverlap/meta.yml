@@ -1,6 +1,7 @@
 name: "bamutil_clipoverlap"
-description: clips overlapping read pairs. When two mates overlap, this tool will
-  clip the record's whose clipped region would have the lowest average quality.
+description: clips overlapping read pairs. When two mates overlap, this tool
+  will clip the record's whose clipped region would have the lowest average
+  quality.
 keywords:
   - bam
   - clipping
@@ -14,9 +15,9 @@ tools:
       documentation: "https://genome.sph.umich.edu/wiki/BamUtil:_clipOverlap"
       tool_dev_url: "https://github.com/statgen/bamUtil"
       doi: "10.1101/gr.176552.114"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:bamutil
-
 input:
   - - meta:
         type: map
@@ -27,7 +28,6 @@ input:
         type: file
         description: Coordinate/ReadName sorted BAM/SAM/uncompressedBAM file
         pattern: "*.{bam,sam,ubam}"
-
         ontologies: []
 output:
   bam:
@@ -52,14 +52,27 @@ output:
           description: basic overlap statistics when unabled with --stats
           pattern: "*.{log}"
           ontologies: []
+  versions_bamutil:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamutil:
+          type: string
+          description: The name of the tool
+      - "bam clipOverlap 2>&1 | grep '^Version:' | sed 's/^Version: //;s/;.*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamutil:
+          type: string
+          description: The name of the tool
+      - "bam clipOverlap 2>&1 | grep '^Version:' | sed 's/^Version: //;s/;.*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Y-Pei"
 maintainers:

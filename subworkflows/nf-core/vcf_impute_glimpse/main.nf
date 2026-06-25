@@ -17,8 +17,10 @@ workflow VCF_IMPUTE_GLIMPSE {
     if (chunk == true) {
         // Error if pre-defined chunks are provided when chunking is activated
         ch_chunks
-            .filter { _meta, regionin, regionout -> regionin.size() == 0 && regionout.size() == 0 }
-            .ifEmpty { error("ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking.") }
+            .filter { _meta, regionin, regionout -> regionin.size() > 0 || regionout.size() > 0 }
+            .subscribe {
+                error("ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking.")
+            }
 
         GLIMPSE_CHUNK(ch_ref)
 
@@ -31,9 +33,16 @@ workflow VCF_IMPUTE_GLIMPSE {
         .filter { _meta, regionin, regionout -> regionin.size() > 0 && regionout.size() > 0 }
         .ifEmpty { error("ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true.") }
 
+    ch_chunks_counts = ch_chunks
+        .groupTuple()
+        .map { metaPC, _regionins, regionouts ->
+            [metaPC, regionouts.size()]
+        }
+
     ch_chunks_panel_map = ch_chunks
         .combine(ch_ref, by: 0)
         .combine(ch_map, by: 0)
+        .combine(ch_chunks_counts, by: 0)
 
     ch_chunks_panel_map.ifEmpty {
         error("ERROR: join operation resulted in an empty channel. Please provide a valid ch_chunks and ch_map channel as input.")
@@ -41,12 +50,21 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     phase_input = ch_vcf
         .combine(ch_chunks_panel_map)
-        .map{ metaI, vcf, csi, sample, metaPC, regionin, regionout, ref, ref_index, _region, map -> [
-            metaI + metaPC + ["regionout": regionout],
-            vcf, csi, sample, // target input
-            regionin, regionout, // chunks
-            ref, ref_index, map // reference panel
-        ]}
+        .map{ metaI, vcf, csi, sample, metaPC, regionin, regionout, ref, ref_index, _region, map, region_size ->
+            def chr = regionout.tokenize(':')[0]
+            def region = regionout.tokenize(':')[1]
+            def start = region.tokenize('-')[0]
+            def end = region.tokenize('-')[1]
+            def paddedStart = String.format('%010d', start as long)
+            def paddedEnd = String.format('%010d', end as long)
+            def regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
+            [
+                metaI + metaPC + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
+                vcf, csi, sample, // target input
+                regionin, regionout, // chunks
+                ref, ref_index, map // reference panel
+            ]
+        }
 
     GLIMPSE_PHASE(phase_input)
 
@@ -55,15 +73,23 @@ workflow VCF_IMPUTE_GLIMPSE {
     // Ligate all phased files in one and index it
     ligate_input = GLIMPSE_PHASE.out.phased_variants
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.index,
             failOnMismatch: true,
             failOnDuplicate: true,
         )
         .map { meta, vcf, index ->
-            def keysToKeep = meta.keySet() - 'regionout'
-            [meta.subMap(keysToKeep), vcf, index]
+            def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
+            [
+                groupKey(meta.subMap(keysToKeep), meta.regionSize),
+                vcf, index
+            ]
         }
         .groupTuple()
+        .map { groupKeyObj, vcf, index ->
+            // Extract the actual meta from the groupKey
+            def meta = groupKeyObj.getGroupTarget()
+            [meta, vcf, index]
+        }
 
     GLIMPSE_LIGATE(ligate_input)
 
@@ -71,7 +97,7 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE_LIGATE.out.merged_variants.join(
-        BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
+        BCFTOOLS_INDEX_LIGATE.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
     )

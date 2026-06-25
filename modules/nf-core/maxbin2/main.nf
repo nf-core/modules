@@ -3,9 +3,9 @@ process MAXBIN2 {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/maxbin2:2.2.7--he1b5a44_2' :
-        'biocontainers/maxbin2:2.2.7--he1b5a44_2' }"
+        'quay.io/biocontainers/maxbin2:2.2.7--he1b5a44_2' }"
 
     input:
     tuple val(meta), path(contigs), path(reads), path(abund)
@@ -20,7 +20,7 @@ process MAXBIN2 {
     tuple val(meta), path("*.tooshort.gz"), emit: tooshort_fasta
     tuple val(meta), path("*_bin.tar.gz") , emit: marker_bins , optional: true
     tuple val(meta), path("*_gene.tar.gz"), emit: marker_genes, optional: true
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('maxbin2'), eval('run_MaxBin.pl -v | sed "1!d;s/MaxBin //"'), topic: versions, emit: versions_maxbin2
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,11 +50,6 @@ process MAXBIN2 {
         -out $prefix
 
     gzip *.fasta *.noclass *.tooshort *log *.marker
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        maxbin2: \$( run_MaxBin.pl -v | head -n 1 | sed 's/MaxBin //' )
-    END_VERSIONS
     """
 
     stub:
@@ -68,10 +63,5 @@ process MAXBIN2 {
     touch ${prefix}.summary
     echo "" | gzip > ${prefix}.tooshort.gz
     echo "" | gzip > ${prefix}.001.fasta.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        maxbin2: \$( run_MaxBin.pl -v | head -n 1 | sed 's/MaxBin //' )
-    END_VERSIONS
     """
 }

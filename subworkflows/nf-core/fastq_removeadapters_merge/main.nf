@@ -26,7 +26,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     ch_discarded_reads    = channel.empty() // from trimmomatic, trimgalore, leehom, fastp, adapterremoval
     ch_log                = channel.empty() // from trimmomatic, trimgalore, fastp
     ch_report             = channel.empty() // from trimmomatic, trimgalore, fastp
-    ch_versions           = channel.empty()
     ch_multiqc_files      = channel.empty() // from trimmomatic, cutadapt, bbduk, leehom, fastp, adapterremoval
 
     if (val_adapter_tool == "trimmomatic") {
@@ -53,7 +52,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         BBMAP_BBDUK( ch_input_reads, ch_custom_adapters_file )
 
         ch_processed_reads = BBMAP_BBDUK.out.reads
-        ch_versions        = ch_versions.mix(BBMAP_BBDUK.out.versions.first())
         ch_multiqc_files   = ch_multiqc_files.mix(BBMAP_BBDUK.out.log)
     } else if (val_adapter_tool == "leehom") {
         LEEHOM( ch_input_reads )
@@ -69,7 +67,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
                 }
             }
         ch_discarded_reads = ch_discarded_reads.mix(LEEHOM.out.fq_fail, LEEHOM.out.unmerged_r1_fq_fail, LEEHOM.out.unmerged_r2_fq_fail)
-        ch_versions        = ch_versions.mix(LEEHOM.out.versions.first())
         ch_multiqc_files   = ch_multiqc_files.mix(LEEHOM.out.log)
     } else if (val_adapter_tool == "fastp") {
         FASTP(
@@ -122,7 +119,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
             ch_processed_reads = ADAPTERREMOVAL_PE.out.paired_truncated.mix(ADAPTERREMOVAL_SE.out.singles_truncated)
         }
         ch_discarded_reads    = ch_discarded_reads.mix(ADAPTERREMOVAL_SE.out.discarded, ADAPTERREMOVAL_PE.out.discarded)
-        ch_versions           = ch_versions.mix(ADAPTERREMOVAL_SE.out.versions.first(), ADAPTERREMOVAL_PE.out.versions.first())
         ch_multiqc_files      = ch_multiqc_files.mix(ADAPTERREMOVAL_PE.out.settings, ADAPTERREMOVAL_SE.out.settings)
     } else {
         error('Please choose one of the available adapter removal and merging tools: ["trimmomatic", "cutadapt", "trimgalore", "bbduk", "leehom", "fastp", "adapterremoval"]')
@@ -133,6 +129,5 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     discarded_reads    = ch_discarded_reads    // channel: [ val(meta), [ fastq.gz ] ]
     logfile            = ch_log                // channel: [ val(meta), [ {log,txt} ] ]
     report             = ch_report             // channel: [ val(meta), [ {summary,html,zip} ] ]
-    versions           = ch_versions           // channel: [ versions.yml ]
     multiqc_files      = ch_multiqc_files
 }

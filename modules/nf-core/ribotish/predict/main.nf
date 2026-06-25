@@ -3,9 +3,9 @@ process RIBOTISH_PREDICT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ribotish:0.2.7--pyhdfd78af_0':
-        'biocontainers/ribotish:0.2.7--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ribotish:0.2.8--pyhdfd78af_0':
+        'quay.io/biocontainers/ribotish:0.2.8--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam_ribo), path(bai_ribo)
@@ -14,12 +14,13 @@ process RIBOTISH_PREDICT {
     tuple val(meta4), path(candidate_orfs)
     tuple val(meta5), path(para_ribo)
     tuple val(meta6), path(para_ti)
+    tuple val(meta7), path(reference_gtf, stageAs: 'secondary.gtf')
 
     output:
     tuple val(meta), path("*_pred.txt")        , emit: predictions
     tuple val(meta), path("*_all.txt")         , emit: all
     tuple val(meta), path("*_transprofile.py") , emit: transprofile
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('ribotish'), eval("ribotish --version | sed 's/ribotish //'"), topic: versions, emit: versions_ribotish
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,6 +28,7 @@ process RIBOTISH_PREDICT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference_gtf_arg = reference_gtf ? "-a ${reference_gtf}" : ''
 
     ribo_bam_cmd = ''
     ti_bam_cmd = ''
@@ -48,29 +50,19 @@ process RIBOTISH_PREDICT {
         $ti_bam_cmd \\
         -f $fasta \\
         -g $gtf \\
+        $reference_gtf_arg \\
         -o ${prefix}_pred.txt \\
         --allresult ${prefix}_all.txt \\
         --transprofile ${prefix}_transprofile.py \\
         -p $task.cpus \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ribotish: \$(ribotish --version | sed 's/ribotish //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_pred.txt
     touch ${prefix}_all.txt
     touch ${prefix}_transprofile.py
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ribotish: \$(ribotish --version | sed 's/ribotish //')
-    END_VERSIONS
     """
 }

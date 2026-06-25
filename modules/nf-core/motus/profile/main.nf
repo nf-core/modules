@@ -3,9 +3,9 @@ process MOTUS_PROFILE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/motus:3.1.0--pyhdfd78af_0':
-        'biocontainers/motus:3.1.0--pyhdfd78af_0' }"
+        'quay.io/biocontainers/motus:3.1.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -55,14 +55,7 @@ process MOTUS_PROFILE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def inputs = reads[0].getExtension() == 'bam' ?
-                    "-i ${reads}" :
-                    reads[0].getExtension() == 'mgc' ? "-m $reads" :
-                        meta.single_end ?
-                            "-s $reads" : "-f ${reads[0]} -r ${reads[1]}"
-    def refdb = db ? "-db ${db}" : ""
     """
     touch ${prefix}.out
     touch ${prefix}.log

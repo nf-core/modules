@@ -3,9 +3,9 @@ process ISOSEQ_REFINE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/isoseq:4.0.0--h9ee0642_0' :
-        'biocontainers/isoseq:4.0.0--h9ee0642_0' }"
+        'quay.io/biocontainers/isoseq:4.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -17,7 +17,7 @@ process ISOSEQ_REFINE {
     tuple val(meta), path("*.consensusreadset.xml")      , emit: consensusreadset
     tuple val(meta), path("*.filter_summary.report.json"), emit: summary
     tuple val(meta), path("*.report.csv")                , emit: report
-    path  "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('isoseq'), eval("isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\\+//'"), emit: versions_isoseq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,26 +33,15 @@ process ISOSEQ_REFINE {
         $bam \\
         $primers \\
         ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        isoseq: \$( isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\\+//' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch dummy.bam
-    touch dummy.bam.pbi
-    touch dummy.consensusreadset.xml
-    touch dummy.filter_summary.report.json
-    touch dummy.report.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        isoseq: \$( isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\\+//' )
-    END_VERSIONS
+    touch ${prefix}.bam
+    touch ${prefix}.bam.pbi
+    touch ${prefix}.consensusreadset.xml
+    touch ${prefix}.filter_summary.report.json
+    touch ${prefix}.report.csv
     """
 }

@@ -41,8 +41,7 @@ nextflow_workflow {
                     workflow.out.seqfu_stats,
                     workflow.out.seqfu_multiqc,
                     workflow.out.seqkit_stats,
-                    workflow.out.seqtk_stats,
-                    workflow.out.versions
+                    workflow.out.seqtk_stats
                 ).match() }
             )
         }
@@ -103,8 +102,7 @@ nextflow_workflow {
                     workflow.out.seqfu_stats,
                     workflow.out.seqfu_multiqc,
                     workflow.out.seqkit_stats,
-                    workflow.out.seqtk_stats,
-                    workflow.out.versions
+                    workflow.out.seqtk_stats
                 ).match() }
             )
         }
@@ -132,10 +130,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }.unique()
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -165,10 +160,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }.unique()
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }

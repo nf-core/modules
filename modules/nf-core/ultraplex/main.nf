@@ -3,9 +3,9 @@ process ULTRAPLEX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ultraplex:1.2.9--py39hf95cd2a_1' :
-        'biocontainers/ultraplex:1.2.9--py39hf95cd2a_1' }"
+        'quay.io/biocontainers/ultraplex:1.2.9--py39hf95cd2a_1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -49,7 +49,6 @@ process ULTRAPLEX {
 
     stub:
     def VERSION = "1.2.5" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def args    = task.ext.args ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ultraplex_${prefix}_Sample1_Fwd_matched.fastq.gz

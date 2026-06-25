@@ -16,6 +16,11 @@ tools:
       documentation: http://manpages.ubuntu.com/manpages/impish/man1/ktImportTaxonomy.1.html
       tool_dev_url: https://github.com/marbl/Krona
       doi: 10.1186/1471-2105-12-385
+      publication:
+        author: "Ondov B.D., Bergman N.H. & Phillippy A.M."
+        year: 2011
+        title: "Interactive metagenomic visualization in a Web browser"
+        source: "BMC Bioinformatics"
       licence: ["https://raw.githubusercontent.com/marbl/Krona/master/KronaTools/LICENSE.txt"]
       identifier: biotools:krona
 input:
@@ -46,13 +51,27 @@ output:
           description: A html file containing an interactive krona plot.
           pattern: "*.{html}"
           ontologies: []
+  versions_krona:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krona:
+          type: string
+          description: The name of the tool
+      - ktImportText | grep -Po '(?<=KronaTools )[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krona:
+          type: string
+          description: The name of the tool
+      - ktImportText | grep -Po '(?<=KronaTools )[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jianhong"
 maintainers:

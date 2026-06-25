@@ -14,18 +14,20 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                   [id: 'test'],
-                   file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
                 ])
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot ( process.out.versions ).match() },
-                { assert file(process.out.html.get(0).get(1)).exists() }
+                { assert snapshot(
+                    file(process.out.html[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
     }
@@ -37,17 +39,17 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                   [id: 'test'],
-                   file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
                 ])
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

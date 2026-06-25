@@ -3,9 +3,9 @@ process QUANTMSUTILS_DIANNCFG {
     label 'process_tiny'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/quantms-utils:0.0.23--pyh7e72e81_0' :
-        'biocontainers/quantms-utils:0.0.23--pyh7e72e81_0' }"
+        'quay.io/biocontainers/quantms-utils:0.0.23--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), val(enzyme), val(fixed_modifications), val(variable_modifications)
@@ -35,8 +35,6 @@ process QUANTMSUTILS_DIANNCFG {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-
     """
     echo "--cut K*,R*,!*P --fixed-mod Carbamidomethyl,57.021464,C --var-mod Oxidation,15.994915,M" > diann_config.cfg
     touch GENERATE_DIANN_CFG.log

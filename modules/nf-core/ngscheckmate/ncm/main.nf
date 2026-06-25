@@ -2,14 +2,14 @@ process NGSCHECKMATE_NCM {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.1--py312pl5321h577a1d6_4'
-        : 'biocontainers/ngscheckmate:1.0.1--py312pl5321h577a1d6_4'}"
+        : 'quay.io/biocontainers/ngscheckmate:1.0.1--py312pl5321h577a1d6_4'}"
 
     input:
     tuple val(meta), path(files)
     tuple val(meta2), path(snp_bed)
-    tuple val(meta3), path(fasta)
+    tuple val(meta3), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*_corr_matrix.txt"), emit: corr_matrix

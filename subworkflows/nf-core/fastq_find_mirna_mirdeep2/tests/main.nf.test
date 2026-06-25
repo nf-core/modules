@@ -28,6 +28,7 @@ nextflow_workflow {
                     [ id:'genome' ], // meta map
                     file('https://github.com/nf-core/test-datasets/raw/smrnaseq/reference/genome.fa', checkIfExists: true)
                 ]
+                input[1] = ''
                 """
             }
         }

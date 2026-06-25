@@ -3,9 +3,9 @@ process VAMB_BIN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vamb:5.0.4--pyhdfd78af_0':
-        'biocontainers/vamb:5.0.4--pyhdfd78af_0' }"
+        'quay.io/biocontainers/vamb:5.0.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(assembly), path(abundance_tsv), path(bams, stageAs: "bams/*"), path(taxonomy)
@@ -20,7 +20,7 @@ process VAMB_BIN {
     tuple val(meta), path("${prefix}/abundance.npz")             , emit: abundance
     tuple val(meta), path("${prefix}/composition.npz")           , emit: composition
     tuple val(meta), path("${prefix}/log.txt")                   , emit: log
-    path "versions.yml"                                          , emit: versions
+    tuple val("${task.process}"), val('vamb'), eval("vamb --version | sed 's/Vamb //'"), emit: versions_vamb, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,25 +44,23 @@ process VAMB_BIN {
         ${tax_input} \\
         ${args}
 
-    find ${prefix}/bins -name "*.fna" -exec gzip {} \\;
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vamb: \$(vamb --version | sed 's/Vamb //')
-    END_VERSIONS
+    find ${prefix}/bins -maxdepth 1 -name "*.fna" -type f | while read file; do
+        newname="${prefix}/bins/${prefix}.\$(basename "\$file")"
+        mv "\$file" "\$newname"
+        gzip "\$newname"
+    done
     """
 
     stub:
     if(bams && abundance_tsv) {
         error("ERROR: Both bams and abundance TSV supplied to Vamb! Please only supply one.")
     }
-    def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/bins
 
-    echo "" | gzip > ${prefix}/bins/1.fna.gz
-    echo "" | gzip > ${prefix}/bins/2.fna.gz
+    echo "" | gzip > ${prefix}/bins/${prefix}.1.fna.gz
+    echo "" | gzip > ${prefix}/bins/${prefix}.2.fna.gz
 
     touch ${prefix}/results_taxometer.tsv
     touch ${prefix}/predictor_model.pt
@@ -74,10 +72,5 @@ process VAMB_BIN {
     touch ${prefix}/abundance.npz
     touch ${prefix}/composition.npz
     touch ${prefix}/log.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vamb: \$(vamb --version | sed 's/Vamb //')
-    END_VERSIONS
     """
 }

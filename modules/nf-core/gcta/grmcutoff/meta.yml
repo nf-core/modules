@@ -1,0 +1,86 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_grmcutoff"
+description: Apply a genetic relationship cutoff to a dense GRM using `gcta --grm-cutoff`
+keywords:
+  - gcta
+  - genome-wide complex trait analysis
+  - grm
+  - genetic relationship matrix
+  - genetics
+tools:
+  - "gcta":
+      description: "Genome-wide Complex Trait Analysis (GCTA) estimates genetic relationships, variance components, and association statistics from genome-wide data."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://yanglab.westlake.edu.cn/software/gcta/"
+      licence: ["GPL-3.0-only"]
+      identifier: "biotools:gcta"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing dense GRM metadata.
+          `meta.id` is the required GRM basename consumed by `--grm` and must match
+          the staged dense GRM files.
+          e.g. `[ id:'tiny_dense' ]` requires
+          `tiny_dense.grm.id`, `tiny_dense.grm.bin`, and `tiny_dense.grm.N.bin`.
+    - grm_files:
+        type: file
+        description: Dense GRM file bundle with basename `${meta.id}`
+        pattern: "*.grm.*"
+        ontologies: []
+  - cutoff:
+      type: float
+      description: Genetic relationship cutoff value passed to `gcta --grm-cutoff`.
+
+output:
+  grm_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing dense GRM metadata.
+            `meta.id` remains the dense-GRM basename contract used for `--grm`.
+      - "${prefix}.grm.*":
+          type: file
+          description: Relatedness-filtered GRM file bundle
+          pattern: "${prefix}.grm.*"
+          ontologies: []
+  keep_file:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing dense GRM metadata.
+            `meta.id` remains the dense-GRM basename contract used for `--grm`.
+      - "${prefix}.grm.id":
+          type: file
+          description: Keep file of unrelated individuals emitted by GCTA
+          pattern: "${prefix}.grm.id"
+          ontologies: []
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the version was collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"

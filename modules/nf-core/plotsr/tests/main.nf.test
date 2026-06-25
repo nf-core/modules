@@ -44,12 +44,12 @@ nextflow_process {
             script "../../syri"
             process {
                 """
-                def genome2_cleanid     = file('genome2_cleanid.fasta')
-                genome2_cleanid.text    = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true).text.replace(/>chr22:16600000-16800000/, '>chr22')
+                def genome2_cleanid_2     = file('genome2_cleanid.fasta')
+                genome2_cleanid_2.text    = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true).text.replace(/>chr22:16600000-16800000/, '>chr22')
 
                 input[0] = MINIMAP2_ALIGN.out.bam
                 input[1] = [ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
-                input[2] = [ [], genome2_cleanid ]
+                input[2] = [ [], genome2_cleanid_2 ]
                 input[3] = 'B'
                 """
             }
@@ -61,10 +61,10 @@ nextflow_process {
         when {
             process {
                 """
-                def genome2_cleanid     = file('genome2_cleanid.fasta')
+                def genome2_cleanid_3     = file('genome2_cleanid.fasta')
                 def fastas              = [
                     [ [ id: 'test']         , file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ],
-                    [ [ id: 'reference' ]   , genome2_cleanid ]
+                    [ [ id: 'reference' ]   , genome2_cleanid_3 ]
                 ]
                 def genome_header_txt   = "#file	name	tags\\n"
                 def genomes             = file('genomes.txt')
@@ -103,10 +103,10 @@ nextflow_process {
         when {
             process {
                 """
-                def genome2_cleanid     = file('genome2_cleanid.fasta')
-                def fastas              = [
+                def genome2_cleanid_3     = file('genome2_cleanid.fasta')
+                def fastas                = [
                     [ [ id: 'test']         , file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ],
-                    [ [ id: 'reference' ]   , genome2_cleanid ]
+                    [ [ id: 'reference' ]   , genome2_cleanid_3 ]
                 ]
                 def genome_header_txt   = "#file	name	tags\\n"
                 def genomes             = file('genomes.txt')

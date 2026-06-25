@@ -60,6 +60,17 @@ output:
           description: Summary of all sequence files analyzed
           pattern: "*-busco.batch_summary.txt"
           ontologies: []
+  batch_summary_failed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*-busco.batch_summary.failed.txt":
+          type: file
+          description: Batch summary lines indicating BUSCO run failures
+          pattern: "*-busco.batch_summary.failed.txt"
+          ontologies: []
   short_summaries_txt:
     - - meta:
           type: map

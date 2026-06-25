@@ -56,6 +56,7 @@ nextflow_workflow {
                 input[9]  = 'A'
                 input[10] = null
                 input[11] = null
+                input[12] = false
                 """
             }
         }
@@ -73,7 +74,7 @@ nextflow_workflow {
                         workflow.out.counts_transcript,
                         workflow.out.tpm_gene,
                         workflow.out.tpm_transcript,
-                        workflow.out.versions
+                        workflow.out.tx2gene_augmented
                     ).match()
                 }
             )
@@ -120,6 +121,7 @@ nextflow_workflow {
                 input[9]  = null
                 input[10] = []
                 input[11] = []
+                input[12] = false
                 """
             }
         }
@@ -136,7 +138,7 @@ nextflow_workflow {
                         workflow.out.lengths_transcript,
                         workflow.out.tpm_gene,
                         workflow.out.tpm_transcript,
-                        workflow.out.versions
+                        workflow.out.tx2gene_augmented
                     ).match()
                 }
             )
@@ -183,6 +185,7 @@ nextflow_workflow {
                 input[9]  = 'A'
                 input[10] = null
                 input[11] = null
+                input[12] = false
                 """
             }
         }
@@ -237,6 +240,7 @@ nextflow_workflow {
                 input[9]  = null
                 input[10] = []
                 input[11] = []
+                input[12] = false
                 """
             }
         }

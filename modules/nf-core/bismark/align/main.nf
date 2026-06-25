@@ -3,7 +3,7 @@ process BISMARK_ALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/38e61d14ccaed82f60c967132963eb467d0fa4bccb7a21404c49b4f377735f03/data' :
         'community.wave.seqera.io/library/bismark:0.25.1--1f50935de5d79c47' }"
 
@@ -16,7 +16,7 @@ process BISMARK_ALIGN {
     tuple val(meta), path("*bam")       , emit: bam
     tuple val(meta), path("*report.txt"), emit: report
     tuple val(meta), path("*fq.gz")     , emit: unmapped, optional: true
-    tuple val("${task.process}"), val("bismark"), eval('bismark --version | grep Version | sed -e "s/Bismark Version: v//" | xargs'), topic: versions, emit: versions_bismark
+    tuple val("${task.process}"), val("bismark"), eval("bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), topic: versions, emit: versions_bismark
 
     when:
     task.ext.when == null || task.ext.when

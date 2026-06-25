@@ -3,9 +3,9 @@ process IGVREPORTS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/igv-reports:1.12.0--pyh7cba7a3_0':
-        'biocontainers/igv-reports:1.12.0--pyh7cba7a3_0' }"
+        'quay.io/biocontainers/igv-reports:1.12.0--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(sites), path(tracks), path(tracks_indices)
@@ -13,7 +13,7 @@ process IGVREPORTS {
 
     output:
     tuple val(meta), path("*.html") , emit: report
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("igvreports"), eval("python -c 'import igv_reports; print(igv_reports.__version__)'"), topic: versions, emit: versions_igvreports
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process IGVREPORTS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_opt = fasta ? "--fasta ${fasta}" : ""
     // If tracks is not null, create a string of the track paths
-    def track_arg = tracks ? "--tracks "+ tracks.collect { it.toString() }.join(' ') : ""
+    def track_arg = tracks ? "--tracks "+ tracks.collect { track -> track.toString() }.join(' ') : ""
     // if "--tracks" is in the args, then add track_string immediately after it in
     // the args string and set the track_arg to ""
     if (args.contains("--tracks") && track_arg) {
@@ -32,27 +32,16 @@ process IGVREPORTS {
     }
 
     """
-    create_report $sites \
-    $args \
-    $fasta_opt \
-    $track_arg \
-    --output ${prefix}_report.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        igvreports: \$(python -c "import igv_reports; print(igv_reports.__version__)")
-    END_VERSIONS
+    create_report ${sites} \\
+        ${args} \\
+        ${fasta_opt} \\
+        ${track_arg} \\
+        --output ${prefix}_report.html
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_report.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        igvreports: \$(python -c "import igv_reports; print(igv_reports.__version__)")
-    END_VERSIONS
     """
 }

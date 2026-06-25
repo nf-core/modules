@@ -1,5 +1,6 @@
 name: "gffcompare"
-description: Compare, merge, annotate and estimate accuracy of generated gtf files
+description: Compare, merge, annotate and estimate accuracy of generated gtf
+  files
 keywords:
   - transcripts
   - gtf
@@ -12,7 +13,8 @@ tools:
       documentation: "http://ccb.jhu.edu/software/stringtie/gffcompare.shtml"
       tool_dev_url: "https://github.com/gpertea/gffcompare"
       doi: "10.12688/f1000research.23297.1"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:gffcompare
 input:
   - - meta:
@@ -140,13 +142,27 @@ output:
             This file matches transcripts up between samples
           pattern: "*.tracking"
           ontologies: []
+  versions_gffcompare:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gffcompare:
+          type: string
+          description: The name of the tool
+      - gffcompare --version 2>&1 | sed "s/gffcompare v//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gffcompare:
+          type: string
+          description: The name of the tool
+      - gffcompare --version 2>&1 | sed "s/gffcompare v//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jemten"
 maintainers:

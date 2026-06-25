@@ -3,7 +3,7 @@ process VARSCAN_PROCESSSOMATIC {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed57a091507c62e990bbd08d532281d161d99f060316e0a991791f167d7b1daf/data':
         'community.wave.seqera.io/library/htslib_varscan:24b3b3db2ca78de8' }"
 
@@ -24,7 +24,6 @@ process VARSCAN_PROCESSSOMATIC {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     bgzip -d $vcf
 
@@ -41,17 +40,14 @@ process VARSCAN_PROCESSSOMATIC {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_name = vcf.baseName.replace(".vcf", "")
     """
-    echo $args
-
-    echo "" | gzip > ${prefix}.Germline.vcf.gz
-    echo "" | gzip > ${prefix}.Germline.hc.vcf.gz
-    echo "" | gzip > ${prefix}.Somatic.vcf.gz
-    echo "" | gzip > ${prefix}.Somatic.hc.vcf.gz
-    echo "" | gzip > ${prefix}.LOH.vcf.gz
-    echo "" | gzip > ${prefix}.LOH.hc.vcf.gz
+    echo "" | gzip > ${output_name}.Germline.vcf.gz
+    echo "" | gzip > ${output_name}.Germline.hc.vcf.gz
+    echo "" | gzip > ${output_name}.Somatic.vcf.gz
+    echo "" | gzip > ${output_name}.Somatic.hc.vcf.gz
+    echo "" | gzip > ${output_name}.LOH.vcf.gz
+    echo "" | gzip > ${output_name}.LOH.hc.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
