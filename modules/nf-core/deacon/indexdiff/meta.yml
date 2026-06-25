@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "deacon_index"
-description: Create deacon index for reference genome
+name: "deacon_indexdiff"
+description: Subtract minimizers in deacon index (or fasta file) from another index (A - B)
 keywords:
   - index
   - fasta
@@ -17,27 +17,39 @@ tools:
       doi: "10.1093/bioinformatics/btae004"
       licence: ["MIT"]
       identifier: "biotools:deacon"
-
 input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing reference information.
+          Groovy Map containing reference index information.
           e.g. [ id:'test', single_end:false ]
-    - fasta:
+    - index:
         type: file
-        description: Input genome fasta file
-        pattern: "*.{fasta,fasta.gz,fas,fas.gz,fa,fa.gz,fna,fna.gz}"
+        description: |
+          Deacon .idx index file to perform the diff operation on
+        pattern: "*.idx"
         ontologies:
+          - edam: "http://edamontology.org/data_3210" # Genome index
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing metadata for the genome to subtract from the index (deacon .idx index or fasta file).
+          e.g. [ id:'genome' ]
+    - genome:
+        type: file
+        description: |
+          A single .idx or fasta file to subtract from the main reference index.
+        pattern: "*.{idx,fasta,fasta.gz,fas,fas.gz,fa,fa.gz,fna,fna.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/data_3210" # Genome index
           - edam: "http://edamontology.org/data_2044" # Sequence
           - edam: "http://edamontology.org/format_1929" # FASTA
-
 output:
   index:
     - - meta:
           type: map
           description: |
-            Groovy Map containing reference information.
+            Groovy Map containing reference index information.
             e.g. [ id:'test', single_end:false ]
       - "*.idx":
           type: file
@@ -55,7 +67,6 @@ output:
       - deacon --version | head -n1 | sed "s/deacon //g":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -68,7 +79,4 @@ topics:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
-  - "@mberacochea"
-maintainers:
-  - "@mberacochea"
   - "@pmoris"
