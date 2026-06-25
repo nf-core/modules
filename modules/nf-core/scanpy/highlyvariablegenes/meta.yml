@@ -1,0 +1,72 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: scanpy_highlyvariablegenes
+description: Identify highly variable genes in single-cell RNA-seq data using Scanpy
+keywords:
+  - highly-variable-genes
+  - hvgs
+  - feature-selection
+  - scanpy
+  - single-cell
+tools:
+  - scanpy:
+      description: Single-Cell Analysis in Python
+      homepage: https://scanpy.readthedocs.io
+      documentation: https://scanpy.readthedocs.io/en/stable/api/generated/scanpy.pp.highly_variable_genes.html
+      tool_dev_url: https://github.com/scverse/scanpy
+      doi: 10.1186/s13059-017-1382-0
+      licence: ["BSD-3-Clause"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - h5ad:
+        type: file
+        description: AnnData object in h5ad format with raw counts in `.X`
+        pattern: "*.{h5ad}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5 format
+  - - n_hvgs:
+        type: integer
+        description: |
+          Number of highly variable genes to select
+          If 0, scanpy will automatically determine the number
+
+output:
+  - h5ad:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.h5ad":
+          type: file
+          description: AnnData object filtered to highly variable genes
+          pattern: "*.h5ad"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5 format
+  - var:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.pkl":
+          type: file
+          description: Pickle file containing highly variable genes information
+          pattern: "*.pkl"
+          ontologies:
+            - edam: "http://edamontology.org/format_3553" # Pickle format
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@nictru"
+maintainers:
+  - "@nictru"
