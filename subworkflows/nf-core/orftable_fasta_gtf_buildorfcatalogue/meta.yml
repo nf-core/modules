@@ -95,6 +95,20 @@ output:
       description: |
         MultiQC custom-content sidecar (per-class ORF counts).
         Structure: [ val(meta), path(tsv) ]
+  - consensus_bed12:
+      description: |
+        Consensus view of the merged catalogue as BED12 (ORFs meeting the
+        merger's --min-callers / --min-samples thresholds; identical to the
+        full catalogue at the defaults of 1/1).
+        Structure: [ val(meta), path(bed12) ]
+  - consensus_tsv:
+      description: |
+        Consensus-filtered per-ORF table, same columns as the full catalogue.
+        Structure: [ val(meta), path(tsv) ]
+  - consensus_orf_to_gene_tsv:
+      description: |
+        ORF-to-gene mapping restricted to the consensus-filtered ORFs.
+        Structure: [ val(meta), path(tsv) ]
 authors:
   - "@pinin4fjords"
 maintainers:
