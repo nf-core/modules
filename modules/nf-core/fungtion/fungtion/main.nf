@@ -28,6 +28,10 @@ process FUNGTION_FUNGTION {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # Without this, the pipeline exit status can become tee's exit status,
+    # which can mask a failing fungtion command.
+    set -o pipefail
+
     fungtion \\
         $args \\
         --fasta ${fasta} \\
@@ -35,7 +39,7 @@ process FUNGTION_FUNGTION {
         --prefix ${prefix} \\
         --pretrain ${pretrain}/esm1b_t33_650M_UR50S.pt \\
         --device cpu \\
-        1> ${prefix}.log
+        | tee ${prefix}.log
     """
 
     stub:
