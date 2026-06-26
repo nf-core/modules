@@ -23,7 +23,6 @@ process NUMORPH_3DUNET {
     """
     echo "Checking GPU access:"
     nvidia-smi
-
     mkdir -p ${prefix}
     img_dir=\$(readlink -f ${img_directory})
 
