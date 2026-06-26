@@ -1,0 +1,94 @@
+name: "cellpheno_nis"
+description: 3D nuclei instance segmentation of whole-brain lightsheet
+  microscopy tiles using a 2D U-Net + flow + GNN gap-stitching pipeline
+keywords:
+  - lightsheet microscopy
+  - nuclei segmentation
+  - instance segmentation
+  - 3D
+  - whole brain
+tools:
+  - "cellpheno_nis":
+      description: "C++/LibTorch executable that segments 3D nuclei instances from a
+        stack of 2D lightsheet image slices. Runs a 2D U-Net per slice, converts 2D
+        flows to 3D, follows flows to obtain instances per depth-chunk, and stitches
+        instances across chunk gaps with a GNN."
+      homepage: "https://github.com/Chrisa142857/Lightsheet_microscopy_image_3D_nuclei_instance_segmentation"
+      documentation: "https://github.com/Chrisa142857/Lightsheet_microscopy_image_3D_nuclei_instance_segmentation/blob/main/cpp/README.md"
+      tool_dev_url: "https://github.com/Chrisa142857/Lightsheet_microscopy_image_3D_nuclei_instance_segmentation"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information. `id` is used as the brain/tile
+          tag and output prefix.
+          e.g. `[ id:'test_brain' ]`
+    - tile_dir:
+        type: directory
+        description: |
+          Directory holding the ordered 2D image slices of a single tile
+          (e.g. `*_C1_*.ome.tif`), sorted by slice index.
+  - models:
+      type: directory
+      description: |
+        Directory containing the TorchScript `.pt` models required by NIS:
+        `nis_unet_cpu.pt`, `grad_2Dto3D_<device>.pt`,
+        `gnn_message_passing_<device>.pt`, `gnn_classifier_<device>.pt`,
+        `flow_3DtoSeed.pt`.
+output:
+  nis:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test_brain' ]`
+      - "*_NIScpp_results_*.zip":
+          type: file
+          description: |
+            Per depth-chunk pickled tensors with the instance segmentation
+            results: `*_seg_meta.zip` (chunk shape), `*_binary_mask.zip`,
+            `*_instance_center.zip`, `*_instance_coordinate.zip`,
+            `*_instance_label.zip`, `*_instance_volume.zip`.
+          pattern: "*_NIScpp_results_zmin*_*.zip"
+          ontologies: []
+  remap:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test_brain' ]`
+      - "*_remap.zip":
+          type: file
+          description: |
+            Pickled tensor of GNN gap-stitching label remaps between consecutive
+            depth chunks. Absent when fewer than two chunks contain instances.
+          pattern: "*_remap.zip"
+          ontologies: []
+  versions_cellpheno_nis:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "cellpheno_nis":
+          type: string
+          description: The name of the tool
+      - "cat /usr/local/share/cellpheno-nis/VERSION":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "cellpheno_nis":
+          type: string
+          description: The name of the tool
+      - "cat /usr/local/share/cellpheno-nis/VERSION":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Chrisa142857"
+maintainers:
+  - "@Chrisa142857"
