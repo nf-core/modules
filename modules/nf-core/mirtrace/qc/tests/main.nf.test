@@ -44,7 +44,7 @@ nextflow_process {
                 { assert snapshot(process.out.all_fa).match("all_fa") },
 
                 // Check versions
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }) },
 
             )
         }
@@ -120,6 +120,9 @@ nextflow_process {
                 // Check FASTA files
                 { assert snapshot(process.out.rnatype_unknown_fa).match("rnatype_unknown_fa_config") },
                 { assert snapshot(process.out.all_fa).match("all_fa_config") },
+
+                // Check versions
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }) },
 
             )
         }
