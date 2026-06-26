@@ -1,0 +1,75 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ferrohgvs_normalize"
+description: Normalize HGVS variant descriptions to canonical form with ferro
+keywords:
+  - hgvs
+  - variant
+  - normalize
+  - nomenclature
+  - canonical
+tools:
+  - "ferrohgvs":
+      description: "A Rust library and CLI for parsing, validating, and normalizing HGVS variant descriptions."
+      homepage: "https://github.com/fulcrumgenomics/ferro-hgvs"
+      documentation: "https://github.com/fulcrumgenomics/ferro-hgvs"
+      tool_dev_url: "https://github.com/fulcrumgenomics/ferro-hgvs"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - variants:
+        type: file
+        description: Text file of HGVS variant descriptions, one per line
+        pattern: "*.{txt,tsv}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'reference' ]
+    - reference:
+        type: directory
+        description: |
+          Optional reference data directory produced by `ferro prepare`. If omitted,
+          normalization uses the built-in provider for basic single-exon variants.
+output:
+  normalized:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "${prefix}.${suffix}":
+          type: file
+          description: Normalized variants (text or JSON), one record per input variant
+          pattern: "*.{txt,json}"
+          ontologies: []
+  versions_ferrohgvs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ferrohgvs:
+          type: string
+          description: The name of the tool
+      - ferro --version | sed 's/^ferro //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ferrohgvs:
+          type: string
+          description: The name of the tool
+      - ferro --version | sed 's/^ferro //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
