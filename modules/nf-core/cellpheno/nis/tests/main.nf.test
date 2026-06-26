@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process CELLPHENO_NIS"
+    script "../main.nf"
+    process "CELLPHENO_NIS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellpheno"
+    tag "cellpheno/nis"
+    tag "gpu"
+
+    // Real run: requires a CUDA GPU + the published container, so it is tagged
+    // `gpu` and skipped on CPU CI (run/snapshot it on a GPU runner). The small
+    // tile + TorchScript models live in nf-core/test-datasets (large model
+    // weights may instead be hosted on Zenodo, as for numorph/3dunet).
+    test("lightsheet - tile") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_brain' ],
+                    file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/tile', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/models', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("lightsheet - tile - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_brain' ],
+                    file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/tile', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/models', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
