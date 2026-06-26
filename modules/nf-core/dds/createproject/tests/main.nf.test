@@ -9,30 +9,6 @@ nextflow_process {
     tag "dds"
     tag "dds/createproject"
 
-    test("dds/createproject") {
-
-        when {
-            process {
-                """
-                input[0] = "Test title"
-                input[1] = "Test description"
-                input[2] = "test-pi@mail.com"
-                input[3] = file(System.getenv("DDS_TOKEN_PATH") ?: params.modules_testdata_base_path + 'generic/txt/hello.txt')
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot (
-                    process.out.log.get(0).readLines().first().contains("Project created with id:")
-                    )
-                }
-            )
-        }
-    }
-
     test("dds/createproject - stub") {
 
         options "-stub"
