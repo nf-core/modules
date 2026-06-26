@@ -20,7 +20,6 @@ process FUNGTION_FUNGTION {
     tuple val(meta), path("${prefix}.log")                       , emit: log
     tuple val("${task.process}"), val('fungtion'), eval("fungtion --version 2>&1 | head -1"), topic: versions, emit: versions_fungtion
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
-    tuple val("${task.process}"), val('torch'), eval("python -c 'import torch; print(torch.__version__)'"), topic: versions, emit: versions_torch
 
     when:
     task.ext.when == null || task.ext.when
