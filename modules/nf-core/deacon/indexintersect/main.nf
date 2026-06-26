@@ -1,5 +1,5 @@
-process DEACON_INDEX {
-    tag "$fasta"
+process DEACON_INDEXINTERSECT {
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -8,7 +8,7 @@ process DEACON_INDEX {
         'quay.io/biocontainers/deacon:0.15.0--hdd79491_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(indices)  // two or more deacon .idx index files to intersect
 
     output:
     tuple val(meta), path("*.idx"), emit: index
@@ -19,18 +19,19 @@ process DEACON_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.intersect"
+
     """
     deacon \\
         index \\
-        build \\
-        --threads ${task.cpus} \\
-        $args \\
-        $fasta > ${prefix}.idx
+        intersect \\
+        ${args} \\
+        ${indices.join(' ')} \\
+        > ${prefix}.idx
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${fasta.baseName}"
+    def prefix = task.ext.prefix ?: "${meta.id}.intersect"
     """
     touch ${prefix}.idx
     """
