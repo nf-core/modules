@@ -1,0 +1,155 @@
+nextflow_process {
+
+    name "Test Process QUARTO_PARTIAL"
+    script "../main.nf"
+    process "QUARTO_PARTIAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "quarto"
+    tag "quarto/partial"
+
+    test("test partial - r") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
+                ]
+                input[1] = [:] // Parameters
+                input[2] = []  // Input files
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                // Explicitly check that output contains executed code. The
+                // `partial` output contains both a markdown file (the partial)
+                // and any associated files in a `_files/` directory, but only
+                // if the partial contains figures or other required resources,
+                // hence the explicit `endsWith` statement.
+                {
+                    def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    assert path(md).readLines().any { it.contains('Hello World 1') }
+                }
+            )
+        }
+
+    }
+
+    test("test partial - python") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_python.qmd', checkIfExists: true) // Notebook
+                ]
+                input[1] = [:] // Parameters
+                input[2] = []  // Input files
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                {
+                    def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    assert path(md).readLines().any { it.contains('Hello World 1') }
+                }
+            )
+        }
+
+    }
+
+    test("test partial - parametrized - r") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
+                ]
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                {
+                    def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    assert path(md).readLines().any { it.contains('Hello World 12') }
+                }
+            )
+        }
+
+    }
+
+    test("test partial - parametrized - python") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_python.qmd', checkIfExists: true) // Notebook
+                ]
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                {
+                    def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    assert path(md).readLines().any { it.contains('Hello World 12') }
+                }
+            )
+        }
+
+    }
+
+    test("test partial - stub - r") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
+                ]
+                input[1] = [:] // Parameters
+                input[2] = []  // Input files
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+}
