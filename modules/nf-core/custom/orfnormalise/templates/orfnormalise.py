@@ -517,7 +517,8 @@ def _parse_ribotish_genpos(s):
     m = _RIBOTISH_GENPOS_RE.match(s.strip())
     if not m:
         return None
-    return m.group(1), int(m.group(2)) - 1, int(m.group(3)), m.group(4)
+    # GenomePos is 0-based half-open (BED-style).
+    return m.group(1), int(m.group(2)), int(m.group(3)), m.group(4)
 
 
 def parse_ribotish(path, transcripts, fields):
