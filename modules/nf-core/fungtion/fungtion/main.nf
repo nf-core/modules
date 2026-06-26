@@ -34,6 +34,7 @@ process FUNGTION_FUNGTION {
         --output-dir . \\
         --prefix ${prefix} \\
         --pretrain ${pretrain}/esm1b_t33_650M_UR50S.pt \\
+        --device cpu \\
         1> ${prefix}.log
     """
 
