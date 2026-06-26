@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process HOLODECK_EVAL"
+    script "../main.nf"
+    process "HOLODECK_EVAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "holodeck"
+    tag "holodeck/eval"
+    tag "holodeck/simulate"
+
+    setup {
+        run("HOLODECK_SIMULATE") {
+            script "../../simulate/main.nf"
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - golden bam") {
+
+        when {
+            process {
+                """
+                input[0] = HOLODECK_SIMULATE.out.golden_bam.map { meta, bam -> [ meta, bam, [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.eval,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - golden bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = HOLODECK_SIMULATE.out.golden_bam.map { meta, bam -> [ meta, bam, [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
