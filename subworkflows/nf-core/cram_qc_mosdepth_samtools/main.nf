@@ -17,13 +17,11 @@ workflow CRAM_QC_MOSDEPTH_SAMTOOLS {
     // Reports run on cram
     SAMTOOLS_STATS(cram, fasta_fai)
 
-    fasta = fasta_fai.map { meta2, fasta_file, fai -> [ meta2, fasta_file ] }
-
     ch_mosdepth_in = cram
         .combine(intervals.map { meta, interval -> interval }.ifEmpty([ [] ]))
         .map { meta, cram_file, crai, bed -> [ meta, cram_file, crai, bed ?: [] ] }
     
-    MOSDEPTH(ch_mosdepth_in, fasta, [])
+    MOSDEPTH(ch_mosdepth_in, fasta_fai.map { meta_, fasta, _fai -> [ meta, fasta ] }, [])
 
     // Gather all reports generated
     reports = reports.mix(SAMTOOLS_STATS.out.stats)
