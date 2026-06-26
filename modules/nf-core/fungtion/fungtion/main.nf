@@ -34,7 +34,7 @@ process FUNGTION_FUNGTION {
         --output-dir . \\
         --prefix ${prefix} \\
         --pretrain ${pretrain}/esm1b_t33_650M_UR50S.pt \\
-        > ${prefix}.log
+        1> ${prefix}.log
     """
 
     stub:
