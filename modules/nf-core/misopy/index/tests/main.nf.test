@@ -41,10 +41,13 @@ nextflow_process {
                 }
             }
 
+            def sortedStableFiles = stableFiles.sort()
+            def sortedEmptyFiles = emptyFiles.sort()
+
             assertAll(
                 { assert snapshot(
-                    stableFiles,
-                    emptyFiles,
+                    sortedStableFiles,
+                    sortedEmptyFiles,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
