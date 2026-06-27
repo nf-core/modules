@@ -34,7 +34,7 @@ nextflow_process {
                     emptyFiles.add(f.name)
                 } else if (f.name.toString().matches(~/.*shelve.*/)) {
                     unstableFiles.add(f.getName().toString())
-                } else if (f.name.toString().endsWith("pickle")) {
+                } else if (f.name.toString().matches(~/.*pickle/)) {
                     unstableFiles.add(f.getName().toString())
                 } else {
                     stableFiles.add(f)
