@@ -37,5 +37,6 @@ process MISOPY_INDEX {
     echo $args
 
     mkdir -p "index"
+    touch "index/${prefix}.shelve"
     """
 }

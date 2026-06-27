@@ -6,7 +6,7 @@ nextflow_process {
     process "MISOPY_INDEX"
 
     tag "modules"
-    tag "modules_"
+    tag "modules_nfcore"
     tag "misopy"
     tag "misopy/index"
 
@@ -24,9 +24,22 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def stableFiles = []
+            def emptyFiles = []
+            file(process.out.miso_index.get(0)[1]).eachFileRecurse {
+                f ->
+                if (f.size() == 0) {
+                    emptyFiles.add(f.name)
+                } else {
+                    stableFiles.add(f)
+                }
+            }
+
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    stableFiles,
+                    emptyFiles,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
