@@ -27,10 +27,13 @@ nextflow_process {
 
             def stableFiles = []
             def emptyFiles = []
+            def unstableFiles = []
             file(process.out.miso_index.get(0)[1]).eachFileRecurse {
                 f ->
                 if (f.size() == 0) {
                     emptyFiles.add(f.name)
+                } else if (f.name.toString().matches(~/.*shelve.*/)) {
+                    unstableFiles.add(f.getName().toString())
                 } else {
                     stableFiles.add(f)
                 }
@@ -39,6 +42,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     stableFiles,
+                    unstableFiles,
                     emptyFiles,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
