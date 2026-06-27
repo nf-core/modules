@@ -27,7 +27,8 @@ process MISOPY_INDEX {
 
     index_gff \\
         --index filtered.gff3 \\
-        "index"
+        "index" \\
+        ${args}
     """
 
     stub:

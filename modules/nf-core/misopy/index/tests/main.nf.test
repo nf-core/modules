@@ -33,9 +33,9 @@ nextflow_process {
                 if (f.size() == 0) {
                     emptyFiles.add(f.name)
                 } else if (f.name.toString().matches(~/.*shelve.*/)) {
-                    unstableFiles.add(f.getName().toString())
+                    unstableFiles.add(f)
                 } else if (f.name.toString().matches(~/.*pickle/)) {
-                    unstableFiles.add(f.getName().toString())
+                    unstableFiles.add(f)
                 } else {
                     stableFiles.add(f)
                 }
@@ -49,7 +49,8 @@ nextflow_process {
                     sortedStableFiles,
                     sortedEmptyFiles,
                     process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                ).match() },
+                { assert unstableFiles.each { f -> f.exists() } }
             )
         }
 
