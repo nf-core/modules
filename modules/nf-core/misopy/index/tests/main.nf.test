@@ -1,0 +1,61 @@
+// nf-core modules test misopy/index
+nextflow_process {
+
+    name "Test Process MISOPY_INDEX"
+    script "../main.nf"
+    process "MISOPY_INDEX"
+
+    tag "modules"
+    tag "modules_"
+    tag "misopy"
+    tag "misopy/index"
+
+    test("homo sapiens - gff3") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'homo_sapiens' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gff3", checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - gff3 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'homo_sapiens' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gff3", checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
