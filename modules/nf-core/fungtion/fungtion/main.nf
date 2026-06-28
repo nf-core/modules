@@ -2,10 +2,10 @@ process FUNGTION_FUNGTION {
     tag "$meta.id"
     label 'process_high'
 
-    conda "${moduleDir}/environment.yml"
+    conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/401a8c91682bec5f7030ed167ab55986d9255b7ebde4b9b06ab6e5b1f447bd50/data':
-        'community.wave.seqera.io/library/r-base_r-e1071_r-caret_r-optparse_pruned:c4d8b270ddf00cb9' }"
+        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/TODO_BUILD_GPU_SINGULARITY/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/401a8c91682bec5f7030ed167ab55986d9255b7ebde4b9b06ab6e5b1f447bd50/data') :
+        (task.accelerator ? 'community.wave.seqera.io/library/r-base_r-e1071_r-caret_r-optparse_pytorch-gpu_cuda-version_pruned:TODO_BUILD_GPU_DOCKER' : 'community.wave.seqera.io/library/r-base_r-e1071_r-caret_r-optparse_pruned:c4d8b270ddf00cb9') }"
 
     input:
     tuple val(meta), path(fasta)
@@ -20,6 +20,7 @@ process FUNGTION_FUNGTION {
     tuple val(meta), path("${prefix}.log")                       , emit: log
     tuple val("${task.process}"), val('fungtion'), eval("fungtion --version 2>&1 | head -1"), topic: versions, emit: versions_fungtion
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
+    tuple val("${task.process}"), val('cuda'), eval('python -c "import torch; print(torch.version.cuda or \'no CUDA available\')"'), topic: versions, emit: versions_cuda
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,6 +28,7 @@ process FUNGTION_FUNGTION {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def device = task.accelerator ? "cuda" : "cpu"
     """
     # Without this, the pipeline exit status can become tee's exit status,
     # which can mask a failing fungtion command.
@@ -38,7 +40,7 @@ process FUNGTION_FUNGTION {
         --output-dir . \\
         --prefix ${prefix} \\
         --pretrain ${pretrain}/esm1b_t33_650M_UR50S.pt \\
-        --device cpu \\
+        --device ${device} \\
         | tee ${prefix}.log
     """
 
