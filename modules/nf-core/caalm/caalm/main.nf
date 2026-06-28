@@ -2,10 +2,10 @@ process CAALM_CAALM {
     tag "$meta.id"
     label 'process_high'
 
-    conda "${moduleDir}/environment.yml"
+    conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/840046fbd06b709533c0f9443a9ab04663012feb074ebca60067c0adb76baa21/data':
-        'community.wave.seqera.io/library/faiss-cpu_python_pip_caalm_torch:c3008a34cb7c94b7' }"
+        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6a/6aa7eed04e267db286dbe275711336f97fa67b30a408be6ed361d1fc8a934b43/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/840046fbd06b709533c0f9443a9ab04663012feb074ebca60067c0adb76baa21/data') :
+        (task.accelerator ? 'community.wave.seqera.io/library/faiss-gpu_python_caalm_torch:44d751e4479c0fcb' : 'community.wave.seqera.io/library/faiss-cpu_python_pip_caalm_torch:c3008a34cb7c94b7') }"
 
     input:
     tuple val(meta), path(fasta)
@@ -23,6 +23,7 @@ process CAALM_CAALM {
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
     tuple val("${task.process}"), val('torch'), eval("python -c 'import torch; print(torch.__version__)'"), topic: versions, emit: versions_torch
     tuple val("${task.process}"), val('faiss'), eval("python -c 'import faiss; print(faiss.__version__)'"), topic: versions, emit: versions_faiss
+    tuple val("${task.process}"), val('cuda'), eval('python -c "import torch; print(torch.version.cuda or \'no CUDA available\')"'), topic: versions, emit: versions_cuda
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,10 +31,12 @@ process CAALM_CAALM {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def device = task.accelerator ? "cuda" : "cpu"
     """
     caalm \\
         $args \\
         --num-workers ${task.cpus} \\
+        --device ${device} \\
         --level0-model ${level0} \\
         --level1-model ${level1} \\
         --level2-model ${level2}/model.pt \\

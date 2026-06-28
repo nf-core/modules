@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - conda-forge::faiss-gpu=1.10.0
+  - conda-forge::mkl<2025 # pin to .so.2 ABI
+  - conda-forge::python=3.10.0
+  - pip:
+      - caalm==1.0.0
+      - torch==2.6.0
