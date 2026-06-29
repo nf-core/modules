@@ -1,0 +1,123 @@
+name: "caddsv_run"
+description: Score structural variants with CADD-SV.
+keywords:
+  - caddsv
+  - structural variants
+  - deleteriousness
+  - annotation
+  - scoring
+tools:
+  - "caddsv":
+      description: "CADD-SV is a command-line tool for scoring structural variants (SVs)"
+      homepage: "https://cadd-sv.bihealth.org"
+      documentation: "https://github.com/kircherlab/CADD-SV"
+      tool_dev_url: "https://github.com/kircherlab/CADD-SV"
+      doi: "10.1101/gr.275995.121"
+      licence:
+        - "MIT"
+      identifier: "biotools:cadd-sv"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - variants:
+        type: file
+        description: |
+          BED file for coordinate-based CADD-SV scoring, or TSV file for
+          sequence-only scoring with `--seqonly`.
+        pattern: "*.{bed,bed.gz,tsv,tsv.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3615" # BGZIP
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'annotations' ]
+    - annotations_dir:
+        type: directory
+        description: |
+          Directory containing CADD-SV annotation resources. This can be the
+          output of the `caddsv_get` module, or a directory containing the
+          CADD-SV annotation bundle and/or SegmentNT model files.
+        pattern: "caddsv_annotations"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - config:
+        type: file
+        description: |
+          Optional YAML configuration file for CADD-SV scoring. If not provided,
+          default scoring parameters will be used.
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "caddsv_results/scored/*.tsv":
+          type: file
+          description: CADD-SV output with variant scores.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "caddsv_results":
+          type: directory
+          description: CADD-SV output directory containing input, intermediate, and scored results.
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "caddsv_run_*.log":
+          type: file
+          description: Optional runtime resource log created when `--check-time` is supplied.
+          optional: true
+          pattern: "caddsv_run_*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text file
+  versions_caddsv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - caddsv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('caddsv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - caddsv:
+          type: string
+          description: The tool name
+      - python -c "import importlib.metadata as m; print(m.version('caddsv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"
