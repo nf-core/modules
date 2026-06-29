@@ -12,12 +12,12 @@ process FUNGTION_FUNGTION {
     path(pretrain)
 
     output:
-    tuple val(meta), path("${prefix}/${prefix}.csv")             , emit: predictions
-    tuple val(meta), path("${prefix}/${prefix}_analysis")        , emit: analysis,  optional: true
-    tuple val(meta), path("${prefix}/${prefix}.html")            , emit: html,      optional: true
-    tuple val(meta), path("${prefix}/${prefix}_assets")          , emit: assets,    optional: true
-    tuple val(meta), path("${prefix}/${prefix}_temp_folder")     , emit: temp,      optional: true
-    tuple val(meta), path("${prefix}.log")                       , emit: log
+    tuple val(meta), path("${prefix}/${prefix}.csv")        , emit: predictions
+    tuple val(meta), path("${prefix}/${prefix}_analysis")   , emit: analysis,  optional: true
+    tuple val(meta), path("${prefix}/${prefix}.html")       , emit: html,      optional: true
+    tuple val(meta), path("${prefix}/${prefix}_assets")     , emit: assets,    optional: true
+    tuple val(meta), path("${prefix}/${prefix}_temp_folder"), emit: temp,      optional: true
+    tuple val(meta), path("${prefix}.log")                  , emit: log
     tuple val("${task.process}"), val('fungtion'), eval("fungtion --version 2>&1 | head -1"), topic: versions, emit: versions_fungtion
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
     tuple val("${task.process}"), val('cuda'), eval('python -c "import torch; print(torch.version.cuda or \'no CUDA available\')"'), topic: versions, emit: versions_cuda
