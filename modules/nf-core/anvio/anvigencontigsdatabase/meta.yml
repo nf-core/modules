@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "anvio_anvi_gen_contigs_database"
+name: "anvio_anvigencontigsdatabase"
 description: Generate an anvi'o contigs database from FASTA sequences.
 keywords:
   - anvio
@@ -44,10 +44,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.CONTIGS.db":
+      - "*.db":
           type: file
           description: Anvi'o contigs database.
-          pattern: "*.CONTIGS.db"
+          pattern: "*.db"
           ontologies:
             - edam: http://edamontology.org/format_3621 # SQLite format
   versions_anvio:
