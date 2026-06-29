@@ -9,9 +9,7 @@ process GATK4_APPLYBQSR {
 
     input:
     tuple val(meta), path(input), path(input_index), path(bqsr_table), path(intervals)
-    path fasta
-    path fai
-    path dict
+    tuple val(meta2), path(fasta), path(fai), path(dict)
     val(output_suffix)
 
     output:

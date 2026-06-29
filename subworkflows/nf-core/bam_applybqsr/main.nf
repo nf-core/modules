@@ -10,10 +10,8 @@ include { GATK4_APPLYBQSR  } from '../../../modules/nf-core/gatk4/applybqsr'
 
 workflow BAM_APPLYBQSR {
     take:
-    reads       // channel: [mandatory] [ meta, reads, index, recal ]
-    fasta     // channel: [mandatory] [ meta, fasta ]
-    fasta_fai // channel: [mandatory] [ meta, fasta_fai ]
-    dict      // channel: [mandatory] [ dict ]
+    reads     // channel: [mandatory] [ meta, reads, index, recal ]
+    reference // channel: [mandatory] [ meta, fasta, fai, dict ]
     intervals // channel: [mandatory] [ intervals, num_intervals ] or [ [], 0 ] if no intervals
 
     main:
@@ -29,22 +27,20 @@ workflow BAM_APPLYBQSR {
     // RUN APPLYBQSR
     GATK4_APPLYBQSR(
         reads_interval,
-        fasta.map { _meta, fasta_file -> [fasta_file] },
-        fasta_fai.map { _meta, fai_file -> [fai_file] },
-        dict.map { _meta, dict_file -> [dict_file] },
+        reference,
         output_suffix,
     )
     // BAM path — populated when ext.suffix='bam', empty otherwise
 
     bam_applybqsr = GATK4_APPLYBQSR.out.bam
-            .join(GATK4_APPLYBQSR.out.bai, failOnDuplicate: true)
+            .join(GATK4_APPLYBQSR.out.bai)
             .branch {
                 single: it[0].num_intervals == 1
                 multiple: it[0].num_intervals > 1
             }
 
-        // For multiple intervals, gather and merge the recalibrated cram files
-        bam_to_merge = bam_applybqsr.multiple
+    // For multiple intervals, gather and merge the recalibrated cram files
+    bam_to_merge = bam_applybqsr.multiple
             .map { meta, bam_, _bai -> [groupKey(meta, meta.num_intervals), bam_] }
             .groupTuple()
 
@@ -54,13 +50,13 @@ workflow BAM_APPLYBQSR {
             )
 
         bam_recal = MERGE_BAM.out.bam
-                .join(MERGE_BAM.out.index, failOnDuplicate: true, failOnMismatch: true)
+                .join(MERGE_BAM.out.index)
                 .mix(bam_applybqsr.single)
                 .map { meta, bam_, bai -> [meta - meta.subMap('num_intervals'), bam_, bai] }
 
      // ---- CRAM path (populated when a cram was produced) ----
         cram_applybqsr = GATK4_APPLYBQSR.out.cram
-            .join(GATK4_APPLYBQSR.out.bai, failOnDuplicate: true)
+            .join(GATK4_APPLYBQSR.out.bai)
             .branch {
                 single:   it[0].num_intervals == 1
                 multiple: it[0].num_intervals > 1
@@ -70,13 +66,10 @@ workflow BAM_APPLYBQSR {
             .map { meta, cram_, crai -> [groupKey(meta, meta.num_intervals), cram_, crai] }
             .groupTuple()
 
-        MERGE_CRAM(
-            cram_to_merge,
-            [ [ id:'null' ], [], [] ]
-        )
+        MERGE_CRAM(cram_to_merge, reference)
 
         cram_recal = MERGE_CRAM.out.cram
-            .join(MERGE_CRAM.out.index, failOnDuplicate: true, failOnMismatch: true)
+            .join(MERGE_CRAM.out.index)
             .mix(cram_applybqsr.single)
             .map { meta, cram_, crai -> [meta - meta.subMap('num_intervals'), cram_, crai] }
 
