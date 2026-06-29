@@ -11,8 +11,9 @@ process PANGOLIN_UPDATEDATA {
     val(dbname)
 
     output:
-    path("${prefix}")   , emit: db
-    path "versions.yml" , emit: versions
+    path("${prefix}"), emit: db
+    tuple val("${task.process}"), val('pangolin-dataset'), eval("pangolin -pv | sed -n 's/pangolin-data \\([0-9.]*\\).*/\\1/p'"), emit: versions_pangolin_dataset, topic: versions
+    tuple val("${task.process}"), val('pangolin'), eval("pangolin -v | sed -n 's/pangolin \\([0-9.]*\\).*/\\1/p'"), emit: versions_pangolin, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,21 +30,11 @@ process PANGOLIN_UPDATEDATA {
         --update-data \\
         --threads $task.cpus \\
         --datadir ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pangolin: \$(pangolin --version | sed "s/pangolin //g")
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${dbname}"
     """
     mkdir -p ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pangolin: \$(pangolin --version | sed "s/pangolin //g")
-    END_VERSIONS
     """
 }

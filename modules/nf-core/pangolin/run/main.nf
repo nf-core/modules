@@ -13,7 +13,7 @@ process PANGOLIN_RUN {
 
     output:
     tuple val(meta), path('*.csv'), emit: report
-    path  "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('pangolin'), eval("pangolin -v | sed -n 's/pangolin \\([0-9.]*\\).*/\\1/p'"), emit: versions_pangolin, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process PANGOLIN_RUN {
         --outfile ${prefix}.pangolin.csv \\
         --threads $task.cpus \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pangolin: \$(pangolin --version | sed "s/pangolin //g")
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +39,5 @@ process PANGOLIN_RUN {
     export XDG_CACHE_HOME=/tmp/.cache
 
     touch ${prefix}.pangolin.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pangolin: \$(pangolin --version | sed "s/pangolin //g")
-    END_VERSIONS
     """
 }
