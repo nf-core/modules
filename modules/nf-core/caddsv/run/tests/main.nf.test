@@ -23,8 +23,8 @@ nextflow_process {
                 annotations_dir.mkdirs()
                 file(annotations_dir.toString() + "/stub.txt").text = "stub\\n"
 
-                config = file("caddsv.yml")
-                config.text = "{}\\n"
+                config_file = file("caddsv.yml")
+                config_file.text = "{}\\n"
 
                 input[0] = [
                     [ id:'test' ],
@@ -36,7 +36,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     [ id:'test' ],
-                    config
+                    config_file
                 ]
                 """
             }
