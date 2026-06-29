@@ -4,9 +4,9 @@ process CADDSV_GET {
     label 'process_long'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/caddsv:2.0--pyh84cbfca_0':
-        'quay.io/biocontainers/caddsv:2.0--pyh84cbfca_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/caddsv:2.0--pyh84cbfca_0'
+        : 'quay.io/biocontainers/caddsv:2.0--pyh84cbfca_0'}"
 
     input:
     val flag
@@ -22,17 +22,12 @@ process CADDSV_GET {
     def args = task.ext.args ?: ''
 
     if (!['annotations', 'segmentnt'].contains(flag)) {
-        error "Invalid caddsv get flag: '${flag}'. Expected 'annotations' or 'segmentnt'."
+        error("Invalid caddsv get flag: '${flag}'. Expected 'annotations' or 'segmentnt'.")
     }
-
     """
-    set -euo pipefail
-
     caddsv get ${flag} \\
         --annotations-dir "caddsv_annotations" \\
         ${args}
-
-    test -d caddsv_annotations
     """
 
     stub:
