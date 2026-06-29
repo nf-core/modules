@@ -7,7 +7,6 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "rmarkdownnotebook"
-    topics "versions"
 
     test("test_rmarkdownnotebook") {
 
@@ -32,7 +31,7 @@ nextflow_process {
                     process.out.parameterised_notebook,
                     process.out.artifacts,
                     file(process.out.session_info[0][1]).name,
-                    topics
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -61,7 +60,7 @@ nextflow_process {
                     process.out.parameterised_notebook,
                     process.out.artifacts,
                     file(process.out.session_info[0][1]).name,
-                    topics
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -92,7 +91,7 @@ nextflow_process {
                     process.out.parameterised_notebook,
                     process.out.artifacts,
                     file(process.out.session_info[0][1]).name,
-                    topics
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
