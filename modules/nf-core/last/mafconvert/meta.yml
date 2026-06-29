@@ -69,14 +69,14 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,blasttab+.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}":
+      - "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,blasttabplus.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}":
           type: file
           description: |
             Pairwise alignment exported to Axt, BAM, BCF, BED, BLAST, Chain,
             CRAM, GFF, HTML PSL, SAM or Tab format.  For BCF generation, pass
             options to `bcftools merge` with `task.ext.args3` and to `bcftools
             call` via `task.ext.args4`.
-          pattern: "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,blasttab+.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"
+          pattern: "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,blasttabplus.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"
           ontologies: []
   index:
     - - meta:
