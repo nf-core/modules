@@ -1,0 +1,46 @@
+name: dotmatch_demux
+description: Demultiplex fixed-window inline barcodes with DotMatch
+keywords:
+  - dotmatch
+  - demux
+  - barcodes
+tools:
+  - dotmatch:
+      description: Deterministic known-target short-DNA assignment workflows.
+      homepage: https://github.com/Dnncha/dotmatch
+      licence:
+        - Apache-2.0
+input:
+  - meta:
+      type: map
+      description: Sample metadata map containing an id field.
+  - reads:
+      type: file
+      description: FASTQ or FASTQ.gz reads to demultiplex.
+      pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+  - barcodes:
+      type: file
+      description: Barcode table with id and sequence columns.
+      pattern: "*.{tsv,csv}"
+output:
+  - demuxed:
+      type: directory
+      description: FASTQ files split by barcode ID.
+      pattern: "demuxed"
+  - summary:
+      type: file
+      description: DotMatch demux JSON summary.
+      pattern: "*.summary.json"
+  - assignments:
+      type: file
+      description: Per-read demux assignment diagnostics.
+      pattern: "*.assignments.tsv"
+  - versions:
+      type: file
+      description: Software versions captured by the process.
+      pattern: "versions.yml"
+authors:
+  - DotMatch contributors
+maintainers:
+  - DotMatch contributors
+license: "Apache-2.0"

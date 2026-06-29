@@ -1,0 +1,33 @@
+nextflow_process {
+    name "Test Process DOTMATCH_ASSAY_RUN"
+    script "../main.nf"
+    process "DOTMATCH_ASSAY_RUN"
+
+    test("runs tiny AssaySpec fixture") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'assay_fixture'],
+                    file('data/crispr_assay.toml'),
+                    [
+                        file('data/crispr_library.csv'),
+                        file('data/sample_a.fastq'),
+                        file('data/sample_b.fastq')
+                    ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert path(process.out.assay_report[0][1]).text.contains("DotMatch Assay Report")
+            assert path(process.out.assay_manifest_summary[0][1]).text.contains("primary_report")
+            assert path(process.out.sample_qc[0][1]).text.contains("assignment_rate")
+            assert path(process.out.crispr_qc_summary[0][1]).text.contains("qc_status")
+            assert path(process.out.crispr_qc_report[0][1]).text.contains("DotMatch CRISPR QC")
+            assert path(process.out.versions[0]).toFile().name == "versions.yml"
+        }
+    }
+}

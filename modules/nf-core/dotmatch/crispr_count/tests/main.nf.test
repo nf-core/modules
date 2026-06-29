@@ -1,0 +1,79 @@
+nextflow_process {
+    name "Test Process DOTMATCH_CRISPR_COUNT"
+    script "../main.nf"
+    process "DOTMATCH_CRISPR_COUNT"
+
+    test("runs tiny CRISPR fixture with default params") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'sample_a'],
+                    file('data/sample_a.fastq'),
+                    file('data/crispr_library.csv')
+                ])
+                input[1] = 0
+                input[2] = 4
+                input[3] = 1
+                input[4] = 'hamming'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert path(process.out.counts[0][1]).toFile().name.endsWith(".counts.mageck.tsv")
+            assert path(process.out.sample_qc[0][1]).text.contains("assignment_rate")
+            assert path(process.out.versions[0]).toFile().name == "versions.yml"
+            assert path(process.out.versions[0]).text.contains("dotmatch")
+            assert path(process.out.summary[0][1]).text.contains("count_engine")
+        }
+    }
+
+    test("runs with k=0 and levenshtein") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'sample_b'],
+                    file('data/sample_b.fastq'),
+                    file('data/crispr_library.csv')
+                ])
+                input[1] = 0
+                input[2] = 4
+                input[3] = 0
+                input[4] = 'levenshtein'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert path(process.out.counts[0][1]).toFile().name.endsWith(".counts.mageck.tsv")
+        }
+    }
+
+    test("stub - runs stub") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'sample_stub'],
+                    file('data/sample_a.fastq'),
+                    file('data/crispr_library.csv')
+                ])
+                input[1] = 0
+                input[2] = 4
+                input[3] = 1
+                input[4] = 'hamming'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert path(process.out.counts[0][1]).toFile().name.endsWith(".counts.mageck.tsv")
+            assert path(process.out.versions[0]).toFile().name == "versions.yml"
+        }
+    }
+}

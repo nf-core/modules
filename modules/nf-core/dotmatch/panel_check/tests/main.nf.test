@@ -1,0 +1,27 @@
+nextflow_process {
+    name "Test Process DOTMATCH_PANEL_CHECK"
+    script "../main.nf"
+    process "DOTMATCH_PANEL_CHECK"
+
+    test("runs tiny panel-check fixture") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'panel_check'],
+                    file('data/panel_barcodes.tsv')
+                ])
+                input[1] = 1
+                input[2] = 'hamming'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert path(process.out.panel_summary[0][1]).text.contains("status")
+            assert path(process.out.target_safety[0][1]).text.contains("barcode_id")
+            assert path(process.out.versions[0]).text.contains("dotmatch")
+        }
+    }
+}
