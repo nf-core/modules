@@ -4,8 +4,8 @@ process FUNGTION_FUNGTION {
 
     conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/TODO_BUILD_GPU_SINGULARITY/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/401a8c91682bec5f7030ed167ab55986d9255b7ebde4b9b06ab6e5b1f447bd50/data') :
-        (task.accelerator ? 'community.wave.seqera.io/library/r-base_r-e1071_r-caret_r-optparse_pytorch-gpu_cuda-version_pruned:TODO_BUILD_GPU_DOCKER' : 'community.wave.seqera.io/library/r-base_r-e1071_r-caret_r-optparse_pruned:c4d8b270ddf00cb9') }"
+        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f9/f99e281c13b6a0916d93ce6faebd9f9f4137c4d1697eac8eeed262981a318c74/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/401a8c91682bec5f7030ed167ab55986d9255b7ebde4b9b06ab6e5b1f447bd50/data') :
+        (task.accelerator ? 'community.wave.seqera.io/library/python_r-base_r-caret_r-e1071_pruned:06c508314407c570' : 'community.wave.seqera.io/library/r-base_r-e1071_r-caret_r-optparse_pruned:c4d8b270ddf00cb9') }"
 
     input:
     tuple val(meta), path(fasta)
