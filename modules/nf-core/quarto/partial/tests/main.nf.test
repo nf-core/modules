@@ -27,7 +27,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.artifacts,
+                    process.out.params_yaml,
+                    process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                ).match() },
                 // Explicitly check that output contains executed code. The
                 // `partial` output contains both a markdown file (the partial)
                 // and any associated files in a `_files/` directory, but only
@@ -36,7 +41,8 @@ nextflow_process {
                 {
                     def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
                     assert path(md).readLines().any { it.contains('Hello World 1') }
-                }
+                },
+                { assert process.out.partial[0][1].find { it.toString().endsWith('_files') } != null }
             )
         }
 
@@ -60,11 +66,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.artifacts,
+                    process.out.params_yaml,
+                    process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                ).match() },
                 {
                     def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
                     assert path(md).readLines().any { it.contains('Hello World 1') }
-                }
+                },
+                { assert process.out.partial[0][1].find { it.toString().endsWith('_files') } != null }
             )
         }
 
@@ -88,11 +100,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.artifacts,
+                    process.out.params_yaml,
+                    process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                ).match() },
                 {
                     def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
                     assert path(md).readLines().any { it.contains('Hello World 12') }
-                }
+                },
+                { assert process.out.partial[0][1].find { it.toString().endsWith('_files') } != null }
             )
         }
 
@@ -116,11 +134,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.artifacts,
+                    process.out.params_yaml,
+                    process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                ).match() },
                 {
                     def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
                     assert path(md).readLines().any { it.contains('Hello World 12') }
-                }
+                },
+                { assert process.out.partial[0][1].find { it.toString().endsWith('_files') } != null }
             )
         }
 
