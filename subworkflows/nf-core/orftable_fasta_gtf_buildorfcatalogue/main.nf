@@ -104,4 +104,13 @@ workflow ORFTABLE_FASTA_GTF_BUILDORFCATALOGUE {
     orf_to_gene_tsv    = CUSTOM_ORFCOLLAPSE.out.orf_to_gene_tsv.mix(ch_routed.keep.map { meta, _bed, _tsv, o2g, _mqc, _aa -> [ meta, o2g ] })
     catalogue_aa_fasta = CUSTOM_ORFCOLLAPSE.out.aa_fasta.mix(ch_routed.keep.map { meta, _bed, _tsv, _o2g, _mqc, aa -> [ meta, aa ] })
     multiqc            = CUSTOM_ORFCOLLAPSE.out.multiqc.mix(ch_routed.keep.map { meta, _bed, _tsv, _o2g, mqc, _aa -> [ meta, mqc ] })
+
+    // Consensus view: ORFs meeting the --min-callers / --min-samples thresholds.
+    // The filter is applied to the final catalogue, so when the amino-acid
+    // collapse runs the consensus is the high-confidence subset of the
+    // de-redundified catalogue (from CUSTOM_ORFCOLLAPSE); otherwise it comes
+    // straight from the merger.
+    consensus_bed12           = val_collapse ? CUSTOM_ORFCOLLAPSE.out.consensus_bed12 : CUSTOM_ORFMERGE.out.consensus_bed12
+    consensus_tsv             = val_collapse ? CUSTOM_ORFCOLLAPSE.out.consensus_tsv : CUSTOM_ORFMERGE.out.consensus_tsv
+    consensus_orf_to_gene_tsv = val_collapse ? CUSTOM_ORFCOLLAPSE.out.consensus_orf_to_gene_tsv : CUSTOM_ORFMERGE.out.consensus_orf_to_gene_tsv
 }
