@@ -12,6 +12,7 @@ process GATK4_APPLYBQSR {
     path fasta
     path fai
     path dict
+    val(output_suffix)
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
@@ -26,7 +27,7 @@ process GATK4_APPLYBQSR {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     // suffix can only be bam or cram, cram being the sensible default
-    def suffix = task.ext.suffix && task.ext.suffix == "bam" ? "bam" : "cram"
+    def suffix = output_suffix && output_suffix == "bam" ? "bam" : "cram"
     def interval_command = intervals ? "--intervals ${intervals}" : ""
 
     def avail_mem = 3072
@@ -50,7 +51,7 @@ process GATK4_APPLYBQSR {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "cram"
+    def suffix = output_suffix ?: "cram"
     """
     touch ${prefix}.${suffix}
     if [[ ${suffix} == cram ]]; then

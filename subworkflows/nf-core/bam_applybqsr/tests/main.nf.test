@@ -3,7 +3,6 @@ nextflow_workflow {
     name "Test Workflow BAM_APPLYBQSR"
     script "../main.nf"
     workflow "BAM_APPLYBQSR"
-    config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
@@ -11,55 +10,45 @@ nextflow_workflow {
     tag "subworkflows/bam_applybqsr"
     tag "gatk4/applybqsr"
 
-    test("homo_sapiens - bam,cram - with intervals") {
+    test("homo_sapiens - cram - with intervals") {
 
         when {
             workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
-                ])
-                input[1] = Channel.of([
-                    [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
                 ])
-                input[2] = Channel.of([
+                input[1] = Channel.of([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
-                input[3] = Channel.of([
+                input[2] = Channel.of([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[4] = Channel.of([
+                input[3] = Channel.of([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
-                input[5] = Channel.of([
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                input[4] = Channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed', checkIfExists: true),
                     1
                 ])
                 """
             }
         }
-
-        then {
-            assertAll(
+   then {
+        assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.bam.collect { meta, bam, bai -> [ meta, file(bam).name, file(bai).name ] },
-                    workflow.out.cram.collect { meta, cram, crai -> [ meta, file(cram).name, file(crai).name ] }
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
 
-    test("homo_sapiens - bam,cram - with intervals - stub") {
+    test("homo_sapiens - cram - with intervals - stub") {
 
         options "-stub-run"
 
@@ -68,43 +57,39 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
-                ])
-                input[1] = Channel.of([
-                    [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
                 ])
-                input[2] = Channel.of([
+                input[1] = Channel.of([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
-                input[3] = Channel.of([
+                input[2] = Channel.of([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[4] = Channel.of([
+                input[3] = Channel.of([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
-                input[5] = Channel.of([
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
-                    1
-                ])
+                input[4] = Channel.of(
+                [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed', checkIfExists: true),
+                    2
+                ],
+                [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed', checkIfExists: true),
+                    2
+                ]
+                )
                 """
             }
         }
-
-        then {
-            assertAll(
+   then {
+        assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.bam.collect { meta, bam, bai -> [ meta, file(bam).name, file(bai).name ] },
-                    workflow.out.cram.collect { meta, cram, crai -> [ meta, file(cram).name, file(crai).name ] }
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
