@@ -13,7 +13,8 @@ tools:
       documentation: https://github.com/google/deepvariant
       tool_dev_url: https://github.com/google/deepvariant
       doi: "10.1038/nbt.4235"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:deepvariant
 input:
   - - meta:
@@ -76,34 +77,46 @@ input:
         description: BED file containing PAR regions
         pattern: "*.bed"
         ontologies: []
+  - with_phasing:
+        type: boolean
+        description: Whether to generate and capture the phased read inputs for use downstream
 output:
   examples:
     - - meta:
-          type: list
+          type: map
           description: |
             Tuple containing sample metadata and examples that can be used for calling
       - ${prefix}.examples.tfrecord-*-of-*.gz{,.example_info.json}:
-          type: list
+          type: file
           description: |
             Tuple containing sample metadata and examples that can be used for calling
   gvcf:
     - - meta:
-          type: list
+          type: map
           description: |
             Tuple containing sample metadata and examples that can be used for calling
       - ${prefix}.gvcf.tfrecord-*-of-*.gz:
-          type: list
+          type: file
           description: |
             Tuple containing sample metadata and the GVCF data in tfrecord format
   small_model_calls:
     - - meta:
-          type: list
+          type: map
           description: |
-            Tuple containing sample metadata and examples that can be used for calling
-      - ${prefix}_call_variant_outputs.examples.tfrecord-*-of-*.gz:
-          type: list
+            Tuple containing sample metadata and small model calls that can be used for calling
+      - ${small_model_filename}:
+          type: file
           description: |
-            Optional variant calls from the small model, if enabled, in tfrecord format
+            Tuple containing sample metadata and small model calls that can be used for calling
+  read_phase_inputs:
+    - - meta:
+          type: map
+          description: |
+            Tuple containing sample metadata and phased read inputs that can be used for calling
+      - ${prefix}-read-phasing_debug-*of-*.tsv:
+          type: file
+          description: |
+            Tuple containing sample metadata and phased read inputs that can be used for calling
   versions_deepvariant:
     - - ${task.process}:
           type: string
@@ -114,7 +127,6 @@ output:
       - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
