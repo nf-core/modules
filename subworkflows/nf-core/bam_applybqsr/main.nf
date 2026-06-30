@@ -41,13 +41,13 @@ workflow BAM_APPLYBQSR {
 
     // For multiple intervals, gather and merge the recalibrated cram files
     bam_to_merge = bam_applybqsr.multiple
-            .map { meta, bam_, _bai -> [groupKey(meta, meta.num_intervals), bam_] }
+            .map { meta, bam_, _bai -> [groupKey(meta, meta.num_intervals), bam_, _bai] }
             .groupTuple()
 
         MERGE_BAM(
-                bam_to_merge,
-                [ [ id:'null' ], [], [] ]
-            )
+                    bam_to_merge,
+                    reference
+                )
 
         bam_recal = MERGE_BAM.out.bam
                 .join(MERGE_BAM.out.index)

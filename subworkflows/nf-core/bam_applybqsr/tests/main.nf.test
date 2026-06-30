@@ -27,7 +27,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
-                input[4] = Channel.of(
+                input[2] = Channel.of(
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals1_multi.bed', checkIfExists: true), 2],
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals2_multi.bed', checkIfExists: true), 2]
                 )
@@ -60,12 +60,19 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
-                input[4] = Channel.of(
+                input[2] = Channel.of(
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals1_multi.bed', checkIfExists: true), 2],
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals2_multi.bed', checkIfExists: true), 2]
                 )
                 """
                 }
             }
+
+    then {
+        assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            )
         }
+    }
 }
