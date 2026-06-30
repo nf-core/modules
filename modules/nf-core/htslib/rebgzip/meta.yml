@@ -1,5 +1,5 @@
 name: "htslib_rebgzip"
-description: "Take gzipped or unzipped file and emit bgzipped file"
+description: "Take unzipped, gzipped, bzipped, or xzipped file and emit bgzipped file"
 keywords:
   - compress
   - decompress
@@ -37,8 +37,7 @@ output:
           type: file
           description: |
             Compressed or decompressed output file. If task.ext.prefix is unset, this will be the name of the input file + .gz,
-            if the input file was zipped, output file name is the same as input file name. 
-            If task.ext.prefix is set, it will be ${prefix}.gz
+            if the input file was {g,x,b}-zipped, output file name is the basename of the input file + .gz.
           pattern: "*"
           ontologies: []
   versions_htslib:
