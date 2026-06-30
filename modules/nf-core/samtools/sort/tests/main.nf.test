@@ -383,7 +383,6 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.sam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.sam', checkIfExists: true)
                 ])
                 input[1] = Channel.of([
