@@ -33,13 +33,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
-      - ${outfile}:
+      - out/${outfile}:
           type: file
-          description: |
-            Compressed or decompressed output file. If task.ext.prefix is unset, this will be the name of the input file + .gz,
-            if the input file was {g,x,b}-zipped, output file name is the basename of the input file + .gz.
-          pattern: "*"
-          ontologies: []
+          description: Bgzipped output file
+          pattern: "*.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   versions_htslib:
     - - ${task.process}:
           type: string
@@ -61,9 +60,6 @@ topics:
       - bgzip --version | sed '1! d; s/bgzip (htslib) //':
           type: eval
           description: The expression to obtain the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The name of the process
 authors:
   - "@nschan"
 maintainers:
