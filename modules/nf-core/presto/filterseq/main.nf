@@ -23,7 +23,7 @@ process PRESTO_FILTERSEQ {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def log_prefix = reads.baseName.replaceFirst(/\.f(ast)?q$/, '')
+    def log_prefix = reads.simpleName
     """
     FilterSeq.py quality \\
     -s $reads \\
@@ -38,7 +38,6 @@ process PRESTO_FILTERSEQ {
     "${task.process}":
         presto: \$( FilterSeq.py --version | awk -F' '  '{print \$2}' )
     END_VERSIONS
-    """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
