@@ -4,8 +4,8 @@ process PANGOLIN_UPDATEDATA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f10f9bd63d24e2382406b2b348c65ae1ac74118e6eb17f5e30b310fbc1bc4b9/data' :
-        'community.wave.seqera.io/library/pangolin-data_pangolin_pip_snakemake:7987089a2a044e70' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/85/858e91f6972f0d8d71dae844bf0232656f5d91112b9a5610f559659b33414c86/data' :
+        'community.wave.seqera.io/library/pangolin-data_pangolin_snakemake-minimal:638a1eb68adff9c7' }"
 
     input:
     val(dbname)
