@@ -11,6 +11,15 @@ description: |
        clustering of normalised calls across callers and samples.
     3. `bedtools/getfasta` + `seqkit/translate` - lifts the merged BED12
        into a catalogue AA FASTA.
+    4. `mmseqs/easycluster` + `custom/orfcollapse` (optional, `val_collapse`) -
+       clusters catalogue peptides by amino-acid identity and folds duplicate
+       small ORFs to one representative each.
+
+  The collapse identity threshold defaults to `--min-seq-id 0.9` (the GENCODE
+  Ribo-seq ORF catalogue convention; Mudge et al. 2022), set on
+  `MMSEQS_EASYCLUSTER` in this subworkflow's `nextflow.config`. Override it via
+  `ext.args` on `MMSEQS_EASYCLUSTER` in the consuming pipeline's config if a
+  different cutoff is wanted.
 
   Supports five callers via the per-record `caller` val: ribocode, ribotish,
   ribotricer, rpbp, price. Any subset can be supplied. When `ch_orf_tables` is empty
@@ -32,6 +41,8 @@ components:
   - custom/orfmerge
   - bedtools/getfasta
   - seqkit/translate
+  - mmseqs/easycluster
+  - custom/orfcollapse
 input:
   - ch_orf_tables:
       description: |
@@ -53,6 +64,13 @@ input:
         (ribotricer, rpbp, price). Pass `[ [:], [] ]` if no GTF is
         available (caller subset must then exclude ribocode and ribotish).
         Structure: [ val(meta), path(gtf) ]
+  - val_collapse:
+      description: |
+        Cluster catalogue peptides by amino-acid identity (mmseqs/easycluster)
+        and fold each multi-member small-ORF cluster to one representative
+        (custom/orfcollapse). When false the merged catalogue is emitted
+        unchanged and the clustering modules do not run.
+        Structure: val(collapse)
 output:
   - catalogue_bed12:
       description: |
@@ -76,6 +94,21 @@ output:
   - multiqc:
       description: |
         MultiQC custom-content sidecar (per-class ORF counts).
+        Structure: [ val(meta), path(tsv) ]
+  - consensus_bed12:
+      description: |
+        Consensus view of the catalogue as BED12 (ORFs meeting the
+        --min-callers / --min-samples thresholds; identical to the full
+        catalogue at the defaults of 1/1). Taken from the amino-acid collapse
+        when it runs, otherwise from the merger.
+        Structure: [ val(meta), path(bed12) ]
+  - consensus_tsv:
+      description: |
+        Consensus-filtered per-ORF table, same columns as the full catalogue.
+        Structure: [ val(meta), path(tsv) ]
+  - consensus_orf_to_gene_tsv:
+      description: |
+        ORF-to-gene mapping restricted to the consensus-filtered ORFs.
         Structure: [ val(meta), path(tsv) ]
 authors:
   - "@pinin4fjords"

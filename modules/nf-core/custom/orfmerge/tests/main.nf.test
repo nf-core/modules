@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'sample1', caller: 'ribotish'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
                     'ribotish'
                 ])
                 input[1] = channel.of([
@@ -35,7 +35,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'sample1', caller: 'ribocode'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
                     'ribocode'
                 ])
                 input[1] = channel.of([
@@ -52,7 +52,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'sample2', caller: 'ribotish'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
                     'ribotish'
                 ])
                 input[1] = channel.of([
@@ -125,6 +125,51 @@ nextflow_process {
                 { assert rows.every { it[n_samples].toInteger() >= 1 } },
                 { assert rows.any { it[n_samples].toInteger() == 2 } },
                 { assert rows.findAll { it[n_samples].toInteger() == 2 }.every { it[samples] == 'sample1,sample2' } }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - consensus view, min-samples 2") {
+
+        config "./consensus_threshold.config"
+
+        when {
+            process {
+                """
+                ch_beds = CUSTOM_ORFNORMALISE_RIBOTISH.out.bed12
+                    .mix(CUSTOM_ORFNORMALISE_RIBOCODE.out.bed12)
+                    .mix(CUSTOM_ORFNORMALISE_RIBOTISH_SAMPLE2.out.bed12)
+                    .map { _meta, bed -> bed }
+                    .collect()
+                    .map { beds -> [ 'cohort', beds ] }
+                ch_tsvs = CUSTOM_ORFNORMALISE_RIBOTISH.out.tsv
+                    .mix(CUSTOM_ORFNORMALISE_RIBOCODE.out.tsv)
+                    .mix(CUSTOM_ORFNORMALISE_RIBOTISH_SAMPLE2.out.tsv)
+                    .map { _meta, tsv -> tsv }
+                    .collect()
+                    .map { tsvs -> [ 'cohort', tsvs ] }
+                input[0] = ch_beds
+                    .combine(ch_tsvs, by: 0)
+                    .map { _k, beds, tsvs -> [ [id: 'cohort'], beds, tsvs ] }
+                """
+            }
+        }
+
+        then {
+            def cols      = path(process.out.catalogue_tsv[0][1]).text.readLines()[0].split('\t') as List
+            def full_rows = path(process.out.catalogue_tsv[0][1]).text.readLines().drop(1)
+            def con_rows  = path(process.out.consensus_tsv[0][1]).text.readLines().drop(1)
+            def n_samples = cols.indexOf('n_samples')
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                // The full catalogue is unaffected by the threshold.
+                { assert full_rows.size() > 0 },
+                // The 2-sample ORF survives; single-sample ORFs are dropped, so
+                // the consensus view is a non-empty strict subset of the full one.
+                { assert con_rows.size() > 0 },
+                { assert con_rows.size() < full_rows.size() },
+                { assert con_rows.collect { it.split('\t') }.every { it[n_samples].toInteger() >= 2 } }
             )
         }
     }

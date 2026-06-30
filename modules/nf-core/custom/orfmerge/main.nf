@@ -11,27 +11,33 @@ process CUSTOM_ORFMERGE {
     tuple val(meta), path(bed12s, arity: '1..*', stageAs: 'beds/*'), path(tsvs, arity: '1..*', stageAs: 'tsvs/*')
 
     output:
-    tuple val(meta), path("${prefix}.catalogue.bed12")    , emit: bed12
-    tuple val(meta), path("${prefix}.catalogue.tsv")      , emit: catalogue_tsv
-    tuple val(meta), path("${prefix}.orf_to_gene.tsv")    , emit: orf_to_gene_tsv
-    tuple val(meta), path("${prefix}.catalogue.mqc.tsv")  , emit: multiqc
-    path "versions.yml"                                   , emit: versions, topic: versions
+    tuple val(meta), path("${prefix}.bed12")                     , emit: bed12
+    tuple val(meta), path("${prefix}.tsv")                       , emit: catalogue_tsv
+    tuple val(meta), path("${prefix}.orf_to_gene.tsv")           , emit: orf_to_gene_tsv
+    tuple val(meta), path("${prefix}.mqc.tsv")                   , emit: multiqc
+    tuple val(meta), path("${prefix}.consensus.bed12")           , emit: consensus_bed12
+    tuple val(meta), path("${prefix}.consensus.tsv")             , emit: consensus_tsv
+    tuple val(meta), path("${prefix}.consensus.orf_to_gene.tsv") , emit: consensus_orf_to_gene_tsv
+    path "versions.yml"                                          , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.catalogue"
     args   = task.ext.args ?: ''
     template 'orfmerge.py'
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.catalogue"
     """
-    touch ${prefix}.catalogue.bed12
-    touch ${prefix}.catalogue.tsv
+    touch ${prefix}.bed12
+    touch ${prefix}.tsv
     touch ${prefix}.orf_to_gene.tsv
-    touch ${prefix}.catalogue.mqc.tsv
+    touch ${prefix}.mqc.tsv
+    touch ${prefix}.consensus.bed12
+    touch ${prefix}.consensus.tsv
+    touch ${prefix}.consensus.orf_to_gene.tsv
 
     python -c "import platform, yaml; yaml.safe_dump({'${task.process}': {'python': platform.python_version()}}, open('versions.yml', 'w'), default_flow_style=False, sort_keys=False)"
     """
