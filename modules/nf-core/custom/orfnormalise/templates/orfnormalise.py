@@ -552,15 +552,16 @@ def parse_ribotish(path, transcripts, fields):
                 continue
             chrom, start, end, strand = gp
 
-            blocks = parse_intervals(row.get("Blocks", ""), seps=(":", "-"))
-            if not blocks:
-                tx = transcripts.get(tid)
-                if tx is None:
+            # ribotish predict reports one genomic span (GenomePos), not
+            # per-exon blocks, so the exon structure is recovered by
+            # intersecting that span with the transcript's exons.
+            tx = transcripts.get(tid)
+            if tx is None:
+                blocks = [(start, end)]
+            else:
+                blocks = [(max(start, gs), min(end, ge)) for gs, ge in tx.exons if min(end, ge) > max(start, gs)]
+                if not blocks:
                     blocks = [(start, end)]
-                else:
-                    blocks = [(max(start, gs), min(end, ge)) for gs, ge in tx.exons if min(end, ge) > max(start, gs)]
-                    if not blocks:
-                        blocks = [(start, end)]
 
             rows.append(
                 {
