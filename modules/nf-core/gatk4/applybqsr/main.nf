@@ -49,7 +49,7 @@ process GATK4_APPLYBQSR {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = output_suffix ?: "cram"
+    def suffix = output_suffix == "bam" ?: "cram"
     """
     touch ${prefix}.${suffix}
     if [[ ${suffix} == cram ]]; then
