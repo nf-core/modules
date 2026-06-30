@@ -4,8 +4,8 @@ process CAALM_CAALM {
 
     conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6a/6aa7eed04e267db286dbe275711336f97fa67b30a408be6ed361d1fc8a934b43/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/840046fbd06b709533c0f9443a9ab04663012feb074ebca60067c0adb76baa21/data') :
-        (task.accelerator ? 'community.wave.seqera.io/library/faiss-gpu_python_caalm_torch:44d751e4479c0fcb' : 'community.wave.seqera.io/library/faiss-cpu_python_pip_caalm_torch:c3008a34cb7c94b7') }"
+        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/94/94a54f57f951341cb74caad4915146688ca4c3108e042c3de446088397cf031e/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/840046fbd06b709533c0f9443a9ab04663012feb074ebca60067c0adb76baa21/data') :
+        (task.accelerator ? 'community.wave.seqera.io/library/faiss-gpu_mkl_python_pytorch-gpu_pruned:195b8640d28ac850' : 'community.wave.seqera.io/library/faiss-cpu_python_pip_caalm_torch:c3008a34cb7c94b7') }"
 
     input:
     tuple val(meta), path(fasta)

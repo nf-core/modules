@@ -5,8 +5,9 @@ channels:
   - bioconda
 dependencies:
   - conda-forge::faiss-gpu=1.10.0
-  - conda-forge::mkl<2025 # pin to .so.2 ABI
+  - conda-forge::mkl=2024.*        # pins the MKL ABI for FAISS
   - conda-forge::python=3.10.0
+  - conda-forge::pytorch-gpu=2.7.1
+  - conda-forge::cuda-version=12.9
   - pip:
       - caalm==1.0.0
-      - torch==2.6.0
