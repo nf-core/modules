@@ -3,9 +3,9 @@ process SEQUENZAUTILS_BAM2SEQZ {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py38h6ed170a_2' :
-        'biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2' }"
+        'quay.io/biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2' }"
 
     input:
     tuple val(meta), path(normalbam), path(tumourbam)
@@ -39,7 +39,6 @@ process SEQUENZAUTILS_BAM2SEQZ {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo | gzip > ${prefix}.gz

@@ -12,15 +12,14 @@ nextflow_process {
     tag "picard/fixmateinformation"
 
     test("test-picard-fixmateinformation") {
-        
+
         when {
             process {
                 """
                 input[0] = [
-				[ id:'test', single_end:false ], // meta map
-				file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
-				]
-
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -29,12 +28,31 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					bam(process.out.bam[0][1]).getReadsMD5(),
-					process.out.versions
-					).match()
-				}
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
     }
-    
+
+    test("test-picard-fixmateinformation - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
 }

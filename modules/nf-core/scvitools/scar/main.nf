@@ -3,25 +3,27 @@ process SCVITOOLS_SCAR {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9b999caba5a5a6bc19bd324d9f1ac28e092a750140b453071956ebc304b7c4aa/data':
-        'community.wave.seqera.io/library/scvi-tools:1.2.0--680d378b86801b8a' }"
+    container "${ task.ext.use_gpu ? 'ghcr.io/scverse/scvi-tools:py3.13-cu12-1.4.3-' :
+        workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/df/dfb4b54fd5cb5c5624d947914f5ab8ac86eeaa5f762ebc52c034fbd36cf30250/data':
+        'community.wave.seqera.io/library/scvi-tools:1.4.3--cce8c95b58ececa6' }"
 
     input:
     tuple val(meta), path(filtered), path(unfiltered)
+    val(input_layer)
+    val(output_layer)
+    val(max_epochs)
+    val(n_batch)
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
-    path "versions.yml"            , emit: versions
+    path "versions.yml"            , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    input_layer = task.ext.input_layer ?: "X"
-    output_layer = task.ext.output_layer ?: "scar"
-    max_epochs = task.ext.max_epochs ?: ""
     template 'scar.py'
 
     stub:

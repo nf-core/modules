@@ -4,9 +4,9 @@ process PRESEQ_LCEXTRAP {
     label 'error_retry'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/preseq:3.2.0--hdcf5f25_6':
-        'biocontainers/preseq:3.2.0--hdcf5f25_6' }"
+        'quay.io/biocontainers/preseq:3.2.0--hdcf5f25_6' }"
 
     input:
     tuple val(meta), path(bam)
@@ -14,7 +14,7 @@ process PRESEQ_LCEXTRAP {
     output:
     tuple val(meta), path("*.lc_extrap.txt"), emit: lc_extrap
     tuple val(meta), path("*.log")          , emit: log
-    path  "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('preseq'), eval("preseq 2>&1 | sed -n 's/.*Version: \\(.*\\)/\\1/p'"), emit: versions_preseq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process PRESEQ_LCEXTRAP {
         -output ${prefix}.lc_extrap.txt \\
         $bam
     cp .command.err ${prefix}.command.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        preseq: \$(echo \$(preseq 2>&1) | sed 's/^.*Version: //; s/Usage:.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +39,5 @@ process PRESEQ_LCEXTRAP {
     """
     touch ${prefix}.lc_extrap.txt
     touch ${prefix}.command.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        preseq: \$(echo \$(preseq 2>&1) | sed 's/^.*Version: //; s/Usage:.*\$//')
-    END_VERSIONS
     """
 }

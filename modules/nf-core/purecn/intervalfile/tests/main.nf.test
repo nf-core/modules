@@ -11,7 +11,7 @@ nextflow_process {
     tag "purecn/intervalfile"
 
     test("test-purecn-intervalfile") {
-        
+
         when {
             process {
                 """
@@ -35,7 +35,7 @@ nextflow_process {
             )
         }
     }
-    
+
     test("test-purecn-intervalfile-stub") {
         options '-stub'
         when {
@@ -56,5 +56,5 @@ nextflow_process {
             )
         }
     }
-    
+
 }

@@ -4,9 +4,9 @@ process SMOOVE_CALL {
     ext prefix: "${meta.id}", args: '', when: true
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smoove:0.2.8--h9ee0642_1' :
-        'biocontainers/smoove:0.2.8--h9ee0642_1' }"
+        'quay.io/biocontainers/smoove:0.2.8--h9ee0642_1' }"
 
     input:
     tuple val(meta), path(input), path(index), path(exclude_beds)
@@ -15,7 +15,7 @@ process SMOOVE_CALL {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('smoove'), eval("smoove -v |& sed -n 's/smoove version: *//p'"), emit: versions_smoove, topic: versions
 
     when: task.ext.when
 
@@ -33,21 +33,11 @@ process SMOOVE_CALL {
         ${exclude} \\
         --processes ${task.cpus} \\
         ${input}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        smoove: \$(echo \$(smoove -v) | sed 's/^.*version: //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix
     """
     echo "" | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        smoove: \$(echo \$(smoove -v) | sed 's/^.*version: //; s/ .*\$//' )
-    END_VERSIONS
     """
 }

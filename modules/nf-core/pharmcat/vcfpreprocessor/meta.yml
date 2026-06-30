@@ -1,0 +1,137 @@
+name: "pharmcat_vcfpreprocessor"
+description: The PharmCAT VCF Preprocessor is a script that can pre-process VCF
+  files for PharmCAT to make sure the VCF file complies with PharmCAT's VCF
+  Requirements
+keywords:
+  - preprocessing
+  - vcf
+  - phamrcat
+tools:
+  - "pharmcat":
+      description: "PharmCAT (Pharmacogenomics Clinical Annotation Tool) is a bioinformatics
+        tool that analyzes genetic variants to predict drug response and tailor medical
+        treatment to an individual patient’s genetic profile. "
+      homepage: "https://pharmcat.clinpgx.org/"
+      documentation: "https://pharmcat.clinpgx.org/"
+      tool_dev_url: "https://github.com/PharmGKB/PharmCAT"
+      doi: "10.1002/cpt.928"
+      licence:
+        - "MPL-2.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', name:'test_sample' ]`
+    - vcf_gz:
+        type: file
+        description: The vcf file to be inspected
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - vcf_index:
+        type: file
+        description: The tbi/csi file to be inspected
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Genome fasta file
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test' ]
+    - fai:
+        type: file
+        description: Genome index file
+        pattern: "*.{fai,fai.gz}"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test' ]
+    - pharmcat_positions:
+        type: file
+        description: Pharmcat positions vcf
+        pattern: "*.vcf.{gz,bgz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - pharmcat_positions_index:
+        type: file
+        description: Pharmcat positions vcf index file
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test' ]
+    - pharmcat_uniallelic_positions:
+        type: file
+        description: Pharmcat uniallelic positions vcf
+        pattern: "*.vcf.{gz,bgz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - pharmcat_uniallelic_positions_index:
+        type: file
+        description: Pharmcat uniallelic positions vcf index file
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+output:
+  preprocessed_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', name:'test_sample' ]`
+      - "*.preprocessed.vcf.bgz":
+          type: file
+          description: Preprocessed vcf file
+          pattern: "*.preprocessed.vcf.bgz"
+          ontologies: []
+  missing_pgx_var:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', name:'test_sample' ]`
+      - "*.missing_pgx_var.vcf":
+          type: file
+          description: Missing position in PGX VCF file
+          pattern: "*.missing_pgx_var.vcf"
+          ontologies: []
+  versions_pharmcat_vcf_preprocessor:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pharmcat_vcf_preprocessor:
+          type: string
+          description: The name of the tool
+      - pharmcat_vcf_preprocessor --version | cut -f4 -d ' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pharmcat_vcf_preprocessor:
+          type: string
+          description: The name of the tool
+      - pharmcat_vcf_preprocessor --version | cut -f4 -d ' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ramsainanduri"
+maintainers:
+  - "@ramsainanduri"

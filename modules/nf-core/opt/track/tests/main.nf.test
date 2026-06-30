@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process OPT_TRACK"
+    script "../main.nf"
+    process "OPT_TRACK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "opt"
+    tag "opt/flip"
+    tag "opt/track"
+
+    setup {
+        run("OPT_FLIP") {
+            script "../../flip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'testrun_opt_track' ],
+                    file(params.modules_testdata_base_path + 'spatial_omics/probe_detection/probes.fa', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test_references' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("testrun opt/track panel probe sequences") {
+
+        when {
+            process {
+                """
+                input[0] = OPT_FLIP.out.fwd_oriented_fa
+                input[1] = [
+                    [ id:'test_references' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("testrun opt/track panel probe sequences -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = OPT_FLIP.out.fwd_oriented_fa
+                input[1] = [
+                    [ id:'test_references' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

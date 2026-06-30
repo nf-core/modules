@@ -9,16 +9,51 @@ nextflow_process {
     tag "proovframe"
     tag "proovframe/map"
 
-    test("sarscov2 - tsv") {
+    test("sarscov2 - provided db") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
+                    [ id:'fa', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
+                input[1] = [
+                    [ id:'fa', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'fa', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.dmnd', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.tsv[0][1]).text.contains('MT192765.1	sp|Q460N5|PAR14_HUMAN	28.4	176	105	5	3424	3918	818	983') },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - provided faa") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'fa', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'fa', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[2] = [[:], []]
                 """
             }
         }
@@ -40,9 +75,16 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
+                    [ id:'test2', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'fa', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'fa', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.dmnd', checkIfExists: true)
                 ]
                 """
             }

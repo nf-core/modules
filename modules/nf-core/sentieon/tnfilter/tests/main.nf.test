@@ -4,15 +4,15 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "SENTIEON_TNFILTER"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "sentieon"
-    tag "sentieon/tnfilter"    
+    tag "sentieon/tnfilter"
     config './nextflow.config'
 
     test("vcf, index, stats only") {
-        
+
         when {
             params {
                 module_args  = ''
@@ -44,16 +44,15 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
     }
-    
+
     test("with contamination/orientation data") {
-        
+
         when {
             params {
                 module_args  = ''
@@ -85,14 +84,13 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
     }
-    
+
     test("vcf, index, stats only - stub") {
         options '-stub'
         when {
@@ -125,11 +123,10 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
     }
-
 }

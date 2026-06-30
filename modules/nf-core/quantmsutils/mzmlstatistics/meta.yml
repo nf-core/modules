@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "quantmsutils_mzmlstatistics"
+description: "Generate statistics from mzML files using quantms-utils"
+keywords:
+  - "quantms-utils"
+  - "mzml"
+  - "statistics"
+  - "proteomics"
+  - "mass spectrometry"
+tools:
+  - "quantms-utils":
+      description: "A Python package for quantitative mass spectrometry data analysis"
+      homepage: "https://github.com/bigbio/quantms-utils"
+      documentation: "https://quantms-utils.readthedocs.io/"
+      tool_dev_url: "https://github.com/bigbio/quantms-utils"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', name:'test' ]
+    - ms_file:
+        type: file
+        description: "Input mzML file"
+        pattern: "*.{mzML,mzml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3244" # mzML
+output:
+  ms_statistics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test' ]
+      - "*_ms_info.parquet":
+          type: file
+          description: "MS statistics in parquet format"
+          pattern: "*_ms_info.parquet"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Plain text
+  ms2_statistics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test' ]
+      - "*_ms2_info.parquet":
+          type: file
+          description: "MS2 statistics in parquet format (optional)"
+          pattern: "*_ms2_info.parquet"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Plain text
+  feature_statistics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test' ]
+      - "*_feature_info.parquet":
+          type: file
+          description: "Feature statistics in parquet format (optional)"
+          pattern: "*_feature_info.parquet"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Plain text
+  versions:
+    - versions.yml:
+        type: file
+        description: "File containing software versions"
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test' ]
+      - "*.log":
+          type: file
+          description: "Log file"
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Plain text
+authors:
+  - "@wanghong"
+  - "@daichengxin"
+  - "@pinin4fjords"
+maintainers:
+  - "@daichengxin"
+  - "@pinin4fjords"

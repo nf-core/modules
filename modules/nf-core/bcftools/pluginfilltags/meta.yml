@@ -17,7 +17,8 @@ tools:
       documentation: "https://samtools.github.io/bcftools/bcftools.html"
       tool_dev_url: "https://github.com/samtools/bcftools"
       doi: "10.1093/bioinformatics/btp352"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       args_id: "$args"
       identifier: biotools:bcftools
   - "bcftools plugin fill-tags":
@@ -28,7 +29,8 @@ tools:
       documentation: "https://samtools.github.io/bcftools/bcftools.html#plugin"
       tool_dev_url: "https://github.com/samtools/bcftools"
       doi: "10.1093/bioinformatics/btp352"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       args_id: "$args2"
       identifier: biotools:bcftools
 input:
@@ -80,35 +82,37 @@ output:
           description: VCF output file containing added INFO/INFO field
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
           ontologies: []
-  tbi:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "*.{tbi,csi}":
           type: file
-          description: Alternative VCF file tabix index
-          pattern: "*.tbi"
-          ontologies: []
-  csi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csi":
-          type: file
-          description: Default VCF file coordinate sorted index
-          pattern: "*.csi"
-          ontologies: []
+          description: VCF file index
+          pattern: "*.{tbi,csi}"
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@LouisLeNezet"
 maintainers:

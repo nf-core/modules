@@ -17,8 +17,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'mat', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    [ id:'pat', single_end:false ],
+                    file(params.modules_testdata_base_path + 'delete_me/merquryfk/Father.Reads.fasta.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -29,8 +29,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'pat', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    [ id:'mat', single_end:false ],
+                    file(params.modules_testdata_base_path + 'delete_me/merquryfk/Mother.Reads.fasta.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -42,14 +42,14 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'child', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/merquryfk/Child.Reads.fasta.gz', checkIfExists: true)
                 ]
                 """
             }
         }
     }
 
-    test("homo_sapiens - Illumina") {
+    test("MerquryFK - Synthetic trio data") {
         config "./nextflow.config"
 
         when {
@@ -71,7 +71,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - Illumina - stub") {
+    test("MerquryFK - Synthetic trio data - stub") {
         config "./nextflow.config"
         options '-stub'
 

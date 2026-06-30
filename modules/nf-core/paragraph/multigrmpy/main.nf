@@ -4,9 +4,9 @@ process PARAGRAPH_MULTIGRMPY {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paragraph:2.3--h21f15d8_1':
-        'biocontainers/paragraph:2.3--h21f15d8_1' }"
+        'quay.io/biocontainers/paragraph:2.3--h21f15d8_1' }"
 
     input:
     tuple val(meta), path(variants), path(variants_index), path(reads), path(reads_index), path(manifest)
@@ -32,7 +32,6 @@ process PARAGRAPH_MULTIGRMPY {
 
     if ("${variants}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-
     """
     ${check_vcf}
 
@@ -65,7 +64,6 @@ process PARAGRAPH_MULTIGRMPY {
 
     if ("${variants}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-
     """
     echo | gzip > ${prefix}.vcf.gz
     echo | gzip > ${prefix}.json.gz

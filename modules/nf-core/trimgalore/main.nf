@@ -1,22 +1,23 @@
 process TRIMGALORE {
     tag "${meta.id}"
-    label 'process_high'
+    label 'process_medium'
+    label 'process_low_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9becad054093ad4083a961d12733f2a742e11728fe9aa815d678b882b3ede520/data'
-        : 'community.wave.seqera.io/library/cutadapt_trim-galore_pigz:a98edd405b34582d'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7e44249e3fafe3d136ea726225551b51bca642387e16d9687b3e602207dedb20/data' :
+        'community.wave.seqera.io/library/trim-galore:2.1.0--27e6376b8f6c1872'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("*{3prime,5prime,trimmed,val}{,_1,_2}.fq.gz"), emit: reads
-    tuple val(meta), path("*report.txt")                               , emit: log, optional: true
-    tuple val(meta), path("*unpaired{,_1,_2}.fq.gz")                  , emit: unpaired, optional: true
-    tuple val(meta), path("*.html")                                    , emit: html, optional: true
-    tuple val(meta), path("*.zip")                                     , emit: zip, optional: true
-    path "versions.yml"					                               , emit: versions
+    tuple val(meta), path("*report.txt")                               , emit: log     , optional: true
+    tuple val(meta), path("*unpaired{,_1,_2}.fq.gz")                   , emit: unpaired, optional: true
+    tuple val(meta), path("*.html")                                    , emit: html    , optional: true
+    tuple val(meta), path("*.zip")                                     , emit: zip     , optional: true
+    tuple val("${task.process}"), val("trimgalore"), eval('trim_galore --version | grep -Eo "[0-9]+(\\.[0-9]+)+"'), topic: versions, emit: versions_trimgalore
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,7 +45,7 @@ process TRIMGALORE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         def args_list = args.split("\\s(?=--)").toList()
-        args_list.removeAll { it.toLowerCase().contains('_r2 ') }
+        args_list.removeAll { arg -> arg.toLowerCase().contains('_r2 ') }
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
         trim_galore \\
@@ -52,13 +53,6 @@ process TRIMGALORE {
             --cores ${cores} \\
             --gzip \\
             ${prefix}.fastq.gz
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
-            cutadapt: \$(cutadapt --version)
-            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-        END_VERSIONS
         """
     }
     else {
@@ -72,13 +66,6 @@ process TRIMGALORE {
             --gzip \\
             ${prefix}_1.fastq.gz \\
             ${prefix}_2.fastq.gz
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
-            cutadapt: \$(cutadapt --version)
-            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-        END_VERSIONS
         """
     }
 
@@ -96,12 +83,5 @@ process TRIMGALORE {
     }
     """
     ${output_command}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
-        cutadapt: \$(cutadapt --version)
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 }

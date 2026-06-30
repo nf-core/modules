@@ -1,0 +1,112 @@
+name: "stainwarpy_transformsegmask"
+description: Transform segmentation mask of multiplexed or H&E stained tissue images using stainwarpy
+keywords:
+  - image registration
+  - histology
+  - hne
+  - multiplexed
+  - segmentation mask
+tools:
+  - "stainwarpy":
+      description: "Register H&E stained and Multiplexed tissue images using feature-based image registration"
+      homepage: "https://github.com/tckumarasekara/stainwarpy"
+      documentation: "https://github.com/tckumarasekara/stainwarpy"
+      tool_dev_url: "https://github.com/tckumarasekara/stainwarpy"
+      licence: ["MIT License", "Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - hne_img:
+        type: file
+        description: H&E stained image file
+        pattern: "*.{ome.tif,ome.tiff,tif,tiff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - multiplx_img:
+        type: file
+        description: Multiplexed image file
+        pattern: "*.{ome.tif,ome.tiff,tif,tiff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - seg_mask:
+        type: file
+        description: Segmentation mask file
+        pattern: "*.{ome.tif,ome.tiff,tif,tiff,npy}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - tform_map:
+        type: file
+        description: Transformation map file
+        pattern: "*.npy"
+        ontologies: []
+  - fixed_img:
+      type: string
+      description: Which image to use as fixed image for registration. Options - 'hne' or 'multiplexed'
+      ontologies: []
+  - final_sz:
+      type: string
+      description: In which pixel size to output the registered image and segmentation mask. Options - 'hne' or 'multiplexed'
+      ontologies: []
+
+output:
+  transformed_seg_mask:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_transformed_segmentation_mask.ome.tif":
+          type: file
+          description: Transformed segmentation mask in OME-TIFF format
+          pattern: "*_transformed_segmentation_mask.ome.tif"
+          ontologies:
+            - edam: "http://edamontology.org/format_3727"
+  versions_stainwarpy:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "stainwarpy":
+          type: string
+          description: The name of the tool
+      - "stainwarpy --version | sed 's/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stainwarpy:
+          type: string
+          description: The name of the tool
+      - stainwarpy --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@tckumarasekara"
+maintainers:
+  - "@tckumarasekara"

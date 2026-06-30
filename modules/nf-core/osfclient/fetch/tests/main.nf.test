@@ -12,11 +12,11 @@ nextflow_process {
     test("download") {
         when {
             process {
-                """                
-                input[0] = [ 
+                """
+                input[0] = [
                     [ id: '74vtp' ],
-                    '74vtp', 
-                    'osfstorage/LJAF_Proposal_Cover_Sheet_and_Summary.docx' 
+                    '74vtp',
+                    'osfstorage/LJAF_Proposal_Cover_Sheet_and_Summary.docx'
                 ]
                 """
             }
@@ -37,11 +37,11 @@ nextflow_process {
 
         when {
             process {
-                """                
-                input[0] = [ 
+                """
+                input[0] = [
                     [ id: '74vtp' ],
-                    '74vtp', 
-                    'osfstorage/LJAF_Proposal_Cover_Sheet_and_Summary.docx' 
+                    '74vtp',
+                    'osfstorage/LJAF_Proposal_Cover_Sheet_and_Summary.docx'
                 ]
                 """
             }

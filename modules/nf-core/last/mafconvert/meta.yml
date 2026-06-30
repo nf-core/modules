@@ -22,14 +22,14 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - maf:
         type: file
-        description: Multiple Alignment Format (MAF) file, optionally compressed with
-          gzip
+        description: Multiple Alignment Format (MAF) file, optionally compressed
+          with gzip
         pattern: "*.{maf.gz,maf}"
         ontologies: []
     - format:
         type: string
-        description: Output format (one of axt, bam, blast, blasttab, cram, chain, gff,
-          html, psl, sam, or tab)
+        description: Output format (one of axt, bam, blast, blasttab, blasttab+, cram, chain,
+          gff, html, psl, sam, or tab)
   - - meta2:
         type: map
         description: |
@@ -37,196 +37,93 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - fasta:
         type: file
-        description: Genome file in FASTA format for CRAM conversion.  If compressed
-          it must be done in BGZF format (like with the bgzip tool).
+        description: Genome file in FASTA format for CRAM conversion.  If
+          compressed it must be done in BGZF format (like with the bgzip tool).
         pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
     - fai:
         type: file
         description: Genome index file needed for CRAM conversion.
         pattern: "*.fai"
         ontologies: []
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
     - gzi:
         type: file
-        description: Genome index file needed for CRAM conversion when the genome file
-          was compressed with the BGZF algorithm.
+        description: Genome index file needed for CRAM conversion when the genome
+          file was compressed with the BGZF algorithm.
         pattern: "*.gzi"
         ontologies: []
-  - - meta5:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+    - sizes:
+        type: file
+        description: File listing sequence names and lenghts in that genome
+        pattern: "*.sizes"
+        ontologies: []
     - dict:
         type: file
         description: Samtools dictionary of the genome file.
         pattern: "*.dict"
         ontologies: []
 output:
-  axt_gz:
+  alignment:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.axt.gz":
+      - "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,blasttabplus.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}":
           type: file
-          description: Gzipped pairwise alignment in Axt (Blastz) format (optional)
-          pattern: "*.axt.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  bam:
-    - - meta:
-          type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.bam":
-          type: file
-          description: Pairwise alignment in BAM format (optional)
-          pattern: "*.bam"
+            Pairwise alignment exported to Axt, BAM, BCF, BED, BLAST, Chain,
+            CRAM, GFF, HTML PSL, SAM or Tab format.  For BCF generation, pass
+            options to `bcftools merge` with `task.ext.args3` and to `bcftools
+            call` via `task.ext.args4`.
+          pattern: "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,blasttabplus.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"
           ontologies: []
-  bed_gz:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.bed.gz":
+      - "*.{bai,crai,csi}":
           type: file
-          description: Gzipped pairwise alignment in BED format (optional)
-          pattern: "*.bed.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  blast_gz:
-    - - meta:
-          type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.blast.gz":
-          type: file
-          description: Gzipped pairwise alignment in blast format (optional)
-          pattern: "*.blast.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  blasttab_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.blasttab.gz":
-          type: file
-          description: Gzipped pairwise alignment in blasttab format (optional)
-          pattern: "*.blasttab.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  chain_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.chain.gz":
-          type: file
-          description: Gzipped pairwise alignment in UCSC chain format (optional)
-          pattern: "*.chain.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  cram:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.cram":
-          type: file
-          description: Pairwise alignment in CRAM format (optional)
-          pattern: "*.cram"
+            Optional index for the BAM, BCF or CRAM files. Pass `--write-index`
+            to `samtools` via `task.ext.args2`, or BAM and CRAM, and to
+            `bcftools call` via `task.ext.arg4` for BCF.
+          pattern: "*.{bai,crai,csi}"
           ontologies: []
-      - fasta:
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.stats":
           type: file
-          description: Genome file to recover sequences from the CRAM file (optional)
-          pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
+          description: Statistics on the BCF files.
+          pattern: "*.stats"
           ontologies: []
-  gff_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.gff.gz":
-          type: file
-          description: Gzipped pairwise alignment in GFF format (optional)
-          pattern: "*.gff.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  html_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.html.gz":
-          type: file
-          description: Gzipped pairwise alignment in HTML format (optional)
-          pattern: "*.html.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  psl_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.psl.gz":
-          type: file
-          description: Gzipped pairwise alignment in PSL (BLAT) format (optional)
-          pattern: "*.psl.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  sam_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.sam.gz":
-          type: file
-          description: Gzipped pairwise alignment in SAM format (optional)
-          pattern: "*.sam.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  tab_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.tab.gz":
-          type: file
-          description: Gzipped pairwise alignment in TAB format (optional)
-          pattern: "*.tab.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_last:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - last:
+          type: string
+          description: The name of the tool
+      - "lastal --version | sed 's/lastal //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - last:
+          type: string
+          description: The name of the tool
+      - "lastal --version | sed 's/lastal //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@aleksandrabliznina"
   - "@charles-plessy"

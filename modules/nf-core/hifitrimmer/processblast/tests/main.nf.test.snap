@@ -1,0 +1,163 @@
+{
+    "hifi_trimmer process_blast test": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bed.gz:md5,3738c66c8eaf6217c351947a3da07939"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    {
+                        "detections": [
+                            {
+                                "adapter": "gnl|uv|NGB00973.1:1-35",
+                                "n_hits": 339
+                            },
+                            {
+                                "adapter": "PacBio_ULI_adapter",
+                                "n_hits": 24
+                            }
+                        ],
+                        "hits": [
+                            {
+                                "adapter": "gnl|uv|NGB00973.1:1-35",
+                                "action": "trim",
+                                "n_hits": 54,
+                                "n_reads": 3,
+                                "bases_removed": 600
+                            },
+                            {
+                                "adapter": "PacBio_ULI_adapter",
+                                "action": "discard",
+                                "n_hits": 24,
+                                "n_reads": 1,
+                                "bases_removed": 14095
+                            }
+                        ],
+                        "summary": {
+                            "total_reads_discarded": 1,
+                            "total_reads_trimmed": 3,
+                            "total_bases_removed": 14695
+                        }
+                    }
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.hits:md5,762ca33409b32c240df80263e440fae9"
+                ]
+            ],
+            [
+                [
+                    "HIFITRIMMER_PROCESSBLAST",
+                    "hifi_trimmer",
+                    "2.2.0"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-02-24T13:45:22.855103708"
+    },
+    "versions": {
+        "content": [
+            [
+                [
+                    "HIFITRIMMER_PROCESSBLAST",
+                    "hifi_trimmer",
+                    "2.2.0"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-02-24T13:45:39.588507697"
+    },
+    "hifi_trimmer process_blast test - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bed.gz:md5,f50b84b1db4b83ba62ec1deacc69c260"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.summary.json:md5,1f7f65ca1a1b41bec29194966ca37228"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.hits:md5,1f7f65ca1a1b41bec29194966ca37228"
+                    ]
+                ],
+                "3": [
+                    [
+                        "HIFITRIMMER_PROCESSBLAST",
+                        "hifi_trimmer",
+                        "2.2.0"
+                    ]
+                ],
+                "bed": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bed.gz:md5,f50b84b1db4b83ba62ec1deacc69c260"
+                    ]
+                ],
+                "hits": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.hits:md5,1f7f65ca1a1b41bec29194966ca37228"
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.summary.json:md5,1f7f65ca1a1b41bec29194966ca37228"
+                    ]
+                ],
+                "versions_hifitrimmer": [
+                    [
+                        "HIFITRIMMER_PROCESSBLAST",
+                        "hifi_trimmer",
+                        "2.2.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-02-24T13:45:39.556307304"
+    }
+}

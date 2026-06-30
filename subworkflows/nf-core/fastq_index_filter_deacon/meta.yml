@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_index_filter_deacon"
+description: |
+  Decontaminate FastQ files by filtering reads that match a reference genome using Deacon
+keywords:
+  - filter
+  - index
+  - fasta
+  - fastq
+  - genome
+  - reference
+  - minimizer
+  - decontamination
+components:
+  - deacon/index
+  - deacon/filter
+input:
+  - ch_fasta_reads:
+      type: file
+      description: |
+        Input genome fasta file and a list of FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), path(fasta), [ path(reads) ] ]
+output:
+  - index:
+      type: file
+      description: |
+        Deacon minimizer index file
+        Structure: [ val(meta), path(index) ]
+      pattern: ".idx"
+  - fastq_filtered:
+      type: file
+      description: |
+        List of output filtered FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), path(${prefix}*.fq) ]
+      pattern: "*.fq.gz"
+  - summary:
+      type: file
+      description: |
+        JSON file containing summary of results.
+        Structure: [ val(meta), path(${prefix}.json) ]
+      pattern: "*.json"
+authors:
+  - "@Baksic-Ivan"
+  - "@Omer0191"
+maintainers:
+  - "@Baksic-Ivan"
+  - "@Omer0191"

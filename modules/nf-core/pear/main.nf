@@ -3,18 +3,18 @@ process PEAR {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pear:0.9.6--h67092d7_8':
-        'biocontainers/pear:0.9.6--h67092d7_8' }"
+        'quay.io/biocontainers/pear:0.9.6--h67092d7_8' }"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.assembled.fastq.gz")                                                  , emit: assembled
-    tuple val(meta), path("*.unassembled.forward.fastq.gz"), path("*.unassembled.reverse.fastq.gz"), emit: unassembled
-    tuple val(meta), path("*.discarded.fastq.gz")                                                  , emit: discarded
-    path "versions.yml"                                                                            , emit: versions
+    tuple val(meta), path("*.assembled.fastq.gz")                                                                   , emit: assembled
+    tuple val(meta), path("*.unassembled.forward.fastq.gz"), path("*.unassembled.reverse.fastq.gz")                 , emit: unassembled
+    tuple val(meta), path("*.discarded.fastq.gz")                                                                   , emit: discarded
+    tuple val("${task.process}"), val('pear'), eval("pear -h | grep 'PEAR v' | sed 's/PEAR v//' | sed 's/ .*//'")   , topic: versions, emit: versions_pear
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,10 +35,14 @@ process PEAR {
     gzip -f ${prefix}.unassembled.forward.fastq
     gzip -f ${prefix}.unassembled.reverse.fastq
     gzip -f ${prefix}.discarded.fastq
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pear: \$(pear -h | grep 'PEAR v' | sed 's/PEAR v//' | sed 's/ .*//' ))
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.assembled.fastq.gz
+    echo | gzip > ${prefix}.unassembled.forward.fastq.gz
+    echo | gzip > ${prefix}.unassembled.reverse.fastq.gz
+    echo | gzip > ${prefix}.discarded.fastq.gz
     """
 }

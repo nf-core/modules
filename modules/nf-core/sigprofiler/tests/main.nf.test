@@ -1,0 +1,188 @@
+nextflow_process {
+
+    name "Test Process SIGPROFILER"
+    script "../main.nf"
+    process "SIGPROFILER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sigprofiler"
+
+    test("test_sigprofiler_single_sample") {
+
+        config "./nextflow.config"
+
+        when {
+
+            params {
+              module_args = "[download_genome_sigprofiler:True, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:False ]"
+
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                ]
+                input[1] = "GRCh38"
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            def (meta, resultPaths) = process.out.results_sigprofiler[0]
+
+            // Convert the list of output paths to a File object list
+            def allPaths = resultPaths.collect { new File(it.toString()) }
+
+            // Get the parent directory containing "results"
+            def resultsDir = allPaths[0].parentFile
+
+            // Define mapping between context names and output folder naming
+            def contextMap = [
+                "96"    : "SBS96",
+                "DINUC" : "DBS78",
+                "ID"    : "ID83"
+            ]
+
+            // Use the same context types as the workflow input (default: all three)
+            def contextTypes = params.context_type?.split(',') ?: ['96','DINUC','ID']
+            def expectedContexts = contextTypes.collect { contextMap[it] }
+
+            // Build expected files dynamically
+            def contextExpectedFiles = expectedContexts.collectEntries { sig ->
+                def type = (sig =~ /[A-Z]+/)[0]   // extract SBS / DBS / ID
+                [
+                    (sig): [
+                        "${sig}/${sig}/Samples.txt",
+                        "${sig}/${sig}/Suggested_Solution/COSMIC_${sig}_Decomposed_Solution/Signatures/COSMIC_${sig}_Signatures.txt",
+                        "output/${type}/${meta.id}.${sig}.all"
+                    ]
+                ]
+            }
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match("versions") },
+                {
+                    def inputFile = new File(resultsDir, "input/input_data.txt")
+                    assert inputFile.exists()
+
+                    // Collect existing + missing files per context
+                    def filesStatus = [:]
+                    contextExpectedFiles.findAll { context, _ -> context in expectedContexts }
+                                        .each { context, files ->
+                        def status = files.collectEntries { relativePath ->
+                            def f = new File(resultsDir, relativePath)
+                            [ (relativePath): (f.exists() ? "present" : "missing") ]
+                        }
+                        filesStatus[context] = status
+                    }
+
+                    filesStatus.each { context, status ->
+                        def missing = status.findAll { it.value == "missing" }.keySet()
+                        if (missing) {
+                            println "[WARN] Missing expected files for ${context}: ${missing.join(', ')}"
+                        } else {
+                            println "[OK] All expected files exist for ${context}"
+                        }
+                    }
+                }
+            )
+        }
+    }
+
+    // Additional error-condition tests
+
+    test("test_sigprofiler - invalid boolean argument") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = "[download_genome_sigprofiler:True, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:maybe ]"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                ]
+                input[1] = "GRCh38"
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Invalid value for 'make_decomposition_plots'") }
+            )
+        }
+    }
+
+
+    test("test_sigprofiler - download False but no genome_installed_path") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = "[download_genome_sigprofiler:False, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:maybe ]"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                ]
+                input[1] = "GRCh38"
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("download_genome_sigprofiler is False but no genome_installed_path was provided.") }
+            )
+        }
+    }
+
+
+
+    test("test_sigprofiler - single_sample - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                ]
+                input[1] = "GRCh38"
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot([
+                        results: process.out.results_sigprofiler,
+                        versions: process.out.versions
+                    ]).match()
+                }
+            )
+
+        }
+    }
+
+}

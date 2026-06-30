@@ -4,9 +4,9 @@ process PNEUMOCAT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pneumocat:1.2.1--0':
-        'biocontainers/pneumocat:1.2.1--0' }"
+        'quay.io/biocontainers/pneumocat:1.2.1--0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -21,7 +21,6 @@ process PNEUMOCAT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     PneumoCaT.py \\
@@ -37,7 +36,6 @@ process PNEUMOCAT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """

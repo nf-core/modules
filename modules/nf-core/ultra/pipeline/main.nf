@@ -3,18 +3,18 @@ process ULTRA_PIPELINE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.1--pyh7cba7a3_1':
-        'biocontainers/ultra_bioinformatics:0.1--pyh7cba7a3_1' }"
+        'quay.io/biocontainers/ultra_bioinformatics:0.1--pyh7cba7a3_1' }"
 
     input:
     tuple val(meta), path(reads)
-    path genome
-    path gtf
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(gtf)
 
     output:
     tuple val(meta), path("*.sam"), emit: sam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ultra'), eval("uLTRA --version | sed 's/uLTRA //'"), emit: versions_ultra, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,26 +28,16 @@ process ULTRA_PIPELINE {
         --t $task.cpus \\
         --prefix $prefix \\
         $args \\
-        $genome \\
+        $fasta \\
         $gtf \\
         $reads \\
         ./
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.sam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
-    END_VERSIONS
     """
 
 

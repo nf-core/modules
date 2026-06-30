@@ -10,7 +10,7 @@ process ILASTIK_MULTICUT {
 
     output:
     tuple val(meta), path("*.tiff") , emit: mask
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('ilastik'), eval("/opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version"), emit: versions_ilastik, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process ILASTIK_MULTICUT {
         --export_source="Multicut Segmentation" \\
         --output_filename_format=${prefix}.tiff \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ilastik: \$(/opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version)
-    END_VERSIONS
     """
 
     stub:
@@ -51,10 +46,5 @@ process ILASTIK_MULTICUT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tiff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ilastik: \$(/opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version)
-    END_VERSIONS
     """
 }

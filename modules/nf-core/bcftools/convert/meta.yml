@@ -17,7 +17,8 @@ tools:
       documentation: "https://samtools.github.io/bcftools/bcftools.html#convert"
       tool_dev_url: "https://github.com/samtools/bcftools"
       doi: "10.1093/gigascience/giab008"
-      licence: ["GPL"]
+      licence:
+        - "GPL"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -48,7 +49,8 @@ input:
           e.g. [ id:'genome' ]
     - fasta:
         type: file
-        description: (Optional) The reference fasta, only needed for gVCF conversion
+        description: (Optional) The reference fasta, only needed for gVCF
+          conversion
         pattern: "*.{fa,fasta}"
         ontologies: []
   - bed:
@@ -65,11 +67,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.vcf.gz":
           type: file
-          description: VCF merged output file (bgzipped) => when `--output-type z` is
-            used
+          description: VCF merged output file (bgzipped) => when `--output-type z`
+            is used
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   vcf:
     - - meta:
           type: map
@@ -80,7 +82,8 @@ output:
           type: file
           description: VCF merged output file => when `--output-type v` is used
           pattern: "*.vcf"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   bcf_gz:
     - - meta:
           type: map
@@ -89,11 +92,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bcf.gz":
           type: file
-          description: BCF merged output file (bgzipped) => when `--output-type b` is
-            used
+          description: BCF merged output file (bgzipped) => when `--output-type b`
+            is used
           pattern: "*.bcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   bcf:
     - - meta:
           type: map
@@ -116,7 +119,7 @@ output:
           description: hap format used by IMPUTE2 and SHAPEIT
           pattern: "*.hap.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   legend:
     - - meta:
           type: map
@@ -128,7 +131,7 @@ output:
           description: legend format used by IMPUTE2 and SHAPEIT
           pattern: "*.legend.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   samples:
     - - meta:
           type: map
@@ -140,35 +143,37 @@ output:
           description: samples format used by IMPUTE2 and SHAPEIT
           pattern: "*.samples"
           ontologies: []
-  tbi:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "*.{tbi,csi}":
           type: file
-          description: Alternative VCF file index
-          pattern: "*.tbi"
-          ontologies: []
-  csi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csi":
-          type: file
-          description: Default VCF file index
-          pattern: "*.csi"
-          ontologies: []
+          description: VCF file index
+          pattern: "*.{tbi,csi}"
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@nvnieuwk"
   - "@ramprasadn"

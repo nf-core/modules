@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "ribocode_prepare"
+description: Prepare the annotation files for RiboCode ORF calling
+keywords:
+  - ribo-seq
+  - ribosome profiling
+  - orf calling
+tools:
+  - "ribocode":
+      description: "A package for detecting the actively translated ORFs using ribosome-profiling
+        data"
+      homepage: "https://github.com/xryanglab/RiboCode"
+      documentation: "https://github.com/xryanglab/RiboCode"
+      tool_dev_url: "https://github.com/xryanglab/RiboCode"
+      doi: "10.1093/nar/gky179"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file (uncompressed)
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - gtf:
+        type: file
+        description: Reference genome GTF annotation file (uncompressed, updated with
+          ribocode/gtfupdate)
+        pattern: "*.{gtf}"
+        ontologies: []
+output:
+  annotation:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - annotation:
+          type: directory
+          description: Directory containing RiboCode annotation files (transcripts_cds.txt,
+            transcripts_sequence.fa, transcripts.pickle)
+          pattern: "annotation/"
+  versions_ribocode:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@JackCurragh"

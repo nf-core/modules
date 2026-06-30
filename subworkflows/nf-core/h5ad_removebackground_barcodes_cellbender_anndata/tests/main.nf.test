@@ -15,7 +15,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true)
                 ])
@@ -25,8 +25,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert file(workflow.out.h5ad.get(0).get(1)).exists()},
-                { assert snapshot(workflow.out.versions).match()}
+                { assert file(workflow.out.h5ad.get(0).get(1)).exists()}
             )
         }
     }
@@ -36,7 +35,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.value([
+                input[0] = channel.value([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true)
                 ])

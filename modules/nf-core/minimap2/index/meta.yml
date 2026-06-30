@@ -10,7 +10,8 @@ tools:
         A versatile pairwise aligner for genomic and spliced nucleotide sequences.
       homepage: https://github.com/lh3/minimap2
       documentation: https://github.com/lh3/minimap2#uguide
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -35,13 +36,27 @@ output:
           description: Minimap2 fasta index.
           pattern: "*.mmi"
           ontologies: []
+  versions_minimap2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimap2:
+          type: string
+          description: The name of the tool
+      - minimap2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimap2:
+          type: string
+          description: The name of the tool
+      - minimap2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@yuukiiwa"
   - "@drpatelh"

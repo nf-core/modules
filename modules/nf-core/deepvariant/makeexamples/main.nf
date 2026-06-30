@@ -3,7 +3,7 @@ process DEEPVARIANT_MAKEEXAMPLES {
     label 'process_high'
 
     //Conda is not supported at the moment
-    container "docker.io/google/deepvariant:1.9.0"
+    container "docker.io/google/deepvariant:1.10.0"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
@@ -13,10 +13,10 @@ process DEEPVARIANT_MAKEEXAMPLES {
     tuple val(meta5), path(par_bed)
 
     output:
-    tuple val(meta), path("${prefix}.examples.tfrecord-*-of-*.gz{,.example_info.json}"),    emit: examples
-    tuple val(meta), path("${prefix}.gvcf.tfrecord-*-of-*.gz"),        emit: gvcf
-    tuple val(meta), path("${prefix}_call_variant_outputs.examples.tfrecord-*-of-*.gz",  arity: "0..*"),        emit: small_model_calls
-    path "versions.yml",  emit: versions
+    tuple val(meta), path("${prefix}.examples.tfrecord-*-of-*.gz{,.example_info.json}")                , emit: examples
+    tuple val(meta), path("${prefix}.gvcf.tfrecord-*-of-*.gz")                                         , emit: gvcf
+    tuple val(meta), path("${prefix}_call_variant_outputs.examples.tfrecord-*-of-*.gz",  arity: "0..*"), emit: small_model_calls
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,6 +32,9 @@ process DEEPVARIANT_MAKEEXAMPLES {
     def par_regions = par_bed ? "--par_regions_bed=${par_bed}" : ""
 
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+    mkdir -p \$MPLCONFIGDIR
+
     seq 0 ${task.cpus - 1} | parallel -q --halt 2 --line-buffer /opt/deepvariant/bin/make_examples \\
         --mode calling \\
         --ref "${fasta}" \\
@@ -42,11 +45,6 @@ process DEEPVARIANT_MAKEEXAMPLES {
         ${par_regions} \\
         ${args} \\
         --task {}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_makeexamples: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +57,5 @@ process DEEPVARIANT_MAKEEXAMPLES {
         touch ${prefix}.examples.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz.example_info.json
         echo "" | gzip > ${prefix}.gvcf.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_makeexamples: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 }

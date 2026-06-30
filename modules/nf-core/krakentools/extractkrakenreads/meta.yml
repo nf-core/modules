@@ -13,7 +13,8 @@ tools:
       documentation: https://github.com/jenniferlu717/KrakenTools?tab=readme-ov-file#extract_kraken_readspy
       tool_dev_url: https://github.com/jenniferlu717/KrakenTools
       doi: 10.1038/s41596-022-00738-y
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:krakentools
 input:
   - taxid:
@@ -26,29 +27,30 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - classified_reads_assignment:
         type: file
-        description: A file contains the taxonomic classification of each input read.
+        description: A file contains the taxonomic classification of each input
+          read.
         pattern: "*.{classifiedreads.txt}"
         ontologies: []
-  - - meta:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
     - classified_reads_fastq:
         type: file
-        description: Classified reads as belonging to any of the taxa on the kraken2
-          database.
+        description: Classified reads as belonging to any of the taxa on the
+          kraken2 database.
         pattern: "*.{fastq.gz}"
         ontologies: []
-  - - meta:
+  - - meta3:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
     - report:
         type: file
-        description: Optional Kraken2 report containing stats about classified and not
-          classified reads.
+        description: Optional Kraken2 report containing stats about classified and
+          not classified reads.
         pattern: "*.{report.txt}"
         ontologies: []
 output:
@@ -63,13 +65,27 @@ output:
           description: Reads assigned to a taxid list.
           pattern: "*.{fastq.gz,fasta.gz}"
           ontologies: []
+  versions_krakentools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krakentools:
+          type: string
+          description: The name of the tool
+      - 1.2.1:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krakentools:
+          type: string
+          description: The name of the tool
+      - 1.2.1:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@LilyAnderssonLee"
 maintainers:

@@ -17,8 +17,8 @@ nextflow_process {
             process {
             """
             input[0] = [
-                        [ id:'mockup' ], // meta map
-                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/mag/databases/gtdbtk/gtdbtk_mockup_20250422.tar.gz', checkIfExists: true)
+                [ id:'mockup' ], // meta map
+                file('https://github.com/nf-core/test-datasets/raw/refs/heads/mag/databases/gtdbtk/gtdbtk_mockup_r232_20260507.tar.gz', checkIfExists: true)
             ]
             """
             }
@@ -32,21 +32,18 @@ nextflow_process {
 
             params {
                 // Recommended by the GTDB developers: https://data.gtdb.ecogenomic.org/releases/latest/auxillary_files/gtdbtk_package/mockup_db/HOWTO.txt
-                // The `--skip_ani_screen` requires comparison against a full database and goes through the full classfywf pipeline
-                module_args = '--extension fa --skip_ani_screen'
+                // The `--place_species` requires comparison against a full database and goes through the full classfywf pipeline
+                module_args = '--extension fa --place_species'
             }
 
             process {
                 """
                 input[0] = [
-                        [ id:'test', single_end:false, assembler:'SPADES' ],
-                        [
-                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true),
-                        ]
-                    ]
+                    [ id:'test', single_end:false, assembler:'SPADES' ],
+                    [file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)]
+                ]
                 input[1] = UNTAR.out.untar
                 input[2] = false
-                input[3] = []
                 """
             }
         }
@@ -54,16 +51,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out.summary,
-                        process.out.tree,
-                        process.out.markers,
-                        process.out.msa,
-                        process.out.user_msa,
-                        process.out.filtered,
-                        file(process.out.log[0][1]).readLines().contains('INFO: Done.'),
-                        process.out.versions,
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["gtdb_outdir", "warnings", "failed", "log"])).match() }
             )
         }
     }
@@ -76,21 +64,18 @@ nextflow_process {
 
             params {
                 // Recommended by the GTDB developers: https://data.gtdb.ecogenomic.org/releases/latest/auxillary_files/gtdbtk_package/mockup_db/HOWTO.txt
-                // The `--skip_ani_screen` requires comparison against a full database and goes through the full classfywf pipeline
-                module_args = '--extension fa --skip_ani_screen'
+                // The `--place_species` requires comparison against a full database and goes through the full classfywf pipeline
+                module_args = '--extension fa --place_species'
             }
 
             process {
                 """
                 input[0] = [
-                        [ id:'test', single_end:false, assembler:'SPADES' ],
-                        [
-                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true),
-                        ]
-                    ]
-                input[1] = [[:],[]]
+                    [ id:'test', single_end:false, assembler:'SPADES' ],
+                    [file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)]
+                ]
+                input[1] = UNTAR.out.untar
                 input[2] = false
-                input[3] = []
                 """
             }
         }
@@ -98,7 +83,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

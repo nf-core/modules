@@ -1,22 +1,22 @@
-process DECOUPLER {
+process DECOUPLER_DECOUPLER {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dc0ee6d6033b9f04c6377ad3b1cf5f924e3243626ab8d7be836d9d6617f8da4e/data' :
-        'community.wave.seqera.io/library/decoupler-py_matplotlib_pandas_scanpy:369a5afe315b9b30' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b5d8e776c3b3a00c25d9a94adbde00008018e5f9eb4aa73c17cb7b886ddc1ae3/data' :
+        'community.wave.seqera.io/library/decoupler-py_matplotlib_pandas_python_scanpy:c539733016e15bbc' }"
 
     input:
     tuple val(meta), path(mat)
-    path(net)
-    path(gtf)
+    tuple val(meta2), path(net)
+    tuple val(meta3), path(annot)
 
     output:
     tuple val(meta), path("*estimate_decoupler.tsv"), emit: dc_estimate
     tuple val(meta), path("*pvals_decoupler.tsv"), emit: dc_pvals
-    tuple val(meta), path("*decoupler_plot.png"), emit: png
-    path("versions.yml"), emit: versions
+    tuple val(meta), path("*estimate_decoupler_plot.png"), emit: png
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,9 +26,17 @@ process DECOUPLER {
 
     stub:
     """
-    touch ${task.ext.prefix}_estimate_decoupler.tsv
-    touch ${task.ext.prefix}_pvals_decoupler.tsv
-    touch ${task.ext.prefix}_decoupler_plot.png
-    touch versions.yml
+    touch deseq2_estimate_decoupler.tsv
+    touch deseq2_pvals_decoupler.tsv
+    touch deseq2_estimate_decoupler_plot.png
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        decoupler-py: \$(pip show decoupler | sed -n 's/Version: //p')
+        matplotlib: \$(pip show matplotlib | sed -n 's/Version: //p')
+        pandas: \$(pip show pandas | sed -n 's/Version: //p')
+        python: \$(python --version | cut -f 2 -d " ")
+        scanpy: \$(pip show scanpy | sed -n 's/Version: //p')
+    END_VERSIONS
     """
 }

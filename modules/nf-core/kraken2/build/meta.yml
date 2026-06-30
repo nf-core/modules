@@ -14,7 +14,13 @@ tools:
       documentation: https://github.com/DerrickWood/kraken2/wiki/Manual
       tool_dev_url: "https://github.com/DerrickWood/kraken2"
       doi: 10.1186/s13059-019-1891-0
-      licence: ["MIT"]
+      publication:
+        author: "Wood D.E., Lu J. & Langmead B."
+        year: 2019
+        title: "Improved metagenomic analysis with Kraken 2"
+        source: "Genome Biology"
+      licence:
+        - "MIT"
       args_id: "$args"
       identifier: biotools:kraken2
 input:
@@ -23,10 +29,37 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - db:
-        type: directory
-        description: contains required files to build the database
-        pattern: "*/"
+    - library_added_files:
+        type: file
+        description: Files present in the <name>/library/added/ directory, including
+          FASTA files, masked FASTAs, and prelim_map files.
+        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - seqid2taxid_map:
+        type: file
+        description: File mapping sequence IDs to taxonomy IDs, either generated or
+          premade.
+        pattern: "seqid2taxid.map"
+        ontologies:
+          - edam: http://edamontology.org/data_3028 # Taxonomy
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - taxonomy_files:
+        type: file
+        description: Files present in the <name>/taxonomy/ directory, including nodes.dmp,
+          names.dmp, and .accession2taxid files.
+        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/data_3028 # Taxonomy
   - cleaning:
       type: boolean
       description: activate or deactivate (true or false) cleaning of intermediate files
@@ -37,18 +70,84 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - $prefix:
+      - kraken2-database:
           type: directory
-          description: contains the database that can be used to perform taxonomic classification
-          pattern: "*/"
+          description: |
+            Directory contains the database that can be used to perform taxonomic classification
+
+            IMPORTANT: this output directory will be hardcoded as 'kraken2-database/' inside the module
+            to prevent issues of containers following symlinks in symlinks.
+
+            To give a user the option to provide custom name for the database directory within a pipeline, you should
+            customise this name using during pipeline output publication via the pipeline's publishDir or workflow output customisation options.
+          pattern: "kraken2-database/"
+          ontologies:
+            - edam: http://edamontology.org/data_1049 # Directory
+  db_separated:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - kraken2-database/*k2d:
+          type: file
+          description: Kraken2 k2d binary database files
+          pattern: "*.k2d"
+          ontologies: []
+      - kraken2-database/*map:
+          type: file
+          description: Kraken2 k2d binary database taxonomy to sequencing mapping file
+          pattern: "*.map"
+          ontologies: []
+      - kraken2-database/library/added/*:
+          type: file
+          description: Kraken2 masked FASTA files used to build the database
+          pattern: "*.fasta"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+      - kraken2-database/taxonomy/*:
+          type: file
+          description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
+          pattern: "*.{dmp,accession2taxid}"
+          ontologies:
+            - edam: http://edamontology.org/data_3028 # Taxonomy
+  versions_kraken2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kraken2:
+          type: string
+          description: The name of the tool
+      - kraken2 --version 2>&1 | head -1 | sed "s/^.*Kraken version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+  unmapped:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - kraken2-database/unmapped*.txt:
+          type: file
+          description: |
+            List of unmapped sequence files, i.e. accessions that did not map to any taxonomy ID
+            and were excluded
+          pattern: "unmapped*.txt"
+          ontologies:
+            - edam: http://edamontology.org/data_2526 # Text data
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kraken2:
+          type: string
+          description: The name of the tool
+      - kraken2 --version 2>&1 | head -1 | sed "s/^.*Kraken version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@alxndrdiaz"
 maintainers:
   - "@alxndrdiaz"
+  - "@jfy133"

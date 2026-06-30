@@ -3,9 +3,9 @@ process RNAQUAST {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rnaquast:2.3.0--h9ee0642_0':
-        'biocontainers/rnaquast:2.3.0--h9ee0642_0' }"
+        'quay.io/biocontainers/rnaquast:2.3.0--h9ee0642_0' }"
 
     input:
     tuple val(meta) , path(fasta)
@@ -39,7 +39,6 @@ process RNAQUAST {
     END_VERSIONS
     """
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}

@@ -26,12 +26,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions).match()
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.findAll { key, val -> key.startsWith("versions") }).match()
                 }
             )
         }
-
     }
 
     test("sarscov2 - vcf - tbi") {
@@ -53,12 +52,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions).match()
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.findAll { key, val -> key.startsWith("versions") }).match()
                 }
             )
         }
-
     }
 
     test("sarscov2 - vcf - csi - stub") {
@@ -82,7 +80,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("sarscov2 - vcf - tbi - stub") {
@@ -107,7 +104,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

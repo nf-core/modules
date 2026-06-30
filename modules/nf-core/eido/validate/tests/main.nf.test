@@ -17,8 +17,7 @@ nextflow_process {
             process {
                 """
                 input[0] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_nextflow_original_samplesheet.csv", checkIfExists: true)
-				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_samplesheet_schema.yaml", checkIfExists: true)
-				input[2] = []
+                input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_samplesheet_schema.yaml", checkIfExists: true)
 
                 """
             }
@@ -28,10 +27,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					file(process.out.log[0]).name,
-					process.out.versions
-					).match()
-				}
+                    file(process.out.log[0]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -42,8 +40,7 @@ nextflow_process {
             process {
                 """
                 input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/pep/test_pep_format_files/config.yaml", checkIfExists: true)
-				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_samplesheet_schema.yaml", checkIfExists: true)
-				input[2] = []
+                input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_samplesheet_schema.yaml", checkIfExists: true)
 
                 """
             }
@@ -53,10 +50,30 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					file(process.out.log[0]).name,
-					process.out.versions
-					).match()
-				}
+                    file(process.out.log[0]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("test-eido-validate-on-pep-config -- stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/pep/test_pep_format_files/config.yaml", checkIfExists: true)
+                input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_samplesheet_schema.yaml", checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

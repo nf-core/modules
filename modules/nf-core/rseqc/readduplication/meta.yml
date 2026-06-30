@@ -26,6 +26,11 @@ input:
         description: the alignment in bam format
         pattern: "*.{bam}"
         ontologies: []
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai}"
+        ontologies: []
 output:
   seq_xls:
     - - meta:
@@ -72,16 +77,32 @@ output:
           pattern: "*.R"
           ontologies:
             - edam: http://edamontology.org/format_3999 # R script
+  versions_rseqc:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rseqc:
+          type: string
+          description: The tool name
+      - read_duplication.py --version | sed "s/read_duplication.py //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rseqc:
+          type: string
+          description: The tool name
+      - read_duplication.py --version | sed "s/read_duplication.py //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@drpatelh"
   - "@kevinmenden"
+  - "@rhassaine"
 maintainers:
   - "@drpatelh"
   - "@kevinmenden"
+  - "@rhassaine"

@@ -1,22 +1,22 @@
 process HAMRONIZATION_ABRICATE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hamronization:1.1.4--pyhdfd78af_0':
-        'biocontainers/hamronization:1.1.4--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hamronization:1.1.9--pyhdfd78af_0'
+        : 'quay.io/biocontainers/hamronization:1.1.9--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(report)
-    val(format)
-    val(software_version)
-    val(reference_db_version)
+    val format
+    val software_version
+    val reference_db_version
 
     output:
     tuple val(meta), path("*.json"), optional: true, emit: json
-    tuple val(meta), path("*.tsv") , optional: true, emit: tsv
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.tsv"), optional: true, emit: tsv
+    tuple val("${task.process}"), val('hamronization'), eval("hamronize --version 2>&1 | sed 's/hamronize //'"), topic: versions, emit: versions_hamronization
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,26 +28,16 @@ process HAMRONIZATION_ABRICATE {
     hamronize \\
         abricate \\
         ${report} \\
-        $args \\
+        ${args} \\
         --format ${format} \\
         --analysis_software_version ${software_version} \\
         --reference_database_version ${reference_db_version} \\
         > ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 }

@@ -3,8 +3,8 @@ name: "ribowaltz"
 description: Calculation of optimal P-site offsets, diagnostic analysis and visual
   inspection of ribosome profiling data
 keywords:
-  - sort
-  - example
+  - riboseq
+  - psite
   - genomics
 tools:
   - "ribowaltz":
@@ -163,6 +163,21 @@ output:
           type: file
           description: riboWaltz diagnostic plots (optional)
           pattern: "ribowaltz_qc/*"
+          ontologies: []
+  ribowaltz_qc_data:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ribowaltz_qc/*.tsv:
+          type: file
+          description: TSV files containing data underlying riboWaltz QC plots including
+            read length distribution, read length bins for P-site offset identification,
+            ends heatmap, codon usage, P-site region distribution, frame distribution,
+            frame distribution stratified by read length, and metaprofile P-site
+            frequency around start/stop codons (optional)
+          pattern: "ribowaltz_qc/*.tsv"
           ontologies: []
   versions:
     - versions.yml:

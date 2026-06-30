@@ -3,9 +3,9 @@ process BEDGOVCF {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedgovcf:0.1.1--h9ee0642_1':
-        'biocontainers/bedgovcf:0.1.1--h9ee0642_1' }"
+        'quay.io/biocontainers/bedgovcf:0.1.1--h9ee0642_1' }"
 
     input:
     tuple val(meta), path(bed), path(config)
@@ -13,7 +13,8 @@ process BEDGOVCF {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val("bedgovcf"), eval("bedgovcf --version 2>&1 | sed 's/^bedgovcf version //'"), emit: versions_bedgovcf, topic: versions
+    tuple val("${task.process}"), val("bgzip"), eval('bgzip --version | head -1 | sed "s/bgzip (htslib) //"')    , emit: versions_bgzip, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,21 +30,11 @@ process BEDGOVCF {
         --fai $fai \\
         --config $config \\
         | bgzip --stdout --threads $task.cpus $args2 > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedgovcf: \$(echo \$(bedgovcf --version 2>&1) | sed 's/^bedgovcf version //' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedgovcf: \$(echo \$(bedgovcf --version 2>&1) | sed 's/^bedgovcf version //' )
-    END_VERSIONS
     """
 }

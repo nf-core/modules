@@ -3,9 +3,9 @@ process FLASH {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/flash:1.2.11--h5bf99c6_6' :
-        'biocontainers/flash:1.2.11--h5bf99c6_6' }"
+        'quay.io/biocontainers/flash:1.2.11--h5bf99c6_6' }"
 
     input:
     tuple val(meta), path(reads)
@@ -14,7 +14,7 @@ process FLASH {
     tuple val(meta), path("${prefix}.extendedFrags.fastq.gz"), emit: merged
     tuple val(meta), path("${prefix}.notCombined_*.fastq.gz"), emit: notcombined
     tuple val(meta), path("${prefix}.hist")                  , emit: histogram
-    path "versions.yml"                                      , emit: versions
+    tuple val("${task.process}"), val('flash'), eval("flash --version |& sed '1!d;s/^.*FLASH v//'"), topic: versions, emit: versions_flash
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,23 +33,14 @@ process FLASH {
         -z \\
         ${reads[0]} \\
         ${reads[1]}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        flash: \$(echo \$(flash --version 2>&1) | sed 's/^.*FLASH v//; s/ .*\$//')
-    END_VERSIONS
     """
-
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-
-    touch ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        flash: \$(echo \$(flash --version 2>&1) | sed 's/^.*FLASH v//; s/ .*\$//')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.extendedFrags.fastq.gz
+    echo "" | gzip > ${prefix}.notCombined_1.fastq.gz
+    echo "" | gzip > ${prefix}.notCombined_2.fastq.gz
+    touch ${prefix}.hist
     """
 }

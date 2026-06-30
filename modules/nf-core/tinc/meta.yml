@@ -1,11 +1,12 @@
 name: "tinc"
-description: write your description here
+description: "TINC is a package to determine the contamination of tumour DNA in a
+  matched normal sample. The approach uses evolutionary theory applied to read counts
+  data from whole-genome sequencing assays."
 keywords:
   - genomics
   - tumour contamination
   - normal
   - purity
-
 tools:
   - "tinc":
       description: "TINC is a package that implements algorithms to determine the contamination
@@ -21,25 +22,22 @@ tools:
       documentation: "https://caravagnalab.github.io/TINC/"
       tool_dev_url: "https://github.com/caravagnalab/TINC/"
       doi: "10.1038/s41467-023-44158-2"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: "biotools:r-tinc"
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name', normal_sample:'normal_sample_name' ]`
-
     - cna_rds:
         type: file
         description: RDS file with copy number segments and purity
-
         ontologies: []
     - vcf_rds:
         type: file
         description: RDS file with vcf calls from tumour and normal sample
-
         ontologies: []
 output:
   rds:
@@ -63,7 +61,6 @@ output:
           type: file
           description: RDS file with the plot of the results
           pattern: "*.{rds}"
-
           ontologies: []
   plot_pdf:
     - - meta:
@@ -86,17 +83,23 @@ output:
           type: file
           description: CSV file with the output of TINC qc flag
           pattern: "*.{csv}"
-
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
+  versions_tinc:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+topics:
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
-
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@valerianilucrezia"
 maintainers:

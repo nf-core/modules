@@ -2,16 +2,16 @@ process METAPHLAN_MERGEMETAPHLANTABLES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaphlan:4.1.1--pyhdfd78af_0' :
-        'biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
+        'quay.io/biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(profiles)
 
     output:
     tuple val(meta), path("${prefix}.txt") , emit: txt
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('metaphlan'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,21 +25,12 @@ process METAPHLAN_MERGEMETAPHLANTABLES {
         -o ${prefix}.txt \\
         ${profiles}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 }

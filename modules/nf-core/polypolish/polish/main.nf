@@ -4,9 +4,9 @@ process POLYPOLISH_POLISH {
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/polypolish:0.6.0--hdbdd923_0':
-        'biocontainers/polypolish:0.6.0--hdbdd923_0' }"
+        'quay.io/biocontainers/polypolish:0.6.0--hdbdd923_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -42,7 +42,6 @@ process POLYPOLISH_POLISH {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_polished.fasta

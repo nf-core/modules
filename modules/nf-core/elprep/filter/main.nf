@@ -3,9 +3,9 @@ process ELPREP_FILTER {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/elprep:5.1.3--he881be0_1':
-        'biocontainers/elprep:5.1.3--he881be0_1' }"
+        'quay.io/biocontainers/elprep:5.1.3--he881be0_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(target_regions_bed), path(filter_regions_bed), path(intermediate_bqsr_tables), path(recall_file)
@@ -28,7 +28,7 @@ process ELPREP_FILTER {
     tuple val(meta), path("*.table")                , optional: true, emit: table
     tuple val(meta), path("*.activity_profile.igv") , optional: true, emit: activity_profile
     tuple val(meta), path("*.assembly_regions.igv") , optional: true, emit: assembly_regions
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('elprep'), eval('elprep 2>&1 | sed -n \'2s/^.*version //;s/ compiled.*$//p\''), emit: versions_elprep, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -84,11 +84,6 @@ process ELPREP_FILTER {
         $args
 
     mv logs/elprep/*.log .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -114,10 +109,5 @@ process ELPREP_FILTER {
     ${bqsr_tables_only_cmd}
     ${activity_profile_cmd}
     ${assembly_regions_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')
-    END_VERSIONS
     """
 }

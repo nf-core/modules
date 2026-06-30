@@ -1,0 +1,210 @@
+nextflow_process {
+
+    name "Test Process BLOBTK_PLOT"
+    script "../main.nf"
+    process "BLOBTK_PLOT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blobtk"
+    tag "blobtk/plot"
+
+    config './nextflow.config'
+
+    test("homo_sapiens - fasta - png") {
+
+        when {
+
+            process {
+                """
+                input[0] = channel.of([
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+
+                input[1] = []
+
+                input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
+
+                input[3] = channel.of(
+                    [
+                        name: "BLOB_VIEW",
+                        args: "-v blob"
+                    ]
+                )
+
+                input[4] = "png"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.png.collect { meta, image -> [meta, file(image).name] },
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - fasta - snail - png") {
+
+        when {
+
+            process {
+                """
+                input[0] = channel.of([
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+
+                input[1] = []
+
+                input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
+
+                input[3] = channel.of(
+                    [
+                        name: "SNAIL_VIEW",
+                        args: "-v snail"
+                    ]
+                )
+
+                input[4] = "png"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.png.collect { meta, image -> [meta, file(image).name] },
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - fasta - cumulative - png") {
+
+        when {
+
+            process {
+                """
+                input[0] = channel.of([
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+
+                input[1] = []
+
+                input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
+
+                input[3] = channel.of(
+                    [
+                        name: "CUMULATIVE_VIEW",
+                        args: "-v cumulative"
+                    ]
+                )
+
+                input[4] = "png"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.png.collect { meta, image -> [meta, file(image).name] },
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - fasta - svg") {
+
+        when {
+
+            process {
+                """
+                input[0] = channel.of([
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+
+                input[1] = []
+
+                input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
+
+                input[3] = channel.of(
+                    [
+                        name: "BLOB_VIEW",
+                        args: "-v blob"
+                    ]
+                )
+
+                input[4] = "svg"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.svg.collect { meta, image -> [meta, file(image).name] },
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - fasta - stub") {
+
+        options "-stub"
+
+        when {
+
+            process {
+                """
+                input[0] = channel.of([
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+
+                input[1] = []
+
+                input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
+
+                input[3] = channel.of(
+                    [
+                        name: "BLOB_VIEW",
+                        args: "-v blob"
+                    ]
+                )
+
+                input[4] = "png"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

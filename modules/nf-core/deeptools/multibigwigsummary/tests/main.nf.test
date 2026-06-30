@@ -1,0 +1,72 @@
+nextflow_process {
+
+    name "Test Process DEEPTOOLS_MULTIBIGWIGSUMMARY"
+    script "../main.nf"
+    process "DEEPTOOLS_MULTIBIGWIGSUMMARY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deeptools"
+    tag "deeptools/multibigwigsummary"
+
+    test("sarscov2 - bigwig") {
+
+        when {
+            process {
+                """
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true).copyTo('test2.bigwig')
+
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [ bigwig1, bigwig2 ],
+                    [ "test_bigwig1", "test_bigwig2" ]
+                ]
+                input[1] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bigwig - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true).copyTo('test2.bigwig')
+
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [ bigwig1, bigwig2 ],
+                    [ "test_bigwig1", "test_bigwig2" ]
+                ]
+                input[1] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

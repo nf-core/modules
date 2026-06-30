@@ -2,18 +2,15 @@
     "sarscov2 - bam - readlist - stub": {
         "content": [
             {
-                "0": [
+                "bai": [
                     [
                         {
                             "id": "test",
                             "single_end": false,
                             "strandedness": "forward"
                         },
-                        "test.filtered.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.filtered.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
-                ],
-                "1": [
-                    "versions.yml:md5,0685c8c10a1531ea249eca9030e8ec3a"
                 ],
                 "bam": [
                     [
@@ -25,32 +22,33 @@
                         "test.filtered.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,0685c8c10a1531ea249eca9030e8ec3a"
+                "versions_picard": [
+                    [
+                        "PICARD_FILTERSAMREADS",
+                        "picard",
+                        "3.4.0"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-06-22T16:01:06.848535268",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-18T16:57:21.286660977"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "sarscov2 - stub": {
         "content": [
             {
-                "0": [
+                "bai": [
                     [
                         {
                             "id": "test",
                             "single_end": false,
                             "strandedness": "forward"
                         },
-                        "test.filtered.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.filtered.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
-                ],
-                "1": [
-                    "versions.yml:md5,0685c8c10a1531ea249eca9030e8ec3a"
                 ],
                 "bam": [
                     [
@@ -62,41 +60,129 @@
                         "test.filtered.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,0685c8c10a1531ea249eca9030e8ec3a"
+                "versions_picard": [
+                    [
+                        "PICARD_FILTERSAMREADS",
+                        "picard",
+                        "3.4.0"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-06-22T16:00:52.327718721",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-18T16:56:49.461946443"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "sarscov2 - bam - readlist - fasta - stub": {
+        "content": [
+            {
+                "bai": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false,
+                            "strandedness": "forward"
+                        },
+                        "test.filtered.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false,
+                            "strandedness": "forward"
+                        },
+                        "test.filtered.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_picard": [
+                    [
+                        "PICARD_FILTERSAMREADS",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-22T16:01:21.02594553",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "sarscov2 - bam - readlist - fasta": {
+        "content": [
+            [
+                "test.filtered.bam,readsmd5:3c2a0fcd376bd70060073cb361fe91c1"
+            ],
+            [
+                "test.filtered.bai"
+            ],
+            {
+                "versions_picard": [
+                    [
+                        "PICARD_FILTERSAMREADS",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-22T15:59:26.563713599",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "sarscov2 - bam - readlist": {
         "content": [
-            "3c2a0fcd376bd70060073cb361fe91c1",
             [
-                "versions.yml:md5,0685c8c10a1531ea249eca9030e8ec3a"
-            ]
+                "test.filtered.bam,readsmd5:3c2a0fcd376bd70060073cb361fe91c1"
+            ],
+            [
+                "test.filtered.bai"
+            ],
+            {
+                "versions_picard": [
+                    [
+                        "PICARD_FILTERSAMREADS",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-06-22T15:59:11.705080712",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-18T16:57:05.707924464"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "sarscov2 - bam": {
         "content": [
-            "b9847fed94d2b7286e18caaa099658ce",
             [
-                "versions.yml:md5,0685c8c10a1531ea249eca9030e8ec3a"
-            ]
+                "test.filtered.bam,readsmd5:b9847fed94d2b7286e18caaa099658ce"
+            ],
+            [
+                
+            ],
+            {
+                "versions_picard": [
+                    [
+                        "PICARD_FILTERSAMREADS",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-06-22T15:54:32.309814076",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-18T16:56:32.776141481"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     }
 }

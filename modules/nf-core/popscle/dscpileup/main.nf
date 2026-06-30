@@ -3,9 +3,9 @@ process POPSCLE_DSCPILEUP {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/popscle:0.1beta--h2c78cec_0' :
-        'biocontainers/popscle:0.1beta--h2c78cec_0' }"
+        'quay.io/biocontainers/popscle:0.1beta--h2c78cec_0' }"
 
     input:
     tuple val(meta), path(bam), path(vcf)
@@ -39,15 +39,14 @@ process POPSCLE_DSCPILEUP {
     """
 
     stub:
-    def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     """
-    touch ${prefix}.cel.gz
-    touch ${prefix}.var.gz
-    touch ${prefix}.plp.gz
-    touch ${prefix}.umi.gz
+    echo "" | gzip > ${prefix}.cel.gz
+    echo "" | gzip > ${prefix}.var.gz
+    echo "" | gzip > ${prefix}.plp.gz
+    echo "" | gzip > ${prefix}.umi.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -3,9 +3,9 @@ process PROPR_PROPD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/27/276e08c149faa028a34ec65f74ac9eac58c2036a30db1f72acc9e35967936620/data' :
-        'community.wave.seqera.io/library/bioconductor-limma_r-propr:8d299a2da993327c' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/10bcda8d87b62771528894e1c03e0f38780e48f37e1bda146e81001a0d0054aa/data' :
+        'community.wave.seqera.io/library/bioconductor-limma_r-propr:4b3195a14835ef20' }"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)
@@ -20,7 +20,7 @@ process PROPR_PROPD {
     tuple val(meta), path("*.propd.adjacency.csv")        , emit: adjacency                , optional:true
     tuple val(meta), path("*.propd.fdr.tsv")              , emit: fdr                      , optional:true
     path "*.R_sessionInfo.log"                            , emit: session_info
-    path "versions.yml"                                   , emit: versions
+    path "versions.yml"                                   , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "minimac4_impute"
 description: Imputation of genotypes using a reference panel
 keywords:
@@ -12,9 +11,9 @@ tools:
       documentation: "https://github.com/statgen/Minimac4"
       tool_dev_url: "https://github.com/statgen/Minimac4"
       doi: "10.1038/ng.3656"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: biotools:minimac4
-
 input:
   - - meta:
         type: map
@@ -36,7 +35,8 @@ input:
           - edam: "http://edamontology.org/format_3700"
     - ref_msav:
         type: file
-        description: Reference compressed MSAV file obtain through `minimac4 --compress-reference`
+        description: Reference compressed MSAV file obtain through `minimac4
+          --compress-reference`
         pattern: "*.{msav}"
         ontologies: []
     - sites_vcf:
@@ -58,7 +58,10 @@ input:
         pattern: "*.map"
         ontologies:
           - edam: "http://edamontology.org/data_1278"
-
+    - region:
+        type: string
+        description: Region to perform imputation
+        pattern: "(chr)?\\d*:\\d*-\\d*"
 output:
   vcf:
     - - meta:
@@ -73,15 +76,27 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3016"
             - edam: "http://edamontology.org/format_3020"
-
+  versions_minimac4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimac4:
+          type: string
+          description: The name of the tool
+      - minimac4 --version |& sed '1!d ; s/minimac v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimac4:
+          type: string
+          description: The name of the tool
+      - minimac4 --version |& sed '1!d ; s/minimac v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@LouisLeNezet"
 maintainers:

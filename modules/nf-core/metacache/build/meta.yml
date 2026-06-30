@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "metacache_build"
 description: Taxonomic profiling database building with MetaCache
 keywords:
@@ -23,18 +22,16 @@ tools:
       homepage: "https://muellan.github.io/metacache"
       documentation: "https://github.com/muellan/metacache/tree/master/docs"
       tool_dev_url: "https://github.com/muellan/metacache"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: ""
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-
     - genome_files:
-        # Mandatory
         type: file
         description: "(possibly gzipped) fasta or fastq files of full genomes, for example
           from an NCBI assembly"
@@ -45,14 +42,12 @@ input:
           - edam: "http://edamontology.org/format_1954"
           - edam: "http://edamontology.org/data_2044"
   - taxonomy:
-      # Optional
       type: file
       description: "NCBI taxonomy formatted files nodes.dmp and names.dmp"
       pattern: "{names,nodes,merged}.dmp"
       ontologies:
         - edam: "http://edamontology.org/data_3028"
   - seq2taxid:
-      # Optional
       type: file
       description: >
         NCBI-style 'accession2taxid' tab-separated file with 3 or 4 columns:
@@ -71,21 +66,34 @@ output:
           description: "sequence signature database binary file"
           pattern: "*.meta"
           ontologies:
-            - edam: "http://edamontology.org/format_2333" # Binary format
+            - edam: "http://edamontology.org/format_2333"
       - "*.cache*":
           type: file
           description: "sequence signature database binary files"
           pattern: "*.cache+([0-9])"
           ontologies:
-            - edam: "http://edamontology.org/format_2333" # Binary format
+            - edam: "http://edamontology.org/format_2333"
+  versions_metacache:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metacache:
+          type: string
+          description: The name of the tool
+      - metacache info |& sed -n 's/^MetaCache version \+\([0-9.]\+\).*\$/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metacache:
+          type: string
+          description: The name of the tool
+      - metacache info |& sed -n 's/^MetaCache version \+\([0-9.]\+\).*\$/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Gullumluvl"
 maintainers:

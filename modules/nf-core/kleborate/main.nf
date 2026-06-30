@@ -3,16 +3,16 @@ process KLEBORATE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kleborate:2.1.0--pyhdfd78af_1' :
-        'biocontainers/kleborate:2.1.0--pyhdfd78af_1' }"
+        'quay.io/biocontainers/kleborate:2.1.0--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(fastas)
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('kleborate'), eval("kleborate --version | sed 's/Kleborate v//'"), emit: versions_kleborate, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,10 +26,6 @@ process KLEBORATE {
         --outfile ${prefix}.results.txt \\
         --assemblies $fastas
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kleborate: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
-    END_VERSIONS
     """
 
     stub:
@@ -37,9 +33,5 @@ process KLEBORATE {
     """
     touch ${prefix}.results.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kleborate: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
-    END_VERSIONS
     """
 }

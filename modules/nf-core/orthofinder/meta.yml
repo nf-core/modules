@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "orthofinder"
-description: OrthoFinder is a fast, accurate and comprehensive platform for comparative
-  genomics.
+description: OrthoFinder is a fast, accurate and comprehensive platform for
+  comparative genomics.
 keywords:
   - genomics
   - orthogroup
@@ -18,9 +17,9 @@ tools:
       documentation: "https://github.com/davidemms/OrthoFinder"
       tool_dev_url: "https://github.com/davidemms/OrthoFinder"
       doi: "10.1186/s13059-019-1832-y"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:OrthoFinder
-
 input:
   - - meta:
         type: map
@@ -39,7 +38,7 @@ input:
     - prior_run:
         type: directory
         description: |
-          A folder container containing a previous WorkingDirectory from Orthofinder.
+          A folder containing a previous WorkingDirectory from OrthoFinder.
 output:
   orthofinder:
     - - meta:
@@ -49,7 +48,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - $prefix:
           type: directory
-          description: Orthofinder output directory
+          description: OrthoFinder output directory
   working:
     - - meta:
           type: map
@@ -58,16 +57,31 @@ output:
             e.g. `[ id:'sample1' ]`
       - $prefix/WorkingDirectory:
           type: directory
-          description: Orthofinder output WorkingDirectory (used for the orthofinder
-            resume function)
+          description: OrthoFinder WorkingDirectory (used for the resume function)
+  versions_orthofinder:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - orthofinder:
+          type: string
+          description: The name of the tool
+      - "NO_COLOR=1 orthofinder --version | cut -d 'v' -f2 | perl -pe 's/\\e\\[[0-9;]*m//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - orthofinder:
+          type: string
+          description: The name of the tool
+      - "NO_COLOR=1 orthofinder --version | cut -d 'v' -f2 | perl -pe 's/\\e\\[[0-9;]*m//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
+  - "@chriswyatt1"
 maintainers:
   - "@GallVp"
+  - "@chriswyatt1"

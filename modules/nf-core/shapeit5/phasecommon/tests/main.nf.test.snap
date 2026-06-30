@@ -2,39 +2,31 @@
     "homo sapiens - vcf, [], [], [] - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "input",
-                            "single_end": false
-                        },
-                        "input.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,135745eaa06583f1c0402134626f9082"
-                ],
                 "phased_variant": [
                     [
                         {
                             "id": "input",
                             "single_end": false
                         },
-                        "input.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "input.graph:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,135745eaa06583f1c0402134626f9082"
+                "versions_shapeit5": [
+                    [
+                        "SHAPEIT5_PHASECOMMON",
+                        "shapeit5",
+                        "5.1.1"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-12-03T17:01:18.387684498"
+        "timestamp": "2026-02-26T15:47:56.277161741"
     },
-    "homo sapiens - vcf, [], [], []": {
+    "homo sapiens - vcf, no reference, no scaffold, no map": {
         "content": [
             [
                 [
@@ -45,14 +37,47 @@
                     "input.bcf"
                 ]
             ],
-            [
-                "versions.yml:md5,135745eaa06583f1c0402134626f9082"
-            ]
+            {
+                "versions_shapeit5": [
+                    [
+                        "SHAPEIT5_PHASECOMMON",
+                        "shapeit5",
+                        "5.1.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-12-03T16:56:47.720234317"
+        "timestamp": "2026-02-26T15:47:34.359222342"
+    },
+    "homo sapiens - vcf, no reference, no scaffold, with map": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "input",
+                        "single_end": false
+                    },
+                    "input.bcf"
+                ]
+            ],
+            {
+                "versions_shapeit5": [
+                    [
+                        "SHAPEIT5_PHASECOMMON",
+                        "shapeit5",
+                        "5.1.1"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-26T15:47:48.169247201"
     }
 }

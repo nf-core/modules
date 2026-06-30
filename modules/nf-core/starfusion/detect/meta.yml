@@ -1,0 +1,80 @@
+name: starfusion_detect
+description: Fast and Accurate Fusion Transcript Detection from RNA-Seq
+keywords:
+  - Fusion
+  - starfusion
+  - RNA-Seq
+  - detect
+tools:
+  - star-fusion:
+      description: Fast and Accurate Fusion Transcript Detection from RNA-Seq
+      homepage: https://github.com/STAR-Fusion/STAR-Fusion
+      documentation: https://github.com/STAR-Fusion/STAR-Fusion/wiki
+      tool_dev_url: https://github.com/STAR-Fusion/STAR-Fusion/releases
+      doi: "10.1101/120295v1"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Input fastq files
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+    - junction:
+        type: file
+        description: Chimeric junction output from STAR aligner
+        pattern: "*.{out.junction}"
+        ontologies: []
+  - reference:
+      type: directory
+      description: STAR-fusion reference genome lib folder
+      pattern: "*genome_lib_build_dir"
+
+output:
+  fusions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fusion_predictions.tsv":
+          type: file
+          description: Fusion events from STAR-fusion
+          pattern: "*.{fusion_predictions.tsv}"
+  abridged:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.abridged.tsv":
+          type: file
+          description: Abridged version of fusion events from STAR-fusion
+          pattern: "*.{fusion.abridged.tsv}"
+  coding_effect:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.coding_effect.tsv":
+          type: file
+          description: Fusion events with their coding effect from STAR-fusion
+          pattern: "*.{coding_effect.tsv}"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@praveenraj2018"

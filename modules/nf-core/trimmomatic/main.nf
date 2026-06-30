@@ -3,9 +3,9 @@ process TRIMMOMATIC {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trimmomatic:0.39--hdfd78af_2':
-        'biocontainers/trimmomatic:0.39--hdfd78af_2' }"
+        'quay.io/biocontainers/trimmomatic:0.39--hdfd78af_2' }"
 
     input:
     tuple val(meta), path(reads)
@@ -16,7 +16,7 @@ process TRIMMOMATIC {
     tuple val(meta), path("*_trim.log")                , emit: trim_log
     tuple val(meta), path("*_out.log")                 , emit: out_log
     tuple val(meta), path("*.summary")                 , emit: summary
-    path "versions.yml"                                , emit: versions
+    tuple val("${task.process}"), val('trimmomatic'), eval("trimmomatic -version"), topic: versions, emit: versions_trimmomatic
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,11 +39,6 @@ process TRIMMOMATIC {
         $output \\
         $qual_trim \\
         $args 2>| >(tee ${prefix}_out.log >&2)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trimmomatic: \$(trimmomatic -version)
-    END_VERSIONS
     """
 
     stub:
@@ -63,11 +58,6 @@ process TRIMMOMATIC {
     touch ${prefix}.summary
     touch ${prefix}_trim.log
     touch ${prefix}_out.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trimmomatic: \$(trimmomatic -version)
-    END_VERSIONS
     """
 
 }

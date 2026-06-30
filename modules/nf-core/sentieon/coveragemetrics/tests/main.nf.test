@@ -9,11 +9,14 @@ nextflow_process {
 
     script "../main.nf"
     process "SENTIEON_COVERAGEMETRICS"
+    config "./nextflow.config"
 
     test("Test per sample") {
-        config "./nextflow.config"
-
         when {
+            params {
+                module_args = ''
+                module_args2 = ''
+            }
             process {
                 """
                 input[0] = [
@@ -30,17 +33,19 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
     }
 
     test("Test with interval") {
-        config "./nextflow.config"
-
         when {
+            params {
+                module_args = ''
+                module_args2 = ''
+            }
             process {
                 """
                 input[0] = [
@@ -57,17 +62,19 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
     }
 
     test("Test omit outputs") {
-        config "./nextflow_omit.config"
-
         when {
+            params {
+                module_args = ''
+                module_args2 = '--omit_sample_stat --omit_locus_stat --omit_interval_stat'
+            }
             process {
                 """
                 input[0] = [
@@ -84,17 +91,19 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
     }
 
     test("Test readgroup partition") {
-        config "./nextflow_partitions.config"
-
         when {
+            params {
+                module_args = ''
+                module_args2 = '--partition sample,platform,library,center'
+            }
             process {
                 """
                 input[0] = [
@@ -111,17 +120,20 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
     }
 
     test("Test multiple BAMs") {
-        config "./nextflow.config"
 
         when {
+            params {
+                module_args = ''
+                module_args2 = ''
+            }
             process {
                 """
                 input[0] = [
@@ -144,8 +156,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -156,6 +168,10 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+                module_args2 = ''
+            }
             process {
                 """
                 input[0] = [
@@ -172,8 +188,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }

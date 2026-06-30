@@ -1,0 +1,131 @@
+{
+    "fastq - single-end - with reference - stub": {
+        "content": [
+            {
+                "fastq": [
+                    [
+                        {
+                            "id": "test_single",
+                            "single_end": true
+                        },
+                        "test_single.clean_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "json": [
+                    [
+                        {
+                            "id": "test_single",
+                            "single_end": true
+                        },
+                        "test_single.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reference": [
+                    [
+                        "genome",
+                        [
+                            "genome.1.bt2:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.2.bt2:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.3.bt2:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.4.bt2:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.rev.1.bt2:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.rev.2.bt2:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-26T14:30:20.029664659",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "fastq - single-end - with reference": {
+        "content": [
+            {
+                "fastq": [
+                    [
+                        {
+                            "id": "test_single",
+                            "single_end": true
+                        },
+                        "test_1.clean.fastq.gz:md5,9224ada21765cb3ad5fc05f40df78f17"
+                    ]
+                ],
+                "json": [
+                    [
+                        {
+                            "id": "test_single",
+                            "single_end": true
+                        },
+                        "test_single.json"
+                    ]
+                ],
+                "reference": [
+                    [
+                        "genome",
+                        [
+                            "genome.1.bt2:md5,cbe3d0bbea55bc57c99b4bfa25b5fbdf",
+                            "genome.2.bt2:md5,47b153cd1319abc88dda532462651fcf",
+                            "genome.3.bt2:md5,4ed93abba181d8dfab2e303e33114777",
+                            "genome.4.bt2:md5,c25be5f8b0378abf7a58c8a880b87626",
+                            "genome.rev.1.bt2:md5,52be6950579598a990570fbcf5372184",
+                            "genome.rev.2.bt2:md5,e3b4ef343dea4dd571642010a7d09597"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-26T14:43:39.771257929",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "fastq - paired-end - with reference": {
+        "content": [
+            {
+                "fastq": [
+                    [
+                        {
+                            "id": "test_paired",
+                            "single_end": false
+                        },
+                        [
+                            "test_1.clean_1.fastq.gz:md5,6de988b85909e6529bad0022703bcab2",
+                            "test_2.clean_2.fastq.gz:md5,539acd65e93bf16a5ace7d6034e704c7"
+                        ]
+                    ]
+                ],
+                "json": [
+                    [
+                        {
+                            "id": "test_paired",
+                            "single_end": false
+                        },
+                        "test_paired.json"
+                    ]
+                ],
+                "reference": [
+                    [
+                        "genome",
+                        [
+                            "genome.1.bt2:md5,cbe3d0bbea55bc57c99b4bfa25b5fbdf",
+                            "genome.2.bt2:md5,47b153cd1319abc88dda532462651fcf",
+                            "genome.3.bt2:md5,4ed93abba181d8dfab2e303e33114777",
+                            "genome.4.bt2:md5,c25be5f8b0378abf7a58c8a880b87626",
+                            "genome.rev.1.bt2:md5,52be6950579598a990570fbcf5372184",
+                            "genome.rev.2.bt2:md5,e3b4ef343dea4dd571642010a7d09597"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-26T14:44:03.047395234",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    }
+}

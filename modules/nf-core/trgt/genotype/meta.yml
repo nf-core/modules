@@ -94,14 +94,28 @@ output:
           description: BAM file with pieces of reads aligning to repeats
           pattern: "*.spanning.bam"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  versions_trgt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trgt:
+          type: string
+          description: The name of the tool
+      - trgt --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trgt:
+          type: string
+          description: The name of the tool
+      - trgt --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version
 authors:
   - "@Schmytzi"
   - "@fellen31"

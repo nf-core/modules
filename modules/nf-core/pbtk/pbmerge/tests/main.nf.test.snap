@@ -1,0 +1,81 @@
+{
+    "pbtk - pbmerge - bam": {
+        "content": [
+            [
+                "@HD\tVN:1.6\tSO:unknown\tpb:3.0.1",
+                "@RG\tID:e4927d21\tPL:PACBIO\tDS:READTYPE=TRANSCRIPT\tPU:transcript\tPM:SEQUEL",
+                "@PG\tID:ccs-6.0.0\tPN:ccs\tVN:6.0.0\tDS:Generate circular consensus sequences (ccs) from subreads.\tCL:ccs ccs alz.1perc.subreads.100000.bam alz.1perc.subreads.100000.1.ccs.bam --report-file alz.1perc.subreads.100000.1.ccs_report.txt --report-json alz.1perc.subreads.100000.1.ccs_report.json --metrics-json alz.1perc.subreads.100000.1.zmw_metrics.json.gz --chunk 1/1 -j 2 --min-rq 0.9",
+                "@PG\tID:cluster\tVN:3.4.0 (commit v3.4.0)\tCL:cluster alz.1perc.subreads.100000.1.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam alz.1perc.subreads.100000.1.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.bam --singletons --singletons --use-qvs --verbose",
+                "@PG\tID:lima\tVN:2.2.0 (commit v2.2.0)\tCL:lima alz.1perc.subreads.100000.1.ccs.bam primers.fasta alz.1perc.subreads.100000.1.ccs.fl.bam -j 2 --isoseq --peek-guess",
+                "@PG\tID:refine\tVN:3.4.0 (commit v3.4.0)\tCL:refine -j 2 alz.1perc.subreads.100000.1.ccs.fl.NEB_5p--NEB_Clontech_3p.bam primers.fasta alz.1perc.subreads.100000.1.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam",
+                "@PG\tID:pbmerge-3.1.1\tPN:pbmerge\tVN:3.1.1"
+            ],
+            "1ec5c2c66d16d0236c20d8e26d0109ea",
+            [
+                "test.bam.pbi"
+            ],
+            [
+                "versions.yml:md5,5f5d8219a2cc09ee7332db6bbb194dac"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-09-24T09:49:47.881788"
+    },
+    "pbtk - pbmerge - bam - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam.pbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,5f5d8219a2cc09ee7332db6bbb194dac"
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "pbi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam.pbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,5f5d8219a2cc09ee7332db6bbb194dac"
+                ]
+            },
+            {
+                "PBTK_PBMERGE": {
+                    "pbbam": "3.1.1"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-09-24T09:49:51.321304"
+    }
+}

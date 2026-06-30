@@ -1,0 +1,117 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "vcfpgloader_load"
+description: High-performance VCF to PostgreSQL loader using asyncpg for bulk
+  variant ingestion
+keywords:
+  - vcf
+  - postgresql
+  - database
+  - variants
+  - genomics
+  - clinical
+  - annotation
+tools:
+  - vcf-pg-loader:
+      description: |
+        High-throughput async PostgreSQL VCF loader using cyvcf2 and asyncpg.
+        Supports variant normalization, multi-allelic decomposition, and clinical-grade audit trails.
+      homepage: "https://github.com/Zacharyr41/vcf-pg-loader"
+      documentation: "https://github.com/Zacharyr41/vcf-pg-loader#readme"
+      tool_dev_url: "https://github.com/Zacharyr41/vcf-pg-loader"
+      licence: ["MIT"]
+      identifier: ""
+      args_id: "$args"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1', family:'FAM001', affected:true ]
+    - vcf:
+        type: file
+        description: Annotated VCF file containing variants to load
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - tbi:
+        type: file
+        description: Tabix index for the VCF file
+        pattern: "*.tbi"
+        ontologies: []
+    - db_host:
+        type: string
+        description: PostgreSQL server hostname or IP address
+    - db_port:
+        type: integer
+        description: PostgreSQL server port (default 5432)
+    - db_name:
+        type: string
+        description: Target database name
+    - db_user:
+        type: string
+        description: Database username for authentication
+    - db_schema:
+        type: string
+        description: Target schema for variant tables (default public)
+
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*.load_report.json":
+          type: file
+          description: JSON report with loading statistics including variant
+            counts, elapsed time, and throughput metrics
+          pattern: "*.load_report.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*.load.log":
+          type: file
+          description: Detailed loading log with any warnings or errors
+          pattern: "*.load.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  row_count:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ROWS_LOADED:
+          type: integer
+          description: Number of variant records successfully loaded
+  versions_vcfpgloader:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf-pg-loader:
+          type: string
+          description: The name of the tool
+      - "vcf-pg-loader --version | sed 's/.*version //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf-pg-loader:
+          type: string
+          description: The name of the tool
+      - "vcf-pg-loader --version | sed 's/.*version //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Zacharyr41"
+maintainers:
+  - "@Zacharyr41"

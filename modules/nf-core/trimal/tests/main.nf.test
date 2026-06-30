@@ -1,0 +1,136 @@
+nextflow_process {
+
+    name "Test Process TRIMAL"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "TRIMAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "trimal"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "../../gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'PF14720' ], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/PF14720_seed.alnfaa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("PF14720 - aln - reformat pir") {
+        when {
+            params {
+                trimal_args = "-nbrf" // Output in NBRF/PIR format, no trimming method provided so it just reformats the alignment
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = "pir"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.trimal,
+                    process.out.summary,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("PF14720 - aln - gappyout mega") {
+        when {
+            params {
+                trimal_args = "-gappyout -mega" // Use gappyout trimming and MEGA output format
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = "meg"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.trimal,
+                    process.out.summary,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("PF14720 - aln - gt htmlout") {
+        when {
+            params {
+                trimal_args = '-gt 0.9 -cons 60 -w 3 -htmlout report.html' // Complex trimming and htmlout summary report
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = [] // if empty, defaults to .trimal extension
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.trimal,
+                    process.out.summary,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("PF14720 - aln - stub") {
+        options "-stub"
+
+        when {
+            params {
+                trimal_args = ""
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.trimal,
+                    process.out.summary,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+}

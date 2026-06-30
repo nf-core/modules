@@ -3,7 +3,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     label 'process_medium'
 
     //Conda is not supported at the moment
-    container "docker.io/google/deepvariant:1.9.0"
+    container "docker.io/google/deepvariant:1.10.0"
 
     input:
     tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords), path(small_model_calls), path(intervals)
@@ -16,7 +16,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     tuple val(meta), path("${prefix}.vcf.gz.{tbi,csi}")   , emit: vcf_index
     tuple val(meta), path("${prefix}.g.vcf.gz")           , emit: gvcf
     tuple val(meta), path("${prefix}.g.vcf.gz.{tbi,csi}") , emit: gvcf_index
-    path "versions.yml"                                   , emit: versions
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
     task.ext.when == null || task.ext.when
@@ -57,6 +57,9 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     }
 
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+    mkdir -p \$MPLCONFIGDIR
+
     /opt/deepvariant/bin/postprocess_variants \\
         ${args} \\
         --ref "${fasta}" \\
@@ -68,10 +71,6 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
         ${small_model_arg} \\
         --cpus $task.cpus
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_postprocessvariants: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -86,9 +85,5 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     echo "" | gzip > ${prefix}.g.vcf.gz
     touch ${prefix}.g.vcf.gz.tbi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_callvariants: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 }

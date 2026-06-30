@@ -2,19 +2,19 @@ process HAMRONIZATION_SUMMARIZE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hamronization:1.1.4--pyhdfd78af_0':
-        'biocontainers/hamronization:1.1.4--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hamronization:1.1.9--pyhdfd78af_0'
+        : 'quay.io/biocontainers/hamronization:1.1.9--pyhdfd78af_0'}"
 
     input:
-    path(reports)
-    val(format)
+    path reports
+    val format
 
     output:
-    path("hamronization_combined_report.json"), optional: true, emit: json
-    path("hamronization_combined_report.tsv") , optional: true, emit: tsv
-    path("hamronization_combined_report.html"), optional: true, emit: html
-    path "versions.yml"                       , emit: versions
+    path ("hamronization_combined_report.json"), optional: true, emit: json
+    path ("hamronization_combined_report.tsv"), optional: true, emit: tsv
+    path ("hamronization_combined_report.html"), optional: true, emit: html
+    tuple val("${task.process}"), val('hamronization'), eval("hamronize --version 2>&1 | sed 's/hamronize //'"), topic: versions, emit: versions_hamronization
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,23 +27,13 @@ process HAMRONIZATION_SUMMARIZE {
         summarize \\
         ${reports.join(' ')} \\
         -t ${format} \\
-        $args \\
+        ${args} \\
         -o hamronization_combined_report.${outformat}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 
     stub:
     def outformat = format == 'interactive' ? 'html' : format
     """
     touch hamronization_combined_report.${outformat}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 }

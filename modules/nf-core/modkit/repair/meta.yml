@@ -1,0 +1,86 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "modkit_repair"
+description: Repair the MM/ML tags on trimmed or hard-clipped ONT reads using untrimmed ONT reads.
+keywords:
+  - methylation
+  - ont
+  - long-read
+tools:
+  - "modkit":
+      description: "A bioinformatics tool for working with modified bases in Oxford Nanopore sequencing data."
+      homepage: "https://nanoporetech.github.io/modkit/"
+      documentation: "https://nanoporetech.github.io/modkit/"
+      tool_dev_url: "https://github.com/nanoporetech/modkit"
+      licence: ["Oxford Nanopore Technologies PLC. Public License Version 1.0"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - before_trim:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - after_trim:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Sorted BAM file
+          pattern: "*.{bam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # log
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: File for debug logs to be written to
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/data_1678"
+  versions_modkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@jkh00"
+maintainers:
+  - "@jkh00"

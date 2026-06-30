@@ -1,0 +1,435 @@
+nextflow_process {
+
+    name "Test Process KMA_KMA"
+    script "../main.nf"
+    process "KMA_KMA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kma"
+    tag "kma/index"
+    tag "kma/kma"
+
+    config "./nextflow.config"
+
+    setup {
+
+        run("KMA_INDEX", alias: "KMA_INDEX_SPARSE") {
+            script "../../index/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [ id: 'MT192765.1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("KMA_INDEX", alias: "KMA_INDEX_ALL") {
+            script "../../index/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [ id: 'MT192765.1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - single") {
+
+        when {
+            params{
+                module_args = ''
+                index_sparse_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = KMA_INDEX_ALL.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - single - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = ''
+                index_sparse_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = KMA_INDEX_ALL.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - sparse - single") {
+
+        when {
+            params{
+                module_args = '-Sparse'
+                index_sparse_args = '-Sparse'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = KMA_INDEX_SPARSE.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - sparse - single - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = '-Sparse'
+                index_sparse_args = '-Sparse'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = KMA_INDEX_ALL.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - pair") {
+
+        when {
+            params{
+                module_args = ''
+                index_sparse_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = KMA_INDEX_ALL.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - pair - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = ''
+                index_sparse_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = KMA_INDEX_ALL.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - interleaved") {
+
+        when {
+            params{
+                module_args = ''
+                index_sparse_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true),
+                    ]
+                ]
+                input[1] = KMA_INDEX_ALL.out.index
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - interleaved - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = ''
+                index_sparse_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true),
+                    ]
+                ]
+                input[1] = KMA_INDEX_ALL.out.index
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+
+    test("sarscov2 - vcf") {
+
+        when {
+            params{
+                module_args = '-vcf'
+                index_sparse_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = KMA_INDEX_ALL.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = '-vcf'
+                index_sparse_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = KMA_INDEX_ALL.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - sam") {
+
+        when {
+            params{
+                module_args = '-sam'
+                index_sparse_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = KMA_INDEX_ALL.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - sam - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = '-sam'
+                index_sparse_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = KMA_INDEX_ALL.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

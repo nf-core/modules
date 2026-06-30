@@ -1,0 +1,64 @@
+name: "mmseqs_makepaddedseqdb"
+description: Create an MMseqs padded database from an existing MMseqs database
+keywords:
+  - protein sequence
+  - databases
+  - clustering
+  - searching
+  - indexing
+  - mmseqs2
+tools:
+  - "mmseqs":
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering
+        suite"
+      homepage: "https://github.com/soedinglab/MMseqs2"
+      documentation: "https://mmseqs.com/latest/userguide.pdf"
+      tool_dev_url: "https://github.com/soedinglab/MMseqs2"
+      doi: "10.1093/bioinformatics/btw006"
+      licence:
+        - "GPL v3"
+      identifier: biotools:mmseqs
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - db_in:
+        type: directory
+        description: Input of existing MMseqs database
+output:
+  db_padded:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "${prefix}/":
+          type: directory
+          description: The padded MMseqs2 database
+  versions_mmseqs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nbtm-sh"
+maintainers:
+  - "@nbtm-sh"

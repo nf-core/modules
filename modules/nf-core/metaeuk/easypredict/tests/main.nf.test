@@ -33,15 +33,15 @@ nextflow_process {
             )
         }
     }
-    
+
     test("homo_sapiens - fasta - mmseqs db") {
         setup {
             run("MMSEQS_DATABASES") {
                 script "../../../mmseqs/databases/main.nf"
-                
+
                 process {
                     """
-                    input[0] = 'UniProtKB/Swiss-Prot'
+                    input[0] = 'Kalamari'
                     """
                 }
             }
@@ -64,8 +64,8 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     test("homo_sapiens - fasta - fasta -- stub") {
         options '-stub'
         when {

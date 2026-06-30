@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_preprocess_seqkit"
+description: Subworkflow that preprocesses FASTQ files
+keywords:
+  - fastq
+  - seqkit
+  - preprocessing
+components:
+  - fastq_sanitise_seqkit
+  - seqkit/sana
+  - seqkit/pair
+  - seqkit/seq
+  - seqkit/replace
+  - seqkit/rmdup
+input:
+  - ch_reads:
+      type: channel
+      description: |
+        Channel containing sample metadata and FASTQ files.
+        Structure: [ val(meta), [ fastq ] ]
+        Where meta is a map containing at least:
+        - id: sample identifier
+        - single_end: boolean indicating if data is single-end (true) or paired-end (false)
+      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+  - skip_seqkit_sana_pair:
+      type: boolean
+      description: |
+        If true, skips the seqkit_sana_pair subworkflow.
+  - skip_seqkit_seq:
+      type: boolean
+      description: |
+        If true, skips the seqkit_seq process.
+  - skip_seqkit_replace:
+      type: boolean
+      description: |
+        If true, skips the seqkit_replace process.
+  - skip_seqkit_rmdup:
+      type: boolean
+      description: |
+        If true, skips the seqkit_rmdup process.
+output:
+  - reads:
+      type: channel
+      description: |
+        Channel containing filtered FASTQ files.
+        Structure: [ val(meta), [ fastq ] ]
+      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@maia-munteanu"
+maintainers:
+  - "@maia-munteanu"
+  - "@vagkaratzas"

@@ -1,8 +1,7 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "snakemake"
-description: The Snakemake workflow management system is a tool to create reproducible
-  and scalable data analyses. This module runs a simple Snakemake pipeline based on
-  input snakefile. Expect many limitations."
+description: The Snakemake workflow management system is a tool to create
+  reproducible and scalable data analyses. This module runs a simple Snakemake
+  pipeline based on input snakefile. Expect many limitations."
 keywords:
   - snakemake
   - workflow
@@ -39,7 +38,6 @@ input:
           Snakefile to use with Snakemake. This is required for proper execution of Snakemake.
         ontologies: []
 output:
-  #Only when we have meta
   outputs:
     - - meta:
           type: map
@@ -57,14 +55,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - .snakemake: {}
+      - .snakemake:
+          type: directory
+          description: Hidden directory containing Snakemake execution logs and
+            metadata
+          pattern: ".snakemake"
+          ontologies: []
+  versions_snakemake:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snakemake:
+          type: string
+          description: The name of the tool
+      - "snakemake --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snakemake:
+          type: string
+          description: The name of the tool
+      - "snakemake --version":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@adamrtalbot"
 maintainers:

@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "bioformats2raw"
-description: Java application to convert image file formats, including .mrxs, to an
-  intermediate Zarr structure compatible with the OME-NGFF specification.
+description: Java application to convert image file formats, including .mrxs, to
+  an intermediate Zarr structure compatible with the OME-NGFF specification.
 keywords:
   - zarr
   - ome-ngff
@@ -13,16 +12,15 @@ tools:
       homepage: "https://github.com/glencoesoftware/bioformats2raw"
       documentation: "https://github.com/glencoesoftware/bioformats2raw"
       tool_dev_url: "https://github.com/glencoesoftware/bioformats2raw"
-      licence: ["GPL-2.0"]
-      identifier: ""
-
+      licence:
+        - "GPL-2.0"
+      identifier: biotools:bioformats2raw
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1']`
-
     - image:
         type: file
         description: bioformats supported image file format
@@ -30,7 +28,6 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3727"
           - edam: "http://edamontology.org/format_3591"
-
 output:
   omezarr:
     - - meta:
@@ -40,19 +37,70 @@ output:
             e.g. `[ id:'sample1']`
       - "*ome.zarr":
           type: directory
-          description: OME-Zarr fileset for image data storage. Specification can be
-            found at https://ngff.openmicroscopy.org/latest/#storage-format
+          description: OME-Zarr fileset for image data storage. Specification can
+            be found at https://ngff.openmicroscopy.org/latest/#storage-format
           pattern: "*{ome.zarr}"
           ontologies:
             - edam: "http://edamontology.org/format_3915"
+  versions_bioformats2raw:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bioformats2raw:
+          type: string
+          description: The name of the tool
+      - bioformats2raw --version |& sed -n "1s/Version = //p":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_bioformats:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bio-formats:
+          type: string
+          description: The name of the tool
+      - bioformats2raw --version |& sed -n "2s/Bio-Formats version = //p":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_ngff:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngff:
+          type: string
+          description: The name of the tool
+      - bioformats2raw --version |& sed -n "3s/NGFF specification version = //p":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bioformats2raw:
+          type: string
+          description: The name of the tool
+      - bioformats2raw --version |& sed -n "1s/Version = //p":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bio-formats:
+          type: string
+          description: The name of the tool
+      - bioformats2raw --version |& sed -n "2s/Bio-Formats version = //p":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngff:
+          type: string
+          description: The name of the tool
+      - bioformats2raw --version |& sed -n "3s/NGFF specification version = //p":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@CaroAMN"
 maintainers:

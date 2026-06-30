@@ -1,0 +1,65 @@
+// nf-core modules test plastid
+nextflow_process {
+
+    name "Test Process PLASTID_MAKE_WIGGLE"
+    script "../main.nf"
+    process "PLASTID_MAKE_WIGGLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plastid"
+    tag "plastid/make_wiggle"
+
+    test("human chr20 bam - fiveprime_variable") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/SRX11780887_p_offsets.txt", checkIfExists: true)
+                ]
+                input[1] = 'fiveprime_variable'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.tracks.get(0).get(1).get(0)).getText().contains('track') },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+
+    test("human chr20 bam - fiveprime_variable - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/SRX11780887_p_offsets.txt", checkIfExists: true)
+                ]
+                input[1] = 'fiveprime_variable'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.tracks.get(0).get(1).get(0)).exists() },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+
+}

@@ -20,7 +20,7 @@ Closes #XXX <!-- If this PR fixes an issue, please link it here! -->
 - [ ] If you've added a new tool - have you followed the module conventions in the [contribution docs](https://github.com/nf-core/modules/tree/master/.github/CONTRIBUTING.md)
 - [ ] If necessary, include test data in your PR.
 - [ ] Remove all TODO statements.
-- [ ] Emit the `versions.yml` file.
+- [ ] Broadcast software version numbers to `topic: versions` - [See version_topics](https://nf-co.re/blog/2025/version_topics)
 - [ ] Follow the naming conventions.
 - [ ] Follow the parameters requirements.
 - [ ] Follow the input/output options guidelines.

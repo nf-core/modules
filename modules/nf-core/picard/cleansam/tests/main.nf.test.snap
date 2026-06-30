@@ -2,14 +2,47 @@
     "test-picard-cleansam": {
         "content": [
             "798439cbd7fd81cbcc5078022dc5479d",
-            [
-                "versions.yml:md5,412651954aecab12c868ee78cf9fa724"
-            ]
+            {
+                "versions_picard": [
+                    [
+                        "PICARD_CLEANSAM",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-02-19T17:35:03.740481707",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-18T10:46:32.969920917"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "test-picard-cleansam - stub": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.cleaned.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_picard": [
+                    [
+                        "PICARD_CLEANSAM",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-02-20T10:29:53.308056272",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

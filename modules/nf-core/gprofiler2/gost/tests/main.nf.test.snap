@@ -10,7 +10,7 @@
                         "target": "KO",
                         "blocking": "batch"
                     },
-                    "Condition_genotype_WT_KO.gprofiler2.all_enriched_pathways.tsv:md5,31d1e4cfa1d09b30bf9126415cb93aff"
+                    "Condition_genotype_WT_KO.gprofiler2.all_enriched_pathways.tsv:md5,17c840d9a837ec0e3f60ca519f0956ee"
                 ]
             ],
             [
@@ -23,15 +23,14 @@
                         "blocking": "batch"
                     },
                     [
-                        "Condition_genotype_WT_KO.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,6211f4fa1a226f3aaab77c3fb9318fe7",
-                        "Condition_genotype_WT_KO.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,98a49b69f8b724d88d6367dea494ca53",
-                        "Condition_genotype_WT_KO.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,39ce8238319df47708df78b1c461a89d",
-                        "Condition_genotype_WT_KO.gprofiler2.HP.sub_enriched_pathways.tsv:md5,616f3a5d19844001bb8aac38049e987a",
-                        "Condition_genotype_WT_KO.gprofiler2.KEGG.sub_enriched_pathways.tsv:md5,413724002abe683f376ea914d4f21ade",
-                        "Condition_genotype_WT_KO.gprofiler2.MIRNA.sub_enriched_pathways.tsv:md5,9168f1d7f7d1b1db18a4652db05b81b6",
-                        "Condition_genotype_WT_KO.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,3571ac765c47e1c38c63c463465f2a1e",
-                        "Condition_genotype_WT_KO.gprofiler2.TF.sub_enriched_pathways.tsv:md5,4d23e5fdc96395ea79d174b1afe84756",
-                        "Condition_genotype_WT_KO.gprofiler2.WP.sub_enriched_pathways.tsv:md5,e99c42df912a9ee75c7197f92d615979"
+                        "Condition_genotype_WT_KO.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,1201012160e769c4e1f0d6fd1a20e618",
+                        "Condition_genotype_WT_KO.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,06d30deaee5c3ba5f7bd0922d683bb3d",
+                        "Condition_genotype_WT_KO.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,036e130863cc281d3771e5f114119c42",
+                        "Condition_genotype_WT_KO.gprofiler2.HP.sub_enriched_pathways.tsv:md5,6ded662a2f00ca35b09df9b81cf89ade",
+                        "Condition_genotype_WT_KO.gprofiler2.KEGG.sub_enriched_pathways.tsv:md5,dd88cd34b1db98eb47acb123a85e68f2",
+                        "Condition_genotype_WT_KO.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,6328990ca27a958621d1d468b880c1a8",
+                        "Condition_genotype_WT_KO.gprofiler2.TF.sub_enriched_pathways.tsv:md5,d3ad0c6a9a9cd01f2e9cf0bbf2e2fa69",
+                        "Condition_genotype_WT_KO.gprofiler2.WP.sub_enriched_pathways.tsv:md5,bf45e6db392a678b7fd5c6b277fbd58d"
                     ]
                 ]
             ],
@@ -42,7 +41,6 @@
                 "Condition_genotype_WT_KO.gprofiler2.GO:MF.sub_enriched_pathways.png",
                 "Condition_genotype_WT_KO.gprofiler2.HP.sub_enriched_pathways.png",
                 "Condition_genotype_WT_KO.gprofiler2.KEGG.sub_enriched_pathways.png",
-                "Condition_genotype_WT_KO.gprofiler2.MIRNA.sub_enriched_pathways.png",
                 "Condition_genotype_WT_KO.gprofiler2.REAC.sub_enriched_pathways.png",
                 "Condition_genotype_WT_KO.gprofiler2.TF.sub_enriched_pathways.png",
                 "Condition_genotype_WT_KO.gprofiler2.WP.sub_enriched_pathways.png"
@@ -54,123 +52,99 @@
                 "R_sessionInfo.log"
             ],
             [
-                "versions.yml:md5,1126f61c24d10b3d9e767aa0240b6178"
+                "Condition_genotype_WT_KO.gprofiler2.gostplot.html"
+            ],
+            [
+                "Condition_genotype_WT_KO.gprofiler2.gost_results.rds"
+            ],
+            {
+                "\"GPROFILER2_GOST\"": {
+                    "r-base": "4.3.3",
+                    "r-ggplot2": "3.4.3",
+                    "r-gprofiler2": "0.2.2",
+                    "gprofiler-data": "e114_eg62_p19_2fe5c4c1"
+                }
+            }
+        ],
+        "timestamp": "2026-04-22T17:06:20.430261786",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
+    },
+    "test-sources": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "Condition_genotype_WT_KO",
+                        "variable": "Condition genotype",
+                        "reference": "WT",
+                        "target": "KO",
+                        "blocking": "batch"
+                    },
+                    "Condition_genotype_WT_KO.gprofiler2.all_enriched_pathways.tsv:md5,4eca2a382d9e5452cb54da925a66357a"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "Condition_genotype_WT_KO",
+                        "variable": "Condition genotype",
+                        "reference": "WT",
+                        "target": "KO",
+                        "blocking": "batch"
+                    },
+                    [
+                        "Condition_genotype_WT_KO.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,06d30deaee5c3ba5f7bd0922d683bb3d",
+                        "Condition_genotype_WT_KO.gprofiler2.WP.sub_enriched_pathways.tsv:md5,bf45e6db392a678b7fd5c6b277fbd58d"
+                    ]
+                ]
+            ],
+            "Condition_genotype_WT_KO.gprofiler2.gostplot.png",
+            [
+                "Condition_genotype_WT_KO.gprofiler2.GO:CC.sub_enriched_pathways.png",
+                "Condition_genotype_WT_KO.gprofiler2.WP.sub_enriched_pathways.png"
+            ],
+            [
+                [
+                    {
+                        "id": "Condition_genotype_WT_KO",
+                        "variable": "Condition genotype",
+                        "reference": "WT",
+                        "target": "KO",
+                        "blocking": "batch"
+                    },
+                    "gprofiler_full_mmusculus.GO:CC_WP.ENSG_filtered.gmt:md5,fe7fb3b351e0ffa5567f866d103c5331"
+                ]
+            ],
+            [
+                "R_sessionInfo.log"
             ],
             [
                 "Condition_genotype_WT_KO.gprofiler2.gostplot.html"
             ],
             [
                 "Condition_genotype_WT_KO.gprofiler2.gost_results.rds"
-            ]
+            ],
+            {
+                "\"GPROFILER2_GOST\"": {
+                    "r-base": "4.3.3",
+                    "r-ggplot2": "3.4.3",
+                    "r-gprofiler2": "0.2.2",
+                    "gprofiler-data": "e114_eg62_p19_2fe5c4c1"
+                }
+            }
         ],
+        "timestamp": "2026-04-22T17:06:51.931771315",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-02-13T15:30:11.459755332"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     },
     "stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "Condition_genotype_WT_KO",
-                            "variable": "Condition genotype",
-                            "reference": "WT",
-                            "target": "KO",
-                            "blocking": "batch"
-                        },
-                        "Condition_genotype_WT_KO.gprofiler2.all_enriched_pathways.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "Condition_genotype_WT_KO",
-                            "variable": "Condition genotype",
-                            "reference": "WT",
-                            "target": "KO",
-                            "blocking": "batch"
-                        },
-                        "Condition_genotype_WT_KO.gprofiler2.gost_results.rds:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "Condition_genotype_WT_KO",
-                            "variable": "Condition genotype",
-                            "reference": "WT",
-                            "target": "KO",
-                            "blocking": "batch"
-                        },
-                        "Condition_genotype_WT_KO.gprofiler2.gostplot.png:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "Condition_genotype_WT_KO",
-                            "variable": "Condition genotype",
-                            "reference": "WT",
-                            "target": "KO",
-                            "blocking": "batch"
-                        },
-                        "Condition_genotype_WT_KO.gprofiler2.gostplot.html:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "Condition_genotype_WT_KO",
-                            "variable": "Condition genotype",
-                            "reference": "WT",
-                            "target": "KO",
-                            "blocking": "batch"
-                        },
-                        "Condition_genotype_WT_KO.gprofiler2.*.sub_enriched_pathways.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "5": [
-                    [
-                        {
-                            "id": "Condition_genotype_WT_KO",
-                            "variable": "Condition genotype",
-                            "reference": "WT",
-                            "target": "KO",
-                            "blocking": "batch"
-                        },
-                        "Condition_genotype_WT_KO.gprofiler2.*.sub_enriched_pathways.png:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "6": [
-                    [
-                        {
-                            "id": "Condition_genotype_WT_KO",
-                            "variable": "Condition genotype",
-                            "reference": "WT",
-                            "target": "KO",
-                            "blocking": "batch"
-                        },
-                        "Condition_genotype_WT_KO.ENSG_filtered.gmt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "7": [
-                    [
-                        {
-                            "id": "Condition_genotype_WT_KO",
-                            "variable": "Condition genotype",
-                            "reference": "WT",
-                            "target": "KO",
-                            "blocking": "batch"
-                        },
-                        "Condition_genotype_WT_KO.R_sessionInfo.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "8": [
-                    "versions.yml:md5,1126f61c24d10b3d9e767aa0240b6178"
-                ],
                 "all_enrich": [
                     [
                         {
@@ -268,14 +242,22 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,1126f61c24d10b3d9e767aa0240b6178"
+                    "versions.yml:md5,aebd877d5cfdb9f22a21776073da6037"
                 ]
+            },
+            {
+                "GPROFILER2_GOST": {
+                    "r-base": "4.3.3",
+                    "r-ggplot2": "3.4.3",
+                    "r-gprofiler2": "0.2.2",
+                    "gprofiler-data": "e114_eg62_p19_2fe5c4c1"
+                }
             }
         ],
+        "timestamp": "2026-04-22T14:42:51.862750525",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-02-13T15:30:19.733789446"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     }
 }

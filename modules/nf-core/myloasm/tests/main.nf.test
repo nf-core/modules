@@ -1,0 +1,77 @@
+nextflow_process {
+
+    name "Test Process MYLOASM"
+    script "../main.nf"
+    process "MYLOASM"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "myloasm"
+
+    test("homo_sapiens - pacbio - hifi - fastq") {
+        when {
+            params {
+                module_args = '--hifi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_hifi' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out).findAll { key, val ->
+                        key in ['contigs', 'gfa', 'contigs_alt'] || key.startsWith('versions')
+                    },
+                    file(process.out.results[0][1]).list().size(),
+                    path(process.out.contigs_dup[0][1]).exists(),
+                    path(process.out.mapping[0][1]).linesGzip.size(),
+                    path(process.out.log[0][1]).readLines().any{ it.contains('Assembly completed') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pacbio - hifi - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--hifi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out).findAll { key, val -> key.startsWith('versions') },
+                    sanitizeOutput(process.out)
+                        .findAll { key, val -> !key.startsWith('versions') }
+                        .collectEntries { key, val ->
+                            [key, val.collect { meta, output_file -> [meta, file(output_file).name] }]
+                        }
+                ).match() }
+            )
+        }
+
+    }
+
+}

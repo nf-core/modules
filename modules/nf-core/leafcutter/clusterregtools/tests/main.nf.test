@@ -1,0 +1,98 @@
+nextflow_process {
+
+    name "Test Process LEAFCUTTER_CLUSTERREGTOOLS"
+    script "../main.nf"
+    process "LEAFCUTTER_CLUSTERREGTOOLS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "leafcutter"
+    tag "leafcutter/clusterregtools"
+    tag "regtools"
+    tag "regtools/junctionsextract"
+
+    test("homo_sapiens - bam - junction files") {
+
+        setup {
+            run("REGTOOLS_JUNCTIONSEXTRACT") {
+                script "../../../regtools/junctionsextract/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of(
+                        [
+                            [ id:'test1', single_end:false ],
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                        ],
+                        [
+                            [ id:'test2', single_end:false ],
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                        ]
+                    )
+                    input[1] = ''
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = REGTOOLS_JUNCTIONSEXTRACT.out.junc
+                    .map { meta, junc -> junc }
+                    .collect()
+                    .map { junc_files -> [ [ id:'test_cluster' ], junc_files ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.pooled,
+                    process.out.refined,
+                    process.out.sortedlibs,
+                    process.out.counts,
+                    process.out.numers,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - junction files - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file('test1.junc'),
+                        file('test2.junc')
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.pooled != null },
+                { assert process.out.refined != null },
+                { assert process.out.sortedlibs != null },
+                { assert process.out.counts != null },
+                { assert process.out.numers != null }
+            )
+        }
+
+    }
+
+}

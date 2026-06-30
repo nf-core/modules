@@ -7,7 +7,7 @@ import argparse
 import gzip
 import sys
 from pathlib import Path
-from typing import Tuple, TextIO
+from typing import TextIO, Tuple
 
 
 def parse_vep_csq_transcripts(
@@ -68,6 +68,7 @@ def construct_most_severe_consequence_info(
 
     columns = line.strip().split()
     info_fields = columns[7].split(";")
+    transcripts = []
     for field in info_fields:
         if field.startswith("CSQ="):
             transcripts = field.split("CSQ=")[1].split(",")

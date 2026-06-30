@@ -3,9 +3,9 @@ process PRESTO_FILTERSEQ {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/presto:0.7.1--pyhdfd78af_0':
-        'biocontainers/presto:0.7.1--pyhdfd78af_0' }"
+        'quay.io/biocontainers/presto:0.7.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -26,10 +26,10 @@ process PRESTO_FILTERSEQ {
     """
     FilterSeq.py quality \\
     -s $reads \\
-    --outname ${meta.id} \\
+    --outname ${prefix} \\
     --log ${reads.baseName}.log \\
     --nproc ${task.cpus} \\
-    $args > ${meta.id}_command_log.txt
+    $args > ${prefix}_command_log.txt
 
     ParseLog.py -l ${reads.baseName}.log $args2 -f ID QUALITY
 
@@ -40,11 +40,10 @@ process PRESTO_FILTERSEQ {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch test_quality-pass.fastq test_quality-pass.fastq \\
-        test_command_log.txt test.log test.tab
+    touch ${prefix}_quality-pass.fastq ${prefix}_quality-pass.fastq \\
+        ${prefix}_command_log.txt ${prefix}.log ${prefix}.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
