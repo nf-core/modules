@@ -14,12 +14,14 @@ keywords:
   - NCBI
 tools:
   - "findMitoReference.py":
-      description: Fetch mitochondrial genome in Fasta and Genbank format from NCBI
+      description: Fetch mitochondrial genome in Fasta and Genbank format from
+        NCBI
       homepage: https://github.com/marcelauliano/MitoHiFi
       documentation: https://github.com/marcelauliano/MitoHiFi
       tool_dev_url: https://github.com/marcelauliano/MitoHiFi
       doi: "10.1101/2022.12.23.521667"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:mitohifi
 input:
   - - meta:
@@ -29,8 +31,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - species:
         type: string
-        description: Latin name of the species for which a mitochondrial genome should
-          be fetched
+        description: Latin name of the species for which a mitochondrial genome
+          should be fetched
         pattern: "[A-Z]?[a-z]* [a-z]*"
 output:
   reference:
@@ -58,9 +60,10 @@ output:
       - mitohifi:
           type: string
           description: The name of the tool
-      - echo 3.2.3:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 3.2.3:
+          type: string
+          description: The version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -69,9 +72,10 @@ topics:
       - mitohifi:
           type: string
           description: The name of the tool
-      - echo 3.2.3:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 3.2.3:
+          type: string
+          description: The version of the tool
+
 authors:
   - "@verku"
 maintainers:
