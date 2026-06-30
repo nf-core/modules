@@ -31,10 +31,11 @@ process HTSLIB_REBGZIP {
 
     stub:
     def args = task.ext.args ?: ''
-    in_ext = "${infile.extension}"
+    def in_ext = "${infile.extension}"
+    def zip_extensions = ["xz", "bz2", "gz"]
+    def prefix = task.ext.prefix ?: zip_extensions.contains(in_ext.toString()) ? "${infile.baseName}" : "${infile.name}"
     in_cmd = in_ext == "gz" ? "zcat" : ( in_ext == "xz" ? "xzcat" : ( in_ext == "bz2" ? "bzcat" : "cat" ) )
-    outname = ["xz", "bz2", "gz"].contains(in_ext) ? "${infile.baseName}" : "${infile.name}"
-    outfile = task.ext.prefix ? "${task.ext.prefix}.gz" : "${outname}.gz"
+    outfile = "${prefix}.gz"
     """
     echo "$in_cmd" | bgzip -c ${args} -@ ${task.cpus} > "out/${outfile}"
     """
