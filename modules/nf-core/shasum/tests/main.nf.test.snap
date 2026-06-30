@@ -1,5 +1,5 @@
 {
-    "test-shasum": {
+    "test-shasum, combined": {
         "content": [
             {
                 "checksum": [
@@ -8,7 +8,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.paired_end.bam.sha256:md5,138a19e100f09fc975ea1b717da9b6dd"
+                        "test.sha256:md5,cbe368d92c146935e6d72a00c2c2c804"
                     ]
                 ],
                 "versions_sha256sum": [
@@ -20,10 +20,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-03T20:43:40.688253838",
+        "timestamp": "2026-06-19T13:40:52.588704139",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "24.10.4"
+            "nextflow": "26.04.4"
         }
     },
     "test-shasum - stub": {
@@ -47,10 +47,40 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-03T20:43:46.125782074",
+        "timestamp": "2026-06-19T13:40:59.232985121",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "24.10.4"
+            "nextflow": "26.04.4"
+        }
+    },
+    "test-shasum, separate": {
+        "content": [
+            {
+                "checksum": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_1.fastq.gz.sha256:md5,d200e9d01dfc874b9c5efe894181b430",
+                            "test_2.fastq.gz.sha256:md5,0035d52e9b642206858b826f2b49d7a3"
+                        ]
+                    ]
+                ],
+                "versions_sha256sum": [
+                    [
+                        "SHASUM",
+                        "sha256sum",
+                        "9.5"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-19T13:40:45.551657784",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
         }
     }
 }
