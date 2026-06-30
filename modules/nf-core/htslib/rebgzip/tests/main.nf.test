@@ -1,0 +1,148 @@
+nextflow_process {
+
+    name "Test Process HTSLIB_REBGZIP"
+    script "../main.nf"
+    process "HTSLIB_REBGZIP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "htslib"
+    tag "htslib/bgziptabix"
+
+    test("sarscov2 - vcf - compress") {
+
+         when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert process.out.bgzipped.get(0).get(1).endsWith('.vcf.gz') }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bgzip - recompress") {
+
+         when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert process.out.bgzipped.get(0).get(1).endsWith('.vcf.gz') }
+            )
+        }
+    }
+
+    test("metagenome - bz2 - recompress") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/rgi/card-data.tar.bz2', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert process.out.bgzipped.get(0).get(1).endsWith('.tar.gz') }
+            )
+        }
+    }
+
+    test("metagenome - xz - recompress") {
+
+         when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/misc/taxa_sqlite.xz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+                { assert process.out.bgzipped.get(0).get(1).endsWith('.gz') }
+            )
+        }
+    }
+    test("sarscov2 - gzip") {
+
+         when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+                { assert process.out.bgzipped.get(0).get(1).endsWith('fastq.gz') }
+            )
+        }
+    }
+
+    test("sarscov2 - gzip - prefix") {
+    config "./nextflow.config"
+         when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+                { assert process.out.bgzipped.get(0).get(1).endsWith('new_name.fastq.gz') }
+            )
+        }
+    }
+}

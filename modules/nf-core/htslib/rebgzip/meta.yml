@@ -1,0 +1,71 @@
+name: "htslib_rebgzip"
+description: "Take gzipped or unzipped file and emit bgzipped file"
+keywords:
+  - compress
+  - decompress
+  - bgzip
+  - gzip
+tools:
+  - "htslib":
+      description: "C library for high-throughput sequencing data formats."
+      homepage: "http://www.htslib.org/"
+      documentation: "http://www.htslib.org/doc/"
+      tool_dev_url: "https://github.com/samtools/htslib"
+      doi: "10.1093/gigascience/giab007"
+      licence:
+        - "MIT"
+      identifier: biotools:htslib
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - infile:
+        type: file
+        description: Input file to (re-)compress
+        pattern: "*"
+        ontologies: []
+output:
+  bgzipped:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${outfile}:
+          type: file
+          description: |
+            Compressed or decompressed output file. If task.ext.prefix is unset, this will be the name of the input file + .gz,
+            if the input file was zipped, output file name is the same as input file name. 
+            If task.ext.prefix is set, it will be ${prefix}.gz
+          pattern: "*"
+          ontologies: []
+  versions_htslib:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htslib:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1! d; s/bgzip (htslib) //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htslib:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1! d; s/bgzip (htslib) //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+authors:
+  - "@nschan"
+maintainers:
+  - "@nschan"
