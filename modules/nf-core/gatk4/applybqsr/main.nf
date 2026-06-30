@@ -25,7 +25,7 @@ process GATK4_APPLYBQSR {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     // suffix can only be bam or cram, cram being the sensible default
-    def suffix = output_suffix && output_suffix == "bam" ? "bam" : "cram"
+    def suffix = output_suffix == "bam" ?: "cram"
     def interval_command = intervals ? "--intervals ${intervals}" : ""
 
     def avail_mem = 3072
