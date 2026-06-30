@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "presto_filterseq"
 description: Filter reads by quality score.
 keywords:
@@ -14,9 +13,9 @@ tools:
       documentation: "https://presto.readthedocs.io"
       tool_dev_url: "https://bitbucket.org/kleinstein/presto"
       doi: "10.1093/bioinformatics/btu138"
-      licence: ["AGPL v3"]
+      licence:
+        - "AGPL v3"
       identifier: biotools:presto-measure
-
 input:
   - - meta:
         type: map
@@ -28,7 +27,7 @@ input:
         description: compressed fastq file
         pattern: "*.{fastq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
 output:
   reads:
     - - meta:
@@ -41,7 +40,7 @@ output:
           description: filtered fastq.gz file
           pattern: "*.{fastq.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_1930
   logs:
     - "*_command_log.txt":
         type: file
@@ -49,34 +48,33 @@ output:
         pattern: "*.txt"
         ontologies: []
   versions_presto:
-     - ${task.process}:
-        type: string
-        description: The name of the process
-     - presto:
-         type: string
-         description: the name of the tool
-     - FilterSeq.py --version | grep -o "[0-9][0-9.]*" | head -n 1:
-         type: eval
-         description: The expression to obtain the version of the tool 
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - presto:
+          type: string
+          description: the name of the tool
+      - FilterSeq.py --version | grep -o "[0-9][0-9.]*" | head -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
   log_tab:
     - "*.tab":
         type: file
         description: parsed log table
         pattern: "*.tab"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
 topics:
   versions:
-    - ${task.process}:
-        type: string
-        description: The name of the process
-    - presto:
-         type: string
-         description: the name of the tool
-    - FilterSeq.py --version | grep -o "[0-9][0-9.]*" | head -n 1:
-         type: eval
-         description: The expression to obtain the version of the tool 
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - presto:
+          type: string
+          description: the name of the tool
+      - FilterSeq.py --version | grep -o "[0-9][0-9.]*" | head -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ggabernet"
 maintainers:
