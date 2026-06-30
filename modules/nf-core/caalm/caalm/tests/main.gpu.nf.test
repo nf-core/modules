@@ -11,7 +11,7 @@ nextflow_process {
     tag "caalm/caalm"
     tag "caalm/downloadmodels"
 
-    test("cazyme - faa - embeddings") {
+    test("cazyme - faa - embeddings - gpu") {
 
         config "./nextflow.gpu.config"
 
@@ -54,7 +54,7 @@ nextflow_process {
 
     }
 
-    test("cazyme - faa - stub") {
+    test("cazyme - faa - gpu - stub") {
 
         config "./nextflow.gpu.config"
         options "-stub"
@@ -83,7 +83,7 @@ nextflow_process {
 
     }
 
-    test("cazyme - faa - embeddings - stub") {
+    test("cazyme - faa - embeddings - gpu - stub") {
 
         config "./nextflow.gpu.config"
         options "-stub"
