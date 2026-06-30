@@ -1,0 +1,28 @@
+nextflow_process {
+    name "Test Process VCONTACT3_RUN"
+    script "../main.nf"
+    process "VCONTACT3_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcontact3"
+    tag "vcontact3/run"
+
+    test("vcontact3_run - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [[ id:'test' ], file(params.modules_testdata_base_path + 'genomics/viral/fasta/test.fasta')]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.results[0][0].id == 'test' }
+            )
+        }
+    }
+}

@@ -1,0 +1,46 @@
+name: vcontact3_run
+description: Cluster viral genomes using protein-level homology comparison
+keywords:
+  - virology
+  - clustering
+  - metagenomics
+  - virus
+  - homology
+
+tools:
+  - vcontact3:
+      description: Automated host-to-phage gene-level similarity searching
+      homepage: https://bitbucket.org/MAVERICLab/vcontact3
+      documentation: https://vcontact3.readthedocs.io/en/latest/
+      tool_dev_url: https://bitbucket.org/MAVERICLab/vcontact3
+      licence: ["GPL-3.0-or-later"]
+      doi: "10.1186/s13059-019-1879-9"
+
+input:
+  - meta:
+      type: map
+      description: Groovy map containing sample metadata
+      pattern: ".*"
+  - genomes:
+      type: file
+      description: Input FASTA or GenBank files with viral sequences
+      pattern: "*.{fasta,fa,faa,gbk,gb}"
+
+output:
+  - meta:
+      type: map
+      description: Groovy map with sample metadata
+  - results:
+      type: directory
+      description: VCONTACT3 output directory with clusters and networks
+      pattern: "vcontact3_output/"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@JP-Bro"
+
+maintainers:
+  - "@JP-Bro"
