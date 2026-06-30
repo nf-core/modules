@@ -33,11 +33,7 @@ process PRESTO_FILTERSEQ {
     $args > ${prefix}_command_log.txt
 
     ParseLog.py -l ${log_prefix}.log $args2 -f ID QUALITY
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        presto: \$( FilterSeq.py --version | awk -F' '  '{print \$2}' )
-    END_VERSIONS
+   """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"

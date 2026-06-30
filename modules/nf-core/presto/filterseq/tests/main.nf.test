@@ -26,9 +26,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions_presto,
-                                  process.out.reads,
-                                  process.out.log_tab).match() },
+                { assert snapshot(process.out.versions_presto).match("test_snap_versions") },
+                { assert snapshot(process.out.reads,
+                                  process.out.log_tab).match("test_snap_output") },
                 { assert path(process.out.log_tab.get(0)).getText().contains("QUALITY") },
                 { assert path(process.out.logs.get(0)).getText().contains("PASS") }
             )
