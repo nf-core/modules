@@ -3,7 +3,7 @@ process VCONTACT3_RUN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularityOptions ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularityOptions ?
         'https://depot.galaxyproject.org/singularity/vcontact3:3.1.6--py39h6e9494a_1' :
         'quay.io/biocontainers/vcontact3:3.1.6--py39h6e9494a_1' }"
 
