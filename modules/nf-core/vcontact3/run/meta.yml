@@ -6,7 +6,6 @@ keywords:
   - metagenomics
   - virus
   - homology
-
 tools:
   - vcontact3:
       description: Automated host-to-phage gene-level similarity searching
@@ -16,7 +15,7 @@ tools:
       licence:
         - GPL-3.0-or-later
       publication_doi: 10.1186/s13059-019-1879-9
-
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -25,31 +24,44 @@ input:
         type: file
         description: Input FASTA or GenBank files with viral sequences
         pattern: "*.{fasta,fa,faa,gbk,gb}"
-
+        ontologies: []
 output:
   results:
     - - meta:
           type: map
-          description: Groovy map with sample metadata
-      - vcontact3_output:
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "vcontact3_output/":
           type: directory
-          description: VCONTACT3 output directory with clusters and networks
+          description: |
+            VCONTACT3 output directory containing clustering results,
+            network files and comparison data
           pattern: "vcontact3_output/"
+          ontologies: []
 
-topics:
-  versions:
-    - - "${task.process}":
+  versions_vcontact3:
+    - - ${task.process}:
           type: string
-          description: The process the versions were collected from
+          description: The name of the process
       - vcontact3:
           type: string
-          description: The tool name
-      - "vcontact3 --version":
+          description: The name of the tool
+      - vcontact3 version:
           type: eval
-          description: The command used to generate the version of the tool
-
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcontact3:
+          type: string
+          description: The name of the tool
+      - vcontact3 version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@JP-Bro"
-
 maintainers:
   - "@JP-Bro"
