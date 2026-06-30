@@ -18,26 +18,35 @@ tools:
       publication_doi: 10.1186/s13059-019-1879-9
 
 input:
-  - meta:
-      type: map
-      description: Groovy map containing sample metadata
-  - genomes:
-      type: file
-      description: Input FASTA or GenBank files with viral sequences
-      pattern: "*.{fasta,fa,faa,gbk,gb}"
+  - - meta:
+        type: map
+        description: Groovy map containing sample metadata
+    - genomes:
+        type: file
+        description: Input FASTA or GenBank files with viral sequences
+        pattern: "*.{fasta,fa,faa,gbk,gb}"
 
 output:
-  - meta:
-      type: map
-      description: Groovy map with sample metadata
-  - results:
-      type: directory
-      description: VCONTACT3 output directory with clusters and networks
-      pattern: "vcontact3_output/"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  results:
+    - - meta:
+          type: map
+          description: Groovy map with sample metadata
+      - vcontact3_output:
+          type: directory
+          description: VCONTACT3 output directory with clusters and networks
+          pattern: "vcontact3_output/"
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The process the versions were collected from
+      - vcontact3:
+          type: string
+          description: The tool name
+      - "vcontact3 --version":
+          type: eval
+          description: The command used to generate the version of the tool
 
 authors:
   - "@JP-Bro"

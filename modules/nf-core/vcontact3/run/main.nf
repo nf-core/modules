@@ -12,7 +12,7 @@ process VCONTACT3_RUN {
 
     output:
     tuple val(meta), path("vcontact3_output/"), emit: results
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('vcontact3'), eval('vcontact3 --version 2>&1 | grep -oP "vcontact3, version \\K[^\\s]+"'), topic: versions, emit: versions_vcontact3
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,6 @@ process VCONTACT3_RUN {
         -o vcontact3_output/ \\
         --threads ${task.cpus} \\
         ${args}
-
-    cat > versions.yml <<-EOF_VERSIONS
-        "${task.process}":
-            vcontact3: \$( vcontact3 --version 2>&1 | grep -oP 'vcontact3, version \\K[^\\s]+' )
-    EOF_VERSIONS
     """
 
     stub:
@@ -38,10 +33,5 @@ process VCONTACT3_RUN {
     mkdir -p vcontact3_output/
     touch vcontact3_output/clusters.csv
     touch vcontact3_output/merged_df.csv
-
-    cat > versions.yml <<-EOF_VERSIONS
-        "${task.process}":
-            vcontact3: 3.1.6
-    EOF_VERSIONS
     """
 }
