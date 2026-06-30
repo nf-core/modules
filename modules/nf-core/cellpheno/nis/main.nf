@@ -8,7 +8,7 @@ process CELLPHENO_NIS {
     // It has no Conda/Bioconda package and requires a CUDA runtime, so it is
     // distributed only as a dedicated GPU container image (cf. the parabricks and
     // numorph/3dunet modules, which likewise ship a vendor GPU image with no conda).
-    container "quay.io/wzq10101/cellpheno-nis:1.0.0"
+    container "quay.io/nf-core/cellpheno-nis:1.0.0"
 
     input:
     tuple val(meta), path(tile_dir)
