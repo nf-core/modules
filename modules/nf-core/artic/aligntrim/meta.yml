@@ -84,6 +84,32 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3750
             - edam: http://edamontology.org/format_3475
+  pre_normalisation_coverage_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pre-normalisation.coverage.tsv":
+          type: file
+          description: TSV report containing per-base coverage depth before normalisation
+          pattern: "*.pre-normalisation.coverage.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3475
+  post_normalisation_coverage_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.post-normalisation.coverage.tsv":
+          type: file
+          description: TSV report containing per-base coverage depth after normalisation
+          pattern: "*.post-normalisation.coverage.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3475
   versions_align_trim:
     - - ${task.process}:
           type: string
