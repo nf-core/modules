@@ -5,7 +5,7 @@ process VCONTACT3_RUN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularityOptions ?
         'oras://ghcr.io/nf-core/vcontact3:3.1.6' :
-        'docker.io/nf-core/vcontact3:3.1.6' }"
+        'quay.io/biocontainers/vcontact3:3.1.6--py39h6e9494a_1' }"
 
     input:
     tuple val(meta), path(genomes)
@@ -19,7 +19,6 @@ process VCONTACT3_RUN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     vcontact3 run \\

@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/fasta/test_1.fasta', checkIfExists: true)
                 ]
                 """
