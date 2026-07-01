@@ -14,7 +14,7 @@ process PBMM2_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    tuple val("${task.process}"), val('pbmm2'), eval("pbmm2 --version  | grep -m 1 pbmm2 | sed 's/pbmm2 //g'"), topic: versions, emit: versions_pbmm2
+    tuple val("${task.process}"), val('pbmm2'), eval("pbmm2 --version  | sed '1s/pbmm2 //;q "), topic: versions, emit: versions_pbmm2
 
     when:
     task.ext.when == null || task.ext.when
