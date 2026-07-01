@@ -13,7 +13,7 @@ process VARSCAN_SOMATIC {
     output:
     tuple val(meta), path("*.snvs.vcf.gz")  , emit: vcf_snvs
     tuple val(meta), path("*.indels.vcf.gz"), emit: vcf_indels
-    tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n '2s/.*v//p'"), emit: versions_varscan, topic: versions
+    tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n 's/VarScan v//p'"), emit: versions_varscan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

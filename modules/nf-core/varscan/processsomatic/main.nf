@@ -17,7 +17,7 @@ process VARSCAN_PROCESSSOMATIC {
     tuple val(meta), path("*.Somatic.hc.vcf.gz") , emit: somatic_hc_vcf
     tuple val(meta), path("*.LOH.vcf.gz")        , emit: loh_vcf
     tuple val(meta), path("*.LOH.hc.vcf.gz")     , emit: loh_hc_vcf
-    tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n '2s/.*v//p'"), emit: versions_varscan, topic: versions
+    tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n 's/VarScan v//p'"), emit: versions_varscan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
