@@ -42,7 +42,11 @@ input:
         type: file
         description: Bed file with the genomic regions included in the library (optional)
         ontologies: []
-  - - meta2: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information about the reference
+          e.g. [ id:'genome' ]
     - fasta:
         type: file
         description: The reference fasta file
