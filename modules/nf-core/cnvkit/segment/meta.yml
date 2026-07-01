@@ -1,0 +1,73 @@
+name: "cnvkit_segment"
+description: Infer discrete copy number segments from the given coverage table.
+keywords:
+  - cnvkit
+  - segment
+  - cbs
+  - haar
+  - hmm
+  - hmm-tumor
+  - hmm-germline
+  - none
+  - cnr
+  - genomics
+tools:
+  - "cnvkit":
+      description: "Copy number variant detection from high-throughput sequencing."
+      homepage: "https://cnvkit.readthedocs.io/en/stable"
+      documentation: "https://cnvkit.readthedocs.io/en/stable"
+      tool_dev_url: "https://github.com/etal/cnvkit"
+      doi: "10.1371/journal.pcbi.1004873"
+      licence: ["Apache-2.0"]
+      identifier: biotools:cnvkit
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - cnr:
+        type: file
+        description: coverage table
+        pattern: "*.{cnr}"
+        ontologies: []
+
+output:
+  segments:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.cns":
+          type: file
+          description: table of copy number segments.
+          pattern: "*.{cns}"
+          ontologies: []
+  versions_cnvkit:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "cnvkit":
+          type: string
+          description: The name of the tool
+      - cnvkit.py version | sed -e "s/cnvkit v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvkit:
+          type: string
+          description: The name of the tool
+      - cnvkit.py version | sed -e "s/cnvkit v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@aadecock"
+maintainers:
+  - "@aadecock"
