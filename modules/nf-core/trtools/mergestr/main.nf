@@ -37,7 +37,7 @@ process TRTOOLS_MERGESTR {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}_dumpstr"
+    def prefix = task.ext.prefix ?: "${meta.id}_mergestr"
 
     """
     echo "" | gzip > ${prefix}.vcf.gz
