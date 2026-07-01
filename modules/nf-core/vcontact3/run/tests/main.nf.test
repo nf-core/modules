@@ -23,7 +23,30 @@ nextflow_process {
         }
 
         then {
-            assert process.success
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.results, process.out.versions_vcontact3).match() }
+            )
+        }
+    }
+
+    test("vcontact3_run - real") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.results[0][1]).exists() }
+            )
         }
     }
 }
