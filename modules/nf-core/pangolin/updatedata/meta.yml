@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: pangolin_updatedata
 description: Phylogenetic Assignment of Named Global Outbreak LINeages
 keywords:
@@ -13,9 +12,9 @@ tools:
         Phylogenetic Assignment of Named Global Outbreak LINeages
       homepage: https://github.com/cov-lineages/pangolin#pangolearn-description
       manual: https://github.com/cov-lineages/pangolin#pangolearn-description
-      licence: ["GPL-3.0-or-later"]
+      licence:
+        - "GPL-3.0-or-later"
       identifier: biotools:pangolin_cov-lineages
-
 input:
   - dbname:
       type: string
@@ -38,6 +37,26 @@ output:
           type: eval
           description: The expression to obtain the version of the tool
   versions_pangolin:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pangolin:
+          type: string
+          description: The name of the tool
+      - pangolin -v | sed -n 's/pangolin \([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pangolin-dataset:
+          type: string
+          description: The name of the tool/dataset
+      - pangolin -pv | sed -n 's/pangolin-data \([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
     - - ${task.process}:
           type: string
           description: The name of the process

@@ -28,7 +28,6 @@ input:
       type: directory
       description: |
         Directory containing the Pangolin database
-
 output:
   report:
     - - meta:
@@ -41,7 +40,8 @@ output:
           pattern: "*.{csv}"
           ontologies:
             - edam: http://edamontology.org/format_3752
-  versions_pangolin:
+topics:
+  versions:
     - - ${task.process}:
           type: string
           description: The name of the process
