@@ -1,13 +1,11 @@
 name: vcontact3_run
 description: Cluster viral genomes using protein-level homology comparison
-
 keywords:
   - virology
   - clustering
   - metagenomics
   - virus
   - homology
-
 tools:
   - vcontact3:
       description: Automated host-to-phage gene-level similarity searching
@@ -17,7 +15,7 @@ tools:
       licence:
         - GPL-3.0-or-later
       doi: 10.1186/s13059-019-1879-9
-
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -26,7 +24,7 @@ input:
         type: file
         description: Input FASTA or GenBank files with viral sequences
         pattern: "*.{fasta,fa,faa,gbk,gb}"
-
+        ontologies: []
 output:
   results:
     - - meta:
@@ -43,10 +41,9 @@ output:
       - vcontact3:
           type: string
           description: The name of the tool
-      - vcontact3 version:
-          type: string
-          description: Version of vcontact3
-
+      - vcontact3 --version 2>&1 | sed -n 's/vcontact3, version \([^ ]*\)/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -55,12 +52,10 @@ topics:
       - vcontact3:
           type: string
           description: The name of the tool
-      - vcontact3 version:
-          type: string
-          description: Version of vcontact3
-
+      - vcontact3 --version 2>&1 | sed -n 's/vcontact3, version \([^ ]*\)/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@JP-Bro"
-
 maintainers:
   - "@JP-Bro"
