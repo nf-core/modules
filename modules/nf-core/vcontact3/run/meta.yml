@@ -16,7 +16,7 @@ tools:
       tool_dev_url: https://bitbucket.org/MAVERICLab/vcontact3
       licence:
         - GPL-3.0-or-later
-      publication_doi: 10.1186/s13059-019-1879-9
+      doi: 10.1186/s13059-019-1879-9
 
 input:
   - - meta:
@@ -36,6 +36,16 @@ output:
           type: directory
           description: VCONTACT3 output directory containing clustering results
           pattern: "vcontact3_output/"
+  versions_vcontact3:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcontact3:
+          type: string
+          description: The name of the tool
+      - vcontact3 version:
+          type: string
+          description: Version of vcontact3
 
 topics:
   versions:

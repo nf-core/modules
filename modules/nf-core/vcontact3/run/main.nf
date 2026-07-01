@@ -12,14 +12,13 @@ process VCONTACT3_RUN {
 
     output:
     tuple val(meta), path("vcontact3_output/"), emit: results
-    tuple val("${task.process}"), val('vcontact3'), val(versions), topic: versions, emit: versions_vcontact3
+    tuple val("${task.process}"), val('vcontact3'), eval("vcontact3 --version 2>&1 | sed -n 's/vcontact3, version \\([^ ]*\\)/\\1/p'"), emit: versions_vcontact3, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    versions = 'vcontact3-3.1.6'
 
     """
     vcontact3 run \\
@@ -30,8 +29,6 @@ process VCONTACT3_RUN {
     """
 
     stub:
-    versions = 'vcontact3-3.1.6'
-
     """
     mkdir -p vcontact3_output/
     touch vcontact3_output/clusters.csv
