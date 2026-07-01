@@ -15,7 +15,8 @@ tools:
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
 input:
   - - meta:
@@ -41,21 +42,22 @@ input:
         type: file
         description: Bed file with the genomic regions included in the library (optional)
         ontologies: []
-  - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
-      ontologies: []
-  - fai:
-      type: file
-      description: Index of reference fasta file
-      pattern: "*.fasta.fai"
-      ontologies: []
-  - dict:
-      type: file
-      description: GATK sequence dictionary
-      pattern: "*.dict"
-      ontologies: []
+  - - meta2: {}
+    - fasta:
+        type: file
+        description: The reference fasta file
+        pattern: "*.fasta"
+        ontologies: []
+    - fai:
+        type: file
+        description: Index of reference fasta file
+        pattern: "*.fasta.fai"
+        ontologies: []
+    - dict:
+        type: file
+        description: GATK sequence dictionary
+        pattern: "*.dict"
+        ontologies: []
   - output_suffix:
       type: string
       description: Output file format, either "bam" or "cram" (cram is the default)
