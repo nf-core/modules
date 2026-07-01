@@ -40,6 +40,16 @@ output:
           pattern: "*.{csv}"
           ontologies:
             - edam: http://edamontology.org/format_3752
+  versions_pangolin:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pangolin:
+          type: string
+          description: The name of the tool
+      - pangolin -v | sed -n 's/pangolin \([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
