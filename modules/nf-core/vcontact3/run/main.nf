@@ -3,7 +3,7 @@ process VCONTACT3_RUN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container 'quay.io/biocontainers/vcontact3:3.1.6--py39h6e9494a_1'
+    container 'quay.io/biocontainers/vcontact3:3.1.6--pyhdfd78af_0'
 
     input:
     tuple val(meta), path(genomes)
