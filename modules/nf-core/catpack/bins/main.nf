@@ -4,8 +4,8 @@ process CATPACK_BINS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'quay.io/biocontainers/cat:6.0.1--hdfd78af_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1e58abd32df3c4d65314311ad1b3b8355fa3d9f229aa3e39a1db6c938eb406d1/data'
+        : 'community.wave.seqera.io/library/cat:6.0.1--6bec964806e8076a'}"
 
     input:
     tuple val(meta), path(bins, stageAs: 'bins/*')
@@ -13,7 +13,7 @@ process CATPACK_BINS {
     tuple val(meta3), path(taxonomy)
     tuple val(meta4), path(proteins)
     tuple val(meta5), path(diamond_table)
-    val(bin_suffix)
+    val bin_suffix
 
     output:
     tuple val(meta), path("*.ORF2LCA.txt"), emit: orf2lca
@@ -33,9 +33,22 @@ process CATPACK_BINS {
     def premade_proteins = proteins ? "-p ${proteins}" : ''
     def premade_table = diamond_table ? "-d ${diamond_table}" : ''
     """
+    # CAT_pack does not support gzipped input, so decompress any gzipped bins
+    # into a separate dir (bin_suffix must match the decompressed extension).
+    mkdir input_bins
+    for f in bins/*; do
+        [ -e "\$f" ] || continue
+        name=\$(basename "\$f")
+        if [[ "\$name" == *.gz ]]; then
+            gunzip -c "\$f" > "input_bins/\${name%.gz}"
+        else
+            ln -s "\$(readlink -f "\$f")" "input_bins/\${name}"
+        fi
+    done
+
     CAT_pack bins \\
         -n ${task.cpus} \\
-        -b bins/ \\
+        -b input_bins/ \\
         -d ${database} \\
         -t ${taxonomy} \\
         -s ${bin_suffix} \\

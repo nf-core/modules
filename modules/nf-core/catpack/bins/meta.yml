@@ -28,8 +28,11 @@ input:
 
     - bins:
         type: file
-        description: One or more nucleotide FASTA file containing binned long DNA sequences.
-        pattern: "*.{fasta,fna,fa,fas}"
+        description: One or more nucleotide FASTA file containing binned long DNA
+          sequences. Files may be optionally gzipped (the module decompresses them
+          before running CAT_pack); in that case `bin_suffix` must refer to the
+          decompressed extension (e.g. `.fasta`).
+        pattern: "*.{fasta,fna,fa,fas}{,.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
 

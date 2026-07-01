@@ -6,8 +6,8 @@ process CATPACK_PREPARE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'quay.io/biocontainers/cat:6.0.1--hdfd78af_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1e58abd32df3c4d65314311ad1b3b8355fa3d9f229aa3e39a1db6c938eb406d1/data'
+        : 'community.wave.seqera.io/library/cat:6.0.1--6bec964806e8076a'}"
 
     input:
     tuple val(meta), path(db_fasta)
