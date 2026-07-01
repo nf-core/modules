@@ -28,13 +28,22 @@ input:
       pattern: "*.{fasta,fa,faa,gbk,gb}"
 
 output:
-  results:
-    type: directory
-    description: VCONTACT3 output directory containing clustering results
-    pattern: "vcontact3_output/"
-  versions_vcontact3:
-    type: custom
-    description: Versions of tools used in vcontact3
+  - results:
+      type: directory
+      description: VCONTACT3 output directory containing clustering results
+      pattern: "vcontact3_output/"
+
+topics:
+  - versions_vcontact3:
+      - - process:
+            type: string
+            description: The name of the process
+        - tool:
+            type: string
+            description: The name of the tool
+        - version:
+            type: string
+            description: The version of the tool
 
 authors:
   - "@JP-Bro"
