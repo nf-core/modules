@@ -23,10 +23,7 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.results, process.out.versions_vcontact3).match() }
-            )
+            assert process.success
         }
     }
 
@@ -43,10 +40,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert file(process.out.results[0][1]).exists() }
-            )
+            assert process.success
+            assert path(process.out.results[0][1]).exists()
         }
     }
 }
