@@ -10,7 +10,7 @@ process VCONTACT3_RUN {
 
     output:
     tuple val(meta), path("vcontact3_output/"), emit: results
-    tuple val("${task.process}"), val('vcontact3'), val(versions), topic: versions, emit: versions
+    tuple val("${task.process}"), val('vcontact3'), val(versions), topic: versions, emit: versions_vcontact3
 
     when:
     task.ext.when == null || task.ext.when

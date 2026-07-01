@@ -32,12 +32,9 @@ output:
       type: directory
       description: VCONTACT3 output directory containing clustering results
       pattern: "vcontact3_output/"
-  - versions:
-      type: custom
-      description: Versions of tools used
 
 topics:
-  - versions:
+  - versions_vcontact3:
       - - ${task.process}:
             type: string
             description: The name of the process
