@@ -1,0 +1,90 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pmlst_pmlst"
+description: Assign plasmid MLST profiles for assembled plasmid sequences.
+keywords:
+  - plasmid
+  - typing
+  - mlst
+  - bacterial genomics
+tools:
+  - "pmlst":
+      description: "Plasmid MLST typing based on the pubMLST database schemes."
+      homepage: "https://bitbucket.org/genomicepidemiology/pmlst/src/master/"
+      documentation: "https://bitbucket.org/genomicepidemiology/pmlst/src/master/"
+      tool_dev_url: "https://bitbucket.org/genomicepidemiology/pmlst/src/master/"
+      licence: ["Apache-2.0"]
+      identifier: biotools:pmlst
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Assembly FASTA for plasmid typing.
+        pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - pmlst_db:
+      type: directory
+      description: Path to the pMLST database directory.
+      pattern: "*"
+  - scheme:
+      type: string
+      description: pMLST scheme name to run (for example `incf`).
+
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: Tabular pMLST typing output.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: Plain-text pMLST typing summary.
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_pmlst:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pmlst:
+          type: string
+          description: The tool name
+      - echo 2.0.3:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pmlst:
+          type: string
+          description: The tool name
+      - echo 2.0.3:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@eit-maxlcummins"
+maintainers:
+  - "@eit-maxlcummins"
