@@ -12,7 +12,7 @@ process TCOFFEE_EXTRACTFROMPDB {
 
     output:
     tuple val(meta), path("${prefix}.pdb"), emit: formatted_pdb
-    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | awk \'{gsub("Version_", ""); print \\$3}\''), emit: versions_tcoffee, topic: versions
+    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | sed -n \'s/.*Version_\\([^ ]*\\).*/\\1/p\''), emit: versions_tcoffee, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
