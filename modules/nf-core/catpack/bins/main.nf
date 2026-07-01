@@ -32,26 +32,25 @@ process CATPACK_BINS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def premade_proteins = proteins ? "-p ${proteins}" : ''
     def premade_table = diamond_table ? "-d ${diamond_table}" : ''
+    // CAT_pack does not support gzipped input. If bin_suffix ends in .gz,
+    // decompress the bins and strip .gz off the suffix passed to CAT_pack.
+    def is_compressed = bin_suffix.endsWith('.gz')
+    def cat_suffix = is_compressed ? bin_suffix - ~/\.gz$/ : bin_suffix
+    def bins_dir = is_compressed ? 'input_bins' : 'bins'
     """
-    # CAT_pack does not support gzipped input, so decompress any gzipped bins
-    # into a separate dir (bin_suffix must match the decompressed extension).
-    mkdir input_bins
-    for f in bins/*; do
-        [ -e "\$f" ] || continue
-        name=\$(basename "\$f")
-        if [[ "\$name" == *.gz ]]; then
-            gunzip -c "\$f" > "input_bins/\${name%.gz}"
-        else
-            ln -s "\$(readlink -f "\$f")" "input_bins/\${name}"
-        fi
-    done
+    if ${is_compressed}; then
+        mkdir input_bins
+        for f in bins/*${bin_suffix}; do
+            gunzip -c "\$f" > "input_bins/\$(basename "\$f" .gz)"
+        done
+    fi
 
     CAT_pack bins \\
         -n ${task.cpus} \\
-        -b input_bins/ \\
+        -b ${bins_dir}/ \\
         -d ${database} \\
         -t ${taxonomy} \\
-        -s ${bin_suffix} \\
+        -s ${cat_suffix} \\
         ${premade_proteins} \\
         ${premade_table} \\
         -o ${prefix} \\

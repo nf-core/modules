@@ -29,9 +29,8 @@ input:
     - bins:
         type: file
         description: One or more nucleotide FASTA file containing binned long DNA
-          sequences. Files may be optionally gzipped (the module decompresses them
-          before running CAT_pack); in that case `bin_suffix` must refer to the
-          decompressed extension (e.g. `.fasta`).
+          sequences. Files may be optionally gzipped, in which case `bin_suffix`
+          must end in `.gz` (the module decompresses them before running CAT_pack).
         pattern: "*.{fasta,fna,fa,fas}{,.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
@@ -92,7 +91,9 @@ input:
 
   - bin_suffix:
       type: string
-      description: Suffix to search for in the input files when `bins` is a directory.
+      description: Suffix to search for in the input files when `bins` is a directory
+        (e.g. `.fasta`). If it ends in `.gz` (e.g. `.fasta.gz`), the bins are
+        decompressed first and the `.gz` is stripped before running CAT_pack.
 
 output:
   orf2lca:
