@@ -3,7 +3,9 @@ process TELESCOPE_ASSIGN {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container 'community.wave.seqera.io/library/telescope:1.0.4--a061d59a7493d996'
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'oras://community.wave.seqera.io/library/telescope:1.0.4--e6e92a2c554f111a':
+        'community.wave.seqera.io/library/telescope:1.0.4--a061d59a7493d996' }"
 
     input:
     tuple val(meta), path(bam)
