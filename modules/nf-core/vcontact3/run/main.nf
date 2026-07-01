@@ -33,5 +33,6 @@ process VCONTACT3_RUN {
     mkdir -p vcontact3_output/
     touch vcontact3_output/clusters.csv
     touch vcontact3_output/merged_df.csv
+    touch vcontact3_output/vContact_contig_id.txt
     """
 }
