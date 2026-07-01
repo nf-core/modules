@@ -20,7 +20,7 @@ process SEQKIT_REPLACE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_replaced"
     def extension = "fastq"
     if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.faa|.+\.faa.gz/) {
         extension = "fasta"
@@ -35,7 +35,7 @@ process SEQKIT_REPLACE {
         replace \\
         ${args} \\
         --threads ${task.cpus} \\
-        -i ${fastx} \\
+        ${fastx} \\
         -o ${prefix}.${endswith}
     """
 
