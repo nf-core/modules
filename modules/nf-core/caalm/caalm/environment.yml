@@ -5,8 +5,8 @@ channels:
   - bioconda
 dependencies:
   - conda-forge::faiss-cpu=1.10.0
-  - conda-forge::mkl=2024.*       # pins the MKL ABI for FAISS (mkl 2026 renames libmkl_intel_lp64.so.2 -> .so.3, breaking faiss import)
+  - conda-forge::mkl=2024.* # pins the MKL ABI for FAISS (mkl 2026 renames libmkl_intel_lp64.so.2 -> .so.3, breaking faiss import)
   - conda-forge::python=3.10.0
+  - conda-forge::pytorch=2.6.0
   - pip:
       - caalm==1.0.0
-      - torch==2.6.0
