@@ -22,7 +22,7 @@ process VCONTACT3_RUN {
 
     """
     vcontact3 run \\
-        -i ${genomes.join(' ')} \\
+        -n ${genomes.join(' ')} \\
         -o vcontact3_output/ \\
         --threads ${task.cpus} \\
         ${args}
