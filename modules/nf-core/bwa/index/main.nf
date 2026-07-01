@@ -1,5 +1,5 @@
 process BWA_INDEX {
-    tag "$fasta"
+    tag "${fasta}"
     // NOTE requires 5.37N memory where N is the size of the database
     // source: https://bio-bwa.sourceforge.net/bwa.shtml#8
     memory { 7.B * fasta.size() }
@@ -13,32 +13,34 @@ process BWA_INDEX {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("bwa"), emit: index
+    tuple val(meta), path("${prefix}"), emit: index
     tuple val("${task.process}"), val('bwa'), eval('bwa 2>&1 | sed -n "s/^Version: //p"'), topic: versions, emit: versions_bwa
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${fasta.baseName}"
-    def args   = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: meta.id ? "${meta.id}" : "${fasta.baseName}"
+    def args = task.ext.args ?: ''
+    def suffix = task.ext.suffix ?: "${fasta.baseName}"
     """
-    mkdir bwa
+    mkdir ${prefix}
     bwa \\
         index \\
-        $args \\
-        -p bwa/${prefix} \\
-        $fasta
+        ${args} \\
+        -p ${prefix}/${suffix} \\
+        ${fasta}
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${fasta.baseName}"
+    prefix = task.ext.prefix ?: meta.id ? "${meta.id}" : "${fasta.baseName}"
+    def suffix = task.ext.suffix ?: "${fasta.baseName}"
     """
-    mkdir bwa
-    touch bwa/${prefix}.amb
-    touch bwa/${prefix}.ann
-    touch bwa/${prefix}.bwt
-    touch bwa/${prefix}.pac
-    touch bwa/${prefix}.sa
+    mkdir ${prefix}
+    touch ${prefix}/${suffix}.amb
+    touch ${prefix}/${suffix}.ann
+    touch ${prefix}/${suffix}.bwt
+    touch ${prefix}/${suffix}.pac
+    touch ${prefix}/${suffix}.sa
     """
 }
