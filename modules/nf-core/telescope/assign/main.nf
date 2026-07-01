@@ -4,7 +4,7 @@ process TELESCOPE_ASSIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/telescope:1.0.4--e6e92a2c554f111a':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2ac4866069270568a825af73b587bfed074f5ae4eae2628048fd61024fbcb330/data':
         'community.wave.seqera.io/library/telescope:1.0.4--a061d59a7493d996' }"
 
     input:
