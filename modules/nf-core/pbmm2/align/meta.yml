@@ -11,9 +11,9 @@ tools:
       homepage: "https://github.com/PacificBiosciences/pbmm2"
       documentation: "https://github.com/PacificBiosciences/pbmm2"
       tool_dev_url: "https://github.com/PacificBiosciences/pbmm2"
-      licence: ["BSD-3-clause-Clear"]
+      licence:
+        - "BSD-3-clause-Clear"
       identifier: biotools:pbmm2
-
 input:
   - - meta:
         type: map
@@ -51,24 +51,24 @@ output:
             - edam: "http://edamontology.org/format_2573"
             - edam: "http://edamontology.org/format_3462"
   versions_pbmm2:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "pbmm2":
+      - pbmm2:
           type: string
           description: The name of the tool
-      - "pbmm2 --version | grep -m 1 pbmm2 | sed 's/pbmm2 //g'":
+      - pbmm2 --version  | grep -m 1 pbmm2 | sed 's/pbmm2 //g':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "pbmm2":
+      - pbmm2:
           type: string
           description: The name of the tool
-      - "pbmm2 --version | grep -m 1 pbmm2 | sed 's/pbmm2 //g'":
+      - pbmm2 --version  | grep -m 1 pbmm2 | sed 's/pbmm2 //g':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
