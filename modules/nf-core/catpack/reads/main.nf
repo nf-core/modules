@@ -4,8 +4,8 @@ process CATPACK_READS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1e58abd32df3c4d65314311ad1b3b8355fa3d9f229aa3e39a1db6c938eb406d1/data'
-        : 'community.wave.seqera.io/library/cat:6.0.1--6bec964806e8076a'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15bcec1eccda12562504e88d44abc8a29742c6b600ae178cc9579fedc3a69062/data'
+        : 'community.wave.seqera.io/library/cat_gzip:0ab95a62b35744c9'}"
 
     input:
     tuple val(meta), path(reads)
