@@ -22,10 +22,11 @@ process DASTOOL_FASTATOCONTIG2BIN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def file_extension = extension ? extension : "fasta"
-    def clean_fasta = fasta.toString() - ".gz"
-    def decompress_fasta = fasta.toString() == clean_fasta ? "" : "gunzip -q -f ${fasta}"
     """
-    ${decompress_fasta}
+    # Fasta_to_Contig2Bin.sh requires uncompressed FASTA input; decompress any gzipped bins
+    for fasta_gz in *.gz; do
+        [ -e "\$fasta_gz" ] && gunzip -kf "\$fasta_gz"
+    done
 
     Fasta_to_Contig2Bin.sh \\
         ${args} \\
