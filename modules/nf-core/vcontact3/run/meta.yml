@@ -1,11 +1,13 @@
 name: vcontact3_run
 description: Cluster viral genomes using protein-level homology comparison
+
 keywords:
   - virology
   - clustering
   - metagenomics
   - virus
   - homology
+
 tools:
   - vcontact3:
       description: Automated host-to-phage gene-level similarity searching
@@ -15,53 +17,39 @@ tools:
       licence:
         - GPL-3.0-or-later
       publication_doi: 10.1186/s13059-019-1879-9
-      identifier: ""
-input:
-  - - meta:
-        type: map
-        description: Groovy map containing sample metadata
-    - genomes:
-        type: file
-        description: Input FASTA or GenBank files with viral sequences
-        pattern: "*.{fasta,fa,faa,gbk,gb}"
-        ontologies: []
-output:
-  results:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'sample1' ]
-      - "vcontact3_output/":
-          type: directory
-          description: |
-            VCONTACT3 output directory containing clustering results,
-            network files and comparison data
-          pattern: "vcontact3_output/"
-          ontologies: []
 
-  versions_vcontact3:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - vcontact3:
-          type: string
-          description: The name of the tool
-      - vcontact3 version:
-          type: eval
-          description: The expression to obtain the version of the tool
+input:
+  - meta:
+      type: map
+      description: Groovy map containing sample metadata
+  - genomes:
+      type: file
+      description: Input FASTA or GenBank files with viral sequences
+      pattern: "*.{fasta,fa,faa,gbk,gb}"
+
+output:
+  - results:
+      type: directory
+      description: VCONTACT3 output directory containing clustering results
+      pattern: "vcontact3_output/"
+  - versions:
+      type: custom
+      description: Versions of tools used
+
 topics:
-  versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - vcontact3:
-          type: string
-          description: The name of the tool
-      - vcontact3 version:
-          type: eval
-          description: The expression to obtain the version of the tool
+  - versions:
+      - - ${task.process}:
+            type: string
+            description: The name of the process
+        - vcontact3:
+            type: string
+            description: The name of the tool
+        - vcontact3 version:
+            type: string
+            description: Version of vcontact3
+
 authors:
   - "@JP-Bro"
+
 maintainers:
   - "@JP-Bro"

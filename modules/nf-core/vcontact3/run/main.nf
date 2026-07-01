@@ -3,23 +3,21 @@ process VCONTACT3_RUN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularityOptions ?
-    'quay.io/biocontainers/vcontact3:3.1.6--pyhdfd78af_0' :
-    'quay.io/biocontainers/vcontact3:3.1.6--pyhdfd78af_0' }"
+    container 'quay.io/biocontainers/vcontact3:3.1.6--pyhdfd78af_0'
 
     input:
     tuple val(meta), path(genomes)
 
     output:
     tuple val(meta), path("vcontact3_output/"), emit: results
-    tuple val("${task.process}"), val('vcontact3'), eval('vcontact3 version'), topic: versions, emit: versions_vcontact3
-
+    tuple val("${task.process}"), val('vcontact3'), val(versions), topic: versions, emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    versions = 'vcontact3-3.1.6'
 
     """
     vcontact3 run \\
@@ -30,6 +28,8 @@ process VCONTACT3_RUN {
     """
 
     stub:
+    versions = 'vcontact3-3.1.6'
+
     """
     mkdir -p vcontact3_output/
     touch vcontact3_output/clusters.csv
