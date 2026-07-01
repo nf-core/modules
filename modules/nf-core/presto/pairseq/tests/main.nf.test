@@ -1,0 +1,42 @@
+nextflow_process {
+
+    name "Test Process PRESTO_PAIRSEQ"
+    script "../main.nf"
+    process "PRESTO_PAIRSEQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "presto"
+    tag "presto/pairseq"
+
+    test("homo_sapiens - fastq") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_umi_R1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_R2.fastq.gz', checkIfExists: true),
+                ]
+                input[1]=""
+                """
+            }
+        }
+
+        then {
+            
+            assertAll(
+                { assert process.success},
+                { assert snapshot(
+                    process.out.reads.get(0).get(1),
+                    process.out.reads.get(0).get(2)
+                ).match("test_snap_out")},
+                { assert snapshot(
+                    process.out.versions_presto).match("test_snap_versions")
+                },  
+                { assert path(process.out.logs.get(0)).getText().contains("PASS") }
+            )
+        }
+    }
+}
