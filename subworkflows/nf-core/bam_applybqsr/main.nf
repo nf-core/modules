@@ -30,13 +30,13 @@ workflow BAM_APPLYBQSR {
         reference,
         output_suffix,
     )
-    // BAM path — populated when ext.suffix='bam', empty otherwise
+    // BAM path — populated when bam file produced, empty otherwise
 
         bam_applybqsr = GATK4_APPLYBQSR.out.bam
                 .join(GATK4_APPLYBQSR.out.bai)
-                .branch {
-                    single: it[0].num_intervals <= 1
-                    multiple: it[0].num_intervals > 1
+                .branch { meta, _cram, _bai ->
+                    single: meta.num_intervals <= 1
+                    multiple: meta.num_intervals > 1
                 }
 
         // For multiple intervals, gather and merge the recalibrated cram files
@@ -54,9 +54,9 @@ workflow BAM_APPLYBQSR {
      // ---- CRAM path (populated when a cram was produced) ----
         cram_applybqsr = GATK4_APPLYBQSR.out.cram
             .join(GATK4_APPLYBQSR.out.bai)
-            .branch {
-                single:   it[0].num_intervals <= 1
-                multiple: it[0].num_intervals > 1
+            .branch { meta, _cram, _bai ->
+                single:   meta.num_intervals <= 1
+                multiple: meta.num_intervals > 1
             }
 
         cram_to_merge = cram_applybqsr.multiple
