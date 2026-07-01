@@ -1,0 +1,176 @@
+name: "fungtion_fungtion"
+description: |
+  Predicts fungal effector proteins from protein FASTA sequences using ESM-1b
+  protein language model embeddings and R-based SVM models. Optionally produces
+  similarity-network and relationship-tree visualizations and an HTML report for
+  predicted effectors. Requires the pretrained ESM-1b weights from
+  FUNGTION_DOWNLOADMODELS as input.
+keywords:
+  - fungal
+  - effector
+  - protein
+  - prediction
+  - language model
+  - deep learning
+  - svm
+  - classification
+tools:
+  - "fungtion":
+      description: |
+        Fungtion predicts and visualizes fungal effector proteins from protein FASTA
+        sequences using ESM-1b protein language model embeddings and R-based SVM models.
+        For predicted effectors it can generate similarity-network and relationship-tree
+        visualizations and an HTML report.
+      homepage: "https://github.com/noHup-cc/fungtion"
+      documentation: "https://github.com/noHup-cc/fungtion"
+      tool_dev_url: "https://github.com/noHup-cc/fungtion"
+      licence:
+        - "MIT"
+      identifier: biotools:fungtion
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Protein sequences in FASTA format.
+        pattern: "*.{fa,fasta,faa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - pretrain:
+      type: directory
+      description: |
+        Directory containing the pretrained ESM-1b weights (esm1b_t33_650M_UR50S.pt),
+        as produced by FUNGTION_DOWNLOADMODELS.
+      pattern: "models"
+      ontologies: []
+
+output:
+  predictions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}.csv:
+          type: file
+          description: |
+            CSV file containing per-sequence effector predictions from fungtion.
+          pattern: "${prefix}/${prefix}.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  analysis:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}_analysis:
+          type: directory
+          description: |
+            Directory containing similarity-network and relationship-tree visualizations
+            for predicted effectors. Optional; produced unless `--skip-visualization` is
+            passed.
+          pattern: "${prefix}/${prefix}_analysis"
+          ontologies: []
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}.html:
+          type: file
+          description: |
+            HTML report summarising the fungtion predictions and visualizations.
+            Optional; produced when `--html-report` is passed.
+          pattern: "${prefix}/${prefix}.html"
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML
+  assets:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}_assets:
+          type: directory
+          description: |
+            Directory containing assets (images, scripts) referenced by the HTML report.
+            Optional; produced when `--html-report` is passed.
+          pattern: "${prefix}/${prefix}_assets"
+          ontologies: []
+  temp:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}_temp_folder:
+          type: directory
+          description: |
+            Temporary working directory retained from the fungtion run.
+            Optional; produced when `--keep-temp` is passed.
+          pattern: "${prefix}/${prefix}_temp_folder"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.log:
+          type: file
+          description: Log file containing the stdout of the fungtion run.
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  versions_fungtion:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fungtion:
+          type: string
+          description: The name of the tool
+      - fungtion --version 2>&1 | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fungtion:
+          type: string
+          description: The name of the tool
+      - fungtion --version 2>&1 | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
