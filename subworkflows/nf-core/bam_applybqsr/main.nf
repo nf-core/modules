@@ -32,33 +32,30 @@ workflow BAM_APPLYBQSR {
     )
     // BAM path — populated when ext.suffix='bam', empty otherwise
 
-    bam_applybqsr = GATK4_APPLYBQSR.out.bam
-            .join(GATK4_APPLYBQSR.out.bai)
-            .branch {
-                single: it[0].num_intervals == 1
-                multiple: it[0].num_intervals > 1
-            }
+        bam_applybqsr = GATK4_APPLYBQSR.out.bam
+                .join(GATK4_APPLYBQSR.out.bai)
+                .branch {
+                    single: it[0].num_intervals <= 1
+                    multiple: it[0].num_intervals > 1
+                }
 
-    // For multiple intervals, gather and merge the recalibrated cram files
-    bam_to_merge = bam_applybqsr.multiple
-            .map { meta, bam_, _bai -> [groupKey(meta, meta.num_intervals), bam_, _bai] }
-            .groupTuple()
+        // For multiple intervals, gather and merge the recalibrated cram files
+        bam_to_merge = bam_applybqsr.multiple
+                .map { meta, bam_, _bai -> [groupKey(meta, meta.num_intervals), bam_, _bai] }
+                .groupTuple()
 
-        MERGE_BAM(
-                    bam_to_merge,
-                    reference
-                )
+        MERGE_BAM(bam_to_merge,reference)
 
         bam_recal = MERGE_BAM.out.bam
                 .join(MERGE_BAM.out.index)
                 .mix(bam_applybqsr.single)
-                .map { meta, bam_, bai -> [meta - meta.subMap('num_intervals'), bam_, bai] }
+
 
      // ---- CRAM path (populated when a cram was produced) ----
         cram_applybqsr = GATK4_APPLYBQSR.out.cram
             .join(GATK4_APPLYBQSR.out.bai)
             .branch {
-                single:   it[0].num_intervals == 1
+                single:   it[0].num_intervals <= 1
                 multiple: it[0].num_intervals > 1
             }
 
@@ -66,17 +63,22 @@ workflow BAM_APPLYBQSR {
             .map { meta, cram_, crai -> [groupKey(meta, meta.num_intervals), cram_, crai] }
             .groupTuple()
 
+
         MERGE_CRAM(cram_to_merge, reference)
 
         cram_recal = MERGE_CRAM.out.cram
             .join(MERGE_CRAM.out.index)
             .mix(cram_applybqsr.single)
-            .map { meta, cram_, crai -> [meta - meta.subMap('num_intervals'), cram_, crai] }
 
-        // Unified output — bam or cram depending on what was produced
-        recal = bam_recal.mix(cram_recal)
+            // Unified output — bam or cram depending on what was produced
+            recal_out = bam_recal
+                .mix(cram_recal)
+            .map { meta, reads_, index -> [meta - meta.subMap('num_intervals'), reads_, index] }
 
-        emit:
-        recal    // channel: [ meta, file, index ]
+
+            emit:
+            recal_out // channel: [ meta, file, index ]
+
+
     }
 }
