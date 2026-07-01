@@ -43,26 +43,26 @@ output:
           pattern: "*.png"
           ontologies: []
   versions_nonpareil:
-    - - ${task.process}:
-          type: string
-          description: Process which generated the version
-      - Nonpareil:
-          type: string
-          description: Tool name
-      - Rscript -e "library(Nonpareil); cat(paste(unlist(packageVersion('Nonpareil')), collapse = '.'))":
-          type: eval
-          description: The expression to obtain the version of the tool
+  - - ${task.process}:
+        type: string
+        description: Process which generated the version
+    - Nonpareil:
+        type: string
+        description: Tool name
+    - Rscript -e "library(Nonpareil); cat(paste(unlist(packageVersion('Nonpareil')), collapse = '.'))":
+        type: eval
+        description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: Process which generated the version
-      - Nonpareil:
-          type: string
-          description: Tool name
-      - Rscript -e "library(Nonpareil); cat(paste(unlist(packageVersion('Nonpareil')), collapse = '.'))":
-          type: eval
-          description: The expression to obtain the version of the tool
+  - - ${task.process}:
+        type: string
+        description: Process which generated the version
+    - Nonpareil:
+        type: string
+        description: Tool name
+    - Rscript -e "library(Nonpareil); cat(paste(unlist(packageVersion('Nonpareil')), collapse = '.'))":
+        type: eval
+        description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

@@ -31,14 +31,14 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
-            )
+            ) 
         }
     }
 
     test("testrun opt/flip panel probe sequences -stub") {
-
+        
         options "-stub"
-
+        
         when {
             process {
                 """

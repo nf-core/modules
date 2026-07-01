@@ -23,7 +23,7 @@ process BAYSOR_RUN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-
+    
     def prior_seg = prior_column ? ":${prior_column}" : (prior_segmentation ?: '')
     def confidence = prior_confidence ? "--prior-segmentation-confidence=${prior_confidence}" : ''
     def scaling_factor = scale ? "--scale=${scale}" : ''

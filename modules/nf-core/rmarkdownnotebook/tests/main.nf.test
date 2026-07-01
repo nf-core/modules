@@ -31,7 +31,7 @@ nextflow_process {
                     process.out.parameterised_notebook,
                     process.out.artifacts,
                     file(process.out.session_info[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.versions
                 ).match() }
             )
         }
@@ -60,7 +60,7 @@ nextflow_process {
                     process.out.parameterised_notebook,
                     process.out.artifacts,
                     file(process.out.session_info[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.versions
                 ).match() }
             )
         }
@@ -91,7 +91,7 @@ nextflow_process {
                     process.out.parameterised_notebook,
                     process.out.artifacts,
                     file(process.out.session_info[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.versions
                 ).match() }
             )
         }

@@ -36,7 +36,7 @@ process MEMOTE_RUN {
     """
     export HOME=\${PWD}
     export COBRA_SOLVER=glpk_exact
-
+    
     echo "" | gzip > ${prefix}.json.gz
     """
 }
