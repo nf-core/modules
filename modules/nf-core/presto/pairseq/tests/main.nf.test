@@ -19,7 +19,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_umi_R1.fastq.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_R2.fastq.gz', checkIfExists: true),
                 ]
-                input[1]=""
+                input[1] = ""
                 """
             }
         }
