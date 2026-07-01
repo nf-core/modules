@@ -58,17 +58,15 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GANGSTR1.out.vcf
-                    .combine(GANGSTR2.out.vcf)
-                    .combine(GANGSTR1.out.index)
-                    .combine(GANGSTR2.out.index)
-                    .map { meta1, vcf1, meta2, vcf2, meta3, tbi1, meta4, tbi2 ->
+                input[0] = GANGSTR1.out.vcf.join(GANGSTR1.out.index)
+                    .mix(GANGSTR2.out.vcf.join(GANGSTR2.out.index))
+                    .map { meta, vcf, tbi ->
                         [
-                            [ id: 'test' ],
-                            [ vcf1, vcf2 ],
-                            [ tbi1, tbi2 ]
+                            [id: 'test'],
+                            vcf,
+                            tbi
                         ]
-                    }
+                    }.groupTuple()
                 """
             }
         }
@@ -77,7 +75,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
                     file(process.out.tbi[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
@@ -92,17 +90,15 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GANGSTR1.out.vcf
-                    .combine(GANGSTR2.out.vcf)
-                    .combine(GANGSTR1.out.index)
-                    .combine(GANGSTR2.out.index)
-                    .map { meta1, vcf1, meta2, vcf2, meta3, tbi1, meta4, tbi2 ->
+                input[0] = GANGSTR1.out.vcf.join(GANGSTR1.out.index)
+                    .mix(GANGSTR2.out.vcf.join(GANGSTR2.out.index))
+                    .map { meta, vcf, tbi ->
                         [
-                            [ id: 'test' ],
-                            [ vcf1, vcf2 ],
-                            [ tbi1, tbi2 ]
+                            [id: 'test'],
+                            vcf,
+                            tbi
                         ]
-                    }
+                    }.groupTuple()
                 """
             }
         }

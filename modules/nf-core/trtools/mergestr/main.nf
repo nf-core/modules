@@ -24,7 +24,7 @@ process TRTOOLS_MERGESTR {
     if ( vcfs.any{ "${it}" == "${prefix}.vcf" || "${it}" == "${prefix}.vcf.gz" } ) {
         error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     }
-    def input = vcfs.sort { vcf -> vcf.toString() }.join(",")
+    def input = vcfs.join(",")
 
     """
     mergeSTR \\
