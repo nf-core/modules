@@ -13,7 +13,7 @@ process MASHTREE {
     output:
     tuple val(meta), path("*.dnd"), emit: tree
     tuple val(meta), path("*.tsv"), emit: matrix
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("mashtree"), eval("mashtree --version 2>&1 | sed 's/Mashtree //'"), emit: versions_mashtree, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,16 +23,11 @@ process MASHTREE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mashtree \\
-        $args \\
-        --numcpus $task.cpus \\
+        ${args} \\
+        --numcpus ${task.cpus} \\
         --outmatrix ${prefix}.tsv \\
         --outtree ${prefix}.dnd \\
-        $seqs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mashtree: \$( echo \$( mashtree --version 2>&1 ) | sed 's/^.*Mashtree //' )
-    END_VERSIONS
+        ${seqs}
     """
 
     stub:
@@ -40,11 +35,5 @@ process MASHTREE {
     """
     touch ${prefix}.dnd
     touch ${prefix}.tsv
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mashtree: \$( echo \$( mashtree --version 2>&1 ) | sed 's/^.*Mashtree //' )
-    END_VERSIONS
     """
 }
