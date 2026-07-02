@@ -1,0 +1,104 @@
+name: mako
+description: Sort SAM/BAM files by coordinate, queryname or template-coordinate using a fast external merge-sort
+keywords:
+  - sort
+  - bam
+  - sam
+  - template-coordinate
+  - umi
+tools:
+  - mako:
+      description: |
+        mako is a focused, single-purpose command-line tool for sorting SAM and BAM files.
+        It uses a high-performance external merge-sort (spilling to disk for inputs larger than
+        memory) with parallel radix sorting of in-memory chunks, and is a standalone packaging
+        of the fgumi sort command.
+      homepage: https://github.com/fg-labs/mako
+      documentation: https://github.com/fg-labs/mako
+      tool_dev_url: https://github.com/fg-labs/mako
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Input SAM/BAM file to sort
+        pattern: "*.{sam,bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # SAM
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}.bam":
+          type: file
+          description: Sorted BAM file
+          pattern: "*.{bam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}.bam.bai":
+          type: file
+          description: BAM index, written only for a coordinate sort with `--write-index`
+          pattern: "*.{bai}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3327" # BAI
+  versions_mako:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "mako":
+          type: string
+          description: The name of the tool
+      - "mako --version | sed '1!d; s/^[^ ]* //; s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_fgumi:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "fgumi":
+          type: string
+          description: The name of the underlying engine
+      - "mako --version | sed '2!d; s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the underlying fgumi engine
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "mako":
+          type: string
+          description: The name of the tool
+      - "mako --version | sed '1!d; s/^[^ ]* //; s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "fgumi":
+          type: string
+          description: The name of the underlying engine
+      - "mako --version | sed '2!d; s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the underlying fgumi engine
+
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
