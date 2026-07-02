@@ -9,5 +9,6 @@ dependencies:
   - r-caret=7.0_1
   - r-e1071=1.7_17
   - r-optparse=1.8.2
+  - conda-forge::pytorch=2.11.0=cpu* # CPU-only torch (no CUDA) satisfying fungtion's torch>=2.11.0, so pip won't pull the CUDA-bundled PyPI wheel
   - pip:
-    - fungtion==1.0.0
+      - fungtion==1.0.0

@@ -9,7 +9,7 @@ dependencies:
   - r-caret=7.0_1
   - r-e1071=1.7_17
   - r-optparse=1.8.2
-  - conda-forge::pytorch-gpu=2.1.0
-  - conda-forge::cuda-version=11.2
+  - conda-forge::pytorch-gpu=2.11.0 # matches fungtion's torch>=2.11.0 so pip won't reinstall a CUDA-mismatched torch wheel
+  - conda-forge::cuda-version=12.9 # lowest CUDA pytorch 2.11 ships (cuda129/cuda130); 12.9 runs on >=12.x drivers via minor-version compat, 13.0 does not
   - pip:
-    - fungtion==1.0.0
+      - fungtion==1.0.0
