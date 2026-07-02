@@ -1,0 +1,75 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "refsolver_compare"
+description: Compare two sequence dictionaries (headers/references) using ref-solver
+keywords:
+  - reference
+  - genome
+  - compare
+  - bam
+  - qc
+tools:
+  - "refsolver":
+      description: "Identify which human reference genome was used to align a BAM/SAM/CRAM file."
+      homepage: "https://github.com/fulcrumgenomics/ref-solver"
+      documentation: "https://github.com/fulcrumgenomics/ref-solver"
+      tool_dev_url: "https://github.com/fulcrumgenomics/ref-solver"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input_a:
+        type: file
+        description: First input (BAM, SAM, CRAM, .dict, TSV, ...)
+        pattern: "*.{bam,sam,cram,fa,fasta,fai,vcf,dict,tsv,csv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - input_b:
+        type: file
+        description: |
+          Second input file to compare against (BAM, SAM, CRAM, .dict, TSV, ...).
+          To compare against a catalog reference ID instead, pass `--reference` via
+          task.ext.args and provide the ID as a file-less argument.
+        pattern: "*.{bam,sam,cram,fa,fasta,fai,vcf,dict,tsv,csv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.${suffix}":
+          type: file
+          description: Comparison report (text, JSON, or TSV depending on --format)
+          pattern: "*.{txt,json,tsv}"
+          ontologies: []
+  versions_refsolver:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "refsolver":
+          type: string
+          description: The name of the tool
+      - "ref-solver --version | sed 's/^ref-solver //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - refsolver:
+          type: string
+          description: The name of the tool
+      - ref-solver --version | sed 's/^ref-solver //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
