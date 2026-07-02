@@ -55,7 +55,7 @@ Each subworkflow has a single top-level directory, without nesting. Required str
 ```
 subworkflows/nf-core/{subworkflow}/
 ├── main.nf               // Nextflow code of the subworkflow
-├── meta.yml              // YAML file containing information about the subworkflow
+├── meta.yml              // contains information about inputs, outputs and tools in the subworkflow
 └── tests
     ├── main.nf.test      // nf-test unit tests for the subworkflow 
     ├── main.nf.test.snap // snapshots for the tests, **SHOULD ONLY** be editted through `nf-test` commands
@@ -79,10 +79,11 @@ Each module contains several files. Each file has a well-defined structure that 
 `meta.yml` **MUST** follow the specification at https://nf-co.re/docs/specifications/components/modules/documentation
 
 ### environment.yml
-This file lists Conda channels and packages necessary to run the module with Conda and to build the seqera containers. 
+This file lists Conda channels and packages necessary to run the module with Conda and to build Seqera containers. 
 - You **SHOULD NOT** add channels unless strictly necessary.
 - You **MUST NOT** add "defaults" to channels.
 - Each dependency **MUST** specify the channel and version, but **NOT** the build number.
+- If pip dependencies are used, you **MUST** also pin the version of pip.
 
 ### tests/main.nf.test
 The test file **MUST** follow the specificaton at https://nf-co.re/docs/specifications/components/modules/testing.
@@ -159,7 +160,6 @@ nf-core provides a CLI toolkit for working with the nf-core template. The core c
 - You **MUST** use special commit titles and no commit body in the following cases:
   - only module version bump: "Bump versions in {module name}"
   - only nf-test snapshot update: "Update snapshots in {component name}"
-- Before each commit, you **MUST** run `prek`, stage all changes it generates, resolve all errors and all solvable warnings, and repeat until none remain.
 
 ## Push routine
 - You **SHOULD** only push after implementing some meaningful changes and if the code is working. You **MUST** obtain permission to push from the user.
@@ -170,6 +170,7 @@ nf-core provides a CLI toolkit for working with the nf-core template. The core c
 
 ## PR procedure
 - All changes **MUST** be submitted to nf-core `master` through GitHub pull request.
+- You **MUST NOT** create "ready for review" pull requests. You **MAY** create draft pull requests if authorized by the user.
 - A PR **SHOULD** contain changes in a single component.
 - A PR **MAY** instead introduce an identical, small change in multiple components. The number of files changed **MUST** stay low enough for proper human review.
 - The PR **MUST** use the nf-core PR template, including the checklist. The PR message **SHOULD** start with a brief explanation of the changes made and the motivation.
