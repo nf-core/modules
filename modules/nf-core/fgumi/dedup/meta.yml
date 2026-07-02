@@ -1,0 +1,89 @@
+name: "fgumi_dedup"
+description: Mark or remove PCR duplicates using UMI information with fgumi
+keywords:
+  - UMIs
+  - deduplication
+  - duplicates
+  - bam
+tools:
+  - "fgumi":
+      description: "High-performance tools for UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://fgumi.readthedocs.io/"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence:
+        - "MIT"
+      identifier: biotools:fgumi
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Template-coordinate sorted BAM with UMI (RX) tags
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: BAM with duplicates marked (or removed with
+            --remove-duplicates)
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.metrics.txt":
+          type: file
+          description: Duplication metrics (TSV)
+          pattern: "*.metrics.txt"
+          ontologies: []
+  histogram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.family_size_histogram.txt":
+          type: file
+          description: UMI family size histogram (TSV)
+          pattern: "*.family_size_histogram.txt"
+          ontologies: []
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"

@@ -17,7 +17,7 @@ process VARSCAN_PROCESSSOMATIC {
     tuple val(meta), path("*.Somatic.hc.vcf.gz") , emit: somatic_hc_vcf
     tuple val(meta), path("*.LOH.vcf.gz")        , emit: loh_vcf
     tuple val(meta), path("*.LOH.hc.vcf.gz")     , emit: loh_hc_vcf
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n 's/VarScan v//p'"), emit: versions_varscan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process VARSCAN_PROCESSSOMATIC {
         ${vcf.baseName}
 
     bgzip *.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        varscan: \$(varscan 2>&1 | grep VarScan | head -n 1 | sed 's/VarScan //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process VARSCAN_PROCESSSOMATIC {
     echo "" | gzip > ${output_name}.Somatic.hc.vcf.gz
     echo "" | gzip > ${output_name}.LOH.vcf.gz
     echo "" | gzip > ${output_name}.LOH.hc.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        varscan: \$(varscan 2>&1 | grep VarScan | head -n 1 | sed 's/VarScan //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 }
