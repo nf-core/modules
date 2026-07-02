@@ -11,7 +11,7 @@ All comments and documentation **MUST** be written in English with British spell
 - **Component**: a module or subworkflow
 
 ## Repository structure
-You are working in a copy of the nf-core modules repository. Repository structure:
+You are working in the nf-core modules repository. Repository structure:
 
 ```
 .
@@ -46,7 +46,7 @@ modules/nf-core/{module}/
 └── tests
     ├── nextflow.config   // Nextflow configuration used for testing ONLY; multiple config files may exist in some cases
     ├── main.nf.test      // nf-test unit tests for the module
-    └── main.nf.test.snap // snapshots for the tests, do not edit
+    └── main.nf.test.snap // snapshots for the tests, **SHOULD ONLY** be editted through `nf-test` commands
 ```
 
 ### Subworkflow directory structure
@@ -58,7 +58,7 @@ subworkflows/nf-core/{subworkflow}/
 ├── meta.yml              // structured description of the subworkflow
 └── tests
     ├── main.nf.test      // nf-test unit tests for the subworkflow 
-    ├── main.nf.test.snap // snapshots for the tests, you **MUST NOT** edit
+    ├── main.nf.test.snap // snapshots for the tests, **SHOULD ONLY** be editted through `nf-test` commands
     └── nextflow.config   // Nextflow configuration used for testing ONLY; multiple config files may exist in some cases
 ```
 
@@ -75,16 +75,6 @@ Each module contains several files. Each file has a well-defined structure that 
 - Module code **MUST** pass all checks triggered by `nf-core modules lint`
 
 ### meta.yml
-`meta.yml` contains a structured description of the module with the following sections:
-- name: the name of the module (in lowercase)
-- description: a one-sentence description of the module
-- keywords: a list of lowercase keywords for searching; should prioritize findability; must contain tool and subtool name, as well as "multi-tool" if the module contains multiple non-trivial tools
-- tools: descriptions of tools used by the module, one entry for each tool
-- input: descriptions of inputs, the structure must exactly match the .nf file
-- output: descriptions of outputs, the structure must exactly match the .nf file
-- topics: descriptions of topic outputs, should match relevant entries in the output section
-- authors: GitHub handles of people who created the module
-- maintainers: GitHub handles of people who maintain the module; these **MAY** be the same as authors
 
 The details are described at https://nf-co.re/docs/specifications/components/modules/documentation
 
@@ -156,7 +146,6 @@ nf-core provides a CLI toolkit for working with the nf-core template. The core c
 - You **SHOULD** use `nf-core subworkflows --help` to discover commands relevant for subworkflows.
 - You **MUST** write subtool module names in commands with a slash, for example `samtools/sort`.
 
-You can find the detailed documentation for each subcommand at https://nf-co.re/docs/nf-core-tools/cli/{modules|subworkflows}/{subcommand}.
 
 ## nf-test and testing
 - Run module tests with `nf-core modules test {name}`.
@@ -182,7 +171,6 @@ You can find the detailed documentation for each subcommand at https://nf-co.re/
 - Before pushing, you **MUST** run `nf-core modules/subworkflows lint {name}`. You **MUST** resolve all errors and all possible warnings. You **MUST** repeat this routine until there are no solvable outstanding issues.
 - You **MUST** run `nf-core modules/subworkflows test {name}`. If the run fails, you **MUST** resolve the underlying issues. If the test fails due to mismatching snapshots, update them with `nf-core modules/subworkflows test {name} --update` only if permitted (see "nf-test" above). Otherwise, you **MUST** fix the issue that caused the unexpected change.
 - If you know the code will cause issues or you intend to push more changes, you **SHOULD** add `[skip ci]` at the end of the commit title. Omit this tag if the changes for final, review-ready commits.
-
 
 ## PR procedure
 - All changes **MUST** be submitted to nf-core `master` through GitHub pull request.
