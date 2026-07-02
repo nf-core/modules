@@ -1,0 +1,90 @@
+nextflow_process {
+
+    name "Test Process HDL_RG"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "HDL_RG"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hdl"
+    tag "hdl/rg"
+
+    test("trait1 trait2 - real") {
+        when {
+            process {
+                """
+                input[0] = tuple(
+                    [id: "trait1"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/sumstats/trait1_canonical.tsv", checkIfExists: true)
+                )
+                input[1] = tuple(
+                    [id: "trait2"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/sumstats/trait2_canonical.tsv", checkIfExists: true)
+                )
+                input[2] = Channel.of([
+                    [id: "hdl_reference"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.1_toy.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.1_toy.rda", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.2_toy.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.2_toy.rda", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/toy_snp_counter.RData", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/toy_snp_list.RData", checkIfExists: true)
+                ])
+                .map { meta, files ->
+                    def reference_dir = file("${workDir}/hdl_reference")
+                    reference_dir.mkdirs()
+                    files.each { it.copyTo(file("${reference_dir}/${it.name}")) }
+                    [meta, reference_dir]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["rg_log"])).match() }
+            )
+        }
+    }
+
+    test("trait1 trait2 - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = tuple(
+                    [id: "trait1"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/sumstats/trait1_canonical.tsv", checkIfExists: true)
+                )
+                input[1] = tuple(
+                    [id: "trait2"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/sumstats/trait2_canonical.tsv", checkIfExists: true)
+                )
+                input[2] = Channel.of([
+                    [id: "hdl_reference"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.1_toy.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.1_toy.rda", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.2_toy.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.2_toy.rda", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/toy_snp_counter.RData", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/toy_snp_list.RData", checkIfExists: true)
+                ])
+                .map { meta, files ->
+                    def reference_dir = file("${workDir}/hdl_reference")
+                    reference_dir.mkdirs()
+                    files.each { it.copyTo(file("${reference_dir}/${it.name}")) }
+                    [meta, reference_dir]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
