@@ -22,8 +22,8 @@ process CIRI2 {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ciri2:2.0.6':
-        'quay.io/biocontainers/ciri2' }"
+        'https://depot.galaxyproject.org/singularity/ciri2:2.0.6--pl5321hdfd78af_0':
+        'quay.io/biocontainers/ciri2:2.0.6--pl5321hdfd78af_0' }"
 
     input:// TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
     //               MUST be provided as an input via a Groovy Map called "meta".
@@ -31,12 +31,16 @@ process CIRI2 {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    tuple val(meta), path(sam) // Required -I sam_file
+    path  fasta     // optional -F reference fasta file
+    path  annotation        // optional -A GTF or GFF3 annotation file
+    path  ref_dir      // optional -R reference directory path
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
-    // TODO nf-core: List additional required output channels/values here
+    tuple val(meta), path("*.txt"), emit: circrna
+    tuple val(meta), path("*.log"), emit: logfile, optional: true
+
     // TODO nf-core: Update the command here to obtain the version number of the software used in this module
     // TODO nf-core: If multiple software packages are used in this module, all MUST be added here
     //               by copying the line below and replacing the current tool with the extra tool(s)
@@ -61,8 +65,7 @@ process CIRI2 {
     ciri2 \\
         $args \\
         -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        $bam
+        -o ${prefix}.txt \\
     """
 
     stub:
