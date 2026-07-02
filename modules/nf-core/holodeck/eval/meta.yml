@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "holodeck_eval"
+description: Evaluate alignment accuracy of holodeck-simulated reads
+keywords:
+  - simulation
+  - evaluation
+  - alignment
+  - accuracy
+  - benchmarking
+tools:
+  - "holodeck":
+      description: "Modern NGS read simulator written in Rust."
+      homepage: "https://github.com/fg-labs/holodeck"
+      documentation: "https://github.com/fg-labs/holodeck"
+      tool_dev_url: "https://github.com/fg-labs/holodeck"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - bam:
+        type: file
+        description: BAM file of mapped reads to evaluate
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - truth:
+        type: file
+        description: |
+          Optional golden BAM with truth alignments. If omitted, truth positions
+          are parsed from the simulated read names.
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+output:
+  eval:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.eval.txt":
+          type: file
+          description: Placement accuracy report stratified by MAPQ bin
+          pattern: "*.eval.txt"
+          ontologies: []
+  versions_holodeck:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - holodeck:
+          type: string
+          description: The name of the tool
+      - holodeck --version | sed 's/^holodeck //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - holodeck:
+          type: string
+          description: The name of the tool
+      - holodeck --version | sed 's/^holodeck //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
