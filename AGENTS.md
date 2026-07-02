@@ -72,11 +72,11 @@ Each module contains several files. Each file has a well-defined structure that 
 - You **MUST NOT** edit the `when` section if present
 - You **MUST NOT** edit or remove `args` and `prefix` definitions 
 - The `stub` section **MUST** emulate the output of the module as closely as possible; see https://nf-co.re/docs/specifications/components/modules/general#stubs
-- Module code **MUST** pass all checks triggered by `nf-core modules lint`
+- Module code **MUST** pass all checks triggered by `nf-core modules lint` and `nextflow lint .`
 
 ### meta.yml
 
-The details are described at https://nf-co.re/docs/specifications/components/modules/documentation
+`meta.yml` **MUST** follow the specification at https://nf-co.re/docs/specifications/components/modules/documentation
 
 ### environment.yml
 This file lists Conda channels and packages necessary to run the module with Conda.
@@ -85,16 +85,9 @@ This file lists Conda channels and packages necessary to run the module with Con
 - Each dependency **MUST** specify the channel and version, but **NOT** the build number.
 
 ### tests/main.nf.test
-This file contains test cases for unit testing with nf-test. The contents of the file are wrapped in a single `nextflow_process` block and start with several auto-generated lines.
-
-- Each test case is defined with the keyword `test` followed by the test name.
-- The name of the test **SHOULD** contain the name of the tool, the main input format, and other inputs if relevant (example: `test("samtools - bam - index")`). Stub test names **SHOULD** end with `- stub`.
-- You **SHOULD** use nf-core test data. You **MAY** use a setup block to generate input files.
-- You **MUST** wrap all test assertions in a single `assertAll` block.
-- Each test case **MUST** assert that the process succeeds (`assert process.success`).
-- If output is deterministic, the test **MUST** assert identical snapshot. Otherwise, for each file, it **SHOULD** assert the first possible of: initial lines match, a string matches, file exists.
-- There **SHOULD** be one test case for each input scenario. Every input channel **MUST** be used in at least 1 test case.
-- Each module **MUST** have at least 1 stub test per execution mode.
+The test file **MUST** follow the specificaton at https://nf-co.re/docs/specifications/components/modules/testing.
+- The name of each test **SHOULD** contain the name of the tool, the main input format, and other inputs if relevant (example: `test("samtools - bam - index")`). Stub test names **SHOULD** end with `- stub`.
+- You **MUST** follow assertion rules at https://nf-co.re/docs/developing/testing/assertions.
 
 ### tests/nextflow.config
 tests/nextflow.config has no effect on pipeline runtime, it is only applied in unit tests.
@@ -106,7 +99,7 @@ Subworkflows are structured similarly to modules. Subworkflows have no environme
 - The file starts with include statements for modules and other subworkflows.
 - The subworkflow is defined in a single named `workflow` block, with `take` (input), `main` (script), and `emit` (output) sections.
 - The subworkflow **MAY** take any inputs that are required for the tools and produce any output that may reasonably be useful.
-- The subworkflow **SHOULD** contain multiple modules (generally at least 3) and any Nextflow logic required to connect them.
+- The subworkflow **SHOULD** contain multiple modules (at least 3, or 2 with complex logic) and any Nextflow logic required to connect them.
 
 ### meta.yml
 The following sections differ:
@@ -138,6 +131,9 @@ The following `ext` options are allowed in nf-core:
 
 Modules **MUST NOT** assume the presence of other `ext` options.
 
+## GPU-capable modules
+Modules that use GPUs **MUST** follow the documentation at https://nf-co.re/docs/developing/components/gpu-modules.
+
 ## nf-core tools
 nf-core provides a CLI toolkit for working with the nf-core template. The core command is `nf-core`.
 
@@ -167,9 +163,10 @@ nf-core provides a CLI toolkit for working with the nf-core template. The core c
 - Before each commit, you **MUST** run `prek`, stage all changes it generates, resolve all errors and all solvable warnings, and repeat until none remain.
 
 ## Push routine
-- You **SHOULD** only push after implementing some meaningful changes and if the code is working.
+- You **SHOULD** only push after implementing some meaningful changes and if the code is working. You **MUST** obtain permission to push from the user.
 - Before pushing, you **MUST** run `nf-core modules/subworkflows lint {name}`. You **MUST** resolve all errors and all possible warnings. You **MUST** repeat this routine until there are no solvable outstanding issues.
 - You **MUST** run `nf-core modules/subworkflows test {name}`. If the run fails, you **MUST** resolve the underlying issues. If the test fails due to mismatching snapshots, update them with `nf-core modules/subworkflows test {name} --update` only if permitted (see "nf-test" above). Otherwise, you **MUST** fix the issue that caused the unexpected change.
+- If the module you have updated is used in subworkflows or in tests of other modules, update their test snapshots as well.
 - If you know the code will cause issues or you intend to push more changes, you **SHOULD** add `[skip ci]` at the end of the commit title. Omit this tag if the changes for final, review-ready commits.
 
 ## PR procedure
