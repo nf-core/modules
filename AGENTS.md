@@ -40,13 +40,13 @@ Required structure:
 
 ```
 modules/nf-core/{module}/
-├── environment.yml       // list of Conda packages with versions
+├── environment.yml       // list of Conda packages with pinned versions
 ├── main.nf               // Nextflow code of the module
 ├── meta.yml              // YAML file containing information about the module
 └── tests
-    ├── nextflow.config   // Nextflow configuration used for testing ONLY; multiple config files may exist in some cases
-    ├── main.nf.test      // nf-test unit tests for the module
-    └── main.nf.test.snap // snapshots for the tests, **SHOULD ONLY** be editted through `nf-test` commands
+    ├── main.nf.test      // nf-test unit tests for the module 
+    ├── main.nf.test.snap // snapshots for the tests, **SHOULD ONLY** be editted through `nf-test` commands
+    └── nextflow.config   // Nextflow configuration used for testing ONLY; multiple config files may exist in some cases
 ```
 
 ### Subworkflow directory structure
@@ -54,8 +54,8 @@ Each subworkflow has a single top-level directory, without nesting. Required str
 
 ```
 subworkflows/nf-core/{subworkflow}/
-├── main.nf               // Nextflow script of the subworkflow
-├── meta.yml              // structured description of the subworkflow
+├── main.nf               // Nextflow code of the subworkflow
+├── meta.yml              // YAML file containing information about the subworkflow
 └── tests
     ├── main.nf.test      // nf-test unit tests for the subworkflow 
     ├── main.nf.test.snap // snapshots for the tests, **SHOULD ONLY** be editted through `nf-test` commands
@@ -66,7 +66,7 @@ subworkflows/nf-core/{subworkflow}/
 Each module contains several files. Each file has a well-defined structure that you **MUST** follow.
 
 ### main.nf
-- main.nf **MUST** define one Nextflow `process`
+- main.nf **MUST** define **ONLY** one Nextflow `process`
 - You **MUST NOT** add any directives other than `tag`, `label`, `conda`, and `container`
 - `input` and `output` sections **MUST** follow the specification at https://nf-co.re/docs/specifications/components/modules/input-output-options
 - You **MUST NOT** edit the `when` section if present
