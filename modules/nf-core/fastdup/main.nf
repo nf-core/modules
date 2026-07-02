@@ -33,13 +33,13 @@ process FASTDUP {
         --metrics ${prefix}.metrics.txt \\
         --output ${prefix}.bam \\
         --num-threads $task.cpus
-        
+
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def index_command = args.contains("--index-format CSI") ? "touch ${prefix}.csi" 
+    def index_command = args.contains("--index-format CSI") ? "touch ${prefix}.csi"
                         : args.contains("--create-index")   ? "touch ${prefix}.bai" : ""
 
     """
@@ -47,6 +47,6 @@ process FASTDUP {
     touch ${prefix}.bam
     ${index_command}
     touch ${prefix}.metrics.txt
-    
+
     """
 }

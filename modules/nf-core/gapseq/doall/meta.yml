@@ -49,6 +49,18 @@ output:
           description: Gap-filled metabolic model in RDS format
           pattern: "*.RDS"
           ontologies: []
+  xml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.xml":
+          type: file
+          description: Gap-filled metabolic model in SBML XML format
+          pattern: "*.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2585
   tbl:
     - - meta:
           type: map
@@ -104,6 +116,6 @@ topics:
           type: string
           description: The expression to obtain the version of the tool
 authors:
-  - "@copilot"
+  - "@brovolia"
 maintainers:
-  - "@copilot"
+  - "@brovolia"
