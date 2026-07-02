@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "methylsieve"
+description: Filter/tag unconverted reads in methylation sequencing with methylsieve; for maximum throughput it can also run inline in the alignment pipe (aligner | methylsieve | sort) rather than as a standalone step
+keywords:
+  - methylation
+  - bisulfite
+  - em-seq
+  - unconverted
+  - bam
+  - qc
+tools:
+  - "methylsieve":
+      description: "Fast, robust filtering of unconverted reads in methylation sequencing."
+      homepage: "https://github.com/fulcrumgenomics/methylsieve"
+      documentation: "https://github.com/fulcrumgenomics/methylsieve"
+      tool_dev_url: "https://github.com/fulcrumgenomics/methylsieve"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: |
+          Aligned SAM/BAM from a methylation aligner, in aligner (query-grouped) order.
+          Must NOT be coordinate-sorted.
+        pattern: "*.{bam,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: Reference genome FASTA index (.fai)
+        pattern: "*.fai"
+        ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.bam":
+          type: file
+          description: BAM with unconverted reads tagged (or filtered)
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.stats.tsv":
+          type: file
+          description: Per-context / per-spike-in conversion-rate statistics (TSV)
+          pattern: "*.stats.tsv"
+          ontologies: []
+  versions_methylsieve:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "methylsieve":
+          type: string
+          description: The name of the tool
+      - "methylsieve --version | sed 's/^methylsieve //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - methylsieve:
+          type: string
+          description: The name of the tool
+      - methylsieve --version | sed 's/^methylsieve //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
