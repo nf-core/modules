@@ -1,0 +1,85 @@
+name: gapseq_medium
+description: Predict growth medium from a draft model and pathway predictions
+keywords:
+  - metabolic model
+  - growth medium
+  - gap filling
+  - gapseq
+  - bacteria
+  - genome-scale model
+tools:
+  - gapseq:
+      description: |
+        gapseq predicts a growth medium from a draft model and pathway predictions.
+      homepage: https://github.com/jotech/gapseq
+      documentation: https://gapseq.readthedocs.io/
+      tool_dev_url: https://github.com/jotech/gapseq
+      doi: "10.1186/s13059-021-02295-1"
+      licence:
+        - "AGPL-3.0-only"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - draft:
+        type: file
+        description: Draft model from gapseq draft
+        pattern: "*.RDS"
+        ontologies: []
+    - pathways:
+        type: file
+        description: Pathway prediction table from gapseq find
+        pattern: "*-all-Pathways.tbl"
+        ontologies: []
+output:
+  medium:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv":
+          type: file
+          description: Predicted growth medium CSV file
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log files from gapseq medium prediction
+          pattern: "*.log"
+          ontologies: []
+  versions_gapseq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gapseq:
+          type: string
+          description: The name of the tool
+      - gapseq -v 2>&1 | grep -oP "\d+\.\d+\.\d+":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gapseq:
+          type: string
+          description: The name of the tool
+      - gapseq -v 2>&1 | grep -oP "\d+\.\d+\.\d+":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@brovolia"
+maintainers:
+  - "@brovolia"
