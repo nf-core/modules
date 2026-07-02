@@ -118,6 +118,7 @@ output:
           type: file
           description: Segmented absolute copy number
           pattern: "*.tsv"
+          optional: true
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   ranked_solutions:
@@ -130,6 +131,7 @@ output:
           type: file
           description: Ranked purity/ploidy solutions
           pattern: "*_ranked_solutions.tsv"
+          optional: true
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   fitted_purity_ploidy:
@@ -142,6 +144,7 @@ output:
           type: file
           description: Final purity/ploidy fit
           pattern: "*_fitted_purity_ploidy.tsv"
+          optional: true
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   segmented_log2r:
@@ -192,6 +195,20 @@ output:
           pattern: "*_allele_counts_hetSNPs.bed"
           ontologies:
             - edam: "http://edamontology.org/format_3003" # BED
+
+  no_fit:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - No_fit_found_PARAMS.tsv:
+          type: file
+          description: Report containing rejected candidate purity/ploidy solutions when no fit is found.
+          pattern: "No_fit_found_PARAMS.tsv"
+          optional: true
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   versions_savana:
     - - ${task.process}:
           type: string
