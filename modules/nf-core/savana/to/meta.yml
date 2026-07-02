@@ -248,11 +248,11 @@ output:
     - - meta:
           type: map
           description: Sample information
-      - ${prefix}_read_counts_*_segmented.tsv:
+      - ${prefix}_read_counts_*_log2r_segmented.tsv:
           type: file
           optional: true
           description: Segmented log2R copy numbers
-          pattern: "*_read_counts_*_segmented.tsv"
+          pattern: "*_read_counts_*_log2r_segmented.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   ranked_solutions:
@@ -299,6 +299,17 @@ output:
           pattern: "*kbp_bin_ref_*_*.bed"
           ontologies:
             - edam: "http://edamontology.org/format_3003" # BED
+  no_fit:
+    - - meta:
+          type: map
+          description: Sample information
+      - No_fit_found_PARAMS.tsv:
+          type: file
+          optional: true
+          description: Report containing rejected candidate purity/ploidy solutions if no fit is found
+          pattern: "No_fit_found_PARAMS.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   versions_savana:
     - - ${task.process}:
           type: string

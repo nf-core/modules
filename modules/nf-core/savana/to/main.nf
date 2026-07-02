@@ -4,8 +4,8 @@ process SAVANA_TO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/savana:1.3.7--pyhdfd78af_0' :
-        'quay.io/biocontainers/savana:1.3.7--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/savana:1.3.8--pyhdfd78af_0' :
+        'quay.io/biocontainers/savana:1.3.8--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(tumour), path(tumour_index), path(snp_vcf), path(allele_counts_het_snps), path(breakpoints)
@@ -30,11 +30,12 @@ process SAVANA_TO {
     tuple val(meta), path("${prefix}.somatic.evaluation.stats"), emit: evaluation_stats, optional: true // savana evaluate
     tuple val(meta), path("${prefix}_allele_counts_hetSNPs.bed"), emit: allele_counts, optional: true
     tuple val(meta), path("${prefix}_raw_read_counts.tsv"), emit: raw_read_counts, optional: true
-    tuple val(meta), path("${prefix}_read_counts_*_segmented.tsv"), emit: segmented_log2r, optional: true
+    tuple val(meta), path("${prefix}_read_counts_*_log2r_segmented.tsv"), emit: segmented_log2r, optional: true
     tuple val(meta), path("${prefix}_ranked_solutions.tsv"), emit: ranked_solutions, optional: true
     tuple val(meta), path("${prefix}_fitted_purity_ploidy.tsv"), emit: fitted_purity_ploidy, optional: true
     tuple val(meta), path("${prefix}_segmented_absolute_copy_number.tsv"), emit: cna, optional: true
     tuple val(meta), path("*kbp_bin_ref_*_${prefix}*.bed"), emit: binned_ref, optional: true
+    tuple val(meta), path("No_fit_found_PARAMS.tsv"), emit: no_fit, optional: true
     tuple val("${task.process}"), val('savana'), eval("python -c \"import importlib.metadata as m; print(m.version('savana'))\""), emit: versions_savana, topic: versions
 
     when:
