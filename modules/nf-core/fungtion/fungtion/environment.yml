@@ -5,6 +5,8 @@ channels:
   - bioconda
 dependencies:
   - conda-forge::python=3.10.0
+  # Build with Wave using `--conda-base-image mambaorg/micromamba:2.0.5`: the default Wave
+  # community base (Amazon Linux 2023) lacks /usr/bin/which, so these R packages fail to load.
   - r-base=4.4
   - r-caret=7.0_1
   - r-e1071=1.7_17
