@@ -23,7 +23,6 @@ process SAVANA_CNA {
     tuple val(meta), path("*kbp_bin_ref_*_${prefix}*.bed"), emit: binned_ref
     tuple val(meta), path("No_fit_found_PARAMS.tsv"), emit: no_fit, optional: true
     tuple val(meta), path("${prefix}_allele_counts_hetSNPs.bed"), emit: allele_counts, optional: true
-
     tuple val("${task.process}"), val("savana"), eval("python -c \"import importlib.metadata as m; print(m.version('savana'))\""), emit: versions_savana, topic: versions
 
     when:
