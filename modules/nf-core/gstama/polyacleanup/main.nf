@@ -11,9 +11,9 @@ process GSTAMA_POLYACLEANUP {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.fa.gz")                   , emit: fasta
-    tuple val(meta), path("*_polya_flnc_report.txt.gz"), emit: report
-    tuple val(meta), path("*_tails.fa.gz")             , emit: tails
+    tuple val(meta), path("*_tama.fa.gz")                   , emit: fasta
+    tuple val(meta), path("*_tama_polya_flnc_report.txt.gz"), emit: report
+    tuple val(meta), path("*_tama_tails.fa.gz")             , emit: tails
     tuple val("${task.process}"), val('gstama'), eval("tama_collapse.py -version | sed -n 's/tc_version_date_//p'"), emit: versions_gstama, topic: versions
 
     when:
