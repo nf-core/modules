@@ -42,7 +42,7 @@ Required structure:
 modules/nf-core/{module}/
 ├── environment.yml       // list of Conda packages with pinned versions
 ├── main.nf               // Nextflow code of the module
-├── meta.yml              // YAML file containing information about the module
+├── meta.yml              // contains information about inputs, outputs and tools in the module
 └── tests
     ├── main.nf.test      // nf-test unit tests for the module 
     ├── main.nf.test.snap // snapshots for the tests, **SHOULD ONLY** be editted through `nf-test` commands
@@ -79,7 +79,7 @@ Each module contains several files. Each file has a well-defined structure that 
 `meta.yml` **MUST** follow the specification at https://nf-co.re/docs/specifications/components/modules/documentation
 
 ### environment.yml
-This file lists Conda channels and packages necessary to run the module with Conda.
+This file lists Conda channels and packages necessary to run the module with Conda and to build the seqera containers. 
 - You **SHOULD NOT** add channels unless strictly necessary.
 - You **MUST NOT** add "defaults" to channels.
 - Each dependency **MUST** specify the channel and version, but **NOT** the build number.
