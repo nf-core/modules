@@ -12,7 +12,7 @@ nextflow_process {
     tag "fungtion/fungtion"
     tag "fungtion/downloadmodels"
 
-    test("cazyme - faa - predictions") {
+    test("cazyme - faa - gpu - predictions") {
 
         setup {
             run("FUNGTION_DOWNLOADMODELS") {
@@ -52,7 +52,7 @@ nextflow_process {
 
     }
 
-    test("cazyme - faa - stub") {
+    test("cazyme - faa - gpu - stub") {
 
         options "-stub"
 
@@ -80,7 +80,7 @@ nextflow_process {
 
     }
 
-    test("cazyme - faa - html-report keep-temp - stub") {
+    test("cazyme - faa - html-report keep-temp - gpu - stub") {
 
         options "-stub"
 
