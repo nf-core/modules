@@ -12,9 +12,9 @@ process MEGAN_RMA2INFO {
     val(megan_summary)
 
     output:
-    tuple val(meta), path("*.txt.gz")               , emit: txt
-    tuple val(meta), path("*.megan"), optional: true, emit: megan_summary
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*.txt.gz"), emit: txt
+    tuple val(meta), path("*.megan") , emit: megan_summary, optional: true
+    tuple val("${task.process}"), val('megan'), eval("rma2info 2>&1 | sed '/version/!d;s/.*version //;s/, .*//'"), emit: versions_megan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,12 +28,7 @@ process MEGAN_RMA2INFO {
         -i ${rma6} \\
         -o ${prefix}.txt.gz \\
         ${summary} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        megan: \$(echo \$(rma2info 2>&1) | grep version | sed 's/.*version //g;s/, built.*//g')
-    END_VERSIONS
+        ${args}
     """
 
     stub:
@@ -41,9 +36,5 @@ process MEGAN_RMA2INFO {
     """
     echo "" | gzip > ${prefix}.txt.gz
     touch ${prefix}.megan
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        megan: \$(echo \$(rma2info 2>&1) | grep version | sed 's/.*version //g;s/, built.*//g')
-    END_VERSIONSs
     """
 }
