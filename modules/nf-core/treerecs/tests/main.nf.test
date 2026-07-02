@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process TREERECS"
+    script "../main.nf"
+    process "TREERECS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "treerecs"
+
+    test("treerecs - polytomy example") {
+
+        when {
+    process {
+        """
+        input[0] = [ [ id:'test' ], file('https://gitlab.inria.fr/Phylophile/Treerecs/-/raw/master/examples/polytomy_example/geneTree.txt?ref_type=heads', checkIfExists: true) ]
+        input[1] = file('https://gitlab.inria.fr/Phylophile/Treerecs/-/raw/master/examples/polytomy_example/speciesTree.txt?ref_type=heads', checkIfExists: true)
+        input[2] = []
+        """
+            }
+        }
+
+
+        then {
+    assertAll(
+        { assert process.success },
+        // since treerecs doesn't reproduce result, it will check only file name
+        { assert process.out.corrected_trees_newick.size() == 1 },
+        { assert process.out.corrected_trees_newick[0][1].endsWith(".nwk") },
+        { assert path(process.out.corrected_trees_newick[0][1]).text.contains("total cost") },
+        { assert snapshot(
+            process.out.findAll { key, val -> key.startsWith("versions") }
+        ).match() }
+    )
+        }       
+    }
+
+    test("streerecs - polytomy example - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+        """
+        input[0] = [ [ id:'test' ], file('https://gitlab.inria.fr/Phylophile/Treerecs/-/raw/master/examples/polytomy_example/geneTree.txt?ref_type=heads', checkIfExists: true) ]
+        input[1] = file('https://gitlab.inria.fr/Phylophile/Treerecs/-/raw/master/examples/polytomy_example/speciesTree.txt?ref_type=heads', checkIfExists: true)
+        input[2] = []
+        """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.corrected_trees_newick.size() == 1
+            assert process.out.corrected_trees_newick[0][1].endsWith(".nwk")
+
+            assert snapshot(
+                process.out.findAll { key, val -> key.startsWith("versions") }
+            ).match()
+        }
+
+    }
+
+}
