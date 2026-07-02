@@ -144,8 +144,7 @@ nf-core provides a CLI toolkit for working with the nf-core template. The core c
 
 
 ## nf-test and testing
-- Run module tests with `nf-core modules test {name}`.
-- Run subworkflow tests with `nf-core subworkflows test {name}`.
+- Run tests with `nf-test test {modules|subworkflows}/{path}/tests --profile +{docker|singularity|conda}`
 - If you expect the output to change (e.g. after a tool update), you **SHOULD** update the snapshot with `nf-core modules/subworkflows test {name} --update`. You **MUST** regenerate snapshots on the same CPU architecture as CI.
 
 ## git and branch policy
