@@ -1,19 +1,18 @@
 process SAVANA_TO {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/savana:1.3.8--pyhdfd78af_0' :
-        'quay.io/biocontainers/savana:1.3.8--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/savana:1.3.8--pyhdfd78af_0'
+        : 'quay.io/biocontainers/savana:1.3.8--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(tumour), path(tumour_index), path(snp_vcf), path(allele_counts_het_snps), path(breakpoints)
     tuple val(meta2), path(ref), path(ref_index)
-    path(contigs)
-    path(blacklist)
-    val(g1000_vcf)
-
+    path contigs
+    path blacklist
+    val g1000_vcf
 
     output:
     tuple val(meta), path("${prefix}.sv_breakpoints.vcf"), emit: sv_breakpoints_vcf // savana run
@@ -75,7 +74,8 @@ process SAVANA_TO {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def cna_outputs = (snp_vcf || g1000_vcf || allele_counts_het_snps) ? """
+    def cna_outputs = snp_vcf || g1000_vcf || allele_counts_het_snps
+        ? """
     touch ${prefix}_raw_read_counts.tsv
     touch ${prefix}_read_counts_self_log2r_segmented.tsv
     touch ${prefix}_ranked_solutions.tsv
@@ -83,7 +83,8 @@ process SAVANA_TO {
     touch ${prefix}_segmented_absolute_copy_number.tsv
     touch ${prefix}_allele_counts_hetSNPs.bed
     touch 10kbp_bin_ref_all_${prefix}_with_SV_breakpoints.bed
-    """ : ""
+    """
+        : ""
 
     """
     touch ${prefix}.sv_breakpoints.vcf
