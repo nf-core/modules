@@ -42,8 +42,10 @@ input:
     - gex_options:
         type: map
         description: |
-          Optional Cell Ranger gene expression section options.
-          Supported keys include chemistry, expect-cells, and create-bam.
+          Optional Cell Ranger gene expression section options as a Map.
+          Supported keys: filter-probes, r1-length, r2-length, chemistry, expect-cells,
+          force-cells, no-secondary, check-library-compatibility, no-target-umi-filter,
+          include-introns, create-bam (defaults to true if not set).
   - - meta3:
         type: map
         description: |
@@ -54,6 +56,11 @@ input:
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989
+    - vdj_options:
+        type: map
+        description: |
+          Optional Cell Ranger VDJ section options as a Map.
+          Supported keys: r1-length, r2-length.
   - - meta4:
         type: map
         description: |
@@ -64,6 +71,11 @@ input:
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989
+    - ab_options:
+        type: map
+        description: |
+          Optional Cell Ranger feature section options for Antibody Capture as a Map.
+          Pass null to disable this modality. Supported keys: r1-length, r2-length.
   - - meta5:
         type: map
         description: |
@@ -74,6 +86,10 @@ input:
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989
+    - beam_options:
+        type: map
+        description: |
+          Optional Cell Ranger BEAM section options as a Map. Reserved for future use.
   - - meta6:
         type: map
         description: |
@@ -84,6 +100,11 @@ input:
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989
+    - cmo_options:
+        type: map
+        description: |
+          Optional Cell Ranger CMO section options as a Map.
+          Supported keys: min-assignment-confidence.
   - - meta7:
         type: map
         description: |
@@ -94,6 +115,11 @@ input:
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989
+    - crispr_options:
+        type: map
+        description: |
+          Optional Cell Ranger feature section options for CRISPR Guide Capture as a Map.
+          Pass null to disable this modality. Supported keys: r1-length, r2-length.
   - gex_reference:
       type: directory
       description: Folder containing Cellranger gene expression reference. Can also
