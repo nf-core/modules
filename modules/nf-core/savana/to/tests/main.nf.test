@@ -10,7 +10,7 @@ nextflow_process {
     tag "savana"
     tag "savana/to"
 
-    test("homo_sapiens - nanopore_HG002_ont_telomere") {
+    test("homo_sapiens - nanopore - bam") {
         when {
             params {
                 module_args = '--overrule_cellularity 1 --chromosomes 22 --overwrite'
@@ -19,20 +19,29 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/savana/colo829.PAU61426.sup.chr22.subset.0.05.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/savana/colo829.PAU61426.sup.chr22.subset.0.05.bam.bai', checkIfExists: true),
                     [],
                     [],
                     []
                 ]
                 input[1] = [
                     [ id:'ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa.fai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta.fai', checkIfExists: true),
                 ]
-                input[2] = []
-                input[3] = []
-                input[4] = []
+                input[2] = [
+                    [ id:'contigs' ],
+                    []
+                ]
+                input[3] = [
+                    [ id:'blacklist' ],
+                    []
+                ]
+                input[4] = [
+                    [ id:'g1000_vcf' ],
+                    ''
+                ]
                 """
             }
         }
@@ -72,11 +81,20 @@ nextflow_process {
                 input[1] = [
                     [ id:'ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta.fai', checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id:'contigs' ],
                     []
                 ]
-                input[2] = []
-                input[3] = []
-                input[4] = []
+                input[3] = [
+                    [ id:'blacklist' ],
+                    []
+                ]
+                input[4] = [
+                    [ id:'g1000_vcf' ],
+                    ''
+                ]
                 """
             }
         }

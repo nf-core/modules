@@ -10,9 +10,9 @@ process SAVANA_TO {
     input:
     tuple val(meta), path(tumour), path(tumour_index), path(snp_vcf), path(allele_counts_het_snps), path(breakpoints)
     tuple val(meta2), path(ref), path(ref_index)
-    path contigs
-    path blacklist
-    val g1000_vcf
+    tuple val(meta3), path(contigs)
+    tuple val(meta4), path(blacklist)
+    tuple val(meta5), val(g1000_vcf)
 
     output:
     tuple val(meta), path("${prefix}.sv_breakpoints.vcf"), emit: sv_breakpoints_vcf // savana run
