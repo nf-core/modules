@@ -1,0 +1,122 @@
+nextflow_process {
+
+    name "Test Process GCTA_MAKEBKSPARSE"
+    script "../main.nf"
+    process "GCTA_MAKEBKSPARSE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/makebksparse"
+    tag "gcta/makegrm"
+
+    setup {
+        run("GCTA_MAKEGRM", alias: "GCTA_MAKEGRM_CONTRACT") {
+            script "../../makegrm/main.nf"
+            process {
+                """
+                file('contract_dense.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'contract_dense' ],
+                    file('contract_dense.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRM", alias: "GCTA_MAKEGRM_STUB") {
+            script "../../makegrm/main.nf"
+            process {
+                """
+                file('stub_dense.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'stub_dense' ],
+                    file('stub_dense.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - create sparse GRM") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_CONTRACT.out.grm_files
+                input[1] = Channel.value(0.05)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.sparse_grm_files.size() == 1 },
+                { assert process.out.sparse_grm_files.get(0).get(0).id == "contract_dense_sp" },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - fail when meta id does not match dense GRM basename") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_CONTRACT.out.grm_files.map { meta, grm_files ->
+                    [[ id:'contract_dense_mismatch' ], grm_files]
+                }
+                input[1] = Channel.value(0.05)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - create sparse GRM - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_STUB.out.grm_files
+                input[1] = Channel.value(0.05)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.sparse_grm_files.size() == 1 },
+                { assert process.out.sparse_grm_files.get(0).get(0).id == "stub_dense_sp" },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
