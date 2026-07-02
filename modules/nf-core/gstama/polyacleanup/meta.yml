@@ -37,7 +37,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fa.gz":
+      - "*_tama.fa.gz":
           type: file
           description: The Full Length Non Chimeric reads cleaned from remaining
             polyA tails. The sequences are in FASTA format compressed with gzip.
@@ -50,7 +50,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_polya_flnc_report.txt.gz":
+      - "*_tama_polya_flnc_report.txt.gz":
           type: file
           description: A text file describing the number of polyA tails removed
             and their length. Compressed with gzip.
@@ -63,7 +63,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_tails.fa.gz":
+      - "*_tama_tails.fa.gz":
           type: file
           description: A gzip compressed FASTA file of trimmed polyA tails.
           pattern: "*_tails.fa.gz"
