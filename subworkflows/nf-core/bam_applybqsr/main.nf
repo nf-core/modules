@@ -75,10 +75,7 @@ workflow BAM_APPLYBQSR {
                 .mix(cram_recal)
                 .map { meta, reads_, index -> [meta - meta.subMap('num_intervals'), reads_, index] }
 
-
             emit:
             recal_out // channel: [ meta, file, index ]
-
-
     }
 }
