@@ -58,7 +58,7 @@ subworkflows/nf-core/{subworkflow}/
 ├── meta.yml              // contains information about inputs, outputs and tools in the subworkflow
 └── tests
     ├── main.nf.test      // nf-test unit tests for the subworkflow 
-    ├── main.nf.test.snap // snapshots for the tests, **SHOULD ONLY** be editted through `nf-test` commands
+    ├── main.nf.test.snap // snapshots for the tests, **SHOULD ONLY** be edited through `nf-test` commands
     └── nextflow.config   // Nextflow configuration used for testing ONLY; multiple config files may exist in some cases
 ```
 
@@ -86,7 +86,7 @@ This file lists Conda channels and packages necessary to run the module with Con
 - If pip dependencies are used, you **MUST** also pin the version of pip.
 
 ### tests/main.nf.test
-The test file **MUST** follow the specificaton at https://nf-co.re/docs/specifications/components/modules/testing.
+The test file **MUST** follow the specification at https://nf-co.re/docs/specifications/components/modules/testing.
 - The name of each test **SHOULD** contain the name of the tool, the main input format, and other inputs if relevant (example: `test("samtools - bam - index")`). Stub test names **SHOULD** end with `- stub`.
 - You **MUST** follow assertion rules at https://nf-co.re/docs/developing/testing/assertions.
 
@@ -116,7 +116,7 @@ Modules:
 - If a meta map is accepted, it **MUST** also be propagated in at least 1 output.
 - If there are multiple file input channels, the module **MAY** define additional meta inputs called `meta2`, `meta3`, and so on.
 - Modules **MAY** assume that the meta map contains `meta.id` (always) and `meta.single_end` (where relevant).
-- Modules **SHOULD NOT** assume the existence of any other keys in the meta map.
+- Modules **MUST NOT** assume the existence of any other keys in the meta map.
 
 Subworkflows:
 - Subworkflows **NEED NOT** specifically accept meta inputs.
