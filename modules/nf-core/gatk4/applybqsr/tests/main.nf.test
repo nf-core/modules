@@ -24,6 +24,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gatk/test.baserecalibrator.table', checkIfExists: true),
+                    []
                 ]
                 input[1] =[
                     [ id:'test' ],
@@ -31,7 +32,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true),
                 ]
-                input[2] = ([[], 0])
+                input[2] = "bam"
 
                 """
             }
