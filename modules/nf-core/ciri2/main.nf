@@ -52,6 +52,8 @@ process CIRI2 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def anno = annotation ? "-A ${annotation}" : ""
+    def reference = fasta ? "-F ${fasta}" : "-R ${ref_dir}"
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
@@ -62,10 +64,13 @@ process CIRI2 {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    ciri2 \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.txt \\
+    perl CIRI2.pl \\
+        -I $sam \\
+        -O ${prefix}.txt \\
+        $reference \\
+        $anno \\
+        -T $task.cpus \\
+        $args
     """
 
     stub:
@@ -81,6 +86,6 @@ process CIRI2 {
     """
     echo $args
 
-    touch ${prefix}.bam
+    touch ${prefix}.txt
     """
 }
