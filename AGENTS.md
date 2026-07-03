@@ -119,7 +119,7 @@ Modules:
 - If a meta map is accepted, it **MUST** also be propagated in at least 1 output.
 - If there are multiple file input channels, the module **MAY** define additional meta inputs called `meta2`, `meta3`, and so on.
 - Modules **MAY** assume that the meta map contains `meta.id` (always) and `meta.single_end` (where relevant).
-- Modules **SHOULD NOT** assume the existence of any other keys in the meta map.
+- Modules **MUST NOT** assume the existence of any other keys in the meta map.
 
 Subworkflows:
 - Subworkflows **NEED NOT** specifically accept meta inputs.
