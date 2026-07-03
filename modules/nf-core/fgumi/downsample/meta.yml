@@ -1,0 +1,109 @@
+name: "fgumi_downsample"
+description: Downsample a BAM by UMI family using streaming with fgumi
+keywords:
+  - UMIs
+  - downsample
+  - bam
+  - subsample
+tools:
+  - "fgumi":
+      description: "High-performance tools for UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://fgumi.readthedocs.io/"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence:
+        - "MIT"
+      identifier: biotools:fgumi
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: UMI-grouped BAM file (from fgumi group) in
+          template-coordinate order with MI tags
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+  - fraction:
+      type: float
+      description: Fraction of UMI families to keep (0.0 exclusive to 1.0
+        inclusive)
+  - keep_rejected:
+      type: boolean
+      description: If true, write reads from families that were not kept to a
+        separate rejects BAM file
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.bam":
+          type: file
+          description: Downsampled BAM file
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  rejects:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.rejects.bam":
+          type: file
+          description: Optional BAM of reads from families not kept
+          pattern: "*.rejects.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  histogram_kept:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.histogram_kept.txt":
+          type: file
+          description: Family-size histogram of kept UMI families (TSV)
+          pattern: "*.histogram_kept.txt"
+          ontologies: []
+  histogram_rejected:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.histogram_rejected.txt":
+          type: file
+          description: Family-size histogram of rejected UMI families (TSV)
+          pattern: "*.histogram_rejected.txt"
+          ontologies: []
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
