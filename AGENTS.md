@@ -164,7 +164,7 @@ nf-core provides a CLI toolkit for working with the nf-core template. The core c
 
 ## PR procedure
 - All changes **MUST** be submitted to nf-core `master` through GitHub pull request.
-- You **MUST NOT** create "ready for review" pull requests. You **MAY** create draft pull requests if authorized by the user.
+- You **MUST NOT** create "ready for review" pull requests. You **MAY** create draft pull requests if authorised by the user.
 - A PR **SHOULD** contain changes in a single component.
 - A PR **MAY** instead introduce an identical, small change in multiple components. The number of files changed **MUST** stay low enough for proper human review.
 - The PR **MUST** use the nf-core PR template, including the checklist. The PR message **SHOULD** start with a brief explanation of the changes made and the motivation.
