@@ -17,8 +17,7 @@ process CARVEME_CARVE {
     tuple val(meta), path("${prefix}_milp_solution.tsv")  , optional: true, emit: milp_solution
     tuple val(meta), path("${prefix}_protein_scores.tsv") , optional: true, emit: protein_scores
     tuple val(meta), path("${prefix}_reaction_scores.tsv"), optional: true, emit: reaction_scores
-    tuple val("${task.process}"), val('carveme'), eval("pip show carveme | sed -n 's/^Version: //p'"), topic: versions, emit: versions_carveme
-    tuple val("${task.process}"), val('carveme'),  eval("python -c \"from importlib.metadata import version; print(version('carveme'))\""), topic: versions, emit: versions_carveme2
+    tuple val("${task.process}"), val('carveme'),  eval("python -c \"from importlib.metadata import version; print(version('carveme'))\""), topic: versions, emit: versions_carveme
     when:
     task.ext.when == null || task.ext.when
 
