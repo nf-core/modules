@@ -50,9 +50,6 @@ nextflow_process {
     test("sarscov2 - bam in, cram out") {
 
         when {
-            params {
-                module_suffix = "bam"
-            }
             process {
                 """
                 input[0] = [
@@ -90,9 +87,6 @@ nextflow_process {
     test("sarscov2 - bam - intervals") {
 
         when {
-            params {
-                module_suffix = "bam"
-            }
             process {
 
                 """
