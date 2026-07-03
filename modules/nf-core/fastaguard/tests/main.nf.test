@@ -1,0 +1,95 @@
+nextflow_process {
+
+    name "Test FASTAGUARD"
+    script "../main.nf"
+    process "FASTAGUARD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastaguard"
+    tag "fastaguard_single"
+
+    test("pass FASTA emits all reports") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'pass' ],
+                    file("${moduleDir}/tests/data/pass.fa", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert file(process.out.html[0][1]).name.endsWith(".fastaguard.html")
+            assert file(process.out.json[0][1]).name.endsWith(".fastaguard.json")
+            assert file(process.out.tsv[0][1]).name.endsWith(".fastaguard.tsv")
+            assert file(process.out.mqc[0][1]).name.endsWith(".fastaguard_mqc.json")
+            assert file(process.out.exit_code[0][1]).name.endsWith(".fastaguard.exit_code")
+            assert file(process.out.exit_code[0][1]).text.trim() == "0"
+            assert process.out.versions_fastaguard
+        }
+    }
+
+    test("warn FASTA preserves reports") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'warn' ],
+                    file("${moduleDir}/tests/data/warn.fa", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.json
+            assert process.out.mqc
+            assert file(process.out.exit_code[0][1]).text.trim() == "1"
+        }
+    }
+
+    test("fail FASTA preserves reports for gate review") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'fail' ],
+                    file("${moduleDir}/tests/data/fail.fa", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.json
+            assert process.out.mqc
+            assert file(process.out.exit_code[0][1]).text.trim() == "2"
+        }
+    }
+
+    test("invalid FASTA is represented in the evidence path") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'invalid' ],
+                    file("${moduleDir}/tests/data/invalid.fa", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.json
+            assert process.out.mqc
+            assert file(process.out.exit_code[0][1]).text.trim() == "2"
+        }
+    }
+}
