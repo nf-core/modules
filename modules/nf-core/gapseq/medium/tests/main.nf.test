@@ -28,11 +28,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.medium[0][1]).exists() },
-                { assert snapshot(
-                    process.out.medium.collect { meta, medium -> [meta, file(medium).getName()] },
-                    process.out.log.collect { meta, log -> [meta, (log instanceof List ? log : [log]).collect { file(it).getName() }.sort()] },
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { with(path(process.out.medium[0][1]).csv) {
+                    assert columnCount == 3
+                    assert rowCount > 0
+                }},
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

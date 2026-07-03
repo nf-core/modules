@@ -3,9 +3,9 @@ process GAPSEQ_MEDIUM {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'community.wave.seqera.io/library/gapseq:2.1.0--31c8824b3592beaf' :
-        'quay.io/biocontainers/gapseq:2.1.0--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gapseq:2.1.0--hdfd78af_0'
+        : 'quay.io/biocontainers/gapseq:2.1.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(draft), path(pathways)
