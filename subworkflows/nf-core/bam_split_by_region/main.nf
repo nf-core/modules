@@ -25,19 +25,21 @@ workflow BAM_SPLIT_BY_REGION {
         }
         .splitCsv ( header: ['seq_name', 'start', 'stop'], sep:'\t', elem: 1)
         .map{ meta, stats ->
+            def chrom
             // If the regions file contains just a sequence name provide that
-            if (!stats['start']) {
-                return [meta, stats['seq_name']]
+            if (! stats['start'] ) {
+                chrom = stats['seq_name']
             }
-
             // If a specific position is given, use that
-            if (!stats['stop']) {
-                return [meta, [stats['seq_name'], stats['start']].join(":")]
+            else if ( ! stats['stop']) {
+                chrom = [ stats['seq_name'], stats['start'] ].join(":")
+            }
+            // If a region between specific bps is requested use that
+            else {
+                chrom = [ [ stats['seq_name'], stats['start'] ].join(":"), stats['stop'] ].join('-')
             }
 
-            // If a region between specific bps is requested use that
-            def chrom = [[stats['seq_name'], stats['start']].join(":"), stats['stop']].join('-')
-            return [meta, chrom]
+            [ meta, chrom ]
         }
 
     //
