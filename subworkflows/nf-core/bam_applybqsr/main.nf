@@ -78,4 +78,3 @@ workflow BAM_APPLYBQSR {
             emit:
             recal_out // channel: [ meta, file, index ]
     }
-}
