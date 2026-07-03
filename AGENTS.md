@@ -45,9 +45,10 @@ modules/nf-core/{module}/
 ├── meta.yml              // contains information about inputs, outputs and tools in the module
 └── tests
     ├── main.nf.test      // nf-test unit tests for the module 
-    ├── main.nf.test.snap // snapshots for the tests, **SHOULD ONLY** be editted through `nf-test` commands
-    └── nextflow.config   // Nextflow configuration used for testing ONLY; multiple config files may exist in some cases
+    ├── main.nf.test.snap // snapshots for the tests (see note below)
+    └── nextflow.config   // Nextflow configuration used for testing ONLY
 ```
+You **MAY** manually change version strings in test snapshots after a version bump. Any other change **MUST ONLY** be introduced through `nf-test` or `nf-core` commands.
 
 ### Subworkflow directory structure
 Each subworkflow has a single top-level directory, without nesting. Required structure:
@@ -58,7 +59,7 @@ subworkflows/nf-core/{subworkflow}/
 ├── meta.yml              // contains information about inputs, outputs and tools in the subworkflow
 └── tests
     ├── main.nf.test      // nf-test unit tests for the subworkflow 
-    ├── main.nf.test.snap // snapshots for the tests, **SHOULD ONLY** be editted through `nf-test` commands
+    ├── main.nf.test.snap // snapshots for the tests (see note above)
     └── nextflow.config   // Nextflow configuration used for testing ONLY; multiple config files may exist in some cases
 ```
 
@@ -70,7 +71,8 @@ Each module contains several files. Each file has a well-defined structure that 
 - You **MUST NOT** add any directives other than `tag`, `label`, `conda`, and `container`
 - `input` and `output` sections **MUST** follow the specification at https://nf-co.re/docs/specifications/components/modules/input-output-options
 - You **MUST NOT** edit the `when` section if present
-- You **MUST NOT** edit or remove `args` and `prefix` definitions 
+- You **SHOULD NOT** remove `args` and `prefix` definition unless clearly unnecessary
+- You **MAY** edit the `prefix` definition to set a reasonable default prefix, respecting `task.ext.prefix`
 - The `stub` section **MUST** emulate the output of the module as closely as possible; see https://nf-co.re/docs/specifications/components/modules/general#stubs
 - Module code **MUST** pass all checks triggered by `nf-core modules lint` and `nextflow lint .`
 
@@ -87,11 +89,12 @@ This file lists Conda channels and packages necessary to run the module with Con
 
 ### tests/main.nf.test
 The test file **MUST** follow the specificaton at https://nf-co.re/docs/specifications/components/modules/testing.
-- The name of each test **SHOULD** contain the name of the tool, the main input format, and other inputs if relevant (example: `test("samtools - bam - index")`). Stub test names **SHOULD** end with `- stub`.
+- Test names **MUST** follow the rules in the "Test names" section of the specification. Stub test names **SHOULD** end with `- stub`.
 - You **MUST** follow assertion rules at https://nf-co.re/docs/developing/testing/assertions.
 
 ### tests/nextflow.config
 tests/nextflow.config has no effect on pipeline runtime, it is only applied in unit tests.
+You **MUST NOT** create additional configs in modules. To create multiple configurations, use `module_args` as described at https://nf-co.re/docs/specifications/components/modules/testing#configuration-of-extargs-in-tests.
 
 ## Structure of a subworkflow
 Subworkflows are structured similarly to modules. Subworkflows have no environment.yml, since Conda information is inherited from the included modules. The differences in specific files are described below.
@@ -145,21 +148,12 @@ nf-core provides a CLI toolkit for working with the nf-core template. The core c
 
 
 ## nf-test and testing
-- Run tests with `nf-test test {modules|subworkflows}/{path}/tests --profile=+{docker|singularity|conda}`
-- If you expect the output to change (e.g. after a tool update), you **SHOULD** update the snapshot with `nf-core modules/subworkflows test {name} --update`. You **MUST** regenerate snapshots on the same CPU architecture as CI.
+- Run tests with `nf-test test {modules|subworkflows}/{path}/tests --profile=+{docker|singularity|conda} --stop-on-first-failure`
+- If you expect the output to change (e.g. after a tool update), you **SHOULD** update the snapshot with `nf-test test {modules|subworkflows}/{path}/tests --profile=+{docker|singularity|conda} --update-snapshot`. You **MUST** regenerate snapshots on the same CPU architecture as CI.
 
 ## git and branch policy
-- You **MUST NOT** commit any code to `master`. Use pull requests instead.
 - You **MUST** create a new branch with a meaningful name for each feature, whether you are working directly in the nf-core repository or on a fork.
 - If you work on multiple features in parallel, you **SHOULD** use a separate worktree for each task to prevent clobber.
-
-## Commit rules and routine
-- Each commit **SHOULD** contain one logical change.
-- Every commit **MUST** only edit files in one module or subworkflow.
-- The commit title **SHOULD** be concise and written in imperative mood. You **MUST** mention the name of the affected component in the commit message.
-- You **MUST** use special commit titles and no commit body in the following cases:
-  - only module version bump: "Bump versions in {module name}"
-  - only nf-test snapshot update: "Update snapshots in {component name}"
 
 ## Push routine
 - You **SHOULD** only push after implementing some meaningful changes and if the code is working. You **MUST** obtain permission to push from the user.
