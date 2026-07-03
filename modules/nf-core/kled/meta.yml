@@ -68,7 +68,7 @@ output:
       - kled:
           type: string
           description: The name of the tool
-      - kled --version 2>&1 | sed 's/Kled version //':
+      - kled --version 2>&1 | sed 's/Kled version //' | sed 's/\.\$//':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -80,7 +80,7 @@ topics:
       - kled:
           type: string
           description: The name of the tool
-      - kled --version 2>&1 | sed 's/Kled version //':
+      - kled --version 2>&1 | sed 's/Kled version //' | sed 's/\.\$//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

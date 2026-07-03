@@ -13,7 +13,7 @@ process KLED {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    tuple val("${task.process}"), val("kled"), eval("kled --version 2>&1 | sed 's/Kled version //'"), topic: versions, emit: versions_kled
+    tuple val("${task.process}"), val("kled"), eval("kled --version 2>&1 | sed 's/Kled version //' | sed 's/\\.\$//'"), topic: versions, emit: versions_kled
 
     when:
     task.ext.when == null || task.ext.when
