@@ -7,10 +7,10 @@ nextflow_workflow {
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "fastq_align_minimap2"
+    tag "subworkflows/fastq_align_minimap2"
     tag "cat/fastq"
     tag "minimap2/align"
-    tag "bam_stats_samtools"
+    tag "subworkflows/bam_stats_samtools"
 
     test("nanopore fastq with concatenation") {
         when {
