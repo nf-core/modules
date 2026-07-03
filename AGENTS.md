@@ -89,7 +89,7 @@ This file lists Conda channels and packages necessary to run the module with Con
 
 ### tests/main.nf.test
 The test file **MUST** follow the specificaton at https://nf-co.re/docs/specifications/components/modules/testing.
-- Test names **MUST** follow the rules in the "Test names" section of the specification. Stub test names **SHOULD** end with `- stub`.
+- Test names **MUST** follow the rules in the "Test names" section of the specification. Stub test names **MUST** end with `- stub`.
 - You **MUST** follow assertion rules at https://nf-co.re/docs/developing/testing/assertions.
 
 ### tests/nextflow.config
