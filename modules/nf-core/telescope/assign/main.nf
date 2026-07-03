@@ -4,8 +4,8 @@ process TELESCOPE_ASSIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2ac4866069270568a825af73b587bfed074f5ae4eae2628048fd61024fbcb330/data':
-        'community.wave.seqera.io/library/telescope:1.0.4--a061d59a7493d996' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/9203f566b3081849549cd5c3df73fccc3dcabad4fc108f9028c8cc58646d8dea/data':
+        'community.wave.seqera.io/library/telescope:1.0.4.1--40b9d7949368a4ed' }"
 
     input:
     tuple val(meta), path(bam)
