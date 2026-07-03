@@ -73,7 +73,7 @@ workflow BAM_APPLYBQSR {
             // Unified output — bam or cram depending on what was produced
             recal_out = bam_recal
                 .mix(cram_recal)
-            .map { meta, reads_, index -> [meta - meta.subMap('num_intervals'), reads_, index] }
+                .map { meta, reads_, index -> [meta - meta.subMap('num_intervals'), reads_, index] }
 
 
             emit:
