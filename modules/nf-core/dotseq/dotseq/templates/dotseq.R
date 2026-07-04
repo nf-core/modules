@@ -253,6 +253,9 @@ gene_ids <- as.character(ann[[opt\$gene_id_col]])
 orf_number <- ave(gene_ids, gene_ids, FUN = seq_along)
 orf_type <- if (opt\$orf_type_col %in% names(ann)) as.character(ann[[opt\$orf_type_col]]) else rep(opt\$orf_type_main_value, nrow(ann))
 orf_type[is.na(orf_type) | !nzchar(trimws(orf_type))] <- opt\$orf_type_main_value
+if (opt\$orf_type_main_value != "mORF") {
+    orf_type[orf_type == "mORF"] <- paste0(opt\$orf_type_main_value, "_not_main")
+}
 orf_type[orf_type == opt\$orf_type_main_value] <- "mORF"
 
 annotation_gr <- GRanges(
