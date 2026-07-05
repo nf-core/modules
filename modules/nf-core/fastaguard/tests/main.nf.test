@@ -13,23 +13,26 @@ nextflow_process {
         when {
             process {
                 """
+                def fasta = file(workDir.resolve("pass.fa").toString())
+                fasta.text = [
+                    ">clean",
+                    "ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT"
+                ].join("\\n") + "\\n"
+
                 input[0] = [
                     [ id:'pass' ],
-                    file("${moduleDir}/tests/data/pass.fa", checkIfExists: true)
+                    fasta
                 ]
                 """
             }
         }
 
         then {
-            assert process.success
-            assert file(process.out.html[0][1]).name.endsWith(".fastaguard.html")
-            assert file(process.out.json[0][1]).name.endsWith(".fastaguard.json")
-            assert file(process.out.tsv[0][1]).name.endsWith(".fastaguard.tsv")
-            assert file(process.out.mqc[0][1]).name.endsWith(".fastaguard_mqc.json")
-            assert file(process.out.exit_code[0][1]).name.endsWith(".fastaguard.exit_code")
-            assert file(process.out.exit_code[0][1]).text.trim() == "0"
-            assert process.out.versions_fastaguard
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() },
+                { assert file(process.out.exit_code[0][1]).text.trim() == "0" }
+            )
         }
     }
 
@@ -37,19 +40,28 @@ nextflow_process {
         when {
             process {
                 """
+                def fasta = file(workDir.resolve("warn.fa").toString())
+                fasta.text = [
+                    ">long",
+                    "ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT",
+                    ">tiny",
+                    "ACGT"
+                ].join("\\n") + "\\n"
+
                 input[0] = [
                     [ id:'warn' ],
-                    file("${moduleDir}/tests/data/warn.fa", checkIfExists: true)
+                    fasta
                 ]
                 """
             }
         }
 
         then {
-            assert process.success
-            assert process.out.json
-            assert process.out.mqc
-            assert file(process.out.exit_code[0][1]).text.trim() == "1"
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() },
+                { assert file(process.out.exit_code[0][1]).text.trim() == "1" }
+            )
         }
     }
 
@@ -57,19 +69,30 @@ nextflow_process {
         when {
             process {
                 """
+                def fasta = file(workDir.resolve("fail.fa").toString())
+                fasta.text = [
+                    ">dup",
+                    "ACGTACGT",
+                    ">dup",
+                    "ACGTACGT",
+                    ">bad",
+                    "ACGTXYZ"
+                ].join("\\n") + "\\n"
+
                 input[0] = [
                     [ id:'fail' ],
-                    file("${moduleDir}/tests/data/fail.fa", checkIfExists: true)
+                    fasta
                 ]
                 """
             }
         }
 
         then {
-            assert process.success
-            assert process.out.json
-            assert process.out.mqc
-            assert file(process.out.exit_code[0][1]).text.trim() == "2"
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() },
+                { assert file(process.out.exit_code[0][1]).text.trim() == "2" }
+            )
         }
     }
 
@@ -77,19 +100,27 @@ nextflow_process {
         when {
             process {
                 """
+                def fasta = file(workDir.resolve("invalid.fa").toString())
+                fasta.text = [
+                    ">empty_record",
+                    ">next_record",
+                    "ACGT"
+                ].join("\\n") + "\\n"
+
                 input[0] = [
                     [ id:'invalid' ],
-                    file("${moduleDir}/tests/data/invalid.fa", checkIfExists: true)
+                    fasta
                 ]
                 """
             }
         }
 
         then {
-            assert process.success
-            assert process.out.json
-            assert process.out.mqc
-            assert file(process.out.exit_code[0][1]).text.trim() == "2"
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() },
+                { assert file(process.out.exit_code[0][1]).text.trim() == "2" }
+            )
         }
     }
 }
