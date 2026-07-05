@@ -52,6 +52,18 @@ process ANGSD_DOSAF {
             )
     }
 
+    // Validate doSAF 2 called alongside -doMajoMinor and -doMaf
+    if (dosaf_mode == 2 && !(args.contains("-doMajorMinor"))) {
+        error(
+            "ANGSD_DOSAF: -doSAF 2 requires -doMajorMinor to be specified. Please include in ext.args."
+            )
+    }
+    if (dosaf_mode == 2 && !(args.contains("-doMaf"))) {
+        error(
+            "ANGSD_DOSAF: -doSAF 2 requires -doMaf to be specified. Please include in ext.args."
+            )
+    }
+
     // Validate GL 4 has error file
     if (gl_model == 4 && !error_file) {
         error(
