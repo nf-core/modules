@@ -37,62 +37,62 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing reference information
-          e.g. [ id:'test' ]
+          Groovy Map containing reference genome information
+          e.g. [ id:'GRCh38' ]
     - fasta:
         type: file
         description: A reference genome in FASTA format
-        pattern: "*.fasta"
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
     - fai:
         type: file
         description: Index of the reference genome FASTA file
-        pattern: "*.{fasta,fa}.fai"
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}.fai"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA (no dedicated FAI term in EDAM)
   - - meta3:
         type: map
         description: |
-          Groovy Map containing ancestral state information
-          e.g. [ id:'test' ]
+          Groovy Map containing ancestral genome information
+          e.g. [ id:'homo_sapiens_ancestor_GRCh38' ]
     - fasta:
         type: file
-        description: A ancestral state genome in FASTA format
-        pattern: "*.fasta"
+        description: An ancestral state genome in FASTA format
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
     - fai:
         type: file
         description: Index of the ancestral state genome FASTA file
-        pattern: "*.{fasta,fa}.fai"
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}.fai"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA (no dedicated FAI term in EDAM)
   - - meta4:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          Groovy Map containing error model information
+          e.g. [ id:'test' ]
     - error_file:
         type: file
-        description: A file containing information about type specific errors.
-        pattern: "*.error"
+        description: A file containing per-base substitution error rates for use with the Sykes genotype likelihood model (-GL 4).
+        pattern: "*.errors"
         ontologies: []
   - - meta5:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          Groovy Map containing inbreeding coefficient information
+          e.g. [ id:'test', population:'population id', samples:'sample IDs' ]
     - inbreeding_coefficient_file:
         type: file
         description: A file containing estimates of individual inbreeding coefficients
-        pattern: "*.txt"
+        pattern: "*.indF"
         ontologies: []
 output:
   saf:
     - - meta:
           type: map
-          description: Groovy Map containing population information. e.g. `[ 
+          description: Groovy Map containing population information. e.g. `[
             id:'test', population:'population id', samples:'sample IDs' ]`
       - "*.saf.idx":
           type: file
@@ -102,9 +102,9 @@ output:
       - "*.saf.pos.gz":
           type: file
           description: Gzipped file containing genomic positions of sites in the SAF
-          pattern: "*.saf.idx"
+          pattern: "*.saf.pos.gz"
           ontologies: []
-      - "*.saf.pos.gz":
+      - "*.saf.gz":
           type: file
           description: Gzipped binary file containing per-site sample allele frequency likelihoods
           pattern: "*.saf.gz"
