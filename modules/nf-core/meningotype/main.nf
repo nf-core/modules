@@ -13,7 +13,7 @@ process MENINGOTYPE {
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val("meningotype"), eval("meningotype --version 2>&1 | sed 's/^.*meningotype v//'"), emit: versions_meningotype, topic: versions
-    tuple val("${task.process}"), val("biopython"), eval("pip show biopython | sed -n 's/Version: //p'"), emit: versions_biopython, topic: versions
+    tuple val("${task.process}"), val("biopython"), eval("python -c 'import Bio; print(Bio.__version__)'"), emit: versions_biopython, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

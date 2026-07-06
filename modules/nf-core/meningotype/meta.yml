@@ -56,7 +56,7 @@ output:
       - biopython:
           type: string
           description: The name of the tool
-      - "pip show biopython | sed -n 's/Version: //p'":
+      - python -c 'import Bio; print(Bio.__version__)':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -78,7 +78,7 @@ topics:
       - biopython:
           type: string
           description: The name of the tool
-      - "pip show biopython | sed -n 's/Version: //p'":
+      - python -c 'import Bio; print(Bio.__version__)':
           type: eval
           description: The expression to obtain the version of the tool
 
