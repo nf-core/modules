@@ -27,12 +27,16 @@ process GPROFILER2_GCONVERT {
     touch ${prefix}.gprofiler2.gconvert.tsv
     touch ${prefix}.R_sessionInfo.log
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
-        r-nfcore.utils: \$(Rscript -e "cat(as.character(packageVersion('nfcore.utils')))")
-        r-gprofiler2: \$(Rscript -e "cat(as.character(packageVersion('gprofiler2')))")
-        gprofiler-data: \$(Rscript -e "cat(gprofiler2::get_version_info()[['gprofiler_version']])")
-    END_VERSIONS
+    Rscript -e "nfcore.utils::process_end(
+        packages = list('r-gprofiler2' = 'gprofiler2'),
+        task_name = '${task.process}',
+        versions_path = 'versions.yml',
+        log_path = '${prefix}.R_sessionInfo.log'
+    )"
+    Rscript -e "write(
+        paste0('    gprofiler-data: ', gprofiler2::get_version_info()[['gprofiler_version']]),
+        file = 'versions.yml',
+        append = TRUE
+    )"
     """
 }
