@@ -36,11 +36,12 @@ nextflow_workflow {
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals1_multi.bed', checkIfExists: true), 2],
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals2_multi.bed', checkIfExists: true), 2]
                 )
+                input[3] = 'cram'
                 """
                 }
             }
 
-   then {
+    then {
         assertAll(
                 { assert workflow.success },
                 { assert snapshot(sanitizeOutput(workflow.out)).match() }
@@ -48,7 +49,7 @@ nextflow_workflow {
         }
     }
 
-    test("homo_sapiens - cram ") {
+    test("homo_sapiens - cram") {
 
         when {
             params {
@@ -69,12 +70,12 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
                 input[2] = channel.of([[], 0])
-
+                input[3] = 'cram'
                 """
                 }
             }
 
-   then {
+    then {
         assertAll(
                 { assert workflow.success },
                 { assert snapshot(sanitizeOutput(workflow.out)).match() }
@@ -106,6 +107,7 @@ nextflow_workflow {
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals1_multi.bed', checkIfExists: true), 2],
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals2_multi.bed', checkIfExists: true), 2]
                 )
+                input[3] = 'bam'
                 """
                 }
             }
@@ -118,7 +120,7 @@ nextflow_workflow {
         }
     }
 
-       test("homo_sapiens - bam ") {
+        test("homo_sapiens - bam") {
 
         when {
             params {
@@ -139,12 +141,12 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
                 input[2] = channel.of([[], 0])
-
+                input[3] = 'bam'
                 """
                 }
             }
 
-   then {
+    then {
         assertAll(
                 { assert workflow.success },
                 { assert snapshot(sanitizeOutput(workflow.out)).match() }
@@ -152,9 +154,12 @@ nextflow_workflow {
         }
     }
 
-       test("homo_sapiens - bam - stub") {
+    test("homo_sapiens - bam - stub") {
         options "-stub"
         when {
+            params {
+                modules_args = '--write-index'
+            }
             workflow {
                 """
                 input[0] = channel.of([
@@ -170,7 +175,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
                 input[2] = channel.of([[], 0])
-
+                input[3] = 'bam'
                 """
                 }
         }
@@ -179,9 +184,12 @@ nextflow_workflow {
             assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
-       test("homo_sapiens - cram - stub") {
+    test("homo_sapiens - cram - stub") {
         options "-stub"
         when {
+            params {
+                modules_args = '--write-index'
+            }
             workflow {
                 """
                 input[0] = channel.of([
@@ -197,12 +205,12 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
                 input[2] = channel.of([[], 0])
-
+                input[3] = 'cram'
                 """
                 }
             }
 
-   then {
+    then {
         assertAll(
                 { assert workflow.success },
                 { assert snapshot(sanitizeOutput(workflow.out)).match() }
