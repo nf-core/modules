@@ -12,30 +12,30 @@ nextflow_process {
     tag "freyja/variants"
     tag "freyja/update"
 
-    test("sarscov2 - illumina - test_paired_end_sorted - bam") {
-
-        setup {
-            run("FREYJA_VARIANTS") {
-                script "../../variants/main.nf"
-                process {
-                    """
-                    input[0] = [
-                            [ id:'test', single_end:false ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                        ]
-                    input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    """
-                }
-            }
-            run("FREYJA_UPDATE") {
-                script "../../update/main.nf"
-                process {
-                    """
-                    input[0] = "freyja_db"
-                    """
-                }
+    setup {
+        run("FREYJA_VARIANTS") {
+            script "../../variants/main.nf"
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                """
             }
         }
+        run("FREYJA_UPDATE") {
+            script "../../update/main.nf"
+            process {
+                """
+                input[0] = "freyja_db"
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - illumina - test_paired_end_sorted - bam") {
 
         when {
             process {
@@ -44,6 +44,7 @@ nextflow_process {
                 input[1] = 3
                 input[2] = FREYJA_UPDATE.out.barcodes
                 input[3] = FREYJA_UPDATE.out.lineages_meta
+                input[4] = FREYJA_UPDATE.out.lineages_topology
                 """
             }
         }
@@ -53,10 +54,33 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.summarized.get(0).get(1)).getText().contains("0.025,") },
                 { assert path(process.out.lineages.get(0).get(1)).getText().contains("0.025,") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
+    }
 
+    test("sarscov2 - illumina - test_paired_end_sorted - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = FREYJA_VARIANTS.out.variants
+                input[1] = 3
+                input[2] = FREYJA_UPDATE.out.barcodes
+                input[3] = FREYJA_UPDATE.out.lineages_meta
+                input[4] = FREYJA_UPDATE.out.lineages_topology
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+            )
+        }
     }
 
 }

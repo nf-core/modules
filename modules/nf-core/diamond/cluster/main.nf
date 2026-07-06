@@ -3,16 +3,16 @@ process DIAMOND_CLUSTER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.16--h13889ed_0'
-        : 'biocontainers/diamond:2.1.16--h13889ed_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/63/63594b00a9e68e690f398d9b9788a883753442dedcce590b4ba5aa97cff200f1/data'
+        : 'community.wave.seqera.io/library/diamond:2.2.2--910ae987965d0d4d'}"
 
     input:
     tuple val(meta), path(db)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('diamond'), eval("diamond --version | sed 's/diamond version //g'"), emit: versions_diamond, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +30,6 @@ process DIAMOND_CLUSTER {
         -p ${task.cpus} \\
         -d ${db} \\
         -o ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diamond: \$(diamond --version |& sed '1!d ; s/diamond version //')
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +38,5 @@ process DIAMOND_CLUSTER {
     """
     echo "${args}"
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diamond: \$(diamond --version |& sed '1!d ; s/diamond version //')
-    END_VERSIONS
     """
 }

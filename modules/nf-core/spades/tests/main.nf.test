@@ -31,7 +31,7 @@ nextflow_process {
                     process.out.transcripts,
                     process.out.gene_clusters,
                     process.out.gfa,
-                    process.out.versions
+                    process.out.versions_spades
                     ).match() },
                 { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } }
             )
@@ -63,7 +63,7 @@ nextflow_process {
                     process.out.transcripts,
                     process.out.gene_clusters,
                     process.out.gfa,
-                    process.out.versions
+                    process.out.versions_spades
                     ).match() },
                 { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } },
                 { assert file(process.out.warnings[0][1]).find{ file(it).name == "warnings.log"} }
@@ -96,7 +96,7 @@ nextflow_process {
                     process.out.transcripts,
                     process.out.gene_clusters,
                     process.out.gfa,
-                    process.out.versions
+                    process.out.versions_spades
                     ).match() },
                 { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } },
                 { assert file(process.out.warnings[0][1]).find{ file(it).name == "warnings.log"} }
@@ -129,7 +129,7 @@ nextflow_process {
                     process.out.transcripts,
                     process.out.gene_clusters,
                     process.out.gfa,
-                    process.out.versions
+                    process.out.versions_spades
                     ).match() },
                 { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } },
                 { assert file(process.out.warnings[0][1]).find{ file(it).name == "warnings.log"} }
@@ -161,7 +161,7 @@ nextflow_process {
                     process.out.transcripts,
                     process.out.gene_clusters,
                     process.out.gfa,
-                    process.out.versions
+                    process.out.versions_spades
                     ).match() },
                 { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } },
                 { assert file(process.out.warnings[0][1]).find{ file(it).name == "warnings.log"} }
@@ -193,7 +193,7 @@ nextflow_process {
                     process.out.transcripts,
                     process.out.gene_clusters,
                     process.out.gfa,
-                    process.out.versions
+                    process.out.versions_spades
                     ).match() },
                 { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } }
             )

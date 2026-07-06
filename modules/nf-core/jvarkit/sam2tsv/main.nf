@@ -3,9 +3,9 @@ process JVARKIT_SAM2TSV {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/jvarkit:2024.08.25--hdfd78af_1':
-        'biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
+        'quay.io/biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(regions_file)
@@ -13,7 +13,7 @@ process JVARKIT_SAM2TSV {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('jvarkit'), eval("jvarkit -v"), emit: versions_jvarkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process JVARKIT_SAM2TSV {
     script:
     def args         = task.ext.args ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
-    def regions_file = regions_file ? " --regions" + " '${regions_file}' " : ""
+    def regions_opt = regions_file ? " --regions" + " '${regions_file}' " : ""
 
     """
     mkdir -p TMP
@@ -30,24 +30,14 @@ process JVARKIT_SAM2TSV {
         --reference "${fasta}" \\
         --output "${prefix}.tsv" \\
         ${args} \\
-        ${regions_file} \\
+        ${regions_opt} \\
         "${bam}"
     rm -rf TMP
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jvarkit: \$(jvarkit -v)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.tsv"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jvarkit: \$(jvarkit -v)
-    END_VERSIONS
     """
 }

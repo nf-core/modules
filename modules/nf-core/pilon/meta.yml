@@ -1,6 +1,6 @@
 name: "pilon"
-description: Automatically improve draft assemblies and find variation among strains,
-  including large event detection
+description: Automatically improve draft assemblies and find variation among
+  strains, including large event detection
 keywords:
   - polishing
   - assembly
@@ -13,7 +13,8 @@ tools:
       documentation: "https://github.com/broadinstitute/pilon/wiki/Requirements-&-Usage"
       tool_dev_url: "https://github.com/broadinstitute/pilon"
       doi: "10.1371/journal.pone.0112963"
-      licence: ["GPL-2.0-or-later"]
+      licence:
+        - "GPL-2.0-or-later"
       identifier: biotools:pilon
 input:
   - - meta:
@@ -43,13 +44,17 @@ input:
         ontologies: []
   - pilon_mode:
       type: string
-      description: Indicates the type of bam file used (frags for paired-end sequencing
-        of DNA fragments, such as Illumina paired-end reads of fragment size <1000bp,
-        jumps for paired sequencing data of larger insert size, such as Illumina mate
-        pair libraries, typically of insert size >1000bp, unpaired for unpaired sequencing
-        reads, bam will automatically classify the BAM as one of the three types above
-        (version 1.17 and higher).
-      enum: ["frags", "jumps", "unpaired", "bam"]
+      description: Indicates the type of bam file used (frags for paired-end
+        sequencing of DNA fragments, such as Illumina paired-end reads of fragment
+        size <1000bp, jumps for paired sequencing data of larger insert size, such
+        as Illumina mate pair libraries, typically of insert size >1000bp,
+        unpaired for unpaired sequencing reads, bam will automatically classify
+        the BAM as one of the three types above (version 1.17 and higher).
+      enum:
+        - "frags"
+        - "jumps"
+        - "unpaired"
+        - "bam"
 output:
   improved_assembly:
     - - meta:
@@ -81,8 +86,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.change":
           type: file
-          description: file containing a space-delimited record of every change made
-            in the assembly as instructed by the --fix option
+          description: file containing a space-delimited record of every change
+            made in the assembly as instructed by the --fix option
           pattern: "*.{change}"
           ontologies: []
   tracks_bed:
@@ -93,8 +98,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bed":
           type: file
-          description: files that may be viewed in genome browsers such as IGV, GenomeView,
-            and other applications that support these formats
+          description: files that may be viewed in genome browsers such as IGV,
+            GenomeView, and other applications that support these formats
           pattern: "*.{bed}"
           ontologies: []
   tracks_wig:
@@ -105,17 +110,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.wig":
           type: file
-          description: files that may be viewed in genome browsers such as IGV, GenomeView,
-            and other applications that support these formats
+          description: files that may be viewed in genome browsers such as IGV,
+            GenomeView, and other applications that support these formats
           pattern: "*.{wig}"
           ontologies: []
+  versions_pilon:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pilon:
+          type: string
+          description: The name of the tool
+      - pilon --version | sed 's/^.*version //; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pilon:
+          type: string
+          description: The name of the tool
+      - pilon --version | sed 's/^.*version //; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@scorreard"
 maintainers:

@@ -3,18 +3,18 @@ process IDEMUX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/idemux:0.1.6--pyhdfd78af_0'
-        : 'biocontainers/idemux:0.1.6--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/idemux:0.1.6--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(reads), path(samplesheet)
 
     output:
     tuple val(meta), path("[!undetermined]*.fastq.gz"), emit: fastq
-    tuple val(meta), path("undetermined_R?.fastq.gz"), optional: true, emit: undetermined
-    path "demultipexing_stats.tsv", emit: stats
-    path "versions.yml", emit: versions
+    tuple val(meta), path("undetermined_R?.fastq.gz") , emit: undetermined, optional: true
+    tuple val(meta), path("demultipexing_stats.tsv")  , emit: stats
+    tuple val("${task.process}"), val("idemux"), eval("idemux --version |& sed '1!d ; s/idemux //'"), topic: versions, emit: versions_idemux
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,17 +29,9 @@ process IDEMUX {
         --sample-sheet ${samplesheet} \\
         --out . \\
         ${args}
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        idemux: \$(idemux --version |& sed '1!d ; s/idemux //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
-
     """
     echo -e "sample_name\twritten_reads" > demultipexing_stats.tsv
 
@@ -52,10 +44,5 @@ process IDEMUX {
     touch undetermined_R1.fastq
     touch undetermined_R2.fastq
     gzip *.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        idemux: \$(idemux --version |& sed '1!d ; s/idemux //')
-    END_VERSIONS
     """
 }

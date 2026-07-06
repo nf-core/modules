@@ -7,39 +7,40 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 
 workflow BAM_VCF_IMPUTE_GLIMPSE2 {
     take:
-    ch_input       // channel (mandatory): [ meta, vcf, csi, list, infos ]
-    ch_ref         // channel (mandatory): [ meta, vcf, csi, region ]
-    ch_chunks      // channel (optional) : [ meta, regionin, regionout ]
-    ch_map         // channel (optional) : [ meta, map ]
-    ch_fasta       // channel (optional) : [ meta, fasta, index ]
-    chunk          // val (optional)     : boolean to activate/deactivate chunking step
-    chunk_model    // val (optional)     : model file for chunking
-    splitreference // val (optional)     : boolean to activate/deactivate split reference step
+    ch_input // channel (mandatory): [ meta, vcf, csi, list, infos ]
+    ch_ref // channel (mandatory): [ meta, vcf, csi, region ]
+    ch_chunks // channel (optional) : [ meta, regionin, regionout ]
+    ch_map // channel (optional) : [ meta, map ]
+    ch_fasta // channel (optional) : [ meta, fasta, index ]
+    chunk // val (optional): boolean to activate/deactivate chunking step
+    chunk_model // val (optional): model file for chunking
+    splitreference // val (optional): boolean to activate/deactivate split reference step
 
     main:
-
-    ch_versions = channel.empty()
 
     if (chunk == true) {
         // Error if pre-defined chunks are provided when chunking is activated
         ch_chunks
-            .filter { _meta, regionin, regionout -> regionin.size() == 0 && regionout.size() == 0 }
-            .ifEmpty {
+            .filter { _meta, regionin, regionout -> regionin.size() > 0 || regionout.size() > 0 }
+            .subscribe {
                 error("ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking.")
             }
 
         // Chunk reference panel
         ch_ref_map = ch_ref.combine(ch_map, by: 0)
         GLIMPSE2_CHUNK(ch_ref_map, chunk_model)
-        ch_versions = ch_versions.mix(GLIMPSE2_CHUNK.out.versions.first())
 
         ch_chunks = GLIMPSE2_CHUNK.out.chunk_chr
             .splitCsv(
                 header: [
-                    'ID', 'Chr',
-                    'RegionBuf', 'RegionCnk',
-                    'WindowCm', 'WindowMb',
-                    'NbTotVariants', 'NbComVariants',
+                    'ID',
+                    'Chr',
+                    'RegionBuf',
+                    'RegionCnk',
+                    'WindowCm',
+                    'WindowMb',
+                    'NbTotVariants',
+                    'NbComVariants',
                 ],
                 sep: "\t",
                 skip: 0,
@@ -51,33 +52,51 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
         .filter { _meta, regionin, regionout -> regionin.size() > 0 && regionout.size() > 0 }
         .ifEmpty { error("ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true.") }
 
+    ch_chunks_counts = ch_chunks
+        .groupTuple()
+        .map { metaPC, _regionins, regionouts ->
+            [metaPC, regionouts.size()]
+        }
+
+    split_input = ch_ref
+        .combine(ch_chunks, by: 0)
+        .combine(ch_chunks_counts, by: 0)
+        .combine(ch_map, by: 0)
+        .map { meta, ref, ref_index, _region, regionin, regionout, region_size, gmap ->
+            def chr = regionout.tokenize(':')[0]
+            def region = regionout.tokenize(':')[1]
+            def start = region.tokenize('-')[0]
+            def end = region.tokenize('-')[1]
+            def paddedStart = String.format('%010d', start as long)
+            def paddedEnd = String.format('%010d', end as long)
+            def regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
+            [
+                meta + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
+                ref,
+                ref_index,
+                regionin,
+                regionout,
+                gmap,
+            ]
+        }
+
     if (splitreference == true) {
         // Split reference panel in bin files
-        split_input = ch_ref
-            .combine(ch_chunks, by: 0)
-            .combine(ch_map, by: 0)
-            .map { meta, ref, index, _region, regionin, regionout, gmap ->
-                [
-                    meta + ["regionin": regionin, "regionout": regionout],
-                    ref, index,
-                    regionin, regionout,
-                    gmap,
-                ]
-            }
-
         GLIMPSE2_SPLITREFERENCE(split_input)
-        ch_versions = ch_versions.mix(GLIMPSE2_SPLITREFERENCE.out.versions.first())
 
         // Everything is provided by the bin file so no additional file
         ch_chunks_panel_map = GLIMPSE2_SPLITREFERENCE.out.bin_ref
-            .map { meta, bin_ref -> [meta, [], [], bin_ref, [], []] }
+            .map { meta, bin_ref -> [
+                meta,
+                [], [],
+                bin_ref, [],
+                []
+            ] }
     } else {
-        ch_chunks_panel_map = ch_chunks
-            .combine(ch_ref, by: 0)
-            .combine(ch_map, by: 0)
-            .map { meta, regionin, regionout, ref, ref_index, _region, gmap ->
+        ch_chunks_panel_map = split_input
+            .map { meta, ref, ref_index, regionin, regionout, gmap ->
                 [
-                    meta + ["regionin": regionin, "regionout": regionout],
+                    meta,
                     regionin, regionout,
                     ref, ref_index,
                     gmap,
@@ -91,49 +110,56 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
 
     ch_phase_input = ch_input
         .combine(ch_chunks_panel_map)
-        .map{ metaI, input, index, list, infos, metaCPM, regionin, regionout, panel, panel_index, gmap -> [
-            metaI + metaCPM, // combined metadata
-            input, index, list, infos, // input files
-            regionin, regionout, // chunk regions
-            panel, panel_index, gmap // panel and map files
-        ] }
+        .map { metaI, input, input_index, list, infos, metaCPM, regionin, regionout, panel, panel_index, gmap ->
+            [
+                metaI + metaCPM,
+                input, input_index,
+                list, infos,
+                regionin, regionout,
+                panel, panel_index,
+                gmap,
+            ]
+        }
 
     // Impute with Glimpse2
-    GLIMPSE2_PHASE(ch_phase_input, ch_fasta)
-    ch_versions = ch_versions.mix(GLIMPSE2_PHASE.out.versions.first())
+    GLIMPSE2_PHASE(ch_phase_input, ch_fasta, "bcf")
 
     // Index phased file
     BCFTOOLS_INDEX_PHASE(GLIMPSE2_PHASE.out.phased_variants)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_PHASE.out.versions.first())
 
     // Ligate all phased files in one and index it
     ligate_input = GLIMPSE2_PHASE.out.phased_variants
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.index,
             failOnMismatch: true,
             failOnDuplicate: true,
         )
         .map { meta, vcf, index ->
-            def keysToKeep = meta.keySet() - ['regionin', 'regionout']
-            [meta.subMap(keysToKeep), vcf, index]
+            def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
+            [
+                groupKey(meta.subMap(keysToKeep), meta.regionSize),
+                vcf, index,
+            ]
         }
         .groupTuple()
+        .map { groupKeyObj, vcf, index ->
+            // Extract the actual meta from the groupKey
+            def meta = groupKeyObj.getGroupTarget()
+            [meta, vcf, index]
+        }
 
     GLIMPSE2_LIGATE(ligate_input)
-    ch_versions = ch_versions.mix(GLIMPSE2_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE2_LIGATE.out.merged_variants)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_LIGATE.out.versions.first())
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
-        BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
+        BCFTOOLS_INDEX_LIGATE.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
     )
 
     emit:
-    chunks    = ch_chunks    // channel: [ val(meta), regionin, regionout ]
-    vcf_index = ch_vcf_index // channel: [ val(meta), vcf, csi ]
-    versions  = ch_versions  // channel: [ versions.yml ]
+    chunks    = ch_chunks // channel: [ val(meta), regionin, regionout ]
+    vcf_index = ch_vcf_index // channel: [ val(meta), vcf, index ]
 }

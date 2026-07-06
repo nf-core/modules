@@ -10,6 +10,7 @@ keywords:
 components:
   - bbmap/bbsplit
   - cat/fastq
+  - fastqc
   - fq/lint
   - fastq_remove_rrna
   - fastq_subsample_fq_salmon
@@ -173,6 +174,26 @@ output:
             type: file
             description: Preprocessed FastQ files
             pattern: "*.{fq,fastq},{,.gz}"
+  - reads_cat:
+      description: Channel snapshot of reads before adapter trimming
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - reads:
+            type: file
+            description: Pre-trimming FastQ files
+            pattern: "*.{fq,fastq},{,.gz}"
+  - reads_trimmed:
+      description: Channel snapshot of reads after adapter trimming but before BBSplit/rRNA removal
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - reads:
+            type: file
+            description: Trimmed FastQ files prior to BBSplit/rRNA removal
+            pattern: "*.{fq,fastq},{,.gz}"
   - multiqc_files:
       description: MultiQC-compatible output files from tools used in preprocessing
       structure:
@@ -192,13 +213,6 @@ output:
         - count:
             type: integer
             description: Number of reads after trimming
-  - versions:
-      description: File containing software versions
-      structure:
-        - versions:
-            type: file
-            description: File containing software versions
-            pattern: "versions.yml"
   - lint_log:
       description: Log files from FastQ linting
       structure:
@@ -209,6 +223,38 @@ output:
             type: file
             description: FastQ lint log file
             pattern: "*.log"
+  - fastqc_filtered_html:
+      description: FastQC report HTML files for filtered reads (after BBSplit and/or rRNA removal)
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - html:
+            type: file
+            description: FastQC report HTML file
+            pattern: "*.html"
+  - fastqc_filtered_zip:
+      description: FastQC report ZIP files for filtered reads (after BBSplit and/or rRNA removal)
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - zip:
+            type: file
+            description: FastQC report ZIP file
+            pattern: "*.zip"
+  - per_sample_mqc_bundle:
+      description: |
+        Per-sample MultiQC-feeding outputs (FastQC raw/trim/filtered zips,
+        trim log/JSON, UMI log, BBSplit stats, SortMeRNA log, RiboDetector
+        log, SeqKit stats, Bowtie2 log) joined on meta.
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - files:
+            type: file
+            description: List of MultiQC-relevant files for the sample
 
 authors:
   - "@pinin4fjords"

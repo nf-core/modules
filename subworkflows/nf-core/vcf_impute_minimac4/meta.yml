@@ -5,8 +5,8 @@ description: |
   takes VCF files, phased reference panel, and genetic maps to perform imputation
   and outputs phased and imputed VCF files.
   Meta map of all channels, except ch_input, will be used to perform joint operations.
-  "regionout" key will be added to the meta map to distinguish the different file
-  before ligation and therefore should not be used.
+  "regionout", "regionoutPadded", "regionSize" keys will be added to the meta map to distinguish
+  the different files before ligation and therefore should not be used.
 keywords:
   - VCF
   - imputation
@@ -102,12 +102,6 @@ output:
             type: file
             description: VCF index file
             pattern: "*.{tbi,csi}"
-  - versions:
-      description: Channel containing software versions file
-      structure:
-        - versions.yml:
-            type: file
-            description: File containing versions of the software used
 authors:
   - "@LouisLeNezet"
   - "@gichas"

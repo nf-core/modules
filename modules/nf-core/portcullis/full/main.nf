@@ -3,9 +3,9 @@ process PORTCULLIS_FULL {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/portcullis:1.2.4--py38haf070c8_0'
-        : 'biocontainers/portcullis:1.2.4--py38haf070c8_0'}"
+        : 'quay.io/biocontainers/portcullis:1.2.4--py38haf070c8_0'}"
 
     input:
     tuple val(meta), path(bam)
@@ -58,7 +58,6 @@ process PORTCULLIS_FULL {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.portcullis.log

@@ -3,9 +3,9 @@ process SVTYPER_SVTYPERSSO {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svtyper:0.7.1--py_0':
-        'biocontainers/svtyper:0.7.1--py_0' }"
+        'quay.io/biocontainers/svtyper:0.7.1--py_0' }"
 
     input:
     tuple val(meta), path(bam), path(bam_index), path(vcf)
@@ -22,15 +22,15 @@ process SVTYPER_SVTYPERSSO {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcf    = vcf ? "--input_vcf ${vcf}" : ""
-    def fasta  = fasta ? "--ref_fasta ${fasta}" : ""
+    def vcf_opt    = vcf ? "--input_vcf ${vcf}" : ""
+    def fasta_opt  = fasta ? "--ref_fasta ${fasta}" : ""
     if ("$vcf" == "${prefix}.vcf") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     svtyper-sso \\
         --bam $bam \\
-        $vcf \\
-        $fasta \\
+        $vcf_opt \\
+        $fasta_opt \\
         --output_vcf ${prefix}.vcf \\
         --lib_info ${prefix}.json \\
         --cores $task.cpus \\
@@ -43,7 +43,6 @@ process SVTYPER_SVTYPERSSO {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.json

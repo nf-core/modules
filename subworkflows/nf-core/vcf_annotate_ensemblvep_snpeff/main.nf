@@ -2,13 +2,13 @@
 // Run VEP and/or SNPEFF to annotate VCF files
 //
 
-include { BCFTOOLS_CONCAT        } from '../../../modules/nf-core/bcftools/concat'
-include { BCFTOOLS_PLUGINSCATTER } from '../../../modules/nf-core/bcftools/pluginscatter'
-include { BCFTOOLS_SORT          } from '../../../modules/nf-core/bcftools/sort'
-include { ENSEMBLVEP_VEP         } from '../../../modules/nf-core/ensemblvep/vep'
-include { SNPEFF_SNPEFF          } from '../../../modules/nf-core/snpeff/snpeff'
-include { TABIX_BGZIP            } from '../../../modules/nf-core/tabix/bgzip'
-include { TABIX_TABIX            } from '../../../modules/nf-core/tabix/tabix'
+include { BCFTOOLS_CONCAT                   } from '../../../modules/nf-core/bcftools/concat'
+include { BCFTOOLS_PLUGINSCATTER            } from '../../../modules/nf-core/bcftools/pluginscatter'
+include { BCFTOOLS_SORT                     } from '../../../modules/nf-core/bcftools/sort'
+include { ENSEMBLVEP_VEP                    } from '../../../modules/nf-core/ensemblvep/vep'
+include { SNPEFF_SNPEFF                     } from '../../../modules/nf-core/snpeff/snpeff'
+include { HTSLIB_BGZIPTABIX as COMPRESS_VCF } from '../../../modules/nf-core/htslib/bgziptabix/main.nf'
+include { HTSLIB_BGZIPTABIX as INDEX_VCF    } from '../../../modules/nf-core/htslib/bgziptabix/main.nf'
 
 workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     take:
@@ -25,7 +25,6 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     val_sites_per_chunk //   value: the amount of variants per scattered VCF
 
     main:
-    def ch_versions = channel.empty()
     def ch_vep_input = channel.empty()
     def ch_scatter = channel.empty()
 
@@ -49,7 +48,6 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             [],
             [],
         )
-        ch_versions = ch_versions.mix(BCFTOOLS_PLUGINSCATTER.out.versions.first())
 
         // If BCFTOOLS_PLUGINSCATTER created multiple files we return a list of vcfs and the size of that list
         // Otherwise, a single vcf and the value 1
@@ -117,12 +115,14 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         ch_snpeff_html = SNPEFF_SNPEFF.out.summary_html
         ch_snpeff_genes = SNPEFF_SNPEFF.out.genes_txt
 
-        TABIX_BGZIP(
-            SNPEFF_SNPEFF.out.vcf
+        COMPRESS_VCF(
+            SNPEFF_SNPEFF.out.vcf.map { meta, vcf -> [meta, vcf, [], []] },
+            "compress",
+            false,
+            "vcf"
         )
-        ch_versions = ch_versions.mix(TABIX_BGZIP.out.versions.first())
 
-        ch_snpeff_output = TABIX_BGZIP.out.output
+        ch_snpeff_output = COMPRESS_VCF.out.output
     }
     else {
         ch_snpeff_output = ch_vep_output
@@ -147,13 +147,9 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
 
         BCFTOOLS_CONCAT(ch_concat_input)
 
-        ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
-
         // Sort the concatenate output (bcftools concat is unable to do this on its own)
 
         BCFTOOLS_SORT(BCFTOOLS_CONCAT.out.vcf)
-
-        ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions.first())
 
         ch_ready_vcfs = BCFTOOLS_SORT.out.vcf
     }
@@ -172,10 +168,15 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         return [meta, vcf, []]
     }
 
-    TABIX_TABIX(ch_tabix_input.bgzip)
+    INDEX_VCF(
+        ch_tabix_input.bgzip.map { meta, vcf -> [meta, vcf, [], []] },
+        "compress",
+        true,
+        "vcf"
+    )
 
     def ch_vcf_tbi = ch_tabix_input.bgzip
-        .join(TABIX_TABIX.out.index, failOnDuplicate: true, failOnMismatch: true)
+        .join(INDEX_VCF.out.index, failOnDuplicate: true, failOnMismatch: true)
         .mix(ch_tabix_input.unzip)
 
     emit:
@@ -184,5 +185,4 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     snpeff_reports = ch_snpeff_reports // channel: [ val(meta), path(csv) ]
     vcf_tbi        = ch_vcf_tbi // channel: [ val(meta), path(vcf), path(tbi) ]
     vep_reports    = ch_vep_reports // channel: [ path(html) ]
-    versions       = ch_versions // channel: [ versions.yml ]
 }

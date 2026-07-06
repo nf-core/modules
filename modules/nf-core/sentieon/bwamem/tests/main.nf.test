@@ -11,9 +11,9 @@ nextflow_process {
 
     script "../main.nf"
     process "SENTIEON_BWAMEM"
+    config "./nextflow.config"
 
     test("Single-End") {
-        config "./nextflow.config"
 
         setup {
             run("SENTIEON_BWAINDEX") {
@@ -30,6 +30,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "-R \"@RG\\tID:sample_lane\\tPU:lane\\tSM:patient_sample\\tLB:sample\\tDS:fasta\\tPL:seqplatform\""
+                module_out_cram = false
+            }
             process {
                 """
                 input[0] = [
@@ -48,13 +52,16 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        bam(process.out.bam_and_bai[0][1]).getReadsMD5(),
+                        file(process.out.bam_and_bai[0][2]).name,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match() }
             )
         }
     }
 
     test("Single-End Output CRAM") {
-        config "./nextflow_out_cram.config"
 
         setup {
             run("SENTIEON_BWAINDEX") {
@@ -71,6 +78,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "-R \"@RG\\tID:sample_lane\\tPU:lane\\tSM:patient_sample\\tLB:sample\\tDS:fasta\\tPL:seqplatform\""
+                module_out_cram = true
+            }
             process {
                 """
                 input[0] = [
@@ -87,15 +98,19 @@ nextflow_process {
         }
 
         then {
+            def fasta = "https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta"
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        cram(process.out.bam_and_bai[0][1], fasta).getReadsMD5(),
+                        file(process.out.bam_and_bai[0][2]).name,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match() }
             )
         }
     }
 
     test("Paired-End") {
-        config "./nextflow.config"
 
         setup {
             run("SENTIEON_BWAINDEX") {
@@ -112,6 +127,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "-R \"@RG\\tID:sample_lane\\tPU:lane\\tSM:patient_sample\\tLB:sample\\tDS:fasta\\tPL:seqplatform\""
+                module_out_cram = false
+            }
             process {
                 """
                 input[0] = [
@@ -128,33 +147,20 @@ nextflow_process {
             }
         }
 
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
-                ]
-                input[1] = SENTIEON_BWAINDEX.out.index
-                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
-                input[3] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)]
-                """
-            }
-        }
 
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                    { assert snapshot(
+                            bam(process.out.bam_and_bai[0][1]).getReadsMD5(),
+                            file(process.out.bam_and_bai[0][2]).name,
+                            process.out.findAll { key, val -> key.startsWith("versions") }
+                        ).match() }
             )
         }
     }
 
     test("Single-End - stub") {
-        config "./nextflow.config"
         options "-stub"
 
         setup {
@@ -172,6 +178,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "-R \"@RG\\tID:sample_lane\\tPU:lane\\tSM:patient_sample\\tLB:sample\\tDS:fasta\\tPL:seqplatform\""
+                module_out_cram = false
+            }
             process {
                 """
                 input[0] = [
@@ -196,7 +206,6 @@ nextflow_process {
     }
 
     test("Paired-End - stub") {
-        config "./nextflow.config"
         options "-stub"
 
         setup {
@@ -214,6 +223,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "-R \"@RG\\tID:sample_lane\\tPU:lane\\tSM:patient_sample\\tLB:sample\\tDS:fasta\\tPL:seqplatform\""
+                module_out_cram = false
+            }
             process {
                 """
                 input[0] = [
@@ -230,22 +243,6 @@ nextflow_process {
             }
         }
 
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
-                ]
-                input[1] = SENTIEON_BWAINDEX.out.index
-                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
-                input[3] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)]
-                """
-            }
-        }
 
         then {
             assert process.success

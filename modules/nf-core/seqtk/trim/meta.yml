@@ -38,12 +38,26 @@ output:
           description: Filtered FastQ files
           pattern: "*.{fastq.gz}"
           ontologies: []
+  versions_seqtk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@laramiellindsey"

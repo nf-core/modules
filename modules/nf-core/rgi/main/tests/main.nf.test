@@ -43,8 +43,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 input[1] = RGI_CARDANNOTATION.out.db
                 input[2] = []
@@ -75,8 +75,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 input[1] = RGI_CARDANNOTATION.out.db
                 input[2] = []

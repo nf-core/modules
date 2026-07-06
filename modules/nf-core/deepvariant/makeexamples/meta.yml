@@ -104,13 +104,28 @@ output:
           type: list
           description: |
             Optional variant calls from the small model, if enabled, in tfrecord format
+  versions_deepvariant:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - deepvariant:
+          type: string
+          description: The tool name
+      - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing the DeepVariant software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - deepvariant:
+          type: string
+          description: The tool name
+      - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@abhi18av"
   - "@ramprasadn"

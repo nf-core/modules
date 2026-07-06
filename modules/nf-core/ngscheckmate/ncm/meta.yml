@@ -46,7 +46,12 @@ input:
     - fasta:
         type: file
         description: fasta file for the genome, only used in the bam mode
-        pattern: "*.{bed}"
+        pattern: "*.{fasta}"
+        ontologies: []
+    - fai:
+        type: file
+        description: fasta index file for the genome, only used in the bam mode
+        pattern: "*.{fai}"
         ontologies: []
 output:
   corr_matrix:

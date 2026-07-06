@@ -34,8 +34,8 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = [[],[]]
-                input[2] = false
+                    .combine(channel.of([[]]))
+                input[1] = false
                 """
             }
         }
@@ -57,8 +57,8 @@ nextflow_process {
                         'XX'
                     )
                 ])
-                input[1] = GUNZIP.out.gunzip
-                input[2] = SAMTOOLS_FAIDX.out.fai
+                input[1] = GUNZIP.out.gunzip.collect()
+                input[2] = SAMTOOLS_FAIDX.out.fai.collect()
                 input[3] = Channel.of('chr22\t18890357\t18890451\tID=TEST;MOTIFS=AT;STRUC=(AT)n')
                             .collectFile(name : 'repeats.bed', newLine: false)
                             .map { file -> [ [ id : 'chr22' ], file ] }
@@ -81,6 +81,7 @@ nextflow_process {
                 """
                 input[0] = BCFTOOLS_SORT.out.vcf
                             .join(BCFTOOLS_SORT.out.tbi)
+                            .view()
                             .map { meta, vcf, tbi -> [ [ id : 'test' ], vcf, tbi ] }
                             .groupTuple()
                 input[1] = [[],[]]

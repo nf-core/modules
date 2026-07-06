@@ -73,10 +73,6 @@ input:
       description: File containing intervals.
       pattern: "*.interval_list"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - mutect2_vcf:
       type: file
       description: Compressed vcf file to be used for variant_calling.

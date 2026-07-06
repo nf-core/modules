@@ -13,30 +13,34 @@ inputs:
   paths:
     description: "Test paths"
     required: true
+  tags:
+    description: "Tag to pass as argument for nf-test --tag parameter"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
+    - uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5
       with:
         distribution: "temurin"
         java-version: "17"
 
     - name: Set up Nextflow
-      uses: nf-core/setup-nextflow@v2
+      uses: nf-core/setup-nextflow@b4ec1bc7c16a94435159de94a05253542fddf6ef # v3
       with:
-        version: "${{ env.NXF_VERSION }}"
+        version: "${{ env.NXF_VER }}"
 
     - name: Set up Python
-      uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
         python-version: "3.14"
 
     - name: Set up nf-test
-      uses: nf-core/setup-nf-test@v1
+      uses: nf-core/setup-nf-test@4069fbbaabe94c08faba4ad261bfa88225ba133f # v2
       with:
         version: "${{ env.NFT_VER }}"
-        install-pdiff: true
+        install-fast-diff: true
 
     - name: Set up apptainer
       if: contains(inputs.profile, 'singularity')
@@ -52,7 +56,7 @@ runs:
 
     - name: Set up Conda
       if: ${{contains(inputs.profile, 'conda')}}
-      uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3
+      uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
       with:
         auto-update-conda: true
         conda-solver: libmamba
@@ -76,6 +80,7 @@ runs:
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
         NFT_WORKDIR=~
+        TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
 
         nf-test test \
           --profile=${{ inputs.profile }} \
@@ -84,6 +89,7 @@ runs:
           --ci \
           --shard ${{ inputs.shard }}/${{ inputs.total_shards }} \
           --filter process,workflow \
+          $TAGS \
           ${{ inputs.paths }}
 
           # Save the absolute path of the test.tap file to the output

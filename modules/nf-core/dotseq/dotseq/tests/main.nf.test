@@ -1,0 +1,165 @@
+nextflow_process {
+
+    name "Test Process DOTSEQ_DOTSEQ"
+    script "../main.nf"
+    process "DOTSEQ_DOTSEQ"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dotseq"
+    tag "dotseq/dotseq"
+
+    test("human - count matrix + annotation") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cycling_vs_interphase' ],
+                    'condition',
+                    'Interphase',
+                    'Mitotic_Cycling'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/samplesheet.csv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/counts.tsv.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/annotation.tsv.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.session_info[0][1]).getText().contains('DOTSeq') },
+                { assert path(process.out.translation[0][1]).exists() },
+                { assert path(process.out.dou[0][1]).exists() },
+                { assert process.out.interaction_p_distribution_plot.size() > 0 },
+                { assert process.out.volcano_plot.size() > 0 },
+                { assert process.out.composite_plot.size() > 0 },
+                { assert process.out.venn_plot.size() > 0 },
+                { assert process.out.heatmap_plot.size() > 0 },
+                { assert snapshot(
+                    file(process.out.translation[0][1]).name,
+                    file(process.out.dou[0][1]).name,
+                    file(process.out.rdata[0][1]).name,
+                    file(process.out.interaction_p_distribution_plot[0][1]).name,
+                    file(process.out.volcano_plot[0][1]).name,
+                    file(process.out.composite_plot[0][1]).name,
+                    file(process.out.venn_plot[0][1]).name,
+                    file(process.out.heatmap_plot[0][1]).name,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("human - count matrix + annotation - non-mORF main label") {
+
+        config "./non_morf_main.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cycling_vs_interphase' ],
+                    'condition',
+                    'Interphase',
+                    'Mitotic_Cycling'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/samplesheet.csv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/counts.tsv.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/annotation_non_morf.tsv.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.heatmap_plot.size() > 0 },
+                { assert snapshot(
+                    file(process.out.dou[0][1]).name,
+                    file(process.out.heatmap_plot[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("human - count matrix + annotation - DOU module only") {
+
+        config "./dou_only.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cycling_vs_interphase' ],
+                    'condition',
+                    'Interphase',
+                    'Mitotic_Cycling'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/samplesheet.csv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/counts.tsv.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/annotation.tsv.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.dou[0][1]).exists() },
+                { assert process.out.translation.size() == 0 },
+                { assert snapshot(
+                    file(process.out.dou[0][1]).name,
+                    file(process.out.rdata[0][1]).name,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("human - count matrix + annotation - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cycling_vs_interphase' ],
+                    'condition',
+                    'Interphase',
+                    'Mitotic_Cycling'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/samplesheet.csv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/counts.tsv.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/annotation.tsv.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+}

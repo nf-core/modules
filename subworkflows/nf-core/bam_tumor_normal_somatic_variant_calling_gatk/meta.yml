@@ -68,10 +68,6 @@ input:
         File containing intervals.
         Structure: [ path(interval_files) ]
 output:
-  - versions:
-      description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
   - mutect2_vcf:
       description: |
         Compressed vcf file to be used for variant_calling.

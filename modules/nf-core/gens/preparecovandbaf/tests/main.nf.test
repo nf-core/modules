@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process PREPARECOVANDBAF"
+    script "modules/nf-core/gens/preparecovandbaf/main.nf"
+    process "PREPARECOVANDBAF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gens"
+    tag "gens/preparecovandbaf"
+
+    test("gens_preparecovandbaf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/hg002_chr20_90000_to_100000.standardizedCR.tsv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/hg002_chr20_90000_to_100000.dnascope.gvcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/hg002_chr20_90000_to_100000.dnascope.gvcf.gz.tbi", checkIfExists: true),
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tab/gnomad_hg38_chr20_90000_to_100000.0.05.txt.gz", checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("gens_preparecovandbaf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/hg002_chr20_90000_to_100000.standardizedCR.tsv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/hg002_chr20_90000_to_100000.dnascope.gvcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/hg002_chr20_90000_to_100000.dnascope.gvcf.gz.tbi", checkIfExists: true),
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tab/gnomad_hg38_chr20_90000_to_100000.0.05.txt.gz", checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

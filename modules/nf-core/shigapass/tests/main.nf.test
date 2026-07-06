@@ -1,0 +1,55 @@
+nextflow_process {
+
+    name "Test Process SHIGAPASS"
+    script "../main.nf"
+    process "SHIGAPASS"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "shigapass"
+
+    test("candidatus_portiera_aleyrodidarum - genome.fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test', single_end:false ], // meta map
+                                file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("candidatus_portiera_aleyrodidarum - genome.fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test', single_end:false ], // meta map
+                                file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

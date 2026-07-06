@@ -3,14 +3,14 @@ process PURECLIP {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pureclip:1.3.1--0':
-        'biocontainers/pureclip:1.3.1--0' }"
+        'quay.io/biocontainers/pureclip:1.3.1--0' }"
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)
-    tuple val(meta), path(ipbai), path(controlbai)
-    tuple val(meta2), path(genome_fasta)
+    tuple val(meta2), path(ipbai), path(controlbai)
+    tuple val(meta3), path(genome_fasta)
     val input_control
 
     output:
@@ -54,7 +54,6 @@ process PURECLIP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     crosslinks_output_name = "${prefix}_pureclip_crosslinks.bed"
     peaks_output_name      = "${prefix}_pureclip_peaks.bed"

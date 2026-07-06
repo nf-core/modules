@@ -36,13 +36,29 @@ output:
           type: list
           description: |
             Each output contains: unique ID string from input channel, meta, tfrecord file with variant calls.
+  versions_deepvariant:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - deepvariant:
+          type: string
+          description: The tool name
+      - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - deepvariant:
+          type: string
+          description: The tool name
+      - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@abhi18av"
   - "@ramprasadn"

@@ -3,9 +3,9 @@ process TCOFFEE_REGRESSIVE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0':
-        'biocontainers/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0' }"
+        'quay.io/biocontainers/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0' }"
 
     input:
     tuple val(meta) , path(fasta)
@@ -15,7 +15,8 @@ process TCOFFEE_REGRESSIVE {
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | sed -n \'s/.*Version_\\([^ ]*\\).*/\\1/p\''), emit: versions_tcoffee, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,12 +43,6 @@ process TCOFFEE_REGRESSIVE {
         pigz -cp ${task.cpus} < stdout > ${prefix}.aln.gz
         rm stdout
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 
     stub:
@@ -56,11 +51,5 @@ process TCOFFEE_REGRESSIVE {
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
     touch ${prefix}.aln${compress ? '.gz':''}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 }

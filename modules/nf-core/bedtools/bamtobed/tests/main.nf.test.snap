@@ -1,9 +1,44 @@
 {
     "stub": {
         "content": [
-            "test.bed"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        "BEDTOOLS_BAMTOBED",
+                        "bedtools",
+                        "2.31.1"
+                    ]
+                ],
+                "bed": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_bedtools": [
+                    [
+                        "BEDTOOLS_BAMTOBED",
+                        "bedtools",
+                        "2.31.1"
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2023-12-05T17:37:27.785556"
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-21T10:40:40.234185059"
     },
     "sarscov2 - bam": {
         "content": [
@@ -17,7 +52,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,90a53b0acd234b4f7d125dadd0dbbdfb"
+                    [
+                        "BEDTOOLS_BAMTOBED",
+                        "bedtools",
+                        "2.31.1"
+                    ]
                 ],
                 "bed": [
                     [
@@ -27,11 +66,19 @@
                         "test.bed:md5,a6a299bd39dc56225f8029c05ea97dcb"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,90a53b0acd234b4f7d125dadd0dbbdfb"
+                "versions_bedtools": [
+                    [
+                        "BEDTOOLS_BAMTOBED",
+                        "bedtools",
+                        "2.31.1"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2023-12-05T17:37:20.997988"
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-21T10:40:32.731340605"
     }
 }

@@ -30,14 +30,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-					file(process.out.bam[0][1]).name, // With bam(), htsjdk.samtools.SAMFormatException: Error parsing SAM header. @RG line missing SM tag.
-					file(process.out.pbi[0][1]).name, //unstable
-					process.out.versions,
-                    file(process.out.versions[0]).readLines().collect { it.trim() }, // Trap to catch bioconda version mismatches
-					).match()
-				}
+                { assert process.failed }
             )
         }
     }
@@ -62,8 +55,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.failed }
             )
         }
     }

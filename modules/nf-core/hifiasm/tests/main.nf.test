@@ -12,7 +12,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [,], [,], [,]]") {
         when {
             params {
-                extra_output = "--write-ec --write-paf"
+                module_args = "-f0 --write-ec --write-paf"
             }
 
             process {
@@ -59,7 +59,7 @@ nextflow_process {
                     process.out.hap2_contigs,
                     process.out.fasta,
                     process.out.paf,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -98,7 +98,8 @@ nextflow_process {
 
         when {
             params {
-                extra_output = ""
+                setup_args = '-f0 --bin-only'
+                module_args = '-f0'
             }
 
             process {
@@ -133,7 +134,7 @@ nextflow_process {
                     process.out.primary_contigs,
                     process.out.hap1_contigs,
                     process.out.hap2_contigs,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -143,7 +144,7 @@ nextflow_process {
 
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {
@@ -191,7 +192,7 @@ nextflow_process {
                     process.out.primary_contigs,
                     process.out.hap1_contigs,
                     process.out.hap2_contigs,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -200,7 +201,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [yak, yak], [,], [,] ]") {
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {
@@ -249,7 +250,7 @@ nextflow_process {
                     process.out.raw_unitigs,
                     process.out.processed_unitigs,
                     process.out.hap1_contigs,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -258,7 +259,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [,], [fastq, fastq], [,] ]") {
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {
@@ -309,7 +310,7 @@ nextflow_process {
                     process.out.primary_contigs,
                     process.out.alternate_contigs,
                     process.out.hap1_contigs,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -318,7 +319,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [yak, yak], [fastq, fastq], [,] ]") {
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
             process {
                 """
@@ -354,7 +355,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [yak, ], [,], [,] ]") {
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {
@@ -387,7 +388,7 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [,], [, fastq], [,] ]") {
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {
@@ -421,7 +422,7 @@ nextflow_process {
         options "-stub"
         when {
             params {
-                extra_output = ""
+                module_args = "-f0"
             }
 
             process {

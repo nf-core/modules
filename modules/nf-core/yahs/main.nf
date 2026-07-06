@@ -3,9 +3,9 @@ process YAHS {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/yahs:1.2.2--h577a1d6_1':
-        'biocontainers/yahs:1.2.2--h577a1d6_1' }"
+        'quay.io/biocontainers/yahs:1.2.2--h577a1d6_1' }"
 
     input:
     tuple val(meta), path(fasta), path(fai), path(hic_map), path(agp)
@@ -18,7 +18,7 @@ process YAHS {
     tuple val(meta), path("${prefix}_r*_*.agp")              , emit: round_agp         ,  optional: true
     tuple val(meta), path("${prefix}.bin")                   , emit: binary
     tuple val(meta), path("${prefix}.log")                   , emit: log
-    path "versions.yml"                                      , emit: versions
+    tuple val("${task.process}"), val('yahs'), eval("yahs --version 2>&1"), emit: versions_yahs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process YAHS {
         ${fasta} \\
         ${hic_map} \\
         2>| >( tee ${prefix}.log >&2 )
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        yahs: \$(yahs --version 2>&1)
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +48,5 @@ process YAHS {
     touch ${prefix}_r01_break.agp
     touch ${prefix}.bin
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        yahs: \$(yahs --version 2>&1)
-    END_VERSIONS
     """
 }

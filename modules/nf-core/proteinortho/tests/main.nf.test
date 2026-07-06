@@ -34,8 +34,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.orthologgroups).match("orthologgroups") },
-                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(
+                    process.out.orthologgroups,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() },
             )
         }
     }

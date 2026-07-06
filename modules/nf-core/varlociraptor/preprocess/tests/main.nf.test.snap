@@ -2,52 +2,47 @@
     "sarscov2 - [bam,vcf,json,fasta]": {
         "content": [
             "test.bcf",
-            [
-                "versions.yml:md5,64700786b6b73ab0100c30233532ff42"
-            ]
+            "Filesize > 0: true",
+            {
+                "versions_varlociraptor": [
+                    [
+                        "VARLOCIRAPTOR_PREPROCESS",
+                        "varlociraptor",
+                        "8.9.5"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-06-11T10:25:08.87559",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-11-14T11:08:31.821862"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "sarscov2 - [bam,vcf,json,fasta] - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.bcf:md5,a26495f85aaf47f832707fa9cb5c5454"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,64700786b6b73ab0100c30233532ff42"
-                ],
                 "bcf": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.bcf:md5,a26495f85aaf47f832707fa9cb5c5454"
+                        "test.bcf:md5,995d1a73860e952ce30d182c361e95c0"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,64700786b6b73ab0100c30233532ff42"
+                "versions_varlociraptor": [
+                    [
+                        "VARLOCIRAPTOR_PREPROCESS",
+                        "varlociraptor",
+                        "8.9.5"
+                    ]
                 ]
-            },
-            {
-                "VARLOCIRAPTOR_PREPROCESS": {
-                    "varlociraptor": "8.9.0"
-                }
             }
         ],
+        "timestamp": "2026-06-10T16:05:49.387114",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-11-14T11:08:38.976194"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

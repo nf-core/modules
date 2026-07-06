@@ -2,17 +2,6 @@
     "scenario_singlesample - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test_normal"
-                        },
-                        "test_normal_called.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,8603bd57dec8bba4ffdf2513d7e28a0f"
-                ],
                 "bcf": [
                     [
                         {
@@ -21,56 +10,59 @@
                         "test_normal_called.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,8603bd57dec8bba4ffdf2513d7e28a0f"
+                "versions_varlociraptor": [
+                    [
+                        "VARLOCIRAPTOR_CALLVARIANTS",
+                        "varlociraptor",
+                        "8.9.5"
+                    ]
                 ]
-            },
-            {
-                "VARLOCIRAPTOR_CALLVARIANTS": {
-                    "varlociraptor": "8.9.0"
-                }
             }
         ],
+        "timestamp": "2026-06-10T16:05:00.963946",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-11-14T12:55:32.734176"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "scenario_singlesample": {
         "content": [
             "test_normal_called.bcf",
-            [
-                "versions.yml:md5,8603bd57dec8bba4ffdf2513d7e28a0f"
-            ],
+            "Filesize > 0: true",
             {
-                "VARLOCIRAPTOR_CALLVARIANTS": {
-                    "varlociraptor": "8.9.0"
-                }
+                "versions_varlociraptor": [
+                    [
+                        "VARLOCIRAPTOR_CALLVARIANTS",
+                        "varlociraptor",
+                        "8.9.5"
+                    ]
+                ]
             }
         ],
+        "timestamp": "2026-06-11T10:24:10.261866",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-11-14T12:20:23.709874"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "normal_multisample": {
         "content": [
             "test_normal_called.bcf",
-            [
-                "versions.yml:md5,8603bd57dec8bba4ffdf2513d7e28a0f"
-            ],
+            "Filesize > 0: true",
             {
-                "VARLOCIRAPTOR_CALLVARIANTS": {
-                    "varlociraptor": "8.9.0"
-                }
+                "versions_varlociraptor": [
+                    [
+                        "VARLOCIRAPTOR_CALLVARIANTS",
+                        "varlociraptor",
+                        "8.9.5"
+                    ]
+                ]
             }
         ],
+        "timestamp": "2026-06-11T10:24:21.318674",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-11-14T13:14:00.637606"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

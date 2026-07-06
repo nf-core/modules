@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "checkqc"
-description: A simple program to parse Illumina NGS data and check it for quality
-  criteria
+description: A simple program to parse Illumina NGS data and check it for
+  quality criteria
 keywords:
   - QC
   - Illumina
@@ -13,9 +12,9 @@ tools:
       homepage: "https://github.com/Molmed/checkQC"
       documentation: "http://checkqc.readthedocs.io/en/latest/"
       doi: "10.21105/joss.00556"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -33,7 +32,7 @@ input:
       description: CheckQC configuration file
       pattern: "*.{yml,yaml}"
       ontologies:
-        - edam: http://edamontology.org/format_3750 # YAML
+        - edam: http://edamontology.org/format_3750
 output:
   report:
     - - meta:
@@ -41,19 +40,33 @@ output:
           description: CheckQC report in json format
           pattern: "*checkqc_report.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
       - "*checkqc_report.json":
           type: file
           description: CheckQC report in json format
           pattern: "*checkqc_report.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
+  versions_checkqc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - checkqc:
+          type: string
+          description: The name of the tool
+      - 'checkqc --version | sed -e "s/checkqc, version //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - checkqc:
+          type: string
+          description: The name of the tool
+      - 'checkqc --version | sed -e "s/checkqc, version //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matrulda"

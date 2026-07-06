@@ -3,9 +3,9 @@ process IQTREE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/iqtree:2.4.0--h503566f_0' :
-        'biocontainers/iqtree:2.4.0--h503566f_0' }"
+        'quay.io/biocontainers/iqtree:2.4.0--h503566f_0' }"
 
     input:
     tuple val(meta), path(alignment), path(tree)
@@ -45,7 +45,7 @@ process IQTREE {
     tuple val(meta), path("*.mlrate")        , emit: mlrate        , optional: true
     tuple val(meta), path("GTRPMIX.nex")     , emit: exch_matrix   , optional: true
     tuple val(meta), path("*.log")           , emit: log
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('iqtree'), eval("iqtree -version 2>&1 | head -n1 | sed 's/^IQ-TREE multicore version //;s/ .*//'"), emit: versions_iqtree, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -84,16 +84,11 @@ process IQTREE {
         $constraint_tree_arg \\
         $trees_z_arg \\
         $suptree_arg \\
-        $trees_rf\\
+        $trees_rf_arg\\
         -pre $prefix \\
         -nt AUTO \\
         -ntmax $task.cpus \\
-        -mem $memory \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iqtree: \$(echo \$(iqtree -version 2>&1) | sed 's/^IQ-TREE multicore version //;s/ .*//')
-    END_VERSIONS
+        -mem $memory
     """
 
     stub:
@@ -121,11 +116,6 @@ process IQTREE {
     touch "${prefix}.mlrate"
     touch "GTRPMIX.nex"
     touch "${prefix}.log"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iqtree: \$(echo \$(iqtree -version 2>&1) | sed 's/^IQ-TREE multicore version //;s/ .*//')
-    END_VERSIONS
     """
 
 }

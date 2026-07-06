@@ -1,18 +1,19 @@
 name: cellrangeratac_count
-description: Module to use Cell Ranger's ATAC pipelines analyze sequencing data produced
-  from Chromium Single Cell ATAC.
+description: Module to use Cell Ranger's ATAC pipelines analyze sequencing data
+  produced from Chromium Single Cell ATAC.
 keywords:
   - align
   - count
   - reference
 tools:
   - cellranger-atac:
-      description: Cell Ranger ATAC is a set of analysis pipelines that process Chromium
-        Single Cell ATAC data.
+      description: Cell Ranger ATAC is a set of analysis pipelines that process
+        Chromium Single Cell ATAC data.
       homepage: https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac
       documentation: https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac
       tool_dev_url: https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac
-      licence: ["10x Genomics EULA"]
+      licence:
+        - "10x Genomics EULA"
       identifier: ""
 input:
   - - meta:
@@ -28,8 +29,8 @@ input:
         ontologies: []
   - reference:
       type: directory
-      description: Directory containing all the reference indices needed by Cell Ranger
-        ATAC
+      description: Directory containing all the reference indices needed by Cell
+        Ranger ATAC
 output:
   outs:
     - - meta:
@@ -40,13 +41,27 @@ output:
           description: Files containing the outputs of Cell Ranger ATAC
           pattern: "sample-${meta.gem}/outs/*"
           ontologies: []
+  versions_cellrangeratac:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellrangeratac:
+          type: string
+          description: The name of the tool
+      - cellranger-atac --version | sed 's/.*cellranger-atac-//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellrangeratac:
+          type: string
+          description: The name of the tool
+      - cellranger-atac --version | sed 's/.*cellranger-atac-//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ggabernet"
   - "@edmundmiller"

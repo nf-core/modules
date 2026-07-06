@@ -6,13 +6,12 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 
 workflow VCF_IMPUTE_BEAGLE5 {
     take:
-    ch_input  // channel (mandatory): [ [id], vcf, tbi ]
-    ch_panel  // channel (mandatory): [ [panel, chr], vcf, tbi ]
+    ch_input // channel (mandatory): [ [id], vcf, tbi ]
+    ch_panel // channel (mandatory): [ [panel, chr], vcf, tbi ]
     ch_chunks // channel (optional) : [ [panel, chr], regionout ]
-    ch_map    // channel (optional) : [ [chr], map]
+    ch_map // channel (optional) : [ [chr], map]
 
     main:
-    ch_versions = channel.empty()
 
     // Branch input files based on format
     ch_input
@@ -31,14 +30,15 @@ workflow VCF_IMPUTE_BEAGLE5 {
     // Convert BCF to VCF if necessary
     BCFTOOLS_VIEW(
         ch_input_branched.bcf,
-        [], [], []
+        [],
+        [],
+        [],
     )
-    ch_versions = ch_versions.mix(BCFTOOLS_VIEW.out.versions.first())
 
     // Combine VCF files
     ch_ready_vcf = ch_input_branched.vcf.mix(
         BCFTOOLS_VIEW.out.vcf.join(
-            BCFTOOLS_VIEW.out.tbi.mix(BCFTOOLS_VIEW.out.csi),
+            BCFTOOLS_VIEW.out.index,
             failOnMismatch: true,
             failOnDuplicate: true,
         )
@@ -62,36 +62,51 @@ workflow VCF_IMPUTE_BEAGLE5 {
 
     ch_beagle_input = ch_ready_vcf
         .combine(ch_panel_map)
-        .map { metaI, input_vcf, input_index, metaPC, panel_vcf, panel_index, map, regionout, regionsize ->
+        .map { metaI, input_vcf, input_index, metaPC, panel_vcf, panel_index, map, regionout, region_size ->
+            def regionoutPadded
+            if (regionout.contains(':')) {
+                // Handle format like "chr22:1000-2000"
+                def chr = regionout.tokenize(':')[0]
+                def region = regionout.tokenize(':')[1]
+                def start = region.tokenize('-')[0]
+                def end = region.tokenize('-')[1]
+                def paddedStart = String.format('%010d', start as long)
+                def paddedEnd = String.format('%010d', end as long)
+                regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
+            } else {
+                // Handle format like "chr22" (no coordinates)
+                regionoutPadded = regionout
+            }
             [
-                metaI + metaPC + ["regionout": regionout, "regionsize": regionsize],
-                input_vcf, input_index,
-                panel_vcf, panel_index,
+                metaI + metaPC + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
+                input_vcf,
+                input_index,
+                panel_vcf,
+                panel_index,
                 map,
-                [], [],
+                [],
+                [],
                 regionout,
             ]
         }
 
     // Run BEAGLE5 imputation
     BEAGLE5_BEAGLE(ch_beagle_input)
-    ch_versions = ch_versions.mix(BEAGLE5_BEAGLE.out.versions.first())
 
     // Index the imputed VCF files
     BCFTOOLS_INDEX_PHASE(BEAGLE5_BEAGLE.out.vcf)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_PHASE.out.versions.first())
 
     // Ligate all phased files in one and index it
     ligate_input = BEAGLE5_BEAGLE.out.vcf
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.index,
             failOnMismatch: true,
             failOnDuplicate: true,
         )
         .map { meta, vcf, index ->
-            def keysToKeep = meta.keySet() - ['regionout', 'regionsize']
+            def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
             [
-                groupKey(meta.subMap(keysToKeep), meta.regionsize),
+                groupKey(meta.subMap(keysToKeep), meta.regionSize),
                 vcf, index,
             ]
         }
@@ -103,19 +118,16 @@ workflow VCF_IMPUTE_BEAGLE5 {
         }
 
     GLIMPSE2_LIGATE(ligate_input)
-    ch_versions = ch_versions.mix(GLIMPSE2_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE2_LIGATE.out.merged_variants)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_LIGATE.out.versions.first())
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
-        BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
+        BCFTOOLS_INDEX_LIGATE.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
     )
 
     emit:
     vcf_index = ch_vcf_index // channel: [ [id, chr, tools], vcf, index ]
-    versions  = ch_versions  // channel: [ versions.yml ]
 }

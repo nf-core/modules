@@ -1,14 +1,73 @@
 {
-    "versions": {
+    "SARS-cov-2 - value db name - stub ": {
         "content": [
-            [
-                "versions.yml:md5,ab1c0c2203b916ad6060753cffc8889d"
-            ]
+            {
+                "barcodes": [
+                    "usher_barcodes.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "config": [
+                    "pathogen_config.yml:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "lineages_meta": [
+                    "curated_lineages.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "lineages_topology": [
+                    "lineages.yml:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "versions_freyja": [
+                    [
+                        "FREYJA_UPDATE",
+                        "freyja",
+                        "2.0.3"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-10-09T14:40:13.571962056"
+        "timestamp": "2026-02-19T09:58:44.069216"
+    },
+    "sarscov2 - value db name ": {
+        "content": [
+            "usher_barcodes.feather",
+            "curated_lineages.json",
+            "lineages.yml",
+            {
+                "versions_freyja": [
+                    [
+                        "FREYJA_UPDATE",
+                        "freyja",
+                        "2.0.3"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-19T09:58:31.628204"
+    },
+    "MPX - value db name ": {
+        "content": [
+            "MPX_barcodes.csv",
+            "MPX_lineages.yml",
+            {
+                "versions_freyja": [
+                    [
+                        "FREYJA_UPDATE",
+                        "freyja",
+                        "2.0.3"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-19T09:49:00.685131"
     }
 }

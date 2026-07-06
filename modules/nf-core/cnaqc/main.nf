@@ -3,9 +3,9 @@ process CNAQC {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-cnaqc%3A1.1.3--r44hdfd78af_0':
-        'biocontainers/r-cnaqc:1.1.3--r44hdfd78af_0' }"
+        'quay.io/biocontainers/r-cnaqc:1.1.3--r44hdfd78af_0' }"
 
     input:
     tuple val(meta), path(snv_rds), path(cna_rds), val(tumour_sample)
@@ -16,20 +16,22 @@ process CNAQC {
     tuple val(meta), path("*_qc_plot.rds"),                             emit: qc_plot_rds
     tuple val(meta), path("*_data.pdf"),                                emit: plot_pdf_data
     tuple val(meta), path("*_qc.pdf"),                                  emit: plot_pdf_qc
-    path "versions.yml",                                                emit: versions
+    path "versions.yml",                                                emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+
+    "echo ${args}"
 
     template "main_script.R"
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    args = task.ext.args ?: ''
     """
     touch ${prefix}_qc.rds
     touch ${prefix}_data_plot.rds

@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fastq_qc_stats"
+description: Generate statistics for short read sequencing data using multiple tools
+keywords:
+  - fastq
+  - qc
+  - fastqc
+  - seqfu
+  - seqkit
+  - seqtk
+components:
+  - fastqc
+  - seqfu/check
+  - seqfu/stats
+  - seqkit/stats
+  - seqtk/comp
+input:
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - skip_fastqc:
+      type: boolean
+      description: |
+        Skip fastqc process
+  - skip_seqfu_check:
+      type: boolean
+      description: |
+        Skip seqfu_check process
+  - skip_seqfu_stats:
+      type: boolean
+      description: |
+        Skip seqfu_stats process
+  - skip_seqkit_stats:
+      type: boolean
+      description: |
+        Skip seqkit_stats process
+  - skip_seqtk_comp:
+      type: boolean
+      description: |
+        Skip seqtk_comp process
+output:
+  - fastqc_html:
+      type: file
+      description: FastQC report
+      pattern: "*_fastqc.html"
+  - fastqc_zip:
+      type: file
+      description: FastQC report archive
+      pattern: "*_fastqc.zip"
+  - seqfu_check:
+      type: file
+      description: seqfu check tsv report
+      pattern: "*.tsv"
+  - seqfu_stats:
+      type: file
+      description: seqfu stats tsv report
+      pattern: "*.tsv"
+  - seqfu_multiqc:
+      type: file
+      description: seqfu stats MultiQC report
+      pattern: "*_mqc.txt"
+  - seqkit_stats:
+      type: file
+      description: seqkit stats report
+      pattern: "*.tsv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@pablo-scd"
+maintainers:
+  - "@pablo-scd"
+  - "@vagkaratzas"

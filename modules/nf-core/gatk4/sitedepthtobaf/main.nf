@@ -3,7 +3,7 @@ process GATK4_SITEDEPTHTOBAF {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ced519873646379e287bc28738bdf88e975edd39a92e7bc6a34bccd37153d9d0/data'
         : 'community.wave.seqera.io/library/gatk4_gcnvkernel:edb12e4f0bf02cd3'}"
 
@@ -15,9 +15,9 @@ process GATK4_SITEDEPTHTOBAF {
     path dict
 
     output:
-    tuple val(meta), path("*.baf.txt.gz"),     emit: baf
+    tuple val(meta), path("*.baf.txt.gz"), emit: baf
     tuple val(meta), path("*.baf.txt.gz.tbi"), emit: baf_tbi
-    path "versions.yml",                       emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +26,7 @@ process GATK4_SITEDEPTHTOBAF {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def site_depth_input = site_depths.collect { "--site-depth ${it}" }.join(" ")
+    def site_depth_input = site_depths.collect { site_depth -> "--site-depth ${site_depth}" }.join(" ")
     def reference = fasta ? "--reference ${fasta}" : ""
 
     def avail_mem = 3072
@@ -46,11 +46,6 @@ process GATK4_SITEDEPTHTOBAF {
         ${reference} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +54,5 @@ process GATK4_SITEDEPTHTOBAF {
     """
     echo "" | gzip -c > ${prefix}.baf.txt.gz
     touch ${prefix}.baf.txt.gz.tbi
-
-        cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

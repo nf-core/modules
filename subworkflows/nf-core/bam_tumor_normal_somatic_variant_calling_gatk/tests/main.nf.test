@@ -54,8 +54,8 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert snapshot(
                     file(workflow.out.artifact_priors[0][1]).name,
                     workflow.out.contamination_table,
@@ -68,8 +68,7 @@ nextflow_workflow {
                     workflow.out.mutect2_vcf.collect { meta, vcf -> [meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}"] },
                     workflow.out.pileup_table_normal,
                     workflow.out.pileup_table_tumor,
-                    workflow.out.segmentation_table,
-                    workflow.out.versions
+                    workflow.out.segmentation_table
                 ).match() }
             )
         }
@@ -114,8 +113,8 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert snapshot(workflow.out).match() }
             )
         }

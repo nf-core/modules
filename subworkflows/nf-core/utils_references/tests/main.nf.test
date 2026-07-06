@@ -4,12 +4,18 @@ nextflow_workflow {
     script "../main.nf"
     workflow "UTILS_REFERENCES"
 
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/utils_references"
+
+    tag "plugin/nf-schema"
+
     test("references_file with params - references_value without params") {
 
         when {
             workflow {
                 """
-                input[0] = 'https://raw.githubusercontent.com/nf-core/references-assets/main/genomes/Homo_sapiens/test/GRCh38_chr22.yml'
+                input[0] = 'https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/GRCh38_chr21.yml'
                 input[1] = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta'
                 input[2] = null
                 input[3] = 'fasta'
@@ -21,7 +27,7 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert snapshot(workflow.out).match()
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
 }

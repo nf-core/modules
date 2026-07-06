@@ -16,7 +16,8 @@ tools:
       homepage: https://github.com/brentp/bwa-meth
       documentation: https://github.com/brentp/bwa-meth
       arxiv: arXiv:1401.1129
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -42,13 +43,27 @@ output:
           type: directory
           description: Directory containing bwameth genome index
           pattern: "index"
+  versions_bwameth_index:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwameth:
+          type: string
+          description: The name of the tool
+      - bwameth.py --version | cut -f2 -d' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwameth:
+          type: string
+          description: The name of the tool
+      - bwameth.py --version | cut -f2 -d' ':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@phue"
 maintainers:

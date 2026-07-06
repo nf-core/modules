@@ -45,11 +45,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out,
-                    path(workflow.out.versions[0]).yaml,
-                    path(workflow.out.versions[1]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }

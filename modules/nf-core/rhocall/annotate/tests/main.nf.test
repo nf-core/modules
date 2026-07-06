@@ -53,9 +53,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.findAll {key, value -> key.startsWith("versions")}
                     ).match() }
             )
         }

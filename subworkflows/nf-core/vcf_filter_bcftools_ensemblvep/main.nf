@@ -1,6 +1,6 @@
 include { BCFTOOLS_VIEW        } from '../../../modules/nf-core/bcftools/view'
 include { ENSEMBLVEP_FILTERVEP } from '../../../modules/nf-core/ensemblvep/filtervep'
-include { TABIX_BGZIPTABIX     } from '../../../modules/nf-core/tabix/bgziptabix'
+include { HTSLIB_BGZIPTABIX    } from '../../../modules/nf-core/htslib/bgziptabix'
 
 // Please note this subworkflow requires the options for bcftools_view that are included in the nextflow.config
 workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
@@ -11,7 +11,6 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
     filter_with_filter_vep //    bool: should filter_vep be run
 
     main:
-    ch_versions = channel.empty()
     ch_tbi = channel.empty()
 
     // Since bcftools is likely much faster than filter_vep,
@@ -24,10 +23,9 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
             [],
             [],
         )
-        ch_versions = ch_versions.mix(BCFTOOLS_VIEW.out.versions)
 
         ch_vcf = BCFTOOLS_VIEW.out.vcf
-        ch_tbi = BCFTOOLS_VIEW.out.tbi
+        ch_tbi = BCFTOOLS_VIEW.out.index
     }
 
     if (filter_with_filter_vep) {
@@ -35,19 +33,21 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
         ENSEMBLVEP_FILTERVEP(
             ch_vcf,
             ch_filter_vep_feature_file.map { _meta, file -> file },
+            "vcf"
         )
 
-        TABIX_BGZIPTABIX(
-            ENSEMBLVEP_FILTERVEP.out.output
+        HTSLIB_BGZIPTABIX(
+            ENSEMBLVEP_FILTERVEP.out.output.map { meta, vcf -> [meta, vcf, [], []] },
+            "compress",
+            true,
+            "vcf"
         )
-        ch_versions = ch_versions.mix(TABIX_BGZIPTABIX.out.versions)
 
-        ch_vcf = TABIX_BGZIPTABIX.out.gz_index.map { meta, vcf, _tbi -> [meta, vcf] }
-        ch_tbi = TABIX_BGZIPTABIX.out.gz_index.map { meta, _vcf, tbi -> [meta, tbi] }
+        ch_vcf = HTSLIB_BGZIPTABIX.out.output
+        ch_tbi = HTSLIB_BGZIPTABIX.out.index
     }
 
     emit:
     vcf      = ch_vcf // channel: [ val(meta), path(vcf) ]
     tbi      = ch_tbi // channel: [ val(meta), path(tbi) ]
-    versions = ch_versions // channel: [ path(versions.yml) ]
 }

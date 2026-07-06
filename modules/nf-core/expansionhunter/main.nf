@@ -3,9 +3,9 @@ process EXPANSIONHUNTER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/expansionhunter:5.0.0--hf366f20_0' :
-        'biocontainers/expansionhunter:5.0.0--hf366f20_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/14e1d96665f934a98e569fc5a6fa237f98d3753eee2b6f60d0aea8ff9d44f406/data' :
+        'community.wave.seqera.io/library/expansionhunter:5.0.0--389ada7e191a4fba' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -17,7 +17,8 @@ process EXPANSIONHUNTER {
     tuple val(meta), path("*.vcf.gz")        , emit: vcf
     tuple val(meta), path("*.json.gz")       , emit: json
     tuple val(meta), path("*_realigned.bam") , emit: bam
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('expansionhunter'), eval("ExpansionHunter --version | head -1 | sed -n 's/^.*ExpansionHunter v//; s/]//p'"), topic: versions, emit: versions_expansionhunter
+    tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_bgzip
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,6 +31,7 @@ process EXPANSIONHUNTER {
     """
     ExpansionHunter \\
         ${args} \\
+        --threads ${task.cpus} \\
         --reads ${bam} \\
         --output-prefix ${prefix} \\
         --reference ${fasta} \\
@@ -38,11 +40,6 @@ process EXPANSIONHUNTER {
     bgzip --threads ${task.cpus} ${args2} ${prefix}.vcf
     bgzip --threads ${task.cpus} ${args2} ${prefix}.json
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | head -1 | sed 's/^.*ExpansionHunter v//')
-        bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //;s/Usage:.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +49,5 @@ process EXPANSIONHUNTER {
     echo "" | gzip > ${prefix}.json.gz
     touch ${prefix}_realigned.bam
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | head -1 | sed 's/^.*ExpansionHunter v//')
-        bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //;s/Usage:.*//')
-    END_VERSIONS
     """
 }

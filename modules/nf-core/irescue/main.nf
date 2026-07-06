@@ -3,9 +3,9 @@ process IRESCUE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/irescue:1.1.2--pyhdfd78af_0':
-        'biocontainers/irescue:1.1.2--pyhdfd78af_0' }"
+        'quay.io/biocontainers/irescue:1.1.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -17,7 +17,7 @@ process IRESCUE {
     tuple val(meta), path("${prefix}/counts")     , emit: counts
     tuple val(meta), path("${prefix}/irescue.log"), emit: log
     tuple val(meta), path("${prefix}/tmp")        , emit: tmp, optional: true
-    path "versions.yml"                           , emit: versions
+    tuple val("${task.process}"), val('irescue'), eval("irescue --version 2>&1 | sed '1!d ; s/IRescue //'"), emit: versions_irescue, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,15 +37,9 @@ process IRESCUE {
         --outdir $prefix \\
         --threads $task.cpus \\
         $args 2>| >(tee -a ${prefix}/irescue.log >&2)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        irescue: \$(irescue --version |& sed '1!d ; s/IRescue //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/counts
@@ -55,10 +49,5 @@ process IRESCUE {
         ${prefix}/counts/features.tsv \\
         ${prefix}/irescue.log
     gzip ${prefix}/counts/*
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        irescue: \$(irescue --version |& sed '1!d ; s/IRescue //')
-    END_VERSIONS
     """
 }

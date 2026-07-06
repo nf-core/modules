@@ -3,9 +3,9 @@ process KALLISTOBUSTOOLS_REF {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kb-python:0.28.2--pyhdfd78af_2' :
-        'biocontainers/kb-python:0.28.2--pyhdfd78af_2' }"
+        'quay.io/biocontainers/kb-python:0.28.2--pyhdfd78af_2' }"
 
     input:
     path fasta
@@ -13,19 +13,18 @@ process KALLISTOBUSTOOLS_REF {
     val  workflow_mode
 
     output:
-    path "versions.yml"   , emit: versions
     path "kb_ref_out.idx" , emit: index
     path "t2g.txt"        , emit: t2g
     path "cdna.fa"        , emit: cdna
     path "intron.fa"      , optional:true, emit: intron
     path "cdna_t2c.txt"   , optional:true, emit: cdna_t2c
     path "intron_t2c.txt" , optional:true, emit: intron_t2c
+    tuple val("${task.process}"), val('kallistobustools'), eval("kb --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+' | head -n1"), emit: versions_kallistobustools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     if (workflow_mode == "standard") {
         """
         kb \\
@@ -36,11 +35,6 @@ process KALLISTOBUSTOOLS_REF {
             --workflow $workflow_mode \\
             $fasta \\
             $gtf
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            kallistobustools: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
-        END_VERSIONS
         """
     } else {
         """
@@ -55,11 +49,6 @@ process KALLISTOBUSTOOLS_REF {
             --workflow $workflow_mode \\
             $fasta \\
             $gtf
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            kallistobustools: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
-        END_VERSIONS
         """
     }
 
@@ -69,11 +58,6 @@ process KALLISTOBUSTOOLS_REF {
         touch kb_ref_out.idx \\
         touch t2g.txt \\
         touch cdna.fa
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            kallistobustools: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
-        END_VERSIONS
         """
     } else {
         """
@@ -83,11 +67,6 @@ process KALLISTOBUSTOOLS_REF {
         touch intron.fa \\
         touch cdna_t2c.txt \\
         touch intron_t2c.txt
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            kallistobustools: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
-        END_VERSIONS
         """
     }
 }

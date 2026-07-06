@@ -3,9 +3,9 @@ process RIBOTRICER_DETECTORFS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ribotricer:1.3.3--pyhdfd78af_0':
-        'biocontainers/ribotricer:1.3.3--pyhdfd78af_0' }"
+        'quay.io/biocontainers/ribotricer:1.3.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -32,23 +32,20 @@ process RIBOTRICER_DETECTORFS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def strandedness_cmd = ''
 
-    switch(meta.strandedness) {
-        case "forward":
-            strandedness_cmd = "--stranded yes"
-            break
-        case "reverse":
-            strandedness_cmd = "--stranded reverse"
-            break
-        //
-        // Specifying unstranded seems broken - see
-        // https://github.com/smithlabcode/ribotricer/issues/153. Leaving it
-        // undefined works, though ribotricer may incorrectly infer
-        // strandednesss?
-        //
-        //case "unstranded":
-        //    strandedness_cmd = "--stranded no"
-        //    break
+    if (meta.strandedness == "forward") {
+        strandedness_cmd = "--stranded yes"
+    } else if (meta.strandedness == "reverse") {
+        strandedness_cmd = "--stranded reverse"
     }
+    //
+    // Specifying unstranded seems broken - see
+    // https://github.com/smithlabcode/ribotricer/issues/153. Leaving it
+    // undefined works, though ribotricer may incorrectly infer
+    // strandednesss?
+    //
+    //case "unstranded":
+    //    strandedness_cmd = "--stranded no"
+    //    break
     """
     ribotricer detect-orfs \\
         --bam $bam \\
@@ -64,7 +61,6 @@ process RIBOTRICER_DETECTORFS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_protocol.txt
