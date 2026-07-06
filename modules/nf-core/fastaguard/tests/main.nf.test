@@ -16,7 +16,7 @@ nextflow_process {
                 def fasta = file(workDir.resolve("pass.fa").toString())
                 fasta.text = [
                     ">clean",
-                    "ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT"
+                    ("ACGT" * 60)
                 ].join("\\n") + "\\n"
 
                 input[0] = [
@@ -43,7 +43,7 @@ nextflow_process {
                 def fasta = file(workDir.resolve("warn.fa").toString())
                 fasta.text = [
                     ">long",
-                    "ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT",
+                    ("ACGT" * 60),
                     ">tiny",
                     "ACGT"
                 ].join("\\n") + "\\n"
