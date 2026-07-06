@@ -1,0 +1,182 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "custom_orfcollapse"
+description: |
+  Collapse small ORFs that share an amino-acid sequence cluster into a single
+  catalogue entry. Pair with `custom/orfmerge` (coordinate-based catalogue),
+  `bedtools/getfasta` + `seqkit/translate` (AA FASTA keyed by orf_id), and
+  `mmseqs/easycluster` (AA clusters) upstream.
+
+  The coordinate-based merge in `custom/orfmerge` only groups ORFs that overlap
+  on the genome, so the same micropeptide encoded at several distinct,
+  non-overlapping loci (typically repetitive regions) survives as separate rows.
+  This adopts the peptide-level deduplication and 0.9 amino-acid-similarity
+  threshold of the GENCODE Ribo-seq ORF consolidation (Mudge et al. 2022,
+  Nat Biotechnol, doi:10.1038/s41587-022-01369-0; gencode-riboseqORFs
+  collapse_cutoff 0.9), implemented here with MMseqs2 sequence-identity
+  clustering rather than that tool's longest-shared-string / P-site-overlap
+  metric. Small ORFs (orf_class "smORF", i.e. aa_length <= 100) are clustered by
+  amino-acid identity upstream and this module folds each multi-member cluster
+  down to one representative.
+
+  Only smORF rows are collapsed; larger ORFs and transcript-anchored classes are
+  passed through untouched. Among the smORF members of a cluster the
+  representative is chosen by longest aa_length (ties broken by orf_id), so the
+  result does not depend on which sequence MMseqs2 labelled the cluster
+  representative. Catalogue row order is preserved; dropped members fold their
+  `called_by_<caller>` / `score_<caller>` evidence, `n_samples` / `samples`
+  recurrence and gene mappings into the survivor.
+keywords:
+  - orf
+  - ribo-seq
+  - catalogue
+  - smorf
+  - deduplication
+tools:
+  - "orfcollapse":
+      description: |
+        Python helper that folds small-ORF catalogue rows sharing an MMseqs2
+        amino-acid cluster into a single representative, merging cross-caller
+        provenance, cross-sample recurrence and gene mappings.
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/orfcollapse/main.nf"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map. Typically a cohort-level `[ id: 'cohort' ]`.
+    - bed12:
+        type: file
+        description: Merged ORF catalogue BED12 (output of `custom/orfmerge`).
+        pattern: "*.bed12"
+        ontologies:
+          - edam: http://edamontology.org/format_3586 # BED
+    - catalogue_tsv:
+        type: file
+        description: Merged ORF catalogue TSV (output of `custom/orfmerge`).
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - orf_to_gene_tsv:
+        type: file
+        description: ORF-to-gene mapping TSV (output of `custom/orfmerge`).
+        pattern: "*.orf_to_gene.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - aa_fasta:
+        type: file
+        description: |
+          Catalogue amino-acid FASTA keyed by orf_id (output of
+          `bedtools/getfasta -split -s -nameOnly` then `seqkit/translate`).
+        pattern: "*.fasta"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - cluster_tsv:
+        type: file
+        description: |
+          Two-column MMseqs2 cluster TSV (representative<TAB>member), output of
+          `mmseqs/easycluster` run on the catalogue AA FASTA.
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+output:
+  bed12:
+    - - meta:
+          type: map
+          description: Groovy Map matching the input meta.
+      - ${prefix}.bed12:
+          type: file
+          description: Deduplicated ORF catalogue as BED12 (genomic blocks).
+          pattern: "*.bed12"
+          ontologies:
+            - edam: http://edamontology.org/format_3586 # BED
+  catalogue_tsv:
+    - - meta:
+          type: map
+          description: Groovy Map matching the input meta.
+      - ${prefix}.tsv:
+          type: file
+          description: Deduplicated per-ORF catalogue table.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  orf_to_gene_tsv:
+    - - meta:
+          type: map
+          description: Groovy Map matching the input meta.
+      - ${prefix}.orf_to_gene.tsv:
+          type: file
+          description: ORF-to-gene mapping with collapsed members remapped to the survivor.
+          pattern: "*.orf_to_gene.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  multiqc:
+    - - meta:
+          type: map
+          description: Groovy Map matching the input meta.
+      - ${prefix}.mqc.tsv:
+          type: file
+          description: MultiQC custom-content TSV (per-class ORF counts, post-collapse).
+          pattern: "*.mqc.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  aa_fasta:
+    - - meta:
+          type: map
+          description: Groovy Map matching the input meta.
+      - ${prefix}.fasta:
+          type: file
+          description: Amino-acid FASTA of the surviving catalogue ORFs.
+          pattern: "*.fasta"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  consensus_bed12:
+    - - meta:
+          type: map
+          description: Groovy Map matching the input meta.
+      - ${prefix}.consensus.bed12:
+          type: file
+          description: |
+            Consensus view as BED12: the collapsed catalogue filtered to ORFs
+            supported by at least `--min-callers` distinct callers and recurring
+            in at least `--min-samples` samples (identical to the full collapsed
+            catalogue at the defaults of 1/1).
+          pattern: "*.consensus.bed12"
+          ontologies:
+            - edam: http://edamontology.org/format_3586 # BED
+  consensus_tsv:
+    - - meta:
+          type: map
+          description: Groovy Map matching the input meta.
+      - ${prefix}.consensus.tsv:
+          type: file
+          description: Consensus-filtered per-ORF table, same columns as the collapsed catalogue.
+          pattern: "*.consensus.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  consensus_orf_to_gene_tsv:
+    - - meta:
+          type: map
+          description: Groovy Map matching the input meta.
+      - ${prefix}.consensus.orf_to_gene.tsv:
+          type: file
+          description: ORF-to-gene mapping restricted to the consensus-filtered ORFs.
+          pattern: "*.consensus.orf_to_gene.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

@@ -14,7 +14,7 @@ process AUTHENTICT_DEAM2CONT {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    tuple val("${task.process}"), val('authentict'), eval("echo \$(AuthentiCT --version 2>&1)"), emit: versions_authentict, topic: versions
+    tuple val("${task.process}"), val('authentict'), eval("AuthentiCT --version"), emit: versions_authentict, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -n1 | sed 's/^.*samtools //'"), emit: versions_samtools, topic: versions
 
     when:
