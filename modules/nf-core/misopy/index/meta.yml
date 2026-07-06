@@ -2,87 +2,87 @@ name: misopy_index
 description: Build an indexed representation of a GFF for efficient retrieval of
   genes
 keywords:
-  - misopy
-  - index
-  - gff
-  - alternative splicing
+- misopy
+- index
+- gff
+- alternative splicing
 tools:
-  - "misopy":
-      description: Mixture of Isoforms model (MISO) for isoform quantitation using
-        RNA-Seq
-      homepage: https://github.com/yarden/MISO
-      documentation: https://miso.readthedocs.io/en/fastmiso/
-      tool_dev_url: https://github.com/yarden/MISO
-      doi: 10.1038/nmeth.1528
-      licence:
-        - "GPL v2"
-      identifier: biotools:misopy
+- "misopy":
+    description: Mixture of Isoforms model (MISO) for isoform quantitation using
+      RNA-Seq
+    homepage: https://github.com/yarden/MISO
+    documentation: https://miso.readthedocs.io/en/fastmiso/
+    tool_dev_url: https://github.com/yarden/MISO
+    doi: 10.1038/nmeth.1528
+    licence:
+    - "GPL v2"
+    identifier: biotools:misopy
 input:
+- - meta:
+      type: map
+      description: |
+        Groovy Map containing genome information
+        e.g. `[ id:'genome1' ]`
+  - gff3:
+      type: file
+      description: GFF3 file
+      pattern: "*.gff3"
+      ontologies:
+      - edam: "http://edamontology.org/format_1965"
+output:
+  miso_index:
   - - meta:
         type: map
         description: |
           Groovy Map containing genome information
           e.g. `[ id:'genome1' ]`
-    - gff3:
+    - index:
         type: file
-        description: GFF3 file
-        pattern: "*.gff3"
-        ontologies:
-          - edam: "http://edamontology.org/format_1965"
-output:
-  miso_index:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing genome information
-            e.g. `[ id:'genome1' ]`
-      - index:
-          type: file
-          description: Processed MISO index file
-          pattern: "*.{shelve}"
-          ontologies: []
+        description: Processed MISO index file
+        pattern: "*.{shelve}"
+        ontologies: []
   versions_python:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - python:
-          type: string
-          description: The name of the tool
-      - python --version 2>&1 | sed "s/Python //g":
-          type: eval
-          description: The expression to obtain the version of the tool
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - python:
+        type: string
+        description: The name of the tool
+    - python --version 2>&1 | sed "s/Python //g":
+        type: eval
+        description: The expression to obtain the version of the tool
   versions_misopy:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - misopy:
-          type: string
-          description: The name of the tool
-      - python -c "import pkg_resources; print(pkg_resources.get_distribution('misopy').version)":
-          type: eval
-          description: The expression to obtain the version of the tool
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - misopy:
+        type: string
+        description: The name of the tool
+    - python -c "import pkg_resources; print(pkg_resources.get_distribution('misopy').version)":
+        type: eval
+        description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - python:
-          type: string
-          description: The name of the tool
-      - python --version 2>&1 | sed "s/Python //g":
-          type: eval
-          description: The expression to obtain the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - misopy:
-          type: string
-          description: The name of the tool
-      - python -c "import pkg_resources; print(pkg_resources.get_distribution('misopy').version)":
-          type: eval
-          description: The expression to obtain the version of the tool
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - python:
+        type: string
+        description: The name of the tool
+    - python --version 2>&1 | sed "s/Python //g":
+        type: eval
+        description: The expression to obtain the version of the tool
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - misopy:
+        type: string
+        description: The name of the tool
+    - python -c "import pkg_resources; print(pkg_resources.get_distribution('misopy').version)":
+        type: eval
+        description: The expression to obtain the version of the tool
 authors:
-  - "@valentinoruggieri"
-  - "@piplus2"
+- "@valentinoruggieri"
+- "@piplus2"
 maintainers:
-  - "@piplus2"
+- "@piplus2"

@@ -1,6 +1,7 @@
 # Updating the docker container and making a new module release
 
-To update this tool : 2. Edit the Dockerfile in the following lines:
+To update this tool :
+2. Edit the Dockerfile in the following lines:
 
 ```diff
 - ARG NUMORPH_PREPROCESSING_VERSION="1.0.0"

@@ -35,7 +35,7 @@ process MEMOTE_REPORT {
     """
     export HOME=\${PWD}
     export COBRA_SOLVER=glpk_exact
-
+    
     touch ${prefix}.html
     """
 }

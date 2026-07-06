@@ -21,7 +21,7 @@ process RMARKDOWNNOTEBOOK {
     tuple val(meta), path("artifacts/*")        , emit: artifacts, optional: true
     tuple val(meta), path("session_info.log")   , emit: session_info
     tuple val("${task.process}"), val("rmarkdownnotebook"), eval("Rscript -e \"cat(paste(packageVersion('rmarkdown'), collapse='.'))\""), emit: versions_rmarkdownnotebook, topic: versions
-
+    
     when:
     task.ext.when == null || task.ext.when
 
