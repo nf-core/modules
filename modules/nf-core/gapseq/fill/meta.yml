@@ -46,6 +46,18 @@ output:
           description: Gap-filled metabolic model in RDS format
           pattern: "*-filled.RDS"
           ontologies: []
+  xml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*-filled.xml":
+          type: file
+          description: Gap-filled metabolic model in SBML XML format
+          pattern: "*-filled.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2585
   log:
     - - meta:
           type: map
@@ -79,6 +91,30 @@ topics:
           type: string
           description: The expression to obtain the version of the tool
 authors:
-  - "@copilot"
+  - "@brovolia"
 maintainers:
-  - "@copilot"
+  - "@brovolia"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/gapseq:2.1.0--4c3c0957c0119f60
+      build_id: bd-4c3c0957c0119f60_1
+      scan_id: sc-c00b3946e67c8a79_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/gapseq:2.1.0--c32b876ebb5e5f5b
+      build_id: bd-c32b876ebb5e5f5b_1
+      scan_id: sc-4e37209a42665a56_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/gapseq:2.1.0--2d31362fa54fb0b1
+      build_id: bd-2d31362fa54fb0b1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/8765d29d9128a4e47bcff3f2182362aacb6b4a1499ab774713fe34ce9e821e0b/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gapseq:2.1.0--860639694c942c89
+      build_id: bd-860639694c942c89_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/933e301b11c1ec1699da6382e9e35b0e4e31edb80763eb2fa1b69ad7d6d1e5c7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gapseq/fill/.conda-lock/linux_amd64-bd-c32b876ebb5e5f5b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/gapseq/fill/.conda-lock/linux_arm64-bd-4c3c0957c0119f60_1.txt

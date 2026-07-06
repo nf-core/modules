@@ -4,31 +4,31 @@ process RIKER_MULTI {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5bf9ec40db8ba058b6ff37a94ea398f37b766858b3e584016e93643f7dde9f63/data' :
-        'community.wave.seqera.io/library/riker:0.2.0--20857cea9478b433' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/62ce363fc85eaa178522adfc3ddbc4a145d7a4136981e060151886e34e7a55d5/data' :
+        'community.wave.seqera.io/library/riker:0.3.0--56fa17ae2be0828f' }"
 
     input:
-    tuple val(meta),  path(bam), path(bai), path(baits), path(targets)
+    tuple val(meta),  path(bam), path(bai), path(baits, stageAs: 'baits/*'), path(targets, stageAs: 'targets/*')
     tuple val(meta2), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("*.alignment-metrics.txt")             , optional: true, emit: alignment_metrics
-    tuple val(meta), path("*.base-distribution-by-cycle.txt")    , optional: true, emit: base_dist
-    tuple val(meta), path("*.mean-quality-by-cycle.txt")         , optional: true, emit: mean_qual
-    tuple val(meta), path("*.quality-score-distribution.txt")    , optional: true, emit: qual_dist
-    tuple val(meta), path("*.error-mismatch.txt")                , optional: true, emit: error_mismatch
-    tuple val(meta), path("*.error-overlap.txt")                 , optional: true, emit: error_overlap
-    tuple val(meta), path("*.error-indel.txt")                   , optional: true, emit: error_indel
-    tuple val(meta), path("*.gcbias-detail.txt")                 , optional: true, emit: gcbias_detail
-    tuple val(meta), path("*.gcbias-summary.txt")                , optional: true, emit: gcbias_summary
-    tuple val(meta), path("*.hybcap-metrics.txt")                , optional: true, emit: hybcap_metrics
-    tuple val(meta), path("*.hybcap-per-target.txt")             , optional: true, emit: hybcap_per_target
-    tuple val(meta), path("*.hybcap-per-base.txt*")              , optional: true, emit: hybcap_per_base
-    tuple val(meta), path("*.isize-metrics.txt")                 , optional: true, emit: isize_metrics
-    tuple val(meta), path("*.isize-histogram.txt")               , optional: true, emit: isize_histogram
-    tuple val(meta), path("*.wgs-metrics.txt")                   , optional: true, emit: wgs_metrics
-    tuple val(meta), path("*.wgs-coverage.txt")                  , optional: true, emit: wgs_coverage
-    tuple val(meta), path("*.pdf")                               , optional: true, emit: pdf
+    tuple val(meta), path("*.alignment-metrics.txt"),          emit: alignment_metrics, optional: true
+    tuple val(meta), path("*.base-distribution-by-cycle.txt"), emit: base_dist,         optional: true
+    tuple val(meta), path("*.mean-quality-by-cycle.txt"),      emit: mean_qual,         optional: true
+    tuple val(meta), path("*.quality-score-distribution.txt"), emit: qual_dist,         optional: true
+    tuple val(meta), path("*.error-mismatch.txt"),             emit: error_mismatch,    optional: true
+    tuple val(meta), path("*.error-overlap.txt"),              emit: error_overlap,     optional: true
+    tuple val(meta), path("*.error-indel.txt"),                emit: error_indel,       optional: true
+    tuple val(meta), path("*.gcbias-detail.txt"),              emit: gcbias_detail,     optional: true
+    tuple val(meta), path("*.gcbias-summary.txt"),             emit: gcbias_summary,    optional: true
+    tuple val(meta), path("*.hybcap-metrics.txt"),             emit: hybcap_metrics,    optional: true
+    tuple val(meta), path("*.hybcap-per-target.txt"),          emit: hybcap_per_target, optional: true
+    tuple val(meta), path("*.hybcap-per-base.txt*"),           emit: hybcap_per_base,   optional: true
+    tuple val(meta), path("*.isize-metrics.txt"),              emit: isize_metrics,     optional: true
+    tuple val(meta), path("*.isize-histogram.txt"),            emit: isize_histogram,   optional: true
+    tuple val(meta), path("*.wgs-metrics.txt"),                emit: wgs_metrics,       optional: true
+    tuple val(meta), path("*.wgs-coverage.txt"),               emit: wgs_coverage,      optional: true
+    tuple val(meta), path("*.pdf"),                            emit: pdf,               optional: true
     tuple val("${task.process}"), val('riker'), eval("riker --version 2>&1 | sed 's/riker //'") , topic: versions, emit: versions_riker
 
     when:

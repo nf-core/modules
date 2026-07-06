@@ -1,19 +1,25 @@
 {
-    "lift - cram": {
-        "content": [
-            [
-                "test.bam"
-            ],
-            [
-                "versions.yml:md5,331d0fec62acbb6e8366e836e7e15469"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
-        },
-        "timestamp": "2024-06-25T12:18:31.453331"
+   "lift - cram": {
+       "content": [
+           [
+               "test.bam"
+           ],
+           {
+               "versions_leviosam2": [
+                   [
+                       "LEVIOSAM2_LIFT",
+                       "leviosam2",
+                       "0.4.2"
+                   ]
+               ]
+           }
+    ],
+    "meta": {
+        "nf-test": "0.8.4",
+        "nextflow": "24.04.2"
     },
+    "timestamp": "2024-06-25T12:18:31.453331"
+},
     "lift - bam - stub": {
         "content": [
             {
@@ -27,7 +33,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,331d0fec62acbb6e8366e836e7e15469"
+                    [
+                        "LEVIOSAM2_LIFT",
+                        "leviosam2",
+                        "0.4.2"
+                    ]
                 ],
                 "bam": [
                     [
@@ -39,9 +49,13 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,331d0fec62acbb6e8366e836e7e15469"
+                    [
+                        "LEVIOSAM2_LIFT",
+                        "leviosam2",
+                        "0.4.2"
+                    ]
                 ]
-            }
+             }
         ],
         "meta": {
             "nf-test": "0.8.4",
@@ -54,9 +68,15 @@
             [
                 "test.bam"
             ],
-            [
-                "versions.yml:md5,331d0fec62acbb6e8366e836e7e15469"
-            ]
+            {
+               "versions_leviosam2": [
+                   [
+                    "LEVIOSAM2_LIFT",
+                    "leviosam2",
+                    "0.4.2"
+                   ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.8.4",
@@ -65,3 +85,5 @@
         "timestamp": "2024-06-25T12:18:17.99171"
     }
 }
+
+

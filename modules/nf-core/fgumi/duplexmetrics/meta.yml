@@ -1,0 +1,134 @@
+name: "fgumi_duplexmetrics"
+description: Collects a suite of metrics to QC duplex sequencing data
+keywords:
+  - UMIs
+  - QC
+  - bam
+  - duplex
+  - metrics
+tools:
+  - "fgumi":
+      description: "High-performance tools for UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://fgumi.readthedocs.io/"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence:
+        - "MIT"
+      identifier: biotools:fgumi
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: UMI-grouped BAM file (from fgumi group) in
+          template-coordinate order with MI tags
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - intervals:
+        type: file
+        description: Optional intervals file to restrict analysis (BED or Picard
+          interval list format)
+        pattern: "*.{bed,interval_list,txt}"
+        ontologies: []
+output:
+  family_sizes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.family_sizes.txt":
+          type: file
+          description: Metrics on the frequency of different types of families of
+            different sizes
+          pattern: "*.family_sizes.txt"
+          ontologies: []
+  duplex_family_sizes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.duplex_family_sizes.txt":
+          type: file
+          description: Metrics on the frequency of duplex tag families by the
+            number of observations from each strand
+          pattern: "*.duplex_family_sizes.txt"
+          ontologies: []
+  duplex_yield_metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.duplex_yield_metrics.txt":
+          type: file
+          description: Summary QC metrics produced using 5%, 10%, 15%...100% of
+            the data
+          pattern: "*.duplex_yield_metrics.txt"
+          ontologies: []
+  umi_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.umi_counts.txt":
+          type: file
+          description: Metrics on the frequency of observations of UMIs within
+            reads and tag families
+          pattern: "*.umi_counts.txt"
+          ontologies: []
+  pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.duplex_qc.pdf":
+          type: file
+          description: Optional plots generated from the metrics files (requires R
+            with ggplot2 and scales)
+          pattern: "*.duplex_qc.pdf"
+          ontologies: []
+  duplex_umi_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.duplex_umi_counts.txt":
+          type: file
+          description: Optional metrics on duplex UMI pairs (enabled with
+            --duplex-umi-counts, memory intensive)
+          pattern: "*.duplex_umi_counts.txt"
+          ontologies: []
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nf-core"
+maintainers:
+  - "@nf-core"

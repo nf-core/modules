@@ -3,15 +3,16 @@ process GAPSEQ_DOALL {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'community.wave.seqera.io/library/gapseq:2.0.1--5e0dffc1176c5fd2' :
-        'quay.io/biocontainers/gapseq:2.0.1--hdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/933e301b11c1ec1699da6382e9e35b0e4e31edb80763eb2fa1b69ad7d6d1e5c7/data'
+:         'community.wave.seqera.io/library/gapseq:2.1.0--c32b876ebb5e5f5b' }"
 
     input:
     tuple val(meta), path(fasta), path(medium)
 
     output:
     tuple val(meta), path("*.RDS")  , emit: model
+    tuple val(meta), path("*.xml")  , emit: xml
     tuple val(meta), path("*.tbl")  , emit: tbl
     tuple val(meta), path("*.fna")  , emit: fna      , optional: true
     tuple val(meta), path("*.log")  , emit: log      , optional: true
@@ -38,6 +39,7 @@ process GAPSEQ_DOALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_model-filled.RDS
+    touch ${prefix}_model-filled.xml
     touch ${prefix}_pathways.tbl
     touch ${prefix}_transporters.tbl
     touch ${prefix}.fna
