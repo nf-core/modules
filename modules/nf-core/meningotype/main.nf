@@ -12,7 +12,7 @@ process MENINGOTYPE {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("meningotype"), eval("meningotype --version 2>&1 | sed 's/^.*meningotype v//'"), emit: versions_meningotype, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,24 +22,14 @@ process MENINGOTYPE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     meningotype \\
-        $args \\
-        $fasta \\
+        ${args} \\
+        ${fasta} \\
         > ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        meningotype: \$( echo \$(meningotype --version 2>&1) | sed 's/^.*meningotype v//' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        meningotype: \$( echo \$(meningotype --version 2>&1) | sed 's/^.*meningotype v//' )
-    END_VERSIONS
     """
 }
