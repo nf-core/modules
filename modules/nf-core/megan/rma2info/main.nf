@@ -14,7 +14,7 @@ process MEGAN_RMA2INFO {
     output:
     tuple val(meta), path("*.txt.gz"), emit: txt
     tuple val(meta), path("*.megan") , emit: megan_summary, optional: true
-    tuple val("${task.process}"), val('megan'), eval("rma2info 2>&1 | sed -n 's/.*version \([^,]*\).*/\1/p'"), emit: versions_megan, topic: versions
+    tuple val("${task.process}"), val('megan'), eval("rma2info 2>&1 | sed -n 's/.*version \\([^,]*\\).*/\\1/p'"), emit: versions_megan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,7 +34,7 @@ process MEGAN_RMA2INFO {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.txt.gz
+    echo "" | gzip > ${prefix}.txt.gz
     touch ${prefix}.megan
     """
 }

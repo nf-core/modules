@@ -14,7 +14,7 @@ process MEGAN_DAA2INFO {
     output:
     tuple val(meta), path("*.txt.gz"), emit: txt_gz
     tuple val(meta), path("*.megan") , emit: megan, optional: true
-    tuple val("${task.process}"), val('megan'), eval("daa2info 2>&1 | sed -n 's/.*version \([^,]*\).*/\1/p'"), emit: versions_megan, topic: versions
+    tuple val("${task.process}"), val('megan'), eval("daa2info 2>&1 | sed -n 's/.*version \\([^,]*\\).*/\\1/p'"), emit: versions_megan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,7 +37,7 @@ process MEGAN_DAA2INFO {
     def megan_cmd = megan_summary ? "touch ${prefix}.megan" : ""
 
     """
-    echo | gzip > ${prefix}.txt.gz
+    echo "" | gzip > ${prefix}.txt.gz
     ${megan_cmd}
     """
 }
