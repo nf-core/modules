@@ -22,22 +22,20 @@ process FASTAGUARD {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: meta.id
-    def args = task.ext.args ?: '--profile assembly --gate pipeline'
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
     """
-    set +e
+    status=0
     fastaguard ${fasta} \
       ${args} \
       --out ${prefix}.fastaguard.html \
       --json ${prefix}.fastaguard.json \
       --tsv ${prefix}.fastaguard.tsv \
-      --multiqc ${prefix}.fastaguard_mqc.json
-    status=\$?
-    set -e
+      --multiqc ${prefix}.fastaguard_mqc.json || status=\$?
 
     printf "%s\\n" "\${status}" > ${prefix}.fastaguard.exit_code
 
-    if [ "\${status}" -eq 3 ]; then
+    if [ "\${status}" -ge 3 ]; then
       exit "\${status}"
     fi
     """
