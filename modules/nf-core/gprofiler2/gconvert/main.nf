@@ -25,7 +25,6 @@ process GPROFILER2_GCONVERT {
     def prefix = task.ext.prefix ?: meta.id
     """
     touch ${prefix}.gprofiler2.gconvert.tsv
-    touch ${prefix}.R_sessionInfo.log
 
     Rscript -e "nfcore.utils::process_end(
         packages = list('r-gprofiler2' = 'gprofiler2'),

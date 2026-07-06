@@ -75,7 +75,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    sanitizeOutput(process.out, unstableKeys:["session_info"]),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
