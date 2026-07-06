@@ -12,7 +12,7 @@ process METASPACE_DOWNLOAD {
     output:
     path "${dataset_id}_*.csv", optional: true, emit: results
     stdout                                      emit: log  // check meta.yml for see how to use!
-    path 'versions.yml'                       , emit: versions
+    path 'versions.yml'                       , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
