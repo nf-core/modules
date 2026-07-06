@@ -60,7 +60,7 @@ output:
       - megan:
           type: string
           description: The name of the tool
-      - "rma2info 2>&1 | sed -n 's/.*version \\([^,]*\\).*/\x01/p'":
+      - rma2info 2>&1 | sed -n 's/.*version \([^,]*\).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -72,7 +72,7 @@ topics:
       - megan:
           type: string
           description: The name of the tool
-      - "rma2info 2>&1 | sed -n 's/.*version \\([^,]*\\).*/\x01/p'":
+      - rma2info 2>&1 | sed -n 's/.*version \([^,]*\).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 

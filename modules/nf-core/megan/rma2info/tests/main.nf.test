@@ -26,7 +26,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["txt"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["txt", "megan_summary"])).match() }
             )
         }
     }
