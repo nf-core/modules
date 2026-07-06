@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "holodeck_mutate"
+description: Generate a VCF of random mutations from a reference genome with holodeck
+keywords:
+  - simulation
+  - vcf
+  - mutations
+  - variants
+  - benchmarking
+tools:
+  - "holodeck":
+      description: "Modern NGS read simulator written in Rust."
+      homepage: "https://github.com/fg-labs/holodeck"
+      documentation: "https://github.com/fg-labs/holodeck"
+      tool_dev_url: "https://github.com/fg-labs/holodeck"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: Reference genome FASTA index (.fai)
+        pattern: "*.fai"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf":
+          type: file
+          description: VCF of simulated mutations
+          pattern: "*.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+  versions_holodeck:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - holodeck:
+          type: string
+          description: The name of the tool
+      - holodeck --version | sed 's/^holodeck //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - holodeck:
+          type: string
+          description: The name of the tool
+      - holodeck --version | sed 's/^holodeck //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
