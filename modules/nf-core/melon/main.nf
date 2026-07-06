@@ -17,6 +17,7 @@ process MELON {
     tuple val(meta), path("${prefix}/*.json"), emit: json_output
     tuple val(meta), path("${prefix}.log")   , emit: log
     tuple val("${task.process}"), val("melon"), eval("melon -v"), emit: versions_melon, topic: versions
+    tuple val("${task.process}"), val("diamond"), eval("diamond version | sed 's/.* version //'"), emit: versions_diamond, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
