@@ -1,0 +1,134 @@
+name: riker_wgs
+description: |
+  Collect whole-genome coverage metrics from a BAM/CRAM file using riker.
+keywords:
+  - bam
+  - wgs
+  - coverage
+  - qc
+  - metrics
+tools:
+  - riker:
+      description: |
+        Fast Rust CLI toolkit for sequencing QC metrics. Ports key QC metrics tools
+        from Picard with cleaner output and better performance.
+      homepage: https://github.com/fulcrumgenomics/riker
+      documentation: https://github.com/fulcrumgenomics/riker
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: |
+          Coordinate-sorted aligned reads in BAM, CRAM, or SAM format. riker wgs
+          performs a single sequential (front-to-back) pass and finalizes each
+          contig as it is encountered, so records must be grouped by position.
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+    - bai:
+        type: file
+        description: |
+          Index for the BAM/CRAM file. Optional: riker wgs scans the input
+          sequentially and does not perform index-based region queries (intervals
+          are applied via an in-memory mask), so an index is not required. Pass
+          `[]` to skip.
+        pattern: "*.{bai,crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome FASTA file. Required.
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: Index for the reference FASTA file
+        pattern: "*.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3326" # FASTA index
+  - intervals:
+      type: file
+      description: |
+        Optional interval file (Picard IntervalList or BED) passed to riker's `-L`
+        option to restrict coverage collection to specific regions. Format is
+        auto-detected from the file contents (a leading `@` header means
+        IntervalList, 1-based closed; otherwise BED, 0-based half-open), not the
+        file extension. Analyzes all contigs when omitted.
+      pattern: "*.{interval_list,bed}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3003" # BED
+output:
+  metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.wgs-metrics.txt":
+          type: file
+          description: Tab-separated whole-genome coverage summary metrics
+          pattern: "*.wgs-metrics.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  coverage:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.wgs-coverage.txt":
+          type: file
+          description: Tab-separated per-depth coverage histogram
+          pattern: "*.wgs-coverage.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.wgs-coverage.pdf":
+          type: file
+          description: PDF plot of the coverage distribution
+          pattern: "*.wgs-coverage.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
+  versions_riker:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - riker:
+          type: string
+          description: The name of the tool
+      - riker --version 2>&1 | sed 's/riker //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - riker:
+          type: string
+          description: The name of the tool
+      - riker --version 2>&1 | sed 's/riker //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@emmcauley"
+maintainers:
+  - "@emmcauley"
