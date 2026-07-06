@@ -20,7 +20,7 @@ workflow BAM_APPLYBQSR {
 
     reads_applybqsr = GATK4_APPLYBQSR.out.bam
         .mix(GATK4_APPLYBQSR.out.cram)
-        .join(GATK4_APPLYBQSR.out.bai)
+        .join(GATK4_APPLYBQSR.out.bai, failOnMismatch: true)
         .branch { meta, _reads, _index ->
             single: meta.num_intervals <= 1
             multiple: meta.num_intervals > 1
@@ -36,7 +36,7 @@ workflow BAM_APPLYBQSR {
     // Unified output — bam or cram depending on what was produced
     recal_out = SAMTOOLS_MERGE.out.bam
         .mix(SAMTOOLS_MERGE.out.cram)
-        .join(SAMTOOLS_MERGE.out.index)
+        .join(SAMTOOLS_MERGE.out.index,failOnMismatch: true)
         .mix(reads_applybqsr.single)
         .map { meta, reads, index -> [meta - meta.subMap('num_intervals'), reads, index] }
 
