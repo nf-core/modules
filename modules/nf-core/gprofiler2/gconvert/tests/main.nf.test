@@ -33,7 +33,7 @@ nextflow_process {
                 """
                 input[0] = [
                     ['id':'gconvert_test'],
-                    file("${moduleDir}/tests/input_ids.tsv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/gene_set_analysis/gprofiler2_mmusculus_random_example.tsv", checkIfExists: true),
                     "ENSG"
                 ]
                 """
@@ -64,7 +64,7 @@ nextflow_process {
                 """
                 input[0] = [
                     ['id':'gconvert_test'],
-                    file("${moduleDir}/tests/input_ids.tsv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/gene_set_analysis/gprofiler2_mmusculus_random_example.tsv", checkIfExists: true),
                     "ENSG"
                 ]
                 """

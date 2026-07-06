@@ -4,8 +4,8 @@ process GPROFILER2_GCONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/r-gprofiler2:0.2.4--ada5695b0be8ddbc':
-        'community.wave.seqera.io/library/r-gprofiler2:0.2.4--c87811ab729aa1b3' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cbb3149e57b187cd63966a1e25bc71a07f9b965509f5c1ffcb81e071bc8a821a/data':
+        'community.wave.seqera.io/library/r-gprofiler2_r-nfcore.utils:b62ba45166a0c1ea' }"
 
     input:
     tuple val(meta), path(ids_tsv), val(target)
@@ -30,6 +30,7 @@ process GPROFILER2_GCONVERT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        r-nfcore.utils: \$(Rscript -e "cat(as.character(packageVersion('nfcore.utils')))")
         r-gprofiler2: \$(Rscript -e "cat(as.character(packageVersion('gprofiler2')))")
         gprofiler-data: \$(Rscript -e "cat(gprofiler2::get_version_info()[['gprofiler_version']])")
     END_VERSIONS
