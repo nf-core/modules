@@ -23,22 +23,7 @@ process GAPSEQ_FINDTRANSPORT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    gapseq_bin=\$(readlink -f \$(which gapseq))
-    gapseq_root=\$(dirname "\$gapseq_bin")
-
-    mkdir -p gapseq_runtime/dat
-    cp "\$gapseq_bin" gapseq_runtime/gapseq
-    cp -r "\$gapseq_root/src" gapseq_runtime/
-
-    while IFS= read -r -d '' directory; do
-        mkdir -p "gapseq_runtime/dat/\${directory#\$gapseq_root/dat/}"
-    done < <(find "\$gapseq_root/dat" -type d -print0)
-
-    while IFS= read -r -d '' file; do
-        ln -s "\$file" "gapseq_runtime/dat/\${file#\$gapseq_root/dat/}"
-    done < <(find "\$gapseq_root/dat" -type f -print0)
-
-    ./gapseq_runtime/gapseq \\
+    gapseq \\
         find-transport \\
         -b 200 \\
         -K ${task.cpus} \
