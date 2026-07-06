@@ -39,9 +39,9 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy map containing sparse GRM metadata
-            e.g. `[ id:'plink_simulated_sp' ]`
-            `meta.id` is set to the sparse GRM basename emitted by this module and can be used downstream as `--grm-sparse`.
+            Groovy map containing the unchanged input metadata
+            e.g. `[ id:'plink_simulated' ]`
+            The sparse GRM basename is represented by the emitted file names, typically `<prefix>_sp.grm.id` and `<prefix>_sp.grm.sp`.
       - "*_sp.grm.*":
           type: file
           description: Sparse GRM sidecar files

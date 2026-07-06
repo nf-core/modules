@@ -21,21 +21,21 @@ process GCTA_MAKEBKSPARSE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def dense_prefix = meta.id
-    meta = meta + [id: "${prefix}_sp"]
+    def sparse_prefix = "${prefix}_sp"
     """
     gcta \\
         --grm ${dense_prefix} \\
         --make-bK-sparse ${cutoff} \\
-        --out ${prefix}_sp \\
+        --out ${sparse_prefix} \\
         --thread-num ${task.cpus} \\
         ${args}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    meta = meta + [id: "${prefix}_sp"]
+    def sparse_prefix = "${prefix}_sp"
     """
-    touch ${prefix}_sp.grm.id
-    touch ${prefix}_sp.grm.sp
+    touch ${sparse_prefix}.grm.id
+    touch ${sparse_prefix}.grm.sp
     """
 }

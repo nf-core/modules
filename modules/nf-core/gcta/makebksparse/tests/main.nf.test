@@ -72,7 +72,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.sparse_grm_files.size() == 1 },
-                { assert process.out.sparse_grm_files.get(0).get(0).id == "contract_dense_sp" },
+                { assert process.out.sparse_grm_files.get(0).get(0).id == "contract_dense" },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -114,7 +114,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.sparse_grm_files.size() == 1 },
-                { assert process.out.sparse_grm_files.get(0).get(0).id == "stub_dense_sp" },
+                { assert process.out.sparse_grm_files.get(0).get(0).id == "stub_dense" },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
