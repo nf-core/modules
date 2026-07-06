@@ -13,10 +13,6 @@ nextflow_process {
     test("sarscov2 - bam") {
 
         when {
-            params {
-                module_suffix = "bam"
-            }
-
             process {
                 """
                 input[0] = [
@@ -33,7 +29,6 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true),
                 ]
                 input[2] = "bam"
-
                 """
             }
         }
@@ -65,9 +60,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true),
                 ]
-                input[2] = "bam"
-
-                 """
+                input[2] = "cram"
+                """
             }
         }
 
@@ -188,10 +182,6 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_suffix = "bam"
-            }
-
             process {
                 """
                 input[0] = [
