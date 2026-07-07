@@ -42,8 +42,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '../../mag/test_data/test_minigut_R1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '../../mag/test_data/test_minigut_R2.fastq.gz', checkIfExists: true),
                     ]
                 ]
                 input[1] = RGI_CARDANNOTATION.out.db
@@ -55,10 +55,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.findAll { key, val -> key.startsWith("versions") },
-                    file(process.out.tmp.get(0).get(1)).list().sort(),
-                    ).match() }
+                {
+                    def outDir = file(process.out.tsv[0][1][0]).parentFile
+
+                    def mappingFile = outDir.listFiles().find {
+                        it.name.endsWith(".gene_mapping_data.txt")
+                    }
+
+                    assert mappingFile != null : "No .gene_mapping_data.txt file found in ${outDir}"
+
+                    def sortedLines = mappingFile.readLines().sort()
+
+                    assert snapshot(sortedLines).match()
+                },
             )
         }
     }
