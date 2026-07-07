@@ -1,0 +1,121 @@
+nextflow_process {
+
+    name "Test Process LEAFCUTTER_DIFFERENTIALSPLICING"
+    script "../main.nf"
+    process "LEAFCUTTER_DIFFERENTIALSPLICING"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "leafcutter"
+    tag "leafcutter/differentialsplicing"
+    tag "leafcutter/clusterregtools"
+    tag "regtools"
+    tag "regtools/junctionsextract"
+
+    test("homo_sapiens - bam - differential splicing") {
+
+        config "./nextflow.config"
+
+        setup {
+            run("REGTOOLS_JUNCTIONSEXTRACT") {
+                script "../../../regtools/junctionsextract/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of(
+                        [
+                            [ id:'ctrl_rep1', single_end:false ],
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                        ],
+                        [
+                            [ id:'ctrl_rep2', single_end:false ],
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                        ],
+                        [
+                            [ id:'kd_rep1', single_end:false ],
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                        ],
+                        [
+                            [ id:'kd_rep2', single_end:false ],
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                        ]
+                    )
+                    input[1] = ''
+                    """
+                }
+            }
+
+            run("LEAFCUTTER_CLUSTERREGTOOLS") {
+                script "../../../leafcutter/clusterregtools/main.nf"
+                process {
+                    """
+                    input[0] = REGTOOLS_JUNCTIONSEXTRACT.out.junc
+                        .map { meta, junc -> junc }
+                        .collect()
+                        .map { junc_files -> [ [ id:'test_ds' ], junc_files ] }
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                def groups_content = '''ctrl_rep1\\tCONTROL
+ctrl_rep2\\tCONTROL
+kd_rep1\\tKNOCKDOWN
+kd_rep2\\tKNOCKDOWN
+'''
+                def groups_file = file("\${workDir}/groups_file.txt")
+                groups_file.text = groups_content
+
+                input[0] = LEAFCUTTER_CLUSTERREGTOOLS.out.numers
+                    .map { meta, counts -> [ meta, counts, groups_file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.cluster_significance,
+                    process.out.effect_sizes,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - differential splicing - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('test_perind.counts.gz'),
+                    file('groups_file.txt')
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.cluster_significance != null },
+                { assert process.out.effect_sizes != null }
+            )
+        }
+
+    }
+
+}
