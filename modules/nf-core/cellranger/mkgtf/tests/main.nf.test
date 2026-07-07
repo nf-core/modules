@@ -3,6 +3,7 @@ nextflow_process {
 
     name "Test Process CELLRANGER_MKGTF"
     script "../main.nf"
+    config "./nextflow.config"
     process "CELLRANGER_MKGTF"
 
     tag "modules"
@@ -25,9 +26,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(process.out).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -49,12 +48,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -62,9 +56,11 @@ nextflow_process {
     test("homo_sapiens - identical input output names - stub") {
 
         options "-stub"
-        config "./nextflow-collision.config"
 
         when {
+            params {
+                module_prefix = 'genome'
+            }
             process {
                 """
                 input[0] = [
@@ -77,9 +73,7 @@ nextflow_process {
 
         then {
             assert process.failed
-            assertAll(
-                { assert process.errorReport.contains("Input and output names are the same") }
-            )
+            assert process.errorReport.contains("Input and output names are the same")
         }
 
     }

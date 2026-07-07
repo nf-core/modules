@@ -31,22 +31,19 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(
-                        path( "${outputDir}/homo_sapiens_reference/fasta"                 ),
-                        path( "${outputDir}/homo_sapiens_reference/genes"                 ),
-                        path( "${outputDir}/homo_sapiens_reference/reference.json"        ),
-                        path( "${outputDir}/homo_sapiens_reference/star/SA"               ),
-                        path( "${outputDir}/homo_sapiens_reference/star/SAindex"          ),
-                        path( "${outputDir}/homo_sapiens_reference/star/Genome"           ),
-                        path( "${outputDir}/homo_sapiens_reference/star/geneInfo.tab"     ),
-                        path( "${outputDir}/homo_sapiens_reference/star/exonGeTrInfo.tab" ),
-                        path( "${outputDir}/homo_sapiens_reference/star/exonInfo.tab"     ),
-                        path( "${outputDir}/homo_sapiens_reference/star/sjdbList.out.tab" ),
-                        process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match()
-                }
-            )
+            assert snapshot(
+                process.out.findAll { key, val -> key.startsWith("versions") },
+                path("${outputDir}/homo_sapiens_reference/fasta"),
+                path("${outputDir}/homo_sapiens_reference/genes"),
+                path("${outputDir}/homo_sapiens_reference/reference.json"),
+                path("${outputDir}/homo_sapiens_reference/star/SA"),
+                path("${outputDir}/homo_sapiens_reference/star/SAindex"),
+                path("${outputDir}/homo_sapiens_reference/star/Genome"),
+                path("${outputDir}/homo_sapiens_reference/star/geneInfo.tab"),
+                path("${outputDir}/homo_sapiens_reference/star/exonGeTrInfo.tab"),
+                path("${outputDir}/homo_sapiens_reference/star/exonInfo.tab"),
+                path("${outputDir}/homo_sapiens_reference/star/sjdbList.out.tab"),
+            ).match()
         }
 
     }
@@ -73,12 +70,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
