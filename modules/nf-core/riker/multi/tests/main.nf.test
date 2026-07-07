@@ -19,11 +19,18 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    [],
-                    []
+                    [ id:'test', single_end:false ], // meta
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true), // bam
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true), // bai
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
+                    [], // hybcap_baits
+                    [], // hybcap_targets
+                    [], // rna_gene_model
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
                 ]
                 input[1] = [[],[],[]]
                 """
@@ -50,8 +57,15 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    [],
-                    []
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
+                    [], // hybcap_baits
+                    [], // hybcap_targets
+                    [], // rna_gene_model
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
                 ]
                 input[1] = [
                     [ id:'genome' ],
@@ -82,8 +96,15 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    [],
-                    []
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
+                    [], // hybcap_baits
+                    [], // hybcap_targets
+                    [], // rna_gene_model
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
                 ]
                 input[1] = [
                     [ id:'genome' ],
@@ -114,8 +135,15 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
-                    [],
-                    []
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
+                    [], // hybcap_baits
+                    [], // hybcap_targets
+                    [], // rna_gene_model
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
                 ]
                 input[1] = [
                     [ id:'genome' ],
@@ -146,8 +174,15 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/targets.interval_list', checkIfExists: true)
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true), // hybcap_baits
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/targets.interval_list', checkIfExists: true), // hybcap_targets
+                    [], // rna_gene_model
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
                 ]
                 input[1] = [
                     [ id:'genome' ],
@@ -178,8 +213,15 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    [],
-                    []
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
+                    [], // hybcap_baits
+                    [], // hybcap_targets
+                    [], // rna_gene_model
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
                 ]
                 input[1] = [
                     [ id:'genome' ],
@@ -210,8 +252,15 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    [],
-                    []
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
+                    [], // hybcap_baits
+                    [], // hybcap_targets
+                    [], // rna_gene_model
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
                 ]
                 input[1] = [
                     [ id:'genome' ],
@@ -242,8 +291,15 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/targets.interval_list', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/targets.interval_list', checkIfExists: true),
+                    [], // rna_gene_model
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
                 ]
                 input[1] = [
                     [ id:'genome' ],
@@ -273,9 +329,15 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true),
-                    []
+                    [], // hybcap_targets
+                    [], // rna_gene_model
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
                 ]
                 input[1] = [[],[],[]]
                 """
@@ -299,8 +361,15 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    [],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/targets.interval_list', checkIfExists: true)
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
+                    [], // hybcap_baits
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/targets.interval_list', checkIfExists: true),
+                    [], // rna_gene_model
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
                 ]
                 input[1] = [[],[],[]]
                 """
@@ -309,6 +378,40 @@ nextflow_process {
 
         then {
             assert process.failed
+        }
+    }
+
+    test("homo_sapiens - paired_end - bam - rna") {
+        when {
+            params {
+                module_args = '--tools rna'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.bam.bai', checkIfExists: true),
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
+                    [], // hybcap_baits
+                    [], // hybcap_targets
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gff3', checkIfExists: true),
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
+                ]
+                input[1] = [[],[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf"])).match() }
+            )
         }
     }
 
@@ -326,8 +429,15 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    [],
-                    []
+                    [], // error_vcf
+                    [], // error_vcf_idx
+                    [], // error_intervals
+                    [], // gcbias_exclude_intervals
+                    [], // hybcap_baits
+                    [], // hybcap_targets
+                    [], // rna_gene_model
+                    [], // rna_ribosomal_intervals
+                    []  // wgs_intervals
                 ]
                 input[1] = [[],[],[]]
                 """
