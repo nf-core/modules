@@ -114,13 +114,23 @@ nextflow_workflow {
 
     then {
         assertAll(
-                { assert workflow.success },
-                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            { assert workflow.success },
+            {
+                assert snapshot(
+                    workflow.out.recal_out.collect { meta, bamfile, index ->
+                        [
+                        bam(bamfile).getReadsMD5(),
+                        file(bamfile).name,
+                        file(index).name
+                        ]
+                    }
+                ).match()
+            }
             )
         }
     }
 
-        test("homo_sapiens - bam") {
+    test("homo_sapiens - bam") {
 
         when {
             params {
@@ -148,8 +158,18 @@ nextflow_workflow {
 
     then {
         assertAll(
-                { assert workflow.success },
-                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            { assert workflow.success },
+            {
+                assert snapshot(
+                    workflow.out.recal_out.collect { meta, bamfile, index ->
+                        [
+                        bam(bamfile).getReadsMD5(),
+                        file(bamfile).name,
+                        file(index).name
+                        ]
+                    }
+                ).match()
+            }
             )
         }
     }
