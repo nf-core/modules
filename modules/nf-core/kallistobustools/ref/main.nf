@@ -16,10 +16,10 @@ process KALLISTOBUSTOOLS_REF {
     tuple val(meta), path("kb_ref_out.idx") , emit: index
     path "t2g.txt"                          , emit: t2g
     path "cdna.fa"                          , emit: cdna
-    path "intron.fa"                        , optional:true, emit: intron
-    path "cdna_t2c.txt"                     , optional:true, emit: cdna_t2c
-    path "intron_t2c.txt"                   , optional:true, emit: intron_t2c
-    tuple val("${task.process}"), val('kallistobustools'), eval("kb --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+' | head -n1"), emit: versions_kallistobustools, topic: versions
+    path "intron.fa"                        , emit: intron, optional: true
+    path "cdna_t2c.txt"                     , emit: cdna_t2c, optional: true
+    path "intron_t2c.txt"                   , emit: intron_t2c, optional: true
+    tuple val("${task.process}"), val('kallistobustools'), eval("kb --version 2>&1 | sed -n 's/kb_python //p'"), emit: versions_kallistobustools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -29,10 +29,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match() },
-                { assert file(process.out.index.get(0).get(1)).exists() }
-            )
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
         }
     }
 
@@ -56,10 +53,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match() },
-                { assert file(process.out.index.get(0).get(1)).exists() }
-            )
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
         }
     }
 
@@ -85,9 +79,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
         }
     }
 
@@ -113,10 +105,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match() },
-                { assert file(process.out.index.get(0).get(1)).exists() }
-            )
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
         }
     }
 }
