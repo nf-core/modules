@@ -12,11 +12,7 @@ workflow BAM_APPLYBQSR {
     reads_interval = input
         .combine(intervals)
         .map { meta, reads_, index, recal, intervals_, num_intervals ->
-            [meta + [
-                num_intervals: num_intervals,
-                interval: intervals_.name
-                ],
-                reads_, index, recal, intervals_]
+            [meta + [num_intervals: num_intervals, interval: intervals_.name], reads_, index, recal, intervals_]
         }
 
     // RUN APPLYBQSR

@@ -41,10 +41,16 @@ nextflow_workflow {
                 }
             }
 
-    then {
-        assertAll(
+        then {
+            def fasta_base = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            def fasta = fasta_base + 'genomics/homo_sapiens/genome/genome.fasta'
+            assertAll(
                 { assert workflow.success },
-                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+                { assert snapshot(
+                    workflow.out.recal_out.collect { meta, reads, index ->
+                        [ file(reads).name + ':readsMD5,' + cram(reads, fasta).getReadsMD5(), file(index).name]
+                    }
+                ).match()}
             )
         }
     }
@@ -75,10 +81,16 @@ nextflow_workflow {
                 }
             }
 
-    then {
-        assertAll(
+        then {
+            def fasta_base = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            def fasta = fasta_base + 'genomics/homo_sapiens/genome/genome.fasta'
+            assertAll(
                 { assert workflow.success },
-                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+                { assert snapshot(
+                    workflow.out.recal_out.collect { meta, reads, index ->
+                        [ file(reads).name + ':readsMD5,' + cram(reads, fasta).getReadsMD5(), file(index).name]
+                    }
+                ).match()}
             )
         }
     }
@@ -112,20 +124,14 @@ nextflow_workflow {
                 }
             }
 
-    then {
-        assertAll(
-            { assert workflow.success },
-            {
-                assert snapshot(
-                    workflow.out.recal_out.collect { meta, bamfile, index ->
-                        [
-                        bam(bamfile).getReadsMD5(),
-                        file(bamfile).name,
-                        file(index).name
-                        ]
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.recal_out.collect { meta, reads, index ->
+                        [ file(reads).name + ':readsMD5,' + bam(reads).getReadsMD5(), file(index).name]
                     }
-                ).match()
-            }
+                ).match()}
             )
         }
     }
@@ -156,20 +162,14 @@ nextflow_workflow {
                 }
             }
 
-    then {
-        assertAll(
-            { assert workflow.success },
-            {
-                assert snapshot(
-                    workflow.out.recal_out.collect { meta, bamfile, index ->
-                        [
-                        bam(bamfile).getReadsMD5(),
-                        file(bamfile).name,
-                        file(index).name
-                        ]
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.recal_out.collect { meta, reads, index ->
+                        [ file(reads).name + ':readsMD5,' + bam(reads).getReadsMD5(), file(index).name]
                     }
-                ).match()
-            }
+                ).match()}
             )
         }
     }
