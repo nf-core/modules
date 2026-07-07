@@ -16,9 +16,15 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
-                input[2] = "homo_sapiens_reference"
+                input[0] = [
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 'homo_sapiens_reference'
                 """
             }
         }
@@ -52,9 +58,15 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = []
-                input[1] = []
-                input[2] = "homo_sapiens_reference"
+                input[0] = [
+                    [id: 'homo_sapiens'],
+                    []
+                ]
+                input[1] = [
+                    [id: 'homo_sapiens'],
+                    []
+                ]
+                input[2] = 'homo_sapiens_reference'
                 """
             }
         }

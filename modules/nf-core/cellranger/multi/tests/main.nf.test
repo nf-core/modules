@@ -19,7 +19,10 @@ nextflow_process {
             script "modules/nf-core/cellranger/mkgtf/main.nf"
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[0] = [
+                    [id: 'homo_sapiens_chr22'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -28,9 +31,12 @@ nextflow_process {
             script "modules/nf-core/cellranger/mkref/main.nf"
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[0] = channel.of([
+                    [id: 'homo_sapiens_chr22'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[1] = CELLRANGER_MKGTF.out.gtf
-                input[2] = 'homo_sapiens_chr22_reference'
+                input[2] = channel.of('homo_sapiens_chr22_reference')
                 """
             }
         }
@@ -720,7 +726,10 @@ nextflow_process {
                 script "modules/nf-core/cellranger/mkgtf/main.nf"
                 process {
                     """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/reference/genes_chr1_32292083_32686211.gtf', checkIfExists: true)
+                    input[0] = [
+                        [id: 'homo_sapiens_chr1'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/reference/genes_chr1_32292083_32686211.gtf', checkIfExists: true)
+                    ]
                     """
                 }
             }
@@ -729,9 +738,12 @@ nextflow_process {
                 script "modules/nf-core/cellranger/mkref/main.nf"
                 process {
                     """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/reference/genome_chr1_32292083_32686211.fa', checkIfExists: true)
+                    input[0] = channel.of([
+                        [id: 'homo_sapiens_chr1'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/reference/genome_chr1_32292083_32686211.fa', checkIfExists: true)
+                    ])
                     input[1] = CELLRANGER_MKGTF_CRISPR.out.gtf
-                    input[2] = 'homo_sapiens_chr1_32292083_32686211_reference'
+                    input[2] = channel.of('homo_sapiens_chr1_32292083_32686211_reference')
                     """
                 }
             }

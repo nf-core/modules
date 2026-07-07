@@ -19,7 +19,10 @@ nextflow_process {
             script "../../mkgtf/main.nf"
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[0] = [
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -27,9 +30,12 @@ nextflow_process {
             script "../../mkref/main.nf"
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[0] = channel.of([
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[1] = CELLRANGER_MKGTF.out.gtf
-                input[2] = "homo_sapiens_reference"
+                input[2] = channel.of('homo_sapiens_reference')
                 """
             }
         }

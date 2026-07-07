@@ -15,7 +15,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[0] = [
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -36,7 +39,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[0] = [
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -48,6 +54,31 @@ nextflow_process {
                     process.out,
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - identical input output names - stub") {
+
+        options "-stub"
+        config "./nextflow-collision.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Input and output names are the same") }
             )
         }
 
