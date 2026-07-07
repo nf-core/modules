@@ -28,7 +28,7 @@ process AARDVARK_COMPARE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def stratification = stratification_tsv && stratification_beds ? "--stratification ${stratification_tsv}" : ""
+    def stratification = stratification_tsv && stratification_beds ? "--stratifications ${stratification_tsv}" : ""
     """
     aardvark compare \\
         --threads $task.cpus \\
