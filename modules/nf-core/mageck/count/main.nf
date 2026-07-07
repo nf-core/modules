@@ -12,9 +12,9 @@ process MAGECK_COUNT {
     path(library)
 
     output:
-    tuple val(meta), path("*count.txt")           , emit: count
+    tuple val(meta), path("*count.txt")            , emit: count
     tuple val(meta), path("*.count_normalized.txt"), emit: norm
-    path "versions.yml"                            , emit: versions
+    tuple val("${task.process}"), val("mageck"), eval("mageck -v"), emit: versions_mageck, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,32 +22,22 @@ process MAGECK_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_file = ("$inputfile".endsWith(".fastq.gz")) ? "--fastq ${inputfile}" : "-k ${inputfile}"
-    def sample_label = ("$inputfile".endsWith(".fastq.gz") || "$inputfile".endsWith(".fq.gz")) ? "--sample-label ${meta.id}" : ''
+    def input_file = ("${inputfile}".endsWith(".fastq.gz")) ? "--fastq ${inputfile}" : "-k ${inputfile}"
+    def sample_label = ("${inputfile}".endsWith(".fastq.gz") || "${inputfile}".endsWith(".fq.gz")) ? "--sample-label ${meta.id}" : ''
 
     """
     mageck \\
         count \\
-        $args \\
-        -l $library \\
-        -n $prefix \\
-        $sample_label \\
-        $input_file \\
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mageck: \$(mageck -v)
-    END_VERSIONS
+        ${args} \\
+        -l ${library} \\
+        -n ${prefix} \\
+        ${sample_label} \\
+        ${input_file}
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.count.txt
     touch ${prefix}.count_normalized.txt
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mageck: \$(mageck -v)
-    END_VERSIONS
     """
 }

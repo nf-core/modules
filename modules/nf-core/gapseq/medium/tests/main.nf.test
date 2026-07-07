@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process GAPSEQ_MEDIUM"
+    script "../main.nf"
+    process "GAPSEQ_MEDIUM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gapseq"
+    tag "gapseq/medium"
+
+    test("gapseq medium prediction from draft and pathways") {
+
+        when {
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/test-draft.RDS', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/proteome-all-Pathways.tbl', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.medium[0][1]).exists() },
+                { with(path(process.out.medium[0][1]).csv) {
+                    assert columnCount == 3
+                    assert rowCount > 0
+                }},
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -17,8 +17,6 @@ workflow HOMER_GROSEQ {
 
     main:
 
-    ch_versions = channel.empty()
-
     ch_uniqmap = channel.empty()
 
     if (!uniqmap) {
@@ -26,7 +24,6 @@ workflow HOMER_GROSEQ {
     }
     else if (uniqmap.endsWith('.zip')) {
         ch_uniqmap = UNZIP([[:], uniqmap]).unzipped_archive.map { index -> index[1] }
-        ch_versions = ch_versions.mix(UNZIP.out.versions)
     }
     else {
         ch_uniqmap = uniqmap
@@ -57,5 +54,4 @@ workflow HOMER_GROSEQ {
     bed_graph = HOMER_MAKEUCSCFILE.out.bedGraph // channel: [ val(meta), [ tag_dir/*ucsc.bedGraph.gz ] ]
     peaks     = HOMER_FINDPEAKS.out.txt // channel: [ val(meta), [ *peaks.txt ] ]
     bed       = HOMER_POS2BED.out.bed // channel: [ val(meta), [ *peaks.txt ] ]
-    versions  = ch_versions // channel: [ versions.yml ]
 }
