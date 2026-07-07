@@ -9,7 +9,7 @@ process KALLISTOBUSTOOLS_COUNT {
 
     input:
     tuple val(meta), path(reads)
-    path  index
+    tuple val(meta2), path(index)
     path  t2g
     path  t1c
     path  t2c
