@@ -10,8 +10,8 @@ process AARDVARK_COMPARE {
     input:
     tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(regions_bed)
     tuple val(meta2), path(fasta)
-    tuple val(meta4), path(stratification_tsv)
-    tuple val(meta5), path(stratification_beds)
+    tuple val(meta3), path(stratification_tsv)
+    tuple val(meta4), path(stratification_beds)
 
     output:
     tuple val(meta), path('*.summary.tsv')                    , emit: summary
@@ -28,7 +28,7 @@ process AARDVARK_COMPARE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def stratification = stratification_tsv && stratification_beds ? "--stratifications ${stratification_tsv}" : ""
+    def stratification = stratification_tsv && stratification_beds ? "--stratification ${stratification_tsv}" : ""
     """
     aardvark compare \\
         --threads $task.cpus \\

@@ -27,12 +27,8 @@ nextflow_process {
                         [ id:'test2' ], // meta map
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                         ]
-                input[2] = [
-                        [ id:'test3' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
-                        ]
+                input[2] = [[],[]]
                 input[3] = [[],[]]
-                input[4] = [[],[]]
                 """
             }
         }
@@ -80,12 +76,8 @@ nextflow_process {
                         [ id:'test2' ], // meta map
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                         ]
-                input[2] = [
-                        [ id:'test3' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
-                        ]
-                input[3] = stratification_tsv
-                input[4] = [[id: 'stratification'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz', checkIfExists:true)]
+                input[2] = stratification_tsv
+                input[3] = [[id: 'stratification'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz', checkIfExists:true)]
                 """
             }
         }
@@ -129,12 +121,8 @@ nextflow_process {
                         [ id:'test2' ], // meta map
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                         ]
-                input[2] = [
-                        [ id:'test3' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
-                        ]
+                input[2] = [[],[]]
                 input[3] = [[],[]]
-                input[4] = [[],[]]
                 """
             }
         }

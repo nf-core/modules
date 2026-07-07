@@ -64,15 +64,6 @@ input:
           - edam: http://edamontology.org/format_1929 # FASTA
   - - meta3:
         type: map
-        description: Groovy Map containing reference fasta index information
-    - fasta_fai:
-        type: file
-        description: Index of the reference genome fasta file
-        pattern: "*.fai"
-        ontologies:
-          - edam: "http://edamontology.org/format_3326"
-  - - meta4:
-        type: map
         description: Groovy Map containing stratification TSV information
     - stratification_tsv:
         type: file
@@ -80,7 +71,7 @@ input:
         pattern: "*.tsv"
         ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  - - meta5:
+  - - meta4:
         type: map
         description: Groovy Map containing stratification BEDs information
     - stratification_beds:
