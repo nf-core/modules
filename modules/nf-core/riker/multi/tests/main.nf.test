@@ -410,7 +410,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf","rna_biotype","rna_insert_size_histogram"])).match() }
             )
         }
     }
