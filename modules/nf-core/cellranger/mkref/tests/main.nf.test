@@ -30,8 +30,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                         path( "${outputDir}/homo_sapiens_reference/fasta"                 ),
                         path( "${outputDir}/homo_sapiens_reference/genes"                 ),
@@ -72,8 +72,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out,
                     process.out.findAll { key, val -> key.startsWith("versions")}

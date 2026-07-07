@@ -233,8 +233,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta'  },
                     process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta.fai'  },
@@ -469,8 +469,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta'  },
                     process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta.fai'  },
@@ -702,8 +702,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta'  },
                     process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta.fai'  },
@@ -852,8 +852,8 @@ nextflow_process {
 
         then {
 
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.outs[0][1].findAll { file(it).name == 'metrics_summary.csv' },
                     process.out.outs[0][1].findAll { file(it).name == 'raw_feature_bc_matrix.h5' },
@@ -958,8 +958,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.outs[0][1].findAll {  file(it).name == 'metrics_summary.csv'  },
                     process.out.outs[0][1].findAll {  file(it).name == 'filtered_feature_bc_matrix.h5'  },
