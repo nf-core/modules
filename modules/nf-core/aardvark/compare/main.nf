@@ -10,7 +10,6 @@ process AARDVARK_COMPARE {
     input:
     tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(regions_bed)
     tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fasta_fai)
     tuple val(meta4), path(stratification_tsv)
     tuple val(meta5), path(stratification_beds)
 
