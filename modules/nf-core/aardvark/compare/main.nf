@@ -41,12 +41,9 @@ process AARDVARK_COMPARE {
         --output-debug $prefix \\
         $args
 
-    mv ${prefix}/summary.tsv              ./${prefix}.summary.tsv 
-    mv ${prefix}/truth.vcf.gz             ./${prefix}.truth.vcf.gz
-    mv ${prefix}/query.vcf.gz             ./${prefix}.query.vcf.gz
-    mv ${prefix}/cli_settings.json        ./${prefix}.cli_settings.json
-    mv ${prefix}/region_sequences.tsv.gz  ./${prefix}.region_sequences.tsv.gz
-    mv ${prefix}/region_summary.tsv.gz    ./${prefix}.region_summary.tsv.gz
+    for f in ${prefix}/*; do
+        mv "\$f" "${prefix}.\${f##*/}"
+    done
 
     """
 
