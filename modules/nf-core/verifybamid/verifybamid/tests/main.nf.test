@@ -35,7 +35,7 @@ nextflow_process {
                     process.out.depthsm,
                     process.out.selfrg,
                     process.out.selfsm,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
