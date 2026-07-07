@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip install --upgrade pip
 
-# the tool needs this 
+# the tool needs this
 RUN pip install git+https://github.com/keras-team/keras-contrib.git
 
 # Install the package
