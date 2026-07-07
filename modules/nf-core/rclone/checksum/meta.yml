@@ -1,0 +1,166 @@
+name: "rclone_checksum"
+description: Check files in a destination path against a checksum SUM file
+keywords:
+  - checksum
+  - md5
+  - sha1
+  - cloud
+  - sync
+tools:
+  - "rclone":
+      description: "Rclone is a command-line program to manage files on cloud storage."
+      homepage: "https://rclone.org/"
+      documentation: "https://rclone.org/commands/rclone_checksum/"
+      tool_dev_url: "https://github.com/rclone/rclone"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing checksum source information
+          e.g. [ id:'test' ]
+    - sumfile:
+        type: file
+        description: Checksum SUM file containing hashes and destination paths to verify.
+        pattern: "*.{md5,sha1,sha256,sum,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/data_3671"
+  - hash:
+      type: string
+      description: Hash type to check, for example MD5, SHA1, or SHA256.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing destination information
+          e.g. [ id:'test_dst' ]
+    - destination:
+        type: file
+        description: File or directory containing destination files to check against the SUM file.
+        pattern: ""
+        ontologies:
+          - edam: "http://edamontology.org/data_0006"
+output:
+  combined:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing checksum source information
+            e.g. [ id:'test' ]
+      - ${prefix}.combined.txt:
+          type: file
+          description: Combined report of matching, missing, differing, and error paths.
+          pattern: "*.combined.txt"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
+  differ:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing checksum source information
+            e.g. [ id:'test' ]
+      - ${prefix}.differ.txt:
+          type: file
+          description: Report of paths present in both source SUM file and destination but different.
+          pattern: "*.differ.txt"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
+  missing_on_dst:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing checksum source information
+            e.g. [ id:'test' ]
+      - ${prefix}.missing_on_dst.txt:
+          type: file
+          description: Report of paths present in the SUM file but missing from the destination.
+          pattern: "*.missing_on_dst.txt"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
+  missing_on_src:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing checksum source information
+            e.g. [ id:'test' ]
+      - ${prefix}.missing_on_src.txt:
+          type: file
+          description: Report of paths present in the destination but missing from the SUM file.
+          pattern: "*.missing_on_src.txt"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
+  match:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing checksum source information
+            e.g. [ id:'test' ]
+      - ${prefix}.match.txt:
+          type: file
+          description: Report of matching paths.
+          pattern: "*.match.txt"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
+  error:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing checksum source information
+            e.g. [ id:'test' ]
+      - ${prefix}.error.txt:
+          type: file
+          description: Report of paths with read or hash errors.
+          pattern: "*.error.txt"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
+  versions_rclone:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rclone:
+          type: string
+          description: The name of the tool
+      - rclone --version | sed -n '1s/^rclone v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rclone:
+          type: string
+          description: The name of the tool
+      - rclone --version | sed -n '1s/^rclone v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/rclone:1.74.3--351f8e39202b129a
+      build_id: bd-351f8e39202b129a_1
+      scan_id: sc-0e6358c70409ff39_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/rclone:1.74.3--2ef33c5b9132aa97
+      build_id: bd-2ef33c5b9132aa97_1
+      scan_id: sc-2cbce8a89ac463aa_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/rclone:1.74.3--af6486c6ac506f82
+      build_id: bd-af6486c6ac506f82_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5d/5dfd28fd0090c69f57c9bd93ea3235d8df194e8f269b5cb3027b6b59bff567d5/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/rclone:1.74.3--49a53709aa05d28d
+      build_id: bd-49a53709aa05d28d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/de06d232599f015aa253f63b84ba2e257bb542810dc11714b88ca9b4045b80ea/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rclone/checksum/.conda-lock/linux_amd64-bd-2ef33c5b9132aa97_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/rclone/checksum/.conda-lock/linux_arm64-bd-351f8e39202b129a_1.txt
