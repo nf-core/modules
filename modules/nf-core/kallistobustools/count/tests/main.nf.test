@@ -54,8 +54,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["count"]),
                     path(process.out.count.get(0).get(1)).list().findAll { file(it.toString()).name != "run_info.json" && file(it.toString()).name != "kb_info.json" },
@@ -94,8 +94,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
