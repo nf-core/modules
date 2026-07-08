@@ -17,7 +17,8 @@ tools:
       documentation: https://github.com/arpcard/rgi
       tool_dev_url: https://github.com/arpcard/rgi
       doi: "10.1093/nar/gkz935"
-      licence: ["https://card.mcmaster.ca/about"]
+      licence:
+        - "https://card.mcmaster.ca/about"
       identifier: ""
 input:
   - - meta:
@@ -27,10 +28,11 @@ input:
           e.g. [ id:'test', single_end:false ]
     - reads:
         type: file
-        description: Single-end or paired-end nucleotide sequences in FASTQ or FASTA format
+        description: Single-end or paired-end nucleotide sequences in FASTQ or
+          FASTA format
         pattern: "*.{fastq,fastq.gz,fq,fq.gz,fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
   - card:
       type: directory
       description: Directory containing the CARD database. This is expected to be
@@ -55,7 +57,7 @@ output:
           description: JSON formatted file with RGI results
           pattern: "*.{json}"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
   tsv:
     - - meta:
           type: map
@@ -85,7 +87,7 @@ output:
           type: string
           description: The tool name
       - rgi main --version:
-          type: string
+          type: eval
           description: The version string returned by the command
   versions_db:
     - - ${task.process}:
@@ -95,9 +97,18 @@ output:
           type: string
           description: The tool name
       - echo \$DB_VERSION:
-          type: string
+          type: eval
           description: The CARD database version string
-
+  versions_kma:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - kma:
+          type: string
+          description: The name of the tool
+      - kma -v:
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -107,8 +118,8 @@ topics:
           type: string
           description: The tool name
       - rgi main --version:
-          type: string
-          description: Command used to collect the version
+          type: eval
+          description: The version string returned by the command
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
@@ -116,9 +127,17 @@ topics:
           type: string
           description: The tool name
       - echo \$DB_VERSION:
+          type: eval
+          description: The CARD database version string
+    - - ${task.process}:
           type: string
-          description: Command used to collect the version
-
+          description: The process the versions were collected from
+      - kma:
+          type: string
+          description: The name of the tool
+      - kma -v:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vinisalazar"
 maintainers:

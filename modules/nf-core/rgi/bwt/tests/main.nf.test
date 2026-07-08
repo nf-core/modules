@@ -3,7 +3,7 @@ nextflow_process {
     name "Test Process RGI_BWT"
     script "../main.nf"
     process "RGI_BWT"
-
+    topics "versions"
     tag "modules"
     tag "modules_nfcore"
     tag "rgi"
@@ -34,7 +34,7 @@ nextflow_process {
         }
     }
 
-    test("rgi/bwt - homo_sapiens - test_fastq_gz") {
+    test("rgi/bwt - minigut - test_fastq_gz") {
 
         when {
             process {
@@ -44,7 +44,7 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + '../../mag/test_data/test_minigut_R1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + '../../mag/test_data/test_minigut_R2.fastq.gz', checkIfExists: true),
-                    ]
+                   ]
                 ]
                 input[1] = RGI_CARDANNOTATION.out.db
                 input[2] = []
@@ -66,13 +66,14 @@ nextflow_process {
 
                     def sortedLines = mappingFile.readLines().sort()
 
-                    assert snapshot(sortedLines).match()
+                    assert snapshot([output: sortedLines,
+				     versions: topics.versions]).match()
                 },
             )
         }
     }
 
-    test("rgi/bwt - homo_sapiens - test_fastq_gz - stub") {
+    test("rgi/bwt - minigut - test_fastq_gz - stub") {
 
         options "-stub"
 
@@ -82,8 +83,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '../../mag/test_data/test_minigut_R1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '../../mag/test_data/test_minigut_R2.fastq.gz', checkIfExists: true),
                     ]
                 ]
                 input[1] = RGI_CARDANNOTATION.out.db
