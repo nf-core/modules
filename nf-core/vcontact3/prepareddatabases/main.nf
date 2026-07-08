@@ -23,7 +23,7 @@ process VCONTACT3_PREPAREDDATABASES {
     """
     vcontact3 prepare_databases \\
         --get-version ${db_version} \\
-        --set-location "${prefix}"  \\
+        --set-location ${prefix}  \\
         ${args}
 
     cat <<EOF > versions.yml
