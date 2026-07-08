@@ -35,8 +35,8 @@ process VCONTACT3_PREPAREDDATABASES {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${prefix}"
-    touch "${prefix}/version.json"
+    mkdir -p ${prefix}
+    touch ${prefix}/version.json
     touch ${prefix}/stub_database.db
     """
 }
