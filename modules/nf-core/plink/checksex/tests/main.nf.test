@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process PLINK_CHECKSEX"
+    script "../main.nf"
+    process "PLINK_CHECKSEX"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink"
+    tag "plink/checksex"
+
+    // NOTE: the plink_simulated fixture only carries chr1 data (no X chromosome
+    // variants), so --check-sex hard-errors on it. This asserts that known,
+    // deterministic failure; on real data with X-chromosome genotypes the
+    // process runs and emits a `*.sexcheck` report as normal.
+    test("plink - checksex - binary") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.join('\n').contains("requires at least one polymorphic X chromosome") }
+            )
+        }
+    }
+
+    test("plink - checksex - binary - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
