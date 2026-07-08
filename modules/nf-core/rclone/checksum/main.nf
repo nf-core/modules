@@ -9,8 +9,8 @@ process RCLONE_CHECKSUM {
 
     input:
     tuple val(meta), path(sumfile)
-    val hash
     tuple val(meta2), path(destination, stageAs: 'destination/*')
+    val hash
 
     output:
     tuple val(meta), path("${prefix}.combined.txt")       , emit: combined      , optional: true
