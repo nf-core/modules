@@ -15,7 +15,7 @@ process FMHFUNPROFILER {
 
     output:
     tuple val(meta), path("*.csv"), emit: csv
-    tuple val("${task.process}"), val('fmh-funprofiler'), eval("pip show fmh-funprofiler | grep '^Version:' | sed 's/Version: //'"), topic: versions, emit: versions_fmhfunprofiler
+    tuple val("${task.process}"), val('fmh-funprofiler'), eval('python -c "import importlib.metadata; print(importlib.metadata.version(\'fmh-funprofiler\'))"'), topic: versions, emit: versions_fmhfunprofiler
 
     when:
     task.ext.when == null || task.ext.when
