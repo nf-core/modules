@@ -19,7 +19,6 @@ process HIPSTR {
 
     output:
     tuple val(meta), path("*.vcf.gz"),             emit: vcf
-    tuple val(meta), path("*.vcf.gz.tbi"),         emit: tbi
     tuple val(meta), path("*.log.txt"),            emit: log, optional: true
     tuple val(meta), path("*.viz.gz"),             emit: viz, optional: true
     tuple val(meta), path("*.stutter_models.txt"), emit: stutter, optional: true
@@ -97,8 +96,6 @@ process HIPSTR {
         $viz_arg \\
         $stutter_out_arg \\
         $args
-
-    tabix -f -p vcf ${prefix}.vcf.gz
     """
 
     stub:
@@ -106,7 +103,6 @@ process HIPSTR {
 
     """
     echo "" | gzip > ${prefix}.vcf.gz
-    touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.log.txt
     echo "" | gzip >  ${prefix}.viz.gz
     touch ${prefix}.stutter_models.txt

@@ -153,17 +153,6 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
-  tbi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample or cohort information
-            e.g. `[ id:'sample1' ]`
-      - "*.vcf.gz.tbi":
-          type: file
-          description: Tabix index for the output VCF file
-          pattern: "*.vcf.gz.tbi"
-          ontologies: []
   log:
     - - meta:
           type: map

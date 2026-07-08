@@ -56,7 +56,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    file(process.out.tbi[0][1]).name,
                     process.out.log,
                     process.out.viz,
                     process.out.stutter,
@@ -116,7 +115,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    file(process.out.tbi[0][1]).name,
                     process.out.log,
                     process.out.viz,
                     process.out.stutter,
@@ -166,14 +164,25 @@ nextflow_process {
                     """
                 }
             }
+
+            run("HTSLIB_BGZIPTABIX", alias: "TABIX_REF") {
+                script "modules/nf-core/htslib/bgziptabix/main.nf"
+
+                process {
+                    """
+                    input[0] = HIPSTR_REF.out.vcf.map { meta, vcf ->
+                        [ meta, vcf, [], [] ]
+                    }
+
+                    input[1] = 'compress'
+                    input[2] = true
+                    input[3] = 'vcf'
+                    """
+                }
+            }
         }
 
         when {
-            params {
-                hipstr_ref_args = '--def-stutter-model --min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired'
-                hipstr_args     = '--min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired'
-            }
-
             process {
                 """
                 bed = Channel.of('chr22\\t3000\\t3020\\t5\\t4\\tSTR1')
@@ -204,7 +213,7 @@ nextflow_process {
                 }
 
                 input[3] = HIPSTR_REF.out.vcf
-                    .join(HIPSTR_REF.out.tbi)
+                    .join(TABIX_REF.out.index)
                     .map { meta, ref_vcf, ref_tbi ->
                         [ [ id:'ref_vcf' ], ref_vcf, ref_tbi ]
                     }
@@ -222,7 +231,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    file(process.out.tbi[0][1]).name,
                     process.out.log,
                     process.out.viz,
                     process.out.stutter,
@@ -279,7 +287,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    file(process.out.tbi[0][1]).name,
                     file(process.out.log[0][1]).name,
                     process.out.viz,
                     process.out.stutter,
@@ -341,7 +348,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    file(process.out.tbi[0][1]).name,
                     process.out.log,
                     process.out.viz,
                     process.out.stutter,
@@ -400,7 +406,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    file(process.out.tbi[0][1]).name,
                     process.out.log,
                     process.out.viz,
                     process.out.stutter,
@@ -460,7 +465,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    file(process.out.tbi[0][1]).name,
                     process.out.log,
                     process.out.viz,
                     process.out.stutter,
