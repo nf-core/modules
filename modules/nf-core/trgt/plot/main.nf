@@ -28,28 +28,18 @@ process TRGT_PLOT {
 
     """
     trgt plot \\
-        $args \\
+        ${args} \\
         --genome ${fasta} \\
         --repeats ${repeats} \\
         --spanning-reads ${bam} \\
         --vcf ${vcf} \\
         --repeat-id ${repeat_id} \\
-        $output_arg
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trgt: \$(trgt --version |& sed '1!d ; s/trgt //')
-    END_VERSIONS
+        ${output_arg}
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_${repeat_id}"
     """
     touch ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trgt: \$(trgt --version |& sed '1!d ; s/trgt //')
-    END_VERSIONS
     """
 }
