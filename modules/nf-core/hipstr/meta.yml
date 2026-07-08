@@ -1,0 +1,227 @@
+name: "hipstr"
+description: Genotype and phase short tandem repeats using Illumina whole-genome
+  sequencing data
+keywords:
+  - str
+  - tandem repeats
+  - short tandem repeats
+  - genotyping
+  - bam
+  - cram
+  - vcf
+tools:
+  - "hipstr":
+      description: "Haplotype inference and phasing for short tandem repeats"
+      homepage: "https://hipstr-tool.github.io/HipSTR/"
+      documentation: "https://hipstr-tool.github.io/HipSTR/"
+      tool_dev_url: "https://github.com/tfwillems/HipSTR"
+      doi: "10.1038/nmeth.4267"
+      licence:
+        - "GPL-2.0"
+      identifier: biotools:hipstr
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample or cohort information
+          e.g. `[ id:'sample1' ]`
+    - alignment_files:
+        type: file
+        description: List of BAM/CRAM files to analyze
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+          - edam: http://edamontology.org/format_3462
+    - alignment_indices:
+        type: file
+        description: Index file(s) for the input BAM/CRAM file(s)
+        pattern: "*.{bai,crai}"
+        ontologies:
+          - edam: http://edamontology.org/format_3327
+          - edam: http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C192224
+    - alignment_file_list:
+        type: file
+        description: Optional file containing BAM/CRAM files to analyze, one per
+          line. Used with HipSTR `--bam-files`.
+        pattern: "*.txt"
+        ontologies:
+          - edam: http://edamontology.org/format_2330
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: |
+          FASTA file containing all of the relevant sequences for your organism.
+          When analyzing CRAMs, this FASTA file must match the file used for compression.
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+    - fai:
+        type: file
+        description: Optional FASTA index file
+        pattern: "*.fai"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ref_regions:
+        type: file
+        description: BED file containing coordinates for each STR region
+        pattern: "*.bed"
+        ontologies:
+          - edam: http://edamontology.org/format_3003
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ref_vcf:
+        type: file
+        description: |
+          Optional bgzipped input VCF file of a reference panel of STR genotypes.
+          VCF alleles will be used as candidate variants instead of finding candidates
+          in the BAMs/CRAMs.
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+          - edam: http://edamontology.org/format_3016
+    - ref_vcf_tbi:
+        type: file
+        description: Optional tabix index for the STR reference panel VCF
+        pattern: "*.vcf.gz.tbi"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - snp_vcf:
+        type: file
+        description: |
+          Optional bgzipped input VCF file containing phased SNP genotypes for the samples
+          to be genotyped. These SNPs will be used to physically phase STRs.
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+          - edam: http://edamontology.org/format_3016
+    - snp_vcf_tbi:
+        type: file
+        description: Optional tabix index for the phased SNP VCF
+        pattern: "*.vcf.gz.tbi"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  - stutter_in:
+      type: file
+      description: |
+        Optional input file containing stutter models.
+        Stutter models in this file will be used to genotype STRs.
+        By default, HipSTR learns stutter models via the EM algorithm.
+      pattern: "*.txt"
+      ontologies:
+        - edam: http://edamontology.org/format_2330
+  - fam:
+      type: file
+      description: |
+        Optional FAM file (PLINK sample information file) containing pedigree information for samples of interest.
+        The pedigree information is used to filter SNPs prior to phasing STRs.
+        By default, all SNPs are used.
+      pattern: "*.fam"
+      ontologies: []
+  - hap_chr_file:
+      type: file
+      description: Optional file containing chromosomes to treat as haploid, one
+        per line
+      pattern: "*.txt"
+      ontologies:
+        - edam: http://edamontology.org/format_2330
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample or cohort information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz":
+          type: file
+          description: Bgzipped VCF file to which STR genotypes are written
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample or cohort information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Tabix index for the output VCF file
+          pattern: "*.vcf.gz.tbi"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample or cohort information
+            e.g. `[ id:'sample1' ]`
+      - "*.log.txt":
+          type: file
+          description: Optional file containing HipSTR log information
+          pattern: "*.log.txt"
+          ontologies: []
+  viz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample or cohort information
+            e.g. `[ id:'sample1' ]`
+      - "*.viz.gz":
+          type: file
+          description: Optional file containing alignments for visualization with
+            VizAln or VizAlnPdf
+          pattern: "*.viz.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  stutter:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample or cohort information
+            e.g. `[ id:'sample1' ]`
+      - "*.stutter_models.txt":
+          type: file
+          description: Optional file containing stutter models learned by the EM
+            algorithm
+          pattern: "*.stutter_models.txt"
+          ontologies: []
+  versions_hipstr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hipstr:
+          type: string
+          description: The name of the tool
+      - HipSTR --version 2>&1 | sed 's/^HipSTR version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hipstr:
+          type: string
+          description: The name of the tool
+      - HipSTR --version 2>&1 | sed 's/^HipSTR version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@KondratievaOlesya"
+maintainers:
+  - "@KondratievaOlesya"

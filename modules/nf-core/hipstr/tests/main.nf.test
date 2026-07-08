@@ -1,0 +1,522 @@
+nextflow_process {
+
+    name "Test Process HIPSTR"
+    script "../main.nf"
+    process "HIPSTR"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hipstr"
+
+    test("homo_sapiens - bam - mode 1 de novo stutter") {
+
+        when {
+            params {
+                hipstr_args = '--min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired'
+            }
+
+            process {
+                """
+                bed = Channel.of('chr22\\t3000\\t3020\\t5\\t4\\tSTR1')
+                    .collectFile(name: 'regions.bed', newLine: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true)
+                    ],
+                    []
+                ]
+
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ]
+
+                input[2] = bed.map { ref_regions ->
+                    [ [ id:'regions' ], ref_regions ]
+                }
+
+                input[3] = [ [ id:'ref_vcf' ], [], [] ]
+                input[4] = [ [ id:'snp_vcf' ], [], [] ]
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    file(process.out.tbi[0][1]).name,
+                    process.out.log,
+                    process.out.viz,
+                    process.out.stutter,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam - mode 2 external stutter") {
+
+        when {
+            params {
+                hipstr_args = '--min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired'
+            }
+
+            process {
+                """
+                bed = Channel.of('chr22\\t3000\\t3020\\t5\\t4\\tSTR1')
+                    .collectFile(name: 'regions.bed', newLine: true)
+
+                stutter = Channel.of('chr22\\t2999\\t3020\\t0.9\\t0.001\\t0.001\\t0.9\\t0.001\\t0.001\\t5')
+                    .collectFile(name: 'stutter_models.txt', newLine: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true)
+                    ],
+                    []
+                ]
+
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ]
+
+                input[2] = bed.map { ref_regions ->
+                    [ [ id:'regions' ], ref_regions ]
+                }
+
+                input[3] = [ [ id:'ref_vcf' ], [], [] ]
+                input[4] = [ [ id:'snp_vcf' ], [], [] ]
+                input[5] = stutter
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    file(process.out.tbi[0][1]).name,
+                    process.out.log,
+                    process.out.viz,
+                    process.out.stutter,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam - mode 3 ref vcf") {
+
+        setup {
+            run("HIPSTR", alias: "HIPSTR_REF") {
+                script "modules/nf-core/hipstr/main.nf"
+
+                process {
+                    """
+                    bed = Channel.of('chr22\\t3000\\t3020\\t5\\t4\\tSTR1')
+                        .collectFile(name: 'regions.bed', newLine: true)
+
+                    input[0] = [
+                        [ id:'ref' ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
+                        ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true)
+                        ],
+                        []
+                    ]
+
+                    input[1] = [
+                        [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                    ]
+
+                    input[2] = bed.map { ref_regions ->
+                        [ [ id:'regions' ], ref_regions ]
+                    }
+
+                    input[3] = [ [ id:'ref_vcf' ], [], [] ]
+                    input[4] = [ [ id:'snp_vcf' ], [], [] ]
+                    input[5] = []
+                    input[6] = []
+                    input[7] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                hipstr_ref_args = '--def-stutter-model --min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired'
+                hipstr_args     = '--min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired'
+            }
+
+            process {
+                """
+                bed = Channel.of('chr22\\t3000\\t3020\\t5\\t4\\tSTR1')
+                    .collectFile(name: 'regions.bed', newLine: true)
+
+                stutter = Channel.of('chr22\\t2999\\t3020\\t0.9\\t0.001\\t0.001\\t0.9\\t0.001\\t0.001\\t5')
+                    .collectFile(name: 'stutter_models.txt', newLine: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true)
+                    ],
+                    []
+                ]
+
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ]
+
+                input[2] = bed.map { ref_regions ->
+                    [ [ id:'regions' ], ref_regions ]
+                }
+
+                input[3] = HIPSTR_REF.out.vcf
+                    .join(HIPSTR_REF.out.tbi)
+                    .map { meta, ref_vcf, ref_tbi ->
+                        [ [ id:'ref_vcf' ], ref_vcf, ref_tbi ]
+                    }
+
+                input[4] = [ [ id:'snp_vcf' ], [], [] ]
+                input[5] = stutter
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    file(process.out.tbi[0][1]).name,
+                    process.out.log,
+                    process.out.viz,
+                    process.out.stutter,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - cram - optional outputs") {
+
+        when {
+            params {
+                hipstr_args = '--min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired --log hipstr --viz-out alignments --stutter-out stutter'
+            }
+
+            process {
+                """
+                bed = Channel.of('chr22\\t3000\\t3020\\t5\\t4\\tSTR1')
+                    .collectFile(name: 'regions.bed', newLine: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists:true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists:true)
+                    ],
+                    []
+                ]
+
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ]
+
+                input[2] = bed.map { ref_regions ->
+                    [ [ id:'regions' ], ref_regions ]
+                }
+
+                input[3] = [ [ id:'ref_vcf' ], [], [] ]
+                input[4] = [ [ id:'snp_vcf' ], [], [] ]
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    file(process.out.tbi[0][1]).name,
+                    file(process.out.log[0][1]).name,
+                    process.out.viz,
+                    process.out.stutter,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam-files input") {
+
+        when {
+            params {
+                hipstr_args = '--def-stutter-model --min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired'
+            }
+
+            process {
+                """
+                bed = Channel.of('chr22\\t3000\\t3020\\t5\\t4\\tSTR1')
+                    .collectFile(name: 'regions.bed', newLine: true)
+
+                alignment_file_list = Channel.of('test.paired_end.sorted.bam')
+                    .collectFile(name: 'alignment_files.txt', newLine: true)
+
+                input[0] = alignment_file_list.map { file_list ->
+                    [
+                        [ id:'test' ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
+                        ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true)
+                        ],
+                        file_list
+                    ]
+                }
+
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ]
+
+                input[2] = bed.map { ref_regions ->
+                    [ [ id:'regions' ], ref_regions ]
+                }
+
+                input[3] = [ [ id:'ref_vcf' ], [], [] ]
+                input[4] = [ [ id:'snp_vcf' ], [], [] ]
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    file(process.out.tbi[0][1]).name,
+                    process.out.log,
+                    process.out.viz,
+                    process.out.stutter,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - multiple bam") {
+
+        when {
+            params {
+                hipstr_args = '--def-stutter-model --min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired'
+            }
+
+            process {
+                """
+                bed = Channel.of('chr22\\t3000\\t3020\\t5\\t4\\tSTR1')
+                    .collectFile(name: 'regions.bed', newLine: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists:true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists:true)
+                    ],
+                    []
+                ]
+
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ]
+
+                input[2] = bed.map { ref_regions ->
+                    [ [ id:'regions' ], ref_regions ]
+                }
+
+                input[3] = [ [ id:'ref_vcf' ], [], [] ]
+                input[4] = [ [ id:'snp_vcf' ], [], [] ]
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    file(process.out.tbi[0][1]).name,
+                    process.out.log,
+                    process.out.viz,
+                    process.out.stutter,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - hap chr file") {
+
+        when {
+            params {
+                hipstr_args = '--def-stutter-model --min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired'
+            }
+
+            process {
+                """
+                bed = Channel.of('chr22\\t3000\\t3020\\t5\\t4\\tSTR1')
+                    .collectFile(name: 'regions.bed', newLine: true)
+
+                hap_chr_file = Channel.of('chr22')
+                    .collectFile(name: 'hap_chroms.txt', newLine: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true)
+                    ],
+                    []
+                ]
+
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ]
+
+                input[2] = bed.map { ref_regions ->
+                    [ [ id:'regions' ], ref_regions ]
+                }
+
+                input[3] = [ [ id:'ref_vcf' ], [], [] ]
+                input[4] = [ [ id:'snp_vcf' ], [], [] ]
+                input[5] = []
+                input[6] = []
+                input[7] = hap_chr_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    file(process.out.tbi[0][1]).name,
+                    process.out.log,
+                    process.out.viz,
+                    process.out.stutter,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                hipstr_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true)
+                    ],
+                    []
+                ]
+
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ]
+
+                input[2] = [
+                    [ id:'regions' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists:true)
+                ]
+
+                input[3] = [ [ id:'ref_vcf' ], [], [] ]
+                input[4] = [ [ id:'snp_vcf' ], [], [] ]
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
