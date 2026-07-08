@@ -1,0 +1,141 @@
+nextflow_process {
+
+    name "Test Process LDAK_CALCKINS"
+    script "../main.nf"
+    process "LDAK_CALCKINS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ldak"
+    tag "ldak/thinpredictors"
+    tag "ldak/createthinweights"
+    tag "ldak/calckins"
+
+    setup {
+        run("LDAK_THINPREDICTORS") {
+            script "../../thinpredictors/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("LDAK_CREATETHINWEIGHTS") {
+            script "../../createthinweights/main.nf"
+            process {
+                """
+                input[0] = LDAK_THINPREDICTORS.out.thin_predictors
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - unweighted kinship") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_unweighted" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = "-0.25"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.ldak_grm.size() == 1 },
+                {
+                    def grmTuple = process.out.ldak_grm.get(0)
+                    def grmBin = path(grmTuple.get(1))
+                    assert grmBin.fileName.toString() == "plink_simulated_unweighted.grm.bin"
+                    assert path(grmTuple.get(2)).fileName.toString() == "plink_simulated_unweighted.grm.id"
+                    def commandText = grmBin.parent.resolve(".command.sh").text
+                    assert commandText.contains("--power -0.25")
+                    assert commandText.contains("--ignore-weights YES")
+                    assert !commandText.contains("--weights ")
+                },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - weighted kinship") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_weighted" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = LDAK_CREATETHINWEIGHTS.out.thin_weights
+                input[2] = "-1"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.ldak_grm.size() == 1 },
+                { assert process.out.versions_ldak6.size() == 1 },
+                {
+                    def grmTuple = process.out.ldak_grm.get(0)
+                    def grmBin = path(grmTuple.get(1))
+                    def commandText = grmBin.parent.resolve(".command.sh").text
+                    assert grmTuple.get(0).id == "plink_simulated_weighted"
+                    assert grmBin.fileName.toString() == "plink_simulated_weighted.grm.bin"
+                    assert path(grmTuple.get(2)).fileName.toString() == "plink_simulated_weighted.grm.id"
+                    assert path(grmTuple.get(3)).fileName.toString() == "plink_simulated_weighted.grm.details"
+                    assert path(grmTuple.get(4)).fileName.toString() == "plink_simulated_weighted.grm.adjust"
+                    assert commandText.contains("--power -1")
+                    assert commandText.contains("--weights ")
+                    assert !commandText.contains("--ignore-weights YES")
+                },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_stub" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = "-0.25"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
