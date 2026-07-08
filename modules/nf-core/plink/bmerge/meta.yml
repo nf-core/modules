@@ -1,0 +1,117 @@
+name: "plink_bmerge"
+description: Merge a second PLINK binary fileset into the first and write a new combined PLINK binary fileset
+keywords:
+  - plink
+  - bmerge
+  - merge
+  - fileset
+  - quality control
+tools:
+  - "plink":
+      description: "Whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner."
+      homepage: "https://www.cog-genomics.org/plink"
+      documentation: "https://www.cog-genomics.org/plink/1.9/data#merge"
+      tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
+      licence:
+        - "GPL"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: PLINK binary biallelic genotype table file
+        pattern: "*.{bed}"
+        ontologies: []
+    - bim:
+        type: file
+        description: PLINK extended MAP file
+        pattern: "*.{bim}"
+        ontologies: []
+    - fam:
+        type: file
+        description: PLINK sample information file
+        pattern: "*.{fam}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information for the second fileset
+          e.g. [ id:'test2', single_end:false ]
+    - bed2:
+        type: file
+        description: PLINK binary biallelic genotype table file to merge in
+        pattern: "*.{bed}"
+        ontologies: []
+    - bim2:
+        type: file
+        description: PLINK extended MAP file to merge in
+        pattern: "*.{bim}"
+        ontologies: []
+    - fam2:
+        type: file
+        description: PLINK sample information file to merge in
+        pattern: "*.{fam}"
+        ontologies: []
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: Merged PLINK binary biallelic genotype table file
+          pattern: "*.{bed}"
+          ontologies: []
+  bim:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bim":
+          type: file
+          description: Merged PLINK extended MAP file
+          pattern: "*.{bim}"
+          ontologies: []
+  fam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fam":
+          type: file
+          description: Merged PLINK sample information file
+          pattern: "*.{fam}"
+          ontologies: []
+  versions_plink:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - plink:
+          type: string
+          description: The name of the tool
+      - "plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - plink:
+          type: string
+          description: The name of the tool
+      - "plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"
