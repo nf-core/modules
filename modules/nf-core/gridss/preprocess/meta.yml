@@ -43,19 +43,11 @@ input:
         description: The reference fasta
         pattern: "*.{fa,fna,fasta}"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing reference information
     - fasta_fai:
         type: file
         description: The index of the reference fasta
         pattern: "*.fai"
         ontologies: []
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing reference information
     - bwa_index:
         type: directory
         description: The BWA index created from the reference fasta, will be

@@ -9,13 +9,11 @@ process GRIDSS_PREPROCESS {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fasta_fai)
-    tuple val(meta4), path(bwa_index)
+    tuple val(meta2), path(fasta), path(fasta_fai), path(bwa_index)
 
     output:
     tuple val(meta), path("*.gridss.working"), emit: preprocess_dir
-    tuple val("${task.process}"), val('gridss'), eval("CallVariants --version 2>&1 | sed 's/-gridss\$//'"), topic: versions, emit: versions_gridss
+    tuple val("${task.process}"), val('gridss'), eval("CallVariants --version 2>&1 | sed 's/-gridss//'"), topic: versions, emit: versions_gridss
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,7 +33,6 @@ process GRIDSS_PREPROCESS {
         --reference ${fasta} \\
         ${args} \\
         ${bam}
-
     """
 
     stub:
