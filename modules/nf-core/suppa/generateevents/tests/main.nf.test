@@ -29,7 +29,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = process.out.events.get(0).collect {
+            def eventNames = [process.out.events.get(0)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
@@ -63,7 +63,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = process.out.events.get(0).collect {
+            def eventNames = [process.out.events.get(0)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
@@ -95,7 +95,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = process.out.events.get(0).collect {
+            def eventNames = [process.out.events.get(0)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
@@ -127,7 +127,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = process.out.events.get(0).collect {
+            def eventNames = [process.out.events.get(0)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
@@ -159,7 +159,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = process.out.events.get(0).collect {
+            def eventNames = [process.out.events.get(0)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
@@ -191,7 +191,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = process.out.events.get(0).collect {
+            def eventNames = [process.out.events.get(0)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
