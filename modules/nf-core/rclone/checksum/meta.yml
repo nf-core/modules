@@ -28,9 +28,6 @@ input:
         pattern: "*.{md5,sha1,sha256,sum,txt}"
         ontologies:
           - edam: "http://edamontology.org/data_3671"
-  - hash:
-      type: string
-      description: Hash type to check, for example MD5, SHA1, or SHA256.
   - - meta2:
         type: map
         description: |
@@ -42,6 +39,9 @@ input:
         pattern: ""
         ontologies:
           - edam: "http://edamontology.org/data_0006"
+  - hash:
+      type: string
+      description: Hash type to check, for example MD5, SHA1, or SHA256.
 output:
   combined:
     - - meta:
