@@ -6,13 +6,7 @@ keywords:
   - antibiotic resistance
 tools:
   - rgi:
-      description: This tool provides a preliminary annotation of your DNA
-        sequence(s) based upon the data available in The Comprehensive Antibiotic
-        Resistance Database (CARD). Hits to genes tagged with Antibiotic
-        Resistance ontology terms will be highlighted. As CARD expands to include
-        more pathogens, genomes, plasmids, and ontology terms this tool will grow
-        increasingly powerful in providing first-pass detection of antibiotic
-        resistance associated genes. See license at CARD website.
+      description: This tool provides a preliminary annotation of your DNA sequence(s) based upon the data available in The Comprehensive Antibiotic Resistance Database (CARD). Hits to genes tagged with Antibiotic Resistance ontology terms will be highlighted. As CARD expands to include more pathogens, genomes, plasmids, and ontology terms this tool will grow increasingly powerful in providing first-pass detection of antibiotic resistance associated genes. See license at CARD website.
       homepage: https://card.mcmaster.ca
       documentation: https://github.com/arpcard/rgi
       tool_dev_url: https://github.com/arpcard/rgi
@@ -28,22 +22,17 @@ input:
           e.g. [ id:'test', single_end:false ]
     - reads:
         type: file
-        description: Single-end or paired-end nucleotide sequences in FASTQ or
-          FASTA format
+        description: Single-end or paired-end nucleotide sequences in FASTQ or FASTA format
         pattern: "*.{fastq,fastq.gz,fq,fq.gz,fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930
   - card:
       type: directory
-      description: Directory containing the CARD database. This is expected to be
-        the unarchived but otherwise unaltered download folder (see RGI
-        documentation for download instructions).
+      description: Directory containing the CARD database. This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
       pattern: "*/"
   - wildcard:
       type: directory
-      description: Directory containing the WildCARD database (optional). This is
-        expected to be the unarchived but otherwise unaltered download folder (see
-        RGI documentation for download instructions).
+      description: Directory containing the WildCARD database (optional). This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
       pattern: "*/"
 output:
   json:
@@ -143,3 +132,27 @@ authors:
 maintainers:
   - "@nickp60"
   - "@vinisalazar"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/rgi_kma:e905ecb8305e2609
+      build_id: bd-e905ecb8305e2609_1
+      scan_id: sc-99ef62328a33452b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/rgi_kma:fab5219836c1d880
+      build_id: bd-fab5219836c1d880_1
+      scan_id: sc-721854d12f10e7f7_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/rgi_kma:06c9375141c15d16
+      build_id: bd-06c9375141c15d16_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3f452c8e124ee58ab6b26442d15401c57d471cb753f53921570dc484df4e7620/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/rgi_kma:a6eaadaaffbeaf85
+      build_id: bd-a6eaadaaffbeaf85_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c8/c8e83b71b5dae10e1d771490c36f49d314718888c3cc8214350eb7f149090f0e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rgi/bwt/.conda-lock/linux_amd64-bd-e905ecb8305e2609_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/rgi/bwt/.conda-lock/linux_arm64-bd-fab5219836c1d880_1.txt

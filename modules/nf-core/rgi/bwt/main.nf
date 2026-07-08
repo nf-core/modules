@@ -3,9 +3,9 @@ process RGI_BWT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/rgi:6.0.8--pyh05cac1d_0'
-        : 'quay.io/biocontainers/rgi:6.0.8--pyh05cac1d_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3f452c8e124ee58ab6b26442d15401c57d471cb753f53921570dc484df4e7620/data'
+:         'community.wave.seqera.io/library/rgi_kma:e905ecb8305e2609' }"
 
     input:
     tuple val(meta), path(reads, arity: '1..2')
