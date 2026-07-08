@@ -1,0 +1,100 @@
+name: "plink_hwefilter"
+description: Remove variants that fail a Hardy-Weinberg equilibrium exact test and write a new PLINK binary fileset
+keywords:
+  - plink
+  - hardy-weinberg
+  - hwe
+  - filter
+  - quality control
+tools:
+  - "plink":
+      description: "Whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner."
+      homepage: "https://www.cog-genomics.org/plink"
+      documentation: "https://www.cog-genomics.org/plink/1.9/filter#hwe"
+      tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
+      licence:
+        - "GPL"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: PLINK binary biallelic genotype table file
+        pattern: "*.{bed}"
+        ontologies: []
+    - bim:
+        type: file
+        description: PLINK extended MAP file
+        pattern: "*.{bim}"
+        ontologies: []
+    - fam:
+        type: file
+        description: PLINK sample information file
+        pattern: "*.{fam}"
+        ontologies: []
+  - hwe:
+      type: float
+      description: Hardy-Weinberg equilibrium exact-test p-value threshold; variants below this value are removed
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: PLINK binary biallelic genotype table file after HWE filtering
+          pattern: "*.{bed}"
+          ontologies: []
+  bim:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bim":
+          type: file
+          description: PLINK extended MAP file after HWE filtering
+          pattern: "*.{bim}"
+          ontologies: []
+  fam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fam":
+          type: file
+          description: PLINK sample information file after HWE filtering
+          pattern: "*.{fam}"
+          ontologies: []
+  versions_plink:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - plink:
+          type: string
+          description: The name of the tool
+      - "plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - plink:
+          type: string
+          description: The name of the tool
+      - "plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"
