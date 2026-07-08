@@ -18,7 +18,7 @@ process MUDSKIPPER_INDEX {
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: ""
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     export RUST_BACKTRACE=full
     mudskipper \\
@@ -28,8 +28,9 @@ process MUDSKIPPER_INDEX {
     """
 
     stub:
-    prefix = task.ext.prefix ?: ""
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}/
+    touch ${prefix}/gtf.{exon,len,map,name}
     """
 }

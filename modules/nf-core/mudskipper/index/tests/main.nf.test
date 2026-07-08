@@ -25,12 +25,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["index"])).match() },
+                { assert snapshot(
+                    process.out.index.collect { meta, dir -> [meta, file(dir).list().sort()] },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
             )
         }
     }
 
-    test("homo_sapiens gtf") {
+    test("homo_sapiens gtf -- stub") {
         options "-stub"
         when {
             process {

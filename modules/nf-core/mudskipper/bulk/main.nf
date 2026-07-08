@@ -9,7 +9,7 @@ process MUDSKIPPER_BULK {
 
     input:
     tuple val(meta), path(bam)
-    path index
+    tuple val(meta2), path(index)
     path gtf
     val rad
 
