@@ -13,7 +13,7 @@ process TAXONKIT_NAME2TAXID {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('taxonkit'), eval("taxonkit version | sed 's/.* v//'"), emit: versions_taxonkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,26 +25,16 @@ process TAXONKIT_NAME2TAXID {
     """
     taxonkit \\
         name2taxid \\
-        $args \\
-        --data-dir $taxdb \\
-        --threads $task.cpus \\
+        ${args} \\
+        --data-dir ${taxdb} \\
+        --threads ${task.cpus} \\
         --out-file ${prefix}.tsv \\
-        ${name? "<<< '$name'": names_txt}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        taxonkit: \$( taxonkit version | sed 's/.* v//' )
-    END_VERSIONS
+        ${name? "<<< '${name}'": names_txt}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        taxonkit: \$( taxonkit version | sed 's/.* v//' )
-    END_VERSIONS
     """
 }
