@@ -38,11 +38,5 @@ process VCONTACT3_PREPAREDDATABASES {
     mkdir -p "${prefix}"
     touch "${prefix}/version.json"
     touch ${prefix}/stub_database.db
-    
-
-    cat <<EOF > versions.yml
-    "${task.process}": 
-        vcontact3: 3.1.6 
-    EOF
     """
 }
