@@ -41,8 +41,8 @@ nextflow_process {
                     file(process.out.labelled_truth[0][1]).name,
                     path(process.out.labelled_query[0][1]).vcf.summary,
                     file(process.out.labelled_query[0][1]).name,
-                    file(process.out.region_sequences[0][1]).name,
-                    file(process.out.region_summary[0][1]).name,
+                    process.out.region_sequences,
+                    process.out.region_summary,
                     process.out.summary,
                     process.out.runinfo,
                     process.out.findAll { key, val -> key.startsWith('versions') }
