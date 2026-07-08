@@ -15,11 +15,13 @@ workflow FASTQ_ALIGN_CHROMAP {
     ch_whitelist // channel (optional):  [ whitelist ]
     ch_chr_order // channel (optional):  [ chr_order ]
     ch_pairs_chr_order // channel (optional):  [ pairs_chr_order ]
-    update_readgroups // boolean (mandatory): true or false
+    update_readgroups // boolean (optional): true or false controls whether readgroups should be updated post alignment
 
     main:
 
     ch_bam = channel.empty()
+    def add_readgroups = update_readgroups ?: false
+
     //
     // Remap ch_fasta_fai to ch_fasta
     //
@@ -35,7 +37,7 @@ workflow FASTQ_ALIGN_CHROMAP {
     //
     PICARD_ADDORREPLACEREADGROUPS(CHROMAP_CHROMAP.out.bam, ch_fasta_fai)
 
-    if (update_readgroups == true) {
+    if (add_readgroups == true) {
         ch_bam = PICARD_ADDORREPLACEREADGROUPS.out.bam
     } else {
         ch_bam = CHROMAP_CHROMAP.out.bam
