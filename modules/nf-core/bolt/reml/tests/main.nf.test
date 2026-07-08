@@ -43,10 +43,13 @@ nextflow_process {
     test("homo_sapiens popgen - quantitative phenotype without covariates") {
         config "./nextflow.config"
         when {
+            params {
+                bolt_reml_args = '--phenoCol="Y1"'
+            }
             process {
                 """
                 generated_pc1_phenotype = GAWK_PC1_PHENOTYPE.out.output.map { meta, phenotype_file ->
-                    [[ id:'generated_pc1', pheno_col:'Y1' ], phenotype_file]
+                    [[ id:'generated_pc1' ], phenotype_file]
                 }
 
                 input[0] = [
@@ -57,7 +60,7 @@ nextflow_process {
                 ]
                 input[1] = generated_pc1_phenotype
                 input[2] = [
-                    [ id:'covariates_none', covariates_columns:'', covariates_cat_columns:'' ],
+                    [ id:'covariates_none' ],
                     []
                 ]
                 """
@@ -97,10 +100,13 @@ nextflow_process {
     test("homo_sapiens popgen - quantitative phenotype with quantitative and categorical covariates") {
         config "./nextflow.config"
         when {
+            params {
+                bolt_reml_args = '--phenoCol="Y1" --covarCol="Sex" --qCovarCol="Age" --qCovarCol="PC1" --qCovarCol="PC2"'
+            }
             process {
                 """
                 generated_pc1_phenotype = GAWK_PC1_PHENOTYPE.out.output.map { meta, phenotype_file ->
-                    [[ id:'generated_pc1', pheno_col:'Y1' ], phenotype_file]
+                    [[ id:'generated_pc1' ], phenotype_file]
                 }
 
                 input[0] = [
@@ -111,7 +117,7 @@ nextflow_process {
                 ]
                 input[1] = generated_pc1_phenotype
                 input[2] = [
-                    [ id:'covariates_mixed', covariates_columns:'Sex,Age,PC1,PC2', covariates_cat_columns:'Sex' ],
+                    [ id:'covariates_mixed' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
                 ]
                 """
@@ -158,6 +164,7 @@ nextflow_process {
         when {
             params {
                 enable_setup_modules = false
+                bolt_reml_args = '--phenoCol="QuantitativeTrait"'
             }
             process {
                 """
@@ -168,11 +175,11 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id:'stub_phenotype', pheno_col:'QuantitativeTrait' ],
+                    [ id:'stub_phenotype' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
                 ]
                 input[2] = [
-                    [ id:'covariates_none', covariates_columns:'', covariates_cat_columns:'' ],
+                    [ id:'covariates_none' ],
                     []
                 ]
                 """
@@ -199,10 +206,13 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                bolt_reml_args = '--phenoCol="Y1"'
+            }
             process {
                 """
                 generated_pc1_phenotype = GAWK_PC1_PHENOTYPE.out.output.map { meta, phenotype_file ->
-                    [[ id:'generated_pc1', pheno_col:'Y1' ], phenotype_file]
+                    [[ id:'generated_pc1' ], phenotype_file]
                 }
 
                 source_bed_location = params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed'
@@ -234,7 +244,7 @@ nextflow_process {
                 ]
                 input[1] = generated_pc1_phenotype
                 input[2] = [
-                    [ id:'covariates_none', covariates_columns:'', covariates_cat_columns:'' ],
+                    [ id:'covariates_none' ],
                     []
                 ]
                 """
