@@ -23,11 +23,11 @@ nextflow_process {
 				]
 				input[1] = [
 				    [id:"ref"],
-				    fasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
 				]
 				input[2] = [
 				    [id:"ref"],
-				    fai = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
 				]
 
                 """
@@ -41,7 +41,7 @@ nextflow_process {
 					process.out.json,
 					file(process.out.gt_vcf[0][1]).name, // nft-vcf says, 'Your input file has a malformed header'.
 					bam(process.out.bam[0][1]).getHeaderMD5(),
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith("versions")}
 					).match()
 				}
             )
@@ -61,11 +61,11 @@ nextflow_process {
 				]
 				input[1] = [
 				    [id:"ref"],
-				    fasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
 				]
 				input[2] = [
 				    [id:"ref"],
-				    fai = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
 				]
 
                 """
@@ -75,7 +75,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
