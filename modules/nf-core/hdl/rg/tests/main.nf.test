@@ -21,21 +21,22 @@ nextflow_process {
                     [id: "trait2"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/sumstats/trait2_canonical.tsv", checkIfExists: true)
                 )
-                input[2] = Channel.of([
-                    [id: "hdl_reference"],
+                def reference_dir = file("${workDir}/hdl_reference")
+                reference_dir.mkdirs()
+                for (f in [
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.1_toy.bim", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.1_toy.rda", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.2_toy.bim", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.2_toy.rda", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/toy_snp_counter.RData", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/toy_snp_list.RData", checkIfExists: true)
-                ])
-                .map { meta, files ->
-                    def reference_dir = file("${workDir}/hdl_reference")
-                    reference_dir.mkdirs()
-                    files.each { it.copyTo(file("${reference_dir}/${it.name}")) }
-                    [meta, reference_dir]
+                ]) {
+                    f.copyTo(reference_dir.resolve(f.name))
                 }
+                input[2] = tuple(
+                    [id: "hdl_reference"],
+                    reference_dir
+                )
                 """
             }
         }
@@ -61,21 +62,22 @@ nextflow_process {
                     [id: "trait2"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/sumstats/trait2_canonical.tsv", checkIfExists: true)
                 )
-                input[2] = Channel.of([
-                    [id: "hdl_reference"],
+                def reference_dir = file("${workDir}/hdl_reference")
+                reference_dir.mkdirs()
+                for (f in [
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.1_toy.bim", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.1_toy.rda", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.2_toy.bim", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/chr1.2_toy.rda", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/toy_snp_counter.RData", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference/toy_snp_list.RData", checkIfExists: true)
-                ])
-                .map { meta, files ->
-                    def reference_dir = file("${workDir}/hdl_reference")
-                    reference_dir.mkdirs()
-                    files.each { it.copyTo(file("${reference_dir}/${it.name}")) }
-                    [meta, reference_dir]
+                ]) {
+                    f.copyTo(reference_dir.resolve(f.name))
                 }
+                input[2] = tuple(
+                    [id: "hdl_reference"],
+                    reference_dir
+                )
                 """
             }
         }
