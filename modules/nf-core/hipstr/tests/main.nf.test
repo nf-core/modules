@@ -130,7 +130,9 @@ nextflow_process {
         setup {
             run("HIPSTR", alias: "HIPSTR_REF") {
                 script "modules/nf-core/hipstr/main.nf"
-
+                params {
+                    hipstr_args = '--def-stutter-model --min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired'
+                }
                 process {
                     """
                     bed = Channel.of('chr22\\t3000\\t3020\\t5\\t4\\tSTR1')
@@ -184,6 +186,9 @@ nextflow_process {
         }
 
         when {
+            params {
+                hipstr_args = ''
+            }
             process {
                 """
                 bed = Channel.of('chr22\\t3000\\t3020\\t5\\t4\\tSTR1')
