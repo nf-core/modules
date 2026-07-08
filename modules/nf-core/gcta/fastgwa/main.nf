@@ -28,13 +28,12 @@ process GCTA_FASTGWA {
     def genotype_suffix = bed_pgen.name.tokenize('.').last()
     def genotype_flag = genotype_suffix == 'pgen' ? '--pfile' : '--bfile'
     def genotype_prefix = bed_pgen.baseName
-    def grm_arg = sparse_grm_files ? "--grm-sparse ${meta5.id}" : ''
     def qcovar_arg = quant_covariates_file ? "--qcovar ${quant_covariates_file}" : ''
     def covar_arg = cat_covariates_file ? "--covar ${cat_covariates_file}" : ''
     """
     gcta \\
         ${genotype_flag} ${genotype_prefix} \\
-        ${grm_arg} \\
+        --grm-sparse ${meta5.id} \\
         --fastGWA-mlm \\
         --pheno ${phenotype_file} \\
         ${qcovar_arg} \\

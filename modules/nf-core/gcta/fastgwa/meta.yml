@@ -78,10 +78,10 @@ input:
         description: |
           Groovy map containing sparse GRM metadata
           e.g. `[ id:'plink_simulated_sp' ]`
-          Used when sparse GRM files are supplied
+          Used as the sparse GRM basename for `--grm-sparse` when sparse GRM files are supplied
     - sparse_grm_files:
         type: file
-        description: Sparse GRM sidecar files, pass `[]` when absent
+        description: Sparse GRM sidecar files
         pattern: "*.grm.{id,sp}"
         ontologies: []
 output:

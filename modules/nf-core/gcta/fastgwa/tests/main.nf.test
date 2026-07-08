@@ -127,7 +127,10 @@ nextflow_process {
                 input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { generated_meta, covariates_file ->
                     [[ id:"plink_simulated" ], covariates_file]
                 }
-                input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files
+                input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_files ->
+                    sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
+                    [[ id:sparse_grm_id.name - '.grm.id' ], sparse_grm_files]
+                }
                 """
             }
         }
@@ -175,7 +178,10 @@ nextflow_process {
                 input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { generated_meta, covariates_file ->
                     [[ id:"plink_simulated" ], covariates_file]
                 }
-                input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files
+                input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_files ->
+                    sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
+                    [[ id:sparse_grm_id.name - '.grm.id' ], sparse_grm_files]
+                }
                 """
             }
         }
@@ -217,7 +223,8 @@ nextflow_process {
                     [[ id:"plink_simulated" ], covariates_file]
                 }
                 input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_files ->
-                    [meta, sparse_grm_files]
+                    sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
+                    [[ id:sparse_grm_id.name - '.grm.id' ], sparse_grm_files]
                 }
                 """
             }
@@ -261,7 +268,10 @@ nextflow_process {
                 }
                 input[2] = [[ id:"plink_simulated" ], []]
                 input[3] = [[ id:"plink_simulated" ], []]
-                input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files
+                input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_files ->
+                    sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
+                    [[ id:sparse_grm_id.name - '.grm.id' ], sparse_grm_files]
+                }
                 """
             }
         }
@@ -338,7 +348,10 @@ nextflow_process {
                 }
                 input[2] = [[ id:"plink_simulated" ], []]
                 input[3] = [[ id:"plink_simulated" ], []]
-                input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files
+                input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_files ->
+                    sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
+                    [[ id:sparse_grm_id.name - '.grm.id' ], sparse_grm_files]
+                }
                 """
             }
         }
