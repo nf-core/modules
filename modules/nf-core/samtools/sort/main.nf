@@ -1,7 +1,7 @@
 process SAMTOOLS_SORT {
     tag "${meta.id}"
     label 'process_medium'
-    ext prefix: "${meta.id}", args: '', when: true
+    ext prefix: "${meta.id}", args: ''
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -21,7 +21,7 @@ process SAMTOOLS_SORT {
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when: 
-    task.ext.when
+    task.ext.when == null || task.ext.when
 
     script:
     extension = task.ext.args.contains("--output-fmt sam")
