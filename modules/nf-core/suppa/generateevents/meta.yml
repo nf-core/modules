@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "suppa_generateevents"
+description: "Generates alternative splicing events from a GTF file using SUPPA."
+keywords:
+  - suppa
+  - alternative splicing
+  - genomics
+tools:
+  - "suppa":
+      description: "Fast, accurate, and uncertainty-aware differential splicing analysis across multiple conditions."
+      homepage: "https://github.com/comprna/SUPPA"
+      documentation: "https://github.com/comprna/SUPPA"
+      tool_dev_url: "https://github.com/comprna/SUPPA"
+      doi: "10.1186/s13059-018-1417-1"
+      licence: ["MIT"]
+      identifier: biotools:suppa
+
+input:
+  - gtf:
+      type: file
+      description: GTF file
+      pattern: "*.gtf"
+      ontologies:
+        - edam: http://edamontology.org/format_3475
+output:
+  events:
+    - "events.*":
+        type: file
+        description: Alternative splicing events
+        pattern: "events.*"
+  events_type:
+    - "events_*.*":
+        type: file
+        description: Alternative splicing events of a specific type
+        pattern: "events_*.*"
+        onthologies: []
+output:
+  events:
+    - "events*.*":
+        type: file
+        description: Alternative splicing events
+        pattern: "events*.*"
+        ontologies: []
+  events_type:
+    - "events_*.*":
+        type: file
+        description: Alternative splicing events of a specific type
+        pattern: "events_*.*"
+        ontologies: []
+  versions_suppa:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - suppa:
+          type: string
+          description: The name of the tool
+      - "suppa.py -v | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - suppa:
+          type: string
+          description: The name of the tool
+      - suppa.py -v | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lathikaa"
+maintainers:
+  - "@piplus2"
