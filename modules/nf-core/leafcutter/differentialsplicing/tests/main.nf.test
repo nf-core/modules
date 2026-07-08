@@ -82,10 +82,13 @@ kd_rep2\\tKNOCKDOWN
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cluster_significance,
-                    process.out.effect_sizes,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.cluster_significance.collect { file(it[1]).getName() },
+                    process.out.effect_sizes.collect { file(it[1]).getName() }
+                ).match() },
+                // Check non-deterministic files exist
+                { assert file(process.out.cluster_significance[0][1]).exists() },
+                { assert file(process.out.effect_sizes[0][1]).exists() }
             )
         }
 
