@@ -1,0 +1,78 @@
+name: "fmhfunprofiler"
+description: Functionally profile metagenomic samples using FracMinHash sketches against KEGG database references.
+keywords:
+  - metagenomics
+  - functional profiling
+  - FracMinHash
+  - sourmash
+  - kegg
+tools:
+  - "fmhfunprofiler":
+      description: "fmh-funprofiler is a pipeline that leverages FracMinHash (implemented in sourmash) to functionally profile metagenomic samples, offering a faster and more memory-efficient alternative to alignment-based methods."
+      homepage: "https://github.com/KoslickiLab/fmh-funprofiler"
+      documentation: "https://github.com/KoslickiLab/fmh-funprofiler"
+      tool_dev_url: "https://github.com/KoslickiLab/fmh-funprofiler"
+      doi: ""
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - metagenome:
+        type: file
+        description: Input metagenomic sequences in FASTA or FASTQ format (can be compressed)
+        pattern: "*.{fasta,fastq,fa,fq,fasta.gz,fastq.gz,fa.gz,fq.gz}"
+  - - ko_sketch:
+        type: file
+        description: Sourmash signature reference sketch or Sequence Bloom Tree (SBT) of KEGG KOs
+        pattern: "*.{sig,sig.zip,sbt.zip}"
+  - - ksize:
+        type: integer
+        description: The k-mer size to use for the protein sequence sketch (typically 7, 11, or 15)
+  - - scaled:
+        type: integer
+        description: The FracMinHash scale factor (e.g., 1000)
+
+output:
+  - csv:
+      - - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. `[ id:'sample1', single_end:false ]`
+        - "*.csv":
+            type: file
+            description: The main functional abundance profile matrix detailing KEGG Orthology (KO) counts
+            pattern: "*.csv"
+  - biom:
+      - - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. `[ id:'sample1', single_end:false ]`
+        - "*.biom":
+            type: file
+            description: Optional BIOM-formatted table mapping KO functional abundance profiles
+            pattern: "*.biom"
+  - versions:
+      - - versions.yml:
+            type: file
+            description: File containing software versions
+            pattern: "versions.yml"
+
+topics:
+  - - metagenomics:
+        type: string
+        description: Study of genetic material recovered directly from environmental samples
+  - - functional_genomics:
+        type: string
+        description: Field of molecular biology that attempts to describe gene functions and interactions
+
+authors:
+  - "@miraep8"
+maintainers:
+  - "@miraep8"
