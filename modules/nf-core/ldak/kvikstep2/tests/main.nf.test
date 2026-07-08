@@ -1,0 +1,286 @@
+nextflow_process {
+
+    name "Test Process LDAK_KVIKSTEP2"
+    script "../main.nf"
+    process "LDAK_KVIKSTEP2"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ldak"
+    tag "ldak/kvikstep1"
+    tag "ldak/kvikstep2"
+
+    setup {
+        run("LDAK_KVIKSTEP1", alias: "LDAK_KVIKSTEP1_QUANTITATIVE") {
+            script "../../kvikstep1/main.nf"
+            process {
+                """
+                sourceBed = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true)
+                sourceBim = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true)
+                sourceFam = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+
+                multiBed = file("plink_multichr.bed")
+                multiBed.bytes = sourceBed.bytes
+                multiFam = file("plink_multichr.fam")
+                multiFam.bytes = sourceFam.bytes
+                multiBim = file("plink_multichr.bim")
+                bimLines = sourceBim.readLines()
+                chrSplit = (int) Math.ceil(bimLines.size() / 2.0)
+                multiBim.text = bimLines.withIndex().collect { line, idx ->
+                    fields = line.split(/\\s+/)
+                    fields[0] = idx < chrSplit ? "21" : "22"
+                    fields.join("\\t")
+                }.join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id: "plink_multichr" ],
+                    multiBed,
+                    multiBim,
+                    multiFam
+                ]
+
+                input[1] = [
+                    [ id: "plink_simulated_quantitative_phenoname" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe", checkIfExists: true),
+                    1,
+                    false
+                ]
+
+                input[2] = [
+                    [ id: "covariates" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.txt", checkIfExists: true)
+                ]
+
+                input[3] = [[:], []]
+                """
+            }
+        }
+
+        run("LDAK_KVIKSTEP1", alias: "LDAK_KVIKSTEP1_BINARY") {
+            script "../../kvikstep1/main.nf"
+            process {
+                """
+                sourceBed = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true)
+                sourceBim = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true)
+                sourceFam = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+
+                multiBed = file("plink_multichr.bed")
+                multiBed.bytes = sourceBed.bytes
+                multiFam = file("plink_multichr.fam")
+                multiFam.bytes = sourceFam.bytes
+                multiBim = file("plink_multichr.bim")
+                bimLines = sourceBim.readLines()
+                chrSplit = (int) Math.ceil(bimLines.size() / 2.0)
+                multiBim.text = bimLines.withIndex().collect { line, idx ->
+                    fields = line.split(/\\s+/)
+                    fields[0] = idx < chrSplit ? "21" : "22"
+                    fields.join("\\t")
+                }.join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id: "plink_multichr" ],
+                    multiBed,
+                    multiBim,
+                    multiFam
+                ]
+
+                input[1] = [
+                    [ id: "plink_simulated_binary_phenoname" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe", checkIfExists: true),
+                    1,
+                    true
+                ]
+
+                input[2] = [
+                    [ id: "covariates" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.txt", checkIfExists: true)
+                ]
+
+                input[3] = [[:], []]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - quantitative with optional chr args and explicit mpheno 1") {
+
+        when {
+            process {
+                """
+                sourceBed = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true)
+                sourceBim = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true)
+                sourceFam = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+
+                chrBed = file("plink_multichr.chr21.bed")
+                chrBed.bytes = sourceBed.bytes
+                chrFam = file("plink_multichr.chr21.fam")
+                chrFam.bytes = sourceFam.bytes
+                chrBim = file("plink_multichr.chr21.bim")
+                chrBim.text = sourceBim.readLines().collect { line ->
+                    fields = line.split(/\\s+/)
+                    fields[0] = "21"
+                    fields.join("\\t")
+                }.join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id: "plink_multichr" ],
+                    chrBed,
+                    chrBim,
+                    chrFam
+                ]
+
+                input[1] = [
+                    [ id: "plink_simulated_quantitative_phenoname", is_binary: false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe", checkIfExists: true),
+                    1
+                ]
+
+                input[2] = LDAK_KVIKSTEP1_QUANTITATIVE.out.predictions
+
+                input[3] = [
+                    [ id: "covariates" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.txt", checkIfExists: true)
+                ]
+
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.results.size() == 1 },
+                { assert process.out.log.size() == 1 },
+                {
+                    def resultFile = path(process.out.results.get(0).get(2))
+                    def commandText = resultFile.parent.resolve(".command.sh").text
+                    assert commandText.contains("--bfile plink_multichr.chr21")
+                    assert commandText.contains("--chr 21")
+                    assert commandText.contains("--mpheno 1")
+                    assert !commandText.contains("--binary YES")
+                },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - binary with fallback mpheno 1") {
+
+        when {
+            process {
+                """
+                sourceBed = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true)
+                sourceBim = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true)
+                sourceFam = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+
+                chrBed = file("plink_multichr.chr21.bed")
+                chrBed.bytes = sourceBed.bytes
+                chrFam = file("plink_multichr.chr21.fam")
+                chrFam.bytes = sourceFam.bytes
+                chrBim = file("plink_multichr.chr21.bim")
+                chrBim.text = sourceBim.readLines().collect { line ->
+                    fields = line.split(/\\s+/)
+                    fields[0] = "21"
+                    fields.join("\\t")
+                }.join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id: "plink_multichr" ],
+                    chrBed,
+                    chrBim,
+                    chrFam
+                ]
+
+                input[1] = [
+                    [ id: "plink_simulated_binary_phenoname", is_binary: true ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe", checkIfExists: true),
+                    []
+                ]
+
+                input[2] = LDAK_KVIKSTEP1_BINARY.out.predictions
+
+                input[3] = [
+                    [ id: "covariates" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.txt", checkIfExists: true)
+                ]
+
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.results.size() == 1 },
+                {
+                    def resultFile = path(process.out.results.get(0).get(2))
+                    def commandText = resultFile.parent.resolve(".command.sh").text
+                    assert commandText.contains("--mpheno 1")
+                    assert !commandText.contains("--binary YES")
+                },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                sourceBed = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true)
+                sourceBim = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true)
+                sourceFam = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+
+                chrBed = file("plink_multichr.chr21.bed")
+                chrBed.bytes = sourceBed.bytes
+                chrFam = file("plink_multichr.chr21.fam")
+                chrFam.bytes = sourceFam.bytes
+                chrBim = file("plink_multichr.chr21.bim")
+                chrBim.text = sourceBim.readLines().collect { line ->
+                    fields = line.split(/\\s+/)
+                    fields[0] = "21"
+                    fields.join("\\t")
+                }.join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id: "plink_multichr" ],
+                    chrBed,
+                    chrBim,
+                    chrFam
+                ]
+
+                input[1] = [
+                    [ id: "plink_simulated_quantitative_phenoname_stub", is_binary: false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe", checkIfExists: true),
+                    1
+                ]
+
+                input[2] = LDAK_KVIKSTEP1_QUANTITATIVE.out.predictions
+
+                input[3] = [
+                    [ id: "covariates" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.txt", checkIfExists: true)
+                ]
+
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+    }
+}
