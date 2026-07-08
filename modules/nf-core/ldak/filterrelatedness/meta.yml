@@ -1,0 +1,86 @@
+name: ldak_filterrelatedness
+description: Filter related individuals from a linkage disequilibrium-adjusted kinship (LDAK) genomic relationship matrix (GRM) and create an unrelated subset GRM
+keywords:
+  - ldak
+  - grm
+  - relatedness
+  - kinship
+tools:
+  - ldak6:
+      description: LDAK toolset for kinship, heritability, and association analyses
+      homepage: https://dougspeed.com/ldak/
+      documentation: https://dougspeed.com/ldak/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing GRM metadata.
+          Expected keys:
+            - id (string): Output prefix used for `.keep`, `.lose`, `.maxrel`, and `<id>_unrel.grm.*` files.
+    - grm_bin:
+        type: file
+        description: GRM binary matrix (`.grm.bin`) for the GRM prefix
+    - grm_id:
+        type: file
+        description: GRM sample identifiers (`.grm.id`) for the GRM prefix
+    - grm_details:
+        type: file
+        description: GRM details (`.grm.details`) for the GRM prefix
+    - grm_adjust:
+        type: file
+        description: GRM adjustment factors (`.grm.adjust`) for the GRM prefix
+output:
+  filtered_list:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - "${prefix}.keep":
+          type: file
+          description: Sample identifiers retained after relatedness filtering (`<prefix>.keep`)
+      - "${prefix}.lose":
+          type: file
+          description: Sample identifiers removed by relatedness filtering (`<prefix>.lose`)
+      - "${prefix}.maxrel":
+          type: file
+          description: Maximum pairwise relatedness summary (`<prefix>.maxrel`)
+  filtered_grm:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - "${prefix}_unrel.grm.bin":
+          type: file
+          description: Unrelated subset GRM binary matrix (`<prefix>_unrel.grm.bin`)
+      - "${prefix}_unrel.grm.id":
+          type: file
+          description: Unrelated subset GRM sample identifiers (`<prefix>_unrel.grm.id`)
+      - "${prefix}_unrel.grm.details":
+          type: file
+          description: Unrelated subset GRM details (`<prefix>_unrel.grm.details`)
+      - "${prefix}_unrel.grm.adjust":
+          type: file
+          description: Unrelated subset GRM adjustment factors (`<prefix>_unrel.grm.adjust`)
+  versions_ldak6:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | grep -oP '(?<=^Version )[0-9.]+':
+          type: eval
+          description: The expression used to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | grep -oP '(?<=^Version )[0-9.]+':
+          type: eval
+          description: The expression used to obtain the version of the tool
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"

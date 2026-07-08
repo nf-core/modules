@@ -1,0 +1,119 @@
+nextflow_process {
+
+    name "Test Process LDAK_FILTERRELATEDNESS"
+    script "../main.nf"
+    process "LDAK_FILTERRELATEDNESS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ldak"
+    tag "ldak/calckins"
+    tag "ldak/addgrms"
+    tag "ldak/filterrelatedness"
+
+    setup {
+        run("LDAK_CALCKINS", alias: "LDAK_CALCKINS_CHR21") {
+            script "../../calckins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr21" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = "-0.25"
+                """
+            }
+        }
+
+        run("LDAK_CALCKINS", alias: "LDAK_CALCKINS_CHR22") {
+            script "../../calckins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr22" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = "-0.25"
+                """
+            }
+        }
+
+        run("LDAK_ADDGRMS") {
+            script "../../addgrms/main.nf"
+            process {
+                """
+                mgrm = file("${outputDir}/ldak_test.mgrm")
+                mgrm.text = "plink_simulated_chr21\\nplink_simulated_chr22\\n"
+                mgrm_file = Channel.value(mgrm)
+
+                grouped_grms = LDAK_CALCKINS_CHR21.out.ldak_grm
+                    .mix(LDAK_CALCKINS_CHR22.out.ldak_grm)
+                    .map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                        tuple("ldak_grm", grm_bin, grm_id, grm_details, grm_adjust)
+                    }
+                    .groupTuple(by: 0)
+
+                input[0] = grouped_grms.combine(mgrm_file).map { group_id, bins, ids, details, adjusts, mgrm ->
+                    tuple([ id: group_id ], mgrm, bins + ids + details + adjusts)
+                }
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - filter related individuals") {
+
+        when {
+            process {
+                """
+                input[0] = LDAK_ADDGRMS.out.combined_grm.map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                    tuple([ id: "ldak_grm_subset" ], grm_bin, grm_id, grm_details, grm_adjust)
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.filtered_list.size() == 1 },
+                { assert process.out.filtered_grm.size() == 1 },
+                {
+                    def keepFile = path(process.out.filtered_list.get(0).get(1))
+                    def commandText = keepFile.parent.resolve(".command.sh").text
+                    assert keepFile.fileName.toString() == "ldak_grm_subset.keep"
+                    assert commandText.contains("--grm ldak_grm")
+                },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = LDAK_ADDGRMS.out.combined_grm.map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                    tuple([ id: "ldak_grm_subset_stub" ], grm_bin, grm_id, grm_details, grm_adjust)
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
