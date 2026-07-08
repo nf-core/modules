@@ -9,6 +9,8 @@ tools:
       description: High-definition likelihood method for genetic correlation and heritability from summary statistics
       homepage: https://github.com/zhenin/HDL
       documentation: https://github.com/zhenin/HDL/wiki
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -16,6 +18,7 @@ input:
     - sumstats:
         type: file
         description: Canonicalized GWAS summary statistics for the trait in `meta.id`.
+        pattern: "*.{tsv,txt}"
   - - meta2:
         type: map
         description: Metadata map for the HDL reference panel directory.
@@ -30,6 +33,7 @@ output:
       - ${meta.id}.h2.tsv:
           type: file
           description: Tab-delimited HDL heritability summary output.
+          pattern: "*.h2.tsv"
   h2_log:
     - - meta:
           type: map
@@ -37,6 +41,7 @@ output:
       - ${meta.id}.hdl.log:
           type: file
           description: HDL heritability run log.
+          pattern: "*.hdl.log"
   versions_hdl:
     - - ${task.process}:
           type: string
