@@ -1,0 +1,204 @@
+nextflow_process {
+
+    name "Test nf-core LDAK_PCGC module"
+    script "../main.nf"
+    process "LDAK_PCGC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ldak"
+    tag "ldak/calckins"
+    tag "ldak/addgrms"
+    tag "ldak/adjustgrm"
+    tag "ldak/pcgc"
+
+    setup {
+        run("LDAK_CALCKINS", alias: "LDAK_CALCKINS_CHR21") {
+            script "../../calckins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr21" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = "-0.25"
+                """
+            }
+        }
+
+        run("LDAK_CALCKINS", alias: "LDAK_CALCKINS_CHR22") {
+            script "../../calckins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr22" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = "-0.25"
+                """
+            }
+        }
+
+        run("LDAK_ADDGRMS") {
+            script "../../addgrms/main.nf"
+            process {
+                """
+                mgrm = file("${outputDir}/ldak_test.mgrm")
+                mgrm.text = "plink_simulated_chr21\\nplink_simulated_chr22\\n"
+                mgrm_file = Channel.value(mgrm)
+
+                grouped_grms = LDAK_CALCKINS_CHR21.out.ldak_grm
+                    .mix(LDAK_CALCKINS_CHR22.out.ldak_grm)
+                    .map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                        tuple("ldak_grm", grm_bin, grm_id, grm_details, grm_adjust)
+                    }
+                    .groupTuple(by: 0)
+
+                input[0] = grouped_grms.combine(mgrm_file).map { group_id, bins, ids, details, adjusts, mgrm_path ->
+                    tuple([ id: group_id ], mgrm_path, bins + ids + details + adjusts)
+                }
+                """
+            }
+        }
+
+        run("LDAK_ADJUSTGRM") {
+            script "../../adjustgrm/main.nf"
+            process {
+                """
+                input[0] = LDAK_ADDGRMS.out.combined_grm.map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                    tuple([ id: "ldak_grm_adj" ], grm_bin, grm_id, grm_details, grm_adjust)
+                }
+                input[1] = [
+                    [ id: "plink_simulated_binary_phenoname" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe", checkIfExists: true),
+                    1
+                ]
+                input[2] = [
+                    [ id: "covariates" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.txt", checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - explicit mpheno 1") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "pcgc_binary" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe", checkIfExists: true),
+                    1,
+                    0.2
+                ]
+                input[1] = LDAK_ADJUSTGRM.out.adjusted_grm.map { meta, meta2, grm_bin, grm_id, grm_details, grm_adjust, grm_root ->
+                    tuple([ id: meta.id ], grm_bin, grm_id, grm_details, grm_adjust, grm_root)
+                }
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.pcgc_results.size() == 1 },
+                { assert process.out.versions_ldak6.size() == 1 },
+                {
+                    def pcgcTuple = process.out.pcgc_results.get(0)
+                    def outMeta = pcgcTuple.get(0)
+                    def pcgcFile = path(pcgcTuple.get(1))
+                    def commandText = pcgcFile.parent.resolve(".command.sh").text
+                    assert outMeta.id == "pcgc_binary"
+                    assert pcgcFile.fileName.toString() == "pcgc_binary.pcgc"
+                    assert pcgcFile.text.contains("Num_Kinships")
+                    assert commandText.contains("--prevalence 0.2")
+                    assert commandText.contains("--mpheno 1")
+                },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pcgc_results", "pcgc_marginal", "cross"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - fallback mpheno 1") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "pcgc_binary_fallback" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe", checkIfExists: true),
+                    [],
+                    0.2
+                ]
+                input[1] = LDAK_ADJUSTGRM.out.adjusted_grm.map { meta, meta2, grm_bin, grm_id, grm_details, grm_adjust, grm_root ->
+                    tuple([ id: meta.id ], grm_bin, grm_id, grm_details, grm_adjust, grm_root)
+                }
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.pcgc_results.size() == 1 },
+                { assert process.out.versions_ldak6.size() == 1 },
+                {
+                    def pcgcTuple = process.out.pcgc_results.get(0)
+                    def pcgcFile = path(pcgcTuple.get(1))
+                    def commandText = pcgcFile.parent.resolve(".command.sh").text
+                    assert pcgcTuple.get(0).id == "pcgc_binary_fallback"
+                    assert pcgcFile.fileName.toString() == "pcgc_binary_fallback.pcgc"
+                    assert pcgcFile.text.contains("Num_Kinships")
+                    assert commandText.contains("--prevalence 0.2")
+                    assert commandText.contains("--mpheno 1")
+                },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pcgc_results", "pcgc_marginal", "cross"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "pcgc_stub" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe", checkIfExists: true),
+                    1,
+                    0.2
+                ]
+                input[1] = LDAK_ADJUSTGRM.out.adjusted_grm.map { meta, meta2, grm_bin, grm_id, grm_details, grm_adjust, grm_root ->
+                    tuple([ id: meta.id ], grm_bin, grm_id, grm_details, grm_adjust, grm_root)
+                }
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pcgc_results", "pcgc_marginal", "cross"])).match() }
+            )
+        }
+    }
+}
