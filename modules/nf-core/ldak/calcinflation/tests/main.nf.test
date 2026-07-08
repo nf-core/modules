@@ -1,0 +1,177 @@
+nextflow_process {
+
+    name "Test Process LDAK_CALCINFLATION"
+    script "../main.nf"
+    process "LDAK_CALCINFLATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ldak"
+    tag "ldak/calckins"
+    tag "ldak/addgrms"
+    tag "ldak/filterrelatedness"
+    tag "ldak/reml"
+    tag "ldak/calcinflation"
+
+    setup {
+        run("LDAK_CALCKINS", alias: "LDAK_CALCKINS_CHR21") {
+            script "../../calckins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr21" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = "-0.25"
+                """
+            }
+        }
+
+        run("LDAK_CALCKINS", alias: "LDAK_CALCKINS_CHR22") {
+            script "../../calckins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr22" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = "-0.25"
+                """
+            }
+        }
+
+        run("LDAK_ADDGRMS") {
+            script "../../addgrms/main.nf"
+            process {
+                """
+                mgrm_file = Channel
+                    .of("plink_simulated_chr21", "plink_simulated_chr22")
+                    .collectFile(name: "ldak_test.mgrm", newLine: true)
+
+                grouped_grms = LDAK_CALCKINS_CHR21.out.ldak_grm
+                    .mix(LDAK_CALCKINS_CHR22.out.ldak_grm)
+                    .map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                        tuple("ldak_grm", grm_bin, grm_id, grm_details, grm_adjust)
+                    }
+                    .groupTuple(by: 0)
+
+                input[0] = grouped_grms.combine(mgrm_file).map { group_id, bins, ids, details, adjusts, mgrm ->
+                    tuple([ id: group_id ], mgrm, bins + ids + details + adjusts)
+                }
+                """
+            }
+        }
+
+        run("LDAK_FILTERRELATEDNESS") {
+            script "../../filterrelatedness/main.nf"
+            process {
+                """
+                input[0] = LDAK_ADDGRMS.out.combined_grm.map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                    tuple([ id: "ldak_grm_subset" ], grm_bin, grm_id, grm_details, grm_adjust)
+                }
+                """
+            }
+        }
+
+        run("LDAK_REML", alias: "LDAK_REML_FULL") {
+            script "../../reml/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "reml_full_ldak_grm", is_binary: false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe", checkIfExists: true),
+                    1,
+                    []
+                ]
+                input[1] = LDAK_ADDGRMS.out.combined_grm.map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                    tuple([ id: "ldak_grm" ], grm_bin, grm_id, grm_details, grm_adjust)
+                }
+                input[2] = LDAK_FILTERRELATEDNESS.out.filtered_list.map { meta, keep_file, lose_file, maxrel_file ->
+                    tuple([ id: "keep" ], keep_file)
+                }
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                """
+            }
+        }
+
+    }
+
+    test("homo_sapiens popgen - inflation report from setup-generated REML outputs fixture-free") {
+
+        when {
+            process {
+                """
+                input[0] = LDAK_REML_FULL.out.reml_results.map { meta, reml_file ->
+                    // No distinct quarter REML fixture exists for this cohort; duplicate the setup-generated REML content.
+                    quarter1 = file(meta.id + ".quarter1.reml")
+                    quarter1.text = file(reml_file).text
+                    quarter2 = file(meta.id + ".quarter2.reml")
+                    quarter2.text = file(reml_file).text
+                    tuple([ id: "inflation_Y1" ], reml_file, [quarter1, quarter2])
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.inflation_results.size() == 1 },
+                { assert process.out.versions.size() == 1 },
+                {
+                    def resultFile = path(process.out.inflation_results.get(0).get(1))
+                    def versionsFile = path(process.out.versions.get(0))
+                    def commandText = resultFile.parent.resolve(".command.sh").text
+                    assert resultFile.fileName.toString() == "inflation_Y1.txt"
+                    assert resultFile.text.contains("LDAK Inflation Analysis Results")
+                    assert versionsFile.fileName.toString() == "versions.yml"
+                    assert versionsFile.text.contains("r-base:")
+                    assert commandText.contains("#!/usr/bin/env Rscript")
+                    assert !commandText.contains("base64 -d > calc_inflation.R")
+                    assert !commandText.contains("Rscript calc_inflation.R")
+                },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - inflation stub fixture-free") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = LDAK_REML_FULL.out.reml_results.map { meta, reml_file ->
+                    // No distinct quarter REML fixture exists for this cohort; duplicate the setup-generated REML content.
+                    quarter1 = file(meta.id + ".stub.quarter1.reml")
+                    quarter1.text = file(reml_file).text
+                    quarter2 = file(meta.id + ".stub.quarter2.reml")
+                    quarter2.text = file(reml_file).text
+                    tuple([ id: "inflation_Y1_stub" ], reml_file, [quarter1, quarter2])
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.inflation_results.size() == 1 },
+                { assert process.out.versions.size() == 1 },
+                {
+                    assert path(process.out.inflation_results.get(0).get(1)).fileName.toString() == "inflation_Y1_stub.txt"
+                    assert path(process.out.versions.get(0)).fileName.toString() == "versions.yml"
+                },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

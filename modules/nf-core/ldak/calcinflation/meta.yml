@@ -1,0 +1,46 @@
+name: ldak_calcinflation
+description: Calculate linkage disequilibrium-adjusted kinship (LDAK) inflation diagnostics from full-genome and quarter restricted maximum likelihood (REML) outputs
+keywords:
+  - ldak
+  - inflation
+  - qc
+  - reml
+tools:
+  - r-base:
+      description: R programming language runtime used for statistical post-processing
+      homepage: https://www.r-project.org/
+      documentation: https://www.r-project.org/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing report metadata.
+          Expected keys:
+            - id (string): Output prefix for inflation report (for example, 'inflation_Y1').
+    - ldak_reml_file:
+        type: file
+        description: Full-genome LDAK REML output file (`*.reml`)
+    - quarter_reml_files:
+        type: file
+        description: One or more quarter/chromosome LDAK REML output files used for inflation comparison
+output:
+  inflation_results:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - "${prefix}.txt":
+          type: file
+          description: Inflation summary report (`<prefix>.txt`)
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"
