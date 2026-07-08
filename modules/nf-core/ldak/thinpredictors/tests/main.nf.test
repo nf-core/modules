@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process LDAK_THINPREDICTORS"
+    script "../main.nf"
+    process "LDAK_THINPREDICTORS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ldak"
+    tag "ldak/thinpredictors"
+
+    test("homo_sapiens popgen - plink1") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.thin_predictors.size() == 1 },
+                {
+                    def thinFile = path(process.out.thin_predictors.get(0).get(1))
+                    assert thinFile.fileName.toString() == "plink_simulated.in"
+                    assert thinFile.readLines().size() > 0
+                },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
