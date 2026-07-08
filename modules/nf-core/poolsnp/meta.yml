@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "poolsnp"
-description: PoolSNP is a heuristic SNP caller, which uses an MPILEUP file and a reference
-  genome in FASTA format as inputs.
+description: PoolSNP is a heuristic SNP caller, which uses an MPILEUP file and a
+  reference genome in FASTA format as inputs.
 keywords:
   - poolseq
   - mpileup
@@ -12,7 +11,8 @@ tools:
         a reference genome in FASTA format as inputs."
       homepage: "https://github.com/capoony/PoolSNP"
       documentation: "https://github.com/capoony/PoolSNP/blob/master/README.md"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       args_id: "$args"
 
       identifier: ""
@@ -77,8 +77,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.vcf.gz":
           type: file
-          description: Gzipped VCF file containing allele counts and frequencies for
-            every position and library
+          description: Gzipped VCF file containing allele counts and frequencies
+            for every position and library
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -90,8 +90,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*cov-*.txt":
           type: file
-          description: File containing the maximum coverage thresholds for all chromosomal
-            arms and libraries
+          description: File containing the maximum coverage thresholds for all
+            chromosomal arms and libraries
           pattern: "*cov-*.txt"
           ontologies: []
   bad_sites:
@@ -102,19 +102,35 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*BS.txt.gz":
           type: file
-          description: File containing a list of sites (variable and invariable) that
-            did not pass the SNP calling criteria
+          description: File containing a list of sites (variable and invariable)
+            that did not pass the SNP calling criteria
           pattern: "*BS.txt.gz"
           optional: true
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_poolsnp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - poolsnp:
+          type: string
+          description: The name of the tool
+      - 1.0.1:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - poolsnp:
+          type: string
+          description: The name of the tool
+      - 1.0.1:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@abhilesh"
 maintainers:
