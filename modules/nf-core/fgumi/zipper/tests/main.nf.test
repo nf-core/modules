@@ -1,0 +1,93 @@
+nextflow_process {
+
+    name "Test Process FGUMI_ZIPPER"
+    script "../main.nf"
+    process "FGUMI_ZIPPER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgumi"
+    tag "fgumi/zipper"
+    tag "fgumi/sort"
+
+    setup {
+        run("FGUMI_SORT") {
+            script "../../sort/main.nf"
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        run("FGUMI_SORT", alias: "FGUMI_SORT_UNMAPPED") {
+            script "../../sort/main.nf"
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - mapped + unmapped") {
+
+        when {
+            process {
+                """
+                input[0] = FGUMI_SORT.out.bam.join(FGUMI_SORT_UNMAPPED.out.bam)
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - mapped + unmapped - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = FGUMI_SORT.out.bam.join(FGUMI_SORT_UNMAPPED.out.bam)
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

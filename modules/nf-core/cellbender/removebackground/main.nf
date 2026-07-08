@@ -1,11 +1,12 @@
 process CELLBENDER_REMOVEBACKGROUND {
     tag "$meta.id"
     label 'process_medium'
+    label 'process_long'
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
     container "${ task.ext.use_gpu ? 'us.gcr.io/broad-dsde-methods/cellbender:0.3.2' :
-        workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/ebcf140f995f79fcad5c17783622e000550ff6f171771f9fc4233484ee6f63cf/data':
         'community.wave.seqera.io/library/cellbender_webcolors:156d413fdfc16cdb' }"
 
@@ -34,7 +35,6 @@ process CELLBENDER_REMOVEBACKGROUND {
         TMPDIR=. cellbender remove-background \
             ${args} \
             --cpu-threads ${task.cpus} \
-            --estimator-multiple-cpu \
             ${use_gpu} \
             --input ${h5ad} \
             --output ${prefix}.h5

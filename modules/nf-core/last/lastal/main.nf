@@ -3,9 +3,9 @@ process LAST_LASTAL {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0d/0d27a2649f1291ff817dc8f73357ffac206424cd972d3855421e4258acc600f7/data'
-        : 'community.wave.seqera.io/library/last:1611--e1193b3871fa0975'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2eb57450207840a7fba7f60b65239a86679bfcaa79fb5fba652dd41af2b3e1d9/data'
+        : 'community.wave.seqera.io/library/last:1651--c83f04148c23181f'}"
 
     input:
     tuple val(meta), path(fastx), path (param_file)
@@ -29,7 +29,11 @@ process LAST_LASTAL {
 
     # LAST reports genome sizes and sequence number at the beginning and end of the MAF files it outputs.
     function get_genome_stats() { awk '
-        BEGIN { OFS = "\\t" }
+        BEGIN {
+            OFS = "\\t"
+            in_params = 1
+        }
+
         function extract(line, regex,   s) {
             if (match(line, regex)) {
                 s = substr(line, RSTART, RLENGTH)
@@ -38,15 +42,34 @@ process LAST_LASTAL {
             }
             return ""
         }
+
+        # Stop parsing parameters at the start of result section
         /^# Reference sequences=/ {
+            in_params = 0
             ref_seq     = extract(\$0, "^# Reference sequences=[0-9]+")
             ref_letters = extract(\$0,                "letters=[0-9]+")
         }
+
+        # Parse parameter lines only before Reference sequences
+        /^#/ {
+            if (in_params && gsub(/=/, "&") >= 5) {
+                if (match(\$0, /s=([0-9]+)/)) {
+                    strand_mode = substr(\$0, RSTART+2, RLENGTH-2)
+                }
+            }
+        }
+
         /^# Query sequences=/ {
             qry_seq     = extract(\$0, "^# Query sequences=[0-9]+")
             qry_letters = extract(\$0,            "letters=[0-9]+")
         }
+
         END {
+        if (strand_mode == 1) {
+            ref_seq     /= 2
+            ref_letters /= 2
+        }
+
             print "TargetSequences", "TargetLength", "QuerySequences", "QueryLength"    # Header for MultiQC
             print ref_seq+0,         ref_letters+0,  qry_seq+0,         qry_letters+0   # Data in TSV format
         }'
@@ -94,7 +117,7 @@ process LAST_LASTAL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     INDEX_NAME=STUB
-    echo stub | gzip --no-name > ${prefix}.\$INDEX_NAME.maf.gz
+    echo "" | gzip > ${prefix}.\$INDEX_NAME.maf.gz
     touch ${prefix}.tsv
     """
 }

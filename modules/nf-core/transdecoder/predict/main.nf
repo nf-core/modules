@@ -3,9 +3,9 @@ process TRANSDECODER_PREDICT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/transdecoder:5.7.1--pl5321hdfd78af_0':
-        'biocontainers/transdecoder:5.7.1--pl5321hdfd78af_0' }"
+        'quay.io/biocontainers/transdecoder:5.7.1--pl5321hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -16,7 +16,7 @@ process TRANSDECODER_PREDICT {
     tuple val(meta), path("*.transdecoder.gff3") , emit: gff3
     tuple val(meta), path("*.transdecoder.cds")  , emit: cds
     tuple val(meta), path("*.transdecoder.bed")  , emit: bed
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('transdecoder'), eval("TransDecoder.Predict --version | sed 's/TransDecoder.Predict //'"), emit: versions_transdecoder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process TRANSDECODER_PREDICT {
         -O . \\
         -t \\
         $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        transdecoder: \$(echo \$(TransDecoder.Predict --version) | sed -e "s/TransDecoder.Predict //g")
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +38,5 @@ process TRANSDECODER_PREDICT {
     touch ${fasta_no_gz}.transdecoder.gff3
     touch ${fasta_no_gz}.transdecoder.cds
     touch ${fasta_no_gz}.transdecoder.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        transdecoder: \$(echo \$(TransDecoder.Predict --version) | sed -e "s/TransDecoder.Predict //g")
-    END_VERSIONS
     """
 }

@@ -3,7 +3,7 @@ process BISCUIT_PILEUP {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/27/2790659e7b390a29fa72483e7eed0101298dd2959dce2f8f3744b4f93517d323/data':
         'community.wave.seqera.io/library/biscuit_htslib:b5833b773bc32c9c' }"
 

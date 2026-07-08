@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "caddsv_get"
+description: Download CADD-SV annotation resources or SegmentNT model files.
+keywords:
+  - caddsv
+  - structural variants
+  - annotations
+  - segmentnt
+  - resource download
+
+tools:
+  - "caddsv":
+      description: "CADD-SV is a command-line tool for scoring structural variants (SVs)"
+      homepage: "https://cadd-sv.bihealth.org"
+      documentation: "https://github.com/kircherlab/CADD-SV"
+      tool_dev_url: "https://github.com/kircherlab/CADD-SV"
+      doi: "10.1101/gr.275995.121"
+      licence:
+        - "MIT"
+      identifier: "biotools:cadd-sv"
+
+input:
+  - flag:
+      type: string
+      description: >
+        CADD-SV resource flag to download. Use `annotations` to download the
+        CADD-SV annotation bundle, or `segmentnt` to download only the SegmentNT
+        model files into `<annotations-dir>/segment_nt`.
+      pattern: "annotations|segmentnt"
+      ontologies: []
+
+output:
+  annotations:
+    - caddsv_annotations:
+        type: directory
+        description: >
+          Directory containing downloaded CADD-SV resources. If `flag` is
+          `annotations`, this contains the CADD-SV annotation bundle. If
+          `flag` is `segmentnt`, this contains SegmentNT files under
+          `segment_nt/`. If `flag` is `annotations` and `--with-segmentnt`
+          is supplied via `task.ext.args`, this contains both resources.
+        pattern: "caddsv_annotations"
+        ontologies: []
+
+  versions_caddsv:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - caddsv:
+          type: string
+          description: The tool name
+      - python -c "import importlib.metadata as m; print(m.version('caddsv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - caddsv:
+          type: string
+          description: The tool name
+      - python -c "import importlib.metadata as m; print(m.version('caddsv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@manascripts"
+
+maintainers:
+  - "@manascripts"

@@ -3,9 +3,9 @@ process TRGT_PLOT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trgt:5.0.0--h9ee0642_0':
-        'biocontainers/trgt:5.0.0--h9ee0642_0' }"
+        'quay.io/biocontainers/trgt:5.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta) , path(bam), path(bai), path(vcf), path(tbi), val(repeat_id)
@@ -28,28 +28,18 @@ process TRGT_PLOT {
 
     """
     trgt plot \\
-        $args \\
+        ${args} \\
         --genome ${fasta} \\
         --repeats ${repeats} \\
         --spanning-reads ${bam} \\
         --vcf ${vcf} \\
         --repeat-id ${repeat_id} \\
-        $output_arg
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trgt: \$(trgt --version |& sed '1!d ; s/trgt //')
-    END_VERSIONS
+        ${output_arg}
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_${repeat_id}"
     """
     touch ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trgt: \$(trgt --version |& sed '1!d ; s/trgt //')
-    END_VERSIONS
     """
 }

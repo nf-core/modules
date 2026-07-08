@@ -3,9 +3,9 @@ process XENGSORT_INDEX {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/xengsort:2.0.5--pyhdfd78af_0':
-        'biocontainers/xengsort:2.0.5--pyhdfd78af_0' }"
+        'quay.io/biocontainers/xengsort:2.0.5--pyhdfd78af_0' }"
 
     input:
     path(host_fasta, stageAs: "host/*")
@@ -17,7 +17,7 @@ process XENGSORT_INDEX {
     output:
     path "${index}.hash"          , emit: hash
     path "${index}.info"          , emit: info
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('xengsort'), eval("xengsort --version"), topic: versions, emit: versions_xengsort
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,21 +33,11 @@ process XENGSORT_INDEX {
         --graft $graft_fasta \\
         --nobjects $nobjects \\
         --mask '$mask' \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xengsort: \$(xengsort --version)
-    END_VERSIONS
     """
 
     stub:
     """
     touch ${index}.info
     touch ${index}.hash
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xengsort: \$(xengsort --version)
-    END_VERSIONS
     """
 }

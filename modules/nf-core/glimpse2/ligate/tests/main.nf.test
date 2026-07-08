@@ -43,6 +43,7 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = channel.of([[],[],[]]).collect()
+                input[2] = []
                 """
                 }
             }
@@ -60,7 +61,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GLIMPSE2_PHASE.out.phased_variants
-                    .join(BCFTOOLS_INDEX.out.csi)
+                    .join(BCFTOOLS_INDEX.out.index)
                     .map{ meta, vcf, index -> [meta.subMap("id"), vcf, index]}
                     .groupTuple()
                 """
