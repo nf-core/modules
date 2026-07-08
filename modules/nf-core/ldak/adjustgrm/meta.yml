@@ -1,0 +1,96 @@
+name: ldak_adjustgrm
+description: Adjust a precomputed linkage disequilibrium-adjusted kinship (LDAK) genomic relationship matrix (GRM) for covariates to produce `.grm.root` for Haseman-Elston (HE) or phenotype correlation-genotype correlation (PCGC) analyses
+keywords:
+  - ldak
+  - grm
+  - heritability
+tools:
+  - ldak6:
+      description: LDAK toolset for kinship, heritability, and association analyses
+      homepage: https://dougspeed.com/ldak/
+      documentation: https://dougspeed.com/ldak/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing GRM context.
+          Expected keys:
+            - id (string): Output prefix for adjusted GRM files.
+    - combined_grm_bin:
+        type: file
+        description: Input GRM binary matrix (`.grm.bin`)
+    - combined_grm_id:
+        type: file
+        description: Input GRM sample identifiers (`.grm.id`)
+    - combined_grm_details:
+        type: file
+        description: Input GRM details (`.grm.details`)
+    - combined_grm_adjust:
+        type: file
+        description: Input GRM adjustment factors (`.grm.adjust`)
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing phenotype metadata.
+          Expected keys:
+            - id (string): Phenotype identifier propagated in outputs.
+    - phenotype_file:
+        type: file
+        description: Headerless phenotype file passed to `--pheno`
+    - mpheno:
+        type: integer
+        description: Optional phenotype column index passed to `--mpheno`; pass [] to use fallback `1`
+  - - meta3:
+        type: map
+        description: Metadata map paired with quantitative covariates input.
+    - quant_covariates_file:
+        type: file
+        description: Optional quantitative covariates file passed to `--covar`; pass [] when absent
+output:
+  adjusted_grm:
+    - - meta:
+          type: map
+          description: GRM metadata map propagated from input
+      - meta2:
+          type: map
+          description: Phenotype metadata map propagated from input
+      - "${prefix}.grm.bin":
+          type: file
+          description: Adjusted GRM binary matrix
+      - "${prefix}.grm.id":
+          type: file
+          description: Adjusted GRM sample identifiers
+      - "${prefix}.grm.details":
+          type: file
+          description: Adjusted GRM details
+      - "${prefix}.grm.adjust":
+          type: file
+          description: Adjusted GRM adjustment factors
+      - "${prefix}.grm.root":
+          type: file
+          description: Adjusted GRM root file required by LDAK HE and PCGC
+  versions_ldak6:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | grep -oP '(?<=^Version )[0-9.]+':
+          type: eval
+          description: The expression used to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | grep -oP '(?<=^Version )[0-9.]+':
+          type: eval
+          description: The expression used to obtain the version of the tool
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"

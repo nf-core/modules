@@ -1,0 +1,49 @@
+name: ldak_calcgenotypeerrort2
+description: Calculate linkage disequilibrium-adjusted kinship (LDAK) genotype error T2 diagnostics from Haseman-Elston (HE) overall, within-batch, and across-batch outputs
+keywords:
+  - ldak
+  - genotype-error
+  - he
+  - qc
+tools:
+  - r-base:
+      description: R programming language runtime used for statistical post-processing
+      homepage: https://www.r-project.org/
+      documentation: https://www.r-project.org/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing report metadata.
+          Expected keys:
+            - id (string): Output prefix for T2 report (for example, 'genotype_error_Y1').
+    - he_overall_file:
+        type: file
+        description: LDAK HE overall result file (`*.he`)
+    - he_within_file:
+        type: file
+        description: LDAK HE within-batch result file (`*.he.within`)
+    - he_across_file:
+        type: file
+        description: LDAK HE across-batch result file (`*.he.across`)
+output:
+  genotype_error_results:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - "${prefix}.txt":
+          type: file
+          description: Genotype error T2 summary report (`<prefix>.txt`)
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"

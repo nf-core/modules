@@ -1,0 +1,189 @@
+nextflow_process {
+
+    name "Test Process LDAK_CALCGENOTYPEERRORT2"
+    script "../main.nf"
+    process "LDAK_CALCGENOTYPEERRORT2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ldak"
+    tag "ldak/calckins"
+    tag "ldak/addgrms"
+    tag "ldak/adjustgrm"
+    tag "ldak/he"
+    tag "ldak/calcgenotypeerrort2"
+
+    setup {
+        run("LDAK_CALCKINS", alias: "LDAK_CALCKINS_CHR21") {
+            script "../../calckins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr21" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = "-0.25"
+                """
+            }
+        }
+
+        run("LDAK_CALCKINS", alias: "LDAK_CALCKINS_CHR22") {
+            script "../../calckins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr22" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = "-0.25"
+                """
+            }
+        }
+
+        run("LDAK_ADDGRMS") {
+            script "../../addgrms/main.nf"
+            process {
+                """
+                mgrm_file = Channel
+                    .of("plink_simulated_chr21", "plink_simulated_chr22")
+                    .collectFile(name: "ldak_test.mgrm", newLine: true)
+
+                grouped_grms = LDAK_CALCKINS_CHR21.out.ldak_grm
+                    .mix(LDAK_CALCKINS_CHR22.out.ldak_grm)
+                    .map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                        tuple("ldak_grm", grm_bin, grm_id, grm_details, grm_adjust)
+                    }
+                    .groupTuple(by: 0)
+
+                input[0] = grouped_grms.combine(mgrm_file).map { group_id, bins, ids, details, adjusts, mgrm ->
+                    tuple([ id: group_id ], mgrm, bins + ids + details + adjusts)
+                }
+                """
+            }
+        }
+
+        run("LDAK_ADJUSTGRM") {
+            script "../../adjustgrm/main.nf"
+            process {
+                """
+                input[0] = LDAK_ADDGRMS.out.combined_grm.map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                    tuple([ id: "ldak_grm_Y1_adj" ], grm_bin, grm_id, grm_details, grm_adjust)
+                }
+                input[1] = [
+                    [ id: "plink_simulated_quantitative_phenoname" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe", checkIfExists: true),
+                1
+                ]
+                input[2] = [
+                    [ id: "covariates" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.txt", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("LDAK_HE") {
+            script "../../he/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "he_Y1_ldak_grm_adj" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe", checkIfExists: true),
+                    1
+                ]
+                input[1] = LDAK_ADJUSTGRM.out.adjusted_grm.map { meta, meta2, grm_bin, grm_id, grm_details, grm_adjust, grm_root ->
+                    tuple([ id: meta.id ], grm_bin, grm_id, grm_details, grm_adjust, grm_root)
+                }
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = ''
+                input[6] = 0
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - calculate genotype error fixture-free") {
+
+        when {
+            process {
+                """
+                he_input = LDAK_HE.out.he_results.map { meta, overall_file ->
+                    // The minimal setup does not generate distinct HE within/across emits, so derive deterministic sidecars.
+                    within_file = file("he.within")
+                    within_file.text = file(overall_file).text
+                    across_file = file("he.across")
+                    across_file.text = file(overall_file).text
+                    tuple([ id: "genotype_error_he_Y1_ldak_grm_adj" ], overall_file, within_file, across_file)
+                }
+
+                input[0] = he_input
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.genotype_error_results.size() == 1 },
+                { assert process.out.versions.size() == 1 },
+                {
+                    def resultFile = path(process.out.genotype_error_results.get(0).get(1))
+                    def versionsFile = path(process.out.versions.get(0))
+                    def commandText = resultFile.parent.resolve(".command.sh").text
+                    assert resultFile.fileName.toString() == "genotype_error_he_Y1_ldak_grm_adj.txt"
+                    assert resultFile.text.contains("T2 Statistic")
+                    assert resultFile.text.contains("P-value (H0: T2 <= 0)")
+                    assert versionsFile.fileName.toString() == "versions.yml"
+                    assert versionsFile.text.contains("r-base:")
+                    assert commandText.contains("#!/usr/bin/env Rscript")
+                    assert !commandText.contains("base64 -d > calc_genotype_error_t2.R")
+                    assert !commandText.contains("Rscript calc_genotype_error_t2.R")
+                },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["genotype_error_results"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - genotype error stub fixture-free") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                he_input = LDAK_HE.out.he_results.map { meta, overall_file ->
+                    // The minimal setup does not generate distinct HE within/across emits, so derive deterministic sidecars.
+                    within_file = file("he.stub.within")
+                    within_file.text = file(overall_file).text
+                    across_file = file("he.stub.across")
+                    across_file.text = file(overall_file).text
+                    tuple([ id: "genotype_error_stub" ], overall_file, within_file, across_file)
+                }
+
+                input[0] = he_input
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.genotype_error_results.size() == 1 },
+                { assert process.out.versions.size() == 1 },
+                {
+                    assert path(process.out.genotype_error_results.get(0).get(1)).fileName.toString() == "genotype_error_stub.txt"
+                    assert path(process.out.versions.get(0)).fileName.toString() == "versions.yml"
+                },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["genotype_error_results"])).match() }
+            )
+        }
+    }
+}
