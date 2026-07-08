@@ -1,0 +1,90 @@
+name: "plink2_king"
+description: Estimate pairwise kinship using the KING-robust estimator, producing both a kinship table and a triangular KING relatedness matrix
+keywords:
+  - plink2
+  - king
+  - kinship
+  - relatedness
+  - ibd
+  - quality control
+tools:
+  - "plink2":
+      description: |
+        Whole genome association analysis toolset, designed to perform a range
+        of basic, large-scale analyses in a computationally efficient manner
+      homepage: "http://www.cog-genomics.org/plink/2.0/"
+      documentation: "http://www.cog-genomics.org/plink/2.0/distance#king_cutoff"
+      doi: "10.1186/s13742-015-0047-8"
+      licence:
+        - "GPL v3"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - plink_genotype_file:
+        type: file
+        description: PLINK binary genotype table file or PLINK 2 binary genotype table
+          file
+        pattern: "*.{bed,pgen}"
+        ontologies: []
+    - plink_variant_file:
+        type: file
+        description: PLINK extended MAP file or PLINK 2 variant information file
+        pattern: "*.{bim,pvar}"
+        ontologies: []
+    - plink_sample_file:
+        type: file
+        description: PLINK sample information file or PLINK 2 sample information file
+        pattern: "*.{fam,psam}"
+        ontologies: []
+output:
+  kin0:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.kin0":
+          type: file
+          description: Pairwise KING-robust kinship coefficient table
+          pattern: "*.{kin0}"
+          ontologies: []
+  king:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.king*":
+          type: file
+          description: Triangular KING-robust relatedness matrix (binary) and its sample id file
+          pattern: "*.king*"
+          ontologies: []
+  versions_plink2:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - plink2:
+          type: string
+          description: The name of the tool
+      - "plink2 --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - plink2:
+          type: string
+          description: The name of the tool
+      - "plink2 --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"
