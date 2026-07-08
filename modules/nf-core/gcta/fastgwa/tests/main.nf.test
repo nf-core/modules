@@ -1,6 +1,7 @@
 nextflow_process {
 
     name "Test Process GCTA_FASTGWA"
+    config "./nextflow.config"
     script "../main.nf"
     process "GCTA_FASTGWA"
 
@@ -104,8 +105,6 @@ nextflow_process {
     }
 
     test("homo_sapiens popgen - plink1 with sparse GRM and quantitative phenotype") {
-        config "./mpheno.config"
-
         when {
             params {
                 module_args = '--mpheno 1'
@@ -155,8 +154,6 @@ nextflow_process {
     }
 
     test("homo_sapiens popgen - plink1 with sparse GRM and quantitative phenotype mpheno selection") {
-        config "./mpheno.config"
-
         when {
             params {
                 module_args = '--mpheno 2'
@@ -249,8 +246,6 @@ nextflow_process {
     }
 
     test("homo_sapiens popgen - plink2 with sparse GRM and quantitative phenotype") {
-        config "./mpheno.config"
-
         when {
             params {
                 module_args = '--mpheno 1'
@@ -329,7 +324,6 @@ nextflow_process {
 
     test("homo_sapiens popgen - plink2 with sparse GRM - stub") {
         options "-stub"
-        config "./mpheno.config"
 
         when {
             params {
