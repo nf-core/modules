@@ -18,16 +18,26 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - fasta:
-      type: file
-      description: Genomic DNA fasta file
-      pattern: "*.{fasta,fasta.gz}"
-      ontologies: []
-  - gtf:
-      type: file
-      description: Genomic gtf file
-      pattern: "*.{gtf,gtf.gz}"
-      ontologies: []
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Genomic DNA fasta file
+        pattern: "*.{fasta,fasta.gz}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - gtf:
+        type: file
+        description: Genomic gtf file
+        pattern: "*.{gtf,gtf.gz}"
+        ontologies: []
   - workflow_mode:
       type: string
       description: String value defining workflow to use, can be one of "standard",
@@ -41,15 +51,18 @@ output:
       - kallistobustools:
           type: string
           description: The name of the tool
-      - kb --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n1:
+      - kb --version 2>&1 | sed -n 's/kb_python //p':
           type: eval
           description: The expression to obtain the version of the tool
   index:
-    - kb_ref_out.idx:
-        type: file
-        description: kb ref index file
-        pattern: "*kb_ref_out.idx"
-        ontologies: []
+    - - meta:
+          type: map
+          description: Groovy Map containing reference information
+      - kb_ref_out.idx:
+          type: file
+          description: kb ref index file
+          pattern: "*kb_ref_out.idx"
+          ontologies: []
   t2g:
     - t2g.txt:
         type: file
@@ -88,7 +101,7 @@ topics:
       - kallistobustools:
           type: string
           description: The name of the tool
-      - kb --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n1:
+      - kb --version 2>&1 | sed -n 's/kb_python //p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

@@ -31,31 +31,28 @@ process SVDB_MERGE {
     if (input_priority && vcfs.collect().size() != input_priority.collect().size()) {
         error "If priority is used, one tag per VCF is needed"
     }
+    // Convert to list if not already for simpler logic below
+    def vcf_list = vcfs instanceof List ? vcfs : [vcfs]
 
-    def input = ""
-    def prio = ""
     if (input_priority) {
-        if (vcfs.collect().size() > 1 && sort_inputs) {
-            // make vcf-priority pairs and sort on VCF name, so priority is also sorted the same
-            def pairs = vcfs.indices.collect { index -> [vcfs[index], input_priority[index]] }
-            pairs = pairs.sort { a, b -> a[0].name <=> b[0].name }
-            vcfs = pairs.collect { vcf -> vcf[0] }
-            priority = pairs.collect { pair -> pair[1] }
-        } else {
-            priority = input_priority
+        pairs = vcf_list.indices.collect { index -> [vcf_list[index], input_priority[index]] }
+
+        if(sort_inputs) {
+            pairs.sort { a, b -> a[0].name <=> b[0].name }
         }
 
-        // Build inputs
         prio = "--priority ${input_priority.join(',')}"
-        input = vcfs
-            .withIndex()
-            .collect { vcf, index -> "${vcf}:${priority[index]}" }
-            .join(" ")
-
+        input = pairs.collect { vcf, priority -> "${vcf}:${priority}"}
     } else {
-        // if there's no priority input just sort the vcfs by name if possible
-        input = (vcfs.collect().size() > 1 && sort_inputs) ? vcfs.sort { vcf_file -> vcf_file.name } : vcfs
+        if (sort_inputs) {
+            vcf_list.sort { vcf_file -> vcf_file.name }
+        }
+
+        prio = ""
+        input = vcf_list
     }
+    // Convert from list to string
+    input = input.join(' ')
 
     def extension = args2.contains("--output-type b") || args2.contains("-Ob") ? "bcf.gz" :
                     args2.contains("--output-type u") || args2.contains("-Ou") ? "bcf" :

@@ -13,7 +13,7 @@ process LSA_COSINE {
     output:
     tuple val(meta), path("*_matrix.csv") , emit: matrix
     tuple val(meta), path("*_heatmap.png"), emit: heatmap
-    path "versions.yml"                   , emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

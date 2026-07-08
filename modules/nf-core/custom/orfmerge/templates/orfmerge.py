@@ -26,11 +26,11 @@ Cross-sample recurrence is recorded in two further columns:
 
 Outputs:
 
-  ${prefix}.catalogue.bed12      merged catalogue (genomic blocks).
-  ${prefix}.catalogue.tsv        per-ORF table with caller-tracking cols.
+  ${prefix}.bed12                merged catalogue (genomic blocks).
+  ${prefix}.tsv                  per-ORF table with caller-tracking cols.
   ${prefix}.orf_to_gene.tsv      one row per (orf_id, gene_id, transcript_id);
                                  an ORF can map to multiple host transcripts.
-  ${prefix}.catalogue.mqc.tsv    MultiQC custom-content sidecar
+  ${prefix}.mqc.tsv              MultiQC custom-content sidecar
                                  (per-class counts).
 """
 
@@ -182,11 +182,17 @@ def load_normalised(tsv_paths, bed_paths):
     return rows, bed_index
 
 
-def write_catalogue(prefix, clusters, bed_index):
-    cat_bed = Path(f"{prefix}.catalogue.bed12")
-    cat_tsv = Path(f"{prefix}.catalogue.tsv")
+def write_catalogue(prefix, clusters, bed_index, min_callers=1, min_samples=1):
+    cat_bed = Path(f"{prefix}.bed12")
+    cat_tsv = Path(f"{prefix}.tsv")
     o2g_tsv = Path(f"{prefix}.orf_to_gene.tsv")
-    mqc_tsv = Path(f"{prefix}.catalogue.mqc.tsv")
+    mqc_tsv = Path(f"{prefix}.mqc.tsv")
+    # Consensus view: the same catalogue filtered to ORFs supported by at least
+    # `min_callers` distinct callers and recurring in at least `min_samples`
+    # samples. At the defaults (1, 1) it is identical to the full catalogue.
+    con_bed = Path(f"{prefix}.consensus.bed12")
+    con_tsv = Path(f"{prefix}.consensus.tsv")
+    con_o2g = Path(f"{prefix}.consensus.orf_to_gene.tsv")
 
     catalogue_cols = (
         ["orf_id", "chrom", "start", "end", "strand", "gene_id", "transcript_id", "orf_class", "aa_length"]
@@ -197,17 +203,41 @@ def write_catalogue(prefix, clusters, bed_index):
 
     per_class_counts = defaultdict(int)
 
+    # orf_ids are assigned in iteration order below, so sort first to make the
+    # numbering deterministic.
+    def _sort_key(cluster):
+        r = representative(cluster)
+        return (
+            r.get("chrom", ""),
+            int(r.get("start") or 0),
+            int(r.get("end") or 0),
+            r.get("strand", ""),
+            r.get("gene_id") or "",
+            r.get("transcript_id") or "",
+            r.get("orf_class", ""),
+        )
+
+    clusters = sorted(clusters, key=_sort_key)
+
+    header = "\\t".join(catalogue_cols) + "\\n"
+    o2g_header = "orf_id\\tgene_id\\ttranscript_id\\n"
+
+    # First pass: write the full catalogue, recording which rows qualify for the
+    # consensus view (>= min_callers distinct callers and >= min_samples samples).
+    consensus_rows = []
     with open(cat_bed, "w") as bh, open(cat_tsv, "w") as th, open(o2g_tsv, "w") as oh:
-        th.write("\\t".join(catalogue_cols) + "\\n")
-        oh.write("orf_id\\tgene_id\\ttranscript_id\\n")
+        th.write(header)
+        oh.write(o2g_header)
         for idx, cluster in enumerate(clusters):
             rep = representative(cluster)
             stable_id = f"orf_{idx + 1:08d}"
+            bed_out = None
             bed_line = bed_index.get(rep["orf_id"])
             if bed_line:
                 parts = bed_line.split("\\t")
                 parts[3] = stable_id
-                bh.write("\\t".join(parts) + "\\n")
+                bed_out = "\\t".join(parts) + "\\n"
+                bh.write(bed_out)
 
             caller_cols = aggregate_caller_columns(cluster)
             row_out = [
@@ -226,10 +256,12 @@ def write_catalogue(prefix, clusters, bed_index):
 
             sample_ids = sorted({r.get("sample_id", "") for r in cluster if r.get("sample_id")})
             row_out += [str(len(sample_ids)), ",".join(sample_ids)]
-            th.write("\\t".join(row_out) + "\\n")
+            row_line = "\\t".join(row_out) + "\\n"
+            th.write(row_line)
 
             per_class_counts[rep.get("orf_class", "other")] += 1
 
+            o2g_pairs = []
             seen_gt = set()
             for r in cluster:
                 key = (r.get("gene_id", ""), r.get("transcript_id", ""))
@@ -237,6 +269,25 @@ def write_catalogue(prefix, clusters, bed_index):
                     continue
                 seen_gt.add(key)
                 oh.write(f"{stable_id}\\t{key[0]}\\t{key[1]}\\n")
+                o2g_pairs.append(key)
+
+            # Consensus membership: distinct callers that flagged the cluster
+            # and distinct contributing samples must each meet the threshold.
+            n_callers = sum(1 for c in CALLERS if caller_cols[f"called_by_{c}"] == "1")
+            if n_callers >= min_callers and len(sample_ids) >= min_samples:
+                consensus_rows.append((bed_out, row_line, stable_id, o2g_pairs))
+
+    # Second pass: the consensus view is the full catalogue restricted to the
+    # qualifying rows.
+    with open(con_bed, "w") as cbh, open(con_tsv, "w") as cth, open(con_o2g, "w") as coh:
+        cth.write(header)
+        coh.write(o2g_header)
+        for bed_out, row_line, stable_id, o2g_pairs in consensus_rows:
+            if bed_out:
+                cbh.write(bed_out)
+            cth.write(row_line)
+            for gid, tid in o2g_pairs:
+                coh.write(f"{stable_id}\\t{gid}\\t{tid}\\n")
 
     with open(mqc_tsv, "w") as mh:
         mh.write("# id: orf_catalogue\\n")
@@ -269,6 +320,18 @@ def main():
         default=0.8,
         help="Reciprocal-overlap fraction for novel_u/smORF clustering (default: 0.8)",
     )
+    parser.add_argument(
+        "--min-callers",
+        type=int,
+        default=1,
+        help="Minimum distinct callers for an ORF to enter the consensus view (default: 1)",
+    )
+    parser.add_argument(
+        "--min-samples",
+        type=int,
+        default=1,
+        help="Minimum distinct samples for an ORF to enter the consensus view (default: 1)",
+    )
     args = parser.parse_args(shlex.split("${args}"))
 
     bed_paths = sorted(Path(p) for p in glob.glob("beds/*"))
@@ -278,7 +341,7 @@ def main():
     rows, bed_index = load_normalised(tsv_paths, bed_paths)
 
     if not rows:
-        write_catalogue(prefix, [], {})
+        write_catalogue(prefix, [], {}, min_callers=args.min_callers, min_samples=args.min_samples)
         write_versions()
         return 0
 
@@ -302,7 +365,7 @@ def main():
     for cls in ("novel_u", "smORF"):
         clusters.extend(cluster_by_reciprocal_overlap(by_class.get(cls, []), frac=args.reciprocal_overlap))
 
-    write_catalogue(prefix, clusters, bed_index)
+    write_catalogue(prefix, clusters, bed_index, min_callers=args.min_callers, min_samples=args.min_samples)
     write_versions()
     return 0
 

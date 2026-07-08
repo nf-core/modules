@@ -1,0 +1,96 @@
+name: "fgumi_zipper"
+description: Zip an unmapped UMI BAM together with its aligned BAM using fgumi
+keywords:
+  - UMIs
+  - zipper
+  - bam
+  - alignment
+  - merge
+tools:
+  - "fgumi":
+      description: "High-performance tools for UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://fgumi.readthedocs.io/"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence:
+        - "MIT"
+      identifier: biotools:fgumi
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Aligned (mapped) BAM, in the same queryname order as the
+          unmapped BAM
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - unmapped:
+        type: file
+        description: Unmapped UMI BAM (e.g. from fgumi extract), queryname order
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: Reference genome FASTA index (.fai)
+        pattern: "*.fai"
+        ontologies: []
+    - dict:
+        type: file
+        description: Reference sequence dictionary (.dict)
+        pattern: "*.dict"
+        ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Zipped BAM with UMI tags transferred onto the aligned reads
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
