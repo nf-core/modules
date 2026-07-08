@@ -16,31 +16,34 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
-                input[2] = "homo_sapiens_reference"
+                input[0] = [
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 'homo_sapiens_reference'
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                        path( "${outputDir}/homo_sapiens_reference/fasta"                 ),
-                        path( "${outputDir}/homo_sapiens_reference/genes"                 ),
-                        path( "${outputDir}/homo_sapiens_reference/reference.json"        ),
-                        path( "${outputDir}/homo_sapiens_reference/star/SA"               ),
-                        path( "${outputDir}/homo_sapiens_reference/star/SAindex"          ),
-                        path( "${outputDir}/homo_sapiens_reference/star/Genome"           ),
-                        path( "${outputDir}/homo_sapiens_reference/star/geneInfo.tab"     ),
-                        path( "${outputDir}/homo_sapiens_reference/star/exonGeTrInfo.tab" ),
-                        path( "${outputDir}/homo_sapiens_reference/star/exonInfo.tab"     ),
-                        path( "${outputDir}/homo_sapiens_reference/star/sjdbList.out.tab" ),
-                        process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match()
-                }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.findAll { key, val -> key.startsWith("versions") },
+                path("${outputDir}/homo_sapiens_reference/fasta"),
+                path("${outputDir}/homo_sapiens_reference/genes"),
+                path("${outputDir}/homo_sapiens_reference/reference.json"),
+                path("${outputDir}/homo_sapiens_reference/star/SA"),
+                path("${outputDir}/homo_sapiens_reference/star/SAindex"),
+                path("${outputDir}/homo_sapiens_reference/star/Genome"),
+                path("${outputDir}/homo_sapiens_reference/star/geneInfo.tab"),
+                path("${outputDir}/homo_sapiens_reference/star/exonGeTrInfo.tab"),
+                path("${outputDir}/homo_sapiens_reference/star/exonInfo.tab"),
+                path("${outputDir}/homo_sapiens_reference/star/sjdbList.out.tab"),
+            ).match()
         }
 
     }
@@ -52,21 +55,22 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = []
-                input[1] = []
-                input[2] = "homo_sapiens_reference"
+                input[0] = [
+                    [id: 'homo_sapiens'],
+                    []
+                ]
+                input[1] = [
+                    [id: 'homo_sapiens'],
+                    []
+                ]
+                input[2] = 'homo_sapiens_reference'
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
