@@ -4,8 +4,8 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - conda-forge::faiss-cpu=1.10.0  # CAALM only uses CPU FAISS APIs; faiss-gpu currently forces CUDA 12.9
-  - conda-forge::mkl=2024.*        # pins the MKL ABI for FAISS
+  - conda-forge::faiss-cpu=1.10.0 # CAALM only uses CPU FAISS APIs; faiss-gpu currently forces CUDA 12.9
+  - conda-forge::mkl=2024.* # pins the MKL ABI for FAISS
   - conda-forge::python=3.10.0
   - conda-forge::pytorch-gpu=2.6.0
   - conda-forge::cuda-version=12.6
