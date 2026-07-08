@@ -31,16 +31,8 @@ process HIPSTR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if (!alignment_file_list && !alignment_files) {
-        error "Either alignment_files or alignment_file_list must be provided"
-    }
-
-    if (alignment_file_list && !alignment_files) {
-        error "alignment_files must also be staged when alignment_file_list is provided"
-    }
-
-    if (alignment_files && !alignment_indices) {
-        error "alignment_indices must be provided with alignment_files"
+    if (alignment_file_list) {
+        log.warn "alignment_file_list is less portable: paths inside it are not staged by Nextflow. Use alignment_files + alignment_indices instead."
     }
 
     def log_match = args =~ "(^|\\s)--log\\s+([^\\s]+)"
@@ -79,11 +71,13 @@ process HIPSTR {
     def fam_arg = fam ? "--fam $fam" : ''
     def hap_chr_file_arg = hap_chr_file ? "--hap-chr-file $hap_chr_file" : ''
 
-    def alignment_arg = alignment_file_list ? "--bam-files $alignment_file_list" : "--bams ${alignment_files.join(',')}"
+    def alignment_file_list_arg = alignment_file_list ? "--bam-files $alignment_file_list" : ''
+    def bams_arg = !alignment_file_list ? "--bams ${alignment_files.join(',')}" : ''
 
     """
     HipSTR \\
-        $alignment_arg \\
+        $bams_arg \\
+        $alignment_file_list_arg \\
         --fasta $fasta \\
         --regions $ref_regions \\
         --str-vcf ${prefix}.vcf.gz \\
