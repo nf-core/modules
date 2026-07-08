@@ -66,11 +66,10 @@ nextflow_process {
 
                     def sortedLines = mappingFile.readLines().sort()
 
-                    assert snapshot([output: sortedLines,
                     assert snapshot([output: sortedLines],
                     	process.out.findAll { key, val -> key.startsWith('versions') }
                     	).match()
-                   
+
                 },
             )
         }
