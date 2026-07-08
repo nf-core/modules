@@ -28,11 +28,18 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def eventNames = process.out.events.get(0).collect {
+                f -> file(f).name.toString()
+            }
+
             assertAll(
-                { assert snapshot(
-                    sanitizeOutput(process.out),
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                {
+                    assert snapshot(
+                        eventNames,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }
@@ -55,9 +62,14 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def eventNames = process.out.events.get(0).collect {
+                f -> file(f).name.toString()
+            }
+
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    eventNames,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -82,9 +94,14 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def eventNames = process.out.events.get(0).collect {
+                f -> file(f).name.toString()
+            }
+
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    eventNames,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -109,9 +126,14 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def eventNames = process.out.events.get(0).collect {
+                f -> file(f).name.toString()
+            }
+
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    eventNames,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -136,9 +158,14 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def eventNames = process.out.events.get(0).collect {
+                f -> file(f).name.toString()
+            }
+
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    eventNames,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -163,9 +190,14 @@ nextflow_process {
 
         then {
             assert process.success
+
+            def eventNames = process.out.events.get(0).collect {
+                f -> file(f).name.toString()
+            }
+
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    eventNames,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
