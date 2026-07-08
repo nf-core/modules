@@ -2,8 +2,8 @@ process HDL_RG {
     tag "${meta.id}_${meta2.id}"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'oras://community.wave.seqera.io/library/r-base_r-data.table_r-hdl:a2553504418194cc'
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/836e8894f4f631571ed765ceccf589173af16074703010898ec821e76f30479e/data'
         : 'community.wave.seqera.io/library/r-base_r-data.table_r-hdl:cb9d70356e12d034'}"
 
     input:
