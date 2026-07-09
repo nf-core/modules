@@ -30,12 +30,14 @@ input:
         type: file
         description: PLINK extended MAP file
         pattern: "*.{bim}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3285 # PLINK MAP
     - fam:
         type: file
         description: PLINK sample information file
         pattern: "*.{fam}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3286 # PLINK PED
   - maf:
       type: float
       description: Minor allele frequency threshold; variants below this value are removed
@@ -61,7 +63,8 @@ output:
           type: file
           description: PLINK extended MAP file after MAF filtering
           pattern: "*.{bim}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3285 # PLINK MAP
   fam:
     - - meta:
           type: map
@@ -72,7 +75,8 @@ output:
           type: file
           description: PLINK sample information file after MAF filtering
           pattern: "*.{fam}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3286 # PLINK PED
   versions_plink:
     - - "${task.process}":
           type: string
