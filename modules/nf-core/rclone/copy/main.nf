@@ -14,7 +14,7 @@ process RCLONE_COPY {
 
     output:
     tuple val(meta), path("rclone-copy.log"), emit: log
-    tuple val("${task.process}"), val('rclone'), eval("rclone version | head -n1 | sed 's/rclone v//'"), topic: versions, emit: versions
+    tuple val("${task.process}"), val('rclone'), eval("rclone version | head -n1 | sed 's/rclone v//'"), topic: versions, emit: versions_rclone
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,8 +22,8 @@ process RCLONE_COPY {
     script:
     def args = task.ext.args ?: ''
     def configArg = rclone_config ? "--config '${rclone_config}'" : ''
-    def transfers = task.ext.transfers ?: task.cpus
-    def checkers = task.ext.checkers ?: task.cpus
+    def transfers = task.cpus
+    def checkers = task.cpus
 
     """
     rclone ${configArg} copy ${args} \\
