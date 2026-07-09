@@ -28,20 +28,23 @@ input:
         type: file
         description: BAM/CRAM file from alignment
         pattern: "*.{bam,cram}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" #BAM
+          - edam: "http://edamontology.org/format_3462" #CRAM
     - input_index:
         type: file
         description: BAI/CRAI file from alignment
         pattern: "*.{bai,crai}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" #BAI
     - bqsr_table:
         type: file
         description: Recalibration table from gatk4_baserecalibrator
-        ontologies: []
     - intervals:
         type: file
         description: Bed file with the genomic regions included in the library (optional)
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" #BED
   - - meta2:
         type: map
         description: |
@@ -51,17 +54,18 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
     - fai:
         type: file
         description: Index of reference fasta file
         pattern: "*.fasta.fai"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/data_3210"
     - dict:
         type: file
         description: GATK sequence dictionary
         pattern: "*.dict"
-        ontologies: []
   - output_suffix:
       type: string
       description: Output file format, either "bam" or "cram" (cram is the default)
@@ -76,7 +80,8 @@ output:
           type: file
           description: Recalibrated BAM file
           pattern: "${prefix}.bam"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" #BAM
   bai:
     - - meta:
           type: map
@@ -87,7 +92,8 @@ output:
           type: file
           description: Recalibrated BAM index file
           pattern: "${prefix}*bai"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3327" #BAI
   cram:
     - - meta:
           type: map
@@ -98,7 +104,8 @@ output:
           type: file
           description: Recalibrated CRAM file
           pattern: "${prefix}.cram"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3462" #CRAM"
   versions_gatk4:
     - - ${task.process}:
           type: string
