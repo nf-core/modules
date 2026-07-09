@@ -22,30 +22,30 @@ input:
       pattern: "*.gtf"
       ontologies:
         - edam: http://edamontology.org/format_3475
-output:
-  events:
-    - "events.*":
-        type: file
-        description: Alternative splicing events
-        pattern: "events.*"
-  events_type:
-    - "events_*.*":
-        type: file
-        description: Alternative splicing events of a specific type
-        pattern: "events_*.*"
-        onthologies: []
+  - format:
+      type: string
+      description: Format of the events to be generated. Options are "ioe" or "ioi".
+  - pool_genes:
+      type: boolean
+      description: Whether to pool genes or not. If true, events will be generated for all genes together.
+  - event_type:
+      type: string
+      description: Type of alternative splicing events to be generated. Options are "SE", "A5", "A3", "RI", "MX", "AF", "AL".
+  - boundary:
+      type: integer
+      description: Boundary for event generation
+  - threshold:
+      type: float
+      description: Threshold for event generation
+  - exon_length:
+      type: integer
+      description: Minimum exon length for event generation
 output:
   events:
     - "events*.*":
         type: file
         description: Alternative splicing events
         pattern: "events*.*"
-        ontologies: []
-  events_type:
-    - "events_*.*":
-        type: file
-        description: Alternative splicing events of a specific type
-        pattern: "events_*.*"
         ontologies: []
   versions_suppa:
     - - ${task.process}:
