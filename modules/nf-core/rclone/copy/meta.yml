@@ -63,7 +63,7 @@ output:
       - rclone:
           type: string
           description: The name of the tool
-      - "rclone version | head -n1 | sed 's/rclone v//'":
+      - rclone --version | sed -n '1s/^rclone v//p':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -75,7 +75,7 @@ topics:
       - rclone:
           type: string
           description: The name of the tool
-      - "rclone version | head -n1 | sed 's/rclone v//'":
+      - rclone --version | sed -n '1s/^rclone v//p':
           type: eval
           description: The expression to obtain the version of the tool
 
