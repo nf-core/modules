@@ -20,7 +20,8 @@ tools:
       homepage: https://github.com/mcanouil/NACHO
       documentation: https://cran.r-project.org/web/packages/NACHO/vignettes/NACHO.html
       doi: "10.1093/bioinformatics/btz647"
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
       identifier: ""
 input:
   - - meta:
@@ -83,6 +84,15 @@ output:
             Plain text reports
           pattern: "*_mqc.txt"
           ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
   versions:
     - versions.yml:
         type: file
