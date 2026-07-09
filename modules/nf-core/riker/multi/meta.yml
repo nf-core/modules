@@ -1,8 +1,8 @@
 name: riker_multi
 description: |
   Run multiple riker collectors in a single BAM pass using riker multi. Specify
-  tools via ext.args (e.g. '--tools alignment basic isize'). The wgs and gcbias
-  tools require a reference FASTA; the hybcap tool requires baits and targets.
+  tools via ext.args (e.g. '--tools alignment basic isize'). The wgs, gcbias, and
+  error tools require a reference FASTA; the hybcap tool requires baits and targets.
 keywords:
   - bam
   - qc
@@ -50,7 +50,7 @@ input:
     - error_vcf_idx:
         type: file
         description: Index for the VCF file.
-        pattern: "*.vcf..gz.{tbi,csi}"
+        pattern: "*.vcf.gz.{tbi,csi}"
         ontologies:
           - edam: "http://edamontology.org/format_3616" # TBI/CSI
     - error_intervals:
