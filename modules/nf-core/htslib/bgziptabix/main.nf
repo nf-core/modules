@@ -55,7 +55,7 @@ process HTSLIB_BGZIPTABIX {
             ${bgzip_cmd} ;;
         *gzip-compressed*)
             [ "\$(basename ${infile})" == "\$(basename ${outfile})" ] && echo "Input and output names cannot be the same" && exit 1
-            zcat  ${infile} | ${compress_cmd} > ${outfile} ;;
+            bgzip -d -c -@ ${task.cpus} ${infile} | ${compress_cmd} > ${outfile} ;;
         *bzip2-compressed*)
             bzcat ${infile} | ${compress_cmd} > ${outfile} ;;
         *XZ-compressed*)

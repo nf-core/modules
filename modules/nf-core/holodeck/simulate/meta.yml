@@ -1,0 +1,115 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "holodeck_simulate"
+description: Simulate sequencing reads from a reference genome with holodeck
+keywords:
+  - simulation
+  - fastq
+  - reads
+  - sequencing
+  - benchmarking
+tools:
+  - "holodeck":
+      description: "Modern NGS read simulator written in Rust."
+      homepage: "https://github.com/fg-labs/holodeck"
+      documentation: "https://github.com/fg-labs/holodeck"
+      tool_dev_url: "https://github.com/fg-labs/holodeck"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: Reference genome FASTA index (.fai)
+        pattern: "*.fai"
+        ontologies: []
+    - vcf:
+        type: file
+        description: Optional VCF of variants to embed in the simulated reads
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+output:
+  reads_1:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.r1.fastq.gz":
+          type: file
+          description: Simulated R1 (or single-end) reads
+          pattern: "*.r1.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930"
+  reads_2:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.r2.fastq.gz":
+          type: file
+          description: Simulated R2 reads (paired-end only)
+          pattern: "*.r2.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930"
+  golden_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.golden.bam":
+          type: file
+          description: Ground-truth BAM with the true alignments of the simulated reads
+          pattern: "*.golden.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  golden_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.golden.vcf.gz":
+          type: file
+          description: Ground-truth VCF annotated with simulated coverage
+          pattern: "*.golden.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+  versions_holodeck:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - holodeck:
+          type: string
+          description: The name of the tool
+      - holodeck --version | sed 's/^holodeck //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - holodeck:
+          type: string
+          description: The name of the tool
+      - holodeck --version | sed 's/^holodeck //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"

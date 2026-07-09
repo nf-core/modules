@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process FGUMI_CORRECT"
+    script "../main.nf"
+    process "FGUMI_CORRECT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgumi"
+    tag "fgumi/correct"
+
+    test("homo_sapiens - tagged bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.unsorted_tagged.bam', checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = 1
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - tagged bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.unsorted_tagged.bam', checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = 1
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

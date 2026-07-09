@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process MAGECK_TEST"
     script "../main.nf"
+    config "./nextflow.config"
     process "MAGECK_TEST"
 
     tag "modules"
@@ -10,15 +11,16 @@ nextflow_process {
     tag "mageck/test"
 
     test("mageck-test - csv") {
-
-        config "./nextflow.config"
-
         when {
+            params {
+                module_args = "-t 'HL60.initial' "
+            }
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
-                    ]
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -26,28 +28,23 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                            process.out.versions,
-                            file(process.out.gene_summary.get(0).get(1)).readLines()[0],
-                            file(process.out.sgrna_summary.get(0).get(1)).readLines()[0],
-                            file(process.out.r_script.get(0).get(1)).readLines()[0]
-                            ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
 
     test("mageck-test-day0 - csv") {
-
-        config "./nextflow-day0_label.config"
-
         when {
+            params {
+                module_args = "--day0-label 'HL60.initial' "
+            }
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
-                    ]
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -55,12 +52,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                            process.out.versions,
-                            file(process.out.gene_summary.get(0).get(1)[0]).readLines()[0],
-                            file(process.out.sgrna_summary.get(0).get(1)[0]).readLines()[0]
-                            ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -71,11 +63,15 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
-                    ]
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -83,7 +79,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
