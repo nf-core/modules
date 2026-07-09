@@ -37,7 +37,7 @@ output:
       - busco:
           type: string
           description: The name of the tool
-      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+      - busco --version | sed 's/BUSCO //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -48,7 +48,7 @@ topics:
       - busco:
           type: string
           description: The name of the tool
-      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+      - busco --version | sed 's/BUSCO //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
