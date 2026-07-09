@@ -72,7 +72,7 @@ process HIPSTR {
     def hap_chr_file_arg = hap_chr_file ? "--hap-chr-file $hap_chr_file" : ''
 
     def alignment_file_list_arg = alignment_file_list ? "--bam-files $alignment_file_list" : ''
-    def bams_arg = !alignment_file_list ? "--bams ${alignment_files.join(',')}" : ''
+    def bams_arg = alignment_files ? "--bams ${alignment_files.join(',')}" : ''
 
     """
     HipSTR \\
