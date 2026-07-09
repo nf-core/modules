@@ -160,13 +160,16 @@ authors:
 maintainers:
   - "@lyh970817"
 containers:
+  conda:
+    linux/amd64:
+      lock_file: "modules/nf-core/regenie/runl1/.conda-lock/linux_amd64-bd-5d361f9fcb2f85cf_1.txt"
   docker:
-    linux_amd64:
+    linux/amd64:
       build_id: "bd-5d361f9fcb2f85cf_1"
       name: "community.wave.seqera.io/library/regenie:4.1.2--5d361f9fcb2f85cf"
-      scanId: "sc-cc9eb5ed5eb381dd_2"
+      scan_id: "sc-cc9eb5ed5eb381dd_2"
   singularity:
-    linux_amd64:
+    linux/amd64:
       build_id: "bd-7c121fb4ecd57890_1"
       name: "oras://community.wave.seqera.io/library/regenie:4.1.2--7c121fb4ecd57890"
       https: "https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7a/7a05bf71ea09adc5ebf9f0c656c9b326c0f16ba8e4966914972e58313469a466/data"
