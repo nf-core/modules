@@ -25,7 +25,7 @@ process SAMTOOLS_ADDREPLACERG {
     def args = task.ext.args ?: ''
     def reference = fasta ? "--reference ${fasta}" : ''
     def read_group_arg = read_group ? "-r ${read_group}" : ''
-    def file_type = args =~ /--output-fmt\s+sam|-O\s+sam/
+    file_type = args =~ /--output-fmt\s+sam|-O\s+sam/
         ? "sam"
         : args =~ /--output-fmt\s+bam|-O\s+bam/
             ? "bam"
