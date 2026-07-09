@@ -12,27 +12,14 @@ nextflow_process {
     tag "samtools/sort"
     tag "mudskipper/index"
 
-    setup {
-        run("SAMTOOLS_SORT"){
-            script "../../../samtools/sort/main.nf"
-            process {
-                """
-                input[0] = [
-                    [id:'test' ],
-                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.bam', checkIfExists: true)
-                ]
-                input[1] = [[], [], []]
-                input[2] = ''
-                """
-            }
-        }
-    }
-
     test("homo_sapiens - gtf - bam") {
         when {
             process {
                 """
-                input[0] = SAMTOOLS_SORT.out.bam
+                input[0] = [
+                    [id:'test' ],
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
+                ]
                 input[1] = [[], []]
                 input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 input[3] = false
@@ -68,7 +55,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = SAMTOOLS_SORT.out.bam
+                input[0] = [
+                    [id:'test' ],
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
+                ]
                 input[1] = MUDSKIPPER_INDEX.out.index
                 input[2] = []
                 input[3] = false
@@ -89,7 +79,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = SAMTOOLS_SORT.out.bam
+                input[0] = [
+                    [id:'test' ],
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
+                ]
                 input[1] = [[], []]
                 input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 input[3] = false
