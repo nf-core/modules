@@ -50,7 +50,8 @@ output:
           type: file
           description: Per-allele PCA weights for projecting new samples onto the reference PCs
           pattern: "*.{eigenvec.allele}"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
   eigenvec:
     - - meta:
           type: map
@@ -61,7 +62,8 @@ output:
           type: file
           description: Principal component scores for the input samples
           pattern: "*.{eigenvec}"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
   eigenval:
     - - meta:
           type: map
