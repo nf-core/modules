@@ -16,6 +16,9 @@ process HIPSTR {
     path stutter_in
     path fam
     path hap_chr_file
+    val save_log
+    val save_viz
+    val save_stutter
 
     output:
     tuple val(meta), path("*.vcf.gz"),             emit: vcf
@@ -35,35 +38,9 @@ process HIPSTR {
         log.warn "alignment_file_list is less portable: paths inside it are not staged by Nextflow. Use alignment_files + alignment_indices instead."
     }
 
-    def log_match = args =~ "(^|\\s)--log\\s+([^\\s]+)"
-    def viz_match = args =~ "(^|\\s)--viz-out\\s+([^\\s]+)"
-    def stutter_match = args =~ "(^|\\s)--stutter-out\\s+([^\\s]+)"
-
-    def log_file = log_match.find() ? log_match.group(2) : null
-    def viz_file = viz_match.find() ? viz_match.group(2) : null
-    def stutter_file = stutter_match.find() ? stutter_match.group(2) : null
-
-    if (log_file && !log_file.endsWith('.log.txt')) {
-        log_file = "${log_file}.log.txt"
-    }
-
-    if (viz_file && !viz_file.endsWith('.viz.gz')) {
-        viz_file = "${viz_file}.viz.gz"
-    }
-
-    if (stutter_file && !stutter_file.endsWith('.stutter_models.txt')) {
-        stutter_file = "${stutter_file}.stutter_models.txt"
-    }
-
-    def log_arg = log_file ? "--log ${log_file}" : ''
-    def viz_arg = viz_file ? "--viz-out ${viz_file}" : ''
-    def stutter_out_arg = stutter_file ? "--stutter-out ${stutter_file}" : ''
-
-    args = args
-        .replaceAll("(^|\\s)--log\\s+[^\\s]+", ' ')
-        .replaceAll("(^|\\s)--viz-out\\s+[^\\s]+", ' ')
-        .replaceAll("(^|\\s)--stutter-out\\s+[^\\s]+", ' ')
-        .trim()
+    def log_arg = save_log ? "--log ${prefix}.log.txt" : ''
+    def viz_arg = save_viz ? "--viz-out ${prefix}.viz.gz" : ''
+    def stutter_out_arg = save_stutter ? "--stutter-out ${prefix}.stutter_models.txt" : ''
 
     def ref_vcf_arg = ref_vcf ? "--ref-vcf $ref_vcf" : ''
     def snp_vcf_arg = snp_vcf ? "--snp-vcf $snp_vcf" : ''

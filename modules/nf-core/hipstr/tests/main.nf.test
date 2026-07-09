@@ -48,6 +48,9 @@ nextflow_process {
                 input[5] = []
                 input[6] = []
                 input[7] = []
+                input[8] = false
+                input[9] = false
+                input[10] = false
                 """
             }
         }
@@ -107,6 +110,9 @@ nextflow_process {
                 input[5] = stutter
                 input[6] = []
                 input[7] = []
+                input[8] = false
+                input[9] = false
+                input[10] = false
                 """
             }
         }
@@ -164,6 +170,9 @@ nextflow_process {
                     input[5] = []
                     input[6] = []
                     input[7] = []
+                    input[8] = false
+                    input[9] = false
+                    input[10] = false
                     """
                 }
             }
@@ -228,6 +237,9 @@ nextflow_process {
                 input[5] = stutter
                 input[6] = []
                 input[7] = []
+                input[8] = false
+                input[9] = false
+                input[10] = false
                 """
             }
         }
@@ -250,7 +262,7 @@ nextflow_process {
 
         when {
             params {
-                hipstr_args = '--min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired --log hipstr --viz-out alignments --stutter-out stutter'
+                hipstr_args = '--min-reads 1 --max-reads 10000000 --no-rmdup --use-unpaired'
             }
 
             process {
@@ -284,6 +296,9 @@ nextflow_process {
                 input[5] = []
                 input[6] = []
                 input[7] = []
+                input[8] = true
+                input[9] = true
+                input[10] = true
                 """
             }
         }
@@ -342,6 +357,9 @@ nextflow_process {
                 input[5] = []
                 input[6] = []
                 input[7] = []
+                input[8] = false
+                input[9] = false
+                input[10] = false
                 """
             }
         }
@@ -401,6 +419,9 @@ nextflow_process {
                 input[5] = []
                 input[6] = []
                 input[7] = hap_chr_file
+                input[8] = false
+                input[9] = false
+                input[10] = false
                 """
             }
         }
@@ -457,6 +478,9 @@ nextflow_process {
                 input[5] = []
                 input[6] = []
                 input[7] = []
+                input[8] = false
+                input[9] = false
+                input[10] = false
                 """
             }
         }
