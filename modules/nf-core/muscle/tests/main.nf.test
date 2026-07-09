@@ -9,11 +9,11 @@ nextflow_process {
     tag "modules_nfcore"
     tag "muscle"
 
-    test("test_muscle") {
+    test("test_muscle - fasta phys physi msf clw html") {
 
         when {
             params {
-                module_args = '-fasta -verbose -phys -phyi -maxiters 2'
+                module_args = '-fasta -verbose -phys -phyi -msf -clw -html -maxiters 2'
             }
             process {
                 """
