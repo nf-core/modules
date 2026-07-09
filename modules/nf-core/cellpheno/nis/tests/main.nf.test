@@ -8,30 +8,60 @@ nextflow_process {
     tag "modules_nfcore"
     tag "cellpheno"
     tag "cellpheno/nis"
+    tag "unzip"
     tag "gpu"
 
-    // Real run: requires a CUDA GPU + the published container, so it is tagged
-    // `gpu` and skipped on CPU CI (run/snapshot it on a GPU runner). The small
-    // tile + TorchScript models live in nf-core/test-datasets (large model
-    // weights may instead be hosted on Zenodo, as for numorph/3dunet).
+    // Real run: needs a CUDA GPU + the published container, so it is tagged `gpu` and
+    // skipped on CPU CI. Test data (a small real P4 tile + the TorchScript models) is
+    // shipped zipped in nf-core/test-datasets and extracted with UNZIP (dir inputs),
+    // following the numorph/3dunet pattern. Outputs are asserted by presence rather than
+    // md5 (the binary is GPU float non-deterministic).
     test("lightsheet - tile") {
+
+        setup {
+            run("UNZIP", alias: "UNZIP_TILE") {
+                script "../../../unzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([ [ id:'tile' ],
+                        file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/cellpheno_nis_tile.zip', checkIfExists: true) ])
+                    """
+                }
+            }
+            run("UNZIP", alias: "UNZIP_MODELS") {
+                script "../../../unzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([ [ id:'models' ],
+                        file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/cellpheno_nis_models.zip', checkIfExists: true) ])
+                    """
+                }
+            }
+        }
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test_brain' ],
-                    file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/tile', checkIfExists: true)
-                ]
-                input[1] = file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/models', checkIfExists: true)
+                input[0] = UNZIP_TILE.out.unzipped_archive
+                    .map { meta, d -> [ [ id:'test_brain' ], file(d).listFiles().find { it.isDirectory() } ] }
+                input[1] = UNZIP_MODELS.out.unzipped_archive
+                    .map { meta, d -> file(d).listFiles().find { it.isDirectory() } }
                 """
             }
         }
 
         then {
+            def names = process.out.nis.get(0).get(1).collect { file(it).name }
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert names.size() == 6 },
+                { assert names.any { it.endsWith('_instance_center.zip') } },
+                { assert names.any { it.endsWith('_instance_coordinate.zip') } },
+                { assert names.any { it.endsWith('_instance_volume.zip') } },
+                { assert names.any { it.endsWith('_instance_label.zip') } },
+                { assert names.any { it.endsWith('_binary_mask.zip') } },
+                { assert names.any { it.endsWith('_seg_meta.zip') } },
+                { assert process.out.versions_cellpheno_nis }
             )
         }
 
@@ -41,14 +71,34 @@ nextflow_process {
 
         options "-stub"
 
+        setup {
+            run("UNZIP", alias: "UNZIP_TILE") {
+                script "../../../unzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([ [ id:'tile' ],
+                        file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/cellpheno_nis_tile.zip', checkIfExists: true) ])
+                    """
+                }
+            }
+            run("UNZIP", alias: "UNZIP_MODELS") {
+                script "../../../unzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([ [ id:'models' ],
+                        file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/cellpheno_nis_models.zip', checkIfExists: true) ])
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test_brain' ],
-                    file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/tile', checkIfExists: true)
-                ]
-                input[1] = file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/models', checkIfExists: true)
+                input[0] = UNZIP_TILE.out.unzipped_archive
+                    .map { meta, d -> [ [ id:'test_brain' ], file(d).listFiles().find { it.isDirectory() } ] }
+                input[1] = UNZIP_MODELS.out.unzipped_archive
+                    .map { meta, d -> file(d).listFiles().find { it.isDirectory() } }
                 """
             }
         }
