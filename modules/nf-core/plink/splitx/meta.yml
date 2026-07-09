@@ -30,12 +30,14 @@ input:
         type: file
         description: PLINK extended MAP file
         pattern: "*.{bim}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3285 # PLINK MAP
     - fam:
         type: file
         description: PLINK sample information file
         pattern: "*.{fam}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3286 # PLINK PED
   - build:
       type: string
       description: Genome build code passed to --split-x (e.g. 'b37', 'b38', 'hg19', 'hg38')
@@ -61,7 +63,8 @@ output:
           type: file
           description: PLINK extended MAP file with the X pseudoautosomal region split off
           pattern: "*.{bim}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3285 # PLINK MAP
   fam:
     - - meta:
           type: map
@@ -72,7 +75,8 @@ output:
           type: file
           description: PLINK sample information file
           pattern: "*.{fam}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3286 # PLINK PED
   versions_plink:
     - - "${task.process}":
           type: string
