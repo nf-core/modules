@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test RCLONE_COPY"
+    script "../main.nf"
+    process "RCLONE_COPY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rclone"
+    tag "rclone/copy"
+
+    test("homo_sapiens - gvcf - copy from https - dry-run") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                def test_file_url = params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz'
+
+                input[0] = [
+                    [ id:'test' ],
+                    test_file_url,
+                    test_file_url
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.log).match("log") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("homo_sapiens - gvcf - copy from https - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def test_file_url = params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz'
+
+                input[0] = [
+                    [ id:'test' ],
+                    test_file_url,
+                    test_file_url
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
