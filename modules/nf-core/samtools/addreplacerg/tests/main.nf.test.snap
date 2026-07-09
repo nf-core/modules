@@ -29,7 +29,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.23.1"
+                        "1.24"
                     ]
                 ],
                 "bai": [
@@ -59,7 +59,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.23.1"
+                        "1.24"
                     ]
                 ]
             }
@@ -105,7 +105,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.23.1"
+                        "1.24"
                     ]
                 ],
                 "bai": [
@@ -140,7 +140,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.23.1"
+                        "1.24"
                     ]
                 ]
             }
@@ -186,7 +186,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.23.1"
+                        "1.24"
                     ]
                 ]
             },
@@ -197,7 +197,7 @@
                     "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina\tDS:replaced_read_group_test",
                     "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz",
                     "@PG\tID:samtools\tPN:samtools\tPP:bwa\tVN:1.13\tCL:samtools view -C -T ../../genome/genome.fasta -o test.paired_end.sorted.cram test.paired_end.sorted.bam",
-                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.23.1\tCL:samtools addreplacerg --threads 1 --write-index -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
+                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.24\tCL:samtools addreplacerg --threads 1 --write-index -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
                 ]
             ]
         ],
@@ -237,7 +237,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.23.1"
+                        "1.24"
                     ]
                 ],
                 "bai": [
@@ -267,7 +267,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.23.1"
+                        "1.24"
                     ]
                 ]
             }

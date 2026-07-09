@@ -69,7 +69,7 @@ nextflow_process {
 
         then {
             assert snapshot(
-                sanitizeOutput(process.out, unstableKeys: ["crai","cram"]),
+                sanitizeOutput(process.out, unstableKeys: ["index","cram"]),
                 process.out.cram.collect{ meta, cram -> bam(cram).getHeader().collect{ l -> l.replaceAll(/\tUR:[^\t\n]+/, '') } },
             ).match()
         }

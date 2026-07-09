@@ -5,7 +5,7 @@ process SAMTOOLS_ADDREPLACERG {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8c5d2818c8b9f58e1fba77ce219fdaf32087ae53e857c4a496402978af26e78c/data'
-        : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
+        : 'community.wave.seqera.io/library/htslib_samtools:1.24--5b6bb4ede7e612e5'}"
 
     input:
     tuple val(meta), path(input), path(index), val(read_group)
@@ -15,9 +15,7 @@ process SAMTOOLS_ADDREPLACERG {
     tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
     tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
     tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
-    tuple val(meta), path("${prefix}.bam.bai"), emit: bai, optional: true
-    tuple val(meta), path("${prefix}.bam.csi"), emit: csi, optional: true
-    tuple val(meta), path("${prefix}.cram.crai"), emit: crai, optional: true
+    tuple val(meta), path("${prefix}.${file_type}.{crai,csi,bai}"), emit: index, optional: true
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
