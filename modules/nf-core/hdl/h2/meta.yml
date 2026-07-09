@@ -19,6 +19,8 @@ input:
         type: file
         description: Canonicalized GWAS summary statistics for the trait in `meta.id`.
         pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
   - - meta2:
         type: map
         description: Metadata map for the HDL reference panel directory.
@@ -34,6 +36,8 @@ output:
           type: file
           description: Tab-delimited HDL heritability summary output.
           pattern: "*.h2.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
   h2_log:
     - - meta:
           type: map
