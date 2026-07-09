@@ -38,9 +38,6 @@ workflow UTILS_NEXTFLOW_PIPELINE {
     if (check_conda_channels) {
         checkCondaChannels()
     }
-
-    emit:
-    dummy_emit = true
 }
 
 /*

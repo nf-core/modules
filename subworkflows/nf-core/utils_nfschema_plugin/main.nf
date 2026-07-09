@@ -71,7 +71,4 @@ workflow UTILS_NFSCHEMA_PLUGIN {
         }
         validateParameters(validateOptions)
     }
-
-    emit:
-    dummy_emit = true
 }
