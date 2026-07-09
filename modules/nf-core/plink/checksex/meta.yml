@@ -29,12 +29,14 @@ input:
         type: file
         description: PLINK extended MAP file
         pattern: "*.{bim}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3285 # PLINK MAP
     - fam:
         type: file
         description: PLINK sample information file
         pattern: "*.{fam}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3286 # PLINK PED
 output:
   sexcheck:
     - - meta:
