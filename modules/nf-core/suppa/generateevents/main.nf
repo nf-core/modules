@@ -8,7 +8,7 @@ process SUPPA_GENERATEEVENTS {
         'community.wave.seqera.io/library/suppa:2.4--2612fcca3884f6bc' }"
 
     input:
-    path gtf
+    tuple val(meta), path(gtf)
     val format
     val pool_genes
     val event_type
@@ -17,7 +17,7 @@ process SUPPA_GENERATEEVENTS {
     val exon_length
 
     output:
-    path "events*.*", emit: events
+    tuple val(meta), path("*.{ioe,ioi,gtf}"), emit: events
     tuple val("${task.process}"), val('suppa'), eval("suppa.py -v | sed '1!d;s/.* //'"), topic: versions, emit: versions_suppa
 
     when:
@@ -25,36 +25,24 @@ process SUPPA_GENERATEEVENTS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: ''
-    def pg = pool_genes ? "--pool-genes" : ''
-    def et = event_type ? "--event-type ${event_type}" : ''
-    def bd = boundary ? "--boundary ${boundary}" : ''
-    def th = threshold ? "--threshold ${threshold}" : ''
-    def el = exon_length ? "--exon-length ${exon_length}" : ''
-    def ioe_args = [et, bd, th, el].join(' ')
+    def prefix = task.ext.prefix ?: meta.id
+    def pool_genes_arg = pool_genes ? "--pool-genes" : ''
+    def event_type_arg = event_type ? "--event-type ${event_type}" : ''
+    def boundary_arg = boundary ? "--boundary ${boundary}" : ''
+    def threshold_arg = threshold ? "--threshold ${threshold}" : ''
+    def exon_length_arg = exon_length ? "--exon-length ${exon_length}" : ''
+    def ioe_args = format == 'ioe' ? [event_type_arg, boundary_arg, threshold_arg, exon_length_arg].join(' ') : ''
 
-    if (format == 'ioe') {
     """
     suppa.py \\
         generateEvents \\
         --input-file ${gtf} \\
         --format ${format} \\
-        --output-file events \\
-        ${pg} \\
+        --output-file ${prefix} \\
+        ${pool_genes_arg} \\
         ${ioe_args} \\
         ${args}
     """
-    } else if (format == 'ioi') {
-    """
-    suppa.py \\
-        generateEvents \\
-        --input-file ${gtf} \\
-        --format ${format} \\
-        --output-file events \\
-        ${pg} \\
-        ${args}
-    """
-    }
 
     stub:
     def args = task.ext.args ?: ''

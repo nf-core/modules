@@ -15,7 +15,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioe'
                 input[2] = false
                 input[3] = 'SE SS MX RI FL'
@@ -29,7 +29,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = [process.out.events.get(0)].flatten().collect {
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
@@ -49,7 +49,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioe'
                 input[2] = false
                 input[3] = 'SE SS MX RI FL'
@@ -63,7 +63,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = [process.out.events.get(0)].flatten().collect {
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
@@ -81,7 +81,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioi'
                 input[2] = false
                 input[3] = []
@@ -95,7 +95,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = [process.out.events.get(0)].flatten().collect {
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
@@ -113,7 +113,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioe'
                 input[2] = false
                 input[3] = 'SE SS MX RI FL'
@@ -127,7 +127,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = [process.out.events.get(0)].flatten().collect {
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
@@ -145,7 +145,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioe'
                 input[2] = false
                 input[3] = 'SE SS MX RI FL'
@@ -159,7 +159,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = [process.out.events.get(0)].flatten().collect {
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
@@ -177,7 +177,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioi'
                 input[2] = false
                 input[3] = []
@@ -191,7 +191,7 @@ nextflow_process {
         then {
             assert process.success
 
-            def eventNames = [process.out.events.get(0)].flatten().collect {
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
                 f -> file(f).name.toString()
             }
 
@@ -215,7 +215,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioe'
                 input[2] = false
                 input[3] = 'SE SS MX RI FL'
@@ -231,7 +231,6 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -244,7 +243,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioe'
                 input[2] = false
                 input[3] = 'SE SS MX RI FL'
@@ -260,7 +259,6 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -273,7 +271,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioi'
                 input[2] = false
                 input[3] = []
@@ -289,7 +287,6 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -302,7 +299,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioe'
                 input[2] = false
                 input[3] = 'SE SS MX RI FL'
@@ -318,7 +315,6 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -331,7 +327,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioe'
                 input[2] = false
                 input[3] = 'SE SS MX RI FL'
@@ -347,7 +343,6 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -360,7 +355,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
                 input[1] = 'ioi'
                 input[2] = false
                 input[3] = []
@@ -376,7 +371,6 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

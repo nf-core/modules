@@ -16,12 +16,15 @@ tools:
       identifier: biotools:suppa
 
 input:
-  - gtf:
-      type: file
-      description: GTF file
-      pattern: "*.gtf"
-      ontologies:
-        - edam: http://edamontology.org/format_3475
+  - - meta:
+        type: map
+        description: Groovy Map containing genome information. e.g. `[ id:'genome1' ]`
+    - gtf:
+        type: file
+        description: GTF file
+        pattern: "*.gtf"
+        ontologies:
+            - edam: http://edamontology.org/format_3475
   - format:
       type: string
       description: Format of the events to be generated. Options are "ioe" or "ioi".
@@ -42,11 +45,14 @@ input:
       description: Minimum exon length for event generation
 output:
   events:
-    - "events*.*":
-        type: file
-        description: Alternative splicing events
-        pattern: "events*.*"
-        ontologies: []
+    - - meta:
+          type: map
+          description: Groovy Map containing genome information. e.g. `[ id:'genome1' ]`
+      - "*.{ioe,ioi,gtf}":
+          type: file
+          description: Alternative splicing events
+          pattern: "*.{ioe,ioi,gtf}"
+          ontologies: []
   versions_suppa:
     - - ${task.process}:
           type: string
