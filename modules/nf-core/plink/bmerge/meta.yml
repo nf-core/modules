@@ -14,7 +14,7 @@ tools:
       tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
       licence:
         - "GPL"
-      identifier: ""
+      identifier: biotools:plink
 input:
   - - meta:
         type: map
@@ -30,12 +30,14 @@ input:
         type: file
         description: PLINK extended MAP file
         pattern: "*.{bim}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3285 # PLINK MAP
     - fam:
         type: file
         description: PLINK sample information file
         pattern: "*.{fam}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3286 # PLINK PED
   - - meta2:
         type: map
         description: |
@@ -50,12 +52,14 @@ input:
         type: file
         description: PLINK extended MAP file to merge in
         pattern: "*.{bim}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3285 # PLINK MAP
     - fam2:
         type: file
         description: PLINK sample information file to merge in
         pattern: "*.{fam}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3286 # PLINK PED
 output:
   bed:
     - - meta:
@@ -78,7 +82,8 @@ output:
           type: file
           description: Merged PLINK extended MAP file
           pattern: "*.{bim}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3285 # PLINK MAP
   fam:
     - - meta:
           type: map
@@ -89,7 +94,8 @@ output:
           type: file
           description: Merged PLINK sample information file
           pattern: "*.{fam}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3286 # PLINK PED
   versions_plink:
     - - "${task.process}":
           type: string
