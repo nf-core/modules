@@ -31,13 +31,15 @@ input:
           One or more PLINK BIM variant files passed to repeated `--bim` arguments.
           Entries must be matched by position to `bed` and must have distinct basenames after staging.
         pattern: "*.bim"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3285"
     - fam:
         type: file
         description: |
           Single PLINK FAM sample file shared by all matched `bed`/`bim` pairs and passed to `--fam`
         pattern: "*.fam"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3286"
   - - meta2:
         type: map
         description: |
