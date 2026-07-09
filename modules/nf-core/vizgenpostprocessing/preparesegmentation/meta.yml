@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vizgenpostprocessing_preparesegmentation"
 description: |
   The module prepares the specification JSON file for Vizgen's post-processing tool
@@ -15,9 +14,9 @@ tools:
       homepage: "https://github.com/Vizgen/vizgen-postprocessing"
       documentation: "https://vizgen.github.io/vizgen-postprocessing"
       tool_dev_url: "https://github.com/Vizgen/vizgen-postprocessing"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -52,7 +51,6 @@ input:
         files to be used (e.g., mosaic_(?P<stain>[\w|-]+)_z(?P<z>[0-9]+).tif)
       ontologies:
         - edam: "http://edamontology.org/data_1352"
-
 output:
   segmentation_files:
     - - meta:
@@ -66,14 +64,46 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464"
+  versions_vpt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vpt:
+          type: string
+          description: The name of the tool
+      - "pip show vpt | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_vptplugincellpose2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vpt-plugin-cellpose2:
+          type: string
+          description: The name of the tool
+      - "pip show vpt-plugin-cellpose2 | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vpt:
+          type: string
+          description: The name of the tool
+      - "pip show vpt | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vpt-plugin-cellpose2:
+          type: string
+          description: The name of the tool
+      - "pip show vpt-plugin-cellpose2 | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mcmero"
 maintainers:
