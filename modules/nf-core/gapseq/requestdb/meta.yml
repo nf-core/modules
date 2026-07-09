@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gapseq_requestdb"
+description: Download gapseq reference sequence database for metabolic pathway prediction
+keywords:
+  - database
+  - reference sequences
+  - metabolic model
+  - bacteria
+  - archaea
+tools:
+  - "gapseq":
+      description: "Informed prediction and analysis of bacterial metabolic pathways and genome-scale networks"
+      homepage: "https://github.com/jotech/gapseq"
+      documentation: "https://gapseq.readthedocs.io/"
+      tool_dev_url: "https://github.com/jotech/gapseq"
+      doi: "10.1186/s13059-021-02295-1"
+      licence: ["AGPL-3.0-only"]
+      identifier: biotools:gapseq
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing database information
+          e.g. [ id:'gapseq_db' ]
+    - taxon:
+        type: string
+        description: Taxonomic group for database download (Bacteria or Archaea)
+        pattern: "Bacteria|Archaea"
+output:
+  db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing database information
+            e.g. [ id:'gapseq_db' ]
+      - gapseq_db:
+          type: directory
+          description: Directory containing gapseq reference sequence database
+          pattern: "gapseq_db"
+  versions_gapseq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gapseq:
+          type: string
+          description: The name of the tool
+      - gapseq -v 2>&1 | grep -oP "\\d+\\.\\d+\\.\\d+":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gapseq:
+          type: string
+          description: The name of the tool
+      - gapseq -v 2>&1 | grep -oP "\\d+\\.\\d+\\.\\d+":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@brovolia"
+maintainers:
+  - "@brovolia"
