@@ -16,12 +16,12 @@ nextflow_process {
         when {
             process {
                 """
-                def test_file_url = params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz'
+                def test_file_path = params.modules_testdata_base_path.replaceFirst(/^https?:\\/\\/[^\\/]+\\//, '') + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz'
 
                 input[0] = [
                     [ id:'test' ],
-                    test_file_url,
-                    test_file_url
+                    ':http:' + test_file_path,
+                    '/tmp/test.genome.vcf.gz'
                 ]
                 input[1] = []
                 """
@@ -31,7 +31,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.log).match("log") },
+                { assert process.out.log[0][1].endsWith("rclone-copy.log") },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
@@ -44,12 +44,12 @@ nextflow_process {
         when {
             process {
                 """
-                def test_file_url = params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz'
+                def test_file_path = params.modules_testdata_base_path.replaceFirst(/^https?:\\/\\/[^\\/]+\\//, '') + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz'
 
                 input[0] = [
                     [ id:'test' ],
-                    test_file_url,
-                    test_file_url
+                    ':http:' + test_file_path,
+                    '/tmp/test.genome.vcf.gz'
                 ]
                 input[1] = []
                 """
