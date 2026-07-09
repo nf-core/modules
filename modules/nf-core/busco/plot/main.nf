@@ -11,7 +11,7 @@ process BUSCO_PLOT {
 
     output:
     path '*.png', emit: png
-    tuple val("${task.process}"), val('busco'), eval("busco --version 2> /dev/null | sed 's/BUSCO //g'"), emit: versions_busco, topic: versions
+    tuple val("${task.process}"), val('busco'), eval("busco --version | sed 's/BUSCO //'"), emit: versions_busco, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
