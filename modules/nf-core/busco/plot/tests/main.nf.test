@@ -43,7 +43,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match("versions") },
-                { assert process.out.png != null } // PNGs with same data but different meta-data. Not sure how to get around this, yet!
+                // PNGs have same data but different meta-data, so md5 is unstable, check the filename instead
+                { assert file(process.out.png[0]).name == "busco_figure.png" }
             )
         }
 
