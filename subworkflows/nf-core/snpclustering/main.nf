@@ -1,8 +1,8 @@
-include { BEAGLE5_BEAGLE } from '../../../modules/nf-core/beagle5/beagle'
-include { PLINK2_VCF } from '../../../modules/nf-core/plink2/vcf/main'
-include { PLINK2_PCA } from '../../../modules/nf-core/plink2/pca/main'
-include { CUSTOM_PCACLUSTERING } from '../../../modules/nf-core/custom/pcaclustering/main'
-include { CUSTOM_CLUSTERMETRICS } from '../../../modules/nf-core/custom/clustermetrics/main'
+include { BEAGLE5_BEAGLE              } from '../../../modules/nf-core/beagle5/beagle'
+include { PLINK2_VCF                  } from '../../../modules/nf-core/plink2/vcf/main'
+include { PLINK2_PCA                  } from '../../../modules/nf-core/plink2/pca/main'
+include { CUSTOM_PCACLUSTERING        } from '../../../modules/nf-core/custom/pcaclustering/main'
+include { CUSTOM_CLUSTERMETRICS       } from '../../../modules/nf-core/custom/clustermetrics/main'
 include { CUSTOM_CLUSTERVISUALIZATION } from '../../../modules/nf-core/custom/clustervisualization/main'
 
 workflow SNPCLUSTERING {
