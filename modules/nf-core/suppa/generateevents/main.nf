@@ -36,7 +36,7 @@ process SUPPA_GENERATEEVENTS {
     """
     suppa.py \\
         generateEvents \\
-        -i ${gtf} \\
+        --input-file ${gtf} \\
         -f ${format} \\
         -o events \\
         ${et} \\
