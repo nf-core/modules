@@ -26,34 +26,31 @@ process SUPPA_GENERATEEVENTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: ''
-    def pg = pool_genes ? "-p" : ''
-    def et = event_type ? "-e ${event_type}" : ''
-    def bd = boundary ? "-b ${boundary}" : ''
-    def th = threshold ? "-t ${threshold}" : ''
-    def el = exon_length ? "-l ${exon_length}" : ''
+    def pg = pool_genes ? "--pool-genes" : ''
+    def et = event_type ? "--event-type ${event_type}" : ''
+    def bd = boundary ? "--boundary ${boundary}" : ''
+    def th = threshold ? "--threshold ${threshold}" : ''
+    def el = exon_length ? "--exon-length ${exon_length}" : ''
+    def params = [et, bd, th, el, pg].join(' ')
 
     if (format == 'ioe') {
     """
     suppa.py \\
         generateEvents \\
         --input-file ${gtf} \\
-        -f ${format} \\
-        -o events \\
-        ${et} \\
-        ${bd} \\
-        ${th} \\
-        ${el} \\
-        ${pg} \\
+        --format ${format} \\
+        --output-file events \\
+        ${params} \\
         ${args}
     """
     } else if (format == 'ioi') {
     """
     suppa.py \\
         generateEvents \\
-        -i ${gtf} \\
-        -f ${format} \\
-        -o events \\
-        ${pg} \\
+        --input-file ${gtf} \\
+        --format ${format} \\
+        --output-file events \\
+        ${params} \\
         ${args}
     """
     }
