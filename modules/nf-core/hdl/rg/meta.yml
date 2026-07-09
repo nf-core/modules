@@ -19,6 +19,8 @@ input:
         type: file
         description: Canonicalized GWAS summary statistics for the first trait.
         pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
   - - meta2:
         type: map
         description: Metadata map for the second trait input. The `meta2.id` value is used as the second trait label.
@@ -26,6 +28,8 @@ input:
         type: file
         description: Canonicalized GWAS summary statistics for the second trait.
         pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
   - - meta3:
         type: map
         description: Metadata map for the HDL reference panel directory.
@@ -44,6 +48,8 @@ output:
           type: file
           description: Tab-delimited HDL genetic correlation summary output.
           pattern: "*.rg.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
   rg_log:
     - - meta:
           type: map
