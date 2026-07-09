@@ -46,21 +46,9 @@ process SUPPA_GENERATEEVENTS {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: ''
+    def prefix = task.ext.prefix ?: meta.id
     """
     echo ${args}
-
-    if [[ "${format}" == "ioe" ]]; then
-        if [[ "${pool_genes}" == "true" ]]; then
-            touch "events.ioe"
-        else
-            IFS=' ' read -ra events <<< "${event_type}"
-            for event in "\${events[@]}"; do
-                touch "events_\${event}.ioe"
-            done
-        fi
-    elif [[ "${format}" == "ioi" ]]; then
-        touch "events.ioi"
-    fi
+    touch ${prefix}.${format}
     """
 }
