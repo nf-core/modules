@@ -1,0 +1,55 @@
+name: "vcontact3_prepareddatabases"
+description: Prepare and format databases for vCONTACT3 viral taxonomic analysis
+keywords:
+  - virus
+  - database
+  - genomics
+  - clustering
+  - vcontact3
+tools:
+  - "vcontact3":
+      description: "Scalable and systematic hierarchical virus taxonomy with vCONTACT3"
+      homepage: "https://bitbucket.org/MAVERICLab/vcontact3/src/master/README.md"
+      documentation: "https://bitbucket.org/MAVERICLab/vcontact3/src/master/README.md"
+      tool_dev_url: "https://vcontact3.readthedocs.io/en/latest/"
+      doi: "10.1101/2025.11.06.686974"
+      licence:
+        - "CC-BY-4.0"
+      identifier: biotools:vcontact3
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - db_version:
+        type: integer
+        description: The database version number to download and prepare (e.g.
+          'latest')
+output:
+  database:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/:
+          type: directory
+          description: Directory containing the downloaded and formatted vConTACT3
+            databases
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@olawal1001"
+maintainers:
+  - "@olawal1001"
