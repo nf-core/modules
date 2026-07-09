@@ -12,10 +12,11 @@ nextflow_process {
     tag "gpu"
 
     // Real run: needs a CUDA GPU + the published container, so it is tagged `gpu` and
-    // skipped on CPU CI. Test data (a small real P4 tile + the TorchScript models) is
-    // shipped zipped in nf-core/test-datasets and extracted with UNZIP (dir inputs),
-    // following the numorph/3dunet pattern. Outputs are asserted by presence rather than
-    // md5 (the binary is GPU float non-deterministic).
+    // skipped on CPU CI. The small real P4 tile ships zipped in nf-core/test-datasets;
+    // the ~64 MB TorchScript models are too large for test-datasets and are fetched from
+    // a stable Zenodo archive (same approach as numorph/3dunet). Both are extracted with
+    // UNZIP (dir inputs). Outputs are asserted by presence rather than md5 (the binary is
+    // GPU float non-deterministic).
     test("lightsheet - tile") {
 
         setup {
@@ -33,7 +34,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = Channel.of([ [ id:'models' ],
-                        file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/cellpheno_nis_models.zip', checkIfExists: true) ])
+                        file('https://zenodo.org/records/21284682/files/cellpheno_nis_models.zip', checkIfExists: true) ])
                     """
                 }
             }
@@ -71,34 +72,13 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("UNZIP", alias: "UNZIP_TILE") {
-                script "../../../unzip/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([ [ id:'tile' ],
-                        file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/cellpheno_nis_tile.zip', checkIfExists: true) ])
-                    """
-                }
-            }
-            run("UNZIP", alias: "UNZIP_MODELS") {
-                script "../../../unzip/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([ [ id:'models' ],
-                        file(params.modules_testdata_base_path + 'imaging/segmentation/cellpheno_nis/cellpheno_nis_models.zip', checkIfExists: true) ])
-                    """
-                }
-            }
-        }
-
+        // The stub does not read the tile or the models, so it uses lightweight dummy
+        // directories rather than downloading the real test data / Zenodo models.
         when {
             process {
                 """
-                input[0] = UNZIP_TILE.out.unzipped_archive
-                    .map { meta, d -> [ [ id:'test_brain' ], file(d).listFiles().find { it.isDirectory() } ] }
-                input[1] = UNZIP_MODELS.out.unzipped_archive
-                    .map { meta, d -> file(d).listFiles().find { it.isDirectory() } }
+                input[0] = Channel.of([ [ id:'test_brain' ], file("\${projectDir}/modules/nf-core/cellpheno/nis", checkIfExists: true) ])
+                input[1] = Channel.of(file("\${projectDir}/modules/nf-core/cellpheno/nis", checkIfExists: true))
                 """
             }
         }

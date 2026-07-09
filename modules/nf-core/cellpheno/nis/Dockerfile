@@ -7,16 +7,24 @@
 #
 # GPU container: run with `--gpus all` (docker) / `--nv` (singularity).
 
-ARG CUDA_VERSION=12.8.0
+# CUDA 12.1 (not 12.8) is chosen for driver compatibility: a 12.1 image runs on any
+# NVIDIA driver >= 530 (vs. >= ~570 for 12.8), covering far more clusters/CI runners while
+# still supporting every GPU this tool targets. The binary has no custom .cu kernels
+# (CMakeLists compiles only .cpp), so GPU-arch coverage comes entirely from LibTorch's
+# prebuilt fat binary: cu121 spans sm_50..sm_90 (Maxwell->Hopper, incl. Ada sm_89). This
+# also matches the cellpheno-postproc container (torch 2.5.1+cu121).
+ARG CUDA_VERSION=12.1.1
 ARG UBUNTU_VERSION=22.04
 
 # ---------------------------------------------------------------------------
 # Stage 1: build the NIS binary from source
 # ---------------------------------------------------------------------------
-FROM nvidia/cuda:${CUDA_VERSION}-cudnn-devel-ubuntu${UBUNTU_VERSION} AS build
+# Base without cuDNN: LibTorch bundles its own cuDNN in libtorch/lib (first on
+# LD_LIBRARY_PATH), so we avoid pinning a base cuDNN tag.
+FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION} AS build
 
-# LibTorch CUDA build matching the runtime CUDA version (cpp/build_main_hummer.sh -> cu128).
-ARG LIBTORCH_URL=https://download.pytorch.org/libtorch/cu128/libtorch-cxx11-abi-shared-with-deps-2.7.0%2Bcu128.zip
+# LibTorch CUDA build matching the base CUDA version.
+ARG LIBTORCH_URL=https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.5.1%2Bcu121.zip
 # Source of the NIS C++ executable. Pin NIS_SOURCE_REF to a release tag/commit for reproducibility.
 ARG NIS_SOURCE_REPO=https://github.com/Chrisa142857/Lightsheet_microscopy_image_3D_nuclei_instance_segmentation
 ARG NIS_SOURCE_REF=main
@@ -45,7 +53,7 @@ RUN cmake -DCMAKE_PREFIX_PATH=/opt/libtorch -DCMAKE_BUILD_TYPE=Release .. \
 # ---------------------------------------------------------------------------
 # Stage 2: slim runtime image
 # ---------------------------------------------------------------------------
-FROM nvidia/cuda:${CUDA_VERSION}-cudnn-runtime-ubuntu${UBUNTU_VERSION} AS runtime
+FROM nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu${UBUNTU_VERSION} AS runtime
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
