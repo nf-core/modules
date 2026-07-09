@@ -14,8 +14,7 @@ process RCLONE_COPY {
 
     output:
     tuple val(meta), path("rclone-copy.log"), emit: log
-    tuple val("${task.process}"), val('rclone'), eval("rclone version | head -n1 | sed 's/rclone v//'"), topic: versions, emit: versions_rclone
-
+    tuple val("${task.process}"), val('rclone'), eval("rclone --version | sed -n '1s/^rclone v//p'"), topic: versions, emit: versions_rclone
     when:
     task.ext.when == null || task.ext.when
 
