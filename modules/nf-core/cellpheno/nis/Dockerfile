@@ -25,9 +25,10 @@ FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION} AS build
 
 # LibTorch CUDA build matching the base CUDA version.
 ARG LIBTORCH_URL=https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.5.1%2Bcu121.zip
-# Source of the NIS C++ executable. Pin NIS_SOURCE_REF to a release tag/commit for reproducibility.
+# Source of the NIS C++ executable, pinned to a tagged release for reproducibility
+# (not a moving branch). v1.0.0 == commit 5420a1cc4b1a7dc8faa71fd7cd36d271fb2f8364.
 ARG NIS_SOURCE_REPO=https://github.com/Chrisa142857/Lightsheet_microscopy_image_3D_nuclei_instance_segmentation
-ARG NIS_SOURCE_REF=main
+ARG NIS_SOURCE_REF=v1.0.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
