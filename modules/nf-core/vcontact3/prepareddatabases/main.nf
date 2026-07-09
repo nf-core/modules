@@ -12,7 +12,7 @@ process VCONTACT3_PREPAREDDATABASES {
 
     output:
     tuple val(meta), path ("${prefix}/"), emit: database
-    path "versions.yml"                 , emit: versions, topic: versions
+    tuple val("${task.process}"), val('vcontact3'), eval('vcontact3 version'), emit: versions_vcontact3, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +25,6 @@ process VCONTACT3_PREPAREDDATABASES {
         --get-version ${db_version} \\
         --set-location ${prefix}  \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcontact3: \$(vcontact3 version)
-    END_VERSIONS
     """
 
     stub:
@@ -38,10 +33,5 @@ process VCONTACT3_PREPAREDDATABASES {
     mkdir -p ${prefix}
     touch ${prefix}/version.json
     touch ${prefix}/stub_database.db
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcontact3: \$(vcontact3 version)
-    END_VERSIONS
     """
 }
