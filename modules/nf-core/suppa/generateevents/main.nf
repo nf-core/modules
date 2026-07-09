@@ -31,7 +31,7 @@ process SUPPA_GENERATEEVENTS {
     def bd = boundary ? "--boundary ${boundary}" : ''
     def th = threshold ? "--threshold ${threshold}" : ''
     def el = exon_length ? "--exon-length ${exon_length}" : ''
-    def params = [et, bd, th, el, pg].join(' ')
+    def ioe_args = [et, bd, th, el].join(' ')
 
     if (format == 'ioe') {
     """
@@ -40,7 +40,8 @@ process SUPPA_GENERATEEVENTS {
         --input-file ${gtf} \\
         --format ${format} \\
         --output-file events \\
-        ${params} \\
+        ${pg} \\
+        ${ioe_args} \\
         ${args}
     """
     } else if (format == 'ioi') {
@@ -50,7 +51,7 @@ process SUPPA_GENERATEEVENTS {
         --input-file ${gtf} \\
         --format ${format} \\
         --output-file events \\
-        ${params} \\
+        ${pg} \\
         ${args}
     """
     }
