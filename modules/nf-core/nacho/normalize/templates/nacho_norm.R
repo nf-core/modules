@@ -44,14 +44,14 @@ opt_valid <- process_inputs(
 
 # Validate that --norm_method is one of the allowed values
 norm_methods <- c("GLM", "GEO")
-if (!(opt[["norm_method"]] %in% norm_methods)) {
+if (!(opt_valid[["norm_method"]] %in% norm_methods)) {
     stop(paste("Error: The --norm_method parameter must be one of:", paste(norm_methods, collapse = " ")))
 }
 
-input_rcc_path    <- opt[["input_rcc_path"]]
-input_samplesheet <- opt[["input_samplesheet"]]
-norm_method       <- opt[["norm_method"]]
-prefix            <- opt[["output_prefix"]]
+input_rcc_path    <- opt_valid[["input_rcc_path"]]
+input_samplesheet <- opt_valid[["input_samplesheet"]]
+norm_method       <- opt_valid[["norm_method"]]
+prefix            <- opt_valid[["output_prefix"]]
 
 # Create filelist for NachoQC
 
@@ -66,8 +66,6 @@ nacho_data <- load_rcc(
     id_colname = "RCC_FILE_NAME",
     normalisation_method = norm_method
 )
-
-output_base <- "./"
 
 ## Write out normalized counts
 norm_counts <- as.data.frame(get_counts(nacho_data))
