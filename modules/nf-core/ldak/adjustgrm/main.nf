@@ -26,7 +26,6 @@ process LDAK_ADJUSTGRM {
     def covar_arg = quant_covariates_file ? "--covar ${quant_covariates_file}" : ''
 
     """
-
     ldak6 \
         --adjust-grm ${prefix} \
         --grm ${grm_prefix} \

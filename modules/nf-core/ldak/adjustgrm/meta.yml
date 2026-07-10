@@ -19,15 +19,19 @@ input:
     - combined_grm_bin:
         type: file
         description: Input GRM binary matrix (`.grm.bin`)
+        ontologies: []
     - combined_grm_id:
         type: file
         description: Input GRM sample identifiers (`.grm.id`)
+        ontologies: []
     - combined_grm_details:
         type: file
         description: Input GRM details (`.grm.details`)
+        ontologies: []
     - combined_grm_adjust:
         type: file
         description: Input GRM adjustment factors (`.grm.adjust`)
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,6 +41,7 @@ input:
     - phenotype_file:
         type: file
         description: Headerless phenotype file passed to `--pheno`
+        ontologies: []
     - mpheno:
         type: integer
         description: Optional phenotype column index passed to `--mpheno`; pass [] to use fallback `1`
@@ -46,6 +51,7 @@ input:
     - quant_covariates_file:
         type: file
         description: Optional quantitative covariates file passed to `--covar`; pass [] when absent
+        ontologies: []
 output:
   adjusted_grm:
     - - meta:
@@ -57,18 +63,23 @@ output:
       - "${prefix}.grm.bin":
           type: file
           description: Adjusted GRM binary matrix
+          ontologies: []
       - "${prefix}.grm.id":
           type: file
           description: Adjusted GRM sample identifiers
+          ontologies: []
       - "${prefix}.grm.details":
           type: file
           description: Adjusted GRM details
+          ontologies: []
       - "${prefix}.grm.adjust":
           type: file
           description: Adjusted GRM adjustment factors
+          ontologies: []
       - "${prefix}.grm.root":
           type: file
           description: Adjusted GRM root file required by LDAK HE and PCGC
+          ontologies: []
   versions_ldak6:
     - - ${task.process}:
           type: string

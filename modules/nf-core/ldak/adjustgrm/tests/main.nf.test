@@ -89,18 +89,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.adjusted_grm.size() == 1 },
-                {
-                    def adjustedTuple = process.out.adjusted_grm.get(0)
-                    def grmBin = path(adjustedTuple.get(2))
-                    assert grmBin.fileName.toString() == "ldak_grm_Y1_adj.grm.bin"
-                    assert path(adjustedTuple.get(6)).fileName.toString() == "ldak_grm_Y1_adj.grm.root"
-                    def commandText = grmBin.parent.resolve(".command.sh").text
-                    assert commandText.contains("--mpheno 1")
-                },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["adjusted_grm"]),
+                    path(process.out.adjusted_grm.get(0).get(3)).readLines(),
+                    path(process.out.adjusted_grm.get(0).get(4)).readLines(),
+                    path(process.out.adjusted_grm.get(0).get(5)).readLines(),
+                    path(process.out.adjusted_grm.get(0).get(6)).readLines()
+                ).match() }
             )
         }
     }
@@ -127,24 +124,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.adjusted_grm.size() == 1 },
-                { assert process.out.versions_ldak6.size() == 1 },
-                {
-                    def adjustedTuple = process.out.adjusted_grm.get(0)
-                    def grmBin = path(adjustedTuple.get(2))
-                    def commandText = grmBin.parent.resolve(".command.sh").text
-                    assert adjustedTuple.get(0).id == "ldak_grm_Y1_adj_fallback"
-                    assert adjustedTuple.get(1).id == "plink_simulated_quantitative_phenoname"
-                    assert grmBin.fileName.toString() == "ldak_grm_Y1_adj_fallback.grm.bin"
-                    assert path(adjustedTuple.get(3)).fileName.toString() == "ldak_grm_Y1_adj_fallback.grm.id"
-                    assert path(adjustedTuple.get(4)).fileName.toString() == "ldak_grm_Y1_adj_fallback.grm.details"
-                    assert path(adjustedTuple.get(5)).fileName.toString() == "ldak_grm_Y1_adj_fallback.grm.adjust"
-                    assert path(adjustedTuple.get(6)).fileName.toString() == "ldak_grm_Y1_adj_fallback.grm.root"
-                    assert commandText.contains("--mpheno 1")
-                },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["adjusted_grm"]),
+                    path(process.out.adjusted_grm.get(0).get(3)).readLines(),
+                    path(process.out.adjusted_grm.get(0).get(4)).readLines(),
+                    path(process.out.adjusted_grm.get(0).get(5)).readLines(),
+                    path(process.out.adjusted_grm.get(0).get(6)).readLines()
+                ).match() }
             )
         }
     }
