@@ -51,15 +51,15 @@ process SAMTOOLS_BAM2FQ {
 
     if (split) {
         """
-        echo "" | bgzip > ${prefix}_1.fq.gz
-        echo "" | bgzip > ${prefix}_2.fq.gz
-        echo "" | bgzip > ${prefix}_other.fq.gz
-        echo "" | bgzip > ${prefix}_singleton.fq.gz
+        echo "" | gzip > ${prefix}_1.fq.gz
+        echo "" | gzip > ${prefix}_2.fq.gz
+        echo "" | gzip > ${prefix}_other.fq.gz
+        echo "" | gzip > ${prefix}_singleton.fq.gz
         """
     }
     else {
         """
-        echo "" | bgzip > ${prefix}_interleaved.fq.gz
+        echo "" | gzip > ${prefix}_interleaved.fq.gz
         """
     }
 }
