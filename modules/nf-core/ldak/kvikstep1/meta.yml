@@ -40,6 +40,7 @@ input:
         description: |
           Groovy Map containing phenotype information
           Keep `id` as the phenotype-specific analysis identifier used for the step 1 output prefix
+          Optional phenotype selection such as `--mpheno 1` is supplied via `task.ext.args`
           e.g. `[ id:'Y1' ]`
     - phenotype_file:
         type: file
@@ -47,9 +48,6 @@ input:
         pattern: "*.{txt,tsv,pheno,phe}"
         ontologies:
           - edam: "http://edamontology.org/format_3475"
-    - mpheno:
-        type: integer
-        description: Optional phenotype column index passed to `--mpheno`; provide `[]` to use the module fallback of `1`
     - is_binary:
         type: boolean
         description: Optional trait-type flag; pass `true` to add `--binary YES`

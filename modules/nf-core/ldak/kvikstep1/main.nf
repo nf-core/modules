@@ -9,7 +9,7 @@ process LDAK_KVIKSTEP1 {
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam)
-    tuple val(meta2), path(phenotype_file), val(mpheno), val(is_binary)
+    tuple val(meta2), path(phenotype_file), val(is_binary)
     tuple val(meta3), path(quant_covariates_file)
     tuple val(meta4), path(cat_covariates_file)
 
@@ -29,8 +29,6 @@ process LDAK_KVIKSTEP1 {
     def covar_arg = quant_covariates_file ? "--covar ${quant_covariates_file}" : ""
     def factors_arg = cat_covariates_file ? "--factors ${cat_covariates_file}" : ""
     def binary_arg = is_binary ? "--binary YES" : ""
-    def mpheno_value = mpheno == null || (mpheno instanceof Collection && mpheno.isEmpty()) ? 1 : mpheno
-
     """
     ldak6 --kvik-step1 ${prefix} \\
         --bfile ${bfile_prefix} \\
@@ -38,7 +36,6 @@ process LDAK_KVIKSTEP1 {
         ${covar_arg} \\
         ${factors_arg} \\
         ${binary_arg} \\
-        --mpheno ${mpheno_value} \\
         --max-threads ${task.cpus} \\
         ${args} \\
         2>&1 | tee ${prefix}.step1.log
