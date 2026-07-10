@@ -24,7 +24,6 @@ process LDAK_FILTERRELATEDNESS {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-
     ldak6 \
         --filter ${prefix} \
         --grm ${grm_prefix} \

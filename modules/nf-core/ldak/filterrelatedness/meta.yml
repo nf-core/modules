@@ -20,15 +20,19 @@ input:
     - grm_bin:
         type: file
         description: GRM binary matrix (`.grm.bin`) for the GRM prefix
+        ontologies: []
     - grm_id:
         type: file
         description: GRM sample identifiers (`.grm.id`) for the GRM prefix
+        ontologies: []
     - grm_details:
         type: file
         description: GRM details (`.grm.details`) for the GRM prefix
+        ontologies: []
     - grm_adjust:
         type: file
         description: GRM adjustment factors (`.grm.adjust`) for the GRM prefix
+        ontologies: []
 output:
   filtered_list:
     - - meta:
@@ -37,12 +41,15 @@ output:
       - "${prefix}.keep":
           type: file
           description: Sample identifiers retained after relatedness filtering (`<prefix>.keep`)
+          ontologies: []
       - "${prefix}.lose":
           type: file
           description: Sample identifiers removed by relatedness filtering (`<prefix>.lose`)
+          ontologies: []
       - "${prefix}.maxrel":
           type: file
           description: Maximum pairwise relatedness summary (`<prefix>.maxrel`)
+          ontologies: []
   filtered_grm:
     - - meta:
           type: map
@@ -50,15 +57,19 @@ output:
       - "${prefix}_unrel.grm.bin":
           type: file
           description: Unrelated subset GRM binary matrix (`<prefix>_unrel.grm.bin`)
+          ontologies: []
       - "${prefix}_unrel.grm.id":
           type: file
           description: Unrelated subset GRM sample identifiers (`<prefix>_unrel.grm.id`)
+          ontologies: []
       - "${prefix}_unrel.grm.details":
           type: file
           description: Unrelated subset GRM details (`<prefix>_unrel.grm.details`)
+          ontologies: []
       - "${prefix}_unrel.grm.adjust":
           type: file
           description: Unrelated subset GRM adjustment factors (`<prefix>_unrel.grm.adjust`)
+          ontologies: []
   versions_ldak6:
     - - ${task.process}:
           type: string

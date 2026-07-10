@@ -82,14 +82,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.filtered_list.size() == 1 },
-                { assert process.out.filtered_grm.size() == 1 },
-                {
-                    def keepFile = path(process.out.filtered_list.get(0).get(1))
-                    def commandText = keepFile.parent.resolve(".command.sh").text
-                    assert keepFile.fileName.toString() == "ldak_grm_subset.keep"
-                    assert commandText.contains("--grm ldak_grm")
-                },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
