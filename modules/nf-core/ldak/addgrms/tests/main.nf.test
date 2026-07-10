@@ -68,18 +68,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.combined_grm.size() == 1 },
-                { assert process.out.versions_ldak6.size() == 1 },
-                {
-                    def combinedTuple = process.out.combined_grm.get(0)
-                    assert combinedTuple.get(0).id == "ldak_grm"
-                    assert path(combinedTuple.get(1)).fileName.toString() == "ldak_grm.grm.bin"
-                    assert path(combinedTuple.get(2)).fileName.toString() == "ldak_grm.grm.id"
-                    assert path(combinedTuple.get(3)).fileName.toString() == "ldak_grm.grm.details"
-                    assert path(combinedTuple.get(4)).fileName.toString() == "ldak_grm.grm.adjust"
-                },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

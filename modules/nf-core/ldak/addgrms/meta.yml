@@ -38,15 +38,19 @@ output:
       - "${prefix}.grm.bin":
           type: file
           description: Combined LDAK GRM binary matrix
+          ontologies: []
       - "${prefix}.grm.id":
           type: file
           description: Combined LDAK GRM sample identifiers
+          ontologies: []
       - "${prefix}.grm.details":
           type: file
           description: Combined LDAK GRM details
+          ontologies: []
       - "${prefix}.grm.adjust":
           type: file
           description: Combined LDAK GRM adjustment factors
+          ontologies: []
   versions_ldak6:
     - - ${task.process}:
           type: string

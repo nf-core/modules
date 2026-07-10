@@ -21,7 +21,6 @@ process LDAK_ADDGRMS {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-
     ldak6 \
         --add-grm ${prefix} \
         --mgrm ${mgrm_file} \
