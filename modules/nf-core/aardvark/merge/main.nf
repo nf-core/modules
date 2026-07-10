@@ -29,7 +29,7 @@ process AARDVARK_MERGE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def inputs = vcfs.flatten().collect { file -> "--input-vcf ${file}" }.join(' ')
+    def inputs = vcfs.collect { file -> "--input-vcf ${file}" }.join(' ')
 
     """
     aardvark merge \\
