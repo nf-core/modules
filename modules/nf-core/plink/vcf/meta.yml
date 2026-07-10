@@ -23,7 +23,17 @@ input:
     - vcf:
         type: file
         description: Variant calling file (vcf)
-        pattern: "*.{vcf}"
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing phenotype sample information
+          e.g. [ id:'test', single_end:false ]
+    - pheno:
+        type: file
+        description: Optional PLINK phenotype file passed with `--pheno`
+        pattern: "*.{phe,pheno,txt}"
         ontologies: []
 output:
   bed:

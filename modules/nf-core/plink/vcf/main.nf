@@ -1,14 +1,15 @@
 process PLINK_VCF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1' :
-        'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1'
+        : 'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1'}"
 
     input:
     tuple val(meta), path(vcf)
+    tuple val(meta2), path(pheno)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed, optional: true
@@ -23,12 +24,14 @@ process PLINK_VCF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def pheno_args = pheno ? "--pheno ${pheno}" : ''
 
     """
     plink \\
         --vcf ${vcf} \\
-        $args \\
-        --threads $task.cpus \\
+        ${pheno_args} \\
+        ${args} \\
+        --threads ${task.cpus} \\
         --out ${prefix}
     """
 
