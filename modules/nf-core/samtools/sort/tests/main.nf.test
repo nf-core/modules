@@ -30,8 +30,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(
                         process.out.bam,
                         process.out.index,
@@ -63,8 +63,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(
                         process.out.bam,
                         process.out.index,
@@ -96,8 +96,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(
                         process.out.bam,
                         process.out.index,
@@ -132,8 +132,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(
                         process.out.bam,
                         process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
@@ -168,8 +168,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(
                         process.out.bam,
                         process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
@@ -204,8 +204,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(
                         process.out.bam,
                         process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
@@ -237,8 +237,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(
                     process.out.cram.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
@@ -271,8 +271,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
@@ -303,8 +303,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
@@ -333,8 +333,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
@@ -362,8 +362,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(
                     process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },

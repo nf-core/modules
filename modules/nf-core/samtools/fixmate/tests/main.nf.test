@@ -35,10 +35,12 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                bam(process.out.bam[0][1]).getReadsMD5(),
-                process.out.findAll { key, val -> key.startsWith("versions") }
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
         }
     }
 
@@ -83,12 +85,13 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                file(process.out.cram[0][1]).name,
-                process.out.findAll { key, val -> key.startsWith("versions") }
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    file(process.out.cram[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
         }
-
     }
 
     test("human - cram - stub") {
@@ -117,8 +120,9 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 }

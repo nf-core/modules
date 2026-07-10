@@ -25,10 +25,12 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot([
-                "fasta": process.out.fasta,
-                "versions_samtools": process.out.versions_samtools
-            ]).match()
+            assertAll(
+                { assert snapshot([
+                    "fasta": process.out.fasta,
+                    "versions_samtools": process.out.versions_samtools
+                ]).match() }
+            )
         }
     }
 
@@ -49,14 +51,17 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot([
-                "interleaved": process.out.interleaved,
-                "versions_samtools": process.out.versions_samtools
-            ]).match()
+            assertAll(
+                { assert snapshot([
+                    "interleaved": process.out.interleaved,
+                    "versions_samtools": process.out.versions_samtools
+                ]).match() }
+            )
         }
     }
 
-    test("test-samtools-fasta-interleave - interleaved -- stub") {
+    test("test-samtools-fasta-interleave - interleaved - stub") {
+
         options "-stub"
 
         when {
@@ -73,11 +78,14 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
     }
 
-    test("test-samtools-fasta - single end - 1 fasta + singleton-- stub") {
+    test("test-samtools-fasta - single end - 1 fasta + singleton- stub") {
+
         options "-stub"
 
         when {
@@ -94,11 +102,14 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
     }
 
-    test("test-samtools-fasta - false - 2 fasta + singleton -- stub") {
+    test("test-samtools-fasta - false - 2 fasta + singleton - stub") {
+
         options "-stub"
 
         when {
@@ -115,8 +126,9 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
     }
-
 }

@@ -29,9 +29,10 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 
     test("bam_split") {
@@ -52,23 +53,25 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.reads.collect{
-                    meta, read_gz ->
-                    [ meta, read_gz.collect{ read_file ->
-                        if (read_file ==~ /.*(other|singleton)\.fq\.gz$/) {
-                            return file(read_file).name
-                        } else {
-                            return read_file
-                        }
-                    }]
-                },
-                process.out.findAll { key, val -> key.startsWith("versions")}
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    process.out.reads.collect{
+                        meta, read_gz ->
+                        [ meta, read_gz.collect{ read_file ->
+                            if (read_file ==~ /.*(other|singleton)\.fq\.gz$/) {
+                                return file(read_file).name
+                            } else {
+                                return read_file
+                            }
+                        }]
+                    },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
         }
     }
 
-    test("bam -- stub") {
+    test("bam - stub") {
         options "-stub"
 
         when {
@@ -87,12 +90,13 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 
-    test("bam_split -- stub") {
+    test("bam_split - stub") {
         options "-stub"
 
         when {
@@ -111,7 +115,9 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
     }
 }

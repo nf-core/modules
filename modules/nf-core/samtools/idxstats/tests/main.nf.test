@@ -23,8 +23,8 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(
                     process.out.idxstats,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -34,7 +34,9 @@ nextflow_process {
     }
 
     test("bam - stub") {
+
         options "-stub"
+
         when {
             process {
                 """
@@ -48,12 +50,13 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert snapshot(
                     process.out.idxstats,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
-    }}
+    }
+}
