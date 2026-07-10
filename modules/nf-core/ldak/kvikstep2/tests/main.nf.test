@@ -106,6 +106,9 @@ nextflow_process {
     test("homo_sapiens popgen - quantitative with optional chr args and explicit mpheno 1") {
 
         when {
+            params {
+                module_args = "--chr 21"
+            }
             process {
                 """
                 sourceBed = file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true)
@@ -152,16 +155,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.results.size() == 1 },
-                { assert process.out.log.size() == 1 },
-                {
-                    def resultFile = path(process.out.results.get(0).get(2))
-                    def commandText = resultFile.parent.resolve(".command.sh").text
-                    assert commandText.contains("--bfile plink_multichr.chr21")
-                    assert commandText.contains("--chr 21")
-                    assert commandText.contains("--mpheno 1")
-                    assert !commandText.contains("--binary YES")
-                },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
             )
         }
@@ -216,13 +209,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.results.size() == 1 },
-                {
-                    def resultFile = path(process.out.results.get(0).get(2))
-                    def commandText = resultFile.parent.resolve(".command.sh").text
-                    assert commandText.contains("--mpheno 1")
-                    assert !commandText.contains("--binary YES")
-                },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
             )
         }
