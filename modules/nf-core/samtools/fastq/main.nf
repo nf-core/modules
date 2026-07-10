@@ -45,10 +45,10 @@ process SAMTOOLS_FASTQ {
     def output = interleave && !meta.single_end
         ? "touch ${prefix}_interleaved.fastq"
         : meta.single_end
-            ? "echo | gzip > ${prefix}_1.fastq.gz && echo | gzip > ${prefix}_singleton.fastq.gz"
-            : "echo | gzip > ${prefix}_1.fastq.gz && echo | gzip > ${prefix}_2.fastq.gz && echo | gzip > ${prefix}_singleton.fastq.gz"
+            ? "echo '' | gzip > ${prefix}_1.fastq.gz && echo '' | gzip > ${prefix}_singleton.fastq.gz"
+            : "echo '' | gzip > ${prefix}_1.fastq.gz && echo '' | gzip > ${prefix}_2.fastq.gz && echo '' | gzip > ${prefix}_singleton.fastq.gz"
     """
     ${output}
-    echo | gzip > ${prefix}_other.fastq.gz
+    echo "" | gzip > ${prefix}_other.fastq.gz
     """
 }

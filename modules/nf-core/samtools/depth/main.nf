@@ -1,5 +1,5 @@
 process SAMTOOLS_DEPTH {
-    tag "${meta1.id}"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -8,11 +8,10 @@ process SAMTOOLS_DEPTH {
         : 'community.wave.seqera.io/library/htslib_samtools:1.24--d697cfb9dce007cd'}"
 
     input:
-    tuple val(meta1), path(bam), path(index)
-    tuple val(meta2), path(intervals)
+    tuple val(meta), path(bam), path(index), path(intervals)
 
     output:
-    tuple val(meta1), path("*.tsv"), emit: tsv
+    tuple val(meta), path("*.tsv"), emit: tsv
     tuple val("${task.process}"), val('samtools'), eval('samtools version | sed "1!d;s/.* //"'), emit: versions_samtools, topic: versions
 
     when:
@@ -20,7 +19,7 @@ process SAMTOOLS_DEPTH {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta1.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def positions = intervals ? "-b ${intervals}" : ""
     """
     # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
@@ -34,7 +33,7 @@ process SAMTOOLS_DEPTH {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta1.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}.tsv

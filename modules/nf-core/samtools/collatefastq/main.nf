@@ -63,6 +63,6 @@ process SAMTOOLS_COLLATEFASTQ {
     ${output2command}
     ${interleavecommand}
     ${singletoncommand}
-    ${empty}> ${prefix}_other.fq.gz
+    echo "" | gzip > ${prefix}_other.fq.gz
     """
 }

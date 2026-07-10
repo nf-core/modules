@@ -47,20 +47,19 @@ process SAMTOOLS_BAM2FQ {
 
     stub:
 
-    def create_cmd = "echo | gzip >"
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if (split) {
         """
-        ${create_cmd} ${prefix}_1.fq.gz
-        ${create_cmd} ${prefix}_2.fq.gz
-        ${create_cmd} ${prefix}_other.fq.gz
-        ${create_cmd} ${prefix}_singleton.fq.gz
+        echo "" | gzip > ${prefix}_1.fq.gz
+        echo "" | gzip > ${prefix}_2.fq.gz
+        echo "" | gzip > ${prefix}_other.fq.gz
+        echo "" | gzip > ${prefix}_singleton.fq.gz
         """
     }
     else {
         """
-        ${create_cmd} ${prefix}_interleaved.fq.gz
+        echo "" | gzip > ${prefix}_interleaved.fq.gz
         """
     }
 }

@@ -31,7 +31,7 @@ process SAMTOOLS_CAT {
     """
 
     stub:
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
     """
     touch ${prefix}.${file_type}

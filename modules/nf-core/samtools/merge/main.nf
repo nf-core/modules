@@ -38,7 +38,7 @@ process SAMTOOLS_MERGE {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
     def index_type = file_type == "bam" ? "csi" : "crai"
     def index = args.contains("--write-index") ? "touch ${prefix}.${index_type}" : ""
