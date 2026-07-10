@@ -27,7 +27,7 @@ process GENOMETESTER4_GLISTMAKER {
         $args \\
         --num_threads $task.cpus \\
         -o ${prefix}
-    mv ${prefix}_22.list ${prefix}.list
+    mv ${prefix}_*.list ${prefix}.list
     """
 
     stub:
