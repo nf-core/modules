@@ -4,8 +4,8 @@ process NACHO_QC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/4754a28a0a1b409ef2f7d503260e307b5f0066f5590a61b75c9a76a99eed784d/data' :
-        'community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:2418688ed8090da0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ad/ad421367a5d71eb73738675a68b5677e283686a8b0a6d5e5530f9ec203aadb30/data' :
+        'community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:bcd6d91c836e9200' }"
 
     input:
     tuple val(meta) , path(rcc_files, stageAs: "input/*")
