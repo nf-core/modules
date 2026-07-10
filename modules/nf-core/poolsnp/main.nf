@@ -16,7 +16,8 @@ process POOLSNP {
     tuple val(meta), path("*.vcf.gz")  , emit: vcf
     tuple val(meta), path("*cov-*.txt"), emit: max_cov  , optional: true
     tuple val(meta), path("*BS.txt.gz"), emit: bad_sites, optional: true
-    path "versions.yml"                , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('poolsnp'), eval("echo 1.0.1"), topic: versions, emit: versions_poolsnp
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +25,6 @@ process POOLSNP {
     script:
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     assert (!max_cov && max_cov_file) || (max_cov && !max_cov_file)
 
     """
@@ -36,16 +36,10 @@ process POOLSNP {
         jobs=${task.cpus} \\
         max-cov=${max_cov ? "${max_cov}" : "\$PWD/${max_cov_file}"} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
-        poolsnp: "${VERSION}"
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     echo "##fileformat=VCFv4.2" > ${prefix}.vcf
@@ -53,10 +47,5 @@ process POOLSNP {
     gzip ${prefix}.vcf
     ${max_cov ? "touch ${prefix}_cov-${max_cov}.txt" : ""}
     echo "" | gzip > ${prefix}_BS.txt.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
-        poolsnp: "${VERSION}"
-    END_VERSIONS
     """
 }
