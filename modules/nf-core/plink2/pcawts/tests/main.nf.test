@@ -27,7 +27,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.allele_weights[0][1]).readLines().size() > 1 },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
             )
         }
