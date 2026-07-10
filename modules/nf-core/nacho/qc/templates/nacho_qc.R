@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-library(optparse)
+library(nfcore.utils)
 library(dplyr)
 library(ggplot2)
 library(fs)
@@ -7,45 +7,34 @@ library(NACHO)
 library(readr)
 library(tidyr)
 
-# Commandline Argument parsing
-option_list <- list(
-    make_option(
-        c("--input_rcc_path"),
-        type = "character",
-        default = "./" ,
-        help = "Path to the folder that contains the RCC input file(s)",
-        metavar = "character"),
-    make_option(
-        c("--input_samplesheet"),
-        type = "character",
-        default = NULL ,
-        help = "Path to the sample sheet file",
-        metavar = "character")
+################################################
+## PARSE PARAMETERS FROM NEXTFLOW             ##
+################################################
+
+opt <- list(
+    input_rcc_path = "input",
+    input_samplesheet = "${sample_sheet}"
 )
 
-opt <- parse_args(OptionParser(option_list = option_list))
+opt_valid <- process_inputs(
+    opt,
+    expected_folder = c("input_rcc_path"),
+    expected_files = c("input_samplesheet"),
+    required_opts = c("input_rcc_path", "input_samplesheet")
+)
 
-# Validate mandatory arguments
-if (is.null(opt$input_rcc_path)) {
-    stop("Error: The --input_rcc_path parameter is mandatory and must be specified.")
-}
-
-if (is.null(opt$input_samplesheet)) {
-    stop("Error: The --input_samplesheet parameter is mandatory and must be specified.")
-}
-
-input_rcc_path    <- opt$input_rcc_path
-input_samplesheet <- opt$input_samplesheet
+input_rcc_path    <- opt_valid[["input_rcc_path"]]
+input_samplesheet <- opt_valid[["input_samplesheet"]]
 
 # Create filelist for NachoQC
 list_of_rccs <- dir_ls(path = input_rcc_path, glob = "*.RCC")
 
 # Core Code
-nacho_data <- load_rcc(data_directory = input_rcc_path,
-                        ssheet_csv = input_samplesheet,
-                        id_colname = "RCC_FILE_NAME")
-
-output_base <- "./"
+nacho_data <- load_rcc(
+    data_directory = input_rcc_path,
+    ssheet_csv = input_samplesheet,
+    id_colname = "RCC_FILE_NAME"
+)
 
 # Write out HK genes detected and add to MultiQC report as custom content
 line="#id: nf-core-nanostring-hk-genes
@@ -56,8 +45,16 @@ line="#id: nf-core-nanostring-hk-genes
 #data:
     "
 
-write(line,file=paste0(output_base, "hk_detected_mqc.txt"),append=TRUE)
-write(nacho_data$housekeeping_genes ,paste0(output_base,"hk_detected_mqc.txt"),append=TRUE)
+write(
+    line,
+    file = "hk_detected_mqc.txt",
+    append = TRUE
+)
+write(
+    nacho_data[["housekeeping_genes"]],
+    file = "hk_detected_mqc.txt",
+    append = TRUE
+)
 
 # Add in all plots as MQC output for MultiQC
 plot_bd <- autoplot(
@@ -254,10 +251,24 @@ qc_table <- nacho_data[["nacho"]] %>%
     rename("Positive Factor" = Positive_factor) %>%
     rename("RCC_FILE" = RCC_FILE_NAME)
 
-write_tsv(qc_table ,file=paste0(output_base,"normalized_qc_mqc.txt"))
+write_tsv(qc_table, file = "normalized_qc_mqc.txt")
 
 # Render Standard Report for investigation in main MultiQC Report
-render(nacho_data, output_dir = output_base, output_file = "NanoQC.html", show_outliers = FALSE)
+render(nacho_data, output_dir = "./", output_file = "NanoQC.html", show_outliers = FALSE)
 
 # Render the same Report for standard investigation, but not for MultiQC Report
-render(nacho_data, output_dir = output_base, output_file = "NanoQC_with_outliers.html", show_outliers = TRUE)
+render(nacho_data, output_dir = "./", output_file = "NanoQC_with_outliers.html", show_outliers = TRUE)
+
+process_end(
+    packages = list(
+        "r-nacho" = "NACHO",
+        "r-dplyr" = "dplyr",
+        "r-ggplot2" = "ggplot2",
+        "r-tidyr" = "tidyr",
+        "r-readr" = "readr",
+        "r-fs" = "fs"
+    ),
+    task_name = "${task.process}",
+    versions_path = "versions.yml",
+    log_path = "R_sessionInfo.log"
+)
