@@ -61,10 +61,7 @@ nextflow_process {
             assertAll(
                 {
                     assert snapshot(
-                        cram(
-                            process.out.cram[0][1],
-                            fasta,
-                        ).getReadsMD5(),
+                        cram(process.out.cram[0][1], fasta).getReadsMD5(),
                         file(process.out.crai[0][1]).name,
                         process.out.metrics,
                         process.out.findAll { key, val -> key.startsWith("versions") }

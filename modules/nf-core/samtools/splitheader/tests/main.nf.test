@@ -31,8 +31,7 @@ nextflow_process {
 					file(process.out.programs[0][1]).readLines(),
 					file(process.out.sequences[0][1]).readLines(),
                     process.out.findAll { key, val -> key.startsWith("versions") }
-					).match()
-				}
+                ).match() }
             )
         }
     }
