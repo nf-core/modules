@@ -4,4 +4,5 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - "bioconda::samtools=1.23"
+  # renovate: datasource=conda depName=bioconda/samtools
+  - bioconda::samtools=1.24
