@@ -20,9 +20,11 @@ input:
     - ldak_reml_file:
         type: file
         description: Full-genome LDAK REML output file (`*.reml`)
+        ontologies: []
     - quarter_reml_files:
         type: file
         description: One or more quarter/chromosome LDAK REML output files used for inflation comparison
+        ontologies: []
 output:
   inflation_results:
     - - meta:
@@ -31,6 +33,7 @@ output:
       - "${prefix}.txt":
           type: file
           description: Inflation summary report (`<prefix>.txt`)
+          ontologies: []
   versions:
     - versions.yml:
         type: file

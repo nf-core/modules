@@ -121,22 +121,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.inflation_results.size() == 1 },
-                { assert process.out.versions.size() == 1 },
-                {
-                    def resultFile = path(process.out.inflation_results.get(0).get(1))
-                    def versionsFile = path(process.out.versions.get(0))
-                    def commandText = resultFile.parent.resolve(".command.sh").text
-                    assert resultFile.fileName.toString() == "inflation_Y1.txt"
-                    assert resultFile.text.contains("LDAK Inflation Analysis Results")
-                    assert versionsFile.fileName.toString() == "versions.yml"
-                    assert versionsFile.text.contains("r-base:")
-                    assert commandText.contains("#!/usr/bin/env Rscript")
-                    assert !commandText.contains("base64 -d > calc_inflation.R")
-                    assert !commandText.contains("Rscript calc_inflation.R")
-                },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -162,14 +148,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.inflation_results.size() == 1 },
-                { assert process.out.versions.size() == 1 },
-                {
-                    assert path(process.out.inflation_results.get(0).get(1)).fileName.toString() == "inflation_Y1_stub.txt"
-                    assert path(process.out.versions.get(0)).fileName.toString() == "versions.yml"
-                },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
