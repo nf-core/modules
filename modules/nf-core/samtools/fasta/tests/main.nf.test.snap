@@ -1,4 +1,34 @@
 {
+    "test-samtools-fasta": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1.fasta.gz:md5,f754f5ea47396799cc68ecf83b32fa8e",
+                        "test_2.fasta.gz:md5,26800c2d35564173662510aacf9fc9a2"
+                    ]
+                ]
+            ],
+            {
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_FASTA",
+                        "samtools",
+                        "1.24"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-07-10T17:48:53.640299143",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
     "test-samtools-fasta - single end - 1 fasta + singleton - stub": {
         "content": [
             {
@@ -47,36 +77,6 @@
             "nextflow": "26.04.4"
         }
     },
-    "test-samtools-fasta": {
-        "content": [
-            {
-                "fasta": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test_1.fasta.gz:md5,f754f5ea47396799cc68ecf83b32fa8e",
-                            "test_2.fasta.gz:md5,26800c2d35564173662510aacf9fc9a2"
-                        ]
-                    ]
-                ],
-                "versions_samtools": [
-                    [
-                        "SAMTOOLS_FASTA",
-                        "samtools",
-                        "1.24"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-03-19T08:58:15.181268",
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        }
-    },
     "test-samtools-fasta-interleave - interleaved - stub": {
         "content": [
             {
@@ -121,16 +121,16 @@
     },
     "test-samtools-fasta-interleave": {
         "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test_interleaved.fasta.gz:md5,02d7f0389745d9d274d091cf8bf3b8a1"
+                ]
+            ],
             {
-                "interleaved": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_interleaved.fasta.gz:md5,02d7f0389745d9d274d091cf8bf3b8a1"
-                    ]
-                ],
                 "versions_samtools": [
                     [
                         "SAMTOOLS_FASTA",
@@ -140,10 +140,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-19T08:58:20.238513",
+        "timestamp": "2026-07-10T17:49:00.247792105",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
         }
     },
     "test-samtools-fasta - false - 2 fasta + singleton - stub": {
