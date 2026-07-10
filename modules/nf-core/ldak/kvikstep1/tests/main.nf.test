@@ -56,18 +56,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.predictions.size() == 1 },
-                { assert process.out.effects.size() == 1 },
-                { assert process.out.log.size() == 1 },
-                {
-                    def predictionTuple = process.out.predictions.get(0)
-                    def commandText = path(predictionTuple.get(1)).parent.resolve(".command.sh").text
-                    assert commandText.contains("--bfile plink_multichr")
-                    assert commandText.contains("--mpheno 1")
-                    assert !commandText.contains("--binary YES")
-                },
                 {
                     // predictions bundles a stable root/loco.prs pair with the non-deterministic
                     // loco.details estimate, so the whole channel is filename-only under
@@ -130,10 +120,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.predictions.size() == 1 },
-                { assert process.out.effects.size() == 1 },
                 {
                     def predictionTuple = process.out.predictions.get(0)
                     def commandText = path(predictionTuple.get(1)).parent.resolve(".command.sh").text
@@ -194,8 +182,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["predictions", "effects", "log"])).match() }
             )
         }

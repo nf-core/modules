@@ -32,7 +32,6 @@ process LDAK_KVIKSTEP1 {
     def mpheno_value = mpheno == null || (mpheno instanceof Collection && mpheno.isEmpty()) ? 1 : mpheno
 
     """
-
     ldak6 --kvik-step1 ${prefix} \\
         --bfile ${bfile_prefix} \\
         --pheno ${phenotype_file} \\
