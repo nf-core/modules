@@ -51,12 +51,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.findAll { key, val -> key.startsWith("versions")},
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.max_cov
+                    sanitizeOutput(process.out, unstableKeys: ['max_cov', 'vcf'])
                     ).match()
                 }
             )
@@ -82,11 +81,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.findAll { key, val -> key.startsWith("versions")},
-                    path(process.out.vcf[0][1]).vcf.variantsMD5
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    sanitizeOutput(process.out, unstableKeys: ['max_cov', 'vcf'])
                     ).match()
                 }
             )
@@ -148,13 +147,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.findAll { key, val -> key.startsWith("versions")},
-                    path(process.out.vcf[0][1]).vcf.variantsMD5
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }
