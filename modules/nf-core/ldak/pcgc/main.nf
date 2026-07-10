@@ -37,7 +37,6 @@ process LDAK_PCGC {
     def prevalence_arg = prevalence ? "--prevalence ${prevalence}" : ''
 
     """
-
     ldak6 --pcgc ${prefix} \\
         --pheno ${phenotype_file} \\
         --mpheno ${mpheno_arg} \\

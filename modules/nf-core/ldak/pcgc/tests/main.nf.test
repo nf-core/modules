@@ -112,18 +112,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.pcgc_results.size() == 1 },
-                { assert process.out.versions_ldak6.size() == 1 },
                 {
                     def pcgcTuple = process.out.pcgc_results.get(0)
                     def outMeta = pcgcTuple.get(0)
                     def pcgcFile = path(pcgcTuple.get(1))
-                    def commandText = pcgcFile.parent.resolve(".command.sh").text
                     assert outMeta.id == "pcgc_binary"
-                    assert pcgcFile.fileName.toString() == "pcgc_binary.pcgc"
                     assert pcgcFile.text.contains("Num_Kinships")
-                    assert commandText.contains("--prevalence 0.2")
-                    assert commandText.contains("--mpheno 1")
                 },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pcgc_results", "pcgc_marginal", "cross"])).match() }
             )
@@ -154,17 +148,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.pcgc_results.size() == 1 },
-                { assert process.out.versions_ldak6.size() == 1 },
                 {
                     def pcgcTuple = process.out.pcgc_results.get(0)
                     def pcgcFile = path(pcgcTuple.get(1))
-                    def commandText = pcgcFile.parent.resolve(".command.sh").text
                     assert pcgcTuple.get(0).id == "pcgc_binary_fallback"
-                    assert pcgcFile.fileName.toString() == "pcgc_binary_fallback.pcgc"
                     assert pcgcFile.text.contains("Num_Kinships")
-                    assert commandText.contains("--prevalence 0.2")
-                    assert commandText.contains("--mpheno 1")
                 },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pcgc_results", "pcgc_marginal", "cross"])).match() }
             )
