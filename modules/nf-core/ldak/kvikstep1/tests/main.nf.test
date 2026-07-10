@@ -129,9 +129,13 @@ nextflow_process {
                 {
                     def predictionTuple = process.out.predictions.get(0)
                     def commandText = path(predictionTuple.get(1)).parent.resolve(".command.sh").text
-                    assert commandText.contains("--bfile plink_multichr")
                     assert !commandText.contains("--mpheno")
                     assert commandText.contains("--binary YES")
+                    assert snapshot(
+                        sanitizeOutput(process.out, unstableKeys: ["predictions", "effects", "log"]),
+                        path(predictionTuple.get(1)).readLines(),
+                        path(predictionTuple.get(3)).readLines()
+                    ).match()
                 }
             )
         }
