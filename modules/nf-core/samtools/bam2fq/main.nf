@@ -14,6 +14,7 @@ process SAMTOOLS_BAM2FQ {
     output:
     tuple val(meta), path("*.fq.gz"), emit: reads
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
+    tuple val("${task.process}"), val("bgzip"), eval('bgzip --version | head -1 | sed "s/bgzip (htslib) //"'), emit: versions_bgzip, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
