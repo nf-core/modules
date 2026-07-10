@@ -17,7 +17,7 @@ process CELLPHENO_NIS {
     output:
     tuple val(meta), path("*_NIScpp_results_*.zip"), emit: nis
     tuple val(meta), path("*_remap.zip")           , emit: remap, optional: true
-    tuple val("${task.process}"), val('cellpheno_nis'), eval("cat /usr/local/share/cellpheno-nis/VERSION"), topic: versions, emit: versions_cellpheno_nis
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,12 +33,17 @@ process CELLPHENO_NIS {
     // The GPU is selected by the executor (e.g. CUDA_VISIBLE_DEVICES); NIS defaults
     // to `cuda:0`. Override with `--device cuda:N` via `task.ext.args` if needed.
     """
-    main \\
+    cellpheno-nis \\
         --model_root ${models} \\
         --data_root ${tile_dir} \\
         --save_root . \\
         --brain_tag ${prefix} \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cellpheno-nis: \$(cat /usr/local/share/cellpheno-nis/VERSION)
+    END_VERSIONS
     """
 
     stub:
@@ -51,5 +56,10 @@ process CELLPHENO_NIS {
     touch ${prefix}_NIScpp_results_zmin0_instance_label.zip
     touch ${prefix}_NIScpp_results_zmin0_instance_volume.zip
     touch ${prefix}_remap.zip
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cellpheno-nis: \$(cat /usr/local/share/cellpheno-nis/VERSION)
+    END_VERSIONS
     """
 }

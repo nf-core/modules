@@ -1,7 +1,7 @@
 # Container image for the CellPheno NIS executable (modules/nf-core/cellpheno/nis).
 #
 # Self-contained build: clones the source repository, compiles the C++/LibTorch/OpenCV/
-# CUDA binary and ships it on PATH as `main`. nf-core builds this Dockerfile from the
+# CUDA binary and ships it on PATH as `cellpheno-nis`. nf-core builds this Dockerfile from the
 # module directory and uploads it to quay.io/nf-core/cellpheno-nis (see README.md), which
 # the module's `container` line references.
 #
@@ -66,10 +66,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /opt/libtorch /opt/libtorch
-COPY --from=build /src/cpp/build/main /usr/local/bin/main
+# Install under a meaningful CLI name (upstream builds the binary as `main`, which is
+# collision-prone on PATH). Matches the bioconda package name `cellpheno-nis`.
+COPY --from=build /src/cpp/build/main /usr/local/bin/cellpheno-nis
 
-# Single authoritative version source. The module reports the NIS version via
-# `eval("cat /usr/local/share/cellpheno-nis/VERSION")`, so the container tag and the
+# Single authoritative version source. The module reads the NIS version from this file into versions.yml, so the container tag and the
 # reported version stay in lockstep. Bump together with the `container` tag in main.nf.
 ARG CELLPHENO_NIS_VERSION=1.0.0
 RUN mkdir -p /usr/local/share/cellpheno-nis \
@@ -85,4 +86,4 @@ LABEL org.opencontainers.image.authors="Ziquan Wei (@Chrisa142857)" \
       org.opencontainers.image.version="1.0.0"
 
 ENTRYPOINT []
-CMD ["main", "--help"]
+CMD ["cellpheno-nis", "--help"]

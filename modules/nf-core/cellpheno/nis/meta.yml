@@ -67,27 +67,12 @@ output:
             depth chunks. Absent when fewer than two chunks contain instances.
           pattern: "*_remap.zip"
           ontologies: []
-  versions_cellpheno_nis:
-    - - "${task.process}":
-          type: string
-          description: The name of the process
-      - "cellpheno_nis":
-          type: string
-          description: The name of the tool
-      - "cat /usr/local/share/cellpheno-nis/VERSION":
-          type: eval
-          description: The expression to obtain the version of the tool
-topics:
   versions:
-    - - "${task.process}":
-          type: string
-          description: The name of the process
-      - "cellpheno_nis":
-          type: string
-          description: The name of the tool
-      - "cat /usr/local/share/cellpheno-nis/VERSION":
-          type: eval
-          description: The expression to obtain the version of the tool
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies: []
 authors:
   - "@Chrisa142857"
 maintainers:

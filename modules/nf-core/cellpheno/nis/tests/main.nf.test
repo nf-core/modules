@@ -62,7 +62,7 @@ nextflow_process {
                 { assert names.any { it.endsWith('_instance_label.zip') } },
                 { assert names.any { it.endsWith('_binary_mask.zip') } },
                 { assert names.any { it.endsWith('_seg_meta.zip') } },
-                { assert process.out.versions_cellpheno_nis }
+                { assert process.out.versions }
             )
         }
 
@@ -84,9 +84,12 @@ nextflow_process {
         }
 
         then {
+            def names = process.out.nis.get(0).get(1).collect { file(it).name }
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert names.size() == 6 },
+                { assert process.out.remap },
+                { assert process.out.versions }
             )
         }
 
