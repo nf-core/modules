@@ -22,6 +22,11 @@ nextflow_process {
                         [ id:'test' ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
                     ]
+                    input[1] = [
+                        [ id:'fasta' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    ]
                     """
                 }
             }
@@ -57,7 +62,6 @@ nextflow_process {
             assert process.success
             assert snapshot(sanitizeOutput(process.out)).match()
         }
-
     }
 
     test("sarscov2 - bam - stub") {
@@ -84,7 +88,5 @@ nextflow_process {
             assert process.success
             assert snapshot(sanitizeOutput(process.out)).match()
         }
-
     }
-
 }
