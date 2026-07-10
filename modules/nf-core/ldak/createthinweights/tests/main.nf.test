@@ -37,14 +37,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.thin_weights.size() == 1 },
-                {
-                    def weightsFile = path(process.out.thin_weights.get(0).get(1))
-                    assert weightsFile.fileName.toString() == "plink_simulated.weights.thin"
-                    assert weightsFile.readLines().every { line -> line.endsWith(" 1") }
-                },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -63,8 +57,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
