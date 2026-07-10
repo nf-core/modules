@@ -1,20 +1,20 @@
 process POOLSNP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/poolsnp:1.0.1--py312h7e72e81_0':
-        'quay.io/biocontainers/poolsnp:1.0.1--py312h7e72e81_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/poolsnp:1.0.1--py312h7e72e81_0'
+        : 'quay.io/biocontainers/poolsnp:1.0.1--py312h7e72e81_0'}"
 
     input:
-    tuple val(meta) , path(mpileup)
+    tuple val(meta), path(mpileup)
     tuple val(meta2), path(reference)
     tuple val(meta3), val(max_cov), path(max_cov_file)
 
     output:
-    tuple val(meta), path("*.vcf.gz")  , emit: vcf
-    tuple val(meta), path("*cov-*.txt"), emit: max_cov  , optional: true
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*cov-*.txt"), emit: max_cov, optional: true
     tuple val(meta), path("*BS.txt.gz"), emit: bad_sites, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('poolsnp'), eval("echo 1.0.1"), topic: versions, emit: versions_poolsnp
@@ -23,8 +23,8 @@ process POOLSNP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     assert (!max_cov && max_cov_file) || (max_cov && !max_cov_file)
 
     """
@@ -35,11 +35,12 @@ process POOLSNP {
         reference=\$PWD/${reference} \\
         jobs=${task.cpus} \\
         max-cov=${max_cov ? "${max_cov}" : "\$PWD/${max_cov_file}"} \\
-        $args
+        ${args}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    assert (!max_cov && max_cov_file) || (max_cov && !max_cov_file)
 
     """
     echo "##fileformat=VCFv4.2" > ${prefix}.vcf

@@ -41,11 +41,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[2] = [
-                    [ id:'test' ],
-                    0.7,
-                    []
-                ]
+                input[2] = [ [ id:'test' ], 0.7, [] ]
                 """
             }
         }
@@ -54,7 +50,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.vcf.collect{meta, vcf ->  file(vcf).name + ':variantsMD5,' + path(vcf).vcf.variantsMD5},
                     process.out.max_cov,
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
@@ -72,10 +68,10 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[2] = Channel.of([
+                input[2] = channel.of([
                     [ id:'test' ],
                     '',
-                ]).combine( Channel.of("MT192765.1\t98").collectFile( name:'max_cov.tsv', newLine: true ))
+                ]).combine(channel.of("MT192765.1\t98").collectFile( name:'max_cov.tsv', newLine: true ))
                 """
             }
         }
@@ -84,7 +80,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.vcf.collect{meta, vcf ->  file(vcf).name + ':variantsMD5,' + path(vcf).vcf.variantsMD5},
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -103,11 +99,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[2] = [
-                    [ id:'test' ], // meta map
-                    0.7,
-                    []
-                ]
+                input[2] = [ [ id:'test' ], 0.7, [] ]
                 """
             }
         }
@@ -115,11 +107,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.max_cov,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -136,10 +124,10 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[2] = Channel.of([
+                input[2] = channel.of([
                     [ id:'test' ],
                     '',
-                ]).combine( Channel.of("MT192765.1\t98").collectFile( name:'max_cov.tsv', newLine: true ))
+                ]).combine(channel.of("MT192765.1\t98").collectFile( name:'max_cov.tsv', newLine: true ))
                 """
             }
         }
@@ -147,10 +135,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
