@@ -8,9 +8,8 @@ process RCLONE_CHECKSUM {
             : 'community.wave.seqera.io/library/rclone:1.74.3--2ef33c5b9132aa97' }"
 
     input:
-    tuple val(meta), path(sumfile)
+    tuple val(meta), path(sumfile), val(hash)
     tuple val(meta2), path(destination, stageAs: 'destination/*')
-    val hash
 
     output:
     tuple val(meta), path("${prefix}.combined.txt")       , emit: combined      , optional: true

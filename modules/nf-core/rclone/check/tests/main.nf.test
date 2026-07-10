@@ -22,7 +22,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot([match: process.out.match, versions_rclone: process.out.versions_rclone]).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_dst", "missing_on_src", "error"])).match() }
             )
         }
     }
@@ -42,7 +42,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot([versions_rclone: process.out.versions_rclone]).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "match", "differ", "missing_on_dst", "missing_on_src", "error"])).match() }
             )
         }
     }
@@ -60,7 +60,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot([differ: process.out.differ, versions_rclone: process.out.versions_rclone]).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "match", "missing_on_dst", "missing_on_src", "error"])).match() }
             )
         }
     }
@@ -78,7 +78,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot([missing_on_dst: process.out.missing_on_dst, match: process.out.match, versions_rclone: process.out.versions_rclone]).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_src", "error"])).match() }
             )
         }
     }

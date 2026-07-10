@@ -15,9 +15,8 @@ nextflow_process {
                 """
                 file('hello.md5').text = 'e59ff97941044f85df5297e1c302d260  hello.txt\\n'
 
-                input[0] = [[id:'test'], file('hello.md5')]
+                input[0] = [[id:'test'], file('hello.md5'), 'MD5']
                 input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
-                input[2] = 'MD5'
                 """
             }
         }
@@ -25,7 +24,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot([match: process.out.match, versions_rclone: process.out.versions_rclone]).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_dst", "missing_on_src", "error"]) ).match() }
             )
         }
     }
@@ -38,9 +37,8 @@ nextflow_process {
                 """
                 file('hello.md5').text = 'e59ff97941044f85df5297e1c302d260  hello.txt\\n'
 
-                input[0] = [[id:'test'], file('hello.md5')]
+                input[0] = [[id:'test'], file('hello.md5'), 'MD5']
                 input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
-                input[2] = 'MD5'
                 """
             }
         }
@@ -48,7 +46,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot([versions_rclone: process.out.versions_rclone]).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["match", "combined", "differ", "missing_on_dst", "missing_on_src", "error"]) ).match() }
             )
         }
     }
@@ -59,9 +57,8 @@ nextflow_process {
                 """
                 file('hello_bad.md5').text = '00000000000000000000000000000000  hello.txt\\n'
 
-                input[0] = [[id:'test'], file('hello_bad.md5')]
+                input[0] = [[id:'test'], file('hello_bad.md5'), 'MD5']
                 input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
-                input[2] = 'MD5'
                 """
             }
         }
@@ -69,7 +66,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot([differ: process.out.differ, versions_rclone: process.out.versions_rclone]).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "match", "missing_on_dst", "missing_on_src", "error"]) ).match() }
             )
         }
     }
@@ -80,9 +77,8 @@ nextflow_process {
                 """
                 file('missing.md5').text = 'e59ff97941044f85df5297e1c302d260  missing.txt\\n'
 
-                input[0] = [[id:'test'], file('missing.md5')]
+                input[0] = [[id:'test'], file('missing.md5'), 'MD5']
                 input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
-                input[2] = 'MD5'
                 """
             }
         }
@@ -90,7 +86,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot([missing_on_dst: process.out.missing_on_dst, versions_rclone: process.out.versions_rclone]).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "match", "missing_on_src", "error"])).match() }
             )
         }
     }

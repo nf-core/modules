@@ -2,6 +2,54 @@
     "sarscov2 - fastq - stub": {
         "content": [
             {
+                "combined": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.combined.txt"
+                    ]
+                ],
+                "differ": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.differ.txt"
+                    ]
+                ],
+                "error": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.error.txt"
+                    ]
+                ],
+                "match": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.match.txt"
+                    ]
+                ],
+                "missing_on_dst": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.missing_on_dst.txt"
+                    ]
+                ],
+                "missing_on_src": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.missing_on_src.txt"
+                    ]
+                ],
                 "versions_rclone": [
                     [
                         "RCLONE_CHECK",
@@ -11,15 +59,23 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-30T14:08:13.090156298",
+        "timestamp": "2026-07-10T21:39:36.202209966",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.04.6"
         }
     },
     "different files - fails": {
         "content": [
             {
+                "combined": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.combined.txt"
+                    ]
+                ],
                 "differ": [
                     [
                         {
@@ -28,30 +84,36 @@
                         "test.differ.txt:md5,ac036608c5c402f92926505d0f0ab0e4"
                     ]
                 ],
-                "versions_rclone": [
+                "error": [
                     [
-                        "RCLONE_CHECK",
-                        "rclone",
-                        "1.74.3-DEV"
+                        {
+                            "id": "test"
+                        },
+                        "test.error.txt"
                     ]
-                ]
-            }
-        ],
-        "timestamp": "2026-06-30T14:09:50.727076111",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
-        }
-    },
-    "sarscov2 - fastq": {
-        "content": [
-            {
+                ],
                 "match": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.match.txt:md5,6f2d815bc8fe93026183cc59946ffc46"
+                        "test.match.txt"
+                    ]
+                ],
+                "missing_on_dst": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.missing_on_dst.txt"
+                    ]
+                ],
+                "missing_on_src": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.missing_on_src.txt"
                     ]
                 ],
                 "versions_rclone": [
@@ -63,15 +125,113 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-30T14:09:39.430160305",
+        "timestamp": "2026-07-10T21:39:43.336064968",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.04.6"
+        }
+    },
+    "sarscov2 - fastq": {
+        "content": [
+            {
+                "combined": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.combined.txt"
+                    ]
+                ],
+                "differ": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.differ.txt"
+                    ]
+                ],
+                "error": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.error.txt"
+                    ]
+                ],
+                "match": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.match.txt:md5,6f2d815bc8fe93026183cc59946ffc46"
+                    ]
+                ],
+                "missing_on_dst": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.missing_on_dst.txt"
+                    ]
+                ],
+                "missing_on_src": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.missing_on_src.txt"
+                    ]
+                ],
+                "versions_rclone": [
+                    [
+                        "RCLONE_CHECK",
+                        "rclone",
+                        "1.74.3-DEV"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-07-10T21:39:29.273416483",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "destination subset - partial match and missing": {
         "content": [
             {
+                "combined": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.combined.txt"
+                    ]
+                ],
+                "differ": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.differ.txt"
+                    ]
+                ],
+                "error": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.error.txt"
+                    ]
+                ],
+                "match": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.match.txt:md5,6f2d815bc8fe93026183cc59946ffc46"
+                    ]
+                ],
                 "missing_on_dst": [
                     [
                         {
@@ -80,12 +240,12 @@
                         "test.missing_on_dst.txt:md5,827cbdd053152d88295a331ab8bae87c"
                     ]
                 ],
-                "match": [
+                "missing_on_src": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.match.txt:md5,6f2d815bc8fe93026183cc59946ffc46"
+                        "test.missing_on_src.txt"
                     ]
                 ],
                 "versions_rclone": [
@@ -97,10 +257,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-30T14:09:56.49214112",
+        "timestamp": "2026-07-10T21:39:50.168759573",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.04.6"
         }
     }
 }
