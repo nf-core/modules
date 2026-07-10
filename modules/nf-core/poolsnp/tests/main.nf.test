@@ -54,11 +54,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.max_cov
-                    ).match()
-                }
+                    process.out.max_cov,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
     }
@@ -85,10 +84,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    path(process.out.vcf[0][1]).vcf.variantsMD5
-                    ).match()
-                }
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
     }
@@ -118,11 +116,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.max_cov
-                    ).match()
-                }
+                    process.out.max_cov,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
     }
@@ -151,10 +148,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    path(process.out.vcf[0][1]).vcf.variantsMD5
-                    ).match()
-                }
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
     }
