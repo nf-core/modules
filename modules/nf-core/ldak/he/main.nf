@@ -46,7 +46,6 @@ process LDAK_HE {
     def subset_number_arg = subset_number ? "--subset-number ${subset_number}" : ''
 
     """
-
     ldak6 --he ${prefix} \\
         --pheno ${phenotype_file} \\
         --mpheno ${mpheno_arg} \\

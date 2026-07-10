@@ -19,6 +19,7 @@ input:
     - phenotype_file:
         type: file
         description: Headerless phenotype file passed to `--pheno`
+        ontologies: []
     - mpheno:
         type: integer
         description: Optional phenotype column index passed to `--mpheno`; pass [] to use fallback `1`
@@ -31,36 +32,44 @@ input:
     - grm_bin:
         type: file
         description: GRM binary matrix (`.grm.bin`)
+        ontologies: []
     - grm_id:
         type: file
         description: GRM sample identifiers (`.grm.id`)
+        ontologies: []
     - grm_details:
         type: file
         description: GRM details (`.grm.details`)
+        ontologies: []
     - grm_adjust:
         type: file
         description: GRM adjustment factors (`.grm.adjust`)
+        ontologies: []
     - grm_root:
         type: file
         description: Optional adjusted GRM root file (`.grm.root`); pass [] for non-adjusted GRM
+        ontologies: []
   - - meta3:
         type: map
         description: Metadata map paired with optional keep input.
     - keep_file:
         type: file
         description: Optional keep file for sample filtering; pass [] when GRM is pre-filtered
+        ontologies: []
   - - meta4:
         type: map
         description: Metadata map paired with optional quantitative covariates input.
     - quant_covariates_file:
         type: file
         description: Optional quantitative covariates file passed to `--covar`; pass [] when absent
+        ontologies: []
   - - meta5:
         type: map
         description: Metadata map paired with optional categorical covariates input.
     - cat_covariates_file:
         type: file
         description: Optional categorical covariates file passed to `--factors`; pass [] when absent
+        ontologies: []
   - subset_prefix:
       type: string
       description: Optional subset prefix for batch-wise genotype error mode; pass '' when unused
@@ -75,6 +84,7 @@ output:
       - "${prefix}.he":
           type: file
           description: HE summary output (`<prefix>.he`)
+          ontologies: []
   coeff:
     - - meta:
           type: map
@@ -82,6 +92,7 @@ output:
       - "${prefix}.coeff":
           type: file
           description: Optional coefficient output (`<prefix>.coeff`)
+          ontologies: []
   combined:
     - - meta:
           type: map
@@ -89,6 +100,7 @@ output:
       - "${prefix}.combined":
           type: file
           description: Optional combined output (`<prefix>.combined`)
+          ontologies: []
   cross:
     - - meta:
           type: map
@@ -96,6 +108,7 @@ output:
       - "${prefix}.cross":
           type: file
           description: Optional cross output (`<prefix>.cross`)
+          ontologies: []
   progress:
     - - meta:
           type: map
@@ -103,6 +116,7 @@ output:
       - "${prefix}.progress":
           type: file
           description: Optional progress output (`<prefix>.progress`)
+          ontologies: []
   share:
     - - meta:
           type: map
@@ -110,6 +124,7 @@ output:
       - "${prefix}.share":
           type: file
           description: Optional share output (`<prefix>.share`)
+          ontologies: []
   he_within:
     - - meta:
           type: map
@@ -117,6 +132,7 @@ output:
       - "${prefix}.he.within":
           type: file
           description: Optional within-subset HE output (`<prefix>.he.within`)
+          ontologies: []
   he_across:
     - - meta:
           type: map
@@ -124,6 +140,7 @@ output:
       - "${prefix}.he.across":
           type: file
           description: Optional across-subset HE output (`<prefix>.he.across`)
+          ontologies: []
   he_compare:
     - - meta:
           type: map
@@ -131,6 +148,7 @@ output:
       - "${prefix}.he.compare":
           type: file
           description: Optional subset comparison output (`<prefix>.he.compare`)
+          ontologies: []
   cross_within:
     - - meta:
           type: map
@@ -138,6 +156,7 @@ output:
       - "${prefix}.cross.within":
           type: file
           description: Optional within-subset cross output (`<prefix>.cross.within`)
+          ontologies: []
   cross_across:
     - - meta:
           type: map
@@ -145,6 +164,7 @@ output:
       - "${prefix}.cross.across":
           type: file
           description: Optional across-subset cross output (`<prefix>.cross.across`)
+          ontologies: []
   share_within:
     - - meta:
           type: map
@@ -152,6 +172,7 @@ output:
       - "${prefix}.share.within":
           type: file
           description: Optional within-subset share output (`<prefix>.share.within`)
+          ontologies: []
   share_across:
     - - meta:
           type: map
@@ -159,6 +180,7 @@ output:
       - "${prefix}.share.across":
           type: file
           description: Optional across-subset share output (`<prefix>.share.across`)
+          ontologies: []
   versions_ldak6:
     - - ${task.process}:
           type: string
