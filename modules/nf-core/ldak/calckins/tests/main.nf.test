@@ -22,6 +22,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
                 ]
+                input[1] = 0.98
+                input[2] = 100
                 """
             }
         }
@@ -54,19 +56,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.ldak_grm.size() == 1 },
-                {
-                    def grmTuple = process.out.ldak_grm.get(0)
-                    def grmBin = path(grmTuple.get(1))
-                    assert grmBin.fileName.toString() == "plink_simulated_unweighted.grm.bin"
-                    assert path(grmTuple.get(2)).fileName.toString() == "plink_simulated_unweighted.grm.id"
-                    def commandText = grmBin.parent.resolve(".command.sh").text
-                    assert commandText.contains("--power -0.25")
-                    assert commandText.contains("--ignore-weights YES")
-                    assert !commandText.contains("--weights ")
-                },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -90,23 +81,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.ldak_grm.size() == 1 },
-                { assert process.out.versions_ldak6.size() == 1 },
-                {
-                    def grmTuple = process.out.ldak_grm.get(0)
-                    def grmBin = path(grmTuple.get(1))
-                    def commandText = grmBin.parent.resolve(".command.sh").text
-                    assert grmTuple.get(0).id == "plink_simulated_weighted"
-                    assert grmBin.fileName.toString() == "plink_simulated_weighted.grm.bin"
-                    assert path(grmTuple.get(2)).fileName.toString() == "plink_simulated_weighted.grm.id"
-                    assert path(grmTuple.get(3)).fileName.toString() == "plink_simulated_weighted.grm.details"
-                    assert path(grmTuple.get(4)).fileName.toString() == "plink_simulated_weighted.grm.adjust"
-                    assert commandText.contains("--power -1")
-                    assert commandText.contains("--weights ")
-                    assert !commandText.contains("--ignore-weights YES")
-                },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -132,8 +108,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

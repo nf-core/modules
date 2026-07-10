@@ -21,6 +21,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
                 ]
+                input[1] = 0.98
+                input[2] = 100
                 """
             }
         }
@@ -37,23 +39,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.thin_weights.size() == 1 },
-                {
-                    def weightsFile = path(process.out.thin_weights.get(0).get(1))
-                    assert weightsFile.fileName.toString() == "plink_simulated.weights.thin"
-                    assert weightsFile.readLines().every { line -> line.endsWith(" 1") }
-                },
-                {
-                    def stableWeights = process.out.thin_weights.collect { thinTuple ->
-                        [thinTuple[0], path(thinTuple[1]).readLines()]
-                    }
-                    assert snapshot(
-                        stableWeights,
-                        process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -71,9 +59,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -19,7 +19,6 @@ process LDAK_CREATETHINWEIGHTS {
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-
     gawk '{print \$1, 1}' < ${thin_predictors_file} > ${prefix}.weights.thin
     """
 

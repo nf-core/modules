@@ -20,12 +20,21 @@ input:
     - bed:
         type: file
         description: PLINK BED genotype file
+        ontologies: []
     - bim:
         type: file
         description: PLINK BIM variant file
+        ontologies: []
     - fam:
         type: file
         description: PLINK FAM sample file
+        ontologies: []
+  - window_prune:
+      type: float
+      description: Correlation squared (r²) threshold passed to LDAK `--window-prune` (for example, 0.98)
+  - window_kb:
+      type: integer
+      description: Window size in kilobases passed to LDAK `--window-kb` (for example, 100)
 output:
   thin_predictors:
     - - meta:
@@ -34,6 +43,7 @@ output:
       - "${prefix}.in":
           type: file
           description: LDAK thinned predictor list emitted by `--thin`
+          ontologies: []
   versions_ldak6:
     - - ${task.process}:
           type: string

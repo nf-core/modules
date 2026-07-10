@@ -21,18 +21,14 @@ process LDAK_CALCKINS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def weights_arg = weights_file ? "--weights ${weights_file}" : ''
-    def ignore_weights_arg = weights_file ? '' : "--ignore-weights YES"
-
+    def weights_arg = weights_file ? "--weights ${weights_file}" : "--ignore-weights YES"
     """
-
     ldak6 \\
         --calc-kins-direct ${prefix} \\
         --bfile ${bed.baseName} \\
         --power ${power} \\
         ${weights_arg} \\
-        ${ignore_weights_arg} \\
-        --max-threads ${task.cpus} \
+        --max-threads ${task.cpus} \\
         ${args}
     """
 
