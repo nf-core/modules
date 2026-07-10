@@ -33,7 +33,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.fastq,
-                    ["versions_samtools": process.out.versions_samtools]
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -63,7 +63,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.fastq_other,
-                    ["versions_samtools": process.out.versions_samtools]
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -93,7 +93,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.fastq,
-                    ["versions_samtools": process.out.versions_samtools]
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -125,7 +125,7 @@ nextflow_process {
                     process.out.fastq_interleaved,
                     process.out.fastq_singleton,
                     process.out.fastq,
-                    ["versions_samtools": process.out.versions_samtools]
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

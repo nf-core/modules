@@ -34,7 +34,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.cram.collect{ meta, cram_file -> [ meta, file(cram_file).name] },
                     process.out.crai.collect{ meta, crai_file -> [ meta, file(crai_file).name] },
-                    ["versions_samtools": process.out.versions_samtools]
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -65,7 +65,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bam.collect{ meta, bam_file -> [ meta, file(bam_file).name, bam(bam_file).getReadsMD5()] },
                     process.out.bai.collect{ meta, bai_file -> [ meta, file(bai_file).name] },
-                    ["versions_samtools": process.out.versions_samtools]
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

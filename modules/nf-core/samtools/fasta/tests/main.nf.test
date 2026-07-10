@@ -26,10 +26,10 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot([
-                    "fasta": process.out.fasta,
-                    "versions_samtools": process.out.versions_samtools
-                ]).match() }
+                { assert snapshot(
+                    process.out.fasta,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
@@ -52,10 +52,10 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot([
-                    "interleaved": process.out.interleaved,
-                    "versions_samtools": process.out.versions_samtools
-                ]).match() }
+                { assert snapshot(
+                    process.out.interleaved,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
@@ -84,7 +84,7 @@ nextflow_process {
         }
     }
 
-    test("test-samtools-fasta - single end - 1 fasta + singleton- stub") {
+    test("test-samtools-fasta - single end - 1 fasta + singleton - stub") {
 
         options "-stub"
 
