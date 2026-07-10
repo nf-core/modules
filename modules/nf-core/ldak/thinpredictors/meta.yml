@@ -24,11 +24,13 @@ input:
     - bim:
         type: file
         description: PLINK BIM variant file
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3285 # PLINK MAP
     - fam:
         type: file
         description: PLINK FAM sample file
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3286 # PLINK PED
   - window_prune:
       type: float
       description: Correlation squared (r²) threshold passed to LDAK `--window-prune` (for example, 0.98)
