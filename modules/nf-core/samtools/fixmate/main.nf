@@ -9,6 +9,7 @@ process SAMTOOLS_FIXMATE {
 
     input:
     tuple val(meta), path(input)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
@@ -32,12 +33,14 @@ process SAMTOOLS_FIXMATE {
     if ("${input}" == "${prefix}.${extension}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
+    def reference_cmd = fasta ? "--reference ${fasta}" : ""
     """
     # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         fixmate  \\
         ${args} \\
         --threads ${task.cpus - 1} \\
+        ${reference_cmd} \\
         ${input} \\
         ${prefix}.${extension}
     """
