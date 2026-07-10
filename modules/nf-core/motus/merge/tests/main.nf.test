@@ -52,7 +52,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                // 'txt' is unstable due to python path stored in header
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["txt"])).match() }
             )
         }
     }
