@@ -20,12 +20,15 @@ input:
     - he_overall_file:
         type: file
         description: LDAK HE overall result file (`*.he`)
+        ontologies: []
     - he_within_file:
         type: file
         description: LDAK HE within-batch result file (`*.he.within`)
+        ontologies: []
     - he_across_file:
         type: file
         description: LDAK HE across-batch result file (`*.he.across`)
+        ontologies: []
 output:
   genotype_error_results:
     - - meta:
@@ -34,15 +37,18 @@ output:
       - "${prefix}.txt":
           type: file
           description: Genotype error T2 summary report (`<prefix>.txt`)
+          ontologies: []
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
+        ontologies: []
 topics:
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
+        ontologies: []
 authors:
   - "@lyh970817"
 maintainers:
