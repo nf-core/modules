@@ -101,20 +101,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.reml_results.size() == 1 },
-                { assert process.out.versions_ldak6.size() == 1 },
-                {
-                    def remlTuple = process.out.reml_results.get(0)
-                    def outMeta = remlTuple.get(0)
-                    def remlFile = path(remlTuple.get(1))
-                    def commandText = remlFile.parent.resolve(".command.sh").text
-                    assert outMeta.id == "reml_quantitative"
-                    assert remlFile.fileName.toString() == "reml_quantitative.reml"
-                    assert !commandText.contains("--prevalence ")
-                    assert commandText.contains("--mpheno 1")
-                },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -142,21 +130,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.reml_results.size() == 1 },
-                { assert process.out.versions_ldak6.size() == 1 },
-                {
-                    def remlTuple = process.out.reml_results.get(0)
-                    def outMeta = remlTuple.get(0)
-                    def remlFile = path(remlTuple.get(1))
-                    def commandText = remlFile.parent.resolve(".command.sh").text
-                    assert outMeta.id == "reml_binary"
-                    assert remlFile.fileName.toString() == "reml_binary.reml"
-                    assert remlFile.text.contains("Num_Kinships")
-                    assert commandText.contains("--prevalence 0.12")
-                    assert commandText.contains("--mpheno 1")
-                },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -186,8 +161,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

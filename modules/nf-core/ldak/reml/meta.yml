@@ -19,6 +19,7 @@ input:
     - phenotype_file:
         type: file
         description: Headerless phenotype file passed to `--pheno`
+        ontologies: []
     - mpheno:
         type: integer
         description: Optional phenotype column index passed to `--mpheno`; pass [] to use fallback `1`
@@ -34,33 +35,40 @@ input:
     - grm_bin:
         type: file
         description: GRM binary matrix (`.grm.bin`)
+        ontologies: []
     - grm_id:
         type: file
         description: GRM sample identifiers (`.grm.id`)
+        ontologies: []
     - grm_details:
         type: file
         description: GRM details (`.grm.details`)
+        ontologies: []
     - grm_adjust:
         type: file
         description: GRM adjustment factors (`.grm.adjust`)
+        ontologies: []
   - - meta3:
         type: map
         description: Metadata map paired with optional keep input.
     - keep_file:
         type: file
         description: Optional keep file for sample filtering; pass [] when GRM is pre-filtered
+        ontologies: []
   - - meta4:
         type: map
         description: Metadata map paired with optional quantitative covariates input.
     - quant_covariates_file:
         type: file
         description: Optional quantitative covariates file passed to `--covar`; pass [] when absent
+        ontologies: []
   - - meta5:
         type: map
         description: Metadata map paired with optional categorical covariates input.
     - cat_covariates_file:
         type: file
         description: Optional categorical covariates file passed to `--factors`; pass [] when absent
+        ontologies: []
 output:
   reml_results:
     - - meta:
@@ -69,6 +77,7 @@ output:
       - "${prefix}.reml":
           type: file
           description: REML summary output (`<prefix>.reml`)
+          ontologies: []
   coeff:
     - - meta:
           type: map
@@ -76,6 +85,7 @@ output:
       - "${prefix}.coeff":
           type: file
           description: Optional coefficient output (`<prefix>.coeff`)
+          ontologies: []
   combined:
     - - meta:
           type: map
@@ -83,6 +93,7 @@ output:
       - "${prefix}.combined":
           type: file
           description: Optional combined output (`<prefix>.combined`)
+          ontologies: []
   cross:
     - - meta:
           type: map
@@ -90,6 +101,7 @@ output:
       - "${prefix}.cross":
           type: file
           description: Optional cross output (`<prefix>.cross`)
+          ontologies: []
   indi_blp:
     - - meta:
           type: map
@@ -97,6 +109,7 @@ output:
       - "${prefix}.indi.blp":
           type: file
           description: Optional individual best linear prediction (BLP) output (`<prefix>.indi.blp`)
+          ontologies: []
   indi_res:
     - - meta:
           type: map
@@ -104,6 +117,7 @@ output:
       - "${prefix}.indi.res":
           type: file
           description: Optional individual residual output (`<prefix>.indi.res`)
+          ontologies: []
   progress:
     - - meta:
           type: map
@@ -111,6 +125,7 @@ output:
       - "${prefix}.progress":
           type: file
           description: Optional progress output (`<prefix>.progress`)
+          ontologies: []
   share:
     - - meta:
           type: map
@@ -118,6 +133,7 @@ output:
       - "${prefix}.share":
           type: file
           description: Optional share output (`<prefix>.share`)
+          ontologies: []
   vars:
     - - meta:
           type: map
@@ -125,6 +141,7 @@ output:
       - "${prefix}.vars":
           type: file
           description: Optional variance component output (`<prefix>.vars`)
+          ontologies: []
   versions_ldak6:
     - - ${task.process}:
           type: string

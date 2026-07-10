@@ -39,7 +39,6 @@ process LDAK_REML {
     def prevalence_arg = prevalence ? "--prevalence ${prevalence}" : ''
 
     """
-
     ldak6 --reml ${prefix} \\
         --pheno ${phenotype_file} \\
         --mpheno ${mpheno_arg} \\
