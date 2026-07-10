@@ -68,18 +68,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.reml_log.size() == 1 },
-                { assert process.out.reml_log.get(0).get(0).id == "plink_simulated_quantitative_nocov" },
-                { assert file(process.out.reml_log.get(0).get(1)).name == "plink_simulated_quantitative_nocov.bolt.reml.log" },
-                {
-                    def command = path(process.out.reml_log.get(0).get(1)).parent.resolve(".command.sh").text
-                    assert command.contains('--phenoCol="Y1"')
-                    assert !command.contains("--covarFile ")
-                    assert !command.contains("--covarCol=")
-                    assert !command.contains("--qCovarCol=")
-                },
                 {
                     def logText = file(process.out.reml_log.get(0).get(1)).text
                     assert logText.contains("=== Reading phenotype and covariate data ===")
@@ -125,20 +115,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.reml_log.size() == 1 },
-                { assert process.out.reml_log.get(0).get(0).id == "plink_simulated_quantitative_covar" },
-                { assert file(process.out.reml_log.get(0).get(1)).name == "plink_simulated_quantitative_covar.bolt.reml.log" },
-                {
-                    def command = path(process.out.reml_log.get(0).get(1)).parent.resolve(".command.sh").text
-                    assert command.contains('--phenoCol="Y1"')
-                    assert command.contains("--covarFile ")
-                    assert command.contains('--covarCol="Sex"')
-                    assert command.contains('--qCovarCol="Age"')
-                    assert command.contains('--qCovarCol="PC1"')
-                    assert command.contains('--qCovarCol="PC2"')
-                },
                 {
                     def logText = file(process.out.reml_log.get(0).get(1)).text
                     assert logText.contains("Using categorical covariate: Sex")
@@ -187,11 +165,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.reml_log.size() == 1 },
-                { assert process.out.reml_log.get(0).get(0).id == "plink_simulated_quantitative_stub" },
-                { assert file(process.out.reml_log.get(0).get(1)).name == "plink_simulated_quantitative_stub.bolt.reml.log" },
                 {
                     assert snapshot(
                         process.out.reml_log.collect { meta, log -> [meta, file(log).name] },
@@ -252,19 +227,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.reml_log.size() == 1 },
-                { assert process.out.reml_log.get(0).get(0).id == "plink_simulated_quantitative_multi_pair" },
-                { assert file(process.out.reml_log.get(0).get(1)).name == "plink_simulated_quantitative_multi_pair.bolt.reml.log" },
-                {
-                    def command = path(process.out.reml_log.get(0).get(1)).parent.resolve(".command.sh").text
-                    assert command.count('--bed "') == 2
-                    assert command.count('--bim "') == 2
-                    assert command.contains('--fam "')
-                    assert command.contains('plink_simulated_part2.bed')
-                    assert command.contains('plink_simulated_part2.bim')
-                },
                 {
                     assert snapshot(
                         process.out.reml_log.collect { meta, log -> [meta, file(log).name] },

@@ -31,15 +31,13 @@ input:
           One or more PLINK BIM variant files passed to repeated `--bim` arguments.
           Entries must be matched by position to `bed` and must have distinct basenames after staging.
         pattern: "*.bim"
-        ontologies:
-          - edam: "http://edamontology.org/format_3285"
+        ontologies: []
     - fam:
         type: file
         description: |
           Single PLINK FAM sample file shared by all matched `bed`/`bim` pairs and passed to `--fam`
         pattern: "*.fam"
-        ontologies:
-          - edam: "http://edamontology.org/format_3286"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -51,8 +49,7 @@ input:
           Phenotype table with headers passed to `--phenoFile`. Select the phenotype
           column with `--phenoCol` via `ext.args`, e.g. `ext.args = '--phenoCol=BMI'`.
         pattern: "*.{phe,pheno,txt,tsv,csv}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3475"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -65,8 +62,7 @@ input:
           Select covariate columns via `ext.args` using `--covarCol` (categorical) and
           `--qCovarCol` (quantitative), e.g. `ext.args = '--covarCol=sex --qCovarCol=age'`.
         pattern: "*.{cov,covar,txt,tsv,csv}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3475"
+        ontologies: []
 output:
   reml_log:
     - - meta:
