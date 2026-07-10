@@ -64,7 +64,7 @@ output:
       - bismark:
           type: string
           description: The name of the tool
-      - "bismark --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+'":
+      - "bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -75,7 +75,7 @@ topics:
       - bismark:
           type: string
           description: The name of the tool
-      - "bismark --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+'":
+      - "bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

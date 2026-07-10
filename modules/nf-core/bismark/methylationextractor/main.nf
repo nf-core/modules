@@ -48,9 +48,9 @@ process BISMARK_METHYLATIONEXTRACTOR {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.bedGraph.gz
-    echo | gzip > ${prefix}.txt.gz
-    echo | gzip > ${prefix}.cov.gz
+    echo "" | gzip > ${prefix}.bedGraph.gz
+    echo "" | gzip > ${prefix}.txt.gz
+    echo "" | gzip > ${prefix}.cov.gz
     touch ${prefix}_splitting_report.txt
     touch ${prefix}.M-bias.txt
     """
