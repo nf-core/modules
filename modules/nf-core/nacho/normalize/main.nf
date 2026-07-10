@@ -4,8 +4,8 @@ process NACHO_NORMALIZE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9e04cca7290d2e7b649e4523fa7aa72660d201908c8003c5690546fe8dac243d/data' :
-        'community.wave.seqera.io/library/r-dplyr_r-fs_r-ggplot2_r-nacho_pruned:48ffc9bbb33907fc' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/4754a28a0a1b409ef2f7d503260e307b5f0066f5590a61b75c9a76a99eed784d/data' :
+        'community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:2418688ed8090da0' }"
 
     input:
     tuple val(meta) , path(rcc_files, stageAs: "input/*")
