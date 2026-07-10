@@ -49,18 +49,23 @@ process SAMTOOLS_BAM2FQ {
     stub:
 
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def bgzip_command_1 = 'echo | bgzip -c > ${prefix}_1.fq.gz'
+    def bgzip_command_2 = 'echo | bgzip -c > ${prefix}_2.fq.gz'
+    def bgzip_command_other = 'echo | bgzip -c > ${prefix}_other.fq.gz'
+    def bgzip_command_singleton = 'echo | bgzip -c > ${prefix}_singleton.fq.gz'
+    def bgzip_command_interleaved = 'echo | bgzip -c > ${prefix}_interleaved.fq.gz'
 
     if (split) {
         """
-        echo "" | gzip > ${prefix}_1.fq.gz
-        echo "" | gzip > ${prefix}_2.fq.gz
-        echo "" | gzip > ${prefix}_other.fq.gz
-        echo "" | gzip > ${prefix}_singleton.fq.gz
+        ${bgzip_command_1}
+        ${bgzip_command_2}
+        ${bgzip_command_other}
+        ${bgzip_command_singleton}
         """
     }
     else {
         """
-        echo "" | gzip > ${prefix}_interleaved.fq.gz
+        ${bgzip_command_interleaved}
         """
     }
 }
