@@ -38,4 +38,15 @@ process VERIFYBAMID_VERIFYBAMID {
         ${args} \\
         > ${prefix}.log
     """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.log
+    touch ${prefix}.bestSM
+    touch ${prefix}.bestRG
+    touch ${prefix}.depthRG
+    touch ${prefix}.depthSM
+    touch ${prefix}.selfRG
+    touch ${prefix}.selfSM
+    """
 }
