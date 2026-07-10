@@ -20,6 +20,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
                 ]
+                input[1] = 0.98
+                input[2] = 100
                 """
             }
         }
@@ -27,12 +29,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.thin_predictors.size() == 1 },
-                {
-                    def thinFile = path(process.out.thin_predictors.get(0).get(1))
-                    assert thinFile.fileName.toString() == "plink_simulated.in"
-                    assert thinFile.readLines().size() > 0
-                },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -51,6 +47,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
                 ]
+                input[1] = 0.98
+                input[2] = 100
                 """
             }
         }

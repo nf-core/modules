@@ -8,6 +8,8 @@ process LDAK_THINPREDICTORS {
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam)
+    val window_prune
+    val window_kb
 
     output:
     tuple val(meta), path("${prefix}.in"), emit: thin_predictors
@@ -17,15 +19,15 @@ process LDAK_THINPREDICTORS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '--window-prune 0.98 --window-kb 100'
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-
     """
-
     ldak6 \\
         --thin ${prefix} \\
         --bfile ${bed.baseName} \\
-        --max-threads ${task.cpus} \
+        --window-prune ${window_prune} \\
+        --window-kb ${window_kb} \\
+        --max-threads ${task.cpus} \\
         ${args}
     """
 
