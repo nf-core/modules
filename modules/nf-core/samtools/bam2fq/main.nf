@@ -41,7 +41,7 @@ process SAMTOOLS_BAM2FQ {
             bam2fq \\
             ${args} \\
             -@ ${task.cpus} \\
-            ${inputbam} | gzip --no-name > ${prefix}_interleaved.fq.gz
+            ${inputbam} | bgzip > ${prefix}_interleaved.fq.gz
         """
     }
 
