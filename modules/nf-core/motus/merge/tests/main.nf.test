@@ -52,7 +52,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // 'txt' is unstable due to python path stored in header
+                // 'txt' is unstable due to bin path stored in header
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys:["txt"])).match() }
             )
         }

@@ -40,7 +40,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // 'out' is unstable due to python path stored in header
+                // 'out' is unstable due to bin path stored in header
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log", "out"])).match() }
             )
         }
@@ -61,7 +61,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // 'out' is unstable due to python path stored in header
+                // 'out' is unstable due to bin path stored in header
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log", "out"])).match() }
             )
         }
