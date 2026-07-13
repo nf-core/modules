@@ -11,6 +11,7 @@ nextflow_process {
 
     test("sarscov2 - fastq, index, fasta_fai, false, true - bam") {
 
+        config "./bam.config"
         setup {
             run("BOWTIE2_BUILD") {
                 script "../../build/main.nf"
@@ -157,6 +158,7 @@ nextflow_process {
 
     test("sarscov2 - fastq, index, fasta_fai, true, true - bam") {
 
+        config "./bam.config"
         setup {
             run("BOWTIE2_BUILD") {
                 script "../../build/main.nf"
@@ -205,6 +207,7 @@ nextflow_process {
 
     test("sarscov2 - [fastq1, fastq2], index, fasta_fai, false, true - bam") {
 
+        config "./bam.config"
         setup {
             run("BOWTIE2_BUILD") {
                 script "../../build/main.nf"
@@ -256,6 +259,7 @@ nextflow_process {
 
     test("sarscov2 - [fastq1, fastq2], index, fasta_fai, true, true - bam") {
 
+        config "./bam.config"
         setup {
             run("BOWTIE2_BUILD") {
                 script "../../build/main.nf"
