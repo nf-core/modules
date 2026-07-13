@@ -29,10 +29,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.log[0][1].endsWith("rclone-copy.log") },
-                { assert snapshot(process.out.versions_rclone).match("versions") }
+                { assert snapshot(sanitizeOutput(process.out), unstableKeys: ["log"]).match() }
             )
         }
     }
