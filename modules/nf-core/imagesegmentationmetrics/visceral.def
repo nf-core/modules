@@ -1,0 +1,27 @@
+Bootstrap: docker
+From: ubuntu:20.04
+
+%environment
+    export DEBIAN_FRONTEND=noninteractive
+
+%post
+    # Update and install necessary tools
+    apt-get update && apt-get install -y \
+        wget \
+        unzip \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Download the zip file
+    wget "https://github.com/Visceral-Project/EvaluateSegmentation/raw/refs/heads/master/builds/Ubuntu/EvaluateSegmentation-2020.08.28-Ubuntu.zip"
+
+    # Unzip the file
+    unzip EvaluateSegmentation-2020.08.28-Ubuntu.zip -d /bin/
+
+    # Make the binary executable
+    chmod +x /bin/EvaluateSegmentation
+
+    # Optional: delete the zip file to save space
+    rm EvaluateSegmentation-2020.08.28-Ubuntu.zip
+
+%runscript
+    exec /bin/EvaluateSegmentation "$@"
