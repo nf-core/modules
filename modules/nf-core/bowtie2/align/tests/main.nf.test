@@ -48,7 +48,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -97,7 +98,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.sam[0][1], stringency: "silent").getReadsMD5(),
+                    bam(process.out.sam[0][1], stringency: "silent").getHeaderMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -146,7 +147,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.sam[0][1], stringency: "silent").getReadsMD5(),
+                    bam(process.out.sam[0][1], stringency: "silent").getHeaderMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -195,7 +196,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -247,7 +249,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -299,7 +302,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -348,7 +352,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -400,7 +405,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -453,7 +459,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.cram[0][1]).name,
-                    file(process.out.crai[0][1]).name
+                    file(process.out.crai[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
