@@ -37,6 +37,12 @@ input:
         pattern: "*.csv"
         ontologies:
           - edam: http://edamontology.org/format_3752
+  - db:
+      type: directory
+      description: |
+        Optional gapseq reference sequence database directory (from GAPSEQ_REQUESTDB).
+        Passed to gapseq via -D. If not provided, gapseq downloads the database itself.
+      pattern: "gapseq_db"
 output:
   model:
     - - meta:
@@ -61,6 +67,7 @@ output:
           pattern: "*.xml"
           ontologies:
             - edam: http://edamontology.org/format_2585
+            - edam: http://edamontology.org/format_2332
   tbl:
     - - meta:
           type: map
@@ -102,7 +109,7 @@ output:
           type: string
           description: The name of the tool
       - gapseq -v 2>&1 | grep -oP "\d+\.\d+\.\d+":
-          type: string
+          type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
@@ -113,7 +120,7 @@ topics:
           type: string
           description: The name of the tool
       - gapseq -v 2>&1 | grep -oP "\d+\.\d+\.\d+":
-          type: string
+          type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@brovolia"
