@@ -78,18 +78,15 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([ [ id:'test_brain' ], file("\${projectDir}/modules/nf-core/cellpheno/nis", checkIfExists: true) ])
-                input[1] = Channel.of(file("\${projectDir}/modules/nf-core/cellpheno/nis", checkIfExists: true))
+                input[1] = Channel.of(file("\${projectDir}/modules/nf-core/cellpheno/nis/tests", checkIfExists: true))
                 """
             }
         }
 
         then {
-            def names = process.out.nis.get(0).get(1).collect { file(it).name }
             assertAll(
                 { assert process.success },
-                { assert names.size() == 6 },
-                { assert process.out.remap },
-                { assert process.out.versions_cellpheno_nis }
+                { assert snapshot(process.out).match() }
             )
         }
 
