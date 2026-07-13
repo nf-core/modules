@@ -17,11 +17,7 @@ process CELLPHENO_NIS {
     output:
     tuple val(meta), path("*_NIScpp_results_*.zip"), emit: nis
     tuple val(meta), path("*_remap.zip")           , emit: remap, optional: true
-    // Versions via the topic channel (nf-core standard). A literal version string is
-    // used rather than eval("cat …/VERSION"): eval runs a command in the container at
-    // output-collection time, which is not portable across all container engines. The
-    // literal is kept in lockstep with the container tag / Dockerfile VERSION on release.
-    tuple val("${task.process}"), val('cellpheno-nis'), val('1.0.0'), topic: versions, emit: versions_cellpheno_nis
+    tuple val("${task.process}"), val('cellpheno-nis'), val('1.0.0'), topic: versions, emit: versions_cellpheno_nis // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
