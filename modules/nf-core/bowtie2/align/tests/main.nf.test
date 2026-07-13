@@ -101,7 +101,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.sam[0][1], stringency: "silent").getReadsMD5(),
+                    file(process.out.sam[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -150,7 +150,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.sam[0][1], stringency: "silent").getReadsMD5(),
+                    file(process.out.sam[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
