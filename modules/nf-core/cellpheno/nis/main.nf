@@ -8,7 +8,7 @@ process CELLPHENO_NIS {
     // It has no Conda/Bioconda package and requires a CUDA runtime, so it is
     // distributed only as a dedicated GPU container image (cf. the parabricks and
     // numorph/3dunet modules, which likewise ship a vendor GPU image with no conda).
-    container "quay.io/nf-core/cellpheno-nis:1.0.0"
+    container "quay.io/nf-core/cellpheno-nis:1.0.2"
 
     input:
     tuple val(meta), path(tile_dir)
@@ -17,7 +17,7 @@ process CELLPHENO_NIS {
     output:
     tuple val(meta), path("*_NIScpp_results_*.zip"), emit: nis
     tuple val(meta), path("*_remap.zip")           , emit: remap, optional: true
-    tuple val("${task.process}"), val('cellpheno-nis'), val('1.0.0'), topic: versions, emit: versions_cellpheno_nis // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('cellpheno-nis'), val('1.0.2'), topic: versions, emit: versions_cellpheno_nis // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when

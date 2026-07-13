@@ -72,7 +72,7 @@ COPY --from=build /src/cpp/build/main /usr/local/bin/cellpheno-nis
 
 # Single authoritative version source. The module reads the NIS version from this file into versions.yml, so the container tag and the
 # reported version stay in lockstep. Bump together with the `container` tag in main.nf.
-ARG CELLPHENO_NIS_VERSION=1.0.0
+ARG CELLPHENO_NIS_VERSION=1.0.2
 RUN mkdir -p /usr/local/share/cellpheno-nis \
     && echo "${CELLPHENO_NIS_VERSION}" > /usr/local/share/cellpheno-nis/VERSION
 
@@ -83,7 +83,7 @@ LABEL org.opencontainers.image.authors="Ziquan Wei (@Chrisa142857)" \
       org.opencontainers.image.description="Whole-brain 3D nuclei instance segmentation for lightsheet microscopy" \
       org.opencontainers.image.source="https://github.com/Chrisa142857/Lightsheet_microscopy_image_3D_nuclei_instance_segmentation" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.version="1.0.0"
+      org.opencontainers.image.version="1.0.2"
 
 ENTRYPOINT []
 CMD ["cellpheno-nis", "--help"]
