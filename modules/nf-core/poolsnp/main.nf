@@ -17,7 +17,7 @@ process POOLSNP {
     tuple val(meta), path("*cov-*.txt"), emit: max_cov, optional: true
     tuple val(meta), path("*BS.txt.gz"), emit: bad_sites, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('poolsnp'), eval("echo 1.0.1"), topic: versions, emit: versions_poolsnp
+    tuple val("${task.process}"), val('poolsnp'), val("1.0.1"), topic: versions, emit: versions_poolsnp
 
     when:
     task.ext.when == null || task.ext.when
