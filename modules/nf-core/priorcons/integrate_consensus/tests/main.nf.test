@@ -1,0 +1,60 @@
+// nf-core modules test priorcons
+nextflow_process {
+
+    name "Test Process PRIORCONS_INTEGRATE_CONSENSUS"
+    script "../main.nf"
+    process "PRIORCONS_INTEGRATE_CONSENSUS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "priorcons"
+    tag "priorcons/integrate_consensus"
+
+    test("integrate_consensus_testfiles") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file("https://raw.githubusercontent.com/GERMAN00VP/PriorCons/refs/heads/main/rsv_files/test_aln.aln", checkIfExists: true),
+                    "RSV_BD",
+                    file("https://raw.githubusercontent.com/GERMAN00VP/PriorCons/refs/heads/main/rsv_files/RSV_priors/RSVBD_win100_ovlp50_priors.parquet", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("integrate_consensus_testfiles - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file("https://raw.githubusercontent.com/GERMAN00VP/PriorCons/refs/heads/main/rsv_files/test_aln.aln", checkIfExists: true),
+                    "RSV_BD",
+                    file("https://raw.githubusercontent.com/GERMAN00VP/PriorCons/refs/heads/main/rsv_files/RSV_priors/RSVBD_win100_ovlp50_priors.parquet", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
