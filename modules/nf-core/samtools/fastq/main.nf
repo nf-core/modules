@@ -42,13 +42,14 @@ process SAMTOOLS_FASTQ {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output = interleave && !meta.single_end
+    def output_command = interleave && !meta.single_end
         ? "touch ${prefix}_interleaved.fastq"
         : meta.single_end
-            ? "echo '' | gzip > ${prefix}_1.fastq.gz && echo '' | gzip > ${prefix}_singleton.fastq.gz"
-            : "echo '' | gzip > ${prefix}_1.fastq.gz && echo '' | gzip > ${prefix}_2.fastq.gz && echo '' | gzip > ${prefix}_singleton.fastq.gz"
+            ? "echo | bgzip -c > ${prefix}_1.fastq.gz && echo | bgzip -c > ${prefix}_singleton.fastq.gz"
+            : "echo | bgzip -c > ${prefix}_1.fastq.gz && echo | bgzip -c > ${prefix}_2.fastq.gz && echo | bgzip -c > ${prefix}_singleton.fastq.gz"
+    def other_command = "echo | bgzip -c > ${prefix}_other.fastq.gz"
     """
-    ${output}
-    echo "" | gzip > ${prefix}_other.fastq.gz
+    ${output_command}
+    ${other_command}
     """
 }
