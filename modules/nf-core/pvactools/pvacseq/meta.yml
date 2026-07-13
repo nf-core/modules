@@ -1,0 +1,478 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pvactools_pvacseq"
+description: A cancer immunotherapy pipeline for identifying and prioritizing neoantigens
+  from a VCF file.
+keywords:
+  - neoantigen
+  - cancer
+  - immunotherapy
+  - genomics
+tools:
+  - "pvacseq":
+      description: "A cancer immunotherapy pipeline for identifying and prioritizing
+        neoantigens from a VCF file."
+      homepage: "https://pvactools.readthedocs.io/en/latest/pvacseq.html"
+      documentation: "https://pvactools.readthedocs.io/en/latest/pvacseq.html"
+      tool_dev_url: "https://github.com/griffithlab/pVACtools"
+      doi: "10.1186/s13073-016-0264-5"
+      licence: ["BSD 3-Clause Clear License"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sample_name:
+        type: string
+        description: |
+          The name of the tumor sample being processed.
+    - hla:
+        type: string
+        description: |
+          Name of the allele to use for epitope prediction.
+          Multiple alleles can be specified using a comma-
+          separated list.
+    - vcf:
+        type: file
+        description: A VEP-annotated single- or multi-sample VCF containing genotype,
+          transcript, Wildtype protein sequence, and Frameshift protein sequence information.The
+          VCF may be gzipped (requires tabix index).
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
+  - - algorithms:
+        type: string
+        description: |
+          The epitope prediction algorithms to use. Multiple
+          prediction algorithms can be specified, separated by
+          spaces.
+  - - iedb:
+        type: directory
+        description: IEDB install directory for local MHC binding prediction tools.
+        pattern: "*/"
+        optional: true
+  - - blastp_path:
+        type: file
+        description: Path to BLASTP binary (if using reference proteome similarity).
+        pattern: "*"
+        optional: true
+        ontologies: []
+  - - genes_of_interest:
+        type: file
+        description: File listing genes of interest (optional).
+        pattern: "*"
+        optional: true
+        ontologies: []
+  - - peptide_fasta:
+        type: file
+        description: Custom peptide FASTA file for reference proteome similarity step
+          to find matches instead of blastp (optional).
+        pattern: "*.{fa,fasta}"
+        optional: true
+        ontologies: []
+  - - phased_proximal_variants_vcf:
+        type: file
+        description: A VCF with phased proximal variant information. Must be gzipped
+          and tabix indexed (optional).
+        pattern: "*.{vcf.gz}"
+        optional: true
+
+        ontologies: []
+output:
+  - mhc_i_intermediate_tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/${sample_name}.tsv:
+          type: file
+          description: Intermediate TSV with pVACseq MHC Class I predictions
+          pattern: "**/MHC_Class_I/*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - mhc_i_chunks:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/${sample_name}.tsv_*:
+          type: file
+          description: Chunked intermediate files for MHC Class I processing
+          pattern: "**/MHC_Class_I/*.tsv_*"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - mhc_i_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/${sample_name}.fasta:
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences for
+            all processable variant-transcript combinations.
+          pattern: "**/MHC_Class_I/*.fasta"
+          ontologies: []
+  - mhc_i_net_chop_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/${sample_name}.net_chop.fa:
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences specific
+            for use in running the net_chop tool.
+          pattern: "**/MHC_Class_I/*.net_chop.fa"
+          ontologies: []
+  - mhc_i_all_epitopes:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/${sample_name}.all_epitopes.tsv:
+          type: file
+          description: All predicted MHC Class I neoantigen epitopes
+          pattern: "**/MHC_Class_I/*.all_epitopes.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - mhc_i_filtered:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/${sample_name}.filtered.tsv:
+          type: file
+          description: Filtered MHC Class I neoantigen predictions
+          pattern: "**/MHC_Class_I/*.filtered.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - mhc_i_all_epitopes_aggregated:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/${sample_name}.all_epitopes.aggregated.tsv:
+          type: file
+          description: Aggregated MHC Class I epitope predictions
+          pattern: "**/MHC_Class_I/*.all_epitopes.aggregated.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - mhc_i_reference_matches:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/${sample_name}.all_epitopes.aggregated.tsv.reference_matches:
+          type: file
+          description: A file outlining details of reference proteome matches (optional)
+          pattern: "**/MHC_Class_I/*.aggregated.tsv.reference_matches"
+          ontologies: []
+  - mhc_i_metrics:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/${sample_name}.all_epitopes.aggregated.metrics.json:
+          type: file
+          description: JSON metrics with detailed information about the predicted epitopes,
+            formatted for pVACview.
+          pattern: "**/MHC_Class_I/*.metrics.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  - mhc_i_r_files:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/*.R:
+          type: file
+          description: pVACview R Shiny application files
+          pattern: "**/MHC_Class_I/*.R"
+          ontologies:
+            - edam: http://edamontology.org/format_3999 # R script
+  - mhc_i_www:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/www:
+          type: directory
+          description: Directory containing image files for pVACview.
+          pattern: "**/MHC_Class_I/www"
+  - mhc_i_log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_I/log:
+          type: directory
+          description: Log files for MHC Class I processing
+          pattern: "**/MHC_Class_I/log"
+  - mhc_ii_intermediate_tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/${sample_name}.tsv:
+          type: file
+          description: Intermediate TSV with pVACseq MHC Class II predictions
+          pattern: "**/MHC_Class_II/*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - mhc_ii_chunks:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/${sample_name}.tsv_*:
+          type: file
+          description: Chunked intermediate files for MHC Class II processing
+          pattern: "**/MHC_Class_II/*.tsv_*"
+          ontologies: []
+  - mhc_ii_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/${sample_name}.fasta:
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences for
+            all processable variant-transcript combinations.
+          pattern: "**/MHC_Class_II/*.fasta"
+          ontologies: []
+  - mhc_ii_net_chop_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/${sample_name}.net_chop.fa:
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences specific
+            for use in running the net_chop tool.
+          pattern: "**/MHC_Class_II/*.net_chop.fa"
+          ontologies: []
+  - mhc_ii_all_epitopes:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/${sample_name}.all_epitopes.tsv:
+          type: file
+          description: All predicted MHC Class II neoantigen epitopes
+          pattern: "**/MHC_Class_II/*.all_epitopes.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - mhc_ii_filtered:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/${sample_name}.filtered.tsv:
+          type: file
+          description: Filtered MHC Class II neoantigen predictions
+          pattern: "**/MHC_Class_II/*.filtered.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - mhc_ii_all_epitopes_aggregated:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/${sample_name}.all_epitopes.aggregated.tsv:
+          type: file
+          description: Aggregated MHC Class II epitope predictions
+          pattern: "**/MHC_Class_II/*.all_epitopes.aggregated.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - mhc_ii_reference_matches:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/${sample_name}.all_epitopes.aggregated.tsv.reference_matches:
+          type: file
+          description: A file outlining details of reference proteome matches (optional)
+          pattern: "**/MHC_Class_II/*.aggregated.tsv.reference_matches"
+          ontologies: []
+  - mhc_ii_metrics:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/${sample_name}.all_epitopes.aggregated.metrics.json:
+          type: file
+          description: JSON metrics with detailed information about the predicted epitopes,
+            formatted for pVACview.
+          pattern: "**/MHC_Class_II/*.metrics.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  - mhc_ii_r_files:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/*.R:
+          type: file
+          description: pVACview R Shiny application files
+          pattern: "**/MHC_Class_II/*.R"
+          ontologies:
+            - edam: http://edamontology.org/format_3999 # R script
+  - mhc_ii_www:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/www:
+          type: directory
+          description: Directory containing image files for pVACview.
+          pattern: "**/MHC_Class_II/www"
+  - mhc_ii_log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/MHC_Class_II/log:
+          type: directory
+          description: Log files for MHC Class II processing
+          pattern: "**/MHC_Class_II/log"
+  - combined_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/combined/${sample_name}.fasta:
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences for
+            all processable variant-transcript combinations.
+          pattern: "**/combined/*.fasta"
+          ontologies: []
+  - combined_net_chop_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/combined/${sample_name}.net_chop.fa:
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences specific
+            for use in running the net_chop tool.
+          pattern: "**/combined/*.net_chop.fa"
+          ontologies: []
+  - combined_all_epitopes:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/combined/${sample_name}.all_epitopes.tsv:
+          type: file
+          description: All predicted MHC Class I and MHC Class II neoantigen epitopes
+          pattern: "**/combined/*.all_epitopes.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - combined_filtered:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/combined/${sample_name}.filtered.tsv:
+          type: file
+          description: Filtered MHC Class I and MHC Class II neoantigen predictions
+          pattern: "**/combined/*.filtered.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - combined_all_epitopes_aggregated:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/combined/${sample_name}.all_epitopes.aggregated.tsv:
+          type: file
+          description: Aggregated MHC Class I and MHC Class II epitope predictions
+          pattern: "**/combined/*.all_epitopes.aggregated.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - combined_reference_matches:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/combined/${sample_name}.all_epitopes.aggregated.tsv.reference_matches:
+          type: file
+          description: A file outlining details of reference proteome matches (optional)
+          pattern: "**/combined/*.aggregated.tsv.reference_matches"
+          ontologies: []
+  - combined_metrics:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/combined/${sample_name}.all_epitopes.aggregated.metrics.json:
+          type: file
+          description: JSON metrics with detailed information about the predicted epitopes,
+            formatted for pVACview.
+          pattern: "**/combined/*.metrics.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  - combined_r_files:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/combined/*.R:
+          type: file
+          description: pVACview R Shiny application files
+          pattern: "**/combined/*.R"
+          ontologies:
+            - edam: http://edamontology.org/format_3999 # R script
+  - combined_www:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/combined/www:
+          type: directory
+          description: Directory containing image files for pVACview.
+          pattern: "**/combined/www"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@KondratievaOlesya"
+maintainers:
+  - "@KondratievaOlesya"
