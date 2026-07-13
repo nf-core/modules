@@ -25,7 +25,8 @@ process RCLONE_COPY {
     def checkers = task.cpus
 
     """
-    rclone ${configArg} copy ${args} \\
+    rclone ${configArg} copy \\
+        ${args} \\
         --log-file rclone-copy.log \\
         --transfers ${transfers} \\
         --checkers ${checkers} \\
