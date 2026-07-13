@@ -21,7 +21,7 @@ process RCLONE_COPY {
     script:
     def args = task.ext.args ?: ''
     def configArg = rclone_config ? "--config '${rclone_config}'" : ''
-    def transfers = task.cpus
+    def transfers = Math.max(1, task.cpus.intdiv(2))
     def checkers = task.cpus
 
     """
