@@ -29,7 +29,7 @@ nextflow_process {
                     """
                     input[0] = UNTAR.out.untar
                         .combine(
-                            Channel.of(
+                            channel.of(
                                 file('https://github.com/snayfach/MIDAS/raw/refs/heads/master/test/genomes.mapfile', checkIfExists:true)
                             )
                         )
@@ -85,10 +85,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
