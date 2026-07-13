@@ -28,7 +28,7 @@ process CELLRANGERARC_MKFASTQ {
     """
     cellranger-arc mkfastq --id=${prefix} \\
         --localmem=${task.memory.toGiga()} \\
-        --localcores=${task.cpus} \\
+        --localcores=1 \\
         --run=${bcl} \\
         --csv=${csv} \\
         ${args}
