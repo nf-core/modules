@@ -23,7 +23,14 @@ process GRIDSS_PREPROCESS {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    ln -s \$(find -L ${bwa_index} -regex '.*\\.\\(amb\\|ann\\|pac\\|gridsscache\\|sa\\|bwt\\|img\\|alt\\)') ./
+    # GRIDSS requires all BWA index files to have the exact
+    # same basename as the reference fasta. This is a hard
+    # requirement of the tool - it will fail to find indices otherwise.
+    index_files=(\$(find -L "${bwa_index}" -regex '.*\\.\\(amb\\|ann\\|pac\\|gridsscache\\|sa\\|bwt\\|img\\|alt\\)'))
+
+    for index_file in "\${index_files[@]}"; do
+        ln -sf "\$index_file" "./${fasta}.\${index_file##*.}"
+    done
 
     gridss \\
         --threads ${task.cpus} \\
