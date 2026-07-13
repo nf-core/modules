@@ -29,7 +29,7 @@ process SNIPPY_RUN {
     tuple val(meta), path("${prefix}/${prefix}.vcf.gz")           , emit: vcf_gz
     tuple val(meta), path("${prefix}/${prefix}.vcf.gz.csi")       , emit: vcf_csi
     tuple val(meta), path("${prefix}/${prefix}.txt")              , emit: txt
-    path "versions.yml"                                           , emit: versions
+    tuple val("${task.process}"), val('snippy'), eval("snippy --version 2>&1 | sed 's/snippy //'"), emit: versions_snippy, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,11 +47,6 @@ process SNIPPY_RUN {
         --reference $reference \\
         --prefix $prefix \\
         $read_inputs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snippy: \$(echo \$(snippy --version 2>&1) | sed 's/snippy //')
-    END_VERSIONS
     """
 
     stub:
@@ -72,14 +67,8 @@ process SNIPPY_RUN {
     touch ${prefix}/${prefix}.consensus.subs.fa
     touch ${prefix}/${prefix}.raw.vcf
     touch ${prefix}/${prefix}.filt.vcf
-    gzip -c ${prefix}/${prefix}.vcf > ${prefix}/${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}/${prefix}.vcf.gz
     touch ${prefix}/${prefix}.vcf.gz.csi
     touch ${prefix}/${prefix}.txt
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snippy: \$(echo \$(snippy --version 2>&1) | sed 's/snippy //')
-    END_VERSIONS
     """
 }
