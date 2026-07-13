@@ -24,16 +24,23 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
                 ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
             assert process.success
-            assert snapshot(
-                bam(process.out.bam[0][1]).getReadsMD5(),
-                process.out.findAll { key, val -> key.startsWith("versions") }
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
         }
     }
 
@@ -62,23 +69,29 @@ nextflow_process {
         when {
             params {
                 module_args         = '--output-fmt cram,version=3.0'
-                samtools_sort_args  = '--template-coordinate --output-fmt cram,version=3.0'
+                samtools_sort_args  = '-n --output-fmt cram,version=3.0'
             }
             process {
                 """
                 input[0] = SAMTOOLS_SORT.out.cram
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
             assert process.success
-            assert snapshot(
-                file(process.out.cram[0][1]).name,
-                process.out.findAll { key, val -> key.startsWith("versions") }
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    file(process.out.cram[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
         }
-
     }
 
     test("human - cram - stub") {
@@ -96,14 +109,20 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
                 ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 }

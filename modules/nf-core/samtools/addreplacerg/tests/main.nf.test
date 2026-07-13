@@ -34,9 +34,10 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 
     test("homo-sapiens - cram") {
@@ -68,12 +69,14 @@ nextflow_process {
         }
 
         then {
-            assert snapshot(
-                sanitizeOutput(process.out, unstableKeys: ["crai","cram"]),
-                process.out.cram.collect{ meta, cram -> bam(cram).getHeader().collect{ l -> l.replaceAll(/\tUR:[^\t\n]+/, '') } },
-            ).match()
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["index","cram"]),
+                    process.out.cram.collect{ meta, cram -> bam(cram).getHeader().collect{ l -> l.replaceAll(/\tUR:[^\t\n]+/, '') } },
+                ).match() }
+            )
         }
-
     }
 
     test("homo-sapiens - cram - output bam") {
@@ -105,9 +108,11 @@ nextflow_process {
         }
 
         then {
-            assert snapshot(process.out).match()
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 
 
@@ -131,9 +136,9 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
-
 }
