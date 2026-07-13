@@ -80,7 +80,7 @@ output:
             for every position and library
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   max_cov:
     - - meta:
           type: map
@@ -106,7 +106,7 @@ output:
           pattern: "*BS.txt.gz"
           optional: true
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_poolsnp:
     - - ${task.process}:
           type: string
