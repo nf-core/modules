@@ -43,7 +43,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
+                    sanitizeOutput(process.out, unstableKeys:["bam"])
+                ).match() }
             )
         }
     }
