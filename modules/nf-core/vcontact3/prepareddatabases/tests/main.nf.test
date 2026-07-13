@@ -1,20 +1,23 @@
 nextflow_process {
 
-    name "Test Process MOTUS_DOWNLOADDB"
+    name "Test Process VCONTACT3_PREPAREDDATABASES"
     script "../main.nf"
-    process "MOTUS_DOWNLOADDB"
+    process "VCONTACT3_PREPAREDDATABASES"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "motus"
-    tag "motus/downloaddb"
+    tag "vcontact3"
+    tag "vcontact3/prepareddatabases"
 
-    test("Should download mOTUs database") {
+    test("vcontact3_prepare_databases - latest_version") {
 
         when {
             process {
                 """
-                input[0] = file("https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py")
+                input[0] = [
+                    [ id:'test' ],
+                    'latest'
+                ]
                 """
             }
         }
@@ -22,20 +25,22 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["database"])).match() }
             )
         }
-
     }
 
-    test("Should download mOTUs database - stub") {
+    test("vcontact3_prepare_databases - latest_version - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = file("https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py")
+                input[0] = [
+                    [ id:'test' ],
+                    'latest'
+                ]
                 """
             }
         }
@@ -46,7 +51,5 @@ nextflow_process {
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }
