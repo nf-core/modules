@@ -48,7 +48,10 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
@@ -98,7 +101,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.sam[0][1], stringency: "silent").getHeaderMD5(),
+                    bam(process.out.sam[0][1], stringency: "silent").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -147,7 +150,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.sam[0][1], stringency: "silent").getHeaderMD5(),
+                    bam(process.out.sam[0][1], stringency: "silent").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -196,7 +199,10 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
@@ -249,7 +255,10 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
@@ -302,7 +311,10 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
@@ -352,7 +364,10 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
@@ -405,7 +420,10 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1], stringency: "silent").getHeaderMD5(),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
                     process.out.log,
                     process.out.fastq,
