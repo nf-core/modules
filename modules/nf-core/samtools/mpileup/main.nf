@@ -35,7 +35,8 @@ process SAMTOOLS_MPILEUP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def bgzip_command = "echo | bgzip -c > ${prefix}.mpileup.gz"
     """
-    echo "" | gzip > ${prefix}.mpileup.gz
+    ${bgzip_command}
     """
 }

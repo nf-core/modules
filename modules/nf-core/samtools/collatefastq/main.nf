@@ -52,17 +52,18 @@ process SAMTOOLS_COLLATEFASTQ {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def empty = "echo '' | gzip "
-    def singletoncommand = "${empty}> ${prefix}_singleton.fq.gz"
-    def interleavecommand = interleave && !meta.single_end ? "${empty}> ${prefix}_interleaved.fq.gz" : ""
-    def output1command = !interleave ? "${empty}> ${prefix}_1.fq.gz" : ""
-    def output2command = !interleave && !meta.single_end ? "${empty}> ${prefix}_2.fq.gz" : ""
+    def empty = "echo | bgzip -c "
+    def interleave_command = interleave && !meta.single_end ? "${empty}> ${prefix}_interleaved.fq.gz" : ""
+    def other_command = "${empty} > ${prefix}_other.fq.gz"
+    def output1_command = !interleave ? "${empty}> ${prefix}_1.fq.gz" : ""
+    def output2_command = !interleave && !meta.single_end ? "${empty}> ${prefix}_2.fq.gz" : ""
+    def singleton_command = "${empty}> ${prefix}_singleton.fq.gz"
 
     """
-    ${output1command}
-    ${output2command}
-    ${interleavecommand}
-    ${singletoncommand}
-    echo "" | gzip > ${prefix}_other.fq.gz
+    ${interleave_command}
+    ${other_command}
+    ${output1_command}
+    ${output2_command}
+    ${singleton_command}
     """
 }

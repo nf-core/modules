@@ -44,18 +44,18 @@ process SAMTOOLS_FASTA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def outputs = []
     if (interleave && !meta.single_end) {
-        outputs << "echo | gzip > ${prefix}_interleaved.fasta.gz"
+        outputs << "echo | bgzip -c > ${prefix}_interleaved.fasta.gz"
     }
     else if (meta.single_end) {
-        outputs << "echo | gzip > ${prefix}_1.fasta.gz"
-        outputs << "echo | gzip > ${prefix}_singleton.fasta.gz"
+        outputs << "echo | bgzip -c > ${prefix}_1.fasta.gz"
+        outputs << "echo | bgzip -c > ${prefix}_singleton.fasta.gz"
     }
     else {
-        outputs << "echo | gzip > ${prefix}_1.fasta.gz"
-        outputs << "echo | gzip > ${prefix}_2.fasta.gz"
-        outputs << "echo | gzip > ${prefix}_singleton.fasta.gz"
+        outputs << "echo | bgzip -c > ${prefix}_1.fasta.gz"
+        outputs << "echo | bgzip -c > ${prefix}_2.fasta.gz"
+        outputs << "echo | bgzip -c > ${prefix}_singleton.fasta.gz"
     }
-    outputs << "echo | gzip > ${prefix}_other.fasta.gz"
+    outputs << "echo | bgzip -c > ${prefix}_other.fasta.gz"
 
     """
     ${outputs.join('\n')}
