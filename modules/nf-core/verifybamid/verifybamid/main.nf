@@ -20,7 +20,7 @@ process VERIFYBAMID_VERIFYBAMID {
     tuple val(meta), path("*.depthRG"), emit: depthrg, optional:true
     tuple val(meta), path("*.bestSM") , emit: bestsm , optional:true
     tuple val(meta), path("*.bestRG") , emit: bestrg , optional:true
-    tuple val("${task.process}"), val('verifybamid'), eval("echo '1.1.3'"), emit: versions_verifybamid, topic: versions
+    tuple val("${task.process}"), val('verifybamid'), val("1.1.3"), emit: versions_verifybamid, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
