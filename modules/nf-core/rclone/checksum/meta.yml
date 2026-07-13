@@ -31,11 +31,6 @@ input:
     - hash:
         type: string
         description: Hash type to check, for example MD5, SHA1, or SHA256.
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing destination information
-          e.g. [ id:'test_dst' ]
     - destination:
         type: file
         description: File or directory containing destination files to check against the SUM file.

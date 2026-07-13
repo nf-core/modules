@@ -15,8 +15,7 @@ nextflow_process {
                 """
                 file('hello.md5').text = 'e59ff97941044f85df5297e1c302d260  hello.txt\\n'
 
-                input[0] = [[id:'test'], file('hello.md5'), 'MD5']
-                input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
+                input[0] = [[id:'test'], file('hello.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
                 """
             }
         }
@@ -37,8 +36,7 @@ nextflow_process {
                 """
                 file('hello.md5').text = 'e59ff97941044f85df5297e1c302d260  hello.txt\\n'
 
-                input[0] = [[id:'test'], file('hello.md5'), 'MD5']
-                input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
+                input[0] = [[id:'test'], file('hello.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
                 """
             }
         }
@@ -57,8 +55,7 @@ nextflow_process {
                 """
                 file('hello_bad.md5').text = '00000000000000000000000000000000  hello.txt\\n'
 
-                input[0] = [[id:'test'], file('hello_bad.md5'), 'MD5']
-                input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
+                input[0] = [[id:'test'], file('hello_bad.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
                 """
             }
         }
@@ -77,8 +74,7 @@ nextflow_process {
                 """
                 file('missing.md5').text = 'e59ff97941044f85df5297e1c302d260  missing.txt\\n'
 
-                input[0] = [[id:'test'], file('missing.md5'), 'MD5']
-                input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
+                input[0] = [[id:'test'], file('missing.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
                 """
             }
         }

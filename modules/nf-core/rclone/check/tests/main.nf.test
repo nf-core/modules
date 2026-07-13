@@ -13,8 +13,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
-                input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
                 """
             }
         }
@@ -33,8 +32,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
-                input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
                 """
             }
         }
@@ -51,8 +49,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'delete_me/aracne3/README.md', checkIfExists: true)]
-                input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'delete_me/binette_checkm2/README.md', checkIfExists: true)]
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'delete_me/aracne3/README.md', checkIfExists: true), file(params.modules_testdata_base_path + 'delete_me/binette_checkm2/README.md', checkIfExists: true)]
                 """
             }
         }
@@ -69,8 +66,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[id:'test'], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]]
-                input[1] = [[id:'test_dst'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                input[0] = [[id:'test'], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
                 """
             }
         }
