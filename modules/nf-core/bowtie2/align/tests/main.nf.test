@@ -52,7 +52,7 @@ nextflow_process {
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
-                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -102,6 +102,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.sam[0][1]).name,
+                    bam(process.out.sam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -151,6 +152,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.sam[0][1]).name,
+                    bam(process.out.sam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -203,7 +205,7 @@ nextflow_process {
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
-                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -259,7 +261,7 @@ nextflow_process {
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
-                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -315,7 +317,7 @@ nextflow_process {
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
-                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -368,7 +370,7 @@ nextflow_process {
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
-                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -424,7 +426,7 @@ nextflow_process {
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
-                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(),
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -473,11 +475,13 @@ nextflow_process {
         }
 
         then {
+            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta'
             assertAll (
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.cram[0][1]).name,
                     file(process.out.crai[0][1]).name,
+                    cram(process.out.cram[0][1], fasta).getStatistics(exclude:["sorted"]),
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
