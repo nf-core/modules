@@ -16,11 +16,9 @@ nextflow_process {
         when {
             process {
                 """
-                def test_file_path = params.modules_testdata_base_path.replaceFirst(/^https?:\\/\\/[^\\/]+\\//, '') + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz'
-
                 input[0] = [
                     [ id:'test' ],
-                    ':http:' + test_file_path,
+                    params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz',
                     '/tmp/test.genome.vcf.gz'
                 ]
                 input[1] = []
@@ -43,11 +41,9 @@ nextflow_process {
         when {
             process {
                 """
-                def test_file_path = params.modules_testdata_base_path.replaceFirst(/^https?:\\/\\/[^\\/]+\\//, '') + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz'
-
                 input[0] = [
                     [ id:'test' ],
-                    ':http:' + test_file_path,
+                    params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz',
                     '/tmp/test.genome.vcf.gz'
                 ]
                 input[1] = []
