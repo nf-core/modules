@@ -47,8 +47,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     // process.out.vcf.collect{meta, vcf ->  file(vcf).name + ':variantsMD5,' + path(vcf).vcf.variantsMD5},
                     // Somehow conda produces empty variantsMD5, so only capture filename
@@ -79,8 +79,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     // process.out.vcf.collect{meta, vcf ->  file(vcf).name + ':variantsMD5,' + path(vcf).vcf.variantsMD5},
                     // Somehow conda produces empty variantsMD5, so only capture filename
@@ -109,8 +109,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -137,8 +137,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
