@@ -47,7 +47,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "lenient").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -96,7 +96,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.sam[0][1]).getReadsMD5(),
+                    bam(process.out.sam[0][1], stringency: "lenient").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -145,7 +145,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.sam[0][1]).getReadsMD5(),
+                    bam(process.out.sam[0][1], stringency: "lenient").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -193,7 +193,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "lenient").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -244,7 +244,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "lenient").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -295,7 +295,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "lenient").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -344,7 +344,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "lenient").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -396,7 +396,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "lenient").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -447,7 +447,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "lenient").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -495,7 +495,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1], stringency: "lenient").getReadsMD5(),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
