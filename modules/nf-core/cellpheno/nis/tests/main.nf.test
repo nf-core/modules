@@ -62,7 +62,7 @@ nextflow_process {
                 { assert names.any { it.endsWith('_instance_label.zip') } },
                 { assert names.any { it.endsWith('_binary_mask.zip') } },
                 { assert names.any { it.endsWith('_seg_meta.zip') } },
-                { assert process.out.versions }
+                { assert process.out.versions_cellpheno_nis }
             )
         }
 
@@ -89,7 +89,7 @@ nextflow_process {
                 { assert process.success },
                 { assert names.size() == 6 },
                 { assert process.out.remap },
-                { assert process.out.versions }
+                { assert process.out.versions_cellpheno_nis }
             )
         }
 

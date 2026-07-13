@@ -17,7 +17,11 @@ process CELLPHENO_NIS {
     output:
     tuple val(meta), path("*_NIScpp_results_*.zip"), emit: nis
     tuple val(meta), path("*_remap.zip")           , emit: remap, optional: true
-    path "versions.yml"                            , emit: versions
+    // Versions via the topic channel (nf-core standard). A literal version string is
+    // used rather than eval("cat …/VERSION"): eval runs a command in the container at
+    // output-collection time, which is not portable across all container engines. The
+    // literal is kept in lockstep with the container tag / Dockerfile VERSION on release.
+    tuple val("${task.process}"), val('cellpheno-nis'), val('1.0.0'), topic: versions, emit: versions_cellpheno_nis
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,11 +43,6 @@ process CELLPHENO_NIS {
         --save_root . \\
         --brain_tag ${prefix} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellpheno-nis: \$(cat /usr/local/share/cellpheno-nis/VERSION)
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +55,5 @@ process CELLPHENO_NIS {
     touch ${prefix}_NIScpp_results_zmin0_instance_label.zip
     touch ${prefix}_NIScpp_results_zmin0_instance_volume.zip
     touch ${prefix}_remap.zip
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellpheno-nis: \$(cat /usr/local/share/cellpheno-nis/VERSION)
-    END_VERSIONS
     """
 }
