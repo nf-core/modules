@@ -48,7 +48,6 @@ input:
       pattern: "*.{yml,yaml}"
       ontologies:
         - edam: "http://edamontology.org/format_3750" # YAML
-
 output:
   tsv:
     - - meta:
@@ -56,7 +55,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
-      - "caddsv_results/scored/*.tsv":
+      - caddsv_results/scored/*.tsv:
           type: file
           description: CADD-SV output with variant scores.
           pattern: "*.tsv"
@@ -68,7 +67,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
-      - "caddsv_results":
+      - caddsv_results:
           type: directory
           description: CADD-SV output directory containing input, intermediate, and scored results.
   log:
@@ -77,7 +76,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
-      - "caddsv_run_*.log":
+      - caddsv_run_*.log:
           type: file
           description: Optional runtime resource log created when `--check-time` is supplied.
           optional: true
@@ -91,7 +90,7 @@ output:
       - caddsv:
           type: string
           description: The name of the tool
-      - python -c "import importlib.metadata as m; print(m.version('caddsv'))":
+      - caddsv --version:
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -99,11 +98,11 @@ topics:
   versions:
     - - ${task.process}:
           type: string
-          description: The process name
+          description: The name of the process
       - caddsv:
           type: string
-          description: The tool name
-      - python -c "import importlib.metadata as m; print(m.version('caddsv'))":
+          description: The name of the tool
+      - caddsv --version:
           type: eval
           description: The expression to obtain the version of the tool
 

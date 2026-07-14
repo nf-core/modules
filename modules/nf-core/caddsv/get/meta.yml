@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "caddsv_get"
 description: Download CADD-SV annotation resources or SegmentNT model files.
 keywords:
@@ -7,7 +6,6 @@ keywords:
   - annotations
   - segmentnt
   - resource download
-
 tools:
   - "caddsv":
       description: "CADD-SV is a command-line tool for scoring structural variants (SVs)"
@@ -28,7 +26,6 @@ input:
         model files into `<annotations-dir>/segment_nt`.
       pattern: "annotations|segmentnt"
       ontologies: []
-
 output:
   annotations:
     - caddsv_annotations:
@@ -41,7 +38,6 @@ output:
           is supplied via `task.ext.args`, this contains both resources.
         pattern: "caddsv_annotations"
         ontologies: []
-
   versions_caddsv:
     - - ${task.process}:
           type: string
@@ -49,7 +45,7 @@ output:
       - caddsv:
           type: string
           description: The tool name
-      - python -c "import importlib.metadata as m; print(m.version('caddsv'))":
+      - caddsv --version:
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -61,13 +57,12 @@ topics:
       - caddsv:
           type: string
           description: The tool name
-      - python -c "import importlib.metadata as m; print(m.version('caddsv'))":
+      - caddsv --version:
           type: eval
           description: The expression to obtain the version of the tool
 
 authors:
   - "@manascripts"
-
 maintainers:
   - "@manascripts"
 containers:
