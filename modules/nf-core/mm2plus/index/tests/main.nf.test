@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process MM2PLUS_INDEX"
+    script "../main.nf"
+    process "MM2PLUS_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mm2plus"
+    tag "mm2plus/index"
+
+    test("mm2plus index") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+    test("mm2plus index - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}

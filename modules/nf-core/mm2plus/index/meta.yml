@@ -1,0 +1,62 @@
+name: mm2plus_index
+description: Provides fasta index required by mm2plus alignment.
+keywords:
+  - index
+  - fasta
+  - reference
+tools:
+  - mm2plus:
+      description: |
+        A versatile pairwise aligner for genomic and spliced nucleotide sequences.
+      homepage: https://github.com/at-cg/mm2-plus
+      documentation: https://github.com/at-cg/mm2-plus#readme_mm2
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: |
+          Reference database in FASTA format.
+        ontologies: []
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.mmi":
+          type: file
+          description: mm2plus fasta index.
+          pattern: "*.mmi"
+          ontologies: []
+  versions_mm2plus:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mm2plus:
+          type: string
+          description: The name of the tool
+      - mm2plus --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mm2plus:
+          type: string
+          description: The name of the tool
+      - mm2plus --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@fellen31"
+maintainers:
+  - "@fellen31"
