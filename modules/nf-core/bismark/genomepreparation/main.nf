@@ -1,14 +1,14 @@
 process BISMARK_GENOMEPREPARATION {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bddea334e6ccbce005ce540214747acf822b040185d2198220dcfbb4b258c331/data' :
-        'community.wave.seqera.io/library/bismark:3.1.0--9557d6ab108a83e4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bddea334e6ccbce005ce540214747acf822b040185d2198220dcfbb4b258c331/data'
+        : 'community.wave.seqera.io/library/bismark:3.1.0--9557d6ab108a83e4'}"
 
     input:
-    tuple val(meta), path(fasta, name:"BismarkIndex/")
+    tuple val(meta), path(fasta, name: "BismarkIndex/")
 
     output:
     tuple val(meta), path("BismarkIndex"), emit: index
@@ -27,7 +27,7 @@ process BISMARK_GENOMEPREPARATION {
 
     stub:
     """
-    rm $fasta
+    rm ${fasta}
 
     mkdir -p BismarkIndex/Bisulfite_Genome/CT_conversion
     touch BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.1.bt2
