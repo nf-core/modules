@@ -24,12 +24,12 @@ process CADDSV_RUN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def real_ext = variants.extension == 'gz' ? file(variants.baseName).extension : variants.extension
+    def is_gz = variants.extension == 'gz'
+    def real_ext = is_gz ? file(variants.baseName).extension : variants.extension
     if (!(real_ext in ['bed', 'tsv'])) {
         error "Unsupported CADD-SV input suffix: ${variants}"
     }
     def run_input = "${prefix}.${real_ext}"
-    def is_gz = variants.extension == 'gz'
 
     def config_arg = config ? "--config ${config}" : ""
     """
