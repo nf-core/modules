@@ -26,9 +26,9 @@ FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION} AS build
 # LibTorch CUDA build matching the base CUDA version.
 ARG LIBTORCH_URL=https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.5.1%2Bcu121.zip
 # Source of the NIS C++ executable, pinned to a tagged release for reproducibility
-# (not a moving branch). v1.0.2 == commit 6fbd3bc4a44045f1c74fc12a107180870ca6f3f1.
+# (not a moving branch). v1.0.3 == commit 709cdcf7bb35eb1f39344b5a881f102964d672ec.
 ARG NIS_SOURCE_REPO=https://github.com/Chrisa142857/Lightsheet_microscopy_image_3D_nuclei_instance_segmentation
-ARG NIS_SOURCE_REF=v1.0.2
+ARG NIS_SOURCE_REF=v1.0.3
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -70,12 +70,6 @@ COPY --from=build /opt/libtorch /opt/libtorch
 # collision-prone on PATH). Matches the bioconda package name `cellpheno-nis`.
 COPY --from=build /src/cpp/build/main /usr/local/bin/cellpheno-nis
 
-# Single authoritative version source. The module reads the NIS version from this file into versions.yml, so the container tag and the
-# reported version stay in lockstep. Bump together with the `container` tag in main.nf.
-ARG CELLPHENO_NIS_VERSION=1.0.2
-RUN mkdir -p /usr/local/share/cellpheno-nis \
-    && echo "${CELLPHENO_NIS_VERSION}" > /usr/local/share/cellpheno-nis/VERSION
-
 ENV LD_LIBRARY_PATH=/opt/libtorch/lib:${LD_LIBRARY_PATH}
 
 LABEL org.opencontainers.image.authors="Ziquan Wei (@Chrisa142857)" \
@@ -83,7 +77,7 @@ LABEL org.opencontainers.image.authors="Ziquan Wei (@Chrisa142857)" \
       org.opencontainers.image.description="Whole-brain 3D nuclei instance segmentation for lightsheet microscopy" \
       org.opencontainers.image.source="https://github.com/Chrisa142857/Lightsheet_microscopy_image_3D_nuclei_instance_segmentation" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.version="1.0.2"
+      org.opencontainers.image.version="1.0.3"
 
 ENTRYPOINT []
 CMD ["cellpheno-nis", "--help"]
