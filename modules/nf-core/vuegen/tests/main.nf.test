@@ -37,20 +37,22 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 {
-                    assert snapshot([
-                        output_folder: (process.out.output_folder[0] ==~ "/.*/streamlit_report"),
-                        output_files: [
-                            "Homepage.py": path(process.out.output_folder[0] + "/sections/Home/Homepage.py"),
-                            "report_manager.py": path(process.out.output_folder[0] + "/sections/report_manager.py"),
-                            "All_Formats.py": path(process.out.output_folder[0] + "/sections/Dataframes/All_Formats.py")
-                                                .readLines()[0..5].sort().join('\n').md5(),
-                            "Interactive_Plots.py": path(process.out.output_folder[0] + "/sections/Plots/Interactive_Plots.py")
+                    assert snapshot(
+                        sanitizeOutput([
+                            output_folder: (process.out.output_folder[0] ==~ "/.*/streamlit_report"),
+                            output_files: [
+                                "Homepage.py": path(process.out.output_folder[0] + "/sections/Home/Homepage.py"),
+                                "report_manager.py": path(process.out.output_folder[0] + "/sections/report_manager.py"),
+                                "All_Formats.py": path(process.out.output_folder[0] + "/sections/Dataframes/All_Formats.py")
                                                     .readLines()[0..5].sort().join('\n').md5(),
-                            "Static_Plots.py": path(process.out.output_folder[0] + "/sections/Plots/Static_Plots.py")
-                                                .readLines()[0..3].sort().join('\n').md5()
-                        ],
-                        versions: path(process.out.versions[0]).yaml,
-                    ]).match()
+                                "Interactive_Plots.py": path(process.out.output_folder[0] + "/sections/Plots/Interactive_Plots.py")
+                                                        .readLines()[0..5].sort().join('\n').md5(),
+                                "Static_Plots.py": path(process.out.output_folder[0] + "/sections/Plots/Static_Plots.py")
+                                                    .readLines()[0..3].sort().join('\n').md5()
+                            ],
+                            versions: process.out.findAll { key, val -> key.startsWith("versions") }.collectEntries()
+                        ])
+                    ).match()
                 }
             )
         }
@@ -72,16 +74,18 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 {
-                    assert snapshot([
-                        output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
-                        output_files: [
-                            "quarto_report.html": path(process.out.output_folder[0] + "/quarto_report.html")
-                                                    .readLines()[0..3].join('\n').md5(),
-                            "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
-                                                .readLines()[0..3].join('\n').md5()
-                        ],
-                        versions: path(process.out.versions[0]).yaml
-                    ]).match()
+                    assert snapshot(
+                        sanitizeOutput([
+                            output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
+                            output_files: [
+                                "quarto_report.html": path(process.out.output_folder[0] + "/quarto_report.html")
+                                                        .readLines()[0..3].join('\n').md5(),
+                                "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
+                                                    .readLines()[0..3].join('\n').md5()
+                            ],
+                            versions: process.out.findAll { key, val -> key.startsWith("versions") }.collectEntries()
+                        ])
+                    ).match()
                 }
             )
         }
@@ -103,16 +107,18 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 {
-                    assert snapshot([
-                        output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
-                        output_files: [
-                            "quarto_report.pdf": path(process.out.output_folder[0] + "/quarto_report.pdf")
-                                                    .exists(),
-                            "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
-                                                    .readLines()[0..3].sort().join('\n').md5()
-                        ],
-                        versions: path(process.out.versions[0]).yaml,
-                    ]).match()
+                    assert snapshot(
+                        sanitizeOutput([
+                            output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
+                            output_files: [
+                                "quarto_report.pdf": path(process.out.output_folder[0] + "/quarto_report.pdf")
+                                                        .exists(),
+                                "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
+                                                        .readLines()[0..3].sort().join('\n').md5()
+                            ],
+                            versions: process.out.findAll { key, val -> key.startsWith("versions") }.collectEntries()
+                        ])
+                    ).match()
                 }
             )
         }
@@ -136,9 +142,11 @@ nextflow_process {
                 { assert process.success },
                 {
                     assert snapshot(
-                        process.out.output_folder.collect { file(it).getName() } +
-                        process.out.output_files.collect { file(it).getName() },
-                        versions: path(process.out.versions[0]).yaml,
+                        sanitizeOutput(
+                            process.out.output_folder.collect { file(it).getName() } +
+                            process.out.output_files.collect { file(it).getName() },
+                            versions: process.out.findAll { key, val -> key.startsWith("versions") }.collectEntries()
+                        )
                     ).match()
                 }
             )

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: vuegen
 description: >
   The VueGen nf-core module is designed to automate report generation from outputs
@@ -29,23 +28,25 @@ tools:
       documentation: https://vuegen.readthedocs.io/
       tool_dev_url: https://github.com/Multiomics-Analytics-Group/vuegen
       doi: 10.1101/2025.03.05.641152
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - input_type:
       type: string
       pattern: "^(config|directory)$"
-      description: Specifies whether the input is a configuration file ('config') or
-        a directory ('directory').
+      description: Specifies whether the input is a configuration file ('config')
+        or a directory ('directory').
   - input_path:
       type: file
-      description: Path to the input directory or configuration file used by VueGen.
+      description: Path to the input directory or configuration file used by
+        VueGen.
       ontologies: []
   - report_type:
       type: string
       pattern: "^(streamlit|html|pdf|docx|odt|revealjs|pptx|jupyter)$"
-      description: The type of report to generate. Options include 'streamlit', 'html',
-        'pdf', 'docx', 'odt', 'revealjs', 'pptx', and 'jupyter'.
+      description: The type of report to generate. Options include 'streamlit',
+        'html', 'pdf', 'docx', 'odt', 'revealjs', 'pptx', and 'jupyter'.
 output:
   output_folder:
     - "*report":
@@ -55,13 +56,27 @@ output:
           - If `report_type` is 'streamlit', a 'streamlit_report' directory is created, containing subfolders for each section with Python scripts corresponding to the web application's pages.
           - For other report types, a 'quarto_report' directory is generated, containing a Quarto Markdown (qmd) file that structures the entire report.
         pattern: "*report"
+  versions_vuegen:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vuegen:
+          type: string
+          description: The name of the tool
+      - python -c "import vuegen; print(vuegen.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vuegen:
+          type: string
+          description: The name of the tool
+      - python -c "import vuegen; print(vuegen.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sayalaruano"
   - "@enryH"
