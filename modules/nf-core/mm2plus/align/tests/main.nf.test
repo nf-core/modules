@@ -9,7 +9,7 @@ nextflow_process {
     tag "mm2plus"
     tag "mm2plus/align"
 
-    test("FASTQ reads (single-end) and FASTA reference as input, BAM output, no index") {
+    test("sarscov - FASTQ reads (single-end) and FASTA reference as input, BAM output, no index") {
 
         when {
             process {
@@ -39,7 +39,7 @@ nextflow_process {
 
     }
 
-    test("FASTQ reads (single-end) and FASTA reference as input, BAM output, BAI index") {
+    test("sarscov - FASTQ reads (single-end) and FASTA reference as input, BAM output, BAI index") {
 
         when {
             process {
@@ -69,7 +69,7 @@ nextflow_process {
 
     }
 
-    test("FASTQ reads (paired-end) and FASTA reference as input, BAM output, no index") {
+    test("sarscov - FASTQ reads (paired-end) and FASTA reference as input, BAM output, no index") {
 
         when {
             process {
@@ -102,7 +102,7 @@ nextflow_process {
 
     }
 
-    test("FASTQ reads (single-end), no reference, BAM output, no index") {
+    test("sarscov - FASTQ reads (single-end), no reference, BAM output, no index") {
 
         when {
             process {
@@ -132,7 +132,7 @@ nextflow_process {
 
     }
 
-    test("BAM reads and FASTA reference as input, BAM output, no index") {
+    test("sarscov - BAM reads and FASTA reference as input, BAM output, no index") {
 
         when {
             process {
@@ -162,7 +162,7 @@ nextflow_process {
 
     }
 
-    test("BAM reads and FASTA reference as input, BAM output, BAI index") {
+    test("sarscov - BAM reads and FASTA reference as input, BAM output, BAI index") {
 
         when {
             process {
@@ -191,7 +191,7 @@ nextflow_process {
         }
     }
 
-    test("BAM reads and no reference as input, BAM output - should fail") {
+    test("sarscov - BAM reads and no reference as input, BAM output - should fail") {
 
         when {
             process {
@@ -220,7 +220,7 @@ nextflow_process {
 
     }
 
-    test("FASTQ reads (single-end) and FASTA reference as input, BAM output, no index - stub") {
+    test("sarscov - FASTQ reads (single-end) and FASTA reference as input, BAM output, no index - stub") {
 
         options "-stub"
 
@@ -252,7 +252,7 @@ nextflow_process {
 
     }
 
-    test("FASTQ reads (single-end) and FASTA reference as input, BAM output, BAI index - stub") {
+    test("sarscov - FASTQ reads (single-end) and FASTA reference as input, BAM output, BAI index - stub") {
 
         options "-stub"
 
@@ -284,7 +284,7 @@ nextflow_process {
 
     }
 
-    test("FASTQ reads (paired-end) and FASTA reference as input, PAF output, no index - stub") {
+    test("sarscov - FASTQ reads (paired-end) and FASTA reference as input, PAF output, no index - stub") {
 
         options "-stub"
 
@@ -316,7 +316,7 @@ nextflow_process {
 
     }
 
-    test("BAM reads and FASTA reference reference as input, BAM output, no index -stub") {
+    test("sarscov - BAM reads and FASTA reference reference as input, BAM output, no index -stub") {
 
         options "-stub"
 
@@ -348,7 +348,7 @@ nextflow_process {
 
     }
 
-    test("BAM reads and FASTA reference reference as input, BAM output, BAI index -stub") {
+    test("sarscov - BAM reads and FASTA reference reference as input, BAM output, BAI index -stub") {
 
         options "-stub"
 
@@ -380,7 +380,7 @@ nextflow_process {
 
     }
 
-    test("BAM reads and no reference as input, BAM output - should fail -stub") {
+    test("sarscov - BAM reads and no reference as input, BAM output - should fail -stub") {
 
         options "-stub"
 
