@@ -20,14 +20,14 @@ input:
         description: |
           Groovy Map containing population information
           e.g. [ id:'test', population:'population id', samples:'sample IDs' ]
-    - bam:
+    - bams:
         type: file
         description: A list of BAM or CRAM files
         pattern: "*.{bam,cram}"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
           - edam: "http://edamontology.org/format_3462" # CRAM
-    - bai:
+    - bam_indices:
         type: file
         description: A list of BAM or CRAM indices
         pattern: "*.{bam.bai,cram.crai}"
@@ -39,13 +39,13 @@ input:
         description: |
           Groovy Map containing reference genome information
           e.g. [ id:'GRCh38' ]
-    - fasta:
+    - reference_fasta:
         type: file
         description: A reference genome in FASTA format
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
-    - fai:
+    - reference_fai:
         type: file
         description: Index of the reference genome FASTA file
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}.fai"
@@ -56,13 +56,13 @@ input:
         description: |
           Groovy Map containing ancestral genome information
           e.g. [ id:'homo_sapiens_ancestor_GRCh38' ]
-    - fasta:
+    - ancestral_fasta:
         type: file
         description: An ancestral state genome in FASTA format
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
-    - fai:
+    - ancestral_fai:
         type: file
         description: Index of the ancestral state genome FASTA file
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}.fai"
@@ -83,7 +83,7 @@ input:
         description: |
           Groovy Map containing inbreeding coefficient information
           e.g. [ id:'test', population:'population id', samples:'sample IDs' ]
-    - inbreeding_coefficient_file:
+    - inbreeding_coefficients:
         type: file
         description: A file containing estimates of individual inbreeding coefficients
         pattern: "*.indF"
@@ -109,9 +109,19 @@ output:
           description: Gzipped binary file containing per-site sample allele frequency likelihoods
           pattern: "*.saf.gz"
           ontologies: []
+  versions_angsd:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
       - angsd:
