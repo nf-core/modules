@@ -13,7 +13,7 @@ process CADDSV_GET {
 
     output:
     path "caddsv_annotations", emit: annotations
-    tuple val("${task.process}"), val('caddsv'), eval("python -c \"import importlib.metadata as m; print(m.version('caddsv'))\""), emit: versions_caddsv, topic: versions
+    tuple val("${task.process}"), val('caddsv'), eval("caddsv --version"), emit: versions_caddsv, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

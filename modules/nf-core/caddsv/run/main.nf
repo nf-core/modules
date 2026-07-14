@@ -16,7 +16,7 @@ process CADDSV_RUN {
     tuple val(meta), path("caddsv_results/scored/*.tsv"), emit: tsv
     tuple val(meta), path("caddsv_results"), emit: results
     tuple val(meta), path("caddsv_run_*.log"), emit: log, optional: true
-    tuple val("${task.process}"), val('caddsv'), eval("python -c \"import importlib.metadata as m; print(m.version('caddsv'))\""), emit: versions_caddsv, topic: versions
+    tuple val("${task.process}"), val('caddsv'), eval("caddsv --version"), emit: versions_caddsv, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
