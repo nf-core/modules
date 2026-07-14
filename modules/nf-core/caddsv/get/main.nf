@@ -4,9 +4,9 @@ process CADDSV_GET {
     label 'process_long'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/caddsv:2.0--pyh84cbfca_0'
-        : 'quay.io/biocontainers/caddsv:2.0--pyh84cbfca_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/7580fd97186cafd35f9b898de8ef33a503b42649c99b9b2a50d4cf4eada0bd0d/data'
+:         'community.wave.seqera.io/library/caddsv:2.0.1--1bd7ba3bc0ff7a4e' }"
 
     input:
     val flag
