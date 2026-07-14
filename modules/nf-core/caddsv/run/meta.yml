@@ -33,31 +33,21 @@ input:
           - edam: "http://edamontology.org/format_3003" # BED
           - edam: "http://edamontology.org/format_3475" # TSV
           - edam: "http://edamontology.org/format_3615" # BGZIP
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'annotations' ]
-    - annotations_dir:
-        type: directory
-        description: |
-          Directory containing CADD-SV annotation resources. This can be the
-          output of the `caddsv_get` module, or a directory containing the
-          CADD-SV annotation bundle and/or SegmentNT model files.
-        pattern: "caddsv_annotations"
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'sample1' ]
-    - config:
-        type: file
-        description: |
-          Optional YAML configuration file for CADD-SV scoring. If not provided,
-          default scoring parameters will be used.
-        pattern: "*.{yml,yaml}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+  - annotations_dir:
+      type: directory
+      description: |
+        Directory containing CADD-SV annotation resources. This can be the
+        output of the `caddsv_get` module, or a directory containing the
+        CADD-SV annotation bundle and/or SegmentNT model files.
+      pattern: "caddsv_annotations"
+  - config:
+      type: file
+      description: |
+        Optional YAML configuration file for CADD-SV scoring. If not provided,
+        default scoring parameters will be used.
+      pattern: "*.{yml,yaml}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3750" # YAML
 
 output:
   tsv:

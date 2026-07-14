@@ -9,8 +9,8 @@ process CADDSV_RUN {
 
     input:
     tuple val(meta), path(variants)
-    tuple val(meta2), path(annotations_dir)
-    tuple val(meta3), path(config)
+    path(annotations_dir)
+    path(config)
 
     output:
     tuple val(meta), path("caddsv_results/scored/*.tsv"), emit: tsv
@@ -23,7 +23,13 @@ process CADDSV_RUN {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def real_ext = variants.extension == 'gz' ? file(variants.baseName).extension : variants.extension
+    if (!(real_ext in ['bed', 'tsv'])) {
+        error "Unsupported CADD-SV input suffix: ${variants}"
+    }
+    def run_input = "${prefix}.${real_ext}"
+    def is_gz = variants.extension == 'gz'
 
     def config_arg = config ? "--config ${config}" : ""
     """
@@ -32,33 +38,15 @@ process CADDSV_RUN {
     export HF_HUB_OFFLINE="\${HF_HUB_OFFLINE:-1}"
     export TRANSFORMERS_OFFLINE="\${TRANSFORMERS_OFFLINE:-1}"
 
-    case "${variants}" in
-        *.bed)
-            run_input="${prefix}.bed"
-            cp -L "${variants}" "\${run_input}"
-            ;;
-        *.bed.gz)
-            run_input="${prefix}.bed"
-            gzip -cdf "${variants}" > "\${run_input}"
-            ;;
-        *.tsv)
-            run_input="${prefix}.tsv"
-            cp -L "${variants}" "\${run_input}"
-            ;;
-        *.tsv.gz)
-            run_input="${prefix}.tsv"
-            gzip -cdf "${variants}" > "\${run_input}"
-            ;;
-        *)
-            echo "Unsupported CADD-SV input suffix: ${variants}" >&2
-            exit 2
-            ;;
-    esac
+    if ${is_gz}; then
+        gzip -cdf "${variants}" > "${run_input}"
+    else
+        cp -L "${variants}" "${run_input}"
+    fi
 
-    caddsv run "\${run_input}" \\
+    caddsv run "${run_input}" \\
         --annotations-dir "${annotations_dir}" \\
         --output-dir caddsv_results \\
-        --conda-prefix caddsv-snakemake-conda \\
         --threads ${task.cpus} \\
         ${config_arg} \\
         ${args}

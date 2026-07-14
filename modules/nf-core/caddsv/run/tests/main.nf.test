@@ -31,11 +31,9 @@ nextflow_process {
                     variants
                 ]
                 input[1] = [
-                    [ id:'test' ],
                     annotations_dir
                 ]
                 input[2] = [
-                    [ id:'test' ],
                     caddsv_yml
                 ]
                 """
@@ -45,7 +43,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
