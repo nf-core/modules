@@ -27,11 +27,16 @@ input:
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
         ontologies: []
-  - index:
-      type: file
-      description: kb-ref index file (.idx)
-      pattern: "*.{idx}"
-      ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - index:
+        type: file
+        description: kb-ref index file (.idx)
+        pattern: "*.{idx}"
+        ontologies: []
   - t2g:
       type: file
       description: t2g file from kallisto
@@ -75,7 +80,7 @@ output:
       - kallistobustools:
           type: string
           description: The name of the tool
-      - kb --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n1:
+      - kb --version 2>&1 | sed -n 's/kb_python //p':
           type: eval
           description: The expression to obtain the version of the tool
   matrix:
@@ -93,7 +98,7 @@ topics:
       - kallistobustools:
           type: string
           description: The name of the tool
-      - kb --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n1:
+      - kb --version 2>&1 | sed -n 's/kb_python //p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

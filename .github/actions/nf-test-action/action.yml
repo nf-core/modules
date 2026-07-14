@@ -21,7 +21,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287 # v5
+    - uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5
       with:
         distribution: "temurin"
         java-version: "17"
@@ -32,7 +32,7 @@ runs:
         version: "${{ env.NXF_VER }}"
 
     - name: Set up Python
-      uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
         python-version: "3.14"
 
