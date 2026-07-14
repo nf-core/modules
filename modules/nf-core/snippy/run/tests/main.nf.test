@@ -49,7 +49,7 @@ nextflow_process {
 					path(process.out.vcf_gz[0][1]).vcf.summary,
 					file(process.out.vcf_csi[0][1]).name,
 					file(process.out.txt[0][1]).readLines()[3..5],
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )

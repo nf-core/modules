@@ -40,13 +40,13 @@ process SNIPPY_RUN {
     def read_inputs = meta.single_end ? "--se ${reads[0]}" : "--R1 ${reads[0]} --R2 ${reads[1]}"
     """
     snippy \\
-        $args \\
-        --cpus $task.cpus \\
-        --ram $task.memory \\
-        --outdir $prefix \\
-        --reference $reference \\
-        --prefix $prefix \\
-        $read_inputs
+        ${args} \\
+        --cpus ${task.cpus} \\
+        --ram ${task.memory} \\
+        --outdir ${prefix} \\
+        --reference ${reference} \\
+        --prefix ${prefix} \\
+        ${read_inputs}
     """
 
     stub:
