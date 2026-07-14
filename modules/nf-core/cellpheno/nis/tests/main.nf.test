@@ -9,7 +9,7 @@ nextflow_process {
     tag "cellpheno"
     tag "cellpheno/nis"
     tag "unzip"
-
+    // tag "gpu"
     // Real run: needs a CUDA GPU + the published container, so it is tagged `gpu` and
     // skipped on CPU CI. The small real P4 tile ships zipped in nf-core/test-datasets;
     // the ~64 MB TorchScript models are too large for test-datasets and are fetched from
