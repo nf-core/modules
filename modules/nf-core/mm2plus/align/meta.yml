@@ -24,9 +24,12 @@ input:
     - reads:
         type: file
         description: |
-          List of input FASTA or FASTQ files of size 1 and 2 for single-end
+          List of input BAM, or input FASTA or FASTQ files of size 1 and 2 for single-end
           and paired-end data, respectively.
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - - meta2:
         type: map
         description: |
@@ -36,7 +39,8 @@ input:
         type: file
         description: |
           Reference database in FASTA format.
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - bam_format:
       type: boolean
       description: Specify that output should be in BAM format
@@ -73,7 +77,8 @@ output:
           type: file
           description: Alignment in BAM format
           pattern: "*.bam"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
   index:
     - - meta:
           type: map
@@ -84,7 +89,8 @@ output:
           type: file
           description: BAM alignment index
           pattern: "*.bam.*"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3327 # BAM index
   versions_mm2plus:
     - - ${task.process}:
           type: string
