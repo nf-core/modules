@@ -457,7 +457,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [
+                        id:'test', 
+                        single_end:false,
+                        fasta:'https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta' ], // meta map + fasta for cram testing
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -475,13 +478,12 @@ nextflow_process {
         }
 
         then {
-            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta'
             assertAll (
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.cram[0][1]).name,
                     file(process.out.crai[0][1]).name,
-                    cram(process.out.cram[0][1], fasta).getStatistics(exclude:["sorted"]),
+                    cram(process.out.cram[0][1], process.out.cram[0][0].fasta ).getStatistics(exclude:["sorted"]),
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
