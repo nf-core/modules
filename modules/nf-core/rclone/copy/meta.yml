@@ -51,7 +51,7 @@ output:
           description: |
             Groovy Map containing sample information.
             e.g. [ id:'test', single_end:false ]
-      - rclone-copy.log:
+      - "*rclone-copy.log":
           type: file
           description: Rclone log file generated during the copy operation.
           pattern: "*rclone-copy.log"
