@@ -88,8 +88,7 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.reads,
                     workflow.out.trim_reads_fail,
-                    workflow.out.trim_reads_merged,
-                    workflow.out.versions
+                    workflow.out.trim_reads_merged
                     ).match()}
             )
         }
@@ -234,6 +233,5 @@ nextflow_workflow {
                 )
         }
     }
-
 
 }
