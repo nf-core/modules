@@ -33,11 +33,10 @@ workflow FASTQ_ALIGN_CHROMAP {
     CHROMAP_CHROMAP(ch_reads, ch_fasta, ch_index, ch_barcodes, ch_whitelist, ch_chr_order, ch_pairs_chr_order)
 
     //
-    // Update read groups
+    // If needed update read groups
     //
-    PICARD_ADDORREPLACEREADGROUPS(CHROMAP_CHROMAP.out.bam, ch_fasta_fai)
-
     if (add_readgroups == true) {
+        PICARD_ADDORREPLACEREADGROUPS(CHROMAP_CHROMAP.out.bam, ch_fasta_fai)
         ch_bam = PICARD_ADDORREPLACEREADGROUPS.out.bam
     } else {
         ch_bam = CHROMAP_CHROMAP.out.bam
