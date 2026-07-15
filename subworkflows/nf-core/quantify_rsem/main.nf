@@ -49,12 +49,20 @@ workflow QUANTIFY_RSEM {
     ch_merged_isoforms_long     = channel.empty()
 
     if (!skip_merge) {
+        //
+        // Sorted by staged file name so the input list order (and therefore
+        // CUSTOM_RSEMMERGECOUNTS's cache key) is stable across runs instead
+        // of following task-completion order. The module's script globs the
+        // staged directory itself (`./genes/*`, `./isoforms/*`), so sorting
+        // here doesn't change which columns land in the merged output.
+        //
         CUSTOM_RSEMMERGECOUNTS (
             ch_counts_gene
-                .collect{ _meta, genes_count -> genes_count }
-                .map { genes_count -> [ ['id': 'all_samples'], genes_count ] },
+                .toSortedList { a, b -> a[1].name <=> b[1].name }
+                .map { sorted -> [ ['id': 'all_samples'], sorted.collect { it[1] } ] },
             ch_counts_transcript
-                .collect{ _meta, transcripts_count -> transcripts_count }
+                .toSortedList { a, b -> a[1].name <=> b[1].name }
+                .map { sorted -> sorted.collect { it[1] } }
         )
         ch_merged_counts_gene       = CUSTOM_RSEMMERGECOUNTS.out.counts_gene
         ch_merged_tpm_gene          = CUSTOM_RSEMMERGECOUNTS.out.tpm_gene
