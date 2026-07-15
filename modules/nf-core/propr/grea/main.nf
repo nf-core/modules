@@ -13,7 +13,7 @@ process PROPR_GREA {
 
     output:
     tuple val(meta), path("*.grea.tsv"), emit: results
-    path "versions.yml",                 emit: versions
+    path "versions.yml",                 emit: versions, topic: versions
     path "*.R_sessionInfo.log",          emit: session_info
 
     when:
