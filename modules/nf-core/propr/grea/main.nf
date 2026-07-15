@@ -21,4 +21,16 @@ process PROPR_GREA {
 
     script:
     template 'grea.R'
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.grea.tsv
+    touch ${prefix}.R_sessionInfo.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-propr: \$(Rscript -e "cat(as.character(packageVersion('propr')))")
+    END_VERSIONS
+    """
 }
