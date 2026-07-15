@@ -5,12 +5,4 @@ channels:
   - bioconda
 dependencies:
   - bioconda::bioconductor-tximeta=1.20.1
-  # Temporary workaround: bioconductor data-package post-link scripts
-  # (installBiocDataPackage.sh) parse download URLs with `yq`, which shells out
-  # to `jq`. The conda-forge `yq` package does not declare `jq` as a runtime
-  # dependency, so on minimal build images `jq` is absent, the post-link fails
-  # silently, and GenomeInfoDbData is not installed (runtime error:
-  # "there is no package called 'GenomeInfoDbData'"). Pinning jq here guarantees
-  # it is present at build time. Remove once the upstream yq recipe is fixed.
-  # Upstream issue: https://github.com/conda-forge/yq-feedstock/issues/41
-  - conda-forge::jq
+  - conda-forge::jq=1.8.2
