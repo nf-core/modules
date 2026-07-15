@@ -27,11 +27,11 @@ process CHELAE_TRIM {
     def output_files = meta.single_end ? "${prefix}.chelae.fastq.gz" : "${prefix}_R1.chelae.fastq.gz ${prefix}_R2.chelae.fastq.gz"
     """
     chelae trim \\
-        -i ${reads} \\
-        -o ${output_files} \\
-        -t ${task.cpus} \\
-        -j ${prefix}.chelae.json \\
-        -m ${prefix}.chelae.tsv \\
+        --inputs ${reads} \\
+        --outputs ${output_files} \\
+        --threads ${task.cpus} \\
+        --json ${prefix}.chelae.json \\
+        --metrics ${prefix}.chelae.tsv \\
         ${adapter_fasta_arg} \\
         ${args}
     """
