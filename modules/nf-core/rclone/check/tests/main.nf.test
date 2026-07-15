@@ -1,0 +1,81 @@
+nextflow_process {
+
+    name "Test Process RCLONE_CHECK"
+    script "../main.nf"
+    process "RCLONE_CHECK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rclone"
+    tag "rclone/check"
+
+    test("sarscov2 - fastq") {
+        when {
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_dst", "missing_on_src", "error"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "match", "differ", "missing_on_dst", "missing_on_src", "error"])).match() }
+            )
+        }
+    }
+
+    test("different files - fails") {
+        when {
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'delete_me/aracne3/README.md', checkIfExists: true), file(params.modules_testdata_base_path + 'delete_me/binette_checkm2/README.md', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "match", "missing_on_dst", "missing_on_src", "error"])).match() }
+            )
+        }
+    }
+
+    test("destination subset - partial match and missing") {
+        when {
+            process {
+                """
+                input[0] = [[id:'test'], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_src", "error"])).match() }
+            )
+        }
+    }
+}
