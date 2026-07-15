@@ -52,13 +52,8 @@ workflow QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT {
     // Import and summarize quantifications with tximport
     // In per-sample mode, run once per sample instead of collecting all
     //
-    // Sorted for the same cache-stability reason as ch_tx2gene_quants above:
-    // an unsorted collect() over per-sample process outputs orders by task
-    // completion, which changes TXIMETA_TXIMPORT's staged input list (and
-    // therefore its cache key) between runs even when nothing changed. The
-    // R script discovers sample identity from the staged file/directory
-    // names itself (list.files()), not from list position, so sorting here
-    // has no effect on tximport's output.
+    // Sorted by name for a stable cache key; the R script derives sample
+    // identity from staged file names, not list position.
     //
     ch_tximport_input = skip_merge
         ? quant_results

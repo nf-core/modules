@@ -50,11 +50,8 @@ workflow QUANTIFY_RSEM {
 
     if (!skip_merge) {
         //
-        // Sorted by staged file name so the input list order (and therefore
-        // CUSTOM_RSEMMERGECOUNTS's cache key) is stable across runs instead
-        // of following task-completion order. The module's script globs the
-        // staged directory itself (`./genes/*`, `./isoforms/*`), so sorting
-        // here doesn't change which columns land in the merged output.
+        // Sorted by name for a stable cache key; the script globs the
+        // staged directory, so order doesn't affect output.
         //
         CUSTOM_RSEMMERGECOUNTS (
             ch_counts_gene
