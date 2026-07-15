@@ -54,7 +54,7 @@ output:
       - rclone-copy.log:
           type: file
           description: Rclone log file generated during the copy operation.
-          pattern: "rclone-copy.log"
+          pattern: "*rclone-copy.log"
           ontologies: []
   versions_rclone:
     - - ${task.process}:
