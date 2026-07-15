@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "octopusv_plotcircos"
+description: "Draw a genome-wide structural variant Circos plot from an OctopuSV SVCF file."
+keywords:
+  - structural variant
+  - circos
+  - plot
+  - visualisation
+tools:
+  - "octopusv":
+      description: "End-to-end structural variant post-processing: standardize, merge,
+        compare, and export SVs."
+      homepage: "https://github.com/ylab-hi/OctopuSV"
+      documentation: "https://github.com/ylab-hi/OctopuSV"
+      tool_dev_url: "https://github.com/ylab-hi/octopusV"
+      doi: "10.1093/bioinformatics/btaf599"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - svcf:
+        type: file
+        description: Structural variant call file in OctopuSV SVCF format
+        pattern: "*.svcf"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+  - fai:
+      type: file
+      description: Optional reference FASTA index used to define chromosome sizes; built-in hg38 sizes are used when absent
+      pattern: "*.fai"
+      optional: true
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # TSV
+output:
+  circos:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.circos.${output_format}":
+          type: file
+          description: Genome-wide structural variant Circos plot in the requested output format
+          pattern: "*circos.${output_format}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
+            - edam: "http://edamontology.org/format_3603" # PNG
+            - edam: "http://edamontology.org/format_3604" # SVG
+  oversized_intra:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.circos.oversized_intra.tsv:
+          type: file
+          description: Intra-chromosomal structural variants exceeding the maximum displayed span
+          pattern: "*.circos.oversized_intra.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_octopusv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"
