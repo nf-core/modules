@@ -14,7 +14,7 @@ process OCTOPUSV_PLOTCIRCOS {
     output:
     tuple val(meta), path("${prefix}.circos.${output_format}"), emit: circos
     tuple val(meta), path("${prefix}.circos.oversized_intra.tsv"), emit: oversized_intra
-    tuple val("${task.process}"), val('octopusv'), eval("python -c \"import importlib.metadata as m; print(m.version('octopusv'))\""), emit: versions_octopusv, topic: versions
+    tuple val("${task.process}"), val('octopusv'), eval("octopusv  --help  | sed -n 's/^ *Version: *//p'"), emit: versions_octopusv, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
