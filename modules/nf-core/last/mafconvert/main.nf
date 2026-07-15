@@ -4,8 +4,8 @@ process LAST_MAFCONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ba/ba8202e2037fc58cd059a87ad671bcf62184781bfac9ae1a8da10c608d5a90cb/data'
-        : 'community.wave.seqera.io/library/bcftools_last_samtools:3b6cdcbfe24ff634'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd71afd3ecc7734aaf576750a0a2879512a9a50b8cd2caee5a0d2fdb2e1fe21b/data'
+        : 'community.wave.seqera.io/library/bcftools_last_samtools_gzip:6baa7d64a57919ca'}"
 
     input:
     tuple val(meta), path(maf), val(format)
