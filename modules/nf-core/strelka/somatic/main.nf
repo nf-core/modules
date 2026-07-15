@@ -56,4 +56,3 @@ process STRELKA_SOMATIC {
     touch ${prefix}.somatic_snvs.vcf.gz.tbi
     """
 }
-}
