@@ -30,6 +30,9 @@ input:
         pattern: "*.svcf"
         ontologies:
           - edam: "http://edamontology.org/format_3016" # VCF
+    - output_format:
+        type: string
+        description: Output format for the Circos plot (valid values - pdf, png, svg)
   - fai:
       type: file
       description: Optional reference FASTA index used to define chromosome sizes; built-in hg38 sizes are used when absent

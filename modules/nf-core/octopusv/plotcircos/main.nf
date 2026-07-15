@@ -16,6 +16,9 @@ process OCTOPUSV_PLOTCIRCOS {
     tuple val(meta), path("${prefix}.circos.oversized_intra.tsv"), emit: oversized_intra
     tuple val("${task.process}"), val('octopusv'), eval("python -c \"import importlib.metadata as m; print(m.version('octopusv'))\""), emit: versions_octopusv, topic: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
