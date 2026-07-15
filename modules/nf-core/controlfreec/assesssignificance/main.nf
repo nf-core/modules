@@ -4,8 +4,8 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/control-freec:11.6b--hdbdd923_0'
-        : 'quay.io/biocontainers/control-freec:11.6b--hdbdd923_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/control-freec:11.6--h1b792b2_1'
+        : 'quay.io/biocontainers/control-freec:11.6--h1b792b2_1'}"
 
     input:
     tuple val(meta), path(cnvs), path(ratio)

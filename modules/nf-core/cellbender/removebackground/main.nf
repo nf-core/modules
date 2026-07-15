@@ -1,6 +1,7 @@
 process CELLBENDER_REMOVEBACKGROUND {
     tag "$meta.id"
     label 'process_medium'
+    label 'process_long'
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
@@ -34,7 +35,6 @@ process CELLBENDER_REMOVEBACKGROUND {
         TMPDIR=. cellbender remove-background \
             ${args} \
             --cpu-threads ${task.cpus} \
-            --estimator-multiple-cpu \
             ${use_gpu} \
             --input ${h5ad} \
             --output ${prefix}.h5

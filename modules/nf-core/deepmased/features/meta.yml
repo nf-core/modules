@@ -1,0 +1,114 @@
+name: "deepmased_features"
+description: "DeepMAsED features subcommand: extracts alignment-based features from
+  BAM and assembly FASTA for each contig, producing feature tables used as input for
+  DeepMAsED predict."
+keywords:
+  - metagenomics
+  - assembly
+  - quality control
+  - error detection
+  - deep learning
+  - features
+tools:
+  - "deepmased":
+      description: "Deep learning for Metagenome Assembly Error Detection"
+      homepage: "https://github.com/leylabmpi/DeepMAsED"
+      documentation: "https://github.com/leylabmpi/DeepMAsED"
+      tool_dev_url: "https://github.com/leylabmpi/DeepMAsED"
+      doi: "10.1093/bioinformatics/btaa386"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM file of reads mapped to the assembly
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+    - fasta:
+        type: file
+        description: Assembly in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  feature_table:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_feature_file_paths.tsv":
+          type: file
+          description: Index file listing all generated feature table files
+          pattern: "*_feature_file_paths.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  feature_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_feats.tsv":
+          type: file
+          description: Per-contig feature tables (one per parallel bin)
+          pattern: "*_feats.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  versions_deepmased:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - deepmased:
+          type: string
+          description: The tool name
+      - 0.3.1:
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_setuptools:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - setuptools:
+          type: string
+          description: The tool name
+      - "78.1":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - deepmased:
+          type: string
+          description: The tool name
+      - 0.3.1:
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - setuptools:
+          type: string
+          description: The tool name
+      - "78.1":
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@SkyLexS"
+maintainers:
+  - "@SkyLexS"

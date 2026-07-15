@@ -2,33 +2,6 @@
     "sarscov2 - fastq - single-end - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "genome.idx:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.json:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "fastq_filtered": [
                     [
                         {
@@ -42,7 +15,8 @@
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": true,
+                            "index_id": "genome"
                         },
                         "genome.idx:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -58,69 +32,152 @@
                 ]
             }
         ],
+        "timestamp": "2026-06-25T09:44:29.66627682",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-13T09:19:12.052209052"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     },
     "sarscov2 - fastq - paired-end": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.idx:md5,84e4985c91800686db9c9dca28fabd1a"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
+            {
+                "fastq_filtered": [
                     [
-                        "test_1.fq.gz:md5,bf1aa22249e7e2b462c6be1a53ac55e9",
-                        "test_2.fq.gz:md5,d3106ad7395c78a212e6214177d5c054"
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_1.fq.gz:md5,bf1aa22249e7e2b462c6be1a53ac55e9",
+                            "test_2.fq.gz:md5,d3106ad7395c78a212e6214177d5c054"
+                        ]
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false,
+                            "index_id": "genome"
+                        },
+                        "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.json"
                     ]
                 ]
-            ],
-            "test.json"
+            }
         ],
+        "timestamp": "2026-06-25T09:31:25.930510862",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-13T09:19:03.559444963"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     },
     "sarscov2 - fastq - single-end": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.idx:md5,84e4985c91800686db9c9dca28fabd1a"
+            {
+                "fastq_filtered": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fq.gz:md5,2250e99ec61fca0e28e2dcb5124d1a16"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true,
+                            "index_id": "genome"
+                        },
+                        "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.json"
+                    ]
                 ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.fq.gz:md5,2250e99ec61fca0e28e2dcb5124d1a16"
-                ]
-            ],
-            "test.json"
+            }
         ],
+        "timestamp": "2026-06-25T09:31:18.10054354",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-13T09:18:55.835377502"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "sarscov2 - identical fasta should be indexed only once": {
+        "content": [
+            {
+                "fastq_filtered": [
+                    [
+                        {
+                            "id": "sample1",
+                            "single_end": true
+                        },
+                        "sample1.fq.gz:md5,2250e99ec61fca0e28e2dcb5124d1a16"
+                    ],
+                    [
+                        {
+                            "id": "sample2",
+                            "single_end": true
+                        },
+                        "sample2.fq.gz:md5,fd26c42f54e3316dfc8d082d9b6ed209"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "sample1",
+                            "single_end": true,
+                            "index_id": "genome"
+                        },
+                        "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
+                    ],
+                    [
+                        {
+                            "id": "sample2",
+                            "single_end": true,
+                            "index_id": "genome"
+                        },
+                        "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "sample1",
+                            "single_end": true
+                        },
+                        "sample1.json"
+                    ],
+                    [
+                        {
+                            "id": "sample2",
+                            "single_end": true
+                        },
+                        "sample2.json"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-25T09:24:55.20131212",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     }
 }

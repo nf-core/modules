@@ -1,6 +1,6 @@
 name: hmmer_hmmalign
-description: hmmalign from the HMMER suite aligns a number of sequences to an HMM
-  profile
+description: hmmalign from the HMMER suite aligns a number of sequences to an
+  HMM profile
 keywords:
   - alignment
   - HMMER
@@ -13,7 +13,8 @@ tools:
       homepage: http://hmmer.org/
       documentation: http://hmmer.org/documentation.html
       doi: "10.1371/journal.pcbi.1002195"
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifier: ""
 input:
   - - meta:
@@ -66,7 +67,6 @@ topics:
       - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@erikrikarddaniel"
   - "@jfy133"

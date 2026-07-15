@@ -55,7 +55,7 @@ jobs:
           rm -rf ./* || true
           rm -rf ./.??* || true
           ls -la ./
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0
 
@@ -104,7 +104,11 @@ jobs:
   # Standard GPU tests (g4dn.xlarge - 4 vCPU, 16 GB RAM, T4 GPU)
   # Runs tests tagged "gpu" (20+ modules: parabricks, amulety, cellpose, etc.)
   nf-test-gpu:
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
+    runs-on:
+      - runs-on=${{ github.run_id }}
+      - family=g4dn.xlarge
+      - image=ubuntu24-gpu-x64
+      - volume=40gb
     name: "GPU Test | g4dn.xlarge | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.gpu_total_shards != '0' && needs.nf-test-changes.outputs.gpu_total_shards != '' }}
@@ -118,7 +122,7 @@ jobs:
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.gpu_total_shards }}
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0
       - name: test cuda
@@ -156,7 +160,7 @@ jobs:
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.gpu_highmem_total_shards }}
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0
       - name: test cuda

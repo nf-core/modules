@@ -43,7 +43,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = CENTRIFUGER_CENTRIFUGER.out.classification_file
+                input[0] = CENTRIFUGER_CENTRIFUGER.out.classification_file.map { meta, file -> [[id: 'quant'], file] }
                 input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
                 input[2] = []
                 input[3] = []
@@ -72,7 +72,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = CENTRIFUGER_CENTRIFUGER.out.classification_file
+                input[0] = CENTRIFUGER_CENTRIFUGER.out.classification_file.map { meta, file -> [[id: 'quant'], file] }
                 input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
                 input[2] = []
                 input[3] = []
