@@ -24,11 +24,10 @@ process CHELAE_TRIM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def adapter_fasta_arg = adapter_fasta ? "--adapter-fasta ${adapter_fasta}" : ''
-    def input_files = meta.single_end ? "${reads}" : "${reads[0]} ${reads[1]}"
     def output_files = meta.single_end ? "${prefix}.chelae.fastq.gz" : "${prefix}_R1.chelae.fastq.gz ${prefix}_R2.chelae.fastq.gz"
     """
     chelae trim \\
-        -i ${input_files} \\
+        -i ${reads} \\
         -o ${output_files} \\
         -t ${task.cpus} \\
         -j ${prefix}.chelae.json \\
