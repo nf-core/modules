@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "angsd_dosaf"
 description: Estimate site allele frequencies from BAM files.
 keywords:
@@ -12,7 +11,9 @@ tools:
       documentation: "http://www.popgen.dk/angsd/"
       tool_dev_url: "https://github.com/ANGSD/angsd"
       doi: "10.1186/s12859-014-0356-4"
-      licence: ["GPL v3", "MIT"]
+      licence:
+        - "GPL v3"
+        - "MIT"
       identifier: biotools:angsd
 input:
   - - meta:
@@ -25,57 +26,59 @@ input:
         description: A list of BAM or CRAM files.
         pattern: "*.{bam,cram}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_3462" # CRAM
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_3462"
     - bam_indices:
         type: file
         description: A list of BAM or CRAM indices.
         pattern: "*.{bam.bai,cram.crai}"
         ontologies:
-          - edam: "http://edamontology.org/format_3327" # BAI
-          - edam: "http://edamontology.org/format_3462" # CRAM (no dedicated CRAI term in EDAM)
+          - edam: "http://edamontology.org/format_3327"
+          - edam: "http://edamontology.org/format_3462"
   - - reference_fasta:
         type: file
         description: A reference genome in FASTA format.
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1929"
     - reference_fai:
         type: file
         description: Index of the reference genome FASTA file.
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}.fai"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA (no dedicated FAI term in EDAM)
+          - edam: "http://edamontology.org/format_1929"
   - - ancestral_fasta:
         type: file
         description: An ancestral state genome in FASTA format.
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1929"
     - ancestral_fai:
         type: file
         description: Index of the ancestral state genome FASTA file.
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}.fai"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA (no dedicated FAI term in EDAM)
-  - - error_file:
-        type: file
-        description: A file containing per-base substitution error rates for use with the Sykes genotype likelihood model (-GL 4).
-        pattern: "*.errors"
-        ontologies: []
-  - - inbreeding_coefficients:
-        type: file
-        description: A file containing estimates of individual inbreeding coefficients.
-        pattern: "*.indF"
-        ontologies: []
-  - - gl_model:
-        type: integer
-        description: |
-          Genotype likelihood model to use (angsd -GL). 1=SAMtools, 2=GATK, 3=SOAPsnp, 4=SYK.
-  - - dosaf_mode:
-        type: integer
-        description: |
-          Site allele frequency likelihood estimation mode (angsd -doSAF). 1=standard, 2=inbreeding-aware (requires indF).
+          - edam: "http://edamontology.org/format_1929" 
+  - error_file:
+      type: file
+      description: A file containing per-base substitution error rates for use
+        with the Sykes genotype likelihood model (-GL 4).
+      pattern: "*.errors"
+      ontologies: []
+  - inbreeding_coefficients:
+      type: file
+      description: A file containing estimates of individual inbreeding
+        coefficients.
+      pattern: "*.indF"
+      ontologies: []
+  - gl_model:
+      type: integer
+      description: |
+        Genotype likelihood model to use (angsd -GL). 1=SAMtools, 2=GATK, 3=SOAPsnp, 4=SYK.
+  - dosaf_mode:
+      type: integer
+      description: |
+        Site allele frequency likelihood estimation mode (angsd -doSAF). 1=standard, 2=inbreeding-aware (requires indF).
 output:
   saf:
     - - meta:
@@ -89,14 +92,18 @@ output:
           ontologies: []
       - "*.saf.pos.gz":
           type: file
-          description: Gzipped file containing genomic positions of sites in the SAF
+          description: Gzipped file containing genomic positions of sites in the
+            SAF
           pattern: "*.saf.pos.gz"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3989
       - "*.saf.gz":
           type: file
-          description: Gzipped binary file containing per-site sample allele frequency likelihoods
+          description: Gzipped binary file containing per-site sample allele
+            frequency likelihoods
           pattern: "*.saf.gz"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   versions_angsd:
     - - "${task.process}":
           type: string
