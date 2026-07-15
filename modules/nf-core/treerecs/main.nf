@@ -30,7 +30,7 @@ process TREERECS {
         --force \\
         --parallelize
 
-    mv treerecs_tmp/* ${prefix}.recphylo.xml
+    mv treerecs_tmp/*.xml ${prefix}.recphylo.xml
     """
 
     stub:
