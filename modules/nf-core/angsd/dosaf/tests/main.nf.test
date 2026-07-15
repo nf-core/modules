@@ -8,8 +8,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "angsd"
     tag "angsd/dosaf"
-    
-    
+
+
     // -------------------------------------------------------------------------
     // SUCCESS CASE 1: GL 1; doSAF 1; no ancestral
     // -------------------------------------------------------------------------
@@ -19,7 +19,7 @@ nextflow_process {
 
         when {
             params {
-                angsd_args   = '-GL 1 -doSAF 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
             process {
@@ -44,13 +44,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = []
+                input[5] = 1
+                input[6] = 1
                 """
             }
         }
@@ -78,7 +79,7 @@ nextflow_process {
 
         when {
             params {
-                angsd_args   = '-GL 1 -doSAF 2 -doMajorMinor 1 -doMaf 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-doMajorMinor 1 -doMaf 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
             process {
@@ -103,20 +104,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ 
-                    [
-                        id: "FIN",
-                        population: "FIN",
-                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
-                    ],
-                    file("${launchDir}/angsd_FIN.indF", checkIfExists: true)
-                ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = file("${launchDir}/angsd_FIN.indF", checkIfExists: true)
+                input[5] = 1
+                input[6] = 2
                 """
             }
         }
@@ -130,7 +125,7 @@ nextflow_process {
         }
     }
 
-    
+
     // -------------------------------------------------------------------------
     // SUCCESS CASE 3: GL 3; doSAF 1; no ancestral
     // -------------------------------------------------------------------------
@@ -140,10 +135,10 @@ nextflow_process {
 
         when {
             params {
-                angsd_args   = '-GL 3 -doSAF 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
-            
+
             process {
                 """
                 input[0] = [
@@ -166,13 +161,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = []
+                input[5] = 3
+                input[6] = 1
                 """
             }
         }
@@ -197,13 +193,13 @@ nextflow_process {
         setup {
             new File("${launchDir}/angsd_syk.errors").text = "0.000000\t0.005488\t0.003847\t0.003137\t0.006807\t0.000000\t0.001972\t0.002396\t0.002190\t0.001855\t0.000000\t0.008068\t0.002491\t0.004268\t0.005812\t0.000000\n"
         }
-        
+
         when {
             params {
-                angsd_args   = '-GL 4 -doSAF 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
-            
+
             process {
                 """
                 input[0] = [
@@ -226,16 +222,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [
-                    [ id: 'errors' ],
-                    file("${launchDir}/angsd_syk.errors", checkIfExists: true)
-                ]
-                input[4] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = file("${launchDir}/angsd_syk.errors", checkIfExists: true)
+                input[4] = []
+                input[5] = 4
+                input[6] = 1
                 """
             }
         }
@@ -259,7 +253,7 @@ nextflow_process {
 
         when {
             params {
-                angsd_args   = '-GL 1 -doSAF 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
             process {
@@ -284,17 +278,17 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
                 input[2] = [
-                    [ id:'ancestral_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/resources/homo_sapiens_ancestor_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/resources/homo_sapiens_ancestor_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[3] = []
+                input[4] = []
+                input[5] = 1
+                input[6] = 1
                 """
             }
         }
@@ -318,7 +312,7 @@ nextflow_process {
 
         when {
             params {
-                angsd_args   = '-GL 1 -doSAF 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0.5
             }
             process {
@@ -343,13 +337,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = []
+                input[5] = 1
+                input[6] = 1
                 """
             }
         }
@@ -362,8 +357,8 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     // -------------------------------------------------------------------------
     // FAILURE CASE 1: Missing inbreeding coefficients file (needed for doSAF 2)
     // -------------------------------------------------------------------------
@@ -373,7 +368,7 @@ nextflow_process {
 
         when {
             params {
-                angsd_args   = '-GL 1 -doSAF 2 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
             process {
@@ -398,13 +393,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = []
+                input[5] = 1
+                input[6] = 2
                 """
             }
         }
@@ -424,15 +420,15 @@ nextflow_process {
 
 
     // -------------------------------------------------------------------------
-    // FAILURE CASE 2: Missing doSAF flag
+    // FAILURE CASE 2: Missing doSAF mode (not supplied)
     // -------------------------------------------------------------------------
 
-    test("angsd - missing -doSAF flag") {
+    test("angsd - missing doSAF mode") {
         config "./nextflow.config"
 
         when {
             params {
-                angsd_args   = '-GL 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
             process {
@@ -457,13 +453,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = []
+                input[5] = 1
+                input[6] = []
                 """
             }
         }
@@ -476,22 +473,22 @@ nextflow_process {
 
             assertAll(
                 { assert process.failed },
-                { assert caused.contains("No valid doSAF mode selected") }
+                { assert caused.contains("Invalid doSAF mode") }
             )
         }
     }
 
 
     // -------------------------------------------------------------------------
-    // FAILURE CASE 3: Missing GL flag
+    // FAILURE CASE 3: Missing GL model (not supplied)
     // -------------------------------------------------------------------------
 
-    test("angsd - missing -GL flag") {
+    test("angsd - missing GL model") {
         config "./nextflow.config"
 
         when {
             params {
-                angsd_args   = '-doSAF 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
             process {
@@ -516,13 +513,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = 1
                 """
             }
         }
@@ -535,7 +533,7 @@ nextflow_process {
 
             assertAll(
                 { assert process.failed },
-                { assert caused.contains("No valid GL model selected") }
+                { assert caused.contains("Invalid GL model") }
             )
         }
     }
@@ -550,7 +548,7 @@ nextflow_process {
 
         when {
             params {
-                angsd_args   = '-GL 5 -doSAF 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
             process {
@@ -575,13 +573,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = []
+                input[5] = 5
+                input[6] = 1
                 """
             }
         }
@@ -594,12 +593,12 @@ nextflow_process {
 
             assertAll(
                 { assert process.failed },
-                { assert caused.contains("No valid GL model selected") }
+                { assert caused.contains("Invalid GL model") }
             )
         }
     }
 
-    
+
     // -------------------------------------------------------------------------
     // FAILURE CASE 5: Missing error file (required by -GL 4)
     // -------------------------------------------------------------------------
@@ -609,7 +608,7 @@ nextflow_process {
 
         when {
             params {
-                angsd_args   = '-GL 4 -doSAF 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
             process {"""
@@ -633,13 +632,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = []
+                input[5] = 4
+                input[6] = 1
                 """}
         }
 
@@ -670,7 +670,7 @@ nextflow_process {
 
         when {
             params {
-                angsd_args   = '-GL 1 -doSAF 2 -doMaf 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-doMaf 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
             process {
@@ -695,20 +695,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ 
-                    [
-                        id: "FIN",
-                        population: "FIN",
-                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
-                    ],
-                    file("${launchDir}/angsd_FIN.indF", checkIfExists: true)
-                ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = file("${launchDir}/angsd_FIN.indF", checkIfExists: true)
+                input[5] = 1
+                input[6] = 2
                 """
             }
         }
@@ -740,7 +734,7 @@ nextflow_process {
 
         when {
             params {
-                angsd_args   = '-GL 1 -doSAF 2 -doMajorMinor 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-doMajorMinor 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
             process {
@@ -765,20 +759,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ 
-                    [
-                        id: "FIN",
-                        population: "FIN",
-                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
-                    ],
-                    file("${launchDir}/angsd_FIN.indF", checkIfExists: true)
-                ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = file("${launchDir}/angsd_FIN.indF", checkIfExists: true)
+                input[5] = 1
+                input[6] = 2
                 """
             }
         }
@@ -807,7 +795,7 @@ nextflow_process {
 
         when {
             params {
-                angsd_args   = '-GL 1 -doSAF 1 -r chr20:1400000-1500000 -checkBamHeaders 0'
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
                 min_ind_frac = 0
             }
             process {
@@ -832,13 +820,14 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [ id:'reference_fa' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
                 ]
-                input[2] = [ [], [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = []
+                input[5] = 1
+                input[6] = 1
                 """
             }
         }
@@ -852,4 +841,3 @@ nextflow_process {
     }
 
 }
-
