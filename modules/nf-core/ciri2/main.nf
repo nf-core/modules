@@ -44,7 +44,7 @@ process CIRI2 {
     // TODO nf-core: Update the command here to obtain the version number of the software used in this module
     // TODO nf-core: If multiple software packages are used in this module, all MUST be added here
     //               by copying the line below and replacing the current tool with the extra tool(s)
-    tuple val("${task.process}"), val('ciri2'), eval("ciri2 --version"), topic: versions, emit: versions_ciri2
+    tuple val("${task.process}"), val('CIRI2.pl'), eval("CIRI2.pl --version"), topic: versions, emit: versions_ciri2_pl
 
     when:
     task.ext.when == null || task.ext.when
@@ -64,7 +64,7 @@ process CIRI2 {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    perl CIRI2.pl \\
+    CIRI2.pl \\
         -I $sam \\
         -O ${prefix}.txt \\
         $reference \\

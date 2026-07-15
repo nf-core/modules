@@ -54,16 +54,6 @@ output:
           description: Output file containing circRNA list
           pattern: "*.{txt}"
           ontologies: []
-  versions_ciri2:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - ciri2:
-          type: string
-          description: The name of the tool
-      - ciri2 --version:
-          type: eval
-          description: The expression to obtain the version of the tool
   logfile:
     - - meta:
           type: map
@@ -80,10 +70,10 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - ciri2:
+      - CIRI2.pl:
           type: string
           description: The name of the tool
-      - ciri2 --version:
+      - CIRI2.pl --version:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
