@@ -173,4 +173,23 @@ nextflow_process {
             )
         }
     }
+
+    test("Test propr/propd - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[:], '', '', '']
+                input[1] = [[id: 'test'], [], []]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
 }
