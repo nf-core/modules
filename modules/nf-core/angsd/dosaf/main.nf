@@ -9,10 +9,12 @@ process ANGSD_DOSAF {
 
     input:
     tuple val(meta), path(bams), path(bam_indices)
-    tuple val(meta2), path(reference_fasta), path(reference_fai)
-    tuple val(meta3), path(ancestral_fasta), path(ancestral_fai) // Optional. Provides ancestral state for unfolded SFS.
-    tuple val(meta4), path(error_file) // Optional. Required for SYK model (-GL 4) only.
-    tuple val(meta5), path(inbreeding_coefficients) // Optional. Required for -doSAF 2 (inbreeding-aware mode).
+    tuple path(reference_fasta), path(reference_fai)
+    tuple path(ancestral_fasta), path(ancestral_fai) // Optional. Provides ancestral state for unfolded SFS.
+    path(error_file) // Optional. Required for SYK model (-GL 4) only.
+    path(inbreeding_coefficients) // Optional. Required for -doSAF 2 (inbreeding-aware mode).
+    val(gl_model)
+    val(dosaf_mode)
 
     output:
     tuple val(meta), path("*.saf.idx"), path("*.saf.pos.gz"), path("*.saf.gz"), emit: saf
@@ -26,22 +28,16 @@ process ANGSD_DOSAF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     // Validate GL model
-    def gl_model = args.contains("-GL 1") ? 1 :
-                   args.contains("-GL 2") ? 2 :
-                   args.contains("-GL 3") ? 3 :
-                   args.contains("-GL 4") ? 4 : 0
-    if (gl_model == 0) {
+    if (!(gl_model in [1, 2, 3, 4])) {
         error(
-            "ANGSD_DOSAF: No valid GL model selected. Please specify one of: -GL 1, -GL 2, -GL 3, or -GL 4 in ext.args."
+            "ANGSD_DOSAF: Invalid GL model '${gl_model}'. Please pass one of 1, 2, 3, or 4 as the gl_model input."
             )
     }
 
     // Validate doSAF mode
-    def dosaf_mode = args.contains("-doSAF 1") ? 1 :
-                     args.contains("-doSAF 2") ? 2 : 0
-    if (dosaf_mode == 0) {
+    if (!(dosaf_mode in [1, 2])) {
         error(
-            "ANGSD_DOSAF: No valid doSAF mode selected. Please specify -doSAF 1 or -doSAF 2 in ext.args."
+            "ANGSD_DOSAF: Invalid doSAF mode '${dosaf_mode}'. Please pass 1 or 2 as the dosaf_mode input."
             )
     }
 
@@ -109,13 +105,15 @@ process ANGSD_DOSAF {
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
             -minQ 0 \\
-            -GL 3 \\
+            -GL ${gl_model} \\
             -ref ${reference_fasta} \\
             -out ${prefix}
 
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
+            -GL ${gl_model} \\
+            -doSAF ${dosaf_mode} \\
             ${ref} \\
             ${indF_arg} \\
             ${args} \\
@@ -131,6 +129,8 @@ process ANGSD_DOSAF {
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
+            -GL ${gl_model} \\
+            -doSAF ${dosaf_mode} \\
             ${ref} \\
             ${indF_arg} \\
             ${errors_arg} \\
@@ -148,6 +148,8 @@ process ANGSD_DOSAF {
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
+            -GL ${gl_model} \\
+            -doSAF ${dosaf_mode} \\
             ${ref} \\
             ${indF_arg} \\
             ${args} \\
