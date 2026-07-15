@@ -12,7 +12,7 @@ process TREERECS {
 
     output:
     tuple val(meta), path("*.xml"), emit: rectree
-    tuple val("${task.process}"), val('treerecs'), eval("treerecs --version"), topic: versions, emit: versions_treerecs
+    tuple val("${task.process}"), val('treerecs'), eval("treerecs --version | sed -n 's/^Treerecs \\([0-9.]*\\)\$/\\1/p'"), topic: versions, emit: versions_treerecs
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,13 +23,13 @@ process TREERECS {
     """
     treerecs \\
         $args \\
-        ‐‐genetree $genetree \\
-        ‐‐speciestree $speciestree \\
-        ‐‐outdir treerecs_tmp \\
-        ‐‐output-format recphyloxml \\
-        ‐‐force \\
-        ‐‐parallelize
-    
+        --genetree $genetree \\
+        --speciestree $speciestree \\
+        --outdir treerecs_tmp \\
+        --output-format recphyloxml \\
+        --force \\
+        --parallelize
+
     mv treerecs_tmp/* ${prefix}.recphylo.xml
     """
 
