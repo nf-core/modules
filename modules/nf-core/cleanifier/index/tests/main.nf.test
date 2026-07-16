@@ -35,7 +35,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.index[0][1]).getFileName().toString(),
                     path(process.out.info[0][1]).getFileName().toString(),
-                    process.out.versions_cleanifier
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match() 
                 }
             )
@@ -67,7 +67,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.index[0][1]).getFileName().toString(),
                     path(process.out.info[0][1]).getFileName().toString(),
-                    process.out.versions_cleanifier
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match() 
                 }
             )
