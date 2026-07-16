@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gapseq"
     tag "gapseq/find"
+    tag "gapseq/requestdb"
 
     test("candidatus_portiera_aleyrodidarum proteome [fasta]") {
 
@@ -19,6 +20,7 @@ nextflow_process {
                     [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
                 ])
+                input[1] = []
                 """
             }
         }
@@ -50,6 +52,17 @@ nextflow_process {
 
         options "-stub"
 
+        setup {
+            run("GAPSEQ_REQUESTDB") {
+                script "../../requestdb/main.nf"
+                process {
+                    """
+                    input[0] = 'Bacteria'
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
@@ -57,6 +70,7 @@ nextflow_process {
                     [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
                 ])
+                input[1] = GAPSEQ_REQUESTDB.out.db
                 """
             }
         }
