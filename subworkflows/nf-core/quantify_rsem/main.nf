@@ -51,14 +51,18 @@ workflow QUANTIFY_RSEM {
     if (!skip_merge) {
         //
         // Sorted by name for a stable cache key; the script globs the
-        // staged directory, so order doesn't affect output.
+        // staged directory, so order doesn't affect output. Filtered to
+        // skip CUSTOM_RSEMMERGECOUNTS when there are no samples, since
+        // toSortedList() emits [] rather than nothing on an empty channel.
         //
         CUSTOM_RSEMMERGECOUNTS (
             ch_counts_gene
                 .toSortedList { a, b -> a[1].name <=> b[1].name }
+                .filter { sorted -> sorted.size() > 0 }
                 .map { sorted -> [ ['id': 'all_samples'], sorted.collect { it[1] } ] },
             ch_counts_transcript
                 .toSortedList { a, b -> a[1].name <=> b[1].name }
+                .filter { sorted -> sorted.size() > 0 }
                 .map { sorted -> sorted.collect { it[1] } }
         )
         ch_merged_counts_gene       = CUSTOM_RSEMMERGECOUNTS.out.counts_gene
