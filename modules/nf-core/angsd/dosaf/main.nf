@@ -94,8 +94,7 @@ process ANGSD_DOSAF {
     """
 
 // SOAPsnp (-GL 3) needs a calibration pass first to generate the matrix
-// angsd reads back in during the doSAF step. -GL 3 is hardcoded here
-// since no other args should reach the calibration call.
+// angsd reads back in during the doSAF step.
 def calibration = ''
 if (gl_model == 3) {
     calibration = """
@@ -120,7 +119,7 @@ angsd \\
     -bam bamlist.txt \\
     -GL ${gl_model} \\
     -doSAF ${dosaf_mode} \\
-    ${ref} \\
+    ${ref_anc_arg} \\
     ${indF_arg} \\
     ${gl4_args} \\
     ${args} \\
