@@ -93,70 +93,40 @@ process ANGSD_DOSAF {
     printf '%s\\n' ${bams} > bamlist.txt
     """
 
-    if (gl_model == 3) {
-        // SOAPsnp requires a two-step process:
-        // 1. Calibration step with -minQ 0 to generate the calibration matrix in angsd_tmpdir/
-        // 2. doSAF step using the calibration matrix
-        // -GL 3 is hardcoded in the calibration step to avoid passing all other args
-        """
-        ${preamble}
+// SOAPsnp (-GL 3) needs a calibration pass first to generate the matrix
+// angsd reads back in during the doSAF step. -GL 3 is hardcoded here
+// since no other args should reach the calibration call.
+def calibration = ''
+if (gl_model == 3) {
+    calibration = """
+    angsd \\
+        -nThreads ${task.cpus} \\
+        -bam bamlist.txt \\
+        -minQ 0 \\
+        -GL ${gl_model} \\
+        -ref ${reference_fasta} \\
+        -out ${prefix}
+    """
+}
 
-        angsd \\
-            -nThreads ${task.cpus} \\
-            -bam bamlist.txt \\
-            -minQ 0 \\
-            -GL ${gl_model} \\
-            -ref ${reference_fasta} \\
-            -out ${prefix}
+// SYK model (-GL 4) needs an error file and -doCounts 1
+def gl4_args = gl_model == 4 ? "${errors_arg} -doCounts 1" : ''
 
-        angsd \\
-            -nThreads ${task.cpus} \\
-            -bam bamlist.txt \\
-            -GL ${gl_model} \\
-            -doSAF ${dosaf_mode} \\
-            ${ref} \\
-            ${indF_arg} \\
-            ${args} \\
-            ${min_ind_arg} \\
-            -out ${prefix}
-        """
-
-    } else if (gl_model == 4) {
-        // SYK model requires an error file and -doCounts 1
-        """
-        ${preamble}
-
-        angsd \\
-            -nThreads ${task.cpus} \\
-            -bam bamlist.txt \\
-            -GL ${gl_model} \\
-            -doSAF ${dosaf_mode} \\
-            ${ref} \\
-            ${indF_arg} \\
-            ${errors_arg} \\
-            -doCounts 1 \\
-            ${args} \\
-            ${min_ind_arg} \\
-            -out ${prefix}
-        """
-
-    } else {
-        // GL 1 (SAMtools) or GL 2 (GATK) - single angsd call
-        """
-        ${preamble}
-
-        angsd \\
-            -nThreads ${task.cpus} \\
-            -bam bamlist.txt \\
-            -GL ${gl_model} \\
-            -doSAF ${dosaf_mode} \\
-            ${ref} \\
-            ${indF_arg} \\
-            ${args} \\
-            ${min_ind_arg} \\
-            -out ${prefix}
-        """
-    }
+"""
+${preamble}
+${calibration}
+angsd \\
+    -nThreads ${task.cpus} \\
+    -bam bamlist.txt \\
+    -GL ${gl_model} \\
+    -doSAF ${dosaf_mode} \\
+    ${ref} \\
+    ${indF_arg} \\
+    ${gl4_args} \\
+    ${args} \\
+    ${min_ind_arg} \\
+    -out ${prefix}
+"""
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
