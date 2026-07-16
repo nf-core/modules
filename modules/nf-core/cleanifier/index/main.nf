@@ -1,20 +1,20 @@
 process CLEANIFIER_INDEX {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cleanifier:1.3.2--pyhdfd78af_0':
-        'quay.io/biocontainers/cleanifier:1.3.2--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cleanifier:1.3.2--pyhdfd78af_0'
+        : 'quay.io/biocontainers/cleanifier:1.3.2--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(reference)
     val n_objects
 
     output:
-    tuple val(meta), path("*.{filter,hash}"),                                                   emit: index
-    tuple val(meta), path("*.info"),                                                            emit: info
-    tuple val("${task.process}"), val('cleanifier'), eval("cleanifier --version"),              emit: versions_cleanifier, topic: versions
+    tuple val(meta), path("*.{filter,hash}"), emit: index
+    tuple val(meta), path("*.info"), emit: info
+    tuple val("${task.process}"), val('cleanifier'), eval("cleanifier --version"), emit: versions_cleanifier, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
