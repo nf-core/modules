@@ -43,16 +43,16 @@ process CLEANIFIER_FILTER {
     def keep_host = args.contains("--keep-host")
     if (meta.single_end) {
         """
-        echo | gzip > ${prefix}.clean_keep.fastq.gz
-        ${keep_host ? "echo | gzip > ${prefix}.clean_filter.fastq.gz" : ""}
+        echo "" | gzip > ${prefix}.clean_keep.fastq.gz
+        ${keep_host ? "echo \"\" | gzip > ${prefix}.clean_filter.fastq.gz" : ""}
         """
     }
     else {
         """
-        echo | gzip > ${prefix}.clean_1_keep.fastq.gz
-        echo | gzip > ${prefix}.clean_2_keep.fastq.gz
-        ${keep_host ? "echo | gzip > ${prefix}.clean_1_filter.fastq.gz" : ""}
-        ${keep_host ? "echo | gzip > ${prefix}.clean_2_filter.fastq.gz" : ""}
+        echo ""| gzip > ${prefix}.clean_1_keep.fastq.gz
+        echo "" | gzip > ${prefix}.clean_2_keep.fastq.gz
+        ${keep_host ? "echo \"\" | gzip > ${prefix}.clean_1_filter.fastq.gz" : ""}
+        ${keep_host ? "echo \"\" | gzip > ${prefix}.clean_2_filter.fastq.gz" : ""}
         """
     }
 }
