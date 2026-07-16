@@ -12,7 +12,7 @@ process RCLONE_COPY {
     path rclone_config
 
     output:
-    tuple val(meta), path("rclone-copy.log"), emit: log
+    tuple val(meta), path("*rclone-copy.log"), emit: log
     tuple val("${task.process}"), val('rclone'), eval("rclone --version | sed -n '1s/^rclone v//p'"), topic: versions, emit: versions_rclone
 
     when:
@@ -41,7 +41,7 @@ process RCLONE_COPY {
     rclone ${configArg} copy \\
         ${http_url_arg} \\
         ${args} \\
-        --log-file rclone-copy.log \\
+        --log-file "${meta.id}-rclone-copy.log" \\
         --transfers ${transfers} \\
         --checkers ${checkers} \\
         "${rclone_source}" \\
