@@ -15,7 +15,6 @@ nextflow_process {
     setup {
         run("CLEANIFIER_INDEX") {
             script "../../index/main.nf"
-            config "./nextflow.config"
             params {
                 module_args = '-k 31'
             }
