@@ -74,7 +74,7 @@ output:
       - octopusv:
           type: string
           description: The name of the tool
-      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+      - "octopusv  --help  | sed -n 's/^ *Version: *//p'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -86,7 +86,7 @@ topics:
       - octopusv:
           type: string
           description: The name of the tool
-      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+      - "octopusv  --help  | sed -n 's/^ *Version: *//p'":
           type: eval
           description: The expression to obtain the version of the tool
 
