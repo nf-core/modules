@@ -80,7 +80,7 @@ process ANGSD_DOSAF {
     // Reference / ancestral args.
     // If ancestral_fasta supplied: use as -anc and pass reference as -ref.
     // If not supplied: use reference as -anc and -ref (suitable for folded SFS via realSFS -fold 1).
-    def ref = ancestral_fasta ? "-anc ${ancestral_fasta} -ref ${reference_fasta}" : "-anc ${reference_fasta} -ref ${reference_fasta}"
+    def ref_anc_arg = ancestral_fasta ? "-anc ${ancestral_fasta} -ref ${reference_fasta}" : "-anc ${reference_fasta} -ref ${reference_fasta}"
 
     // Optional args
     def indF_arg   = inbreeding_coefficients ? "-indF ${inbreeding_coefficients}" : ""
