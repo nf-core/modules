@@ -37,6 +37,7 @@ nextflow_process {
                 {
                     assert snapshot(
                         eventNames,
+                        process.out.gtf.get(0).get(1),
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
@@ -70,6 +71,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     eventNames,
+                    process.out.gtf.get(0).get(1),
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -134,6 +136,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     eventNames,
+                    process.out.gtf.get(0).get(1),
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -166,6 +169,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     eventNames,
+                    process.out.gtf.get(0).get(1),
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )

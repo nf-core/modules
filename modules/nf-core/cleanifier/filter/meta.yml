@@ -1,0 +1,95 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "cleanifier_filter"
+description: Fast, lightweight contamination removal from microbiome data (FASTQ) using a probabilistic Cuckoo filter or Cuckoo hash table index
+keywords:
+  - contamination removal
+  - metagenomics
+  - microbiome
+  - filter
+tools:
+  - "cleanifier":
+      description: "A fast lightweight tool to remove contamination using k-mers."
+      homepage: "https://gitlab.com/rahmannlab/cleanifier"
+      documentation: "https://gitlab.com/rahmannlab/cleanifier"
+      tool_dev_url: "https://gitlab.com/rahmannlab/cleanifier"
+      doi: "10.1093/bioinformatics/btaf632"
+      licence: ['MIT']
+      identifier: biotools:cleanifier
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reads:
+        type: file
+        description: |
+          List of input FASTQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        pattern: "*.{fastq.gz,fq.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - index:
+        type: file
+        description: |
+          The Cleanifier index file (either a .filter or .hash file).
+        pattern: "*.{filter,hash}"
+    - info:
+        type: file
+        description: Metadata file containing index parameters.
+        pattern: "*.info"
+
+output:
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.clean*keep.fastq.gz":
+          type: file
+          description: |
+            FASTQ files containing the kept reads (non-contaminant sequences).
+          pattern: "*.clean*keep.fastq.gz"
+  removed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.clean*filter.fastq.gz":
+          type: file
+          description: |
+            Compressed FASTQ files containing the filtered/removed (host) reads.
+            Only generated if `--keep-host` is provided in `task.ext.args`.
+          pattern: "*.clean*filter.fastq.gz"
+  versions_cleanifier:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "cleanifier":
+          type: string
+          description: The name of the tool
+      - "cleanifier --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cleanifier:
+          type: string
+          description: The name of the tool
+      - cleanifier --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@LeonHornich"
+maintainers:
+  - "@LeonHornich"
