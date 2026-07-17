@@ -26,7 +26,6 @@ workflow FASTA_GXF_BUSCO_PLOT {
     val_busco_cleanup                           // val(boolean); Set to true to remove BUSCO intermediate files
 
     main:
-    ch_versions                                 = channel.empty()
     ch_db_path                                  = val_busco_lineages_path
                                                 ? channel.of(file(val_busco_lineages_path, checkIfExists: true))
                                                 : channel.of( [ [] ] )
@@ -190,5 +189,4 @@ workflow FASTA_GXF_BUSCO_PLOT {
     annotation_full_table                       = ch_annotation_full_table              // channel: [ meta3, tsv ]
     annotation_plot_summary_json                = ch_annotation_plot_summary            // channel: [ json ]
     annotation_png                              = ch_annotation_png                     // channel: [ png ]
-    versions                                    = ch_versions                           // channel: [ versions.yml ]
 }

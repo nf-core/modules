@@ -52,9 +52,17 @@ workflow QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT {
     // Import and summarize quantifications with tximport
     // In per-sample mode, run once per sample instead of collecting all
     //
+    // Sorted by name for a stable cache key; the R script derives sample
+    // identity from staged file names, not list position. Filtered to
+    // skip TXIMETA_TXIMPORT when there are no samples, since
+    // toSortedList() emits [] rather than nothing on an empty channel.
+    //
     ch_tximport_input = skip_merge
         ? quant_results
-        : quant_results.collect{ meta_results -> meta_results[1] }.map { results -> [ ['id': 'all_samples'], results ] }
+        : quant_results
+            .toSortedList { a, b -> a[1].name <=> b[1].name }
+            .filter { sorted -> sorted.size() > 0 }
+            .map { sorted -> [ ['id': 'all_samples'], sorted.collect { it[1] } ] }
 
     TXIMETA_TXIMPORT (
         ch_tximport_input,
