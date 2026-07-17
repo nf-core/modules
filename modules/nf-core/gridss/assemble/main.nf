@@ -9,7 +9,7 @@ process GRIDSS_ASSEMBLE {
 
     input:
     tuple val(meta), path(bams), path(bais), path(preprocess_dirs)
-    tuple val(meta2), path(fasta), path(fasta_fai), path(fasta_dict), path(bwa_index)
+    tuple val(meta2), path(fasta), path(fasta_fai), path(bwa_index)
     tuple val(meta3), path(gridss_config)
 
     output:
@@ -27,7 +27,14 @@ process GRIDSS_ASSEMBLE {
     def bams_list = bams instanceof List ? bams : [bams]
 
     """
-    ln -s \$(find -L ${bwa_index} -regex '.*\\.\\(amb\\|ann\\|pac\\|gridsscache\\|sa\\|bwt\\|img\\|alt\\)') ./
+    # GRIDSS requires all BWA index files to have the exact
+    # same basename as the reference fasta. This is a hard
+    # requirement of the tool - it will fail to find indices otherwise.
+    index_files=(\$(find -L "${bwa_index}" -regex '.*\\.\\(amb\\|ann\\|pac\\|gridsscache\\|sa\\|bwt\\|img\\|alt\\)\$'))
+
+    for index_file in "\${index_files[@]}"; do
+        ln -sf "\$index_file" "./${fasta}.\${index_file##*.}"
+    done
 
     gridss ${args} \\
         --jvmheap ${Math.round(task.memory.bytes * 0.95)} \\
@@ -44,7 +51,19 @@ process GRIDSS_ASSEMBLE {
 
     """
     mkdir -p ${prefix}.sv.assembly.bam.gridss.working
+
     touch ${prefix}.sv.assembly.bam
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.cigar_metrics",
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.coverage.blacklist.bed",
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.downsampled_0.bed",
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.excluded_0.bed",
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.idsv_metrics",
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.mapq_metrics",
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.quality_distribution_metrics",
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.subsetCalled_0.bed",
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.sv.bam",
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.sv.bam.bai",
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.tag_metrics"
 
     """
 }

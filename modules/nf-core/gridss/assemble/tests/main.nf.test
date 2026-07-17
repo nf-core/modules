@@ -4,7 +4,7 @@ nextflow_process {
 
     name "Test Process GRIDSS_ASSEMBLE"
     script "../main.nf"
-    config "./nextflow.config"
+    // config "./nextflow.config"
     process "GRIDSS_ASSEMBLE"
 
     tag "modules"
@@ -14,19 +14,19 @@ nextflow_process {
 
     setup {
         run("UNTAR") {
-            script "../../untar/main.nf"
+            script "../../../untar/main.nf"
             process {
                 """
                 input[0] = channel.of([
-                    [ id: 'gridss_preprocess_dir' ],
-                    file(params.modules_testdata_base_path + 'testdata/gridss/gridss_preprocess_dir.tar.gz', checkIfExists: true)
+                    [ id: 'test.paired_end.sorted.bam.gridss.working' ],
+                    file(params.modules_testdata_base_path + 'test.paired_end.sorted.bam.gridss.preprocess.tar.gz', checkIfExists: true)
                 ])
                 """
             }
         }
 
         run("BWA_INDEX") {
-            script "../../bwa/index/main.nf"
+            script "../../../bwa/index/main.nf"
             process {
                 """
                 input[0] = [
@@ -38,7 +38,7 @@ nextflow_process {
         }
     }
 
-    test("gridss_assemble - human - bam") {
+    test("human - bam") {
 
         when {
             process {
@@ -47,16 +47,15 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
-                ]).join(UNTAR.out.untar)
+                ]).combine(UNTAR.out.untar).map { meta, bam, bai, meta_untar, preprocess_dir -> [meta, bam, bai, preprocess_dir] }
                 input[1] = channel.of([
                     [id:'fasta'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
-                ]).join(BWA_INDEX.out.index)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]).combine(BWA_INDEX.out.index).map { meta, fasta, fai, meta_index, bwa_index -> [meta, fasta, fai, bwa_index] }
                 input[2] = channel.of([
                     [ id: 'gridss_config' ],
-                    file(params.modules_testdata_base_path + 'reference/GRCh37/gridss/gridss.properties', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'test-data/reference/GRCh37/gridss/gridss.properties', checkIfExists: true)
                 ])
                 """
             }
@@ -75,7 +74,7 @@ nextflow_process {
         }
     }
 
-    test("gridss_assemble - human - bam - stub") {
+    test("human - bam - stub") {
 
         options "-stub"
 
@@ -83,27 +82,18 @@ nextflow_process {
             process {
                 """
                 input[0] = channel.of([
-                    [ id: 'test_sample', sample_type: 'tumor' ],
-                    file(params.modules_testdata_base_path + 'testdata/bam/test.paired_end.markduplicates.gridss.targeted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'testdata/bam/test.paired_end.markduplicates.gridss.targeted.bam.bai', checkIfExists: true)
-                ])
-                .join(UNTAR.out.untar)
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ]).combine(UNTAR.out.untar).map { meta, bam, bai, meta_untar, preprocess_dir -> [meta, bam, bai, preprocess_dir] }
                 input[1] = channel.of([
-                    [ id: 'genome' ],
-                    file(params.modules_testdata_base_path + 'testdata/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[2] = BWA_INDEX.out.index
-                input[3] = channel.of([
-                    [ id: 'genome_fai' ],
-                    file(params.modules_testdata_base_path + 'testdata/genome/genome.fasta.fai', checkIfExists: true)
-                ])
-                input[4] = channel.of([
-                    [ id: 'genome_dict' ],
-                    file(params.modules_testdata_base_path + 'testdata/genome/genome.dict', checkIfExists: true)
-                ])
-                input[5] = channel.of([
+                    [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]).combine(BWA_INDEX.out.index).map { meta, fasta, fai, meta_index, bwa_index -> [meta, fasta, fai, bwa_index] }
+                input[2] = channel.of([
                     [ id: 'gridss_config' ],
-                    file(params.modules_testdata_base_path + 'reference/GRCh37/gridss/gridss.properties', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'test-data/reference/GRCh37/gridss/gridss.properties', checkIfExists: true)
                 ])
                 """
             }
