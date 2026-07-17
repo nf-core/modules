@@ -5,7 +5,7 @@ process TRIDENT_FETCH {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/poseidon-trident:1.6.7.1--hebebf5b_1'
-        : 'biocontainers/poseidon-trident:1.6.7.1--hebebf5b_1'}"
+        : 'quay.io/biocontainers/poseidon-trident:1.6.7.1--hebebf5b_1'}"
 
     input:
     tuple path(archive_dir), val(fetch_s), path(fetch_fn)
