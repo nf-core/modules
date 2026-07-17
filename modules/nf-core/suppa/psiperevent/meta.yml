@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "suppa_psiperevent"
 description: "Calculate PSI values for alternative splicing events using SUPPA"
 keywords:
@@ -8,14 +7,15 @@ keywords:
   - genomics
 tools:
   - "suppa":
-      description: "Fast, accurate, and uncertainty-aware differential splicing analysis across multiple conditions."
+      description: "Fast, accurate, and uncertainty-aware differential splicing analysis
+        across multiple conditions."
       homepage: "https://github.com/comprna/SUPPA"
       documentation: "https://github.com/comprna/SUPPA"
       tool_dev_url: "https://github.com/comprna/SUPPA"
       doi: "10.1186/s13059-018-1417-1"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:suppa
-
 input:
   - - meta:
         type: map
@@ -32,15 +32,15 @@ input:
         description: |
           Groovy Map containing genome information
           e.g. `[ id:'genome1' ]`
-    - expression:
+    - ioe:
         type: file
         description: Events file in ioe format
         pattern: "*.ioe"
         ontologies: []
   - total_filter:
       type: integer
-      description: Minimum total expression of the transcripts involved in the event to be considered for PSI calculation (default = 0)
-
+      description: Minimum total expression of the transcripts involved in the
+        event to be considered for PSI calculation (default = 0)
 output:
   psi:
     - - meta:
@@ -52,6 +52,7 @@ output:
           type: file
           description: PSI values file
           pattern: "*.psi"
+          ontologies: []
   versions_suppa:
     - - ${task.process}:
           type: string
@@ -62,7 +63,6 @@ output:
       - "suppa.py -v | sed '1!d;s/.* //'":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -71,7 +71,7 @@ topics:
       - suppa:
           type: string
           description: The name of the tool
-      - suppa.py -v | sed '1!d;s/.* //':
+      - "suppa.py -v | sed '1!d;s/.* //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

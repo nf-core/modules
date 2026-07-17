@@ -10,24 +10,24 @@ nextflow_process {
     tag "suppa"
     tag "suppa/psiperevent"
 
-    test("human - skipping exon - ioe") {
-
-        setup {
-            run("SUPPA_GENERATEEVENTS") {
-                script "../../generateevents/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
-                    input[1] = 'ioe'
-                    input[2] = false
-                    input[3] = 'SE'
-                    input[4] = 'S'
-                    input[5] = []
-                    input[6] = []
-                    """
-                }
+    setup {
+        run("SUPPA_GENERATEEVENTS") {
+            tag "suppa/generateevents"
+            script "../../generateevents/main.nf"
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioe'
+                input[2] = false
+                input[3] = 'SE'
+                input[4] = 'S'
+                input[5] = []
+                input[6] = []
+                """
             }
+        }
 
+        run("GENERATE_DUMMY_EXPRESSION") {
             def dummy_expression = file("${outputDir}/dummy_expression_matrix.txt")
             dummy_expression.text = """
             sample1
@@ -36,7 +36,10 @@ nextflow_process {
             ENSE00003754925.1\t0.0
             """.stripIndent().trim()
         }
+    }
 
+
+    test("human - skipping exon - ioe") {
         when {
             process {
                 """
@@ -58,32 +61,6 @@ nextflow_process {
     }
 
     test("human - alternative splice site - ioe") {
-
-        setup {
-            run("SUPPA_GENERATEEVENTS") {
-                script "../../generateevents/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
-                    input[1] = 'ioe'
-                    input[2] = false
-                    input[3] = 'SS'
-                    input[4] = 'S'
-                    input[5] = []
-                    input[6] = []
-                    """
-                }
-            }
-
-            def dummy_expression = file("${outputDir}/dummy_expression_matrix.txt")
-            dummy_expression.text = """
-            sample1
-            ENST00000625012.1\t10.5
-            ENSE00003760353.1\t95.1
-            ENSE00003754925.1\t0.0
-            """.stripIndent().trim()
-        }
-
         when {
             process {
                 """
@@ -105,32 +82,6 @@ nextflow_process {
     }
 
     test("human - mutually exclusive exons - ioe") {
-
-        setup {
-            run("SUPPA_GENERATEEVENTS") {
-                script "../../generateevents/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
-                    input[1] = 'ioe'
-                    input[2] = false
-                    input[3] = 'MX'
-                    input[4] = 'S'
-                    input[5] = []
-                    input[6] = []
-                    """
-                }
-            }
-
-            def dummy_expression = file("${outputDir}/dummy_expression_matrix.txt")
-            dummy_expression.text = """
-            sample1
-            ENST00000625012.1\t10.5
-            ENSE00003760353.1\t95.1
-            ENSE00003754925.1\t0.0
-            """.stripIndent().trim()
-        }
-
         when {
             process {
                 """
@@ -152,32 +103,6 @@ nextflow_process {
     }
 
     test("human - retained intron - ioe") {
-
-        setup {
-            run("SUPPA_GENERATEEVENTS") {
-                script "../../generateevents/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
-                    input[1] = 'ioe'
-                    input[2] = false
-                    input[3] = 'RI'
-                    input[4] = 'S'
-                    input[5] = []
-                    input[6] = []
-                    """
-                }
-            }
-
-            def dummy_expression = file("${outputDir}/dummy_expression_matrix.txt")
-            dummy_expression.text = """
-            sample1
-            ENST00000625012.1\t10.5
-            ENSE00003760353.1\t95.1
-            ENSE00003754925.1\t0.0
-            """.stripIndent().trim()
-        }
-
         when {
             process {
                 """
@@ -199,32 +124,6 @@ nextflow_process {
     }
 
     test("human - alternative first/last exons - ioe") {
-
-        setup {
-            run("SUPPA_GENERATEEVENTS") {
-                script "../../generateevents/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
-                    input[1] = 'ioe'
-                    input[2] = false
-                    input[3] = 'FL'
-                    input[4] = 'S'
-                    input[5] = []
-                    input[6] = []
-                    """
-                }
-            }
-
-            def dummy_expression = file("${outputDir}/dummy_expression_matrix.txt")
-            dummy_expression.text = """
-            sample1
-            ENST00000625012.1\t10.5
-            ENSE00003760353.1\t95.1
-            ENSE00003754925.1\t0.0
-            """.stripIndent().trim()
-        }
-
         when {
             process {
                 """
@@ -253,31 +152,6 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("SUPPA_GENERATEEVENTS") {
-                script "../../generateevents/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
-                    input[1] = 'ioe'
-                    input[2] = false
-                    input[3] = 'SE'
-                    input[4] = 'S'
-                    input[5] = []
-                    input[6] = []
-                    """
-                }
-            }
-
-            def dummy_expression = file("${outputDir}/dummy_expression_matrix.txt")
-            dummy_expression.text = """
-            sample1
-            ENST00000625012.1\t10.5
-            ENSE00003760353.1\t95.1
-            ENSE00003754925.1\t0.0
-            """.stripIndent().trim()
-        }
-
         when {
             process {
                 """
@@ -301,31 +175,6 @@ nextflow_process {
     test("human - alternative splice site - ioe - stub") {
 
         options "-stub"
-
-        setup {
-            run("SUPPA_GENERATEEVENTS") {
-                script "../../generateevents/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
-                    input[1] = 'ioe'
-                    input[2] = false
-                    input[3] = 'SS'
-                    input[4] = 'S'
-                    input[5] = []
-                    input[6] = []
-                    """
-                }
-            }
-
-            def dummy_expression = file("${outputDir}/dummy_expression_matrix.txt")
-            dummy_expression.text = """
-            sample1
-            ENST00000625012.1\t10.5
-            ENSE00003760353.1\t95.1
-            ENSE00003754925.1\t0.0
-            """.stripIndent().trim()
-        }
 
         when {
             process {
@@ -351,31 +200,6 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("SUPPA_GENERATEEVENTS") {
-                script "../../generateevents/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
-                    input[1] = 'ioe'
-                    input[2] = false
-                    input[3] = 'MX'
-                    input[4] = 'S'
-                    input[5] = []
-                    input[6] = []
-                    """
-                }
-            }
-
-            def dummy_expression = file("${outputDir}/dummy_expression_matrix.txt")
-            dummy_expression.text = """
-            sample1
-            ENST00000625012.1\t10.5
-            ENSE00003760353.1\t95.1
-            ENSE00003754925.1\t0.0
-            """.stripIndent().trim()
-        }
-
         when {
             process {
                 """
@@ -400,31 +224,6 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("SUPPA_GENERATEEVENTS") {
-                script "../../generateevents/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
-                    input[1] = 'ioe'
-                    input[2] = false
-                    input[3] = 'RI'
-                    input[4] = 'S'
-                    input[5] = []
-                    input[6] = []
-                    """
-                }
-            }
-
-            def dummy_expression = file("${outputDir}/dummy_expression_matrix.txt")
-            dummy_expression.text = """
-            sample1
-            ENST00000625012.1\t10.5
-            ENSE00003760353.1\t95.1
-            ENSE00003754925.1\t0.0
-            """.stripIndent().trim()
-        }
-
         when {
             process {
                 """
@@ -448,31 +247,6 @@ nextflow_process {
     test("human - alternative first/last exons - ioe - stub") {
 
         options "-stub"
-
-        setup {
-            run("SUPPA_GENERATEEVENTS") {
-                script "../../generateevents/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
-                    input[1] = 'ioe'
-                    input[2] = false
-                    input[3] = 'FL'
-                    input[4] = 'S'
-                    input[5] = []
-                    input[6] = []
-                    """
-                }
-            }
-
-            def dummy_expression = file("${outputDir}/dummy_expression_matrix.txt")
-            dummy_expression.text = """
-            sample1
-            ENST00000625012.1\t10.5
-            ENSE00003760353.1\t95.1
-            ENSE00003754925.1\t0.0
-            """.stripIndent().trim()
-        }
 
         when {
             process {
