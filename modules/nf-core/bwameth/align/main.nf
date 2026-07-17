@@ -26,7 +26,7 @@ process BWAMETH_ALIGN {
     def prefix     = task.ext.prefix ?: "${meta.id}"
     """
     export BWA_METH_SKIP_TIME_CHECKS=1
-    ln -sf \$(readlink ${fasta}) ${index}/${fasta}
+    [ -e "${index}/${fasta}" ] || ln -s "$(readlink "${fasta}")" "${index}/${fasta}"
 
     bwameth.py \\
         ${args} \\
