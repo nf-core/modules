@@ -48,11 +48,21 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing genome information. e.g. `[ id:'genome1' ]`
-      - "*.{ioe,ioi,gtf}":
+      - "*.{ioe,ioi}":
           type: file
           description: Alternative splicing events
-          pattern: "*.{ioe,ioi,gtf}"
+          pattern: "*.{ioe,ioi}"
           ontologies: []
+  gtf:
+    - - meta:
+          type: map
+          description: Groovy Map containing genome information. e.g. `[ id:'genome1' ]`
+      - "*.gtf":
+          type: file
+          description: GTF file
+          pattern: "*.gtf"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   versions_suppa:
     - - ${task.process}:
           type: string
