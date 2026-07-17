@@ -48,8 +48,10 @@ process SUPPA_GENERATEEVENTS {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: meta.id
+    def gtf_out = format == 'ioe' ? "touch ${prefix}.gtf" : ''
     """
     echo ${args}
     touch ${prefix}.${format}
+    ${gtf_out}
     """
 }
