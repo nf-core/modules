@@ -205,4 +205,142 @@ nextflow_process {
             )
         }
     }
+
+    test("bowtie2 | intra-instance -p threading | paired-end | 8 cpus") {
+
+        config './nextflow_pthreads.config'
+
+        when {
+            params {
+                bismark_args    = '--bowtie2'
+                genomeprep_args = '--bowtie2'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // directional Bowtie 2 = 2 instances; 8 cpus / 2 = -p 4
+                { assert file(process.out.report[0][1]).text.contains('-p 4 --reorder') }
+            )
+        }
+    }
+
+    test("bowtie2 | intra-instance -p threading | non_directional | 8 cpus") {
+
+        config './nextflow_pthreads.config'
+
+        when {
+            params {
+                bismark_args    = '--bowtie2 --non_directional'
+                genomeprep_args = '--bowtie2'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // non-directional = 4 instances; 8 cpus / 4 = -p 2
+                { assert file(process.out.report[0][1]).text.contains('-p 2 --reorder') }
+            )
+        }
+    }
+
+    test("hisat2 | intra-instance -p threading | paired-end | 8 cpus") {
+
+        config './nextflow_pthreads.config'
+
+        when {
+            params {
+                bismark_args    = '--hisat2'
+                genomeprep_args = '--hisat2'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // HISAT2 shares the 2/4 instance model + honours -p; directional = 2 instances, 8/2 = -p 4
+                { assert file(process.out.report[0][1]).text.contains('-p 4 --reorder') }
+            )
+        }
+    }
+
+    test("bowtie2 | combined_index | intra-instance -p threading | single-end | 8 cpus") {
+
+        config './nextflow_pthreads.config'
+
+        when {
+            params {
+                bismark_args    = '--bowtie2 --combined_index'
+                genomeprep_args = '--bowtie2 --combined_genome'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // combined index = 1 both-strands pass (n=1); 8 cpus / 1 = -p 8
+                { assert file(process.out.report[0][1]).text.contains('-p 8 --reorder') }
+            )
+        }
+    }
 }
