@@ -3,9 +3,9 @@ process SHINYNGS_STATICDIFFERENTIAL {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d782b4f11adf8f3cad6af74ea585468decd873a171da1dae0e4a24a82bb29020/data' :
-        'community.wave.seqera.io/library/r-shinyngs:2.4.0--709fc6932be670a5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8a/8acde9b0bc0374d51ca50f3e49fb0f26a6fb394d277b3af5e276de8bf1786610/data'
+        : 'community.wave.seqera.io/library/r-shinyngs:3.1.1--b5595b301bfbfd4d'}"
 
     input:
     tuple val(meta), path(differential_result)                              // Differential info: contrast and differential stats
