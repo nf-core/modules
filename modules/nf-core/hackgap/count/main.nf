@@ -31,7 +31,7 @@ process HACKGAP_COUNT {
         --threads-read ${read_threads} \\
         --subtables ${subtables_threads} \\
         --files ${reads} \\
-        -o ${prefix}
+        --out ${prefix}
     """
 
     stub:
