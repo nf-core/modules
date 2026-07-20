@@ -47,7 +47,7 @@ output:
       - pangolin:
           type: string
           description: The name of the tool
-      - pangolin -v | sed -n 's/pangolin \([0-9.]*\).*/\1/p':
+      - pangolin -v | sed 's/pangolin //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -58,7 +58,7 @@ topics:
       - pangolin:
           type: string
           description: The name of the tool
-      - pangolin -v | sed -n 's/pangolin \([0-9.]*\).*/\1/p':
+      - pangolin -v | sed 's/pangolin //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
