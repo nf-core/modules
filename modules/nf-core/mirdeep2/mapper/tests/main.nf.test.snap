@@ -1,51 +1,83 @@
 {
-    "mirdeep2 - fasta - stub": {
+    "mirdeep2 - mapper - fasta smrnaseq": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test_reads",
-                            "single_end": false
-                        },
-                        "test_reads.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "test_readsreads_vs_refdb.arf:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,33c794292d6772d67fa8001439394614"
-                ],
                 "outputs": [
                     [
                         {
-                            "id": "test_reads",
-                            "single_end": false
+                            "id": "small_Clone1_N1"
+                        },
+                        "small_Clone1_N1_collapsed.fa",
+                        "small_Clone1_N1_reads_collapsed_vs_genome_cel_cluster_genome.arf"
+                    ]
+                ],
+                "versions_mirdeep2": [
+                    [
+                        "MIRDEEP2_MAPPER",
+                        "mirdeep2",
+                        "2.0.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-07-06T22:20:40.838489993",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "mirdeep2 - fasta - stub": {
+        "content": [
+            {
+                "outputs": [
+                    [
+                        {
+                            "id": "test_reads"
                         },
                         "test_reads.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
                         "test_readsreads_vs_refdb.arf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,33c794292d6772d67fa8001439394614"
+                "versions_mirdeep2": [
+                    [
+                        "MIRDEEP2_MAPPER",
+                        "mirdeep2",
+                        "2.0.1"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-07-06T22:20:52.02701589",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-20T20:58:19.544297445"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     },
     "mirdeep2 - mapper - fasta celegans": {
         "content": [
-            [
-                "versions.yml:md5,33c794292d6772d67fa8001439394614"
-            ]
+            {
+                "outputs": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        "test_reads_collapsed.fa",
+                        "test_reads_reads_collapsed_vs_genome_cel_cluster_genome.arf"
+                    ]
+                ],
+                "versions_mirdeep2": [
+                    [
+                        "MIRDEEP2_MAPPER",
+                        "mirdeep2",
+                        "2.0.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-07-06T22:19:58.260680818",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-17T17:41:05.101661825"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     }
 }

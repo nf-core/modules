@@ -1,0 +1,77 @@
+name: "cleanifier_download"
+description: Download human reference index
+keywords:
+  - download
+  - index
+  - metagenomics
+  - contamination removal
+  - microbiome
+tools:
+  - "cleanifier":
+      description: "A fast lightweight tool to remove contamination using k-mers."
+      homepage: "https://gitlab.com/rahmannlab/cleanifier"
+      documentation: "https://gitlab.com/rahmannlab/cleanifier"
+      tool_dev_url: "https://gitlab.com/rahmannlab/cleanifier"
+      doi: "10.1093/bioinformatics/btaf632"
+      licence:
+        - "MIT"
+      identifier: biotools:cleanifier
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - version:
+        type: string
+        description: |
+          The version of the index to download. 
+          Options: 'probabilistic' (default) or 'exact'
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'human_index' ]`
+      - "*.{filter,hash}":
+          type: file
+          description: The main index file (Cuckoo filter or hash table).
+          pattern: "*.{filter,hash}"
+          ontologies: []
+  info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'human_index' ]`
+      - "*.info":
+          type: file
+          description: Metadata file containing index parameters.
+          pattern: "*.info"
+          ontologies: []
+  versions_cleanifier:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "cleanifier":
+          type: string
+          description: The name of the tool
+      - "cleanifier --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "cleanifier":
+          type: string
+          description: The name of the tool
+      - "cleanifier --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@LeonHornich"
+maintainers:
+  - "@LeonHornich"

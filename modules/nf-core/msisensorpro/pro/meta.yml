@@ -39,8 +39,19 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - list:
         type: file
-        description: micro-satellite list
-        pattern: "*.{list}"
+        description: |
+          Micro-satellite file passed to `msisensor-pro pro -d`. The tool
+          accepts either of two file types here:
+            1. A raw scan list produced by `msisensorpro/scan`. When used,
+               `msisensor-pro pro` falls back to a hard threshold for MSI
+               calling, set via `-i` (default `0.1`, configurable via
+               `ext.args`).
+            2. A trained baseline produced by `msisensorpro/baseline` from
+               a panel of normals. This enables per-site trained thresholds
+               and is the tumor-only workflow recommended by the
+               msisensor-pro maintainers
+               (https://github.com/xjtu-omics/msisensor-pro/wiki/Best-Practices).
+        pattern: "*.{list,baseline}"
         ontologies: []
   - - meta3:
         type: map
