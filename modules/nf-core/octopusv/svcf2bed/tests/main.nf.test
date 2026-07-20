@@ -1,0 +1,94 @@
+// nf-core modules test octopusv/svcf2bed
+nextflow_process {
+
+    name "Test Process OCTOPUSV_SVCF2BED"
+    script "../main.nf"
+    process "OCTOPUSV_SVCF2BED"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "octopusv"
+    tag "octopusv/svcf2bed"
+
+    // test("homo_sapiens - svcf") {
+
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'test' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
+    //             ]
+    //             """
+    //         }
+    //     }
+
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 path(process.out.vcf.get(0).get(1)).bed.summary,
+    //                 process.out.findAll { key, val -> key.startsWith('versions') }
+    //             ).match() }
+    //         )
+    //     }
+
+    // }
+
+    test("homo_sapiens - svcf - minimal") {
+
+        when {
+            params {
+                module_args = '--minimal'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - svcf - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--minimal'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
