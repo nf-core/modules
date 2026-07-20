@@ -1,0 +1,81 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "suppa_psiperisoform"
+description: "Calculate PSI values for transcript isoforms using SUPPA"
+keywords:
+  - transcript isoforms
+  - suppa
+  - psi
+  - genomics
+tools:
+  - "suppa":
+      description: "Fast, accurate, and uncertainty-aware differential splicing analysis
+        across multiple conditions."
+      homepage: "https://github.com/comprna/SUPPA"
+      documentation: "https://github.com/comprna/SUPPA"
+      tool_dev_url: "https://github.com/comprna/SUPPA"
+      doi: "10.1186/s13059-018-1417-1"
+      licence:
+        - "MIT"
+      identifier: biotools:suppa
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - tpm:
+        type: file
+        description: TPM expression matrix file
+        pattern: "*.{txt}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. `[ id:'genome1' ]`
+    - gtf:
+        type: file
+        description: GTF annotation file
+        pattern: "*.{gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+
+output:
+  psi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.psi":
+          type: file
+          description: PSI values file
+          pattern: "*.psi"
+          ontologies: []
+  versions_suppa:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - suppa:
+          type: string
+          description: The name of the tool
+      - "suppa.py -v | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - suppa:
+          type: string
+          description: The name of the tool
+      - "suppa.py -v | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lathikaa"
+  - "@piplus2"
+maintainers:
+  - "@piplus2"
