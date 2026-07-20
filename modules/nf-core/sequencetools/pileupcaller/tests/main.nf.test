@@ -31,7 +31,6 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.freqsum[0][1]).linesGzip[0..4],
                     process.out.versions,
-                    path(process.out.versions[0]).yaml
                     ).match() }
             )
         }
@@ -60,7 +59,6 @@ nextflow_process {
                     process.out.eigenstrat[0][2],
                     process.out.eigenstrat[0][3],
                     process.out.versions,
-                    path(process.out.versions[0]).yaml
                     ).match() }
             )
         }
@@ -89,7 +87,6 @@ nextflow_process {
                     process.out.plink[0][2],
                     process.out.plink[0][3],
                     process.out.versions,
-                    path(process.out.versions[0]).yaml
                     ).match() }
             )
         }
