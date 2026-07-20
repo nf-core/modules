@@ -13,7 +13,7 @@ process PANGOLIN_RUN {
 
     output:
     tuple val(meta), path('*.csv'), emit: report
-    tuple val("${task.process}"), val('pangolin'), eval("pangolin -v | sed -n 's/pangolin \\([0-9.]*\\).*/\\1/p'"), emit: versions_pangolin, topic: versions
+    tuple val("${task.process}"), val('pangolin'), eval("pangolin -v | sed 's/pangolin //'"), emit: versions_pangolin, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

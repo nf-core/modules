@@ -13,7 +13,7 @@ process PANGOLIN_UPDATEDATA {
     output:
     path("${prefix}")           , emit: db
     tuple val("${task.process}"), val('pangolin-dataset'), eval("pangolin -pv | sed -n 's/pangolin-data \\([0-9.]*\\).*/\\1/p'"), emit: versions_pangolin_dataset, topic: versions
-    tuple val("${task.process}"), val('pangolin'), eval("pangolin -v | sed -n 's/pangolin \\([0-9.]*\\).*/\\1/p'"), emit: versions_pangolin, topic: versions
+    tuple val("${task.process}"), val('pangolin'), eval("pangolin -v | sed 's/pangolin //'"), emit: versions_pangolin, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
