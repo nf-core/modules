@@ -11,31 +11,6 @@ nextflow_process {
     tag "octopusv"
     tag "octopusv/svcf2bed"
 
-    // test("homo_sapiens - svcf") {
-
-    //     when {
-    //         process {
-    //             """
-    //             input[0] = [
-    //                 [ id:'test' ],
-    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
-    //             ]
-    //             """
-    //         }
-    //     }
-
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(
-    //                 path(process.out.vcf.get(0).get(1)).bed.summary,
-    //                 process.out.findAll { key, val -> key.startsWith('versions') }
-    //             ).match() }
-    //         )
-    //     }
-
-    // }
-
     test("homo_sapiens - svcf - minimal") {
 
         when {
@@ -55,10 +30,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
