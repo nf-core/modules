@@ -36,12 +36,6 @@ process HACKGAP_COUNT {
         read_threads = 1
         split_threads = 2
     }
-
-    if (cpus < 4) {
-        subtables = 1
-        read_threads = 1
-        split_threads = 1
-    }
     """
     hackgap count \\
         ${args} \\
@@ -51,7 +45,7 @@ process HACKGAP_COUNT {
         --files ${reads} \\
         --out ${prefix}
     """
-
+    
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
