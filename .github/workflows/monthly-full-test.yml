@@ -1,0 +1,266 @@
+name: Monthly Full Module Test
+on:
+  schedule:
+    # Every Sunday at 2 AM UTC - cycles through all batches of 100 modules
+    - cron: "0 2 * * 0"
+  workflow_dispatch:
+    inputs:
+      batch:
+        description: "Batch number to test (1-based; each batch is 100 modules)"
+        required: true
+        default: "1"
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.inputs.batch || 'scheduled' }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
+  NFT_VER: "0.9.4"
+  NXF_ANSI_LOG: false
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
+  NXF_VER: "25.10.2"
+
+jobs:
+  list-modules:
+    name: List modules for batch
+    runs-on:
+      - runs-on=${{ github.run_id }}-list-modules
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
+    outputs:
+      batch_number: ${{ steps.list.outputs.batch_number }}
+      batch_label: ${{ steps.list.outputs.batch_label }}
+      paths: ${{ steps.list.outputs.paths }}
+      modules: ${{ steps.list.outputs.modules }}
+      shard: ${{ steps.set-shards.outputs.shard }}
+      total_shards: ${{ steps.set-shards.outputs.total_shards }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: List 100 modules for this batch
+        id: list
+        run: |
+          BATCH_SIZE=100
+
+          # All module directories that have a main.nf, sorted deterministically
+          ALL_PATHS=$(find modules/nf-core -name "main.nf" -type f | \
+            sed 's|/main.nf||' | sort)
+
+          TOTAL=$(echo "$ALL_PATHS" | wc -l | tr -d ' ')
+          TOTAL_BATCHES=$(( (TOTAL + BATCH_SIZE - 1) / BATCH_SIZE ))
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            BATCH=${{ github.event.inputs.batch }}
+          else
+            # Cycle through all batches using week-of-year
+            WEEK=$(date +%V | sed 's/^0//')
+            BATCH=$(( (WEEK - 1) % TOTAL_BATCHES + 1 ))
+          fi
+
+          # Clamp to valid range
+          if [ "$BATCH" -lt 1 ]; then BATCH=1; fi
+          if [ "$BATCH" -gt "$TOTAL_BATCHES" ]; then BATCH=$TOTAL_BATCHES; fi
+
+          START=$(( (BATCH - 1) * BATCH_SIZE + 1 ))
+          END=$(( BATCH * BATCH_SIZE ))
+
+          PATHS=$(echo "$ALL_PATHS" | sed -n "${START},${END}p" | \
+            jq -R -s -c 'split("\n") | map(select(length > 0))')
+
+          BATCH_LABEL="modules ${START}-$(echo "$PATHS" | jq 'length + '${START}' - 1') of ${TOTAL}"
+
+          echo "batch_number=$BATCH" >> $GITHUB_OUTPUT
+          echo "batch_label=$BATCH_LABEL" >> $GITHUB_OUTPUT
+          echo "paths=$PATHS" >> $GITHUB_OUTPUT
+
+          MODULES=$(echo "$PATHS" | jq -c 'map(gsub("modules/nf-core/"; ""))')
+          echo "modules=$MODULES" >> $GITHUB_OUTPUT
+
+          echo "Batch $BATCH of $TOTAL_BATCHES: $(echo "$PATHS" | jq 'length') modules"
+          echo "Sample: $(echo "$MODULES" | jq -r '.[0:5] | join(", ")')"
+
+      - name: Get number of shards
+        id: set-shards
+        if: ${{ steps.list.outputs.paths != '[]' }}
+        uses: ./.github/actions/get-shards
+        env:
+          NFT_VER: ${{ env.NFT_VER }}
+        with:
+          max_shards: 100
+          paths: "${{ join(fromJson(steps.list.outputs.paths), ' ') }}"
+
+      - name: Debug output
+        run: |
+          echo "Batch: ${{ steps.list.outputs.batch_number }} (${{ steps.list.outputs.batch_label }})"
+          echo "Paths: ${{ steps.list.outputs.paths }}"
+          echo "Modules: ${{ steps.list.outputs.modules }}"
+          echo "Shards: ${{ steps.set-shards.outputs.total_shards }}"
+
+  nf-test:
+    runs-on:
+      - runs-on=${{ github.run_id }}
+      - runner=4cpu-linux-x64
+      - image=ubuntu24-full-x64
+    name: "Batch ${{ needs.list-modules.outputs.batch_label }} | docker | shard ${{ matrix.shard }}"
+    needs: [list-modules]
+    if: ${{ needs.list-modules.outputs.total_shards != '0' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJson(needs.list-modules.outputs.shard) }}
+    env:
+      NXF_ANSI_LOG: false
+      TOTAL_SHARDS: ${{ needs.list-modules.outputs.total_shards }}
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Run nf-test Action
+        id: nf-test
+        uses: ./.github/actions/nf-test-action
+        env:
+          SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+          SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+          SENTIEON_AUTH_MECH: "GitHub Actions - token"
+        with:
+          profile: docker
+          shard: ${{ matrix.shard }}
+          total_shards: ${{ env.TOTAL_SHARDS }}
+          paths: "${{ join(fromJson(needs.list-modules.outputs.paths), ' ') }}"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: tap-results-${{ matrix.shard }}
+          path: test.tap
+          retention-days: 30
+
+  confirm-pass:
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
+    needs: [nf-test]
+    if: always()
+    outputs:
+      test_status: ${{ steps.set-status.outputs.status }}
+    steps:
+      - name: Set test status
+        id: set-status
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" ]]; then
+            echo "status=failed" >> $GITHUB_OUTPUT
+          elif [[ "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "status=cancelled" >> $GITHUB_OUTPUT
+          elif [[ "${{ contains(needs.*.result, 'success') }}" == "true" ]]; then
+            echo "status=passed" >> $GITHUB_OUTPUT
+          else
+            echo "status=skipped" >> $GITHUB_OUTPUT
+          fi
+
+      - name: One or more tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: One or more tests cancelled
+        if: ${{ contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
+      - name: All tests passed
+        if: ${{ contains(needs.*.result, 'success') }}
+        run: |
+          echo "✅ All tests passed for batch ${{ needs.list-modules.outputs.batch_number }}"
+          echo "Batch range: ${{ needs.list-modules.outputs.batch_label }}"
+
+      - name: Debug output
+        if: always()
+        run: |
+          echo "::group::DEBUG: Results"
+          echo "Batch: ${{ needs.list-modules.outputs.batch_number }} (${{ needs.list-modules.outputs.batch_label }})"
+          echo "Results: ${{ toJSON(needs.*.result) }}"
+          echo "::endgroup::"
+
+  update-dashboard:
+    runs-on:
+      - runs-on=${{ github.run_id }}-update-dashboard
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
+    needs: [list-modules, nf-test, confirm-pass]
+    if: always() && needs.list-modules.outputs.total_shards != '0'
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Download all test results
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: tap-results-*
+          path: tap-results/
+
+      - name: Parse test results
+        id: parse
+        run: |
+          python3 - <<'PYTHON'
+          import os
+          import re
+          from pathlib import Path
+
+          failed_tests = set()
+          total_tests = 0
+          passed_tests = 0
+
+          # Parse all TAP files
+          tap_dir = Path("tap-results")
+          if tap_dir.exists():
+              for tap_file in tap_dir.rglob("test.tap"):
+                  with open(tap_file) as f:
+                      for line in f:
+                          line = line.strip()
+                          if line.startswith("ok "):
+                              total_tests += 1
+                              passed_tests += 1
+                          elif line.startswith("not ok "):
+                              total_tests += 1
+                              # Extract test name (remove "not ok <number> ")
+                              test_name = re.sub(r'^not ok \d+ ', '', line)
+                              failed_tests.add(test_name)
+
+          failed_count = len(failed_tests)
+
+          # Write to GitHub output
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"failed_count={failed_count}\n")
+              f.write(f"passed_count={passed_tests}\n")
+              f.write(f"total_count={total_tests}\n")
+
+          # Write failed tests to file
+          with open("failed_tests.txt", "w") as f:
+              for test in sorted(failed_tests):
+                  f.write(f"{test}\n")
+
+          print(f"Parsed {total_tests} tests: {passed_tests} passed, {failed_count} failed")
+          PYTHON
+
+      - name: Create or update dashboard issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BATCH_NUM: ${{ needs.list-modules.outputs.batch_number }}
+          BATCH_LABEL: ${{ needs.list-modules.outputs.batch_label }}
+          STATUS: ${{ needs.confirm-pass.outputs.test_status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_NUMBER: ${{ github.run_number }}
+          FAILED_COUNT: ${{ steps.parse.outputs.failed_count }}
+          PASSED_COUNT: ${{ steps.parse.outputs.passed_count }}
+          TOTAL_COUNT: ${{ steps.parse.outputs.total_count }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 .github/scripts/update-test-dashboard.py
