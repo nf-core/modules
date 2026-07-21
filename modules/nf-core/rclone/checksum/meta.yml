@@ -32,11 +32,22 @@ input:
         type: string
         description: Hash type to check, for example MD5, SHA1, or SHA256.
     - destination:
-        type: file
-        description: File or directory containing destination files to check against the SUM file.
-        pattern: ""
-        ontologies:
-          - edam: "http://edamontology.org/data_0006"
+        type: string
+        description: |
+          Directory containing destination files to check against the SUM file. This should be the fully resolved target
+          path understood by Rclone, such as a local path or a configured remote
+          path. The module does not append sample IDs, basenames, or modify this
+          path internally.
+          Examples: `results/output`, `s3:bucket/output`, `gs:bucket/output`,
+          `remote:path/to/output`.
+  - rclone_config:
+      type: file
+      description: |
+        Rclone configuration file defining the remotes used by source_path and/or
+        destination_path. Authentication and remote-specific options should be
+        configured in this file where possible.
+      pattern: "*.conf"
+      ontologies: []
 output:
   combined:
     - - meta:
