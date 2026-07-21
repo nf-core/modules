@@ -1,0 +1,117 @@
+name: "stitchr_thimble"
+description: Automatic TCR nucleotide sequence generation from V, J and CDR3
+  information
+keywords:
+  - TCR
+  - sequence
+  - immunology
+tools:
+  - "stitchr":
+      description: "Automatic TCR nucleotide sequence generation from V, J and CDR3
+        information"
+      homepage: "https://github.com/JamieHeather/stitchr"
+      documentation: "https://jamieheather.github.io/stitchr/index.html"
+      tool_dev_url: "https://github.com/JamieHeather/stitchr"
+      doi: "10.1093/nar/gkac190"
+      licence:
+        - "MIT"
+      identifier: ""
+  - "imgtgenedl":
+      description: "provides access to TCR and IG genes stored in IMGT/GENE-DB"
+      homepage: "https://github.com/JamieHeather/IMGTgeneDL"
+      documentation: "https://github.com/JamieHeather/IMGTgeneDL/blob/main/README.md"
+      tool_dev_url: "https://github.com/JamieHeather/IMGTgeneDL"
+      doi: "10.1093/nar/gkab1136"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing per sample information
+          e.g. `[ id:'sample1' ]`
+    - samplesheet:
+        type: file
+        description: tsv containing J,V and CDR3 information
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  - - meta2:
+        type: map
+        description: |
+          Information about codon usage
+    - alt_codon_usage:
+        type: file
+        description: txt containing alternative codon usage in kazusa-like format
+        pattern: "*.txt"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Information about non-standard allele preferences
+    - allele_preferences:
+        type: file
+        description: tsv containing alternative allele preferences
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  - species:
+      type: string
+      description: Species ("mouse" or "human")
+output:
+  thimble:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${meta.id}.tsv:
+          type: file
+          description: |
+            tsv containing full TCR sequences
+          ontologies: []
+  versions_stitchr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stitchr:
+          type: string
+          description: The name of the tool
+      - stitchr --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_imgtgenedl:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - imgtgenedl:
+          type: string
+          description: The name of the tool
+      - 0.6.1:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stitchr:
+          type: string
+          description: The name of the tool
+      - stitchr --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - imgtgenedl:
+          type: string
+          description: The name of the tool
+      - 0.6.1:
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Clara0611"
+maintainers:
+  - "@Clara0611"
