@@ -4,8 +4,8 @@ process ISOSEQ3_TAG {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/isoseq3:4.0.0--h9ee0642_0':
-        'quay.io/biocontainers/isoseq3:4.0.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/isoseq:4.0.0--h9ee0642_0':
+        'quay.io/biocontainers/isoseq:4.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -14,7 +14,7 @@ process ISOSEQ3_TAG {
     output:
     tuple val(meta), path("*.flt.bam")                  , emit: bam
     tuple val(meta), path("*.flt.bam.pbi")              , emit: pbi
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('isoseq3'), eval("isoseq tag --version | head -n 1 | sed 's/isoseq tag //g' | sed 's/ (.*//g'"), emit: versions_isoseq3, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process ISOSEQ3_TAG {
         ${prefix}.5p--3p.bam \\
         ${prefix}.flt.bam \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        isoseq3: \$(isoseq tag --version | head -n 1 | sed 's/isoseq tag //g' | sed 's/ (.*//g' )
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +39,5 @@ process ISOSEQ3_TAG {
     """
     touch ${prefix}.flt.bam
     touch ${prefix}.flt.bam.pbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        isoseq3: \$(isoseq tag --version | head -n 1 | sed 's/isoseq tag //g' | sed 's/ (.*//g' )
-    END_VERSIONS
     """
 }
