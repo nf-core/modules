@@ -3,19 +3,32 @@ nextflow_process {
     name "Test Process RCLONE_CHECKSUM"
     script "../main.nf"
     process "RCLONE_CHECKSUM"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "rclone"
     tag "rclone/checksum"
 
-    test("hello - md5") {
+    test("test - md5 - match") {
+
         when {
             process {
                 """
-                file('hello.md5').text = 'e59ff97941044f85df5297e1c302d260  hello.txt\\n'
+                file('malt.md5').text = [
+                    "444118a9fb9d0a03c37e86094d8e52a9  WBcel235.105/sequence.III.bin",
+                    "2fd1694bd91cf7952cbad8cfed161e53  WBcel235.105/sequence.I.bin",
+                    "ff756628faa0b71cd65495668c3d82b5  WBcel235.105/sequence.IV.bin",
+                    "bacedbdea89508e108223767fa260a4c  WBcel235.105/sequence.II.bin",
+                    "d6ad5476162ac45829f719dd4ee3f4e7  WBcel235.105/sequence.V.bin",
+                    "ec2bc2ae81755ab90fcf1848bc7ce41f  WBcel235.105/sequence.bin",
+                    "b79bec6cc8f96b8373dac56bab5d0a6c  WBcel235.105/sequence.X.bin"
+                ].join('\\n') + '\\n'
 
-                input[0] = [[id:'test'], file('hello.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
+                file('rclone.config').text = '[s3]\\ntype = s3\\nprovider = AWS\\nregion = eu-west-1\\nenv_auth = false\\nno_check_bucket = true'
+
+                input[0] = [[id:'test'], file('malt.md5'), 'MD5', "s3://annotation-cache/snpeff_cache/WBcel235.105/"]
+                input[1] = file('rclone.config')
                 """
             }
         }
@@ -28,15 +41,16 @@ nextflow_process {
         }
     }
 
-    test("hello - md5 - stub") {
+    test("test - md5 - stub") {
         options "-stub"
 
         when {
             process {
                 """
-                file('hello.md5').text = 'e59ff97941044f85df5297e1c302d260  hello.txt\\n'
+                file('test.md5').text = 'e59ff97941044f85df5297e1c302d260  hello.txt\\n'
 
-                input[0] = [[id:'test'], file('hello.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
+                input[0] = [[id:'test'], file('test.md5'), 'MD5', "s3://nf-core-test-datasets/modules/data/delete_me/malt/"]
+                input[1] = []
                 """
             }
         }
@@ -49,13 +63,15 @@ nextflow_process {
         }
     }
 
-    test("hello - differs") {
+    test("test - md5 - differs") {
         when {
             process {
                 """
-                file('hello_bad.md5').text = '00000000000000000000000000000000  hello.txt\\n'
+                file('test_bad.md5').text = '00000000000000000000000000000000  hello.txt'
+                file('rclone.config').text = '[s3]\\ntype = s3\\nprovider = AWS\\nregion = eu-west-1\\nenv_auth = false\\nno_check_bucket = true'
 
-                input[0] = [[id:'test'], file('hello_bad.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
+                input[0] = [[id:'test'], file('test_bad.md5'), 'MD5', "s3://annotation-cache/snpeff_cache/WBcel235.105/"]
+                input[1] = file('rclone.config')
                 """
             }
         }
@@ -64,25 +80,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "match", "missing_on_dst", "missing_on_src", "error"]) ).match() }
-            )
-        }
-    }
-
-    test("missing destination") {
-        when {
-            process {
-                """
-                file('missing.md5').text = 'e59ff97941044f85df5297e1c302d260  missing.txt\\n'
-
-                input[0] = [[id:'test'], file('missing.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "match", "missing_on_src", "error"])).match() }
             )
         }
     }

@@ -1,6 +1,7 @@
 process RCLONE_CHECKSUM {
     tag "${meta.id}"
     label 'process_low'
+    stageInMode 'copy'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -8,7 +9,8 @@ process RCLONE_CHECKSUM {
             : 'community.wave.seqera.io/library/rclone:1.74.3--2ef33c5b9132aa97' }"
 
     input:
-    tuple val(meta), path(sumfile), val(hash), path(destination, stageAs: 'destination/*')
+    tuple val(meta), path(sumfile), val(hash), val(destination)
+    path rclone_config
 
     output:
     tuple val(meta), path("${prefix}.combined.txt")       , emit: combined      , optional: true
@@ -25,10 +27,10 @@ process RCLONE_CHECKSUM {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def configArg = rclone_config ? "--config ${rclone_config}" : ''
 
     """
-    rclone checksum \\
-        --copy-links \\
+    rclone checksum ${configArg} \\
         $args \\
         --combined ${prefix}.combined.txt \\
         --differ ${prefix}.differ.txt \\
@@ -39,7 +41,12 @@ process RCLONE_CHECKSUM {
         --checkers $task.cpus \\
         $hash \\
         $sumfile \\
-        destination || true
+        ${destination} || true
+
+    # Do not emit empty output files
+    for f in *.txt; do
+        [ -s "\$f" ] || rm -f "\$f"
+    done
     """
 
     stub:

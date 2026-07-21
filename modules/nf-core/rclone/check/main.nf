@@ -8,7 +8,8 @@ process RCLONE_CHECK {
             : 'community.wave.seqera.io/library/rclone:1.74.3--2ef33c5b9132aa97' }"
 
     input:
-    tuple val(meta), path(source, stageAs: 'source/*'), path(destination, stageAs: 'destination/*')
+    tuple val(meta), val(source), val(destination)
+    path rclone_config
 
     output:
     tuple val(meta), path("${prefix}.combined.txt")       , emit: combined      , optional: true
@@ -25,10 +26,10 @@ process RCLONE_CHECK {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def configArg = rclone_config ? "--config ${rclone_config}" : ''
 
     """
-    rclone check \\
-        --copy-links \\
+    rclone check ${configArg} \\
         $args \\
         --combined ${prefix}.combined.txt \\
         --differ ${prefix}.differ.txt \\
@@ -37,8 +38,13 @@ process RCLONE_CHECK {
         --match ${prefix}.match.txt \\
         --error ${prefix}.error.txt \\
         --checkers $task.cpus \\
-        source \\
-        destination || true
+        ${source} \\
+        ${destination} || true
+
+    # Do not emit empty output files
+    for f in *.txt; do
+        [ -s "\$f" ] || rm -f "\$f"
+    done
     """
 
     stub:
