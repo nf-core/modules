@@ -52,7 +52,9 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
                           table_s = shared[[sample_name]] %>%
                               CNAqc::subset_by_segment_karyotype("1:1") %>%
                               CNAqc::Mutations() %>%
-                              dplyr::mutate(sample_id=sample_name)
+                              dplyr::mutate(sample_id=sample_name) %>%
+			      dplyr::filter(chr %in% c(paste0('chr', 1:22), as.character(1:22)))
+
                           if (nrow(table_s) == 0) {
                             cli::cli_alert_warning("Sample {sample_name} has no diploid mutations!")
                           }

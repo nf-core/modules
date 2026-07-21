@@ -3,9 +3,9 @@ process PAIRTOOLS_FLIP {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pairtools:1.1.3--py39h7a39fba_0' :
-        'biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
+        'quay.io/biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
 
     input:
     tuple val(meta), path(sam)
@@ -28,5 +28,11 @@ process PAIRTOOLS_FLIP {
         $args \\
         -o ${prefix}.flip.gz \\
         $sam
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.flip.gz
     """
 }

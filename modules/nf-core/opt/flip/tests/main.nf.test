@@ -9,52 +9,56 @@ nextflow_process {
     tag "opt"
     tag "opt/flip"
 
-    test("testrun panel probe sequences") {
+    test("testrun opt/flip panel probe sequences") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test_run' ],
-                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/panel_probe_sequences.fasta', checkIfExists: true)
+                    [ id:'testrun_opt_flip' ],
+                    file(params.modules_testdata_base_path + 'spatial_omics/probe_detection/probes.fa', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id:'test_run' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [ id:'test_references' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
                 ]
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test("testrun panel probe sequences -stub") {
+    test("testrun opt/flip panel probe sequences -stub") {
+
         options "-stub"
+
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test_run' ],
-                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/panel_probe_sequences.fasta', checkIfExists: true)
+                    [ id:'testrun_opt_stat' ],
+                    file(params.modules_testdata_base_path + 'spatial_omics/probe_detection/probes.fa', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id:'test_run' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [ id:'test_references' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
                 ]
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

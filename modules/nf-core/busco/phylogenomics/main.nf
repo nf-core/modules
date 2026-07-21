@@ -3,9 +3,9 @@ process BUSCO_PHYLOGENOMICS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/busco_phylogenomics:20240919--pyhdfd78af_0':
-        'biocontainers/busco_phylogenomics:20240919--pyhdfd78af_0' }"
+        'quay.io/biocontainers/busco_phylogenomics:20240919--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(busco)
@@ -14,7 +14,7 @@ process BUSCO_PHYLOGENOMICS {
     tuple val(meta), path("${prefix}/gene_trees_single_copy/"), emit: gene_trees
     tuple val(meta), path("${prefix}/supermatrix/")           , emit: supermatrix
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('busco_phylogenomics'), eval('echo 20240919'), emit: versions_buscophylogenomics, topic: versions
+    tuple val("${task.process}"), val('busco_phylogenomics'), val('20240919'), emit: versions_buscophylogenomics, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

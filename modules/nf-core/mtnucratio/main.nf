@@ -3,9 +3,9 @@ process MTNUCRATIO {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mtnucratio:0.7--hdfd78af_2' :
-        'biocontainers/mtnucratio:0.7--hdfd78af_2' }"
+        'quay.io/biocontainers/mtnucratio:0.7--hdfd78af_2' }"
 
     input:
     tuple val(meta), path(bam)
@@ -14,7 +14,7 @@ process MTNUCRATIO {
     output:
     tuple val(meta), path("*.mtnucratio"), emit: mtnucratio
     tuple val(meta), path("*.json")      , emit: json
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('mtnucratio'), eval("mtnucratio --version 2>&1 | sed -n 's/Version: //p'"), emit: versions_mtnucratio, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,14 +23,9 @@ process MTNUCRATIO {
     def args = task.ext.args ?: ''
     """
     mtnucratio \\
-        $args \\
-        $bam \\
-        $mt_id
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mtnucratio: \$(mtnucratio --version 2>&1 | sed -n '1s/Version: //p')
-    END_VERSIONS
+        ${args} \\
+        ${bam} \\
+        ${mt_id}
     """
 
     stub:
@@ -38,10 +33,5 @@ process MTNUCRATIO {
     """
     touch ${prefix}.mtnucratio
     touch ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mtnucratio: \$(mtnucratio --version 2>&1 | sed -n '1s/Version: //p')
-    END_VERSIONS
     """
 }

@@ -2,7 +2,7 @@ process MCQUANT {
     tag "${meta.id}"
     label 'process_single'
 
-    container "nf-core/quantification:1.5.4"
+    container "quay.io/nf-core/quantification:1.5.4"
 
     input:
     tuple val(meta), path(image)

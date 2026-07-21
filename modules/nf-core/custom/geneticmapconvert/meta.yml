@@ -52,6 +52,7 @@ output:
             tab-delimited file with header and columns:
             pos, chr, cM
           pattern: "*.glimpse.map"
+          ontologies: []
   plink_map:
     - - meta:
           type: map
@@ -65,6 +66,7 @@ output:
             space-delimited file without header and columns:
             chr, id, cM, pos
           pattern: "*.plink.map"
+          ontologies: []
   stitch_map:
     - - meta:
           type: map
@@ -78,6 +80,7 @@ output:
             space-delimited file with header and columns:
             pos, rate, cM
           pattern: "*.stitch.map"
+          ontologies: []
   minimac_map:
     - - meta:
           type: map
@@ -91,18 +94,34 @@ output:
             tab-delimited file with header and columns:
             chr, pos, cM
           pattern: "*.minimac.map"
-  versions_geneticmapconvert:
+          ontologies: []
+  versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
+  session_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.R_sessionInfo.log:
+          type: file
+          description: dump of R SessionInfo
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/data_1678" # Log
 topics:
   versions:
     - versions.yml:
-        type: string
-        description: The name of the process
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LouisLeNezet"
 maintainers:

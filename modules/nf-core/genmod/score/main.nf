@@ -3,9 +3,9 @@ process GENMOD_SCORE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/31/31b331bee43c7ff070bdde5460a4102ba31c3bfb0ee0d70197001ff011036555/data' :
-        'community.wave.seqera.io/library/genmod_python:31b2fba4d3b7ba6f' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ac/acf051b79e515c6fb504092ca3bae45030c956f4e3f0488e62dab3ad16976146/data' :
+        'community.wave.seqera.io/library/genmod:3.12.0--9b9048c2e842d266' }"
 
     input:
     tuple val(meta), path(input_vcf), path (fam), path (score_config)

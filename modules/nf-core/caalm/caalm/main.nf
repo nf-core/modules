@@ -2,10 +2,10 @@ process CAALM_CAALM {
     tag "$meta.id"
     label 'process_high'
 
-    conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/840046fbd06b709533c0f9443a9ab04663012feb074ebca60067c0adb76baa21/data':
-        'community.wave.seqera.io/library/faiss-cpu_python_pip_caalm_torch:c3008a34cb7c94b7' }"
+    conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b7d8463ba45e58c679292c34ae29a86d32203c087656b21c6a0b1994f99587b1/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/55/55ece0a3f753bb56ac6218db66467266cafb0fb4e04116875b26817614a45fd4/data') :
+        (task.accelerator ? 'community.wave.seqera.io/library/faiss-cpu_mkl_python_pytorch-gpu_pruned:eafab5e379ebcfa9' : 'community.wave.seqera.io/library/faiss-cpu_mkl_python_pytorch_caalm:de045242d7b19122') }"
 
     input:
     tuple val(meta), path(fasta)
@@ -23,6 +23,7 @@ process CAALM_CAALM {
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
     tuple val("${task.process}"), val('torch'), eval("python -c 'import torch; print(torch.__version__)'"), topic: versions, emit: versions_torch
     tuple val("${task.process}"), val('faiss'), eval("python -c 'import faiss; print(faiss.__version__)'"), topic: versions, emit: versions_faiss
+    tuple val("${task.process}"), val('cuda'), eval('python -c "import torch; print(torch.version.cuda or \'no CUDA available\')"'), topic: versions, emit: versions_cuda
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,10 +31,12 @@ process CAALM_CAALM {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def device = task.accelerator ? "cuda" : "cpu"
     """
     caalm \\
         $args \\
         --num-workers ${task.cpus} \\
+        --device ${device} \\
         --level0-model ${level0} \\
         --level1-model ${level1} \\
         --level2-model ${level2}/model.pt \\

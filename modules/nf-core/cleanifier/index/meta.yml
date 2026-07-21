@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "cleanifier_index"
+description: Builds a Cuckoo filter or Cuckoo hash table index from reference sequences (FASTA/FASTQ) for fast contamination removal.
+keywords:
+  - index
+  - genomics
+  - metagenomics
+  - contamination removal
+  - microbiome
+tools:
+  - "cleanifier":
+      description: "A fast lightweight tool to remove contamination using k-mers."
+      homepage: "https://gitlab.com/rahmannlab/cleanifier"
+      documentation: "https://gitlab.com/rahmannlab/cleanifier"
+      tool_dev_url: "https://gitlab.com/rahmannlab/cleanifier"
+      doi: "10.1093/bioinformatics/btaf632"
+      licence: ['MIT']
+      identifier: biotools:cleanifier
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reference:
+        type: file
+        description: FASTA or FASTQ file(s) for the genomes that should be removed.
+        pattern: "*.{fasta,fa,fastq,fq,gz,bz2,xz,zst}"
+  - n_objects:
+      type: integer
+      description: |
+        The number of k-mers to be stored in hash table.
+        Mandatory parameter.
+
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'human_index' ]`
+      - "*.{filter,hash}":
+          type: file
+          description: The main index file (Cuckoo filter or hash table).
+          pattern: "*.{filter,hash}"
+  info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'human_index' ]`
+      - "*.info":
+          type: file
+          description: Metadata file containing the configuration and parameters used to build the index.
+          pattern: "*.info"
+  versions_cleanifier:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "cleanifier":
+          type: string
+          description: The name of the tool
+      - "cleanifier --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cleanifier:
+          type: string
+          description: The name of the tool
+      - cleanifier --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@LeonHornich"
+maintainers:
+  - "@LeonHornich"

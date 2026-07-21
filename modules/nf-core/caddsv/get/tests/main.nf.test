@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process CADDSV_GET"
+    script "../main.nf"
+    process "CADDSV_GET"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "caddsv"
+    tag "caddsv/get"
+
+    test("caddsv-get annotations - stub") {
+
+        options "-stub" // since the actual run downloads a large set of annotations, only a stub test is included.
+
+        when {
+            process {
+                """
+                input[0] = Channel.value('annotations')
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("caddsv-get segmentnt - stub") {
+
+        options "-stub" // since the actual run downloads a large set of annotations, only a stub test is included.
+
+        when {
+            process {
+                """
+                input[0] = Channel.value('segmentnt')
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

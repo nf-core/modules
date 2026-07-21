@@ -10,6 +10,8 @@ nextflow_process {
     tag "parabricks/applybqsr"
     tag "gpu"
 
+    config './nextflow.config'
+
     test("sarscov2 | paired-end | [bam]") {
 
         when {

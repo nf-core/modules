@@ -1,16 +1,16 @@
 process CELLRANGER_MKREF {
-    tag "$fasta"
+    tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:10.0.0"
+    container "quay.io/nf-core/cellranger:10.0.0"
 
     input:
-    path fasta
-    path gtf
+    tuple val(meta), path(fasta)
+    tuple val(meta2), path(gtf)
     val reference_name
 
     output:
-    path "${reference_name}", emit: reference
+    tuple val(meta), path("${reference_name}"), emit: reference
     tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
 
     when:

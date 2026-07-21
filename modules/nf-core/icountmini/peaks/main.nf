@@ -3,16 +3,16 @@ process ICOUNTMINI_PEAKS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/icount-mini:2.0.3--pyh5e36f6f_0':
-        'biocontainers/icount-mini:2.0.3--pyh5e36f6f_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/icount-mini:3.0.1--pyh7cba7a3_0':
+        'quay.io/biocontainers/icount-mini:3.0.1--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bed), path(sigxls)
 
     output:
     tuple val(meta), path("*.peaks.bed.gz"), emit: peaks
-    path "versions.yml",                     emit: versions
+    tuple val("${task.process}"), val('iCount-Mini'), eval("iCount-Mini -v"), emit: versions_icount_mini, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,25 +22,15 @@ process ICOUNTMINI_PEAKS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     iCount-Mini peaks \\
-        $bed \\
-        $sigxls \\
+        ${bed} \\
+        ${sigxls} \\
         ${prefix}.peaks.bed.gz \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iCount-Mini: \$(iCount-Mini -v)
-    END_VERSIONS
+        ${args}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.peaks.bed.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iCount-Mini: \$(iCount-Mini -v)
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.peaks.bed.gz
     """
 }

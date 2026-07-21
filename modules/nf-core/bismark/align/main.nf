@@ -3,9 +3,9 @@ process BISMARK_ALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/38e61d14ccaed82f60c967132963eb467d0fa4bccb7a21404c49b4f377735f03/data' :
-        'community.wave.seqera.io/library/bismark:0.25.1--1f50935de5d79c47' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bddea334e6ccbce005ce540214747acf822b040185d2198220dcfbb4b258c331/data' :
+        'community.wave.seqera.io/library/bismark:3.1.0--9557d6ab108a83e4' }"
 
     input:
     tuple val(meta), path(reads)
@@ -16,7 +16,7 @@ process BISMARK_ALIGN {
     tuple val(meta), path("*bam")       , emit: bam
     tuple val(meta), path("*report.txt"), emit: report
     tuple val(meta), path("*fq.gz")     , emit: unmapped, optional: true
-    tuple val("${task.process}"), val("bismark"), eval('bismark --version | grep Version | sed -e "s/Bismark Version: v//" | xargs'), topic: versions, emit: versions_bismark
+    tuple val("${task.process}"), val("bismark"), eval("bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'"), topic: versions, emit: versions_bismark
 
     when:
     task.ext.when == null || task.ext.when

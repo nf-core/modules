@@ -3,9 +3,9 @@ process PAIRTOOLS_STATS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pairtools:1.1.3--py39h7a39fba_0' :
-        'biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
+        'quay.io/biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
 
     input:
     tuple val(meta), path(pairs)
@@ -26,5 +26,11 @@ process PAIRTOOLS_STATS {
         --nproc-in ${task.cpus} --nproc-out ${task.cpus} \\
         -o ${prefix}.pairs.stat \\
         ${pairs}
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.pairs.stat
     """
 }
