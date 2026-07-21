@@ -81,13 +81,27 @@ output:
           description: dump of R SessionInfo
           pattern: "*.log"
           ontologies: []
+  versions_rmarkdownnotebook:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rmarkdownnotebook:
+          type: string
+          description: Name of the tool
+      - 'Rscript -e "cat(paste(packageVersion(''rmarkdown''), collapse=''.''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rmarkdownnotebook:
+          type: string
+          description: Name of the tool
+      - 'Rscript -e "cat(paste(packageVersion(''rmarkdown''), collapse=''.''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@grst"
 maintainers:

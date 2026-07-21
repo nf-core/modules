@@ -95,7 +95,7 @@ output:
       - bismark:
           type: string
           description: The name of the tool
-      - "bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'":
+      - "bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -106,7 +106,7 @@ topics:
       - bismark:
           type: string
           description: The name of the tool
-      - "bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'":
+      - "bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
@@ -114,3 +114,27 @@ authors:
 maintainers:
   - "@ewels"
   - "@sateeshperi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bismark:3.1.0--9557d6ab108a83e4
+      build_id: bd-9557d6ab108a83e4_1
+      scan_id: sc-8d2a54959fbc873b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bismark:3.1.0--f83bc6617fa3cadd
+      build_id: bd-f83bc6617fa3cadd_1
+      scan_id: sc-cf3a320dd51a3a24_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bismark:3.1.0--4c41a9578c1f2001
+      build_id: bd-4c41a9578c1f2001_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9b84d7ddbd3e0bb2240038ce3c9ff9979287d38bf09f2945256eaafba1450096/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bismark:3.1.0--3abb485fce628c19
+      build_id: bd-3abb485fce628c19_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bddea334e6ccbce005ce540214747acf822b040185d2198220dcfbb4b258c331/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bismark/coverage2cytosine/.conda-lock/linux_amd64-bd-9557d6ab108a83e4_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bismark/coverage2cytosine/.conda-lock/linux_arm64-bd-f83bc6617fa3cadd_1.txt

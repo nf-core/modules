@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_gxf_busco_plot"
 description: |
-  Runs BUSCO for input assemblies and their annotations in GFF/GFF3/GTF format, and creates summary plots using `BUSCO/generate_plot.py` script
+  Runs BUSCO for input assemblies and their annotations in GFF/GFF3/GTF format, and creates summary plots using `busco --plot`
 keywords:
   - genome
   - annotation
@@ -9,7 +9,7 @@ keywords:
   - plot
 components:
   - busco/busco
-  - busco/generateplot
+  - busco/plot
   - gffread
 input:
   - ch_fasta:
@@ -75,12 +75,12 @@ output:
         and coordinates (for genome mode) or gene/protein IDs (for transcriptome or protein modes)
         Structure: [ val(meta), tsv ]
       pattern: "*.tsv"
-  - assembly_plot_summary_txt:
+  - assembly_plot_summary_json:
       type: file
       description: |
         Channel containing BUSCO short summaries corresponding to fasta files renamed to include lineage in sample id
-        Structure: [ txt ]
-      pattern: "*.txt"
+        Structure: [ json ]
+      pattern: "*.json"
   - assembly_png:
       type: file
       description: |
@@ -111,24 +111,18 @@ output:
         protein IDs in protein mode
         Structure: [ val(meta), tsv ]
       pattern: "*.tsv"
-  - annotation_plot_summary_txt:
+  - annotation_plot_summary_json:
       type: file
       description: |
         Channel containing BUSCO short summaries corresponding to annotation files renamed to include lineage in sample id
-        Structure: [ txt ]
-      pattern: "*.txt"
+        Structure: [ json ]
+      pattern: "*.json"
   - annotation_png:
       type: file
       description: |
         Channel containing summary plot for annotations
         Structure: png
       pattern: "*.png"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@GallVp"
 maintainers:

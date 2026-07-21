@@ -1,8 +1,8 @@
 name: riker_multi
 description: |
   Run multiple riker collectors in a single BAM pass using riker multi. Specify
-  tools via ext.args (e.g. '--tools alignment basic isize'). The wgs and gcbias
-  tools require a reference FASTA; the hybcap tool requires baits and targets.
+  tools via ext.args (e.g. '--tools alignment basic isize'). The wgs, gcbias, and
+  error tools require a reference FASTA; the hybcap tool requires baits and targets.
 keywords:
   - bam
   - qc
@@ -12,6 +12,7 @@ keywords:
   - insert size
   - gc bias
   - coverage
+  - rna
 tools:
   - riker:
       description: |
@@ -40,15 +41,58 @@ input:
         pattern: "*.{bai,crai}"
         ontologies:
           - edam: "http://edamontology.org/format_3327" # BAI
-    - baits:
+    - error_vcf:
+        type: file
+        description: VCF file containing known variants for error metrics. Must be bgzipped and indexed.
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+    - error_vcf_idx:
+        type: file
+        description: Index for the VCF file.
+        pattern: "*.vcf.gz.{tbi,csi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616" # TBI/CSI
+    - error_intervals:
+        type: file
+        description: IntervalList or BED file containing regions to exclude from error metrics. Optional.
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - gcbias_exclude_intervals:
+        type: file
+        description: IntervalList or BED file containing regions to exclude from GC bias metrics. Optional.
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - hybcap_baits:
         type: file
         description: Bait interval file (IntervalList or BED). Required when running the hybcap tool. Optional otherwise.
         pattern: "*.{interval_list,bed}"
         ontologies:
           - edam: "http://edamontology.org/format_3003" # BED
-    - targets:
+    - hybcap_targets:
         type: file
         description: Target interval file (IntervalList or BED). Required when running the hybcap tool. Optional otherwise.
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - rna_gene_model:
+        type: file
+        description: GTF or GFF file containing gene models. Required when running the rna tool. Optional otherwise.
+        pattern: "*.{gtf,gff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
+          - edam: "http://edamontology.org/format_1975" # GFF
+    - rna_ribosomal_intervals:
+        type: file
+        description: Explicit ribosomal intervals (BED or Picard IntervalList), unioned with biotype-derived rRNA genes from the gene model
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - wgs_intervals:
+        type: file
+        description: IntervalList or BED file containing intervals for whole-genome coverage metrics. Required when running the wgs tool. Optional otherwise.
         pattern: "*.{interval_list,bed}"
         ontologies:
           - edam: "http://edamontology.org/format_3003" # BED
@@ -90,24 +134,14 @@ output:
           pattern: "*.base-distribution-by-cycle.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  mean_qual:
+  error_indel:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*.mean-quality-by-cycle.txt":
+      - "*.error-indel.txt":
           type: file
-          description: Mean quality by cycle (basic tool)
-          pattern: "*.mean-quality-by-cycle.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
-  qual_dist:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - "*.quality-score-distribution.txt":
-          type: file
-          description: Quality score distribution (basic tool)
-          pattern: "*.quality-score-distribution.txt"
+          description: Indel error metrics (error tool)
+          pattern: "*.error-indel.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   error_mismatch:
@@ -128,16 +162,6 @@ output:
           type: file
           description: Read overlap error metrics (error tool)
           pattern: "*.error-overlap.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
-  error_indel:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - "*.error-indel.txt":
-          type: file
-          description: Indel error metrics (error tool)
-          pattern: "*.error-indel.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   gcbias_detail:
@@ -170,16 +194,6 @@ output:
           pattern: "*.hybcap-metrics.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  hybcap_per_target:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - "*.hybcap-per-target.txt":
-          type: file
-          description: Per-target coverage metrics (hybcap tool, optional)
-          pattern: "*.hybcap-per-target.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
   hybcap_per_base:
     - - meta:
           type: map
@@ -188,6 +202,16 @@ output:
           type: file
           description: Per-base coverage values (hybcap tool, optional)
           pattern: "*.hybcap-per-base.txt{,.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  hybcap_per_target:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.hybcap-per-target.txt":
+          type: file
+          description: Per-target coverage metrics (hybcap tool, optional)
+          pattern: "*.hybcap-per-target.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   isize_metrics:
@@ -210,6 +234,76 @@ output:
           pattern: "*.isize-histogram.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  mean_qual:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.mean-quality-by-cycle.txt":
+          type: file
+          description: Mean quality by cycle (basic tool)
+          pattern: "*.mean-quality-by-cycle.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  pdf:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.pdf":
+          type: file
+          description: PDF plots from any tool that generates them
+          pattern: "*.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
+  qual_dist:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.quality-score-distribution.txt":
+          type: file
+          description: Quality score distribution (basic tool)
+          pattern: "*.quality-score-distribution.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  rna_biotype:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.rna-biotype.txt":
+          type: file
+          description: RNA biotype metrics (rna tool)
+          pattern: "*.rna-biotype.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  rna_insert_size:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.rna-insert-size.txt":
+          type: file
+          description: RNA insert size metrics (rna tool)
+          pattern: "*.rna-insert-size.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  rna_insert_size_histogram:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.rna-insert-size-histogram.txt":
+          type: file
+          description: RNA insert size histogram (rna tool)
+          pattern: "*.rna-insert-size-histogram.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  rna_metrics:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.rna-metrics.txt":
+          type: file
+          description: RNA summary metrics (rna tool)
+          pattern: "*.rna-metrics.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   wgs_metrics:
     - - meta:
           type: map
@@ -230,16 +324,6 @@ output:
           pattern: "*.wgs-coverage.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  pdf:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - "*.pdf":
-          type: file
-          description: PDF plots from any tool that generates them
-          pattern: "*.pdf"
-          ontologies:
-            - edam: "http://edamontology.org/format_3508" # PDF
   versions_riker:
     - - ${task.process}:
           type: string
@@ -263,5 +347,8 @@ topics:
           description: The expression to obtain the version of the tool
 authors:
   - "@emmcauley"
+  - "@matthdsm"
+  - "@tfenne"
 maintainers:
   - "@emmcauley"
+  - "@matthdsm"

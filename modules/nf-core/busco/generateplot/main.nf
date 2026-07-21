@@ -17,19 +17,12 @@ process BUSCO_GENERATEPLOT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args     ?: ''
-    def prefix  = task.ext.prefix   ?: 'busco_figure'
-    """
-    generate_plot.py \\
-        $args \\
-        -wd busco
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/busco/plot instead.
 
-    mv ./busco/busco_figure.png ${prefix}.png
-    """
-
-    stub:
-    def prefix  = task.ext.prefix   ?: 'busco_figure'
-    """
-    touch ${prefix}.png
-    """
+Reason:
+The standalone generate_plot.py script was removed in BUSCO v6.0.0. Plotting is now
+built into BUSCO via 'busco --plot', implemented by the busco/plot module.
+"""
+    assert false: deprecation_message
 }

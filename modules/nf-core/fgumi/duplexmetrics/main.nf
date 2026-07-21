@@ -4,8 +4,8 @@ process FGUMI_DUPLEXMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a5/a510706f3481fae12ff6100d6e4ad298b8bf464a2d93a6afe35e9cf26542d080/data':
-        'community.wave.seqera.io/library/fgumi:0.2.0--fe028e7a64e5da27' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4a/4a62b457c53300603da026225f95b4db04d1c9f8ba7f734787818fc105d51323/data':
+        'community.wave.seqera.io/library/fgumi:0.4.0--1fb5dc6de05ce63b' }"
 
     input:
     tuple val(meta), path(bam), path(intervals)
@@ -17,7 +17,7 @@ process FGUMI_DUPLEXMETRICS {
     tuple val(meta), path("*.umi_counts.txt"), emit: umi_counts
     tuple val(meta), path("*.duplex_qc.pdf"), emit: pdf, optional: true
     tuple val(meta), path("*.duplex_umi_counts.txt"), emit: duplex_umi_counts, optional: true
-    tuple val("${task.process}"), val('fgumi'), eval("fgumi --version"), topic: versions, emit: versions_fgumi
+    tuple val("${task.process}"), val('fgumi'), eval('fgumi --version | sed "s/^fgumi //"'), topic: versions, emit: versions_fgumi
 
     when:
     task.ext.when == null || task.ext.when
