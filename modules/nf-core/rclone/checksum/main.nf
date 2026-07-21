@@ -1,7 +1,6 @@
 process RCLONE_CHECKSUM {
     tag "${meta.id}"
     label 'process_low'
-    stageInMode 'copy'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -31,6 +30,7 @@ process RCLONE_CHECKSUM {
 
     """
     rclone checksum ${configArg} \\
+        --copy-links \\
         $args \\
         --combined ${prefix}.combined.txt \\
         --differ ${prefix}.differ.txt \\
