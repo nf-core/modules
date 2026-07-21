@@ -14,7 +14,7 @@ process SKANI_SKETCH {
     tuple val(meta), path("${prefix}")                 , emit: sketch_dir
     tuple val(meta), path("${prefix}/${fasta}.sketch") , emit: sketch
     tuple val(meta), path("${prefix}/markers.bin")     , emit: markers
-    path "versions.yml"                                , emit: versions
+    tuple val("${task.process}"), val('skani'), eval('skani --version 2>&1 | sed "s/^.*skani //"'), emit: versions_skani, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process SKANI_SKETCH {
             -o ${prefix} \\
             -t ${task.cpus} \\
             ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        skani: \$(skani --version 2>&1 | sed 's/^.*skani //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -42,10 +37,5 @@ process SKANI_SKETCH {
     mkdir -p ${prefix}
     touch ${prefix}/${fasta}.sketch
     touch ${prefix}/markers.bin
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        skani: \$(skani --version 2>&1 | sed 's/^.*skani //; s/ .*\$//')
-    END_VERSIONS
     """
 }

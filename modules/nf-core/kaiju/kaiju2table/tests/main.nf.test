@@ -35,7 +35,7 @@ nextflow_process {
                     input[1] = UNTAR.out.untar
                         .map {
                             meta, untar ->
-                                db = [
+                                def db = [
                                     untar,
                                     file(params.modules_testdata_base_path + "delete_me/kaiju/nodes.dmp", checkIfExists: true),
                                     file(params.modules_testdata_base_path + "delete_me/kaiju/names.dmp", checkIfExists: true)
