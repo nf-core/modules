@@ -18,6 +18,7 @@ process RCLONE_CHECK {
     tuple val(meta), path("${prefix}.missing_on_src.txt") , emit: missing_on_src, optional: true
     tuple val(meta), path("${prefix}.match.txt")          , emit: match         , optional: true
     tuple val(meta), path("${prefix}.error.txt")          , emit: error         , optional: true
+    tuple val(meta), path("${prefix}.exit_code.txt")      , emit: exit_code     , optional: true
     tuple val("${task.process}"), val('rclone'), eval("rclone --version | sed -n '1s/^rclone v//p'"), topic: versions, emit: versions_rclone
 
     when:
@@ -39,7 +40,7 @@ process RCLONE_CHECK {
         --error ${prefix}.error.txt \\
         --checkers $task.cpus \\
         ${source} \\
-        ${destination} || true
+        ${destination} || echo \$? > ${prefix}.exit_code.txt
 
     # Do not emit empty output files
     for f in *.txt; do
