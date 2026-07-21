@@ -1,0 +1,139 @@
+name: "mobsuite_typer"
+description: Bacterial plasmid typing and mobility prediction
+keywords:
+  - bacteria
+  - plasmid
+  - typing
+  - genomics
+tools:
+  - "mobsuite":
+      description: "MOB-suite is a set of tools for finding, typing and reconstruction
+        of plasmids from draft and complete genome assemblies."
+      homepage: "https://github.com/phac-nml/mob-suite/blob/master/README.md"
+      documentation: "https://github.com/phac-nml/mob-suite/blob/master/README.md"
+      tool_dev_url: "https://github.com/phac-nml/mob-suite"
+      doi: "10.1099/mgen.0.000435"
+      licence:
+        - "Apache-2.0"
+      identifier: biotools:mob_suite
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: A bacterial genome assembly in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - db:
+      type: directory
+      description: Optional local copy of MOB-suite database directory
+      pattern: "databases/"
+  - plasmid_mash_db:
+      type: file
+      description: Optional Companion Mash database of reference database
+      pattern: "*.msh"
+      ontologies:
+        - edam: http://edamontology.org/format_3911
+  - plasmid_meta_txt:
+      type: file
+      description: MOB-cluster plasmid cluster formatted file matched to the reference
+        plasmid db
+      pattern: "*.txt"
+      ontologies: []
+  - plasmid_replicons_fas:
+      type: file
+      description: Optional nucleotide FASTA file of plasmid replicons
+      pattern: "*.{fasta,fna,fa,fas}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929"
+  - repetitive_mask_fas:
+      type: file
+      description: Optional nucleotide FASTA file of known repetitive elements
+      pattern: "*.{fasta,fna,fa,fas}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929"
+  - plasmid_mob_faa:
+      type: file
+      description: Optional protein FASTA file of plasmid mobility proteins
+      pattern: "*.{fasta,faa,fa,fas}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929"
+  - plasmid_mpf_faa:
+      type: file
+      description: Optional protein FASTA file of plasmid mating pair formation proteins
+      pattern: "*.{fasta,faa,fa,fas}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929"
+  - plasmid_orit_fas:
+      type: file
+      description: Optional nucleotide FASTA file of known plasmid oriT dna sequences
+      pattern: "*.{fasta,fna,fa,fas}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929"
+  - generate_biomarker_report:
+      type: boolean
+      description: Whether to generate a biomarker report file
+  - generate_mge_report:
+      type: boolean
+      description: Whether to generate a mobile genetic element (MGE) report file
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: MOB-suite typer report file
+          pattern: "*.txt"
+          ontologies: []
+  biomarker_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_biomarker_report.txt":
+          type: file
+          description: MOB-suite biomarker report file
+          pattern: "*_biomarker_report.txt"
+  mge_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_mge_report.txt":
+          type: file
+          description: MOB-suite mobile genetic element (MGE) report file
+          pattern: "*_mge_report.txt"
+  versions_mobsuite:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mobsuite:
+          type: string
+          description: The name of the tool
+      - mob_typer --version | sed 'mob_typer '/:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mobsuite:
+          type: string
+          description: The name of the tool
+      - mob_typer --version | sed 'mob_typer '/:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"
