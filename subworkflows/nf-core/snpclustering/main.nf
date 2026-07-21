@@ -26,9 +26,6 @@ workflow SNPCLUSTERING {
      * Build BEAGLE input tuple:
      * tuple val(meta), path(vcf), path(vcf_index), path(refpanel), path(refpanel_index),
      *       path(genmap), path(exclsamples), path(exclmarkers), val(region)
-     *
-     * For now, refpanel/genmap/exclusion files are optional and passed as empty lists
-     * when not provided by the caller.
      */
     ch_beagle_input = vcf_ch.map { meta, vcf, vcf_index ->
         tuple(
@@ -74,7 +71,6 @@ workflow SNPCLUSTERING {
 
     /*
      * PCA clustering
-     * Signature inferred from your successful wiring so far:
      * CUSTOM_PCACLUSTERING(tsv, algorithm, n_clusters, dbscan_eps, dbscan_min_samples)
      */
     CUSTOM_PCACLUSTERING(
