@@ -1,0 +1,170 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "aardvark_compare"
+description:  A tool to evaluate variant calling performance by comparing a query VCF against a truth VCF.
+keywords:
+  - variant calling
+  - benchmarking
+  - vcf
+  - comparison
+  - consensus
+tools:
+  - aardvark:
+      description: |
+        A benchmarking tool that constructs haplotype sequences and it enables basepair-level
+        comparisons that work across all variant types. The program evaluates genotypes using traditional,
+        strict exact-match scoring, while also allowing for implicit partial credit when variant calls are an
+        inexact but close match.      
+      homepage: "https://github.com/PacificBiosciences/aardvark"
+      documentation: "https://github.com/PacificBiosciences/aardvark/blob/main/docs/methods.md#compare-command"
+      tool_dev_url: "https://github.com/PacificBiosciences/aardvark"
+      doi: "10.1101/2025.10.03.680257"
+      licence: ["MIT"]
+      identifier: biotools:aardvark
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - query_vcf:
+        type: file
+        description: Query VCF file to be benchmarked
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - query_vcf_tbi:
+        type: file
+        description: Index for the query VCF file
+        pattern: "*.{vcf.gz.tbi,vcf.gz.csi}"
+    - truth_vcf:
+        type: file
+        description: Truth VCF file containing the ground truth baseline
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - truth_vcf_tbi:
+        type: file
+        description: Index for the truth VCF file
+        pattern: "*.{vcf.gz.tbi,vcf.gz.csi}"
+    - regions_bed:
+        type: file
+        description: Regions BED file containing genomic regions to restrict the evaluation
+        pattern: "*.{bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3586"
+  - - meta2:
+        type: map
+        description: Groovy Map containing reference fasta information
+    - fasta:
+        type: file
+        description: Reference genome fasta file
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta3:
+        type: map
+        description: Groovy Map containing stratification TSV information
+    - stratification_tsv:
+        type: file
+        description: Optional TSV file defining stratification regions for fine grained benchmarking
+        pattern: "*.tsv"
+        ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  - - meta4:
+        type: map
+        description: Groovy Map containing stratification BEDs information
+    - stratification_beds:
+        type: file
+        description: Optional BED files corresponding to the regions defined in the stratification TSV
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3586"
+
+output:
+  summary:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.summary.tsv":
+          type: file
+          description: Global summary statistics of the variant comparison
+          pattern: "*.summary.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  labelled_truth:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.truth.vcf.gz":
+          type: file
+          description: Truth VCF file annotated with evaluation results
+          pattern: "*.truth.vcf.gz"
+          ontologies:
+          - edam: "http://edamontology.org/format_3016"
+  labelled_query:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.query.vcf.gz":
+          type: file
+          description: Query VCF file annotated with evaluation results
+          pattern: "*.query.vcf.gz"
+          ontologies:
+          - edam: "http://edamontology.org/format_3016"
+  runinfo:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.json":
+          type: file
+          description: JSON file containing parameter settings used during the run
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  region_sequences:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.region_sequences.tsv.gz":
+          type: file
+          description: Sequence level output for specific evaluated regions
+          pattern: "*.region_sequences.tsv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  region_summary:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.region_summary.tsv.gz":
+          type: file
+          description: Summary statistics broken down by individual genomic regions
+          pattern: "*.region_summary.tsv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_aardvark:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - aardvark:
+          type: string
+          description: The name of the tool
+      - "aardvark compare --version 2>&1 | sed 's/aardvark-bio-compare //; s/-conda//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "aardvark":
+          type: string
+          description: The name of the tool
+      - "aardvark compare --version 2>&1 | sed 's/aardvark-bio-compare //; s/-conda//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@kubranarci"
+maintainers:
+  - "@kubranarci"

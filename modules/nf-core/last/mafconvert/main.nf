@@ -4,15 +4,15 @@ process LAST_MAFCONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/8975c4b3f5acfdf065246236c3a1b8cde7a0df4cacff72f9ca2670fc7626726e/data'
-        : 'community.wave.seqera.io/library/bcftools_last_samtools:f6cbdfb2676292ee'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd71afd3ecc7734aaf576750a0a2879512a9a50b8cd2caee5a0d2fdb2e1fe21b/data'
+        : 'community.wave.seqera.io/library/bcftools_last_samtools_gzip:6baa7d64a57919ca'}"
 
     input:
     tuple val(meta), path(maf), val(format)
     tuple val(meta2), path(fasta), path(fai), path(gzi), path(sizes), path(dict) // see subworkflows/nf-core/fasta_bgzip_index_dict_samtools
 
     output:
-    tuple val(meta), path("*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"), emit: alignment
+    tuple val(meta), path("*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,blasttabplus.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"), emit: alignment
     tuple val(meta), path("*.{bai,crai,csi}"), emit: index, optional: true
     tuple val(meta), path("*.stats"),          emit: stats, optional: true
     // last-dotplot has no --version option so let's use lastal from the same suite
@@ -74,6 +74,10 @@ process LAST_MAFCONVERT {
             maf-convert $args \$DICT_ARGS sam $maf -r 'ID:${meta.id} SM:${meta.id}' |
                 samtools sort $args2 -u | bcftools mpileup $args3 --fasta-ref $fasta -Ou - | bcftools call $args4 -Ob -o ${prefix}.bcf
             bcftools stats ${prefix}.bcf > ${prefix}.stats
+            ;;
+        blasttab+)
+            maf-convert $args $format $maf |
+                gzip --no-name > ${prefix}.blasttabplus.gz
             ;;
         *)
             maf-convert $args $format $maf |

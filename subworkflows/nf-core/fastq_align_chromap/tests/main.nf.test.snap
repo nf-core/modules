@@ -2,58 +2,13 @@
     "test_fastq_align_chromap_single_end": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam:md5,3ea7d664a0a0c9f9bd8a2b000d2374c1"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.bai:md5,7d430ef50fcff34620d96d3c31797d27"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.stats:md5,746dde58f858b3a504886f3c294f201a"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.flagstat:md5,99698bba57b57c7ab68b32bc368a0cc5"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.idxstats:md5,0ca8c5edb633a2f4c72fb3160cc25abf"
-                    ]
-                ],
                 "bam": [
                     [
                         {
                             "id": "test",
                             "single_end": true
                         },
-                        "test.sorted.bam:md5,3ea7d664a0a0c9f9bd8a2b000d2374c1"
+                        "test.sorted.bam:md5,0dee4a081e53f90c6d039824025b6028"
                     ]
                 ],
                 "flagstat": [
@@ -80,7 +35,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.sorted.bam.bai:md5,7d430ef50fcff34620d96d3c31797d27"
+                        "test.sorted.bam.bai:md5,c91870ca4b40436a0e9ceedad8fbed8c"
                     ]
                 ],
                 "stats": [
@@ -89,72 +44,27 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.sorted.bam.stats:md5,746dde58f858b3a504886f3c294f201a"
+                        "test.sorted.bam.stats:md5,813d8c081cd42fc60c5bda88611e0e6e"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-04-01T22:05:11.84639",
+        "timestamp": "2026-07-15T10:01:46.149093",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     },
     "test_fastq_align_chromap_paired_end": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam:md5,852ba39ffed911e1b713f4ff9040e0c1"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.bai:md5,31f5969b2c5cd2056c87fd566353239b"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.stats:md5,e7187e959c98eca8018ccef10b1d08ad"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.flagstat:md5,2fa0d90162a1b655863796c2a6bd8f45"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.idxstats:md5,1adb27b52d4d64b826f48b59d61dcd4d"
-                    ]
-                ],
                 "bam": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
-                        "test.sorted.bam:md5,852ba39ffed911e1b713f4ff9040e0c1"
+                        "test.sorted.bam:md5,284d65dcd5b5061a924d817109bab514"
                     ]
                 ],
                 "flagstat": [
@@ -181,7 +91,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.sorted.bam.bai:md5,31f5969b2c5cd2056c87fd566353239b"
+                        "test.sorted.bam.bai:md5,7cccc7484bcab9060221153fb8ab9143"
                     ]
                 ],
                 "stats": [
@@ -190,65 +100,132 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.sorted.bam.stats:md5,e7187e959c98eca8018ccef10b1d08ad"
+                        "test.sorted.bam.stats:md5,bbe7d1234474cccc926499f7e15744b8"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-04-01T22:05:26.399485",
+        "timestamp": "2026-07-15T10:01:55.610632",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "test_fastq_align_chromap_paired_end_add_readgroups": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.sorted.bam:md5,658b738d37c813b528371a22193cdb68"
+                    ]
+                ],
+                "flagstat": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.sorted.bam.flagstat:md5,2fa0d90162a1b655863796c2a6bd8f45"
+                    ]
+                ],
+                "idxstats": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.sorted.bam.idxstats:md5,1adb27b52d4d64b826f48b59d61dcd4d"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.sorted.bam.bai:md5,e1734249192edb61ec95bcddf8a91f2d"
+                    ]
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.sorted.bam.stats:md5,bbe7d1234474cccc926499f7e15744b8"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-07-15T10:02:36.957514",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "test_fastq_align_chromap_single_end_add_readgroups": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.sorted.bam:md5,d6ecb02390b4ce23b16f94c9c875196f"
+                    ]
+                ],
+                "flagstat": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.sorted.bam.flagstat:md5,99698bba57b57c7ab68b32bc368a0cc5"
+                    ]
+                ],
+                "idxstats": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.sorted.bam.idxstats:md5,0ca8c5edb633a2f4c72fb3160cc25abf"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.sorted.bam.bai:md5,6b5aff820e930f71408f7404dc043bff"
+                    ]
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.sorted.bam.stats:md5,813d8c081cd42fc60c5bda88611e0e6e"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-07-15T10:02:15.914993",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     },
     "test_fastq_align_chromap_paired_end -- stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.stats:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.flagstat:md5,67394650dbae96d1a4fcc70484822159"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.idxstats:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "bam": [
                     [
                         {
@@ -296,10 +273,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-01T22:05:39.99444",
+        "timestamp": "2026-07-15T10:04:47.695403",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     }
 }
