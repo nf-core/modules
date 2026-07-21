@@ -1,11 +1,11 @@
 process HACKGAP_COUNT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hackgap:1.0.1--pyhdfd78af_0':
-        'quay.io/biocontainers/hackgap:1.0.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hackgap:1.0.1--pyhdfd78af_0'
+        : 'quay.io/biocontainers/hackgap:1.0.1--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -21,21 +21,38 @@ process HACKGAP_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def split_threads = Math.max(1, (task.cpus / 4) as int)
-    def read_threads = Math.max(1, (task.cpus / 4) as int)
-    def subtables_threads = Math.max(1, task.cpus - split_threads - read_threads)
+    def cpus = task.cpus as int
+
+    def subtables = Math.max([(cpus / 2) as int - 1, cpus - 3, 19].min(), 1)
+    if ((subtables % 2) == 0) {
+        subtables += 1
+    }
+
+    def read_threads = Math.ceil(subtables / 10) as int
+
+    def split_threads = 2 * read_threads
+
+    if ((subtables + read_threads + split_threads) >= cpus) {
+        read_threads = 1
+        split_threads = 2
+    }
+
+    if (cpus < 4) {
+        subtables = 1
+        read_threads = 1
+        split_threads = 1
+    }
     """
     hackgap count \\
-        $args \\
+        ${args} \\
         --threads-split ${split_threads} \\
         --threads-read ${read_threads} \\
-        --subtables ${subtables_threads} \\
+        --subtables ${subtables} \\
         --files ${reads} \\
         --out ${prefix}
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.hash
