@@ -1,0 +1,108 @@
+nextflow_process {
+
+    name "Test Process BINETTE"
+    script "../main.nf"
+    process "BINETTE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "binette"
+
+    config './nextflow.config'
+
+    test("bacteroides_fragilis - genome") {
+
+        setup {
+            new File("${launchDir}/c2b_1.txt").text = """
+            NZ_CP069563.1\tbin1
+            NZ_CP069564.1\tbin2
+            """.stripIndent().trim()
+
+            new File("${launchDir}/c2b_2.txt").text = """
+            NZ_CP069563.1\tbin1
+            NZ_CP069564.1\tbin2
+            """.stripIndent().trim()
+
+            run("CHECKM2_DATABASEDOWNLOAD") {
+                script "../../checkm2/databasedownload/main.nf"
+                process {
+                    """
+                    input[0] = []
+                    """
+                }
+            }
+        }
+
+        when {
+
+            params {
+                binette_args = "--low_mem"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [file("${launchDir}/c2b_1.txt"), file("${launchDir}/c2b_2.txt")],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz"),
+                    []
+                ]
+                input[1] = CHECKM2_DATABASEDOWNLOAD.out.database
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - stub") {
+
+        options "-stub"
+
+        setup {
+            new File("${launchDir}/c2b_1.txt").text = """
+            NZ_CP069563.1\tbin1
+            NZ_CP069564.1\tbin2
+            """.stripIndent().trim()
+
+            new File("${launchDir}/c2b_2.txt").text = """
+            NZ_CP069563.1\tbin1
+            NZ_CP069564.1\tbin2
+            """.stripIndent().trim()
+        }
+
+        when {
+
+            params {
+                binette_args = "--low_mem"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [file("${launchDir}/c2b_1.txt"), file("${launchDir}/c2b_2.txt")],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz"),
+                    []
+                ]
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
