@@ -1,0 +1,111 @@
+name: dorado_aligner
+description: |
+  Align unaligned Oxford Nanopore BAM files (typically produced by dorado basecaller)
+  to a reference genome using the dorado aligner, which wraps minimap2 and
+  preserves modified base tags (MM/ML) and other BAM auxiliary tags.
+keywords:
+  - alignment
+  - minimap2
+  - ont
+  - long-read
+  - methylation
+  - modified-bases
+  - nanopore
+tools:
+  - "dorado":
+      description: Oxford Nanopore's aligner that wraps minimap2 and preserves
+        modification tags (MM/ML) from basecaller output.
+      homepage: https://github.com/nanoporetech/dorado
+      documentation: https://software-docs.nanoporetech.com/dorado/latest/
+      tool_dev_url: https://github.com/nanoporetech/dorado
+      licence:
+        - "Oxford Nanopore Technologies PLC. Public License Version 1.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: |
+          Unaligned BAM file produced by dorado basecaller. Modified base tags
+          (MM/ML) and other BAM tags are preserved through alignment.
+        pattern: "*.bam"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference genome information
+          e.g. `[ id:'hg38' ]`
+    - reference:
+        type: file
+        description: |
+          Reference FASTA (or pre-built minimap2 .mmi index) to align to.
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz,mmi}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+    - fai:
+        type: file
+        description: |
+          FASTA index (.fai) for the reference. Required when reference is a FASTA.
+          Pass `[]` when reference is a minimap2 .mmi index.
+        pattern: "*.fai"
+        ontologies:
+          - edam: http://edamontology.org/format_3003
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: |
+            Aligned BAM with modification tags preserved. Output sort order is
+            SO:unknown — pipe to SAMTOOLS_SORT + SAMTOOLS_INDEX for coordinate-sorted
+            indexed BAMs.
+          pattern: "*.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*_summary.tsv":
+          type: file
+          description: Per-read summary TSV with alignment statistics. Present when
+            `--emit-summary` is set in task.ext.args.
+          pattern: "*_summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_dorado:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dorado:
+          type: string
+          description: The name of the tool
+      - dorado --version 2>&1 | head -1 | sed 's/^//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dorado:
+          type: string
+          description: The name of the tool
+      - dorado --version 2>&1 | head -1 | sed 's/^//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sahuno"
+maintainers:
+  - "@sahuno"
