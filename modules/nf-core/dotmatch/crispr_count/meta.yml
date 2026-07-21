@@ -1,62 +1,110 @@
-name: dotmatch_crispr_count
-description: Count CRISPR guides with DotMatch
+name: "dotmatch_crispr_count"
+description: Count known CRISPR guide sequences in FASTQ reads with explicit unmatched and ambiguous-read reporting
 keywords:
-  - dotmatch
-  - crispr
+  - CRISPR
+  - sgRNA
   - guide counting
+  - FASTQ
   - known-target assignment
 tools:
-  - dotmatch:
-      description: Fast exact matching for short DNA reads against known targets.
-      homepage: https://github.com/Dnncha/dotmatch
+  - "dotmatch":
+      description: "Deterministic known-target short-DNA assignment for sequencing workflows."
+      homepage: "https://github.com/dnncha/dotmatch"
+      documentation: "https://dotmatch.readthedocs.io/"
+      tool_dev_url: "https://github.com/dnncha/dotmatch"
+      doi: "10.5281/zenodo.20541628"
       licence:
-        - Apache-2.0
+        - "Apache-2.0"
 input:
-  - meta:
-      type: map
-      description: Sample metadata map containing an id field.
-  - reads:
-      type: file
-      description: FASTQ or FASTQ.gz reads for one CRISPR guide-counting sample.
-      pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reads:
+        type: file
+        description: FASTQ file containing CRISPR guide reads
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930"
   - library:
       type: file
-      description: DotMatch or MAGeCK-style guide library.
-      pattern: "*.{tsv,csv}"
+      description: CSV or TSV table containing guide identifiers, sequences and optional gene annotations
+      pattern: "*.{csv,tsv}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3752"
+        - edam: "http://edamontology.org/format_3475"
   - guide_start:
       type: integer
-      description: Zero-based guide start offset in the read.
+      description: Zero-based start position of the guide sequence in each read
   - guide_length:
       type: integer
-      description: Guide sequence length.
+      description: Number of bases in the guide sequence
   - k:
       type: integer
-      description: Maximum edit distance used for assignment.
+      description: Maximum edit distance allowed for assignment
   - metric:
       type: string
-      description: Assignment metric, hamming or levenshtein.
-  - threads:  # via task.cpus / ext.cpus
-      type: integer
-      description: Threads for parallel read processing (defaults to auto-detect in DotMatch).
+      description: Edit-distance metric, either hamming or levenshtein
 output:
-  - counts:
-      type: file
-      description: MAGeCK-compatible guide-count matrix for the sample.
-      pattern: "*.counts.mageck.tsv"
-  - summary:
-      type: file
-      description: DotMatch JSON assignment and QC summary.
-      pattern: "*.summary.json"
-  - sample_qc:
-      type: file
-      description: DotMatch sample-level QC table suitable for MultiQC custom content.
-      pattern: "*.sample_qc.tsv"
-  - versions:
-      type: file
-      description: Software versions captured by the process.
-      pattern: "versions.yml"
+  counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.counts.mageck.tsv":
+          type: file
+          description: MAGeCK-compatible guide count matrix
+          pattern: "*.counts.mageck.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.summary.json":
+          type: file
+          description: Assignment and quality-control summary
+          pattern: "*.summary.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+  sample_qc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.sample_qc.tsv":
+          type: file
+          description: Sample-level assignment and quality-control metrics
+          pattern: "*.sample_qc.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  versions_dotmatch:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dotmatch:
+          type: string
+          description: The name of the tool
+      - dotmatch --version | sed "s/^dotmatch //":
+          type: eval
+          description: The expression used to obtain the tool version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dotmatch:
+          type: string
+          description: The name of the tool
+      - dotmatch --version | sed "s/^dotmatch //":
+          type: eval
+          description: The expression used to obtain the tool version
 authors:
-  - DotMatch contributors
+  - "@dnncha"
 maintainers:
-  - DotMatch contributors
-license: "Apache-2.0"
+  - "@dnncha"
