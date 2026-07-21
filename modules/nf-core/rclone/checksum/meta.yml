@@ -15,7 +15,6 @@ tools:
       licence:
         - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -24,7 +23,8 @@ input:
           e.g. [ id:'test' ]
     - sumfile:
         type: file
-        description: Checksum SUM file containing hashes and destination paths to verify.
+        description: Checksum SUM file containing hashes and destination paths to
+          verify.
         pattern: "*.{md5,sha1,sha256,sum,txt}"
         ontologies:
           - edam: "http://edamontology.org/data_3671"
@@ -57,7 +57,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}.combined.txt:
           type: file
-          description: Combined report of matching, missing, differing, and error paths.
+          description: Combined report of matching, missing, differing, and error
+            paths.
           pattern: "*.combined.txt"
           ontologies:
             - edam: "http://edamontology.org/data_3671"
@@ -69,7 +70,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}.differ.txt:
           type: file
-          description: Report of paths present in both source SUM file and destination but different.
+          description: Report of paths present in both source SUM file and
+            destination but different.
           pattern: "*.differ.txt"
           ontologies:
             - edam: "http://edamontology.org/data_3671"
@@ -81,7 +83,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}.missing_on_dst.txt:
           type: file
-          description: Report of paths present in the SUM file but missing from the destination.
+          description: Report of paths present in the SUM file but missing from
+            the destination.
           pattern: "*.missing_on_dst.txt"
           ontologies:
             - edam: "http://edamontology.org/data_3671"
@@ -93,7 +96,8 @@ output:
             e.g. [ id:'test' ]
       - ${prefix}.missing_on_src.txt:
           type: file
-          description: Report of paths present in the destination but missing from the SUM file.
+          description: Report of paths present in the destination but missing from
+            the SUM file.
           pattern: "*.missing_on_src.txt"
           ontologies:
             - edam: "http://edamontology.org/data_3671"
@@ -131,6 +135,18 @@ output:
       - rclone --version | sed -n '1s/^rclone v//p':
           type: eval
           description: The expression to obtain the version of the tool
+  exit_code:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing checksum source information
+            e.g. [ id:'test' ]
+      - ${prefix}.exit_code.txt:
+          type: file
+          description: File with exit status.
+          pattern: "*.exit_code.txt"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
 topics:
   versions:
     - - ${task.process}:

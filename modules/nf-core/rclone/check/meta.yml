@@ -117,6 +117,18 @@ output:
           pattern: "*.error.txt"
           ontologies:
             - edam: "http://edamontology.org/data_3671"
+  exit_code:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing checksum source information
+            e.g. [ id:'test' ]
+      - ${prefix}.exit_code.txt:
+          type: file
+          description: File with exit status.
+          pattern: "*.exit_code.txt"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
   versions_rclone:
     - - ${task.process}:
           type: string
