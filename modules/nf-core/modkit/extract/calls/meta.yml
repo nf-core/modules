@@ -1,0 +1,115 @@
+name: modkit_extract_calls
+description: |
+  Produce a per-read per-position table of base modification **calls**
+  (pass/fail/filtered, with the called base) from a modBAM using the same
+  thresholding algorithm as `modkit pileup`. Complementary to `modkit
+  extract full`, which emits raw probabilities: `extract calls` emits the
+  thresholded categorical decision per site per read.
+keywords:
+  - modkit
+  - methylation
+  - extract
+  - calls
+  - read-level
+  - modbam
+  - nanopore
+  - ont
+tools:
+  - "modkit":
+      description: A bioinformatics tool for working with modified bases in Oxford Nanopore
+        sequencing data.
+      homepage: https://github.com/nanoporetech/modkit
+      documentation: https://nanoporetech.github.io/modkit/
+      tool_dev_url: https://github.com/nanoporetech/modkit
+      licence:
+        - "Oxford Nanopore Technologies PLC. Public License Version 1.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`. The output inherits this meta.
+    - bam:
+        type: file
+        description: Input modBAM with MM/ML tags.
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+    - bai:
+        type: file
+        description: BAM index (`.bai` or `.csi`).
+        pattern: "*.{bai,csi}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'mm10' ]`. May be `[[], [], []]` to skip — reference
+          context columns will then be "." in the output.
+    - fasta:
+        type: file
+        description: Optional reference FASTA. Required only to populate reference-context
+          columns in the output.
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+    - fai:
+        type: file
+        description: Samtools FASTA index for `fasta`.
+        pattern: "*.fai"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`.
+      - "*.tsv{,.gz}":
+          type: file
+          description: |
+            Per-read per-position call table. BGZF-compressed when `--bgzf`
+            is passed via `ext.args`.
+          pattern: "*.{tsv,tsv.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`.
+      - "*.log":
+          type: file
+          description: |
+            Optional modkit debug log (only emitted when `--log-filepath
+            <name>.log` is passed via `ext.args`).
+          pattern: "*.log"
+          ontologies: []
+  versions_modkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sahuno"
+maintainers:
+  - "@sahuno"
