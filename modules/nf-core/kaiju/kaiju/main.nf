@@ -23,7 +23,9 @@ process KAIJU_KAIJU {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input = meta.single_end ? "-i ${reads}" : "-i ${reads[0]} -j ${reads[1]}"
 
-    if (!db.find { db_files -> db_files.name.endsWith('names.dmp') } || !db.find { db_files -> db_files.name.endsWith('nodes.dmp') }) {
+    def db_list = db instanceof List ? db : db.listDirectory()
+
+    if (!db_list.find { db_files -> db_files.name.endsWith('names.dmp') } || !db_list.find { db_files -> db_files.name.endsWith('nodes.dmp') }) {
         error('[KAIJU_KAIJU] Module error: Missing one of `nodes.dmp`, `names.dmp`. Check input.')
     }
     """
