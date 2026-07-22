@@ -3,17 +3,21 @@ nextflow_process {
     name "Test Process RCLONE_CHECK"
     script "../main.nf"
     process "RCLONE_CHECK"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "rclone"
     tag "rclone/check"
 
-    test("sarscov2 - fastq") {
+    test("match - malt") {
         when {
             process {
                 """
-                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                file('rclone.config').text = '[s3]\\ntype = s3\\nprovider = AWS\\nregion = eu-west-1\\nenv_auth = false\\nno_check_bucket = true'
+
+                input[0] = [[id:'test'], "s3://nf-core-test-datasets/modules/data/delete_me/malt/", "s3://nf-core-test-datasets/modules/data/delete_me/malt/"]
+                input[1] = file('rclone.config')
                 """
             }
         }
@@ -21,7 +25,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_dst", "missing_on_src", "error"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "match", "missing_on_dst", "missing_on_src", "error"])).match() }
             )
         }
     }
@@ -32,7 +36,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                input[0] = [[id:'test'], params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/', params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/']
+                input[1] = []
                 """
             }
         }
@@ -45,11 +50,14 @@ nextflow_process {
         }
     }
 
-    test("different files - fails") {
+    test("different files") {
         when {
             process {
                 """
-                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'delete_me/aracne3/README.md', checkIfExists: true), file(params.modules_testdata_base_path + 'delete_me/binette_checkm2/README.md', checkIfExists: true)]
+                file('rclone.config').text = '[https]\\ntype = http\\n[s3]\\ntype = s3\\nprovider = AWS\\nregion = eu-west-1\\nenv_auth = false\\nno_check_bucket = true'
+
+                input[0] = [[id:'test'], "s3://nf-core-test-datasets/modules/data/delete_me/malt/", "s3://annotation-cache/snpeff_cache/WBcel235.105/"]
+                input[1] = file('rclone.config')
                 """
             }
         }
@@ -62,11 +70,14 @@ nextflow_process {
         }
     }
 
-    test("destination subset - partial match and missing") {
+    test("differ and missing") {
         when {
             process {
                 """
-                input[0] = [[id:'test'], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                file('rclone.config').text = '[https]\\ntype = http\\n[s3]\\ntype = s3\\nprovider = AWS\\nregion = eu-west-1\\nenv_auth = false\\nno_check_bucket = true'
+
+                input[0] = [[id:'test'], "s3://nf-core-test-datasets/modules/data/delete_me/mirtop/", "s3://nf-core-test-datasets/modules/data/delete_me/metabuli"]
+                input[1] = file('rclone.config')
                 """
             }
         }
@@ -74,7 +85,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_src", "error"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_dst", "missing_on_src", "error"])).match() }
             )
         }
     }
