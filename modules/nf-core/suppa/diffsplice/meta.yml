@@ -134,6 +134,17 @@ output:
           description: PSI values for all events in the analysis
           pattern: "*.psivec"
           ontologies: []
+  tpm_events:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genome information
+            e.g. `[ id:'genome1' ]`
+      - "*.tab":
+          type: file
+          description: Average log TPM of the events
+          pattern: "*.tab"
+          ontologies: []
   versions_suppa:
     - - ${task.process}:
           type: string

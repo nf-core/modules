@@ -130,6 +130,126 @@ nextflow_process {
         }
     }
 
+    test("human - ioe - save tpm events") {
+        setup {
+
+            //
+            // Make mock expression files for two conditions with 2 samples using the same transcripts as in the events file
+            //
+            def transcripts = [
+                "ENST00000614229.4", "ENST00000400566.6", "ENST00000658863.1",
+                "ENST00000635225.1", "ENST00000635621.1", "ENST00000449602.2",
+                "ENST00000654045.1", "ENST00000669763.1", "ENST00000660967.1",
+                "ENST00000339775.10", "ENST00000284881.9", "ENST00000671660.1",
+                "ENST00000656151.1", "ENST00000656404.1", "ENST00000666665.1",
+                "ENST00000400094.5", "ENST00000348990.9", "ENST00000346798.8",
+                "ENST00000357903.7", "ENST00000439274.6", "ENST00000440126.7",
+                "ENST00000303775.10", "ENST00000286788.9", "ENST00000626972.2",
+                "ENST00000399913.5", "ENST00000399907.5", "ENST00000622113.4",
+                "ENST00000618007.4", "ENST00000285681.6", "ENST00000400183.6",
+                "ENST00000400166.5", "ENST00000400165.5", "ENST00000400128.5",
+                "ENST00000400127.5", "ENST00000299295.7", "ENST00000543733.5",
+                "ENST00000400135.5", "ENST00000480456.6", "ENST00000400532.5",
+                "ENST00000596385.5", "ENST00000660773.1", "ENST00000399935.6",
+                "ENST00000399934.5", "ENST00000339024.8", "ENST00000344577.6",
+                "ENST00000536861.5", "ENST00000619120.4", "ENST00000634644.1",
+                "ENST00000635525.2", "ENST00000348354.7", "ENST00000400558.7",
+                "ENST00000663293.1", "ENST00000654371.1", "ENST00000669643.1",
+                "ENST00000284971.7", "ENST00000354192.7", "ENST00000359726.7",
+                "ENST00000351429.7", "ENST00000540844.5", "ENST00000389125.7",
+                "ENST00000427445.6", "ENST00000285679.10", "ENST00000356275.10",
+                "ENST00000400131.5", "ENST00000312957.9", "ENST00000600590.1",
+                "ENST00000668267.1", "ENST00000399947.6", "ENST00000341618.8"
+            ]
+
+            def mock_expression1 = file("${outputDir}/mock_tpm_1.txt")
+            def lines1 = ["sample1\tsample2"]
+            transcripts.eachWithIndex { tx, i ->
+                lines1 << "${tx}\t${(i + 1) * 10.5}\t${(i + 1) * 2.1}"
+            }
+            mock_expression1.text = lines1.join("\n")
+
+            def mock_expression2 = file("${outputDir}/mock_tpm_2.txt")
+            def lines2 = ["sample1\tsample2"]
+            transcripts.eachWithIndex { tx, i ->
+                lines2 << "${tx}\t${(i + 1) * 1.5}\t${(i + 1) * 15.3}"
+            }
+            mock_expression2.text = lines2.join("\n")
+
+            run("SUPPA_GENERATEEVENTS") {
+                tag "suppa/generateevents"
+                script "../../generateevents/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                    input[1] = 'ioe'
+                    input[2] = false
+                    input[3] = 'SE'
+                    input[4] = 'S'
+                    input[5] = []
+                    input[6] = []
+                    """
+                }
+            }
+
+            run("SUPPA_PSIPEREVENT", alias: "SUPPA_PSIPEREVENT_COND1") {
+                tag "suppa/psiperevent"
+                script "../../psiperevent/main.nf"
+                process {
+                    """
+                    input[0] = [ [id: 'samples1'], file("${outputDir}/mock_tpm_1.txt") ]
+                    input[1] = SUPPA_GENERATEEVENTS.out.events
+                    input[2] = 0
+                    """
+                }
+            }
+
+            run("SUPPA_PSIPEREVENT", alias: "SUPPA_PSIPEREVENT_COND2") {
+                tag "suppa/psiperevent"
+                script "../../psiperevent/main.nf"
+                process {
+                    """
+                    input[0] = [ [id: 'samples2'], file("${outputDir}/mock_tpm_2.txt") ]
+                    input[1] = SUPPA_GENERATEEVENTS.out.events
+                    input[2] = 0
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = SUPPA_GENERATEEVENTS.out.events.map { meta, events -> [ [ id: 'test_SE' ], events ] }
+                input[1] = SUPPA_PSIPEREVENT_COND1.out.psi.map { meta, psi -> [ [ id: 'samples1' ], 'condition1', file("${outputDir}/mock_tpm_1.txt"), psi ] }
+                input[2] = SUPPA_PSIPEREVENT_COND2.out.psi.map { meta, psi -> [ [ id: 'samples2' ], 'condition2', file("${outputDir}/mock_tpm_2.txt"), psi ] }
+                input[3] = 'empirical'
+                input[4] = 1000
+                input[5] = 0
+                input[6] = false
+                input[7] = false
+                input[8] = 0.05
+                input[9] = true
+                input[10] = false
+                input[11] = false
+                input[12] = 0
+                input[13] = 0
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                {
+                    assert snapshot(
+                        process.out.dpsi.collect { meta, dpsi -> file(dpsi).getName().toString() },
+                        process.out.psivec.collect { meta, psivec -> file(psivec).getName().toString() },
+                    ).match()
+                }
+            )
+        }
+    }
+
     test("human - ioi") {
         setup {
 

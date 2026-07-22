@@ -26,6 +26,7 @@ process SUPPA_DIFFSPLICE {
     output:
     tuple val(meta), path("*.dpsi"), emit: dpsi
     tuple val(meta), path("*.psivec"), emit: psivec
+    tuple val(meta), path("*.tab"), emit: tpm_events, optional: true
     tuple val("${task.process}"), val('suppa'), eval("suppa.py -v | sed '1!d;s/.* //'"), topic: versions, emit: versions_suppa
 
     when:
@@ -40,6 +41,7 @@ process SUPPA_DIFFSPLICE {
     def gene_correction_arg = gene_correction ? '--gene-correction' : ''
     def combination_analysis_arg = combination_analysis ? '--combination' : ''
     def alpha_arg = multi_testing_correction_alpha ? "--alpha ${multi_testing_correction_alpha}" : ''
+    def save_tpm_events_arg = save_tpm_events ? '--save_tpm_events' : ''
     def median_delta_psi_arg = use_median_delta_psi ? '--median' : ''
     def tpm_threshold_arg = tpm_threshold ? "--tpm-threshold ${tpm_threshold}" : ''
     def nan_tpm_threshold_arg = nan_tpm_threshold ? "--nan-tpm-threshold ${nan_tpm_threshold}" : ''
@@ -57,6 +59,7 @@ process SUPPA_DIFFSPLICE {
         ${gene_correction_arg} \\
         ${combination_analysis_arg} \\
         ${alpha_arg} \\
+        ${save_tpm_events_arg} \\
         ${median_delta_psi_arg} \\
         ${tpm_threshold_arg} \\
         ${nan_tpm_threshold_arg} \\
