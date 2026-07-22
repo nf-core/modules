@@ -29,7 +29,7 @@ input:
         description: |
           List of input FastQ/FASTA files of size 1 and 2 for single-end and paired-end data,
           respectively. They are automatically sketched to .sylsp/.syldb
-        pattern: "*.{fasta,fastq,fna,fa,fq,fas,fasta.gz,fastq.gz,fna,fa.gz,fq,fas.gz}"
+        pattern: "*.{fasta,fastq,fna,fa,fq,fas}{,.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
           - edam: http://edamontology.org/format_1930 # FASTQ
