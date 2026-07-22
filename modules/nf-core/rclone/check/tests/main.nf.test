@@ -25,7 +25,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_dst", "missing_on_src", "error"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "match", "missing_on_dst", "missing_on_src", "error"])).match() }
             )
         }
     }
@@ -85,7 +85,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_src", "error"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_dst", "missing_on_src", "error"])).match() }
             )
         }
     }
