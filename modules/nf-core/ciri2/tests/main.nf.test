@@ -3,17 +3,35 @@ nextflow_process {
     name "Test Process CIRI2"
     script "../main.nf"
     process "CIRI2"
+    config "./nextflow.config"
+
+    setup {
+        run("SAMTOOLS_VIEW") {
+            script "../../samtools/view/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end: false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'fasta' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true), [] ]
+                input[2] = [ [], [] ]
+                input[3] = [ [], [] ]
+                input[4] = []
+                """
+            }
+        }
+    }
 
     test("homo_sapiens - sam - pairedend") {
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end: false ],
-                    file("/home/razmia/nf-core-modules/modules/nf-core/ciri2/tests/test_data/test-datasets/sample.sam", checkIfExists: true)
-                ]
-                input[1] = file("/home/razmia/nf-core-modules/modules/nf-core/ciri2/tests/test_data/test-datasets/chr1.fa")
+                input[0] = SAMTOOLS_VIEW.out.sam
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 input[2] = []
                 input[3] = []
                 """
