@@ -45,6 +45,9 @@ process SUPPA_DIFFSPLICE {
     def median_delta_psi_arg = use_median_delta_psi ? '--median' : ''
     def tpm_threshold_arg = tpm_threshold ? "--tpm-threshold ${tpm_threshold}" : ''
     def nan_tpm_threshold_arg = nan_tpm_threshold ? "--nan-tpm-threshold ${nan_tpm_threshold}" : ''
+
+    [ "empirical", "classical" ].contains(method) ?: error("Invalid method: ${method}. Must be one of 'empirical' or 'classical'.")
+
     """
     suppa.py \\
         diffSplice \\
