@@ -53,7 +53,10 @@ output:
           type: file
           description: Output file containing circRNA list
           pattern: "*.{txt}"
-          ontologies: []
+      - "CIRIerror.log":
+          type: file
+          description: Error log file from CIRI2.pl
+          pattern: "CIRIerror.log"
   logfile:
     - - meta:
           type: map
@@ -64,18 +67,17 @@ output:
           type: file
           description: Output logfile
           pattern: "*.{log}"
-          ontologies: []
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
-      - CIRI2.pl:
+      - "CIRI2.pl":
           type: string
-          description: The name of the tool
-      - CIRI2.pl --version:
-          type: eval
-          description: The expression to obtain the version of the tool
+          description: The name of the tool used to detect circular RNAs
+      - versions:
+          type: string
+          description: The version of CIRI2.pl used
 authors:
   - "@razmia02"
 maintainers:

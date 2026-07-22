@@ -11,9 +11,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end: false ],
-                    file("/home/razmia/nf-core-modules/modules/nf-core/ciri2/tests/test_data/sample.sam", checkIfExists: true)
+                    file("/home/razmia/nf-core-modules/modules/nf-core/ciri2/tests/test_data/test-datasets/sample.sam", checkIfExists: true)
                 ]
-                input[1] = file("/home/razmia/nf-core-modules/modules/nf-core/ciri2/tests/test_data/chr1.fa")
+                input[1] = file("/home/razmia/nf-core-modules/modules/nf-core/ciri2/tests/test_data/test-datasets/chr1.fa")
                 input[2] = []
                 input[3] = []
                 """
