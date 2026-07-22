@@ -12,7 +12,7 @@ process ANGSD_SOAPSNPCALIBRATION {
     tuple path(reference_fasta), path(reference_fai)
 
     output:
-    tuple val(meta), path("*_calibration_matrix"), emit: gl_calibration
+    tuple val(meta), path("*_calibration_matrix"), emit: soapsnp_calibration
     tuple val("${task.process}"), val('angsd'), eval("angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'"), emit: versions_angsd, topic: versions
 
     when:
