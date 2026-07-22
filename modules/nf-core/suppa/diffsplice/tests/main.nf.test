@@ -124,6 +124,7 @@ nextflow_process {
                     assert snapshot(
                         process.out.dpsi.collect { meta, dpsi -> file(dpsi).getName().toString() },
                         process.out.psivec.collect { meta, psivec -> file(psivec).getName().toString() },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -224,7 +225,7 @@ nextflow_process {
                 input[2] = SUPPA_PSIPEREVENT_COND2.out.psi.map { meta, psi -> [ [ id: 'samples2' ], 'condition2', file("${outputDir}/mock_tpm_2.txt"), psi ] }
                 input[3] = 'empirical'
                 input[4] = 1000
-                input[5] = 5
+                input[5] = 2
                 input[6] = false
                 input[7] = false
                 input[8] = 0.05
@@ -244,6 +245,7 @@ nextflow_process {
                     assert snapshot(
                         process.out.dpsi.collect { meta, dpsi -> file(dpsi).getName().toString() },
                         process.out.psivec.collect { meta, psivec -> file(psivec).getName().toString() },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -364,7 +366,8 @@ nextflow_process {
                     assert snapshot(
                         process.out.dpsi.collect { meta, dpsi -> file(dpsi).getName().toString() },
                         process.out.psivec.collect { meta, psivec -> file(psivec).getName().toString() },
-                        process.out.tpm_events.collect { meta, tpm_events -> file(tpm_events).getName().toString() }
+                        process.out.tpm_events.collect { meta, tpm_events -> file(tpm_events).getName().toString() },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
