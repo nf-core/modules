@@ -9,6 +9,34 @@ nextflow_process {
     tag "canvas/germline"
     tag "canvas"
 
+    test("homo_sapiens - [ [bam,bai], vcf, [], fasta, xml, bed ]") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true)
+                ]
+                input[2] = [ [], [] ]
+                input[3] = [
+                    [ id: 'GRCh38' ], 
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[4] = [
+                    [ id: 'GRCh38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/GenomeSize.xml', checkIfExists: true)
+                ]
+                input[5] = channel.of("chr22\t0\t1").collectFile('test_filter.bed', newLine:true)
+                """
+            }
+        }
+    }
+
     test("homo_sapiens - bam - female - stub") {
 
         options "-stub"
