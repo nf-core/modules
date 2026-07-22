@@ -244,6 +244,7 @@ nextflow_process {
                     assert snapshot(
                         process.out.dpsi.collect { meta, dpsi -> file(dpsi).getName().toString() },
                         process.out.psivec.collect { meta, psivec -> file(psivec).getName().toString() },
+                        process.out.tpm_events.collect { meta, tpm_events -> file(tpm_events).getName().toString() }
                     ).match()
                 }
             )
