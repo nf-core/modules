@@ -29,7 +29,6 @@ import os
 import platform
 import re
 import statistics
-from typing import Optional, Set
 
 # Create a logger
 logging.basicConfig(format="%(name)s - %(asctime)s %(levelname)s: %(message)s")
