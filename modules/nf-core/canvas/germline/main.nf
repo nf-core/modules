@@ -2,7 +2,9 @@ process CANVAS_GERMLINE {
     tag "$meta.id"
     label 'process_high'
 
-    container "quay.io/nf-core/canvas:1.40.0"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c0/c0fb830dbc4633b045c3681aa2115db1021b5e3c17e03becccbd976ef01b95db/data' :
+        'community.wave.seqera.io/library/canvas:1.40.0.1613--5f0cde4f6826e813' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
