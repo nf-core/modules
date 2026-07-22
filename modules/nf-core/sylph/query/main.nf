@@ -28,7 +28,7 @@ process SYLPH_QUERY {
         ${args} \\
         ${database} \\
         ${input} \\
-        -o ${prefix}.tsv
+        --output-file ${prefix}.tsv
     """
 
     stub:
