@@ -15,19 +15,9 @@ nextflow_process {
         when {
             process {
                 """
-                file('snpeff_cache.md5').text = [
-                    "444118a9fb9d0a03c37e86094d8e52a9  WBcel235.105/sequence.III.bin",
-                    "2fd1694bd91cf7952cbad8cfed161e53  WBcel235.105/sequence.I.bin",
-                    "ff756628faa0b71cd65495668c3d82b5  WBcel235.105/sequence.IV.bin",
-                    "bacedbdea89508e108223767fa260a4c  WBcel235.105/sequence.II.bin",
-                    "d6ad5476162ac45829f719dd4ee3f4e7  WBcel235.105/sequence.V.bin",
-                    "ec2bc2ae81755ab90fcf1848bc7ce41f  WBcel235.105/sequence.bin",
-                    "b79bec6cc8f96b8373dac56bab5d0a6c  WBcel235.105/sequence.X.bin"
-                ].join('\\n') + '\\n'
-
                 file('rclone.config').text = '[s3]\\ntype = s3\\nprovider = AWS\\nregion = eu-west-1\\nenv_auth = false\\nno_check_bucket = true'
 
-                input[0] = [[id:'test'], file('snpeff_cache.md5'), 'MD5', "s3://annotation-cache/snpeff_cache/WBcel235.105/"]
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'generic/txt/snpeff_cache_md5.txt', checkIfExists: true), 'MD5', "s3://annotation-cache/snpeff_cache/WBcel235.105/"]
                 input[1] = file('rclone.config')
                 """
             }
