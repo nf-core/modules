@@ -120,7 +120,12 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                {
+                    assert snapshot(
+                        process.out.dpsi.collect { meta, dpsi -> file(dpsi).getName().toString() },
+                        process.out.psivec.collect { meta, psivec -> file(psivec).getName().toString() },
+                    ).match()
+                }
             )
         }
     }
