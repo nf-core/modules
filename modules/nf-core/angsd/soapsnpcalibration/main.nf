@@ -25,6 +25,7 @@ process ANGSD_SOAPSNPCALIBRATION {
     // Touch fai index to ensure it is newer than the fasta (ANGSD requirement)
     def touch_ref = reference_fai  ? "sleep 1 && touch ${reference_fai}"  : ''
     
+    // Note: -GL 3 and -minQ 0 hardcoded as required to perform SOAPsnp calibration
     """
     ${touch_ref}
     printf '%s\\n' ${bams} > bamlist.txt
