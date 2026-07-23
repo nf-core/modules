@@ -19,7 +19,7 @@ process ANGSD_SOAPSNPCALIBRATION {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def args   = task.ext.args ?: ''
 
     // Touch fai index to ensure it is newer than the fasta (ANGSD requirement)
