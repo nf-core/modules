@@ -9,6 +9,8 @@ nextflow_process {
     tag "mgnifam"
     tag "mgnifam/generatefamilies"
 
+    config "./nextflow.config"
+
     test("mgnify - faa - mgnifams") {
 
         when {
@@ -39,6 +41,68 @@ nextflow_process {
         options "-stub"
 
         when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    // Stub-only on purpose: the point of this test is to document every
+    // `mgnifam generate_families` CLI flag main.nf forwards via `ext.args`
+    // (wired through `./nextflow.config` -> `params.module_args`), not to
+    // re-verify real tool behaviour under a non-default parameterisation
+    // (already covered by the real-data test above). The stub script never
+    // reads these flag values, so re-running the real tool here would add
+    // runtime cost without adding coverage.
+    //
+    // Every `generate_families --help` option that main.nf does not already
+    // hardcode (`--clusters_chunk`, `--fasta_file`, `--cpus`, `--chunk_num`,
+    // `--output_dir`) is set below to a small, realistic deviation from its
+    // tool default (shown in the comment) so this test doubles as living
+    // documentation of the available tuning knobs:
+    //   --discard_min_rep_length          75    -> 50
+    //   --discard_max_rep_length          2000  -> 1500
+    //   --discard_min_starting_membership 0.9   -> 0.8
+    //   --max_seq_identity                0.8   -> 0.7
+    //   --max_seed_seqs                   2000  -> 1000
+    //   --max_gap_occupancy               0.5   -> 0.6
+    //   --recruit_evalue_cutoff           0.001 -> 0.01
+    //   --recruit_hit_length_percentage   0.9   -> 0.8
+    //   --batch_size                      0     -> 4
+    //   --prefetch_targets                (off) -> on
+    // `--fasta_index` is skipped: it takes a path to a precomputed sequence
+    // index, not a tunable value, and is optional (auto-built when omitted).
+    test("mgnify - faa - mgnifams - custom_args - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--discard_min_rep_length 50 " +
+                    "--discard_max_rep_length 1500 " +
+                    "--discard_min_starting_membership 0.8 " +
+                    "--max_seq_identity 0.7 " +
+                    "--max_seed_seqs 1000 " +
+                    "--max_gap_occupancy 0.6 " +
+                    "--recruit_evalue_cutoff 0.01 " +
+                    "--recruit_hit_length_percentage 0.8 " +
+                    "--batch_size 4 " +
+                    "--prefetch_targets"
+            }
             process {
                 """
                 input[0] = [

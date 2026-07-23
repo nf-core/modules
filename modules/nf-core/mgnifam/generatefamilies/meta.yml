@@ -191,6 +191,16 @@ output:
       - mgnifam --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n1:
           type: eval
           description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python3 --version 2>&1 | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
@@ -201,6 +211,15 @@ topics:
           type: string
           description: The name of the tool
       - mgnifam --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n1:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python3 --version 2>&1 | sed 's/Python //':
           type: eval
           description: The expression to obtain the version of the tool
 
