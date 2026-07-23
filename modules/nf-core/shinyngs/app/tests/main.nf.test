@@ -38,6 +38,8 @@ nextflow_process {
                 input[0] = [ [ "id":"SRP254919" ], expression_sample_sheet,  expression_feature_meta, [ raw_expression_matrix_file, normalised_expression_matrix_file ] ]
                 input[1] = [ [ "id":"SRP254919" ], expression_contrasts, [ expression_differential, second_contrast_stats  ] ]
                 input[2] = contrast_stats_assay
+                input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -79,6 +81,8 @@ nextflow_process {
                 input[0] = [ [ "id":"SRP254919" ], expression_sample_sheet,  expression_feature_meta, [ raw_expression_matrix_file ] ]
                 input[1] = [ [ "id":"SRP254919" ], expression_contrasts, [ expression_differential, second_contrast_stats  ] ]
                 input[2] = contrast_stats_assay
+                input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -122,6 +126,8 @@ nextflow_process {
                 input[0] = [ [ "id":"SRP254919" ], expression_sample_sheet,  expression_feature_meta, [ raw_expression_matrix_file ] ]
                 input[1] = [ [ "id":"SRP254919" ], expression_contrasts, [ expression_differential, second_contrast_stats  ] ]
                 input[2] = contrast_stats_assay
+                input[3] = []
+                input[4] = []
                 """
             }
         }
