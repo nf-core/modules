@@ -45,7 +45,7 @@ output:
       - ngmaster:
           type: string
           description: The name of the tool
-      - ngmaster --version 2>&1 | sed -n 's/^ngmaster //p' | tail -n 1:
+      - ngmaster --version 2>&1 | tail -n 1 | sed 's/^ngmaster //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -56,7 +56,7 @@ topics:
       - ngmaster:
           type: string
           description: The name of the tool
-      - ngmaster --version 2>&1 | sed -n 's/^ngmaster //p' | tail -n 1:
+      - ngmaster --version 2>&1 | tail -n 1 | sed 's/^ngmaster //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
