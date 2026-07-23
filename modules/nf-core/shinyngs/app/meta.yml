@@ -53,6 +53,19 @@ input:
       type: file
       description: contrast statistics
       ontologies: []
+  - gene_sets:
+      type: file
+      description: |
+        Optional: GMT-format gene set files used for enrichment, referenced in the
+        app via the shinyngs `--enrichment_gene_sets` argument.
+      pattern: "*.{gmt}"
+      ontologies: []
+  - enrichment_results:
+      type: file
+      description: |
+        Optional: per-contrast enrichment result tables (e.g. GSEA output), matched
+        to contrasts in the app via the shinyngs `--enrichment_filename_template` argument.
+      ontologies: []
 output:
   app:
     - - meta:
