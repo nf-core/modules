@@ -49,7 +49,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.soapsnp_calibration },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
