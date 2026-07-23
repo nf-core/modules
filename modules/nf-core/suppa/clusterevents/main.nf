@@ -39,12 +39,13 @@ process SUPPA_CLUSTEREVENTS {
     clustering_method == 'optics' && !separation ? error("The 'optics' clustering method requires the '--separation' parameter to be set.") : ''
 
     """
-    touch ${prefix}.clustvec
+    cp -L ${dpsi} local_${dpsi}
+    cp -L ${psivec} local_${psivec}
 
     suppa.py \\
         clusterEvents \\
-        --dpsi ${dpsi} \\
-        --psivec ${psivec} \\
+        --dpsi local_${dpsi} \\
+        --psivec local_${psivec} \\
         ${sig_threshold_arg} \\
         ${dpsi_threshold_arg} \\
         ${eps_arg} \\
@@ -53,16 +54,16 @@ process SUPPA_CLUSTEREVENTS {
         ${min_pts_arg} \\
         --groups ${groups} \\
         ${clustering_arg} \\
-        --output ${prefix} \\
-        $args
+        ${args} \\
+        --output ${prefix}
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
-    touch ${prefix}.clustvec
+    touch ./${prefix}.clustvec
     """
 }
