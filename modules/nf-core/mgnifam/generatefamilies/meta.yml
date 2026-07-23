@@ -12,15 +12,14 @@ tools:
   - "mgnifam":
       description: Python package for iterative HMM-based protein family generation
         over large sequence databases, building an HMM from each cluster, recruiting
-        new members, re-aligning, and either converging on a family or discarding
-        the cluster
+        new members, re-aligning, and either converging on a family or discarding the
+        cluster
       homepage: "https://github.com/vagkaratzas/mgnifam"
       documentation: "https://github.com/vagkaratzas/mgnifam"
       tool_dev_url: "https://github.com/vagkaratzas/mgnifam"
       licence:
         - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -29,19 +28,18 @@ input:
           e.g. `[ id:'sample1' ]`
     - clusters_chunk:
         type: file
-        description: Headerless TSV file of MMseqs2 sequence clusters,
-          one representative-member pair per line (representative<TAB>member)
+        description: Headerless TSV file of MMseqs2 sequence clusters, one representative-member
+          pair per line (representative<TAB>member)
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
     - fasta_file:
         type: file
-        description: Uncompressed FASTA file of the protein sequence
-          database, with unique sequence names, referenced by the cluster members
+        description: Uncompressed FASTA file of the protein sequence database, with
+          unique sequence names, referenced by the cluster members
         pattern: "*.{fa,fasta,fna,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-
 output:
   seed_msa:
     - - meta:
@@ -51,8 +49,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/seed_msa/*.sto.gz:
           type: file
-          description: Optional. Per-family seed multiple sequence alignment in
-            gzipped Stockholm format
+          description: Optional. Per-family seed multiple sequence alignment in gzipped
+            Stockholm format
           pattern: "*/seed_msa/*.sto.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -151,8 +149,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/${prefix}_successful.txt:
           type: file
-          description: Optional. List of clusters that successfully converged into
-            families
+          description: Optional. List of clusters that successfully converged into families
           pattern: "*/*_successful.txt"
           ontologies:
             - edam: http://edamontology.org/format_3671 # Plain text format
@@ -164,8 +161,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/${prefix}_discarded.csv:
           type: file
-          description: Optional. Clusters discarded during family generation, with
-            reasons
+          description: Optional. Clusters discarded during family generation, with reasons
           pattern: "*/*_discarded.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
@@ -188,7 +184,7 @@ output:
       - mgnifam:
           type: string
           description: The name of the tool
-      - mgnifam --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n1:
+      - "mgnifam --version 2>&1":
           type: eval
           description: The expression to obtain the version of the tool
   versions_python:
@@ -201,7 +197,6 @@ output:
       - python3 --version 2>&1 | sed 's/Python //':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -210,7 +205,7 @@ topics:
       - mgnifam:
           type: string
           description: The name of the tool
-      - mgnifam --version 2>&1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n1:
+      - "mgnifam --version 2>&1":
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -222,7 +217,6 @@ topics:
       - python3 --version 2>&1 | sed 's/Python //':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@vagkaratzas"
 maintainers:

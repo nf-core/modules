@@ -22,7 +22,7 @@ process MGNIFAM_GENERATEFAMILIES {
     tuple val(meta), path("${prefix}/${prefix}_successful.txt"), emit: successful, optional: true
     tuple val(meta), path("${prefix}/${prefix}_discarded.csv") , emit: discarded , optional: true
     tuple val(meta), path("${prefix}/${prefix}_converged.txt") , emit: converged , optional: true
-    tuple val("${task.process}"), val('mgnifam'), eval("mgnifam --version 2>&1 | sed -nE 's/.*([0-9]+\.[0-9]+\.[0-9]+).*/\1/p;q'"), topic: versions, emit: versions_mgnifam
+    tuple val("${task.process}"), val('mgnifam'), eval("mgnifam --version 2>&1"), topic: versions, emit: versions_mgnifam
     tuple val("${task.process}"), val('python'), eval("python3 --version 2>&1 | sed 's/Python //'"), topic: versions, emit: versions_python
 
     when:
