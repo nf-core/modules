@@ -12,7 +12,7 @@ process NGMASTER {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    tuple val("${task.process}"), val('ngmaster'), eval("ngmaster --version 2>&1 | sed -n 's/^ngmaster //p' | tail -n 1"), emit: versions_ngmaster, topic: versions
+    tuple val("${task.process}"), val('ngmaster'), eval("ngmaster --version 2>&1 sed -n '$s/^ngmaster //p'"), emit: versions_ngmaster, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
