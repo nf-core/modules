@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process MGNIFAM_GENERATEFAMILIES"
+    script "../main.nf"
+    process "MGNIFAM_GENERATEFAMILIES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mgnifam"
+    tag "mgnifam/generatefamilies"
+
+    // `clustering.tsv` is a real 22-cluster / 57-line clusters_chunk already produced
+    // by the nf-core/proteinfamilies pipeline against `mgnifams_input_small.faa`, so
+    // every member name is guaranteed to resolve in the FASTA database. Reused as-is
+    // instead of a hand-built fixture. Both files live on the `proteinfamilies` branch
+    // of nf-core/test-datasets rather than under `modules/data/`, hence the `../../`
+    // climb out of `modules_testdata_base_path` (see modules/nf-core/hmmer/jackhmmer
+    // for the same pattern).
+    test("mgnifams - clusters_chunk/fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "../../proteinfamilies/test_data/modules/clustering.tsv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "../../proteinfamilies/test_data/mgnifams_input_small.faa", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // "log" contains a wall-clock timestamp on every line, so only its
+                // filename is stable across runs.
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+
+    }
+
+    test("mgnifams - clusters_chunk/fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "../../proteinfamilies/test_data/modules/clustering.tsv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "../../proteinfamilies/test_data/mgnifams_input_small.faa", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
