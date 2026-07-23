@@ -31,8 +31,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() },
-                { assert file(process.out.exit_code[0][1]).text.trim() == "0" }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() }
             )
         }
     }
@@ -60,8 +59,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() },
-                { assert file(process.out.exit_code[0][1]).text.trim() == "1" }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() }
             )
         }
     }
@@ -91,8 +89,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() },
-                { assert file(process.out.exit_code[0][1]).text.trim() == "2" }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() }
             )
         }
     }
@@ -119,8 +116,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() },
-                { assert file(process.out.exit_code[0][1]).text.trim() == "2" }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() }
             )
         }
     }
