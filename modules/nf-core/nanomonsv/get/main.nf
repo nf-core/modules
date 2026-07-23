@@ -9,7 +9,7 @@ process NANOMONSV_GET {
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bai), path(tumor_parse_files, arity: '8')
-    tuple val(meta2), path(control_bam), path(control_bai), path(control_parse_files, arity: '8')
+    tuple val(meta2), path(control_bam), path(control_bai), path(control_parse_files, arity: '0..8')
     tuple val(meta3), path(ref), path(ref_index)
     path simple_repeat_bed
     path simple_repeat_bed_index
