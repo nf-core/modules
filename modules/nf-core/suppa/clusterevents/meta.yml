@@ -45,7 +45,7 @@ input:
       default: 0.05
   - metric:
       type: string
-      description: Distance metric. Choices: euclidean, manhattan, cosine
+      description: Distance metric. (allowed values are euclidean, manhattan, cosine)
       default: euclidean
   - separation:
       type: float
@@ -59,7 +59,7 @@ input:
       description: Ranges of column numbers specifying the replicates per condition. Column numbers have to be continuous, with no overlapping or missing columns between them (e.g. 1-2,3-4)
   - clustering_method:
       type: string
-      description: Clustering method to use Choices: DBSCAN, OPTICS
+      description: Clustering method to use (allowed values are DBSCAN, OPTICS)
       default: DBSCAN
 output:
   clustvec:
