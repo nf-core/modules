@@ -23,7 +23,7 @@
                         {
                             "id": "plasmid"
                         },
-                        "plasmid.summary.json:md5,e75842f2ccc99bde8b759f03eb5aab5f"
+                        "plasmid.summary.json"
                     ]
                 ],
                 "versions_dotmatch": [
@@ -33,9 +33,57 @@
                         "0.2.1"
                     ]
                 ]
+            },
+            {
+                "k": 0,
+                "metric": "hamming",
+                "ambiguity_policy": "radius",
+                "alphabet_policy": "literal-byte; A/C/G/T/N/IUPAC symbols are ordinary byte symbols; no wildcard expansion",
+                "max_correction_qual": null,
+                "indel_window": 0,
+                "target_start": 23,
+                "auto_offset": 0,
+                "offset_mode": "best",
+                "offset_min_fraction": 0.00500000,
+                "offset_detection_strategy": "none",
+                "backend_requested": "auto",
+                "backend_effective": "cpu",
+                "metal_device": null,
+                "metal_validation": null,
+                "count_engine": "hamming_lookup_direct_single_offset",
+                "hamming_index": "exact",
+                "target_length": 19,
+                "n_targets": 87437,
+                "read_threads": 2,
+                "samples": [
+                    {
+                        "sample": "plasmid",
+                        "selected_target_start": 23,
+                        "selected_target_starts": [
+                            23
+                        ],
+                        "total_reads": 10000,
+                        "assigned_unique": 8499,
+                        "assigned_exact": 8499,
+                        "assigned_corrected": 0,
+                        "k1_rescued_reads": 0,
+                        "percent_rescued_by_k1": 0.000000,
+                        "ambiguous": 0,
+                        "percent_ambiguous": 0.000000,
+                        "unmatched": 1501,
+                        "percent_unmatched": 15.010000,
+                        "invalid": 0,
+                        "library_covered_targets": 7794,
+                        "library_coverage_fraction": 0.089138,
+                        "top_target_id": "chr15:83102977-83103000",
+                        "top_target_count": 6,
+                        "candidates_considered": 8499,
+                        "candidates_verified": 8499
+                    }
+                ]
             }
         ],
-        "timestamp": "2026-07-21T15:46:41.09546",
+        "timestamp": "2026-07-23T13:30:05.676051",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -107,7 +155,7 @@
                         {
                             "id": "esc1"
                         },
-                        "esc1.summary.json:md5,dc728244fd228257aea3f2509bc0aca5"
+                        "esc1.summary.json"
                     ]
                 ],
                 "versions_dotmatch": [
@@ -117,9 +165,57 @@
                         "0.2.1"
                     ]
                 ]
+            },
+            {
+                "k": 1,
+                "metric": "levenshtein",
+                "ambiguity_policy": "radius",
+                "alphabet_policy": "literal-byte; A/C/G/T/N/IUPAC symbols are ordinary byte symbols; no wildcard expansion",
+                "max_correction_qual": null,
+                "indel_window": 0,
+                "target_start": 23,
+                "auto_offset": 0,
+                "offset_mode": "best",
+                "offset_min_fraction": 0.00500000,
+                "offset_detection_strategy": "none",
+                "backend_requested": "auto",
+                "backend_effective": "cpu",
+                "metal_device": null,
+                "metal_validation": null,
+                "count_engine": "generic_indexed",
+                "hamming_index": "query",
+                "target_length": 19,
+                "n_targets": 87437,
+                "read_threads": 2,
+                "samples": [
+                    {
+                        "sample": "esc1",
+                        "selected_target_start": 23,
+                        "selected_target_starts": [
+                            23
+                        ],
+                        "total_reads": 10000,
+                        "assigned_unique": 8818,
+                        "assigned_exact": 8445,
+                        "assigned_corrected": 373,
+                        "k1_rescued_reads": 373,
+                        "percent_rescued_by_k1": 3.730000,
+                        "ambiguous": 54,
+                        "percent_ambiguous": 0.540000,
+                        "unmatched": 1128,
+                        "percent_unmatched": 11.280000,
+                        "invalid": 0,
+                        "library_covered_targets": 8054,
+                        "library_coverage_fraction": 0.092112,
+                        "top_target_id": "chr15:83102977-83103000",
+                        "top_target_count": 6,
+                        "candidates_considered": 8927,
+                        "candidates_verified": 8927
+                    }
+                ]
             }
         ],
-        "timestamp": "2026-07-21T15:47:09.096737",
+        "timestamp": "2026-07-23T13:32:00.567562",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"

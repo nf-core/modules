@@ -29,9 +29,15 @@ nextflow_process {
         }
 
         then {
+            def summary_data = new groovy.json.JsonSlurper().parse(file(process.out.summary[0][1]))
+            summary_data.remove("phase_seconds")
+
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["summary"]),
+                    summary_data
+                ).match() }
             )
         }
 
@@ -56,9 +62,15 @@ nextflow_process {
         }
 
         then {
+            def summary_data = new groovy.json.JsonSlurper().parse(file(process.out.summary[0][1]))
+            summary_data.remove("phase_seconds")
+
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["summary"]),
+                    summary_data
+                ).match() }
             )
         }
 
