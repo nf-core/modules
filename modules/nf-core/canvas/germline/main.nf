@@ -23,11 +23,17 @@ process CANVAS_GERMLINE {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
     def ploidy_arg = ploidy_vcf ? "--ploidy-vcf $ploidy_vcf" : ""
 
+    // Seqera containers does not set up PATH correctly for .NET, so we need to add it manually
+    // Conda does not need this
     """
+    if [[ '${workflow.containerEngine}' != 'null' ]]; then
+        export PATH=/opt/conda/lib/dotnet:\$PATH
+    fi
+
     Canvas SmallPedigree-WGS \\
         --bam ${bam} \\
         --sample-b-allele-vcf ${germline_snv_vcf} \\
