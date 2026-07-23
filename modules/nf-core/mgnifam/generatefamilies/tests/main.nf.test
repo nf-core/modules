@@ -9,22 +9,15 @@ nextflow_process {
     tag "mgnifam"
     tag "mgnifam/generatefamilies"
 
-    // `clustering.tsv` is a real 22-cluster / 57-line clusters_chunk already produced
-    // by the nf-core/proteinfamilies pipeline against `mgnifams_input_small.faa`, so
-    // every member name is guaranteed to resolve in the FASTA database. Reused as-is
-    // instead of a hand-built fixture. Both files live on the `proteinfamilies` branch
-    // of nf-core/test-datasets rather than under `modules/data/`, hence the `../../`
-    // climb out of `modules_testdata_base_path` (see modules/nf-core/hmmer/jackhmmer
-    // for the same pattern).
-    test("mgnifams - clusters_chunk/fasta") {
+    test("mgnify - faa - mgnifams") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "../../proteinfamilies/test_data/modules/clustering.tsv", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "../../proteinfamilies/test_data/mgnifams_input_small.faa", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
                 ]
                 """
             }
@@ -41,7 +34,7 @@ nextflow_process {
 
     }
 
-    test("mgnifams - clusters_chunk/fasta - stub") {
+    test("mgnify - faa - mgnifams - stub") {
 
         options "-stub"
 
@@ -50,8 +43,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "../../proteinfamilies/test_data/modules/clustering.tsv", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "../../proteinfamilies/test_data/mgnifams_input_small.faa", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
                 ]
                 """
             }
