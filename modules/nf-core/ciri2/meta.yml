@@ -1,0 +1,103 @@
+name: "ciri2"
+description: Circular RNA identification based on multiple seed matching
+keywords:
+  - circRNA
+  - detection
+  - genomics
+  - transcriptomics
+tools:
+  - "ciri2":
+      description: "CIRI2: Circular RNA identification based on multiple seed matching"
+      homepage: "https://ciri-cookbook.readthedocs.io/en/latest/CIRI2.html"
+      documentation: "https://ciri-cookbook.readthedocs.io/en/latest/CIRI2.html"
+      tool_dev_url: "https://github.com/bioinfo-biols/CIRI-full/tree/master/bin/CIRI_v2.0.6"
+      doi: "10.1093/bib/bbx014"
+      licence:
+        - "GPL-2.0-only"
+      identifier: "biotools:ciri2"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - sam:
+        type: file
+        description: Raw SAM file from BWA
+        pattern: "*.{sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3462"
+  - fasta:
+      type: file
+      description: Fasta file for reference sequence
+      pattern: "*.{fasta, fa}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929"
+  - annotation:
+      type: file
+      description: GTF or GFF3 annotation file
+      pattern: "*.{gtf, gff, gff3}"
+      ontologies:
+        - edam: "http://edamontology.org/format_2305"
+  - ref_dir:
+      type: directory
+      description: Directory containing reference files
+output:
+  circrna:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: Output file containing circRNA list
+          pattern: "*.{txt}"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt.log":
+          type: file
+          description: Output log file
+          pattern: "*.{txt.log}"
+          ontologies: []
+  error_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - CIRIerror.log:
+          type: file
+          description: Output error log file
+          pattern: "CIRIerror.log"
+          ontologies: []
+  versions_ciri2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - CIRI2.pl:
+          type: string
+          description: The name of the tool
+      - CIRI2.pl --help | sed -n 's/^Version:\s*//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - CIRI2.pl:
+          type: string
+          description: The name of the tool
+      - CIRI2.pl --help | sed -n 's/^Version:\s*//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@razmia02"
+maintainers:
+  - "@razmia02"
