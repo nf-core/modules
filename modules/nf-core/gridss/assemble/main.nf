@@ -37,7 +37,9 @@ process GRIDSS_ASSEMBLE {
         --reference ${fasta} \\
         --workingdir "." \\
         --assembly ${prefix}.sv.assembly.bam \\
-        --threads ${task.cpus} ${arg_config} ${bams_list.join(' ')}
+        --threads ${task.cpus} \\
+        ${arg_config} \\
+        ${bams_list.join(' ')}
 
     """
 
