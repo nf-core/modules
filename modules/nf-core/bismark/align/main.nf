@@ -28,32 +28,54 @@ process BISMARK_ALIGN {
     }
     def fastq = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
 
-    // Try to assign sensible bismark --multicore if not already set
-    if(!args.contains('--multicore') && task.cpus){
+    // Give each strand instance `-p = cpus / n_instances` threads (one index load per strand,
+    // byte-identical) instead of forking N --multicore chunks that each re-load the index.
+    // minimap2/rammap can't take -p from bismark yet, so they keep the legacy --multicore path.
+    def isMinimapLike = args.contains('--minimap2') || args.contains('--mm2') || args.contains('--rammap') || args.contains('--ram')
+    if(isMinimapLike){
 
-        // Numbers based on recommendation by Felix for a typical mouse genome
-        def ccore = 1
-        def cpu_per_multicore = 3
-        def mem_per_multicore = (13.GB).toBytes()
-        if(args.contains('--non_directional')){
-            cpu_per_multicore = 5
-            mem_per_multicore = (18.GB).toBytes()
+        // Legacy --multicore auto-compute (unchanged) — minimap2/rammap only.
+        if(!args.contains('--multicore') && task.cpus){
+
+            // Numbers based on recommendation by Felix for a typical mouse genome
+            def ccore = 1
+            def cpu_per_multicore = 3
+            def mem_per_multicore = (13.GB).toBytes()
+            if(args.contains('--non_directional')){
+                cpu_per_multicore = 5
+                mem_per_multicore = (18.GB).toBytes()
+            }
+
+            // How many multicore splits can we afford with the cpus we have?
+            ccore = ((task.cpus as int) / cpu_per_multicore) as int
+
+            // Check that we have enough memory
+            try {
+                def tmem = (task.memory as MemoryUnit).toBytes()
+                def mcore = (tmem / mem_per_multicore) as int
+                ccore = Math.min(ccore, mcore)
+            } catch (Exception e) {
+                log.warn "Error catched: ${e}"
+                log.warn "Not able to define bismark align multicore based on available memory"
+            }
+            if(ccore > 1){
+                args += " --multicore ${ccore}"
+            }
+        }
+    } else if(!args.contains('--multicore') && !args.contains('--parallel') && !args.contains('-p ') && task.cpus){
+
+        def n_instances = 2
+        if(args.contains('--combined_index')){
+            // combined index = one both-strands pass; parallel non-directional runs two.
+            n_instances = (args.contains('--non_directional') && args.contains('--combined_index_parallel')) ? 2 : 1
+        } else if(args.contains('--non_directional')){
+            n_instances = 4
         }
 
-        // How many multicore splits can we afford with the cpus we have?
-        ccore = ((task.cpus as int) / cpu_per_multicore) as int
-
-        // Check that we have enough memory
-        try {
-            def tmem = (task.memory as MemoryUnit).toBytes()
-            def mcore = (tmem / mem_per_multicore) as int
-            ccore = Math.min(ccore, mcore)
-        } catch (Exception e) {
-            log.warn "Error catched: ${e}"
-            log.warn "Not able to define bismark align multicore based on available memory"
-        }
-        if(ccore > 1){
-            args += " --multicore ${ccore}"
+        // bismark requires -p >= 2, so omit it below that (one thread per instance).
+        def pthreads = ((task.cpus as int) / n_instances) as int
+        if(pthreads >= 2){
+            args += " -p ${pthreads}"
         }
     }
     """
