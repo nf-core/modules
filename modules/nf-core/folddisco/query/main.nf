@@ -24,11 +24,11 @@ process FOLDDISCO_QUERY {
     """
     folddisco \\
         query \\
-        -p ${pdb} \\
-        -q ${query} \\
-        -i ${index}/${index} \\
-        -o ${prefix}.tsv \\
-        -t $task.cpus \\
+        --pdb ${pdb} \\
+        --query ${query} \\
+        --index ${index}/${index} \\
+        --output ${prefix}.tsv \\
+        --threads $task.cpus \\
         $args
     """
 
