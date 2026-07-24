@@ -1,0 +1,131 @@
+name: "angsd_dosaf"
+description: Estimate site allele frequencies from BAM files.
+keywords:
+  - angsd
+  - genotype likelihood
+  - genomics
+tools:
+  - "angsd":
+      description: "ANGSD: Analysis of next generation Sequencing Data"
+      homepage: "http://www.popgen.dk/angsd/"
+      documentation: "http://www.popgen.dk/angsd/"
+      tool_dev_url: "https://github.com/ANGSD/angsd"
+      doi: "10.1186/s12859-014-0356-4"
+      licence:
+        - "GPL v3"
+        - "MIT"
+      identifier: biotools:angsd
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing population information
+          e.g. [ id:'test', population:'population id', samples:'sample IDs' ]
+    - bams:
+        type: file
+        description: A list of BAM or CRAM files.
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_3462"
+    - bam_indices:
+        type: file
+        description: A list of BAM or CRAM indices.
+        pattern: "*.{bam.bai,cram.crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+          - edam: "http://edamontology.org/format_3462"
+  - - reference_fasta:
+        type: file
+        description: A reference genome in FASTA format.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - reference_fai:
+        type: file
+        description: Index of the reference genome FASTA file.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - ancestral_fasta:
+        type: file
+        description: An ancestral state genome in FASTA format.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - ancestral_fai:
+        type: file
+        description: Index of the ancestral state genome FASTA file.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" 
+  - error_file:
+      type: file
+      description: A file containing per-base substitution error rates for use
+        with the Sykes genotype likelihood model (-GL 4).
+      pattern: "*.errors"
+      ontologies: []
+  - inbreeding_coefficients:
+      type: file
+      description: A file containing estimates of individual inbreeding
+        coefficients.
+      pattern: "*.indF"
+      ontologies: []
+  - gl_model:
+      type: integer
+      description: |
+        Genotype likelihood model to use (angsd -GL). 1=SAMtools, 2=GATK, 3=SOAPsnp, 4=SYK.
+  - dosaf_mode:
+      type: integer
+      description: |
+        Site allele frequency likelihood estimation mode (angsd -doSAF). 1=standard, 2=inbreeding-aware (requires indF).
+output:
+  saf:
+    - - meta:
+          type: map
+          description: Groovy Map containing population information. e.g. `[
+            id:'test', population:'population id', samples:'sample IDs' ]`
+      - "*.saf.idx":
+          type: file
+          description: ANGSD site allele frequency index file
+          pattern: "*.saf.idx"
+          ontologies: []
+      - "*.saf.pos.gz":
+          type: file
+          description: Gzipped file containing genomic positions of sites in the
+            SAF
+          pattern: "*.saf.pos.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+      - "*.saf.gz":
+          type: file
+          description: Gzipped binary file containing per-site sample allele
+            frequency likelihoods
+          pattern: "*.saf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  versions_angsd:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ASendellPrice"
+maintainers:
+  - "@ASendellPrice"
