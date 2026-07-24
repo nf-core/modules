@@ -1,6 +1,6 @@
-process FOLDDISCO_INDEX {
+process FOLDDISCO_QUERY {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
@@ -8,10 +8,11 @@ process FOLDDISCO_INDEX {
         'quay.io/biocontainers/folddisco:2.9375a2d--hb42e459_0' }"
 
     input:
-    tuple val(meta), path(structures, stageAs: "structures/*")
+    tuple val(meta), path(pdb), val(query)
+    tuple val(meta2), path(index), path(structures, stageAs: "structures/*")
 
     output:
-    tuple val(meta), path("${prefix}"), emit: index
+    tuple val(meta), path("${prefix}.tsv"), emit: results
     tuple val("${task.process}"), val('folddisco'), eval("folddisco version"), topic: versions, emit: versions_folddisco
 
     when:
@@ -21,12 +22,12 @@ process FOLDDISCO_INDEX {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}
-
     folddisco \\
-        index \\
-        --pdbs structures \\
-        --index ${prefix}/${prefix} \\
+        query \\
+        --pdb ${pdb} \\
+        --query ${query} \\
+        --index ${index}/${index} \\
+        --output ${prefix}.tsv \\
         --threads $task.cpus \\
         $args
     """
@@ -34,10 +35,6 @@ process FOLDDISCO_INDEX {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}
-    touch ${prefix}/${prefix}
-    touch ${prefix}/${prefix}.offset
-    touch ${prefix}/${prefix}.lookup
-    touch ${prefix}/${prefix}.type
+    touch ${prefix}.tsv
     """
 }
