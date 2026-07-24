@@ -7,8 +7,7 @@ keywords:
   - shinyngs
 tools:
   - "shinyngs":
-      description: "Provides Shiny applications for various array and NGS applications.
-        Currently very RNA-seq centric, with plans for expansion."
+      description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
       homepage: "https://github.com/pinin4fjords/shinyngs"
       documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
       tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
@@ -99,3 +98,27 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/r-shinyngs:3.2.0--71dbb9a6ee95bc28
+      build_id: bd-71dbb9a6ee95bc28_1
+      scan_id: sc-0b57ec15282cc0fe_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-shinyngs:3.2.0--19cca4636e20b0f7
+      build_id: bd-19cca4636e20b0f7_1
+      scan_id: sc-501add0467d2f061_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-shinyngs:3.2.0--c8c7c602b7ecaf69
+      build_id: bd-c8c7c602b7ecaf69_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/41759558393509662940440e609bd5e89e4ec0d4b02c09421923fa0270926666/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r-shinyngs:3.2.0--537d87067431146d
+      build_id: bd-537d87067431146d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0bd003b3b7ca7b4081291d4b2cf34b41afb8cf1dd18ffb6f3c7134aaa00c7df/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/shinyngs/staticdifferential/.conda-lock/linux_amd64-bd-19cca4636e20b0f7_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/shinyngs/staticdifferential/.conda-lock/linux_arm64-bd-71dbb9a6ee95bc28_1.txt
