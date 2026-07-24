@@ -2,10 +2,10 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     tag "$meta.id"
     label 'process_high'
 
-    container "quay.io/nf-core/xeniumranger:4.0"
+    container "nf-core/xeniumranger:4.0"
 
     input:
-    tuple val(meta), path(xenium_bundle, stageAs: "bundle/"), path(transcript_assignment), path(viz_polygons), path(nuclei), path(cells), path(coordinate_transform), val(units)
+    tuple val(meta), path(xenium_bundle, stageAs: "bundle/"), path(transcript_assignment), path(viz_polygons), path(nuclei), path(cells), path(coordinate_transform), val(units), val(expansion_distance)
 
     output:
     tuple val(meta), path("${prefix}"), emit: outs
@@ -32,6 +32,11 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
 
     def assembled_args = []
     if (task.ext.args) { assembled_args << task.ext.args.trim() }
+    // --expansion-distance is only valid for nuclei-based imports (it expands nuclei
+    // into cell boundaries). xeniumranger rejects it for transcript-assignment imports
+    // (proseg/baysor/segger) and cells-only imports with "--expansion-distance requires
+    // --nuclei", so only emit it when a nuclei segmentation is being imported.
+    if (nuclei && expansion_distance != null) { assembled_args << "--expansion-distance=${expansion_distance}" }
     if (nuclei) { assembled_args << "--nuclei=\"${nuclei}\"" }
     if (cells) { assembled_args << "--cells=\"${cells}\"" }
     if (transcript_assignment) { assembled_args << "--transcript-assignment=\"${transcript_assignment}\"" }
