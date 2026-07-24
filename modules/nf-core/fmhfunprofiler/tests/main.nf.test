@@ -44,7 +44,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(process.out.csv[0][1]).readLines()).match() }
+                { assert snapshot([
+		    versions: process.out.versions_fmhfunprofiler,
+		    out: path(process.out.csv[0][1]).readLines()
+		]
+		).match() }
             )
         }
     }
@@ -67,7 +71,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(process.out.csv[0][1]).readLines()[1..10]).match() }
+                { assert snapshot(
+		    path(process.out.csv[0][1]).readLines()[1..10]
+		).match() }
             )
         }
     }
@@ -89,7 +95,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(process.out.csv[0][1]).readLines()).match() }
+                { assert snapshot(
+		    path(process.out.csv[0][1]).readLines(),
+		).match() }
             )
         }
     }
