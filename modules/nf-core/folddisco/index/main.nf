@@ -25,9 +25,9 @@ process FOLDDISCO_INDEX {
 
     folddisco \\
         index \\
-        -p structures \\
-        -i ${prefix}/${prefix} \\
-        -t $task.cpus \\
+        --pdbs structures \\
+        --index ${prefix}/${prefix} \\
+        --threads $task.cpus \\
         $args
     """
 
