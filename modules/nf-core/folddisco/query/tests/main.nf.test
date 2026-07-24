@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process FOLDDISCO_QUERY"
     script "../main.nf"
     process "FOLDDISCO_QUERY"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -13,7 +14,6 @@ nextflow_process {
     setup {
         run("FOLDDISCO_INDEX") {
             script "../../index/main.nf"
-            config "./nextflow.config"
             process {
                 """
                 input[0] = [
@@ -29,8 +29,10 @@ nextflow_process {
     }
 
     test("proteomics - pdb - tsv") {
-
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -60,10 +62,10 @@ nextflow_process {
     }
 
     test("proteomics - pdb - tsv - skip-match") {
-
-        config "./skip_match.config"
-
         when {
+            params {
+                module_args = '--skip-match'
+            }
             process {
                 """
                 input[0] = [
@@ -90,6 +92,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
