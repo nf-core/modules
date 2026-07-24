@@ -1,11 +1,11 @@
-process XENIUMRANGER_IMPORT_SEGMENTATION {
+process XENIUMRANGER_IMPORTSEGMENTATION {
     tag "$meta.id"
     label 'process_high'
 
     container "quay.io/nf-core/xeniumranger:4.0"
 
     input:
-    tuple val(meta), path(xenium_bundle, stageAs: "bundle/"), path(transcript_assignment), path(viz_polygons), path(nuclei), path(cells), path(coordinate_transform), val(units)
+    tuple val(meta), path(xenium_bundle, stageAs: "bundle/"), path(transcript_assignment), path(viz_polygons), path(nuclei), path(cells), path(coordinate_transform), val(units), val(expansion_distance)
 
     output:
     tuple val(meta), path("${prefix}"), emit: outs
@@ -18,7 +18,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "XENIUMRANGER_IMPORT_SEGMENTATION module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error "XENIUMRANGER_IMPORTSEGMENTATION module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -32,6 +32,9 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
 
     def assembled_args = []
     if (task.ext.args) { assembled_args << task.ext.args.trim() }
+    // --expansion-distance is only valid for nuclei-based imports.
+    // xeniumranger rejects it for transcript-assignment imports and cells-only imports.
+    if (nuclei && expansion_distance != null) { assembled_args << "--expansion-distance=${expansion_distance}" }
     if (nuclei) { assembled_args << "--nuclei=\"${nuclei}\"" }
     if (cells) { assembled_args << "--cells=\"${cells}\"" }
     if (transcript_assignment) { assembled_args << "--transcript-assignment=\"${transcript_assignment}\"" }
@@ -48,14 +51,14 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
 
     """
     xeniumranger import-segmentation \\
-        --id="XENIUMRANGER_IMPORT_SEGMENTATION" \\
+        --id="XENIUMRANGER_IMPORTSEGMENTATION" \\
         --xenium-bundle="${xenium_bundle}" \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         ${args}
 
     rm -rf "${prefix}"
-    mv XENIUMRANGER_IMPORT_SEGMENTATION/outs "${prefix}"
+    mv XENIUMRANGER_IMPORTSEGMENTATION/outs "${prefix}"
     """
 
     stub:

@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process XENIUMRANGER_IMPORT_SEGMENTATION"
+    name "Test Process XENIUMRANGER_IMPORTSEGMENTATION"
     script "../main.nf"
-    process "XENIUMRANGER_IMPORT_SEGMENTATION"
+    process "XENIUMRANGER_IMPORTSEGMENTATION"
 
     tag "modules"
     tag "modules_nfcore"
     tag "xeniumranger"
-    tag "xeniumranger/import-segmentation"
+    tag "xeniumranger/importsegmentation"
     tag "unzip"
 
 
@@ -24,21 +24,22 @@ nextflow_process {
 
     }
 
-    test("xeniumranger import-segmentation nuclei") {
+    test("xeniumranger importsegmentation nuclei") {
         when {
             process {
                 """
                 input[0] = UNZIP.out.unzipped_archive
                     .map { meta, bundle ->
                         [
-                            [id: "test_xeniumranger_import-segmentation"],
+                            [id: "test_xeniumranger_importsegmentation"],
                             bundle,
                             [],
                             [],
                             bundle + "/cells.zarr.zip",
                             [],
                             [],
-                            []
+                            [],
+                            5
                         ]
                     }
                 """
@@ -56,7 +57,7 @@ nextflow_process {
         }
     }
 
-    test("xeniumranger import-segmentation stub") {
+    test("xeniumranger importsegmentation stub") {
         options "-stub"
 
         when {
@@ -65,14 +66,15 @@ nextflow_process {
                 input[0] = UNZIP.out.unzipped_archive
                     .map { meta, bundle ->
                         [
-                            [id: "test_xeniumranger_import-segmentation"],
+                            [id: "test_xeniumranger_importsegmentation"],
                             bundle,
                             [],
                             [],
                             bundle + "/cells.zarr.zip",
                             [],
                             [],
-                            []
+                            [],
+                            5
                         ]
                     }
                 """
