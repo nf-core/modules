@@ -53,17 +53,17 @@ process GRIDSS_ASSEMBLE {
     mkdir -p ${prefix}.sv.assembly.bam.gridss.working
 
     touch ${prefix}.sv.assembly.bam
-    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.cigar_metrics",
-    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.coverage.blacklist.bed",
-    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.downsampled_0.bed",
-    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.excluded_0.bed",
-    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.idsv_metrics",
-    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.mapq_metrics",
-    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.quality_distribution_metrics",
-    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.subsetCalled_0.bed",
-    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.sv.bam",
-    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.sv.bam.bai",
-    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.tag_metrics"
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.cigar_metrics
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.coverage.blacklist.bed
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.downsampled_0.bed
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.excluded_0.bed
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.idsv_metrics
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.mapq_metrics
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.quality_distribution_metrics
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.subsetCalled_0.bed
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.sv.bam
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.sv.bam.bai
+    touch ${prefix}.sv.assembly.bam.gridss.working/${prefix}.sv.assembly.bam.tag_metrics
 
     """
 }
