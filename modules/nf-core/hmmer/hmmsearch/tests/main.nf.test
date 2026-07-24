@@ -57,7 +57,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 // "output" carries the CPU-time footer and "target_summary"/"domain_summary" carry a
-                // "Current dir"/"Date" comment block, all run-dependent;
+                // "Current dir"/"Date" comment block, all run-dependent
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["output", "target_summary", "domain_summary"])).match() }
             )
         }
