@@ -1,0 +1,89 @@
+name: "presto_pairseq"
+description: Sorts and matches sequence records with matching coordinates across
+  files
+keywords:
+  - immcantation
+  - airrseq
+  - genomics
+  - immunoinformatics
+tools:
+  - "presto":
+      description: "A bioinformatics toolkit for processing high-throughput lymphocyte
+        receptor sequencing data."
+      homepage: "https://immcantation.readthedocs.io"
+      documentation: "https://presto.readthedocs.io"
+      tool_dev_url: "https://bitbucket.org/kleinstein/presto"
+      doi: "10.1093/bioinformatics/btu138"
+      licence:
+        - "AGPL v3"
+      identifier: biotools:presto-measure
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test']`
+    - R1_reads:
+        type: file
+        description: compressed fastq file
+        pattern: "*.{fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+    - R2_reads:
+        type: file
+        description: compressed fastq file
+        pattern: "*.{fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+  - barcode_position:
+      type: string
+      description: Barcode position. One of "R1, R2, R1R2 or clustersets". Default
+        is ""
+output:
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test']`
+      - "*_pair-pass.fastq.gz": 
+          type: file
+          description: paired fastq.gz file of R1 reads
+          pattern: "*.{fastq.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_1930
+      - "*_pair-pass.fastq.gz": 
+          type: file
+          description: paired fastq.gz file of R2 reads
+          pattern: "*.{fastq.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_1930
+  logs:
+    - "*_command_log.txt":
+        type: file
+        description: command_logs
+        pattern: "*.txt"
+        ontologies: []
+  versions_presto:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - presto:
+          type: string
+          description: the name of the tool
+      - PairSeq.py --version | grep -o "[0-9][0-9.]*" | head -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - presto:
+          type: string
+          description: the name of the tool
+      - PairSeq.py --version | grep -o "[0-9][0-9.]*" | head -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Vivian0105"
