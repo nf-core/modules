@@ -21,6 +21,8 @@ process SHINYNGS_APP {
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)    // Experiment-level info
     tuple val(meta2), path(contrasts), path(differential_results)           // Differential info: contrasts and differential stats
     val(contrast_stats_assay)
+    path(gene_sets)                                                         // Optional: GMT gene set files for enrichment (referenced via --enrichment_gene_sets)
+    path(enrichment_results)                                               // Optional: per-contrast enrichment result tables (matched via --enrichment_filename_template)
 
     output:
     tuple val(meta), path("*/data.rds"), path("*/app.R")    , emit: app
