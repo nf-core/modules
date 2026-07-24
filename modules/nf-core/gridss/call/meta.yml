@@ -1,0 +1,116 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gridss_call"
+description: Run the GRIDSS variant calling step to identify structural variants
+  from pre-processed and assembled alignments.
+keywords:
+  - gridss
+  - structural variants
+  - variant calling
+  - bam
+  - vcf
+tools:
+  - "gridss":
+      description: "GRIDSS: the Genomic Rearrangement IDentification Software Suite"
+      homepage: "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
+      documentation: "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
+      tool_dev_url: "https://github.com/PapenfussLab/gridss"
+      doi: "10.1186/s13059-021-02423-x"
+      licence: ["GPL v3"]
+      identifier: biotools:gridss
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - bams:
+        type: file
+        description: One or more input BAM file(s)
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: http://edamontology.org/data_1383 # Sequence alignment (nucleic acid)
+          - edam: http://edamontology.org/format_2572 # BAM
+    - bais:
+        type: file
+        description: Index file(s) for the input BAM file(s)
+        pattern: "*.{bai}"
+        ontologies: []
+    - preprocess_dir:
+        type: directory
+        description: Working directory containing the output of the GRIDSS preprocess step
+    - assemble_dir:
+        type: directory
+        description: Working directory containing the output of the GRIDSS assemble step
+    - assemble_bam:
+        type: file
+        description: The assembly BAM file created by the GRIDSS assemble step
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: http://edamontology.org/data_1383 # Sequence alignment (nucleic acid)
+          - edam: http://edamontology.org/format_2572 # BAM
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: The reference fasta
+        pattern: "*.{fa,fna,fasta}"
+        ontologies: []
+    - fasta_fai:
+        type: file
+        description: The index of the reference fasta
+        pattern: "*.fai"
+        ontologies: []
+    - bwa_index:
+        type: directory
+        description: The BWA index created from the reference fasta
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - gridss_config:
+        type: file
+        description: OPTIONAL - A GRIDSS configuration file
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.sv.gridss.vcf.gz":
+          type: file
+          description: The called VCF file created by the GRIDSS call step
+          pattern: "*.sv.gridss.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_gridss:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gridss:
+          type: string
+          description: The name of the tool
+      - CallVariants --version 2>&1 | sed 's/-gridss$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gridss:
+          type: string
+          description: The name of the tool
+      - CallVariants --version 2>&1 | sed 's/-gridss$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@imsarath"
+maintainers:
+  - "@imsarath"
