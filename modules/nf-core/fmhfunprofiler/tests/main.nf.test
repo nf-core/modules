@@ -44,7 +44,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(process.out.csv).readLines()).match() }
+                { assert snapshot(path(process.out.csv[0][1]).readLines()).match() }
             )
         }
     }
@@ -90,6 +90,27 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(path(process.out.csv[0][1]).readLines()).match() }
+            )
+        }
+    }
+    test("sarscov2 - fastq - single_end - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], [] ]
+                input[1] = []
+                input[2] = 11
+                input[3] = 1000
+                """
+	    }
+	}
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
