@@ -37,11 +37,13 @@ jobs:
     runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 2 # for pull_request/merge_group: the checked-out commit is a merge of base (HEAD^1) and head (HEAD^2)
       - uses: nf-core/setup-nextflow@b4ec1bc7c16a94435159de94a05253542fddf6ef # v3
       - name: Run prek
         uses: j178/prek-action@5337cb91e0fa35a7ff31b9ca345126d8bbbcdf16 # v2.0.6
         with:
-          extra-args: ""
+          extra-args: ${{ (github.event_name == 'pull_request' || github.event_name == 'merge_group') && '--from-ref HEAD^1 --to-ref HEAD^2' || '--all-files' }}
 
   ###################
   # nf-core linting #
