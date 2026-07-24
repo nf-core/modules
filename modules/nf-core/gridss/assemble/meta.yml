@@ -36,7 +36,8 @@ input:
         ontologies: []
     - preprocess_dirs:
         type: directory
-        description: GRIDSS preprocessing working directories from the GRIDSS_PREPROCESS step
+        description: GRIDSS preprocessing working directories from the
+          GRIDSS_PREPROCESS step
         pattern: "*.gridss.working/"
   - - meta2:
         type: map
@@ -54,14 +55,10 @@ input:
         description: Reference genome FASTA index file
         pattern: "*.fai"
         ontologies: []
-    - fasta_dict:
-        type: file
-        description: Reference genome sequence dictionary
-        pattern: "*.dict"
-        ontologies: []
     - bwa_index:
         type: directory
-        description: Directory containing the GRIDSS/BWA index files for the reference genome
+        description: Directory containing the GRIDSS/BWA index files for the
+          reference genome
         pattern: "*"
   - - meta3:
         type: map
@@ -82,7 +79,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.gridss.working":
           type: directory
-          description: GRIDSS assembly working directory containing assembled breakend contigs
+          description: GRIDSS assembly working directory containing assembled
+            breakend contigs
           pattern: "*.gridss.working"
       - "*.sv.assembly.bam":
           type: file
