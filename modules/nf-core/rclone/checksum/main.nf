@@ -8,7 +8,8 @@ process RCLONE_CHECKSUM {
             : 'community.wave.seqera.io/library/rclone:1.74.3--2ef33c5b9132aa97' }"
 
     input:
-    tuple val(meta), path(sumfile), val(hash), path(destination, stageAs: 'destination/*')
+    tuple val(meta), path(sumfile), val(hash), val(destination)
+    path rclone_config
 
     output:
     tuple val(meta), path("${prefix}.combined.txt")       , emit: combined      , optional: true
@@ -17,6 +18,7 @@ process RCLONE_CHECKSUM {
     tuple val(meta), path("${prefix}.missing_on_src.txt") , emit: missing_on_src, optional: true
     tuple val(meta), path("${prefix}.match.txt")          , emit: match         , optional: true
     tuple val(meta), path("${prefix}.error.txt")          , emit: error         , optional: true
+    tuple val(meta), path("${prefix}.exit_code.txt")      , emit: exit_code     , optional: true
     tuple val("${task.process}"), val('rclone'), eval("rclone --version | sed -n '1s/^rclone v//p'"), topic: versions, emit: versions_rclone
 
     when:
@@ -25,9 +27,10 @@ process RCLONE_CHECKSUM {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def configArg = rclone_config ? "--config ${rclone_config}" : ''
 
     """
-    rclone checksum \\
+    rclone checksum ${configArg} \\
         --copy-links \\
         $args \\
         --combined ${prefix}.combined.txt \\
@@ -39,7 +42,12 @@ process RCLONE_CHECKSUM {
         --checkers $task.cpus \\
         $hash \\
         $sumfile \\
-        destination || true
+        ${destination} || echo \$? > ${prefix}.exit_code.txt
+
+    # Do not emit empty output files
+    for f in *.txt; do
+        [ -s "\$f" ] || rm -f "\$f"
+    done
     """
 
     stub:

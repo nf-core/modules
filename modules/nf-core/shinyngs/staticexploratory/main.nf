@@ -3,9 +3,9 @@ process SHINYNGS_STATICEXPLORATORY {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d782b4f11adf8f3cad6af74ea585468decd873a171da1dae0e4a24a82bb29020/data' :
-        'community.wave.seqera.io/library/r-shinyngs:2.4.0--709fc6932be670a5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/41759558393509662940440e609bd5e89e4ec0d4b02c09421923fa0270926666/data'
+        : 'community.wave.seqera.io/library/r-shinyngs:3.2.0--19cca4636e20b0f7'}"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files), val(variable)
