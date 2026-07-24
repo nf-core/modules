@@ -31,13 +31,13 @@ input:
         pattern: "*.{fa,fasta}"
         ontologies: []
 output:
-  fasta:
+  seq:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fa.gz":
+      - "*_seq.fa.gz":
           type: file
           description: The Full Length Non Chimeric reads cleaned from remaining
             polyA tails. The sequences are in FASTA format compressed with gzip.
