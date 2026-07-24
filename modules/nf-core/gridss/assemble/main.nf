@@ -25,16 +25,11 @@ process GRIDSS_ASSEMBLE {
     def arg_config = gridss_config ? "-c ${gridss_config}" : ""
 
     def bams_list = bams instanceof List ? bams : [bams]
-
-    """
-    # GRIDSS requires all BWA index files to have the exact
-    # same basename as the reference fasta. This is a hard
-    # requirement of the tool - it will fail to find indices otherwise.
-    index_files=(\$(find -L "${bwa_index}" -regex '.*\\.\\(amb\\|ann\\|pac\\|gridsscache\\|sa\\|bwt\\|img\\|alt\\)\$'))
-
-    for index_file in "\${index_files[@]}"; do
-        ln -sf "\$index_file" "./${fasta}.\${index_file##*.}"
-    done
+	def index_files = bwa_index instanceof List ? bwa_index : [bwa_index]
+	// GRIDSS requires all BWA index files to have the exact same basename as the reference fasta 
+	def link_cmds = index_files.collect { idx -> "ln -sf ${idx} ./${fasta}.${idx.extension}" }.join('\n')
+	"""
+	${link_cmds}
 
     gridss ${args} \\
         --jvmheap ${Math.round(task.memory.bytes * 0.95)} \\
