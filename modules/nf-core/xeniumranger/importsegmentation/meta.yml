@@ -1,4 +1,4 @@
-name: xeniumranger_import_segmentation
+name: XENIUMRANGER_IMPORTSEGMENTATION
 description: |
   The xeniumranger import-segmentation module runs `xeniumranger import-segmentation`
   to recompute Xenium Onboard Analysis outputs using external segmentation results.
@@ -108,8 +108,7 @@ input:
         description: |
           Distance (in microns) to expand nuclei outward into cell boundaries. Only valid for
           nuclei-based imports (`nuclei` must be set); xeniumranger rejects it for
-          transcript-assignment imports and cells-only imports. Default: 5. Range: 0-100.
-          Passed to `--expansion-distance`.
+          transcript-assignment imports and cells-only imports. Default: 5. Range: 0-100. 
 output:
   outs:
     - - meta:

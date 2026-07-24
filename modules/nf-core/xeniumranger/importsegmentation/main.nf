@@ -1,4 +1,4 @@
-process XENIUMRANGER_IMPORT_SEGMENTATION {
+process XENIUMRANGER_IMPORTSEGMENTATION {
     tag "$meta.id"
     label 'process_high'
 
@@ -18,7 +18,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "XENIUMRANGER_IMPORT_SEGMENTATION module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error "XENIUMRANGER_IMPORTSEGMENTATION module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -32,10 +32,8 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
 
     def assembled_args = []
     if (task.ext.args) { assembled_args << task.ext.args.trim() }
-    // --expansion-distance is only valid for nuclei-based imports (it expands nuclei
-    // into cell boundaries). xeniumranger rejects it for transcript-assignment imports
-    // (proseg/baysor/segger) and cells-only imports with "--expansion-distance requires
-    // --nuclei", so only emit it when a nuclei segmentation is being imported.
+    // --expansion-distance is only valid for nuclei-based imports.
+    // xeniumranger rejects it for transcript-assignment imports and cells-only imports.
     if (nuclei && expansion_distance != null) { assembled_args << "--expansion-distance=${expansion_distance}" }
     if (nuclei) { assembled_args << "--nuclei=\"${nuclei}\"" }
     if (cells) { assembled_args << "--cells=\"${cells}\"" }
@@ -53,14 +51,14 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
 
     """
     xeniumranger import-segmentation \\
-        --id="XENIUMRANGER_IMPORT_SEGMENTATION" \\
+        --id="XENIUMRANGER_IMPORTSEGMENTATION" \\
         --xenium-bundle="${xenium_bundle}" \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         ${args}
 
     rm -rf "${prefix}"
-    mv XENIUMRANGER_IMPORT_SEGMENTATION/outs "${prefix}"
+    mv XENIUMRANGER_IMPORTSEGMENTATION/outs "${prefix}"
     """
 
     stub:
