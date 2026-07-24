@@ -9,7 +9,7 @@ nextflow_process {
     tag "hmmer"
     tag "hmmer/hmmsearch"
 
-    test("hmmer/hmmsearch") {
+    test("bacteria - [ hmm, fasta ] - txt") {
 
         when {
             process {
@@ -29,17 +29,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.output[0][1]).linesGzip.toString().contains('[ok]') },
-                { assert snapshot(
-                    path(process.out.output[0][1]).linesGzip.size(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                // the pipeline statistics footer (CPU time, Mc/sec) is run-dependent, so "output" is unstable
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["output"])).match() }
             )
         }
 
     }
 
-    test("hmmer/hmmsearch - optional") {
+    test("bacteria - [ hmm, fasta ] - txt - sto - tbl - domtbl") {
 
         when {
             process {
@@ -59,21 +56,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.output.get(0).get(1)).linesGzip.toString().contains('[ok]') },
-                { assert path(process.out.target_summary.get(0).get(1)).linesGzip.toString().contains('[ok]') },
-                { assert snapshot(
-                    process.out.alignments,
-                    path(process.out.output[0][1]).linesGzip.size(),
-                    path(process.out.target_summary[0][1]).linesGzip.size(),
-                    path(process.out.domain_summary[0][1]).linesGzip.size(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                // "output" carries the CPU-time footer and "target_summary"/"domain_summary" carry a
+                // "Current dir"/"Date" comment block, all run-dependent
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["output", "target_summary", "domain_summary"])).match() }
             )
         }
 
     }
 
-    test("hmmer/hmmsearch - stub") {
+    test("bacteria - [ hmm, fasta ] - txt - stub") {
 
         options "-stub"
 
@@ -101,7 +92,7 @@ nextflow_process {
 
     }
 
-    test("hmmer/hmmsearch - optional - stub") {
+    test("bacteria - [ hmm, fasta ] - txt - sto - tbl - domtbl - stub") {
 
         options "-stub"
 
