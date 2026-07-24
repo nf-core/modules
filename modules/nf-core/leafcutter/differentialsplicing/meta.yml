@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "leafcutter_differentialsplicing"
+description: Perform differential splicing analysis to identify junctions with significant changes in splicing between conditions
+keywords:
+  - alternative splicing
+  - differential splicing
+  - RNA-seq
+  - intron usage
+tools:
+  - "leafcutter":
+      description: "Annotation-free quantification of RNA splicing from RNA-seq data"
+      homepage: "https://leafcutter2.github.io/leafcutter-ds/"
+      documentation: "https://leafcutter2.github.io/leafcutter-ds/tutorials/differential-splicing/"
+      tool_dev_url: "https://github.com/leafcutter2/leafcutter-ds"
+      doi: "10.1038/s41588-017-0004-9"
+      licence: ["Apache-2.0"]
+      identifier: biotools:leafcutter
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - counts:
+        type: file
+        description: Intron usage counts file from leafcutter-cluster (either perind.counts.gz or perind_numers.counts.gz)
+        pattern: "*.counts.gz"
+    - groups:
+        type: file
+        description: Tab-delimited file with sample names in column 1 and sample group/phenotype assignments in column 2
+        pattern: "*.txt"
+
+output:
+  cluster_significance:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_cluster_significance.txt":
+          type: file
+          description: Cluster-level differential splicing statistics including p-values and test status
+          pattern: "*_cluster_significance.txt"
+  effect_sizes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_effect_sizes.txt":
+          type: file
+          description: Per-intron junction effect sizes, PSI values, and delta PSI for each condition
+          pattern: "*_effect_sizes.txt"
+  versions_leafcutter:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "leafcutter":
+          type: string
+          description: The name of the tool
+      - "2.0.3":
+          type: string
+          description: The version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - leafcutter:
+          type: string
+          description: The name of the tool
+      - "2.0.3":
+          type: string
+          description: The version of the tool
+authors:
+  - "@JTL-lab"
+maintainers:
+  - "@JTL-lab"
