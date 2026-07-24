@@ -10,19 +10,18 @@ process CIRI2 {
         'quay.io/biocontainers/ciri2:2.0.6--pl5321hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(sam) // Required -I sam_file
-    path  fasta     // optional -F reference fasta file
-    path  annotation        // optional -A GTF or GFF3 annotation file
-    path  ref_dir      // optional -R reference directory path
+    tuple val(meta), path(sam) // Required input sam_file
+    path  fasta     // optional reference fasta file
+    path  annotation        // optional GTF or GFF3 annotation file
+    path  ref_dir      // optional reference directory path
 
     output:
 
     tuple val(meta), path("*.txt"), emit: circrna
-    tuple val(meta), path("*.txt.log"), emit: logfile, optional: true
+    tuple val(meta), path("*.txt.log"), emit: log, optional: true
     tuple val(meta), path("CIRIerror.log"), emit: error_log, optional: true
 
-
-    tuple val("${task.process}"), val('CIRI2.pl'), val("2.0.6"), topic: versions
+    tuple val("${task.process}"), val('CIRI2.pl'), eval("CIRI2.pl --help | sed -n 's/^Version:\\s*//p'"), topic: versions, emit: versions_ciri2
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,16 +29,16 @@ process CIRI2 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def anno = annotation ? "-A ${annotation}" : ""
-    def reference = fasta ? "-F ${fasta}" : "-R ${ref_dir}"
+    def anno = annotation ? "--anno ${annotation}" : ""
+    def reference = fasta ? "--ref_file ${fasta}" : "--ref_dir ${ref_dir}"
 
     """
     CIRI2.pl \\
-        -I $sam \\
-        -O ${prefix}.txt \\
+        --in $sam \\
+        --out ${prefix}.txt \\
         $reference \\
         $anno \\
-        -T $task.cpus \\
+        --thread_num $task.cpus \\
         $args
     """
 
