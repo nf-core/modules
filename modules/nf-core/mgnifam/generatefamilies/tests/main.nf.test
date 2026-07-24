@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process MGNIFAM_GENERATEFAMILIES"
+    script "../main.nf"
+    process "MGNIFAM_GENERATEFAMILIES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mgnifam"
+    tag "mgnifam/generatefamilies"
+
+    config "./nextflow.config"
+
+    test("mgnify - faa - mgnifams") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // "log" contains a wall-clock timestamp on every line, so only its
+                // filename is stable across runs.
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+
+    }
+
+    test("mgnify - faa - mgnifams - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    // Extra `generate_families --help` options that main.nf does not already
+    // hardcode, as documentation (default values as comments):
+    // `--fasta_index` is skipped: it takes a path to a precomputed sequence
+    // index, not a tunable value, and is optional (auto-built when omitted).
+    test("mgnify - faa - mgnifams - custom_args - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--discard_min_rep_length 50 " + // 75
+                    "--discard_max_rep_length 1500 " +         // 2000
+                    "--discard_min_starting_membership 0.8 " + // 0.9
+                    "--max_seq_identity 0.7 " +                // 0.8
+                    "--max_seed_seqs 1000 " +                  // 2000
+                    "--max_gap_occupancy 0.6 " +               // 0.5
+                    "--recruit_evalue_cutoff 0.01 " +          // 0.001
+                    "--recruit_hit_length_percentage 0.8 " +   // 0.9
+                    "--batch_size 4 " +                        // 0
+                    "--prefetch_targets"                       // off
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
