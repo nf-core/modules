@@ -236,7 +236,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // directional Bowtie 2 = 2 instances; 4 cpus / 2 = -p 2
+                // directional = 2 instances; 4 cpus / 2 -> -p 2
                 { assert file(process.out.report[0][1]).text.contains('-p 2 --reorder') }
             )
         }
@@ -269,7 +269,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // non-directional = 4 instances; 4 cpus / 4 = 1 (< 2) -> -p omitted (I2 boundary)
+                // non-directional = 4 instances; 4 cpus / 4 = 1 (< 2) -> no -p
                 { assert !file(process.out.report[0][1]).text.contains('-p ') }
             )
         }
@@ -305,7 +305,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // HISAT2 shares the 2/4 instance model + honours -p; directional = 2 instances, 4/2 = -p 2
+                // HISAT2 uses the same 2/4-instance model; directional 4/2 -> -p 2
                 { assert file(process.out.report[0][1]).text.contains('-p 2 --reorder') }
             )
         }
@@ -338,7 +338,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // combined index = 1 both-strands pass (n=1); 4 cpus / 1 = -p 4
+                // combined index = 1 pass; 4 cpus / 1 -> -p 4
                 { assert file(process.out.report[0][1]).text.contains('-p 4 --reorder') }
             )
         }

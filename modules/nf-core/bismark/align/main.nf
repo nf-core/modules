@@ -28,16 +28,9 @@ process BISMARK_ALIGN {
     }
     def fastq = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
 
-    // Aligner thread model:
-    //  - Bowtie 2 + HISAT2 run 2 (directional/pbat) or 4 (non-directional) *concurrent*
-    //    strand instances, each of which honours `-p` (threads per instance). Dividing the
-    //    task's cpus across the instances (`-p = task.cpus / n_instances`) uses all cpus with
-    //    a single index load per instance, instead of `--multicore N` forking N chunks that
-    //    each re-load the index (Bowtie 2: N x 2/4 concurrent index copies -> high peak RAM).
-    //    Bowtie 2 `-p N --reorder` is thread-invariant (byte-identical); HISAT2 is near-
-    //    invariant (a handful of reads re-baseline). See the resource-model benchmark.
-    //  - minimap2/rammap ignore `-p` (bismark hard-codes minimap2 `-t 2`; rammap auto-scales),
-    //    so they keep the legacy `--multicore` auto-compute untouched.
+    // Give each strand instance `-p = cpus / n_instances` threads (one index load per strand,
+    // byte-identical) instead of forking N --multicore chunks that each re-load the index.
+    // minimap2/rammap can't take -p from bismark yet, so they keep the legacy --multicore path.
     def isMinimapLike = args.contains('--minimap2') || args.contains('--mm2') || args.contains('--rammap') || args.contains('--ram')
     if(isMinimapLike){
 
@@ -71,18 +64,15 @@ process BISMARK_ALIGN {
         }
     } else if(!args.contains('--multicore') && !args.contains('--parallel') && !args.contains('-p ') && task.cpus){
 
-        // Bowtie 2 / HISAT2: split the cpus across the concurrent strand instances.
         def n_instances = 2
         if(args.contains('--combined_index')){
-            // combined = one both-strands pass (n=1); only the opt-in parallel non-directional
-            // path runs two concurrent passes (n=2).
+            // combined index = one both-strands pass; parallel non-directional runs two.
             n_instances = (args.contains('--non_directional') && args.contains('--combined_index_parallel')) ? 2 : 1
         } else if(args.contains('--non_directional')){
             n_instances = 4
         }
 
-        // -p threads per instance; emit only when it lands >= 2 (bismark requires -p >= 2),
-        // otherwise omit it (faithful single-thread-per-instance default).
+        // bismark requires -p >= 2, so omit it below that (one thread per instance).
         def pthreads = ((task.cpus as int) / n_instances) as int
         if(pthreads >= 2){
             args += " -p ${pthreads}"
