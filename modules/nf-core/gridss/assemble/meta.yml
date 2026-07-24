@@ -23,18 +23,18 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bams:
+    - bam:
         type: file
         description: Input BAM file(s)
         pattern: "*.bam"
         ontologies:
           - edam: http://edamontology.org/format_2572
-    - bais:
+    - bai:
         type: file
         description: BAM index file(s)
         pattern: "*.bam.bai"
         ontologies: []
-    - preprocess_dirs:
+    - preprocess_dir:
         type: directory
         description: GRIDSS preprocessing working directories from the
           GRIDSS_PREPROCESS step
