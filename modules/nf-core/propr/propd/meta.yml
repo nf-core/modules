@@ -65,7 +65,7 @@ output:
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.genewise.tsv":
           type: file
           description: |
@@ -73,7 +73,7 @@ output:
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   genewise_plot:
     - - meta:
           type: file
@@ -82,7 +82,7 @@ output:
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.genewise.png":
           type: file
           description: |
@@ -99,7 +99,7 @@ output:
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.rds":
           type: file
           description: |
@@ -114,7 +114,7 @@ output:
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.pairwise.tsv":
           type: file
           description: |
@@ -123,7 +123,7 @@ output:
             each pair of genes.
           pattern: "*.propd.pairwise.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   results_pairwise_filtered:
     - - meta:
           type: file
@@ -132,7 +132,7 @@ output:
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.pairwise_filtered.tsv":
           type: file
           description: |
@@ -141,7 +141,7 @@ output:
             proportionality values.
           pattern: "*.propd.pairwise_filtered.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   adjacency:
     - - meta:
           type: file
@@ -150,7 +150,7 @@ output:
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.adjacency.csv":
           type: file
           description: |
@@ -159,7 +159,7 @@ output:
             proportional.
           pattern: "*.propd.adjacency.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   fdr:
     - - meta:
           type: file
@@ -168,7 +168,7 @@ output:
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.fdr.tsv":
           type: file
           description: |
@@ -178,7 +178,7 @@ output:
             computationally expensive.
           pattern: "*.propd.fdr.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   session_info:
     - "*.R_sessionInfo.log":
         type: file
@@ -191,7 +191,7 @@ output:
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
 topics:
   versions:
     - versions.yml:

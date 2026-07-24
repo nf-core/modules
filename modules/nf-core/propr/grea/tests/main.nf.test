@@ -9,11 +9,10 @@ nextflow_process {
     tag "propr"
     tag "propr/grea"
     tag "propr/propd"
+    config "./nextflow.config"
 
     test("test grea chained to propd") {
-
-        tag "default"
-        config "./grea_test.config"
+        
 
         setup {
             run("PROPR_PROPD") {
@@ -57,9 +56,29 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.results,
-                    process.out.versions
-                ).match()}
+                    sanitizeOutput(process.out),
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("test grea chained to propd - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[ id: 'test' ], []]
+                input[1] = [[ id: 'test' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
