@@ -24,11 +24,11 @@ process EIGENSTRATDATABASETOOLS_EIGENSTRATSNPCOVERAGE {
     """
     eigenstrat_snp_coverage \\
         $args \\
-        -g ${geno} \\
-        -s ${snp} \\
-        -i ${ind} \\
-        -j ${prefix}.json \\
-        -o ${prefix}.tsv
+        --genoFn ${geno} \\
+        --snpFn ${snp} \\
+        --indFn ${ind} \\
+        --json ${prefix}.json \\
+        --Output ${prefix}.tsv
     """
 
     stub:
