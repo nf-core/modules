@@ -71,28 +71,27 @@ nextflow_process {
             )
         }
     }
-    // pending fixing test database
-    // test("minigut - fastq - single_end - testdb") {
+    test("minigut - fastq - single_end - testdb") {
 
-    //     tag "testdb"
+        tag "testdb"
 
-    //     when {
-    //         process {
-    //             """
-    //             input[0] = [ [ id:'test', single_end:true ], ['https://github.com/nf-core/test-datasets/raw/refs/heads/mag/test_data/test_minigut_R1.fastq.gz'] ]
-    //             input[1] = "https://github.com/nickp60/test-datasets/raw/refs/heads/funcprofiler/data/database/fmhfunprofiler/KOs_sketched_scaled_1000_demo.sig.zip"
-    //             input[2] = 11
-    //             input[3] = 1000
-    //             """
-    //         }
-    //     }
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], ['https://github.com/nf-core/test-datasets/raw/refs/heads/mag/test_data/test_minigut_R1.fastq.gz'] ]
+                input[1] = "https://github.com/nickp60/test-datasets/raw/refs/heads/funcprofiler/data/database/fmhfunprofiler/KOs_sketched_scaled_1000_demo.sig.zip"
+                input[2] = 11
+                input[3] = 1000
+                """
+            }
+        }
 
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(path(process.out.csv[0][1]).readLines()).match() }
-    //         )
-    //     }
-    // }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(process.out.csv[0][1]).readLines()).match() }
+            )
+        }
+    }
 
 }
