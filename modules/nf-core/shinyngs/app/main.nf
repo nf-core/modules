@@ -14,8 +14,8 @@ process SHINYNGS_APP {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/41759558393509662940440e609bd5e89e4ec0d4b02c09421923fa0270926666/data'
-        : 'community.wave.seqera.io/library/r-shinyngs:3.2.0--19cca4636e20b0f7'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d5f79ef0afe3e3831496c61c81aeda56312f49ac324dc378d3312af7acae2ec6/data'
+        : 'community.wave.seqera.io/library/r-shinyngs:3.2.1--d43071e62bc500d3'}"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)    // Experiment-level info
