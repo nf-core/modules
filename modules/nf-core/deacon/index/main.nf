@@ -26,7 +26,7 @@ process DEACON_INDEX {
         build \\
         --threads ${task.cpus} \\
         $args \\
-        $fasta > ${prefix}.idx
+        $fasta > ${fasta.baseName}.idx
     """
 
     stub:
