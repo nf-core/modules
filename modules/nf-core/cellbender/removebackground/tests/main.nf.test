@@ -38,6 +38,41 @@ nextflow_process {
             )
         }
     }
+        test("test_cellbender_removebackground mtx") {
+        config './epochs.config'
+        config './mtx.config'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/10x_mtx/SRR28679756_raw/matrix.mtx.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/10x_mtx/SRR28679756_raw/barcodes.tsv.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/10x_mtx/SRR28679756_raw/features.tsv.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(
+                        process.out.findAll { key, val -> key.startsWith('versions') },
+                        process.out.h5.collect{file(it[1]).name},
+                        process.out.filtered_h5.collect{file(it[1]).name},
+                        process.out.posterior_h5.collect{file(it[1]).name},
+                        process.out.barcodes.collect{file(it[1]).name},
+                        process.out.metrics.collect{file(it[1]).name},
+                        process.out.report.collect{file(it[1]).name},
+                        process.out.pdf.collect{file(it[1]).name},
+                        process.out.log.collect{file(it[1]).name}
+                    ).match()
+                }
+            )
+        }
+    }
 
     test("test_cellbender_removebackground - stub") {
         options '-stub'
