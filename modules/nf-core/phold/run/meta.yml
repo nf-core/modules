@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "phold_run"
+description: Runs phold predict (translates protein amino acid sequences to 3Di tokens) and phold compare (search for similar phages in db) all in one
+keywords:
+  - phage
+  - annotation
+  - proteins
+  - genomics
+  - foldseek
+tools:
+  - "phold":
+      description: "Phage annotation using protein structures"
+      homepage: "https://phold.readthedocs.io/en/latest/"
+      documentation: "https://phold.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/gbouras13/phold"
+      doi: "10.1093/nar/gkaf1448"
+      licence: ["MIT"]
+      identifier: biotools:phold
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - input:
+        type: file
+        description: |
+          Input GenBank or nucleotide FASTA file
+        pattern: "*.{gbk,gb,gbff,fasta,fna,fa}"
+
+output:
+  fasta_3di:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "${prefix}_phold/phold_3di.fasta":
+          type: file
+          description: 3Di sequences for each CDS
+          pattern: "*/phold_3di.fasta"
+
+  per_cds_predictions:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "${prefix}_phold/phold_per_cds_predictions.tsv":
+          type: file
+          description: Detailed annotation information for every CDS
+          pattern: "*/phold_per_cds_predictions.tsv"
+
+  all_cds_functions:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "${prefix}_phold/phold_all_cds_functions.tsv":
+          type: file
+          description: CDS functional category counts per contig
+          pattern: "*/phold_all_cds_functions.tsv"
+
+  gbk:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "${prefix}_phold/phold.gbk":
+          type: file
+          description: Annotated GenBank output
+          pattern: "*/phold.gbk"
+
+  versions_phold:
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - phold:
+        type: string
+        description: The name of the tool
+    - phold --version:
+        type: eval
+        description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - phold:
+          type: string
+          description: The name of the tool
+      - phold --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@gbouras13"
+maintainers:
+  - "@gbouras13"
