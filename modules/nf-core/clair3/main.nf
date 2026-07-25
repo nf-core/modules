@@ -4,8 +4,8 @@ process CLAIR3 {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-    'docker.io/hkubal/clair3:v2.0.0' :
-    'docker.io/hkubal/clair3:v2.0.0' }"
+        'https://depot.galaxyproject.org/singularity/clair3:2.0.1--py311hbc58adc_0' :
+        'quay.io/biocontainers/clair3:2.0.1--py311hbc58adc_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai), val(packaged_model), path(user_model), val(platform)
