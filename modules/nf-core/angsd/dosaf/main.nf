@@ -13,6 +13,7 @@ process ANGSD_DOSAF {
     tuple path(ancestral_fasta), path(ancestral_fai) // Optional. Provides ancestral state for unfolded SFS.
     path(error_file) // Optional. Required for SYK model (-GL 4) only.
     path(inbreeding_coefficients) // Optional. Required for -doSAF 2 (inbreeding-aware mode).
+    tuple val(meta2), path(soapsnp_calibration) // Optional. Required for -GL 3. 
     val(gl_model)
     val(dosaf_mode)
 
@@ -60,6 +61,20 @@ process ANGSD_DOSAF {
             )
     }
 
+    // Validate soapsnp calibration directory provided when using -GL 3
+    if (gl_model == 3 && !soapsnp_calibration) {
+        error(
+            "ANGSD_DOSAF: -GL 3 (soapSNP model) requires calibration directory. Please supply directory."
+        )
+    }
+
+    // Check meta (bams) and meta2 (soapsnp_calibration) are identical to ensure sample order matches
+    if (gl_model == 3 && meta != meta2) {
+        error(
+            "ANGSD_DOSAF: bam metadata and soap calibration metadata do not match!"
+        )
+    }
+    
     // Validate GL 4 has error file
     if (gl_model == 4 && !error_file) {
         error(
@@ -86,46 +101,30 @@ process ANGSD_DOSAF {
     def indF_arg   = inbreeding_coefficients ? "-indF ${inbreeding_coefficients}" : ""
     def errors_arg = error_file              ? "-errors ${error_file}"            : ""
 
-    // Shared preamble
-    def preamble = """
+    // SOAPsnp model (-GL 3) needs to know the name of the temp directory
+    def gl3_args = gl_model == 3 ? "-tmpdir ${soapsnp_calibration}" : ""
+
+    // SYK model (-GL 4) needs an error file and -doCounts 1
+    def gl4_args = gl_model == 4 ? "${errors_arg} -doCounts 1" : ""
+
+    """
     ${touch_ref}
     ${touch_anc}
     printf '%s\\n' ${bams} > bamlist.txt
-    """
-
-// SOAPsnp (-GL 3) needs a calibration pass first to generate the matrix
-// angsd reads back in during the doSAF step.
-def calibration = ''
-if (gl_model == 3) {
-    calibration = """
+    
     angsd \\
         -nThreads ${task.cpus} \\
         -bam bamlist.txt \\
-        -minQ 0 \\
         -GL ${gl_model} \\
-        -ref ${reference_fasta} \\
+        -doSAF ${dosaf_mode} \\
+        ${ref_anc_arg} \\
+        ${indF_arg} \\
+        ${gl3_args} \\
+        ${gl4_args} \\
+        ${args} \\
+        ${min_ind_arg} \\
         -out ${prefix}
     """
-}
-
-// SYK model (-GL 4) needs an error file and -doCounts 1
-def gl4_args = gl_model == 4 ? "${errors_arg} -doCounts 1" : ''
-
-"""
-${preamble}
-${calibration}
-angsd \\
-    -nThreads ${task.cpus} \\
-    -bam bamlist.txt \\
-    -GL ${gl_model} \\
-    -doSAF ${dosaf_mode} \\
-    ${ref_anc_arg} \\
-    ${indF_arg} \\
-    ${gl4_args} \\
-    ${args} \\
-    ${min_ind_arg} \\
-    -out ${prefix}
-"""
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
