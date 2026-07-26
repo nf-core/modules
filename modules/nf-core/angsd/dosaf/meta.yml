@@ -58,7 +58,7 @@ input:
         description: Index of the ancestral state genome FASTA file.
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}.fai"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" 
+          - edam: "http://edamontology.org/format_1929"
   - error_file:
       type: file
       description: A file containing per-base substitution error rates for use
@@ -70,6 +70,15 @@ input:
       description: A file containing estimates of individual inbreeding
         coefficients.
       pattern: "*.indF"
+      ontologies: []
+  - soapsnp_calibration:
+      type: directory
+      description: |
+        Directory of soapSNP calibration files. Required for use with the SOAPsnp
+        genotype likelihood model (-GL 3), passed to ANGSD via -tmpdir.
+        Contains (per sample), a *.counts* file of per-position base/allele 
+        counts and a *.qual* file of recalibrated quality score information.
+      pattern: "*_calibration_matrix"
       ontologies: []
   - gl_model:
       type: integer

@@ -13,7 +13,7 @@ process ANGSD_DOSAF {
     tuple path(ancestral_fasta), path(ancestral_fai) // Optional. Provides ancestral state for unfolded SFS.
     path(error_file) // Optional. Required for SYK model (-GL 4) only.
     path(inbreeding_coefficients) // Optional. Required for -doSAF 2 (inbreeding-aware mode).
-    tuple val(meta2), path(soapsnp_calibration) // Optional. Required for -GL 3. 
+    path(soapsnp_calibration) // Optional. Required for -GL 3. 
     val(gl_model)
     val(dosaf_mode)
 
@@ -65,13 +65,6 @@ process ANGSD_DOSAF {
     if (gl_model == 3 && !soapsnp_calibration) {
         error(
             "ANGSD_DOSAF: -GL 3 (soapSNP model) requires calibration directory. Please supply directory."
-        )
-    }
-
-    // Check meta (bams) and meta2 (soapsnp_calibration) are identical to ensure sample order matches
-    if (gl_model == 3 && meta != meta2) {
-        error(
-            "ANGSD_DOSAF: bam metadata and soap calibration metadata do not match!"
         )
     }
     
