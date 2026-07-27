@@ -12,7 +12,7 @@ process PYDAMAGE_ANALYZE {
 
     output:
     tuple val(meta), path("${prefix}_pydamage_results.csv"), emit: csv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('pydamage'), eval("NUMBA_CACHE_DIR=./tmp MPLCONFIGDIR=./tmp pydamage --version | sed -n 's/pydamage, version //p'"), emit: versions_pydamage, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,25 +31,12 @@ process PYDAMAGE_ANALYZE {
         $bam
 
     mv pydamage_results/pydamage_results.csv ${prefix}_pydamage_results.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pydamage: \$(pydamage --version | sed -n 's/pydamage, version \\(.*\\)/\\1/p')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export NUMBA_CACHE_DIR=./tmp # exports required for versions to resolve correctly
-    export MPLCONFIGDIR=./tmp
-
     touch ${prefix}_pydamage_results.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pydamage: \$(echo \$(pydamage --version 2>&1) | sed -e 's/pydamage, version //g')
-    END_VERSIONS
     """
 
 }

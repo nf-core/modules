@@ -50,13 +50,27 @@ output:
           pattern: "*.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_pydamage:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pydamage:
+          type: string
+          description: The name of the tool
+      - NUMBA_CACHE_DIR=./tmp MPLCONFIGDIR=./tmp pydamage --version | sed -n 's/pydamage, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pydamage:
+          type: string
+          description: The name of the tool
+      - NUMBA_CACHE_DIR=./tmp MPLCONFIGDIR=./tmp pydamage --version | sed -n 's/pydamage, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@maxibor"
 maintainers:
