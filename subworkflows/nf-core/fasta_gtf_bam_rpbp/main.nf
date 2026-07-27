@@ -11,16 +11,18 @@ workflow FASTA_GTF_BAM_RPBP {
 
     take:
     ch_bam        // channel: [ val(meta), path(bam), path(bai) ] - Ribo-seq BAMs
-    ch_fasta_gtf  // channel (single value): [ val(meta), path(fasta), path(gtf) ]
+    ch_fasta_gtf  // value channel: [ val(meta), path(fasta), path(gtf) ]. Must be a value channel:
+                  //                the annotation products derived from it are paired with the
+                  //                per-sample BAM channel below.
 
     main:
 
     RPBP_PREPAREGENOME(ch_fasta_gtf)
 
-    ch_transcript_bed   = RPBP_PREPAREGENOME.out.transcript_bed.first()
-    ch_orfs_genomic_bed = RPBP_PREPAREGENOME.out.orfs_genomic_bed.first()
-    ch_orfs_exons_bed   = RPBP_PREPAREGENOME.out.orfs_exons_bed.first()
-    ch_genome_fasta     = ch_fasta_gtf.map { meta, fasta, _gtf -> [ meta, fasta ] }.first()
+    ch_transcript_bed   = RPBP_PREPAREGENOME.out.transcript_bed
+    ch_orfs_genomic_bed = RPBP_PREPAREGENOME.out.orfs_genomic_bed
+    ch_orfs_exons_bed   = RPBP_PREPAREGENOME.out.orfs_exons_bed
+    ch_genome_fasta     = ch_fasta_gtf.map { meta, fasta, _gtf -> [ meta, fasta ] }
 
     RPBP_EXTRACTMETAGENEPROFILES (
         ch_bam,
