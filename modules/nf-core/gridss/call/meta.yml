@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gridss_call"
 description: Run the GRIDSS variant calling step to identify structural variants
   from pre-processed and assembled alignments.
@@ -15,40 +14,41 @@ tools:
       documentation: "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
       tool_dev_url: "https://github.com/PapenfussLab/gridss"
       doi: "10.1186/s13059-021-02423-x"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:gridss
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'test' ]`
-    - bams:
+    - bam:
         type: file
-        description: One or more input BAM file(s)
-        pattern: "*.{bam}"
+        description: Input BAM file(s)
+        pattern: "*.bam"
         ontologies:
-          - edam: http://edamontology.org/data_1383 # Sequence alignment (nucleic acid)
-          - edam: http://edamontology.org/format_2572 # BAM
-    - bais:
+          - edam: http://edamontology.org/format_2572
+    - bai:
         type: file
-        description: Index file(s) for the input BAM file(s)
-        pattern: "*.{bai}"
+        description: BAM index file(s)
+        pattern: "*.bam.bai"
         ontologies: []
     - preprocess_dir:
         type: directory
-        description: Working directory containing the output of the GRIDSS preprocess step
+        description: Working directory containing the output of the GRIDSS
+          preprocess step
     - assemble_dir:
         type: directory
-        description: Working directory containing the output of the GRIDSS assemble step
+        description: Working directory containing the output of the GRIDSS
+          assemble step
     - assemble_bam:
         type: file
         description: The assembly BAM file created by the GRIDSS assemble step
         pattern: "*.{bam}"
         ontologies:
-          - edam: http://edamontology.org/data_1383 # Sequence alignment (nucleic acid)
-          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/data_1383
+          - edam: http://edamontology.org/format_2572
   - - meta2:
         type: map
         description: |
@@ -75,7 +75,7 @@ input:
     - gridss_config:
         type: file
         description: OPTIONAL - A GRIDSS configuration file
-
+        ontologies: []
 output:
   vcf:
     - - meta:
@@ -88,7 +88,7 @@ output:
           description: The called VCF file created by the GRIDSS call step
           pattern: "*.sv.gridss.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   versions_gridss:
     - - ${task.process}:
           type: string
@@ -96,7 +96,7 @@ output:
       - gridss:
           type: string
           description: The name of the tool
-      - CallVariants --version 2>&1 | sed 's/-gridss$//':
+      - CallVariants --version 2>&1 | sed 's/-gridss\$//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -107,7 +107,7 @@ topics:
       - gridss:
           type: string
           description: The name of the tool
-      - CallVariants --version 2>&1 | sed 's/-gridss$//':
+      - CallVariants --version 2>&1 | sed 's/-gridss\$//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
