@@ -36,11 +36,11 @@ input:
         ontologies: []
     - preprocess_dir:
         type: directory
-        description: Working directory containing the output of the GRIDSS
+        description: Working directory containing the output of the GRIDSS preprocess step
           preprocess step
     - assemble_dir:
         type: directory
-        description: Working directory containing the output of the GRIDSS
+        description: Working directory containing the output of the GRIDSS assemble step
           assemble step
     - assemble_bam:
         type: file
@@ -74,7 +74,9 @@ input:
           e.g. `[ id:'test' ]`
     - gridss_config:
         type: file
-        description: OPTIONAL - A GRIDSS configuration file
+        description: OPTIONAL - A GRIDSS configuration file (Java .properties format).
+          See the default config for available settings,
+          https://github.com/PapenfussLab/gridss/blob/825bc8e1bb092e9bb2ccb0c1c51dc6e7e1a922dd/src/main/resources/gridss.properties
         ontologies: []
 output:
   vcf:
