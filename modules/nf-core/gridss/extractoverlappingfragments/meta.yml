@@ -1,0 +1,88 @@
+name: "gridss_extractoverlappingfragments"
+description: Extract read fragments from a BAM file whose reads overlap a set of
+  target regions, producing a subset BAM for targeted GRIDSS structural variant
+  calling.
+keywords:
+  - gridss
+  - bam
+  - subset
+  - target
+  - structural variants
+tools:
+  - gridss:
+      description: "GRIDSS: the Genomic Rearrangement IDentification Software Suite"
+      homepage: "https://github.com/PapenfussLab/gridss"
+      documentation: "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
+      tool_dev_url: "https://github.com/PapenfussLab/gridss"
+      doi: "10.1186/s13059-021-02423-x"
+      licence:
+        - "GPL v3"
+      identifier: biotools:gridss
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Input BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+    - bai:
+        type: file
+        description: Index of the input BAM file
+        pattern: "*.{bai,csi}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing target region information
+          e.g. `[ id:'targets' ]`
+    - target_bed:
+        type: file
+        description: BED file describing the target regions used to select
+          overlapping read fragments
+        pattern: "*.bed"
+        ontologies:
+          - edam: http://edamontology.org/format_3003
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.subset.bam":
+          type: file
+          description: BAM file containing only the read fragments that overlap
+            the target regions
+          pattern: "*.subset.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572
+  versions_gridss:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gridss:
+          type: string
+          description: The tool name
+      - CallVariants --version 2>&1 | sed 's/-gridss//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gridss:
+          type: string
+          description: The tool name
+      - CallVariants --version 2>&1 | sed 's/-gridss//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@imsarath"
+maintainers:
+  - "@imsarath"
