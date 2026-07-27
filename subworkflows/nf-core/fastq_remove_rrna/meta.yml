@@ -45,7 +45,6 @@ input:
       type: directory
       description: |
         Pre-built SortMeRNA index directory. Optional - can be built on-the-fly if make_sortmerna_index is true.
-        Must be a value channel: it is paired with the per-sample reads channel across every SORTMERNA call.
       structure:
         - meta:
             type: map
@@ -57,7 +56,6 @@ input:
       type: directory
       description: |
         Pre-built Bowtie2 index directory. Optional - can be built on-the-fly if make_bowtie2_index is true.
-        Must be a value channel: it is paired with the per-sample reads channel across every BOWTIE2_ALIGN call.
       structure:
         - meta:
             type: map

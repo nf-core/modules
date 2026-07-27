@@ -37,8 +37,8 @@ workflow FASTQ_REMOVE_RRNA {
     take:
     ch_reads // channel: [ val(meta), [ reads ] ]
     ch_rrna_fastas // channel: one or more fasta files containing rrna sequences
-    ch_sortmerna_index // channel: /path/to/sortmerna/index/ (optional, must be a value channel: reused across every sample)
-    ch_bowtie2_index // channel: /path/to/bowtie2/index/ (optional, must be a value channel: reused across every sample)
+    ch_sortmerna_index // channel: /path/to/sortmerna/index/ (optional)
+    ch_bowtie2_index // channel: /path/to/bowtie2/index/ (optional)
     ribo_removal_tool // string (enum): 'sortmerna', 'ribodetector', or 'bowtie2'
     make_sortmerna_index // boolean: Whether to create a sortmerna index before running sortmerna
     make_bowtie2_index // boolean: Whether to create a bowtie2 index before running bowtie2
