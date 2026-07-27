@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hackgap_count"
+description: Fast, JIT-compiled k-mer counter supporting both contiguous and gapped k-mers using multi-way bucketed Cuckoo hash tables.
+keywords:
+  - k-mer
+  - counting
+  - gapped k-mer
+  - genomics
+  - hashing
+tools:
+  - "hackgap":
+      description: "hackgap (hash-based counting of k-mers with gaps) provides a fast jit-compiled k-kmer counter which supports gapped k-mers."
+      homepage: "https://gitlab.com/rahmannlab/hackgap"
+      documentation: "https://gitlab.com/rahmannlab/hackgap"
+      tool_dev_url: "https://gitlab.com/rahmannlab/hackgap"
+      doi: "10.4230/LIPICS.WABI.2022.12"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reads:
+        type: file
+        description: Input genomic sequence files (FASTA/FASTQ), can be compressed (gzip, xz, bzip2).
+        pattern: "*.{fasta,fa,fastq,fq,gz,xz,bz2}"
+
+output:
+  hash:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.hash":
+          type: file
+          description: Binary hash-table dump containing calculated k-mer integer encodings.
+          pattern: "*.hash"
+  info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.info":
+          type: file
+          description: Contains metadata information on multi-way bucketed k-mer cuckoo hashing
+          pattern: "*.info"
+  versions_hackgap:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "hackgap":
+          type: string
+          description: The name of the tool
+      - "hackgap --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hackgap:
+          type: string
+          description: The name of the tool
+      - hackgap --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@LeonHornich"
+maintainers:
+  - "@LeonHornich"
+  
