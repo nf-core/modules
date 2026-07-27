@@ -34,20 +34,20 @@ process MOBSUITE_TYPER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def biomarker_report_cmd = generate_biomarker_report ? "--biomarker_report_file ${prefix}_biomarker_report.txt" : ''
     def mge_report_cmd = generate_mge_report ? "--mge_report_file ${prefix}_mge_report.txt" : ''
-    def plasmid_mash_db_cmd = plasmid_mash_db ? "-d ${plasmid_mash_db}" : ''
-    def plasmid_meta_cmd = plasmid_meta_txt ? "-m ${plasmid_meta_txt}" : ''
+    def plasmid_mash_db_cmd = plasmid_mash_db ? "--plasmid_mash_db ${plasmid_mash_db}" : ''
+    def plasmid_meta_cmd = plasmid_meta_txt ? "--plasmid_meta ${plasmid_meta_txt}" : ''
     def plasmid_replicons_cmd = plasmid_replicons_fas ? "--plasmid_replicons ${plasmid_replicons_fas}" : ''
     def repetitive_mask_cmd = repetitive_mask_fas ? "--repetitive_mask ${repetitive_mask_fas}" : ''
     def plasmid_mob_cmd = plasmid_mob_faa ? "--plasmid_mob ${plasmid_mob_faa}" : ''
     def plasmid_mpf_cmd = plasmid_mpf_faa ? "--plasmid_mpf ${plasmid_mpf_faa}" : ''
     def plasmid_orit_fas_cmd = plasmid_orit_fas ? "--plasmid_orit ${plasmid_orit_fas}" : ''
-    def db_cmd = db ? "-d ${db}" : ''
+    def db_cmd = db ? "--database_directory ${db}" : ''
     """
     mob_typer \\
-        -n ${task.cpus} \\
-        -s ${prefix} \\
+        --num_threads ${task.cpus} \\
+        --sample_id ${prefix} \\
         ${args} \\
-        -i ${fasta} \\
+        --infile ${fasta} \\
         ${plasmid_mash_db_cmd} \\
         ${plasmid_meta_cmd} \\
         ${plasmid_replicons_cmd} \\
@@ -56,7 +56,7 @@ process MOBSUITE_TYPER {
         ${plasmid_mpf_cmd} \\
         ${plasmid_orit_fas_cmd} \\
         ${db_cmd} \\
-        -o ${prefix}.txt \\
+        --out_file ${prefix}.txt \\
         ${biomarker_report_cmd} \\
         ${mge_report_cmd}
 

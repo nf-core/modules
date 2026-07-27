@@ -34,43 +34,57 @@ input:
       pattern: "databases/"
   - plasmid_mash_db:
       type: file
-      description: Optional Companion Mash database of reference database
+      description: | 
+        Optional Companion Mash database of reference database.
+        If not supplied, default internal `ncbi_plasmid_full_seqs.fas.msh` is used.
       pattern: "*.msh"
       ontologies:
         - edam: http://edamontology.org/format_3911
   - plasmid_meta_txt:
       type: file
-      description: MOB-cluster plasmid cluster formatted file matched to the reference
-        plasmid db
+      description: |
+        Optional MOB-cluster plasmid cluster formatted file matched to the reference
+        plasmid db. 
+        If not supplied, default internal `clusters.txt` is used.
       pattern: "*.txt"
       ontologies: []
   - plasmid_replicons_fas:
       type: file
-      description: Optional nucleotide FASTA file of plasmid replicons
+      description: |
+        Optional nucleotide FASTA file of plasmid replicons
+        If not supplied, default internal `rep.dna.fas` is used.
       pattern: "*.{fasta,fna,fa,fas}"
       ontologies:
         - edam: "http://edamontology.org/format_1929"
   - repetitive_mask_fas:
       type: file
-      description: Optional nucleotide FASTA file of known repetitive elements
+      description: |
+        Optional nucleotide FASTA file of known repetitive elements
+        If not supplied, default internal `repetitive.dna.fas` is used.
       pattern: "*.{fasta,fna,fa,fas}"
       ontologies:
         - edam: "http://edamontology.org/format_1929"
   - plasmid_mob_faa:
       type: file
-      description: Optional protein FASTA file of plasmid mobility proteins
+      description: |
+        Optional protein FASTA file of plasmid mobility proteins
+        If not supplied, default internal `mob.proteins.faa` is used.
       pattern: "*.{fasta,faa,fa,fas}"
       ontologies:
         - edam: "http://edamontology.org/format_1929"
   - plasmid_mpf_faa:
       type: file
-      description: Optional protein FASTA file of plasmid mating pair formation proteins
+      description: |
+        Optional protein FASTA file of plasmid mating pair formation proteins
+        If not supplied, default internal `mpf.proteins.faa` is used.
       pattern: "*.{fasta,faa,fa,fas}"
       ontologies:
         - edam: "http://edamontology.org/format_1929"
   - plasmid_orit_fas:
       type: file
-      description: Optional nucleotide FASTA file of known plasmid oriT dna sequences
+      description: |
+        Optional nucleotide FASTA file of known plasmid oriT dna sequences
+        If not supplied, default internal `orit.fas` is used.
       pattern: "*.{fasta,fna,fa,fas}"
       ontologies:
         - edam: "http://edamontology.org/format_1929"
