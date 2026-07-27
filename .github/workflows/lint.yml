@@ -37,7 +37,7 @@ jobs:
     runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: nf-core/setup-nextflow@b4ec1bc7c16a94435159de94a05253542fddf6ef # v3
+      - uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
       - name: Run prek
         uses: j178/prek-action@5337cb91e0fa35a7ff31b9ca345126d8bbbcdf16 # v2.0.6
         with:
@@ -153,7 +153,7 @@ jobs:
           java-version: "17"
 
       - name: Set up Nextflow
-        uses: nf-core/setup-nextflow@b4ec1bc7c16a94435159de94a05253542fddf6ef # v3
+        uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
 
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
@@ -185,7 +185,7 @@ jobs:
           python-version: "3.14"
 
       - name: Set up Nextflow
-        uses: nf-core/setup-nextflow@b4ec1bc7c16a94435159de94a05253542fddf6ef # v3
+        uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
 
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
