@@ -12,7 +12,7 @@ process MSISENSORPRO_SCAN {
 
     output:
     tuple val(meta), path("*.list"), emit: list
-    tuple val("${task.process}"), val('msisensor-pro'), eval("msisensor-pro --version 2>&1 | sed -nE 's/Version:\\s*//p'") , emit: versions_msisensorpro, topic: versions
+    tuple val("${task.process}"), val('msisensor-pro'), eval("msisensor-pro --version 2>&1 | sed -nE 's/Version:\\s*v//p'") , emit: versions_msisensorpro, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -1,0 +1,120 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "octopusv_plot"
+description: "Plot structural variant statistics using octopusv stat output"
+keywords:
+  - summary
+  - structural variant
+  - statistics
+  - plot
+tools:
+  - "octopusv":
+      description: "End-to-end structural variant post-processing: standardize, merge,
+        compare, and export SVs."
+      homepage: "https://github.com/ylab-hi/OctopuSV"
+      documentation: "https://github.com/ylab-hi/OctopuSV"
+      tool_dev_url: "https://github.com/ylab-hi/octopusV"
+      doi: "10.1093/bioinformatics/btaf599"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - txt:
+        type: file
+        description: OctopuSV stats text input
+        pattern: "*.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330" # TXT
+
+output:
+  sv_sizes_png:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_sv_sizes.png:
+          type: file
+          description: SV sizes plot (PNG)
+          pattern: "*_sv_sizes.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603" # PNG
+  sv_sizes_svg:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_sv_sizes.svg:
+          type: file
+          description: SV sizes plot (SVG)
+          pattern: "*_sv_sizes.svg"
+          ontologies:
+            - edam: "http://edamontology.org/format_3604" # SVG
+  sv_types_png:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_sv_types.png:
+          type: file
+          description: SV types plot (PNG)
+          pattern: "*_sv_types.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603" # PNG
+  sv_types_svg:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_sv_types.svg:
+          type: file
+          description: SV types plot (SVG)
+          pattern: "*_sv_types.svg"
+          ontologies:
+            - edam: "http://edamontology.org/format_3604" # SVG
+  chromosome_distribution_png:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_chromosome_distribution.png:
+          type: file
+          description: Chromosome distribution plot of structural variants (PNG)
+          pattern: "*_chromosome_distribution.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603" # PNG
+  chromosome_distribution_svg:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_chromosome_distribution.svg:
+          type: file
+          description: Chromosome distribution plot of structural variants (SVG)
+          pattern: "*_chromosome_distribution.svg"
+          ontologies:
+            - edam: "http://edamontology.org/format_3604" # SVG
+  versions_octopusv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"

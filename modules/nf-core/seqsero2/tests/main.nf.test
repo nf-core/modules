@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process SEQSERO2"
@@ -16,8 +15,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
 
                 """
@@ -28,12 +27,36 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					file(process.out.log[0][1]).name,
-					file(process.out.tsv[0][1]).readLines()[0],
-					file(process.out.txt[0][1]).readLines()[0],
-					process.out.versions
-					).match()
-				}
+                    file(process.out.log[0][1]).name,
+                    file(process.out.tsv[0][1]).readLines()[0],
+                    file(process.out.txt[0][1]).readLines()[0],
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-seqsero2 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

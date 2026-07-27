@@ -5,7 +5,7 @@ process SNIPPY_CORE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2':
-        'quay.io/biocontainers/snippy:4.6.0--hdfd78af_1' }"
+        'quay.io/biocontainers/snippy:4.6.0--hdfd78af_2' }"
 
     input:
     tuple val(meta), path(vcf), path(aligned_fa)
@@ -17,7 +17,7 @@ process SNIPPY_CORE {
     tuple val(meta), path("${prefix}.tab")     , emit: tab
     tuple val(meta), path("${prefix}.vcf")     , emit: vcf
     tuple val(meta), path("${prefix}.txt")     , emit: txt
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('snippy-core'), eval("snippy-core --version 2>&1 | sed 's/snippy-core //'"), emit: versions_snippy_core, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,11 +44,6 @@ process SNIPPY_CORE {
         --ref $reference_name \\
         --prefix $prefix \\
         samples/*
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snippy-core: \$(echo \$(snippy-core --version 2>&1) | sed 's/snippy-core //')
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +55,5 @@ process SNIPPY_CORE {
     touch ${prefix}.tab
     touch ${prefix}.vcf
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snippy-core: \$(echo \$(snippy-core --version 2>&1) | sed 's/snippy-core //')
-    END_VERSIONS
     """
 }

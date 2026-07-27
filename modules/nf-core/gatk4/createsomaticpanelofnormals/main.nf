@@ -14,8 +14,8 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     tuple val(meta4), path(dict)
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi"), emit: tbi
+    tuple val(meta), path("${prefix}.vcf.gz"), emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz.tbi"), emit: tbi
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
@@ -23,7 +23,7 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -43,9 +43,9 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "${prefix}" | gzip -c > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     """
 }

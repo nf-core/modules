@@ -29,10 +29,11 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match() }
+            )
         }
     }
-
 
     test("sarscov2 - bam, bed, save_cliprejects") {
 
@@ -54,7 +55,9 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match() }
+            )
         }
     }
 
@@ -78,7 +81,9 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match() }
+            )
         }
     }
 }

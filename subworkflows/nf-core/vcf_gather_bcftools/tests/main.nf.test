@@ -14,8 +14,8 @@ nextflow_workflow {
     tag "bcftools/concat"
     tag "bcftools/sort"
     tag "bcftools"
-    tag "tabix/tabix"
-    tag "tabix"
+    tag "htslib/bgziptabix"
+    tag "htslib"
 
     test("homo_sapiens - [vcf, tbi] [vcf, tbi] - meta [] 2 - sample, key - true") {
         when {

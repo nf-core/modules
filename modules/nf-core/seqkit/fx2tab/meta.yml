@@ -28,6 +28,9 @@ input:
         pattern: "*.{fasta,fastq,fa,fq,fas,fna,faa}[.gz,.zst]"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
+  - out_ext:
+      type: string
+      description: Output file extension (for example `txt.zst`)
 output:
   text:
     - - meta:

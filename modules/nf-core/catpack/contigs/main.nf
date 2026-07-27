@@ -4,8 +4,8 @@ process CATPACK_CONTIGS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'quay.io/biocontainers/cat:6.0.1--hdfd78af_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15bcec1eccda12562504e88d44abc8a29742c6b600ae178cc9579fedc3a69062/data'
+        : 'community.wave.seqera.io/library/cat_gzip:0ab95a62b35744c9'}"
 
     input:
     tuple val(meta), path(contigs)
@@ -32,9 +32,20 @@ process CATPACK_CONTIGS {
     def premade_proteins = proteins ? "--proteins_fasta ${proteins}" : ''
     def premade_table = diamond_table ? "--diamond_alignment ${diamond_table}" : ''
     """
+    # CAT_pack does not support gzipped input, so decompress any gzipped contigs.
+    contigs_fastas=""
+    for f in ${contigs}; do
+        if [[ "\$f" == *.gz ]]; then
+            gunzip -c "\$f" > "\$(basename "\$f" .gz)"
+            contigs_fastas="\${contigs_fastas} \$(basename "\$f" .gz)"
+        else
+            contigs_fastas="\${contigs_fastas} \$f"
+        fi
+    done
+
     CAT_pack contigs \\
         --nproc ${task.cpus} \\
-        --contigs_fasta ${contigs} \\
+        --contigs_fasta \${contigs_fastas## } \\
         --database_folder ${database} \\
         --taxonomy_folder ${taxonomy} \\
         --out_prefix ${prefix} \\

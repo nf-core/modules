@@ -28,4 +28,11 @@ process PAIRTOOLS_DEDUP {
         --output-stats ${prefix}.pairs.stat \\
         $input
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.pairs.gz
+    touch ${prefix}.pairs.stat
+    """
 }

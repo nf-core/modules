@@ -26,10 +26,31 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
                 // odgi layout is not deterministic
-                { assert path(process.out.lay.get(0).get(1)).exists() },
-                { assert path(process.out.tsv.get(0).get(1)).exists() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["lay", "tsv"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - pangenome - pangenome_smoothxg_gfa - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.smoothxg.gfa', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

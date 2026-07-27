@@ -7,13 +7,15 @@ keywords:
   - vcf
 tools:
   - "graphtyper":
-      description: A graph-based variant caller capable of genotyping population-scale
-        short read data sets while incorporating previously discovered variants.
+      description: A graph-based variant caller capable of genotyping
+        population-scale short read data sets while incorporating previously
+        discovered variants.
       homepage: "https://github.com/DecodeGenetics/graphtyper"
       documentation: "https://github.com/DecodeGenetics/graphtyper/wiki/User-guide"
       tool_dev_url: "https://github.com/DecodeGenetics/graphtyper"
       doi: "10.1038/ng.3964"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:Graphtyper
 input:
   - - meta:
@@ -49,13 +51,27 @@ output:
           description: Concatenated VCF file index
           pattern: "*.{tbi}"
           ontologies: []
+  versions_graphtyper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - graphtyper:
+          type: string
+          description: The name of the tool
+      - graphtyper --help | tail -1 | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - graphtyper:
+          type: string
+          description: The name of the tool
+      - graphtyper --help | tail -1 | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@zachary-foster"
 maintainers:

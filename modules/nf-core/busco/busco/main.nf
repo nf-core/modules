@@ -4,8 +4,8 @@ process BUSCO_BUSCO {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c6684133dafc676a4087ca5615907bfdaaba29210f1c8eb2082c4096a009b2cd/data'
-        : 'community.wave.seqera.io/library/busco_numpy:1877b1d6022fa08d'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/963bad66c10646cf0adb1967cc462ad04d02789ddbfae4fbb94182291dbddf8c/data'
+        : 'community.wave.seqera.io/library/busco:6.1.0--6d1f7006d91892b3'}"
     // Note: one test had to be disabled when switching to Busco 6.0.0, cf https://github.com/nf-core/modules/pull/8781/files
     // Try to restore it when upgrading Busco to a later version
 
@@ -56,6 +56,7 @@ process BUSCO_BUSCO {
         './*-busco/*/auto_lineage',
         './*-busco/*/**/{miniprot,hmmer,.bbtools}_output',
         './*-busco/*/prodigal_output/predicted_genes/tmp/',
+        './*-busco/*/tmp/',
     ]
     def clean_cmd = clean_intermediates ? "rm -fr ${intermediate_files.join(' ')}" : ''
 

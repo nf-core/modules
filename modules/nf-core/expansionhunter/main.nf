@@ -31,6 +31,7 @@ process EXPANSIONHUNTER {
     """
     ExpansionHunter \\
         ${args} \\
+        --threads ${task.cpus} \\
         --reads ${bam} \\
         --output-prefix ${prefix} \\
         --reference ${fasta} \\

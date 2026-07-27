@@ -11,8 +11,9 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     path(custom_weights) // Optional; also defined in segmentation parameters
 
     output:
-    tuple val(meta), path("${prefix}/result_tiles/*.parquet"), emit: segmented_tile
-    path  "versions.yml"                                     , emit: versions
+    tuple val(meta), path("${prefix}/result_tiles/*.parquet")                                                                 , emit: segmented_tile
+    tuple val("${task.process}"), val('vpt'), eval("pip show vpt | sed -n 's/Version: //p'")                                 , emit: versions_vpt, topic: versions
+    tuple val("${task.process}"), val('vpt-plugin-cellpose2'), eval("pip show vpt-plugin-cellpose2 | sed -n 's/Version: //p'"), emit: versions_vptplugincellpose2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,12 +27,6 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
         $args \\
         --input-segmentation-parameters $segmentation_params \\
         --tile-index $tile_index
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vpt: \$( pip show vpt | grep Version | sed -e "s/Version: //g" )
-        vpt-plugin-cellpose2: \$( pip show vpt-plugin-cellpose2 | grep Version | sed -e "s/Version: //g" )
-    END_VERSIONS
     """
 
     stub:
@@ -39,11 +34,5 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     """
     mkdir -p ${prefix}/result_tiles
     touch ${prefix}/result_tiles/cell_0.parquet
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vpt: \$( pip show vpt | grep Version | sed -e "s/Version: //g" )
-        vpt-plugin-cellpose2: \$( pip show vpt-plugin-cellpose2 | grep Version | sed -e "s/Version: //g" )
-    END_VERSIONS
     """
 }

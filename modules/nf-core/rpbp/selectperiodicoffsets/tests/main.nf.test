@@ -1,0 +1,55 @@
+nextflow_process {
+
+    name "Test Process RPBP_SELECTPERIODICOFFSETS"
+    script "../main.nf"
+    process "RPBP_SELECTPERIODICOFFSETS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rpbp"
+    tag "rpbp/selectperiodicoffsets"
+
+    test("homo_sapiens chr20 - select periodic offsets") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.metagene-periodicity-bayes-factors.csv.gz", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens chr20 - select periodic offsets - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.metagene-periodicity-bayes-factors.csv.gz", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,102 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "suppa_clusterevents"
+description: Cluster events based on PSI values and significantly differentially spliced events using SUPPA2.
+keywords:
+  - alternative splicing
+  - clustering
+  - suppa
+  - genomics
+tools:
+  - "suppa":
+      description: "Fast, accurate, and uncertainty-aware differential splicing analysis across multiple conditions."
+      homepage: "https://github.com/comprna/SUPPA"
+      documentation: "https://github.com/comprna/SUPPA"
+      tool_dev_url: "https://github.com/comprna/SUPPA"
+      doi: "10.1186/s13059-018-1417-1"
+      licence: ["MIT"]
+      identifier: biotools:suppa
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing differential splicing analysis information
+          e.g. `[ id:'diffsplice1' ]`
+    - dpsi:
+        type: file
+        description: Differentially spliced events file
+        pattern: "*.{dpsi}"
+        ontologies: []
+    - psivec:
+        type: file
+        description: PSI values for all events across all samples
+        pattern: "*.{psivec}"
+        ontologies: []
+  - significance_threshold:
+      type: float
+      description: P-value threshold to consider an event significant from the dpsi file
+  - dpsi_threshold:
+      type: float
+      description: Lower-bound for the absolute delta PSI value to cluster
+      default: 0.05
+  - maximum_distance:
+      type: float
+      description:  Maximum distance (between 0 and 1) to consider two events as members of the same cluster
+      default: 0.05
+  - metric:
+      type: string
+      description: Distance metric. (allowed values are euclidean, manhattan, cosine)
+      default: euclidean
+  - separation:
+      type: float
+      description: Maximum distance in PSI space of an event to a cluster (only for OPTICS)
+  - min_number_events:
+      type: integer
+      description: Minimum number of events required per cluster
+      default: 20
+  - groups:
+      type: string
+      description: Ranges of column numbers specifying the replicates per condition. Column numbers have to be continuous, with no overlapping or missing columns between them (e.g. 1-2,3-4)
+  - clustering_method:
+      type: string
+      description: Clustering method to use (allowed values are DBSCAN, OPTICS)
+      default: DBSCAN
+output:
+  clustvec:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing differential splicing analysis information
+            e.g. `[ id:'diffsplice1' ]`
+      - "*.clustvec":
+          type: file
+          description: Clustered events file
+          pattern: "*.{clustvec}"
+          ontologies: []
+  versions_suppa:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - suppa:
+          type: string
+          description: The name of the tool
+      - "suppa.py -v | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - suppa:
+          type: string
+          description: The name of the tool
+      - suppa.py -v | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lathikaa"
+  - "@piplus2"
+maintainers:
+  - "@piplus2"

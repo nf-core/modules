@@ -13,7 +13,8 @@ tools:
       homepage: "https://genome.sph.umich.edu/wiki/Vt"
       documentation: "https://genome.sph.umich.edu/wiki/Vt"
       tool_dev_url: "https://github.com/atks/vt"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -52,14 +53,30 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_vt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vt:
+          type: string
+          description: The name of the tool
+      - 2015.11.10:
+          type: string
+          description: Version of vt (WARN - Version information not provided by
+            tool on CLI)
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vt:
+          type: string
+          description: The name of the tool
+      - 2015.11.10:
+          type: string
+          description: Version of vt (WARN - Version information not provided by
+            tool on CLI)
 authors:
   - "@kubranarci"
 maintainers:
