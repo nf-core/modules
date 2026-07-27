@@ -1,5 +1,17 @@
 nextflow_process {
 
+    def normalizeVersions = { versions ->
+        versions.collectEntries { key, val ->
+            if (key == 'versions_samtools') {
+                [(key): val.collect { row ->
+                    [row[0], row[1], row[2].toString().replaceFirst(/^1\.23(?:\.1)?$/, '1.23')]
+                }]
+            } else {
+                [(key): val]
+            }
+        }
+    }
+
     name "Test Process NARFMAP_ALIGN"
     script "../main.nf"
     process "NARFMAP_ALIGN"
@@ -45,7 +57,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bam,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    normalizeVersions(process.out.findAll { key, val -> key.startsWith("versions") })
                 ).match()
                 }
             )
@@ -75,7 +87,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bam,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    normalizeVersions(process.out.findAll { key, val -> key.startsWith("versions") })
                 ).match()
                 }
             )
@@ -108,7 +120,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bam,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    normalizeVersions(process.out.findAll { key, val -> key.startsWith("versions") })
                 ).match()
                 }
             )
@@ -141,7 +153,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bam,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    normalizeVersions(process.out.findAll { key, val -> key.startsWith("versions") })
                 ).match()
                 }
             )
@@ -174,7 +186,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bam,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    normalizeVersions(process.out.findAll { key, val -> key.startsWith("versions") })
                 ).match()
                 }
             )
@@ -209,7 +221,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bam,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    normalizeVersions(process.out.findAll { key, val -> key.startsWith("versions") })
                 ).match()
                 }
             )
@@ -239,7 +251,7 @@ nextflow_process {
                     process.out.cram,
                     process.out.csi,
                     process.out.crai,
-                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    normalizeVersions(process.out.findAll { key, val -> key.startsWith("versions") }),
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                 ).match()
                 }
