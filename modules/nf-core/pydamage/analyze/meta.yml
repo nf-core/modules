@@ -57,7 +57,7 @@ output:
       - pydamage:
           type: string
           description: The name of the tool
-      - NUMBA_CACHE_DIR=./tmp MPLCONFIGDIR=./tmp pydamage --version | sed -n 's/pydamage, version //p':
+      - NUMBA_CACHE_DIR=./tmp pydamage --version | sed -n 's/pydamage, version //p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -68,7 +68,7 @@ topics:
       - pydamage:
           type: string
           description: The name of the tool
-      - NUMBA_CACHE_DIR=./tmp MPLCONFIGDIR=./tmp pydamage --version | sed -n 's/pydamage, version //p':
+      - NUMBA_CACHE_DIR=./tmp pydamage --version | sed -n 's/pydamage, version //p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

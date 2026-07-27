@@ -12,7 +12,7 @@ process PYDAMAGE_ANALYZE {
 
     output:
     tuple val(meta), path("${prefix}_pydamage_results.csv"), emit: csv
-    tuple val("${task.process}"), val('pydamage'), eval("NUMBA_CACHE_DIR=./tmp MPLCONFIGDIR=./tmp pydamage --version | sed -n 's/pydamage, version //p'"), emit: versions_pydamage, topic: versions
+    tuple val("${task.process}"), val('pydamage'), eval("NUMBA_CACHE_DIR=./tmp pydamage --version | sed -n 's/pydamage, version //p'"), emit: versions_pydamage, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
