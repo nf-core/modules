@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: fastq_align_minimap2
+description: Optionally concatenate FASTQ files, align reads with minimap2, and run BAM statistics
+keywords:
+  - fastq
+  - align
+  - minimap2
+  - bam
+  - long-read
+components:
+  - cat/fastq
+  - minimap2/align
+  - bam_stats_samtools
+  - samtools/stats
+  - samtools/flagstat
+  - samtools/idxstats
+input:
+  - ch_reads:
+      description: |
+        FASTQ input channel.
+        Structure: [ val(meta), path(reads) ]
+        reads may be one FASTQ file or a list of FASTQ files.
+  - ch_fasta_fai:
+      description: |
+        Reference FASTA and FASTA index.
+        Structure: [ val(meta2), path(fasta), path(fai) ]
+  - val_bam_index_extension:
+      description: |
+        BAM index extension created by minimap2/align.
+        Typical values are "bai" or "csi".
+  - val_cigar_bam:
+      description: |
+        Whether to use minimap2 long-CIGAR BAM handling.
+  - val_skip_cat:
+      description: |
+        If true, pass input FASTQ files directly to minimap2.
+        If false, concatenate FASTQ files with cat/fastq before alignment.
+output:
+  - merged_fastq:
+      description: |
+        Concatenated FASTQ file, emitted only when val_skip_cat is false.
+        Structure: [ val(meta), path(fastq) ]
+  - bam:
+      description: |
+        Coordinate-sorted BAM file from minimap2/align.
+        Structure: [ val(meta), path(bam) ]
+  - index:
+      description: |
+        BAM index file from minimap2/align.
+        Structure: [ val(meta), path(index) ]
+  - stats:
+      description: |
+        Samtools stats output from bam_stats_samtools.
+        Structure: [ val(meta), path(stats) ]
+  - flagstat:
+      description: |
+        Samtools flagstat output from bam_stats_samtools.
+        Structure: [ val(meta), path(flagstat) ]
+  - idxstats:
+      description: |
+        Samtools idxstats output from bam_stats_samtools.
+        Structure: [ val(meta), path(idxstats) ]
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"
