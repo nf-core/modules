@@ -1,0 +1,89 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "kled"
+description: "An ultra-fast and sensitive structural variant detection tool for
+  long-read sequencing data."
+keywords:
+  - genomics
+  - longread
+  - structural
+  - variants
+tools:
+  - "kled":
+      description: "An ultra-fast and sensitive structural variant detection tool for
+        long-read sequencing data."
+      homepage: "https://github.com/CoREse/kled"
+      documentation: "https://github.com/CoREse/kled/blob/master/README.md"
+      tool_dev_url: "https://github.com/CoREse/kled"
+      doi: "10.1093/bib/bbae049"
+      licence: ["MIT"]
+      identifier: biotools:kled
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai:
+        type: file
+        description: Sorted BAM index file
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'fasta' ]
+    - fasta:
+        type: file
+        description: |
+          Reference database in FASTA format
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf":
+          type: file
+          description: VCF file containing called variants from Kled
+          pattern: "*.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  versions_kled:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kled:
+          type: string
+          description: The name of the tool
+      - kled --version 2>&1 | sed 's/Kled version //' | sed 's/\.\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kled:
+          type: string
+          description: The name of the tool
+      - kled --version 2>&1 | sed 's/Kled version //' | sed 's/\.\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@tetedange13"
+maintainers:
+  - "@tetedange13"

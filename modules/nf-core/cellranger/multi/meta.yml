@@ -94,11 +94,16 @@ input:
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989
-  - gex_reference:
-      type: directory
-      description: Folder containing Cellranger gene expression reference. Can also
-        be a gzipped tarball
-      pattern: "*.tar.gz"
+  - - meta8:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - gex_reference:
+        type: directory
+        description: Folder containing Cellranger gene expression reference. Can also
+          be a gzipped tarball
+        pattern: "*.tar.gz"
   - gex_frna_probeset:
       type: file
       description: Fixed RNA profiling information containing custom probes in CSV format

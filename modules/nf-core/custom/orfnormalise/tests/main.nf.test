@@ -16,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'sample1'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
                     'ribocode'
                 ])
                 input[1] = channel.of([
@@ -39,6 +39,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() },
+                // every ORF must span a whole number of codons (frame guard)
+                { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
                 { assert rows.size() > 0 },
                 { assert rows.every { it[aa].toInteger() > 0 } },
                 { assert rows.every { it[score] && it[score] != '' } },
@@ -57,7 +59,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'sample1'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
                     'ribotish'
                 ])
                 input[1] = channel.of([
@@ -80,6 +82,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() },
+                // every ORF must span a whole number of codons (frame guard)
+                { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
                 { assert rows.size() > 0 },
                 { assert rows.every { it[aa].toInteger() > 0 } },
                 { assert rows.every { it[score] && it[score] != '' } },
@@ -95,7 +99,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'sample1'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotricer.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotricer.tsv', checkIfExists: true),
                     'ribotricer'
                 ])
                 input[1] = channel.of([
@@ -123,6 +127,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() },
+                // every ORF must span a whole number of codons (frame guard)
+                { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
                 { assert rows.size() > 0 },
                 { assert rows.every { it[aa].toInteger() > 0 } },
                 { assert rows.every { it[score] && it[score] != '' } },
@@ -139,7 +145,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'sample1'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.rpbp.predicted-orfs.bed.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.rpbp.predicted-orfs.bed.gz', checkIfExists: true),
                     'rpbp'
                 ])
                 input[1] = channel.of([
@@ -162,6 +168,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() },
+                // every ORF must span a whole number of codons (frame guard)
+                { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
                 { assert rows.size() > 0 },
                 { assert rows.every { it[aa].toInteger() > 0 } },
                 { assert rows.every { it[score] && it[score] != '' && it[score].toDouble() > 0 } },
@@ -179,7 +187,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'cohort'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/cohort.price.orfs.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/cohort.price.orfs.tsv', checkIfExists: true),
                     'price'
                 ])
                 input[1] = channel.of([
@@ -206,6 +214,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() },
+                // every ORF must span a whole number of codons (frame guard)
+                { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
                 { assert rows.size() > 0 },
                 { assert rows.every { it[aa].toInteger() > 0 } },
                 { assert rows.collect { it[cls] }.toSet().any { it != 'other' } },
@@ -222,7 +232,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id: 'sample1'],
-                    file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
                     'ribotish'
                 ])
                 input[1] = channel.of([
