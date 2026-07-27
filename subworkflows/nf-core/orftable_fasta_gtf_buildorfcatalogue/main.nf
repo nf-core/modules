@@ -39,8 +39,6 @@ workflow ORFTABLE_FASTA_GTF_BUILDORFCATALOGUE {
     ch_normalise_in = ch_orf_tables.map { meta, table, caller ->
         [ meta + [ id: "${meta.id}.${caller}" ], table, caller ]
     }
-    // `.first()` normalises the reference to a value channel so it fans out
-    // across every sample; a queue channel would be consumed by the first.
     CUSTOM_ORFNORMALISE ( ch_normalise_in, ch_gtf.first() )
 
     // 2. Gather all normalised BED12s + sidecar TSVs across callers and
