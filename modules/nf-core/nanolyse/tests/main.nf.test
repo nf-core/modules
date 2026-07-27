@@ -28,12 +28,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-					process.out.fastq,
-					file(process.out.log[0]).name,
-					process.out.findAll { key, val -> key.startsWith('versions') }
-					).match()
-				}
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
             )
         }
     }

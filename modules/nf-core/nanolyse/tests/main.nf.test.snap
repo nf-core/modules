@@ -48,16 +48,18 @@
     },
     "test-nanolyse": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.clean.fastq.gz:md5,7567d853ada6ac142332619d0b541d76"
-                ]
-            ],
-            "test.clean.nanolyse.log",
             {
+                "fastq": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clean.fastq.gz:md5,7567d853ada6ac142332619d0b541d76"
+                    ]
+                ],
+                "log": [
+                    "test.clean.nanolyse.log"
+                ],
                 "versions_nanolyse": [
                     [
                         "NANOLYSE",
@@ -67,7 +69,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-27T16:19:52.11256459",
+        "timestamp": "2026-07-27T17:49:53.720356286",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.07.0"
