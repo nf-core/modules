@@ -47,8 +47,8 @@ nextflow_workflow {
                         'ribocode'
                     ]
                 )
-                input[1] = GUNZIP.out.gunzip
-                input[2] = channel.of([
+                input[1] = GUNZIP.out.gunzip.first()
+                input[2] = channel.value([
                     [id: 'reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
                 ])
@@ -82,8 +82,8 @@ nextflow_workflow {
                         'ribocode'
                     ]
                 )
-                input[1] = GUNZIP.out.gunzip
-                input[2] = channel.of([
+                input[1] = GUNZIP.out.gunzip.first()
+                input[2] = channel.value([
                     [id: 'reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
                 ])
