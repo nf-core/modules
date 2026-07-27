@@ -766,6 +766,24 @@ def _price_score_from_p(p):
     return clamp1000(min(-math.log10(p) * 100, 1000))
 
 
+def _price_transcript_id(orf_id_raw, orf_type):
+    """Recover the transcript id from PRICE's `Id` column.
+
+    PRICE builds `Id` as `<transcript_id>_<orf_type>_<n>` (an increasing
+    counter within the transcript). The split anchors on the row's own
+    `orf_type` value so transcript ids that themselves contain underscores
+    (true for some non-Ensembl annotations) survive intact.
+    """
+    if orf_type:
+        m = re.match(r"^(.+)_" + re.escape(orf_type) + r"_\\d+\$", orf_id_raw)
+        if m:
+            return m.group(1)
+    parts = orf_id_raw.rsplit("_", 2)
+    if len(parts) == 3 and parts[2].isdigit():
+        return parts[0]
+    return orf_id_raw.split("_", 1)[0]
+
+
 def parse_price(path, transcripts, fields):
     resolved = {"score": "", "orf_type": ""}
     rows = []
@@ -785,12 +803,16 @@ def parse_price(path, transcripts, fields):
 
             orf_type = (pick(row, fields, resolved, "orf_type") or "").strip()
 
-            tid = orf_id_raw.split("_", 1)[0]
-            gid = (row.get("Gene") or "").strip()
-            if not gid:
-                t = transcripts.get(tid)
-                if t is not None:
-                    gid = t.gene_id
+            tid = _price_transcript_id(orf_id_raw, orf_type)
+            t = transcripts.get(tid)
+            if t is not None:
+                gid = t.gene_id
+            else:
+                # PRICE's `Gene` column concatenates every gene overlapping the
+                # ORF's genomic span with an underscore, so this fallback value
+                # may itself be a multi-gene string; passed through as-is,
+                # downstream joins against a single-gene matrix won't match it.
+                gid = (row.get("Gene") or "").strip()
 
             length_nt = sum(b[1] - b[0] for b in blocks)
             aa_len = max(0, (length_nt - 3) // 3) if length_nt > 0 else 0
