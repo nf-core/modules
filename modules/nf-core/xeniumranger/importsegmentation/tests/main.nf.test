@@ -13,11 +13,11 @@ nextflow_process {
 
     setup {
 
-        run("UNZIP") {
-            script "modules/nf-core/unzip/main.nf"
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
             process {
                 """
-                input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip', checkIfExists: true)]
+                input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialaxe/xenium_bundle.tar.gz', checkIfExists: true)]
                 """
             }
         }
@@ -28,7 +28,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive
+                input[0] = UNTAR.out.untar
                     .map { meta, bundle ->
                         [
                             [id: "test_xeniumranger_importsegmentation"],
@@ -63,7 +63,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive
+                input[0] = UNTAR.out.untar
                     .map { meta, bundle ->
                         [
                             [id: "test_xeniumranger_importsegmentation"],
