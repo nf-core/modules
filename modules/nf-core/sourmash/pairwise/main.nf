@@ -11,10 +11,11 @@ process SOURMASH_PAIRWISE {
     input:
     tuple val(meta), path(signatures)
     path file_list
+    val include_ani
 
     output:
     tuple val(meta), path("*pairwise.csv"), emit: csv
-    tuple val("${task.process}"), val("sourmash_plugin_branchwater"), eval("sourmash_plugin_branchwater --version"), topic: versions, emit: versions_branchwater
+    tuple val("${task.process}"), val("sourmash"), eval("sourmash --version 2>&1 | sed 's/^sourmash //'"), topic: versions, emit: versions_sourmash
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,6 +26,7 @@ process SOURMASH_PAIRWISE {
 
     def combine_cmd = ''
     def pairwise_input = ''
+    def ani = include_ani ? "--ani" : ''
 
     // input format handling
     if (file_list) {
@@ -43,6 +45,7 @@ process SOURMASH_PAIRWISE {
     ${combine_cmd}
     sourmash scripts pairwise \\
         ${pairwise_input} \\
+        ${ani} \\
         -o ${prefix}_pairwise.csv \\
         --cores ${task.cpus} \\
         ${args}
