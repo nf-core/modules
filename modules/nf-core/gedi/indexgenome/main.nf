@@ -23,8 +23,14 @@ process GEDI_INDEXGENOME {
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
+
+    # GEDI records the -s path in the .fi it writes: a bare relative name when the FASTA
+    # is co-located with the .fi, an absolute path otherwise. Index from a copy inside the
+    # index directory so the reference resolves wherever the index is later read.
+    cp -L ${fasta} ${prefix}/${fasta.name}
+
     gedi -e IndexGenome \\
-        -s ${fasta} \\
+        -s ${prefix}/${fasta.name} \\
         -a ${gtf} \\
         -n ${name} \\
         -f ${prefix} \\
