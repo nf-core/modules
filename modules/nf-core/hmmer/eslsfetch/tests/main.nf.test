@@ -13,6 +13,9 @@ nextflow_process {
     test("sarscov2 - fasta - index only") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -37,6 +40,9 @@ nextflow_process {
     test("sarscov2 - fasta - fetch by keyfile") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = channel.of(
@@ -100,6 +106,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = channel.of('NODE_4_length_458_cov_1.051360').collectFile(name: 'keys.txt', newLine: true)
