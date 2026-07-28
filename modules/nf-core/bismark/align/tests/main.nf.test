@@ -208,8 +208,6 @@ nextflow_process {
 
     test("bowtie2 | intra-instance -p threading | paired-end | 4 cpus") {
 
-        config './nextflow_pthreads.config'
-
         when {
             params {
                 bismark_args    = '--bowtie2'
@@ -244,8 +242,6 @@ nextflow_process {
 
     test("bowtie2 | non_directional | low-cpu omits -p (4 cpus / 4 instances < 2)") {
 
-        config './nextflow_pthreads.config'
-
         when {
             params {
                 bismark_args    = '--bowtie2 --non_directional'
@@ -276,8 +272,6 @@ nextflow_process {
     }
 
     test("hisat2 | intra-instance -p threading | paired-end | 4 cpus") {
-
-        config './nextflow_pthreads.config'
 
         when {
             params {
@@ -312,8 +306,6 @@ nextflow_process {
     }
 
     test("bowtie2 | combined_index | intra-instance -p threading | single-end | 4 cpus") {
-
-        config './nextflow_pthreads.config'
 
         when {
             params {
