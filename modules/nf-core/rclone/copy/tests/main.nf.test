@@ -13,6 +13,9 @@ nextflow_process {
     test("homo_sapiens - gvcf - copy from https - dry-run") {
 
         when {
+            params {
+                exclude_from = false
+            }
             process {
                 """
                 input[0] = [
@@ -68,6 +71,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                exclude_from = true
+            }
             process {
                 """
                 input[0] = [
