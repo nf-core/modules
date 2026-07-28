@@ -78,3 +78,5 @@ authors:
   - "@JTL-lab"
 maintainers:
   - "@JTL-lab"
+notes:
+  - This module uses PyTorch for statistical analysis. When running in containers, you may need to set environment variables in your pipeline configuration for reproducibility. For example, `containerOptions = '--env USER=nobody --env PYTHONHASHSEED=0 --env CUBLAS_WORKSPACE_CONFIG=:4096:8'` (Docker) or `containerOptions = '--env USER=nobody,PYTHONHASHSEED=0,CUBLAS_WORKSPACE_CONFIG=:4096:8'` (Singularity/Apptainer).
