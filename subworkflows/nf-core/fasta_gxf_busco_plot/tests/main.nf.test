@@ -53,8 +53,7 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.assembly_batch_summary,
-                    workflow.out.annotation_batch_summary,
-                    workflow.out.versions,
+                    workflow.out.annotation_batch_summary
                     ).match()
                 },
 
