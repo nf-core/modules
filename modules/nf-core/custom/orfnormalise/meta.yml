@@ -145,13 +145,16 @@ input:
     - gtf:
         type: file
         description: |
-          Annotation GTF. Required for ribocode (transcript-relative
-          coordinates → genomic lift) and strongly recommended for
-          ribotish (multi-exon block recovery from GenomePos) and
-          ribotricer (multi-exon block recovery from ORF_ID span). For
-          rpbp and price (genomic coordinates emitted directly by the
-          tool) the GTF is unused; pass `[ [:], [] ]` if you only run
-          those callers.
+          Annotation GTF. Every caller draws on it: ribocode requires it
+          (transcript-relative coordinates → genomic lift), ribotish and
+          ribotricer use it for multi-exon block recovery (from GenomePos
+          and the ORF_ID span respectively), and rpbp and price resolve
+          `gene_id` from the ORF's transcript id through it. Supply the
+          annotation the caller was run against, or a superset of it: a
+          transcript missing here cannot be resolved, and price then falls
+          back to its `Gene` column, which concatenates every gene the
+          ORF's genomic span overlaps. Passing `[ [:], [] ]` loses
+          multi-exon structure and, for rpbp and price, `gene_id`.
         pattern: "*.gtf"
         ontologies:
           - edam: http://edamontology.org/format_2306 # GTF
