@@ -14,13 +14,15 @@ process SHINYNGS_APP {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8a/8acde9b0bc0374d51ca50f3e49fb0f26a6fb394d277b3af5e276de8bf1786610/data'
-        : 'community.wave.seqera.io/library/r-shinyngs:3.1.1--b5595b301bfbfd4d'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d5f79ef0afe3e3831496c61c81aeda56312f49ac324dc378d3312af7acae2ec6/data'
+        : 'community.wave.seqera.io/library/r-shinyngs:3.2.1--d43071e62bc500d3'}"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)    // Experiment-level info
     tuple val(meta2), path(contrasts), path(differential_results)           // Differential info: contrasts and differential stats
     val(contrast_stats_assay)
+    path(gene_sets)                                                         // Optional: GMT gene set files for enrichment (referenced via --enrichment_gene_sets)
+    path(enrichment_results)                                               // Optional: per-contrast enrichment result tables (matched via --enrichment_filename_template)
 
     output:
     tuple val(meta), path("*/data.rds"), path("*/app.R")    , emit: app
