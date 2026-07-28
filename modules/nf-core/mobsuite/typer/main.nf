@@ -67,7 +67,7 @@ process MOBSUITE_TYPER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
-    
+
     touch ${prefix}.txt
     touch ${prefix}_biomarker_report.txt
     touch ${prefix}_mge_report.txt
