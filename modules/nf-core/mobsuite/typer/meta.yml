@@ -27,19 +27,19 @@ input:
         description: A bacterial genome assembly in FASTA format
         pattern: "*.{fasta,fa,fna}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929"
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - db:
       type: directory
       description: Optional local copy of MOB-suite database directory
       pattern: "databases/"
   - plasmid_mash_db:
       type: file
-      description: | 
+      description: |
         Optional Companion Mash database of reference database.
         If not supplied, default internal `ncbi_plasmid_full_seqs.fas.msh` is used.
       pattern: "*.msh"
       ontologies:
-        - edam: http://edamontology.org/format_3911
+        - edam: http://edamontology.org/format_3911 # msh
   - plasmid_meta_txt:
       type: file
       description: |
@@ -47,7 +47,8 @@ input:
         plasmid db. 
         If not supplied, default internal `clusters.txt` is used.
       pattern: "*.txt"
-      ontologies: []
+      ontologies:
+        - edam: "http://edamontology.org/format_3671" # Text
   - plasmid_replicons_fas:
       type: file
       description: |
@@ -55,7 +56,7 @@ input:
         If not supplied, default internal `rep.dna.fas` is used.
       pattern: "*.{fasta,fna,fa,fas}"
       ontologies:
-        - edam: "http://edamontology.org/format_1929"
+        - edam: "http://edamontology.org/format_1929" # FASTA
   - repetitive_mask_fas:
       type: file
       description: |
@@ -63,7 +64,7 @@ input:
         If not supplied, default internal `repetitive.dna.fas` is used.
       pattern: "*.{fasta,fna,fa,fas}"
       ontologies:
-        - edam: "http://edamontology.org/format_1929"
+        - edam: "http://edamontology.org/format_1929" # FASTA
   - plasmid_mob_faa:
       type: file
       description: |
@@ -71,7 +72,7 @@ input:
         If not supplied, default internal `mob.proteins.faa` is used.
       pattern: "*.{fasta,faa,fa,fas}"
       ontologies:
-        - edam: "http://edamontology.org/format_1929"
+        - edam: "http://edamontology.org/format_1929" # FASTA
   - plasmid_mpf_faa:
       type: file
       description: |
@@ -79,7 +80,7 @@ input:
         If not supplied, default internal `mpf.proteins.faa` is used.
       pattern: "*.{fasta,faa,fa,fas}"
       ontologies:
-        - edam: "http://edamontology.org/format_1929"
+        - edam: "http://edamontology.org/format_1929" # FASTA
   - plasmid_orit_fas:
       type: file
       description: |
@@ -87,7 +88,7 @@ input:
         If not supplied, default internal `orit.fas` is used.
       pattern: "*.{fasta,fna,fa,fas}"
       ontologies:
-        - edam: "http://edamontology.org/format_1929"
+        - edam: "http://edamontology.org/format_1929" # FASTA
   - generate_biomarker_report:
       type: boolean
       description: Whether to generate a biomarker report file
@@ -105,7 +106,8 @@ output:
           type: file
           description: MOB-suite typer report file
           pattern: "*.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3671" # Text
   biomarker_report:
     - - meta:
           type: map
@@ -116,6 +118,8 @@ output:
           type: file
           description: MOB-suite biomarker report file
           pattern: "*_biomarker_report.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3671" # Text
   mge_report:
     - - meta:
           type: map
@@ -126,6 +130,8 @@ output:
           type: file
           description: MOB-suite mobile genetic element (MGE) report file
           pattern: "*_mge_report.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3671" # Text
   versions_mobsuite:
     - - ${task.process}:
           type: string
@@ -133,7 +139,7 @@ output:
       - mobsuite:
           type: string
           description: The name of the tool
-      - mob_typer --version | sed 'mob_typer '/:
+      - mob_typer --version | sed 's/mob_typer //g':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -144,7 +150,7 @@ topics:
       - mobsuite:
           type: string
           description: The name of the tool
-      - mob_typer --version | sed 'mob_typer '/:
+      - mob_typer --version | sed 's/mob_typer //g':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
