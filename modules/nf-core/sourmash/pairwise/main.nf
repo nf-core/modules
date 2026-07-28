@@ -11,7 +11,6 @@ process SOURMASH_PAIRWISE {
     input:
     tuple val(meta), path(signatures)
     path file_list
-    val include_ani
 
     output:
     tuple val(meta), path("*pairwise.csv"), emit: csv
@@ -26,7 +25,6 @@ process SOURMASH_PAIRWISE {
 
     def combine_cmd = ''
     def pairwise_input = ''
-    def ani = include_ani ? "--ani" : ''
 
     // input format handling
     if (file_list) {
@@ -45,7 +43,6 @@ process SOURMASH_PAIRWISE {
     ${combine_cmd}
     sourmash scripts pairwise \\
         ${pairwise_input} \\
-        ${ani} \\
         -o ${prefix}_pairwise.csv \\
         --cores ${task.cpus} \\
         ${args}
