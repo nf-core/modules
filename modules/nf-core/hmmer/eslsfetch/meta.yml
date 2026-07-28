@@ -2,11 +2,13 @@ name: "hmmer_eslsfetch"
 description: |
   Retrieves one or more complete sequences or subsequences from a sequence
   file. The esl-sfetch utility is an Easel miniapp bundled with the HMMER
-  package. The module always indexes the (uncompressed) sequence file first
-  (esl-sfetch --index), producing an SSI index. If a keyfile is also given,
-  it is used to fetch the named sequences (-f), or, with ext.args = '-C',
-  parsed as a subsequence coordinate file (-Cf) to extract and rename
-  subsequences (giving from > to yields the reverse complement).
+  package. Unless an existing SSI index is supplied, the module first
+  indexes the (uncompressed) sequence file (esl-sfetch --index), producing
+  an SSI index; if an index is supplied, indexing is skipped and the index
+  is passed through unchanged. If a keyfile is also given, it is used to
+  fetch the named sequences (-f), or, with ext.args = '-C', parsed as a
+  subsequence coordinate file (-Cf) to extract and rename subsequences
+  (giving from > to yields the reverse complement).
 keywords:
   - hmmer
   - easel
@@ -39,23 +41,41 @@ input:
         type: file
         description: |
           Sequence file, in any format supported by esl-sfetch (fasta, embl,
-          genbank, stockholm, a2m, afa, psiblast, clustal, phylip). Must be
-          uncompressed: esl-sfetch cannot index a gzipped file. Mandatory.
+          genbank, stockholm, a2m, afa, psiblast, clustal, phylip). Must NOT
+          be gzip-compressed: esl-sfetch --index cannot index a .gz file.
+          Mandatory.
         pattern: "*"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1927 # EMBL format
+          - edam: http://edamontology.org/format_1936 # GenBank format
+          - edam: http://edamontology.org/format_1961 # Stockholm format
+          - edam: http://edamontology.org/format_1982 # ClustalW format
+          - edam: http://edamontology.org/format_1997 # Phylip format
+          - edam: http://edamontology.org/format_1984 # FASTA-aln (a2m/afa)
+          - edam: http://edamontology.org/format_2554 # Alignment format (text) — covers PSI-BLAST and other Easel-readable formats without a dedicated EDAM term
     - keyfile:
         type: file
         description: |
-          Optional. Plain-text list of sequence names/accessions to retrieve
-          (one per whitespace-delimited first field per line; blank lines
-          and lines starting with '#' are ignored), used with -f. With
+          Optional (pass [] to skip): plain-text list of sequence
+          names/accessions to retrieve, one name/accession per line (first
+          whitespace-delimited field; blank lines and lines starting with
+          '#' are ignored), used with -f for multi-sequence retrieval. With
           ext.args = '-C' (i.e. -Cf), instead parsed as a subsequence
-          coordinate file with four whitespace-delimited fields per line:
-          new_name from to name/accession. Pass [] to skip and only index
-          the seqfile.
+          coordinate file for -Cf retrieval: four whitespace-delimited
+          fields per line, new_name from to name/accession.
         pattern: "*"
         ontologies:
           - edam: http://edamontology.org/format_3671 # Plain text
+    - ssi:
+        type: file
+        description: |
+          Optional (pass [] to build a fresh index): pre-built SSI index of
+          seqfile, as produced by esl-sfetch --index. If supplied, the
+          indexing step is skipped and this file is reused as-is, then
+          re-emitted unchanged through the `ssi` output.
+        pattern: "*.ssi"
+        ontologies: []
 output:
   ssi:
     - - meta:
@@ -65,8 +85,10 @@ output:
             e.g. `[ id:'test' ]`
       - "*.ssi":
           type: file
-          description: SSI index of the sequence file, created by esl-sfetch
-            --index. Always produced.
+          description: |
+            SSI index of the sequence file. Freshly built by esl-sfetch
+            --index when no ssi input is supplied, otherwise the supplied
+            ssi passed through unchanged. Always produced.
           pattern: "*.ssi"
           ontologies: []
   sequences:
