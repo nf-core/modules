@@ -5,7 +5,7 @@ process SOURMASH_PAIRWISE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'oras://community.wave.seqera.io/library/sourmash_plugin_branchwater:0.9.14--df01c04891ace7ef'
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/90/90c428a073e3c30e1f45fdc6e2ee39a9945682b50e71d347bd712ea59a9aa5be/data'
         : 'community.wave.seqera.io/library/sourmash_plugin_branchwater:0.9.14--3720b94abc654eac' }"
 
     input:
