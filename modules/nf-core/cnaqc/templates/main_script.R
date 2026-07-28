@@ -60,7 +60,7 @@ opt <- list(
   min_VAF = 0,
   muts_per_karyotype = 25,
   cutoff_QC_PASS = 0.1,
-  method = "ENTROPY", 
+  method = "ENTROPY",
   blacklist_indels = 'TRUE'
 )
 opt_types <- lapply(opt, class)
@@ -98,17 +98,17 @@ x = CNAqc::init(
   mutations = SNV,
   cna = CNA\$segments,
   purity = CNA\$purity ,
-  ref = opt[["genome"]], 
+  ref = opt[["genome"]],
   blacklist_indels = opt[['blacklist_indels']])
 
 x = CNAqc::analyze_peaks(x,
                           matching_strategy = opt[["matching_strategy"]],
                           min_absolute_karyotype_mutations = as.numeric(opt[["min_absolute_karyotype_mutations"]]),
-                          purity_error = as.numeric(opt[["purity_error"]]), 
+                          purity_error = as.numeric(opt[["purity_error"]]),
                           min_VAF = opt[['min_VAF']])
 
 x = CNAqc::compute_CCF(x,
-                        muts_per_karyotype = as.numeric(opt[["muts_per_karyotype"]], 
+                        muts_per_karyotype = as.numeric(opt[["muts_per_karyotype"]],
                         min_VAF = opt[['min_VAF']])
 )
 
