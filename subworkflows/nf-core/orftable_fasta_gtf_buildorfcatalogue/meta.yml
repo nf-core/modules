@@ -58,13 +58,11 @@ input:
         Structure: [ val(meta), path(fasta) ]
   - ch_gtf:
       description: |
-        Reference annotation GTF. Every caller's normaliser uses it:
-        ribocode, ribotish and ribotricer to lift transcript coordinates to
-        genomic blocks, rpbp and price to resolve `gene_id` from the ORF's
-        transcript id. Must be a superset of the annotations the callers
-        were run against, since a transcript absent from it cannot be
-        resolved: price then falls back to its `Gene` column, which
-        concatenates every gene the ORF's genomic span overlaps.
+        Reference annotation GTF, used by every caller's normaliser:
+        ribocode, ribotish and ribotricer for genomic coordinates and
+        multi-exon blocks, rpbp and price to resolve `gene_id` from the
+        ORF's transcript id. Must cover every annotation the callers ran
+        against; unmatched transcripts lose `gene_id`.
         Structure: [ val(meta), path(gtf) ]
   - val_collapse:
       description: |
