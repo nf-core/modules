@@ -4,22 +4,22 @@ process PBJASMINE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pbjasmine:2.4.0--h9948957_1':
-        'quay.io/biocontainers/pbjasmine:2.4.0--h9948957_1' }"
+        'https://depot.galaxyproject.org/singularity/pbjasmine:26.1.3--hd63eeec_0':
+        'quay.io/biocontainers/pbjasmine:26.1.3--hd63eeec_0' }"
 
     input:
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("${prefix}.bam"), emit: bam
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("*.bam"), emit: bam
+    tuple val("${task.process}"), val('pbjasmine'), eval("jasmine --version | head -n 1 | sed 's/jasmine //'"), topic: versions, emit: versions_pbjasmine
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_jasmine"
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
@@ -29,24 +29,12 @@ process PBJASMINE {
         $bam \\
         ${prefix}.bam
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbjasmine: \$(jasmine --version | head -n1 | sed 's/jasmine //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_jasmine"
 
     """
-    echo $args
-
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbjasmine: \$(jasmine --version | head -n1 | sed 's/jasmine //')
-    END_VERSIONS
     """
 }

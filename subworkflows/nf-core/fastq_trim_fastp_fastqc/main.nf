@@ -31,8 +31,6 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
 
     main:
 
-    ch_versions = channel.empty()
-
     // Split input channel for reads-only operations
     ch_reads_only = ch_reads.map { meta, reads, _adapter_fasta -> [ meta, reads ] }
 
@@ -102,6 +100,4 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
     fastqc_raw_zip   = ch_fastqc_raw_zip     // channel: [ val(meta), path(zip) ]
     fastqc_trim_html = ch_fastqc_trim_html   // channel: [ val(meta), path(html) ]
     fastqc_trim_zip  = ch_fastqc_trim_zip    // channel: [ val(meta), path(zip) ]
-
-    versions = ch_versions
 }

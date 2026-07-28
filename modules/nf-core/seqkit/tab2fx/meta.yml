@@ -26,6 +26,9 @@ input:
         description: Text file in tabular format
         pattern: "*.txt[.gz,.zst]"
         ontologies: []
+  - out_ext:
+      type: string
+      description: Output file extension (for example `fa.zst`, `fq.gz`)
 output:
   fastx:
     - - meta:

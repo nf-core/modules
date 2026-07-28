@@ -11,7 +11,7 @@ process HOSTILE_FETCH {
 
     output:
     tuple val(index_name), path('reference/'), emit: reference
-    path 'versions.yml', emit: versions
+    tuple val("${task.process}"), val('hostile'), eval("hostile --version"), emit: versions_hostile, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,18 +27,12 @@ process HOSTILE_FETCH {
         fetch \\
         --name ${index_name} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hostile: \$(hostile --version)
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir reference/
     export HOSTILE_CACHE_DIR=./reference
-
     touch reference/human-t2t-hla.1.bt2
     touch reference/human-t2t-hla.2.bt2
     touch reference/human-t2t-hla.3.bt2
@@ -46,10 +40,5 @@ process HOSTILE_FETCH {
     touch reference/human-t2t-hla.rev.1.bt2
     touch reference/human-t2t-hla.rev.2.bt2
     touch reference/human-t2t-hla.mmi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hostile: \$(hostile --version)
-    END_VERSIONS
     """
 }

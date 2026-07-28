@@ -1,0 +1,117 @@
+nextflow_process {
+
+    name "Test Process FINALETOOLKIT_AGGBW"
+    script "../main.nf"
+    process "FINALETOOLKIT_AGGBW"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "finaletoolkit"
+    tag "finaletoolkit/wps"
+    tag "finaletoolkit/adjustwps"
+    tag "finaletoolkit/aggbw"
+
+    test("homo_sapiens - bigwig") {
+
+        setup {
+
+            config "./nextflow.config"
+            run("FINALETOOLKIT_WPS") {
+                script("../../wps/main.nf")
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true),
+                    ]
+                    input[1] = [
+                        [id: 'tss' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_tss.bed', checkIfExists: true),
+                    ]
+                    input[2] = [
+                        [id: 'sizes' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.sizes', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+            run("FINALETOOLKIT_ADJUSTWPS") {
+                script("../../adjustwps/main.nf")
+                process {
+                    """
+                    input[0] = FINALETOOLKIT_WPS.out.bigwig
+                    input[1] = [
+                        [id: 'tss' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_tss.bed', checkIfExists: true),
+                    ]
+                    input[2] = Channel.of('chr22\t50818468')
+                        .collectFile(name: 'chr22.sizes', newLine: true)
+                        .map { sizes -> [[id: 'sizes' ], sizes] }
+                    """
+
+                }
+            }
+        }
+
+        when {
+
+            process {
+
+                config "./nextflow.config"
+
+                """
+                input[0] = FINALETOOLKIT_ADJUSTWPS.out.bigwig
+                input[1] = [
+                    [id: 'tss' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_tss.bed', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match()  }
+            )
+
+        }
+
+    }
+
+    test("homo_sapiens - stub") {
+
+        options "-stub"
+
+
+        when {
+
+            process {
+
+                config "./nextflow.config"
+
+                """
+                input[0] =  [
+                    [ id: 'test'],
+                    []
+                ]
+                input[1] = [
+                    [id: 'tss' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_tss.bed', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match()  }
+            )
+
+        }
+
+    }
+
+}

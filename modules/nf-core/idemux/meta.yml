@@ -11,7 +11,8 @@ tools:
       homepage: https://github.com/Lexogen-Tools/idemux
       documentation: https://github.com/Lexogen-Tools/idemux
       tool_dev_url: https://github.com/Lexogen-Tools/idemux
-      licence: ["LEXOGEN"]
+      licence:
+        - "LEXOGEN"
       identifier: ""
 input:
   - - meta:
@@ -35,11 +36,10 @@ input:
 output:
   fastq:
     - - meta:
-          type: file
-          description: Demultiplexed sample FASTQ files
-          pattern: "*.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'NVQ', lane:1 ]
       - "[!undetermined]*.fastq.gz":
           type: file
           description: Demultiplexed sample FASTQ files
@@ -48,11 +48,10 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   undetermined:
     - - meta:
-          type: file
-          description: Demultiplexed sample FASTQ files
-          pattern: "*.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'NVQ', lane:1 ]
       - undetermined_R?.fastq.gz:
           type: file
           description: Optional undetermined sample FASTQ files
@@ -60,19 +59,38 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   stats:
-    - demultipexing_stats.tsv:
-        type: file
-        description: Demultiplexing Stats
-        pattern: "demultipexing_stats.tsv"
-        ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'NVQ', lane:1 ]
+      - demultipexing_stats.tsv:
+          type: file
+          description: Demultiplexing Stats
+          pattern: "demultipexing_stats.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_idemux:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - idemux:
+          type: string
+          description: The name of the tool
+      - idemux --version |& sed '1!d ; s/idemux //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - idemux:
+          type: string
+          description: The name of the tool
+      - idemux --version |& sed '1!d ; s/idemux //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jaanckae"
 maintainers:

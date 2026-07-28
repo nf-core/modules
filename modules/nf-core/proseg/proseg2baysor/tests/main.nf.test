@@ -1,0 +1,77 @@
+nextflow_process {
+
+    name "Test Process PROSEG2BAYSOR"
+    script "../main.nf"
+    process "PROSEG2BAYSOR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "proseg/proseg2baysor"
+    tag "proseg/proseg"
+    tag "proseg"
+    tag "segmentation"
+    tag "cell_segmentation"
+
+
+    setup {
+        run("PROSEG") {
+            script "../../proseg/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: "testrun_proseg"],
+                    file(params.modules_testdata_base_path + "spatial_omics/xenium/homo_sapiens/spatial_gene_expression.csv", checkIfExists: true)
+                ]
+                input[1] = 'xenium'
+                input[2] = ['csv.gz', 'csv.gz', 'csv.gz']
+                """
+            }
+        }
+    }
+
+    test("proseg-to-baysor - transcripts.csv") {
+
+        when {
+            process {
+                """
+                input[0] = PROSEG.out.zarr
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(
+                                    process.out,
+                                    unstableKeys: [
+                                        "cell_polygons",
+                                        "transcript_metadata",
+                                    ]
+                                )).match()
+                }
+            )
+        }
+
+    }
+
+    test("proseg-to-baysor stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = PROSEG.out.zarr
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

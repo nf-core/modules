@@ -1,0 +1,104 @@
+name: "baysor_run"
+description: Bayesian segmentation of spatial transcriptomics data.
+keywords:
+  - segmentation
+  - spatial transcriptomics
+  - cell clustering
+  - imaging
+tools:
+  - "baysor":
+      description: "Baysor is a tool that segments cells using spatial gene expression
+        maps. Optionally, segmentation masks can be given as additional input."
+      homepage: "https://kharchenkolab.github.io/Baysor/dev/"
+      documentation: "https://kharchenkolab.github.io/Baysor/dev/"
+      tool_dev_url: "https://github.com/kharchenkolab/Baysor"
+      doi: "10.1038/s41587-021-01044-w"
+      licence:
+        - "MIT license"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - transcripts:
+        type: file
+        description: CSV file
+        pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752
+    - prior_segmentation:
+        type: file
+        description: CSV file with segmentation mask (optional)
+        pattern: "*_segmentation.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752
+    - config:
+        type: file
+        description: TOML file with config arguments
+        pattern: "*.toml"
+        ontologies: []
+    - scale:
+        type: float
+        description: Scale factor for the segmentation
+  - prior_confidence:
+      type: float
+      description: Confidence of the prior segmentation (optional)
+  - prior_column:
+      type: string
+      description: Column name in the prior segmentation file that contains the
+        segmentation mask (optional)
+  - polygon_format:
+      type: string
+      description: |
+        Format for output segmentation polygons (default: FeatureCollection)
+      enum:
+        - GeometryCollectionLegacy
+        - GeometryCollection
+        - FeatureCollection
+output:
+  segmentation:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}_segmentation.csv:
+          type: file
+          description: CSV file with segmentation mask
+          pattern: "*_segmentation.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+      - ${prefix}_segmentation_polygons_2d.json:
+          type: file
+          description: JSON file with segmentation polygons
+          pattern: "*_segmentation_polygons_2d.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3464
+  versions_baysor:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - baysor:
+          type: string
+          description: The name of the tool
+      - baysor --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - baysor:
+          type: string
+          description: The name of the tool
+      - baysor --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@khersameesh24"
+maintainers:
+  - "@khersameesh24"

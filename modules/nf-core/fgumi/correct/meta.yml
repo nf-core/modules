@@ -1,0 +1,107 @@
+name: "fgumi_correct"
+description: Correct UMIs in a BAM file to a fixed set of known UMIs with fgumi
+keywords:
+  - UMIs
+  - correction
+  - bam
+tools:
+  - "fgumi":
+      description: "High-performance tools for UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://fgumi.readthedocs.io/"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence:
+        - "MIT"
+      identifier: biotools:fgumi
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Input BAM file with UMIs in the RX tag
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+  - umis:
+      type: file
+      description: |
+        Optional file(s) of known UMI sequences, passed to fgumi correct via
+        `--umi-files`. Additional UMIs may be supplied inline with `--umis`
+        via `task.ext.args`. Provide an empty list (`[]`) to rely on `--umis`.
+      pattern: "*.txt"
+      ontologies: []
+  - min_distance:
+      type: integer
+      description: |
+        Minimum required difference in mismatches between the best and
+        second-best matching known UMI for a correction to be made
+        (`--min-distance`).
+  - keep_rejected:
+      type: boolean
+      description: |
+        If true, write reads whose UMIs could not be corrected to a separate
+        rejects BAM file.
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.bam":
+          type: file
+          description: BAM file with corrected UMIs
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  rejects:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.rejects.bam":
+          type: file
+          description: Optional BAM of reads whose UMIs could not be corrected
+          pattern: "*.rejects.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.metrics.txt":
+          type: file
+          description: UMI correction metrics (TSV)
+          pattern: "*.metrics.txt"
+          ontologies: []
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"

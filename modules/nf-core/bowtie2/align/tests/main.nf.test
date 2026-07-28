@@ -9,8 +9,9 @@ nextflow_process {
     tag "bowtie2/build"
     tag "bowtie2/align"
 
-    test("sarscov2 - fastq, index, fasta_fai, false, false - bam") {
+    test("sarscov2 - fastq, index, fasta_fai, false, true - bam") {
 
+        config "./bam.config"
         setup {
             run("BOWTIE2_BUILD") {
                 script "../../build/main.nf"
@@ -47,7 +48,11 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getSamLines(5),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -57,7 +62,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta_fai, false, false - sam") {
+    test("sarscov2 - fastq, index, fasta_fai, false, true - sam") {
 
         config "./sam.config"
         setup {
@@ -96,7 +101,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.sam[0][1]).getSamLines(5),
+                    file(process.out.sam[0][1]).name,
+                    bam(process.out.sam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -106,7 +112,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta_fai, false, false - sam2") {
+    test("sarscov2 - fastq, index, fasta_fai, false, true - sam2") {
 
         config "./sam2.config"
         setup {
@@ -145,7 +151,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.sam[0][1]).getSamLines(5),
+                    file(process.out.sam[0][1]).name,
+                    bam(process.out.sam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -155,8 +162,9 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta_fai, false, true - bam") {
+    test("sarscov2 - fastq, index, fasta_fai, true, true - bam") {
 
+        config "./bam.config"
         setup {
             run("BOWTIE2_BUILD") {
                 script "../../build/main.nf"
@@ -183,7 +191,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[3] = false //save_unaligned
+                input[3] = true //save_unaligned
                 input[4] = true //sort
                 """
             }
@@ -193,7 +201,11 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getSamLines(5),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -203,8 +215,9 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, false, false - bam") {
+    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, false, true - bam") {
 
+        config "./bam.config"
         setup {
             run("BOWTIE2_BUILD") {
                 script "../../build/main.nf"
@@ -244,7 +257,11 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getSamLines(5),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -254,8 +271,9 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, false, true - bam") {
+    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, true, true - bam") {
 
+        config "./bam.config"
         setup {
             run("BOWTIE2_BUILD") {
                 script "../../build/main.nf"
@@ -285,7 +303,7 @@ nextflow_process {
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[3] = false //save_unaligned
+                input[3] = true //save_unaligned
                 input[4] = true //sort
                 """
             }
@@ -295,7 +313,11 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getSamLines(5),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -305,7 +327,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, large_index, fasta_fai, false, false - bam") {
+    test("sarscov2 - fastq, large_index, fasta_fai, false, true - bam") {
 
         config "./large_index.config"
         setup {
@@ -344,7 +366,11 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getSamLines(5),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -354,7 +380,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], large_index, fasta_fai, false, false - bam") {
+    test("sarscov2 - [fastq1, fastq2], large_index, fasta_fai, false, true - bam") {
 
         config "./large_index.config"
         setup {
@@ -396,7 +422,11 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getSamLines(5),
+                    // Conda and docker version of bowtie2 produce different 
+                    // hashes. Therefore, testing whether file exists and bam
+                    // statistics.
+                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -406,107 +436,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, true, false - bam") {
-
-        setup {
-            run("BOWTIE2_BUILD") {
-                script "../../build/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
-                ]
-                input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [
-                    [ id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ]
-                input[3] = false //save_unaligned
-                input[4] = true //sort
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    bam(process.out.bam[0][1]).getSamLines(5),
-                    process.out.log,
-                    process.out.fastq,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
-            )
-        }
-
-    }
-
-    test("sarscov2 - fastq, index, fasta_fai, true, false - bam") {
-
-        setup {
-            run("BOWTIE2_BUILD") {
-                script "../../build/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ]
-                input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [
-                    [ id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ]
-                input[3] = false //save_unaligned
-                input[4] = true //sort
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    bam(process.out.bam[0][1]).getSamLines(5),
-                    process.out.log,
-                    process.out.fastq,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
-
-            )
-        }
-
-    }
-
-    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, true, true - cram") {
+    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, false, true - cram") {
 
         config "./cram_crai.config"
         setup {
@@ -527,7 +457,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [
+                        id:'test', 
+                        single_end:false,
+                        fasta:'https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta' ], // meta map + fasta for cram testing
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -549,7 +482,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.cram[0][1]).name,
-                    file(process.out.crai[0][1]).name
+                    file(process.out.crai[0][1]).name,
+                    cram(process.out.cram[0][1], process.out.cram[0][0].fasta ).getStatistics(exclude:["sorted"]),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -638,7 +573,7 @@ nextflow_process {
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[3] = false //save_unaligned
+                input[3] = true //save_unaligned
                 input[4] = false //sort
                 """
             }

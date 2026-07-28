@@ -1,0 +1,112 @@
+nextflow_process {
+
+    name "Test Process GEDI_PRICE"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "GEDI_PRICE"
+
+    tag "gunzip"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gedi"
+    tag "gedi/price"
+    tag "gedi/indexgenome"
+
+    setup {
+        run("GUNZIP", alias: "GUNZIP_FASTA") {
+            script "modules/nf-core/gunzip/main.nf"
+            process {
+            """
+            input[0] = [
+                [ ],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/price/Homo_sapiens.GRCh38_chr19_22.pc_exon_masked.fa.gz", checkIfExists: true)
+            ]
+            """
+            }
+        }
+
+        run("GUNZIP", alias: "GUNZIP_GTF") {
+            script "modules/nf-core/gunzip/main.nf"
+            process {
+            """
+            input[0] = [
+                [ ],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/price/Homo_sapiens.GRCh38.111_chr19_22.pc.gtf.gz", checkIfExists: true)
+            ]
+            """
+            }
+        }
+
+        run("GEDI_INDEXGENOME") {
+            script "../../indexgenome/main.nf"
+            process {
+            """
+            input[0] = GUNZIP_FASTA.out.gunzip
+                .join(GUNZIP_GTF.out.gunzip)
+                .map{ _meta, fasta, gtf -> [[id:'homo_sapiens_chr19_22'], fasta, gtf] }
+            """
+            }
+        }
+    }
+
+    test("homo_sapiens [bam] - single_end - chr19_22") {
+
+        when {
+            process {
+                """
+                def base = params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/price/bams/"
+                def samples = ['SRX11780885', 'SRX11780886', 'SRX11780887', 'SRX11780888']
+                def bams = samples.collect { file(base + "\${it}.chr19_22.ds50.bam", checkIfExists: true) }
+                def bais = samples.collect { file(base + "\${it}.chr19_22.ds50.bam.bai", checkIfExists: true) }
+                input[0] = [
+                    [ id:'cohort', single_end:true ],
+                    bams,
+                    bais
+                ]
+                input[1] = GEDI_INDEXGENOME.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.orfs_cit.collect      { meta, f -> [meta, file(f).name] },
+                    process.out.orfs_metadata.collect { meta, f -> [meta, file(f).name] },
+                    process.out.codons_cit.collect    { meta, f -> [meta, file(f).name] },
+                    process.out.model.collect         { meta, f -> [meta, file(f).name] },
+                    process.out.signal.collect        { meta, f -> [meta, file(f).name] },
+                    process.out.param.collect         { meta, f -> [meta, file(f).name] },
+                    process.out.orfs_tsv.collect      { meta, f -> [meta, file(f).name, path(f).readLines().size()] },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens [bam] - single_end - chr20 - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true) ]
+                ]
+                input[1] = GEDI_INDEXGENOME.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

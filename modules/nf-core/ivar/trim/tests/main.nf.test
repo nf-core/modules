@@ -31,7 +31,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.bam,
-                        process.out.versions,
+                        process.out.findAll { key, val -> key.startsWith('versions') },
                         file(process.out.log.get(0).get(1)).exists()
                     ).match()
                 }
