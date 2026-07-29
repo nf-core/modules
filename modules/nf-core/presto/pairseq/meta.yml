@@ -37,8 +37,7 @@ input:
           - edam: http://edamontology.org/format_1930
   - barcode_position:
       type: string
-      description: Barcode position. One of `R1`, `R2`, `R1R2` or `clustersets`. Default
-        is ""
+      description: Barcode position. One of `R1`, `R2`, `R1R2`, `clustersets` or ``. Default is ``.
 output:
   reads:
     - - meta:
@@ -46,13 +45,13 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test']`
-      - "*_pair-pass.fastq.gz":
+      - "*1_pair-pass.fastq.gz":
           type: file
           description: paired fastq.gz file of R1 reads
           pattern: "*.{fastq.gz}"
           ontologies:
             - edam: http://edamontology.org/format_1930
-      - "*_pair-pass.fastq.gz":
+      - "*2_pair-pass.fastq.gz":
           type: file
           description: paired fastq.gz file of R2 reads
           pattern: "*.{fastq.gz}"
