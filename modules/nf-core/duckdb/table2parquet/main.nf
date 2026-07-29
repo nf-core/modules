@@ -29,9 +29,8 @@ process DUCKDB_TABLE2PARQUET {
     python3 <<PYEOF
     import duckdb
 
-    duckdb.sql(
-        "COPY (SELECT * FROM read_csv('${table}', delim='${delim}', header=true)) TO '${prefix}.parquet' (FORMAT PARQUET)"
-    )
+    con = duckdb.connect(config={'threads': ${task.cpus}, 'memory_limit': ${task.memory.toGiga()}GB, 'temp_directory': '.'})
+    con.sql("COPY (SELECT * FROM read_csv('${table}', delim='${delim}', header=true${args})) TO '${prefix}.parquet' (FORMAT PARQUET${args2})")
     PYEOF
     """
 
