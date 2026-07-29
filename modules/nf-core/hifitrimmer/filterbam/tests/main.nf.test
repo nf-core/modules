@@ -132,7 +132,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of(
                     [
-                        [ id:'test' ], // meta map
+                        [ id:'test_stub' ], // meta map
                         file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
                     ]

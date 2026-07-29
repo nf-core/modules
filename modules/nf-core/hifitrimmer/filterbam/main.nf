@@ -12,9 +12,9 @@ process HIFITRIMMER_FILTERBAM {
 
 
    output:
-   tuple val(meta), path("*.sam"), emit: sam, optional: true
-   tuple val(meta), path("*.bam"), emit: bam, optional: true
-   tuple val(meta), path("*.cram"), emit: cram, optional: true
+   tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
+   tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
+   tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
    tuple val("${task.process}"), val('hifi-trimmer'), eval("hifi-trimmer --version | cut -d' ' -f3"), emit: versions_hifitrimmer, topic: versions
    tuple val("${task.process}"), val('samtools'), eval('samtools --version | head -1 | sed -e "s/samtools //"'), emit: versions_samtools, topic: versions
 
@@ -22,14 +22,18 @@ process HIFITRIMMER_FILTERBAM {
    task.ext.when == null || task.ext.when
 
    script:
-   def prefix = task.ext.prefix ?: "${meta.id}"
+   prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
    def args2 = task.ext.args2 ?: ''
    def args3 = task.ext.args3 ?: ''
-   def format = args.contains('-f cram') ? 'cram' : args.contains('-f sam') ? 'sam' : 'bam'
-   def suffix = "${format}"
+   def suffix = args.contains('-f cram') ? 'cram' : args.contains('-f sam') ? 'sam' : 'bam'
    def input_convert = input.name.endsWith('cram') ? "<(samtools view ${input} -u ${args3} -@ ${task.cpus})" :
         !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ ${task.cpus})" : input
+
+   if (input.name == "${prefix}.${suffix}") {
+      error "ERROR: Output file '${prefix}.${suffix}' collides with input file name. Please set a different prefix via task.ext.prefix or meta.id."
+   }
+
    """
    hifi-trimmer trim \\
       -t ${task.cpus} \\
@@ -40,10 +44,9 @@ process HIFITRIMMER_FILTERBAM {
    """
 
    stub:
+   prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
-   def prefix = task.ext.prefix ?: "${meta.id}"
-   def format = args.contains('-f cram') ? 'cram' : args.contains('-f sam') ? 'sam' : 'bam'
-   def suffix = "${format}"
+   def suffix = args.contains('-f cram') ? 'cram' : args.contains('-f sam') ? 'sam' : 'bam'
    """
    printf "stub\n" > ${prefix}.${suffix}
    echo ${args}
