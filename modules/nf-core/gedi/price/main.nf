@@ -33,9 +33,7 @@ process GEDI_PRICE {
     ls -1 bams/*.bam > price_input.bamlist
     bamlist2cit -n ${task.cpus} -p price_input.bamlist
 
-    # The .oml holds absolute paths to its members, fixed when the index was built, so an
-    # index read from anywhere other than where it was built needs them pointed at the
-    # staged copy. Rewrite into the task directory: the staged index must not be written to.
+    # .oml member paths are absolute; repoint them at the staged index
     sed "s|file=\\"[^\\"]*/|file=\\"\$PWD/${index}/|g" ${oml} > ${prefix}.genomic.oml
 
     gedi -e Price \\
