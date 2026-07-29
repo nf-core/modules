@@ -12,7 +12,7 @@ process PRESTO_PAIRSEQ {
     val(barcode_position)
 
     output:
-    tuple val(meta), path("*_pair-pass.fastq.gz"), path("*_pair-pass.fastq.gz") , emit: reads
+    tuple val(meta), path("*1_pair-pass.fastq.gz"), path("*2_pair-pass.fastq.gz") , emit: reads
     path "*_command_log.txt", emit: logs
     tuple val("${task.process}"), val('presto'), eval('PairSeq.py --version | grep -o "[0-9][0-9.]*" | head -n 1'), emit: versions_presto, topic: versions
 
