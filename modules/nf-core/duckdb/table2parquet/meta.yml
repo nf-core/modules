@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "duckdb_table2parquet"
 description: Convert a delimited text table (CSV or TSV, gzipped or not) to Parquet
 keywords:
@@ -12,13 +11,15 @@ tools:
       homepage: "https://duckdb.org"
       documentation: "https://duckdb.org/docs/"
       tool_dev_url: "https://github.com/duckdb/duckdb"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: "biotools:duckdb"
   - "python":
       description: "Used to drive DuckDB via its Python bindings, since conda-forge's duckdb package doesn't ship a standalone CLI binary"
       homepage: "https://www.python.org/"
       documentation: "https://docs.python.org/3/"
-      licence: ["PSF-2.0"]
+      licence:
+        - "PSF-2.0"
       identifier: "biotools:python"
 
 input:
@@ -34,7 +35,6 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3752" # CSV
           - edam: "http://edamontology.org/format_3475" # TSV
-
 output:
   parquet:
     - - meta:
@@ -70,25 +70,50 @@ output:
 
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
-      - duckdb:
+      - "duckdb":
           type: string
           description: The name of the tool
-      - python3 -c 'import duckdb; print(duckdb.__version__)':
+      - "python3 -c 'import duckdb; print(duckdb.__version__)'":
           type: eval
           description: The expression to obtain the version of the tool
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
-      - python:
+      - "python":
           type: string
           description: The name of the tool
-      - python3 --version | sed 's/^Python //':
+      - "python3 --version | sed 's/^Python //'":
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@erikrikarddaniel"
 maintainers:
   - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/duckdb:1.5.5--4d5652e4fe720475
+      build_id: bd-4d5652e4fe720475_1
+      scan_id: sc-a2b09de2bf50b0b7_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/duckdb:1.5.5--a35d96a433829842
+      build_id: bd-a35d96a433829842_1
+      scan_id: sc-998f8d5f2cc9a3c9_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/duckdb:1.5.5--9c484e21d16cfb5a
+      build_id: bd-9c484e21d16cfb5a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/22/22003bcc86de42cba4d5153271ec309d2d59121ef6c4c703455e3614e356ac26/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/duckdb:1.5.5--fa451237dbb5d9b9
+      build_id: bd-fa451237dbb5d9b9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/53/534f8759d8fd8d4ee81840aee69254afa080a0269be641f81f3407ccf7f832bd/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/duckdb/table2parquet/.conda-lock/linux_amd64-bd-a35d96a433829842_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/duckdb/table2parquet/.conda-lock/linux_arm64-bd-4d5652e4fe720475_1.txt
