@@ -19,8 +19,10 @@ process DUCKDB_TABLE2PARQUET {
     task.ext.when == null || task.ext.when
 
     script:
+    def args   = task.ext.args   ? ", ${task.ext.args}"  : ''      // read_csv options
+    def args2  = task.ext.args2  ? ", ${task.ext.args2}" : ''  // Copy options
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def stem   = table.name.replaceAll(/\.gz$/, '')
+    def stem   = table.name.replaceAll(/\.(gz|zst)$/, '')
     def delim  = stem.endsWith('.tsv') ? '\\t' : stem.endsWith('.csv') ? ',' : null
     if ( ! delim ) {
         error("DUCKDB_TABLE2PARQUET: cannot determine a delimiter for '${table.name}' -- expected a .csv or .tsv suffix, optionally followed by .gz")
@@ -29,9 +31,8 @@ process DUCKDB_TABLE2PARQUET {
     python3 <<PYEOF
     import duckdb
 
-    duckdb.sql(
-        "COPY (SELECT * FROM read_csv('${table}', delim='${delim}', header=true)) TO '${prefix}.parquet' (FORMAT PARQUET)"
-    )
+    con = duckdb.connect(config={'threads': ${task.cpus}, 'memory_limit': ${task.memory.toGiga()}GB, 'temp_directory': '.'})
+    con.sql("COPY (SELECT * FROM read_csv('${table}', delim='${delim}', header=true${args})) TO '${prefix}.parquet' (FORMAT PARQUET${args2})")
     PYEOF
     """
 
