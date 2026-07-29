@@ -2,17 +2,17 @@ process CANVAS_GERMLINE {
     tag "$meta.id"
     label 'process_high'
 
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c0/c0fb830dbc4633b045c3681aa2115db1021b5e3c17e03becccbd976ef01b95db/data' :
-        'community.wave.seqera.io/library/canvas:1.40.0.1613--5f0cde4f6826e813' }"
+    container "quay.io/nf-core/canvas:1.40.0"
 
     input:
     tuple val(meta) , path(bam), path(bai)
-    tuple val(meta2), path(germline_snv_vcf)
-    tuple val(meta3), path(ploidy_vcf)
-    tuple val(meta4), path(kmer_fasta, stageAs: 'genome/genome.fa')
-    tuple val(meta5), path(genomesize, stageAs: 'genome/GenomeSize.xml')
-    path filter_bed
+    tuple val(meta1), path(kmer_fasta, stageAs: 'Sequence/WholeGenomeFasta/genome.fa')
+    tuple val(meta2), path(genomesize, stageAs: 'Sequence/WholeGenomeFasta/GenomeSize.xml')
+    tuple val(meta3), path(filter_bed)
+    tuple val(meta4), path(sample_snv_vcf)
+    tuple val(meta5), path(population_snv_vcf)
+    tuple val(meta6), path(ploidy_vcf)
+    tuple val(meta7), path(common_cnvs_bed)
 
     output:
     tuple val(meta), path("${prefix}.vcf.gz")                            , emit: vcf
@@ -23,32 +23,41 @@ process CANVAS_GERMLINE {
     task.ext.when == null || task.ext.when
 
     script:
+
+    if (!(sample_snv_vcf || population_snv_vcf)) {
+        error("Either sample_snv_vcf or population_snv_vcf must be supplied")
+    }
+
     prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
+    def sample_vcf_arg = sample_snv_vcf ? "--sample-b-allele-vcf ${sample_snv_vcf}" : ""
+    def population_vcf_arg = population_snv_vcf ? "--population-b-allele-vcf ${population_snv_vcf}" : ""
     def ploidy_arg = ploidy_vcf ? "--ploidy-vcf $ploidy_vcf" : ""
+    def common_cnvs_arg = common_cnvs_bed ? "--common-cnvs-bed ${common_cnvs_bed}" : ""
 
-    // Seqera containers does not set up PATH correctly for .NET, so we need to add it manually
-    // Conda does not need this
     """
-    if [[ '${workflow.containerEngine}' != 'null' ]]; then
-        export PATH=/opt/conda/lib/dotnet:\$PATH
-    fi
-
     Canvas SmallPedigree-WGS \\
         --bam ${bam} \\
-        --sample-b-allele-vcf ${germline_snv_vcf} \\
-        --genome-folder ./genome \\
+        --genome-folder ./Sequence/WholeGenomeFasta \\
         --reference ${kmer_fasta} \\
         --filter-bed ${filter_bed} \\
         --output ./ \\
+        ${sample_vcf_arg} \\
+        ${population_vcf_arg} \\
         ${ploidy_arg} \\
+        ${common_cnvs_arg} \\
         ${args}
 
     mv CNV.vcf.gz ${prefix}.vcf.gz
-    mv CNV.CoverageAndVariantFrequency.txt ${prefix}.CoverageAndVariantFrequency.txt
+    mv TempCNV_*/CNV.CoverageAndVariantFrequency.txt ${prefix}.CoverageAndVariantFrequency.txt
     """
 
     stub:
+
+    if (!(sample_snv_vcf || population_snv_vcf)) {
+        error("Either sample_snv_vcf or population_snv_vcf must be supplied")
+    }
+
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.vcf.gz
