@@ -151,7 +151,7 @@ nextflow_process {
                 new File("${calibDir}/${fname}").bytes = new URL("${base}${fname}").bytes
             }
         }
-        
+
         when {
             params {
                 angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
@@ -820,7 +820,7 @@ nextflow_process {
 
     test("angsd - GL3 - missing calibration dir") {
         config "./nextflow.config"
-        
+
         when {
             params {
                 angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
