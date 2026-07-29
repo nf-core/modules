@@ -96,24 +96,24 @@ maintainers:
 containers:
   docker:
     linux/arm64:
-      name: community.wave.seqera.io/library/duckdb:1.5.5--4d5652e4fe720475
-      build_id: bd-4d5652e4fe720475_1
-      scan_id: sc-a2b09de2bf50b0b7_1
+      name: community.wave.seqera.io/library/duckdb_python:5573cdba671eb225
+      build_id: bd-5573cdba671eb225_1
+      scan_id: sc-500ca38d43d3331d_1
     linux/amd64:
-      name: community.wave.seqera.io/library/duckdb:1.5.5--a35d96a433829842
-      build_id: bd-a35d96a433829842_1
-      scan_id: sc-998f8d5f2cc9a3c9_1
+      name: community.wave.seqera.io/library/duckdb_python:a34b8568c8c0948e
+      build_id: bd-a34b8568c8c0948e_1
+      scan_id: sc-9ea26565e5fdd87b_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/duckdb:1.5.5--9c484e21d16cfb5a
-      build_id: bd-9c484e21d16cfb5a_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/22/22003bcc86de42cba4d5153271ec309d2d59121ef6c4c703455e3614e356ac26/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/duckdb:1.5.5--fa451237dbb5d9b9
-      build_id: bd-fa451237dbb5d9b9_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/53/534f8759d8fd8d4ee81840aee69254afa080a0269be641f81f3407ccf7f832bd/data
+      name: oras://community.wave.seqera.io/library/duckdb_python:4c31cdfa68242247
+      build_id: bd-4c31cdfa68242247_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b4259f92248127d173a8637b5f50fc37d5dca8c34ae457f7ccebb637dac955e/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/duckdb_python:f01275333c1e1371
+      build_id: bd-f01275333c1e1371_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/ee51bc247c3ec4858cc8cb084a80c23e606923eb0f2cb488533e506b18d1e604/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/duckdb/table2parquet/.conda-lock/linux_amd64-bd-a35d96a433829842_1.txt
+      lock_file: modules/nf-core/duckdb/table2parquet/.conda-lock/linux_amd64-bd-a34b8568c8c0948e_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/duckdb/table2parquet/.conda-lock/linux_arm64-bd-4d5652e4fe720475_1.txt
+      lock_file: modules/nf-core/duckdb/table2parquet/.conda-lock/linux_arm64-bd-5573cdba671eb225_1.txt

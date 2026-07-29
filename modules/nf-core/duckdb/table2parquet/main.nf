@@ -4,8 +4,8 @@ process DUCKDB_TABLE2PARQUET {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/53/534f8759d8fd8d4ee81840aee69254afa080a0269be641f81f3407ccf7f832bd/data'
-:         'community.wave.seqera.io/library/duckdb:1.5.5--a35d96a433829842' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b4259f92248127d173a8637b5f50fc37d5dca8c34ae457f7ccebb637dac955e/data'
+:         'community.wave.seqera.io/library/duckdb_python:a34b8568c8c0948e' }"
 
     input:
     tuple val(meta), path(table)

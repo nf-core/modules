@@ -28,9 +28,9 @@ linux-64:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.6-hdb14827_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-64/openssl-3.6.3-h35e630c_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-64/procps-ng-4.0.6-h18c060e_0.conda
-- conda: https://conda.anaconda.org/conda-forge/linux-64/python-3.14.6-hf9ea5aa_1_cp314t.conda
-- conda: https://conda.anaconda.org/conda-forge/linux-64/python-duckdb-1.5.5-py314h3ce7e56_0.conda
-- conda: https://conda.anaconda.org/conda-forge/noarch/python_abi-3.14-8_cp314t.conda
+- conda: https://conda.anaconda.org/conda-forge/linux-64/python-3.14.6-habeac84_101_cp314.conda
+- conda: https://conda.anaconda.org/conda-forge/linux-64/python-duckdb-1.5.5-py314ha160325_0.conda
+- conda: https://conda.anaconda.org/conda-forge/noarch/python_abi-3.14-8_cp314.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-64/readline-8.3-h853b02a_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-64/tk-8.6.13-noxft_hd70dff1_3.conda
 - conda: https://conda.anaconda.org/conda-forge/noarch/tzdata-2026c-h151e31d_0.conda
@@ -237,10 +237,10 @@ license: GPL-2.0-or-later AND LGPL-2.0-or-later
 license_family: GPL
 size: 593603
 timestamp: 1769710381284
-- conda: https://conda.anaconda.org/conda-forge/linux-64/python-3.14.6-hf9ea5aa_1_cp314t.conda
-build_number: 1
-sha256: b7967c8fab11caea7250ea792436d3c49f41058c17c492c5e8100e426856c633
-md5: af2137659733c81765711e72a7aaaed0
+- conda: https://conda.anaconda.org/conda-forge/linux-64/python-3.14.6-habeac84_101_cp314.conda
+build_number: 101
+sha256: ee8f2006e1724b1f2e9e0ccc5a7cfdcab973460faa2f63ac1f6e44fdad4c0344
+md5: 78975a41cf3c525da654f17e35bfca9e
 depends:
 - __glibc >=2.17,<3.0.a0
 - bzip2 >=1.0.8,<2.0a0
@@ -255,40 +255,38 @@ depends:
 - libzlib >=1.3.2,<2.0a0
 - ncurses >=6.6,<7.0a0
 - openssl >=3.5.7,<4.0a0
-- python_abi 3.14.* *_cp314t
+- python_abi 3.14.* *_cp314
 - readline >=8.3,<9.0a0
 - tk >=8.6.13,<8.7.0a0
 - tzdata
 - zstd >=1.5.7,<1.6.0a0
-track_features:
-- py_freethreading
 license: Python-2.0
-size: 47853050
-timestamp: 1784910167279
-python_site_packages_path: lib/python3.14t/site-packages
-- conda: https://conda.anaconda.org/conda-forge/linux-64/python-duckdb-1.5.5-py314h3ce7e56_0.conda
-sha256: 585febd9a80f2b47a609d13729e64e7c551ba113ba050fcc66822f73d307c183
-md5: 5bb13164672e74166026391f967f68b8
+size: 36869055
+timestamp: 1784910110714
+python_site_packages_path: lib/python3.14/site-packages
+- conda: https://conda.anaconda.org/conda-forge/linux-64/python-duckdb-1.5.5-py314ha160325_0.conda
+sha256: fd176bf06a1a2fc8dec7f501ad1f10bce55455b7982caeb5e4a6c571295abf25
+md5: f6a23611599fd9905e730e89119b7d5c
 depends:
 - __glibc >=2.17,<3.0.a0
 - libgcc >=14
 - libstdcxx >=14
 - python >=3.14,<3.15.0a0
-- python_abi 3.14.* *_cp314t
+- python_abi 3.14.* *_cp314
 license: MIT
 license_family: MIT
-size: 17154184
-timestamp: 1784912756707
-- conda: https://conda.anaconda.org/conda-forge/noarch/python_abi-3.14-8_cp314t.conda
+size: 17174100
+timestamp: 1784912456994
+- conda: https://conda.anaconda.org/conda-forge/noarch/python_abi-3.14-8_cp314.conda
 build_number: 8
-sha256: d9ed2538fba61265a330ee1b1afe99a4bb23ace706172b9464546c7e01259d63
-md5: 3251796e09870c978e0f69fa05e38fb6
+sha256: ad6d2e9ac39751cc0529dd1566a26751a0bf2542adb0c232533d32e176e21db5
+md5: 0539938c55b6b1a59b560e843ad864a4
 constrains:
-- python 3.14.* *_cp314t
+- python 3.14.* *_cp314
 license: BSD-3-Clause
 license_family: BSD
-size: 7020
-timestamp: 1752805919426
+size: 6989
+timestamp: 1752805904792
 - conda: https://conda.anaconda.org/conda-forge/linux-64/readline-8.3-h853b02a_0.conda
 sha256: 12ffde5a6f958e285aa22c191ca01bbd3d6e710aa852e00618fa6ddc59149002
 md5: d7d95fc8287ea7bf33e0e7116d2b95ec
