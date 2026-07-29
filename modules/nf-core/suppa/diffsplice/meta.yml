@@ -1,0 +1,174 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "suppa_diffsplice"
+description: "Perform differential splicing analysis using SUPPA."
+keywords:
+  - alternative splicing
+  - differential splicing
+  - suppa
+  - genomics
+tools:
+  - "suppa":
+      description: "Fast, accurate, and uncertainty-aware differential splicing analysis across multiple conditions."
+      homepage: "https://github.com/comprna/SUPPA"
+      documentation: "https://github.com/comprna/SUPPA"
+      tool_dev_url: "https://github.com/comprna/SUPPA"
+      doi: "10.1186/s13059-018-1417-1"
+      licence: ["MIT"]
+      identifier: biotools:suppa
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. `[ id:'genome1' ]`
+    - events:
+        type: file
+        description: Splicing events file (events per event or transcript)
+        pattern: "*.{ioe,ioi}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing samples information from condition 1
+          e.g. `[ id:'samples1' ]`
+    - condition1:
+        type: string
+        description: Condition 1 name
+        pattern: "*"
+        ontologies: []
+    - expression1:
+        type: file
+        description: Expression file for condition 1 (in TPM units)
+        pattern: "*.txt"
+        ontologies: []
+    - psi1:
+        type: file
+        description: PSI file for condition 1
+        pattern: "*.psi"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing samples information from condition 2
+          e.g. `[ id:'samples2' ]`
+    - condition2:
+        type: string
+        description: Condition 2 name
+        pattern: "*"
+        ontologies: []
+    - expression2:
+        type: file
+        description: Expression file for condition 2 (in TPM units)
+        pattern: "*.txt"
+        ontologies: []
+    - psi2:
+        type: file
+        description: PSI file for condition 2
+        pattern: "*.psi"
+        ontologies: []
+  - method:
+      type: string
+      description: Method to use for differential splicing analysis. Options are "empirical" or "classical".
+  - local_area:
+      type: integer
+      description: Number of points in the local area of the delta PSI - average TPM distribution.
+      default: 1000
+  - lower_bound_delta_psi:
+      type: float
+      description: Lower bound for the absolute delta PSI to test for significant. Events with less than this delta PSI will not be tested. Only valid for the "empirical" method.
+      default: 0
+  - is_paired:
+      type: boolean
+      description: Indicates if replicates across conditions are paired.
+      default: false
+  - gene_correction:
+      type: boolean
+      description: Correction of the p-values by gene.
+      default: false
+  - multi_testing_correction_alpha:
+      type: float
+      description: Family-wise error rate to use for the multiple testing correction.
+      default: 0.05
+  - save_tpm_events:
+      type: boolean
+      description: The average log TPM of the events will be saved in an external file.
+      default: false
+  - combination_analysis:
+      type: boolean
+      description: SUPPA will perform the analysis between all possible combinations of conditions.
+      default: false
+  - use_median_delta_psi:
+      type: boolean
+      description: SUPPA will use the median delta PSI, instead of the mean.
+      default: false
+  - tpm_threshold:
+      type: float
+      description: Minimum expression (calculated as average TPM value within-replicates and between-conditions) to be included in the analysis.
+      default: 0
+  - nan_tpm_threshold:
+      type: float
+      description: Proportion of samples with nan values allowed per condition to calculate a delta PSI.
+      default: 0
+
+output:
+  dpsi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genome information
+            e.g. `[ id:'genome1' ]`
+      - "*.dpsi":
+          type: file
+          description: Differential splicing analysis results file
+          pattern: "*.dpsi"
+          ontologies: []
+  psivec:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genome information
+            e.g. `[ id:'genome1' ]`
+      - "*.psivec":
+          type: file
+          description: PSI values for all events in the analysis
+          pattern: "*.psivec"
+          ontologies: []
+  tpm_events:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genome information
+            e.g. `[ id:'genome1' ]`
+      - "*.tab":
+          type: file
+          description: Average log TPM of the events
+          pattern: "*.tab"
+          ontologies: []
+  versions_suppa:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - suppa:
+          type: string
+          description: The name of the tool
+      - "suppa.py -v | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - suppa:
+          type: string
+          description: The name of the tool
+      - suppa.py -v | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lathikaa"
+  - "@piplus2"
+maintainers:
+  - "@piplus2"

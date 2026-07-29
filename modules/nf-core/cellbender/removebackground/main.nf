@@ -1,6 +1,7 @@
 process CELLBENDER_REMOVEBACKGROUND {
     tag "$meta.id"
     label 'process_medium'
+    label 'process_long'
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"

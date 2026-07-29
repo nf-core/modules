@@ -20,7 +20,7 @@ process METAMAPS_CLASSIFY {
     tuple val(meta), path("*classification_res.EM.contigCoverage")                    , emit: contig_coverage
     tuple val(meta), path("*classification_res.EM.lengthAndIdentitiesPerMappingUnit") , emit: length_and_id
     tuple val(meta), path("*classification_res.EM.reads2Taxon.krona")                 , emit: krona
-    path "versions.yml"                                                               , emit: versions
+    tuple val("${task.process}"), val('metamaps'), eval("metamaps | sed -n 's/.*MetaMaps v //p'"), emit: versions_metamaps, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process METAMAPS_CLASSIFY {
         --mappings ${classification_res} \\
         --threads ${task.cpus} \\
         --DB ${database_folder}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metamaps: \$(metamaps | sed -n 2p | sed 's/^.*MetaMaps v //')
-    END_VERSIONS
     """
 
     stub:
@@ -51,11 +46,6 @@ process METAMAPS_CLASSIFY {
     touch ${prefix}_classification_res.EM.contigCoverage
     touch ${prefix}_classification_res.EM.lengthAndIdentitiesPerMappingUnit
     touch ${prefix}_classification_res.EM.reads2Taxon.krona
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metamaps: \$(metamaps | sed -n 2p | sed 's/^.*MetaMaps v //')
-    END_VERSIONS
     """
 
 }
