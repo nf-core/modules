@@ -3,6 +3,7 @@ nextflow_process {
     name "Test RCLONE_COPY"
     script "../main.nf"
     process "RCLONE_COPY"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,15 +12,46 @@ nextflow_process {
 
     test("homo_sapiens - gvcf - copy from https - dry-run") {
 
-        config "./nextflow.config"
-
         when {
+            params {
+                exclude_from = false
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
                     params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz',
-                    '/tmp/'
+                    '/tmp/',
+                    []
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - gvcf - filter - dry-run") {
+
+        when {
+            params {
+                exclude_from = true
+            }
+            process {
+                """
+                file('exclude.txt').text = 'test.genome.vcf.gz'
+
+                input[0] = [
+                    [ id:'test' ],
+                    params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz',
+                    '/tmp/',
+                    file('exclude.txt')
                 ]
                 input[1] = []
                 """
@@ -39,12 +71,16 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                exclude_from = true
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
                     params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz',
-                    '/tmp/'
+                    '/tmp/',
+                    []
                 ]
                 input[1] = []
                 """
