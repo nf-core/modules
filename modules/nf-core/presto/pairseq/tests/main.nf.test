@@ -28,8 +28,33 @@ nextflow_process {
             assert process.success
 
             assertAll(
-                { snapshot(sanitizeOutput(process.out,unstableKeys: ["logs"])).match()},
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["logs"])).match() },
                 { assert path(process.out.logs.get(0)).getText().contains("PASS") }
+            )
+        }
+    }
+
+    test("homo_sapiens - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_umi_R1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_R2.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = ""
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["logs", "reads"])).match() }
             )
         }
     }
