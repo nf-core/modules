@@ -12,7 +12,7 @@ process UNTARFILES {
 
     output:
     tuple val(meta), path("${prefix}/**") , emit: files
-    tuple val("${task.process}"), val('tar'), eval("tar --version 2>&1 | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//'"), topic: versions, emit: versions_tar
+    tuple val("${task.process}"), val('tar'), eval("tar --version 2>&1 | sed '1s/^.*(GNU tar) //;q'"), topic: versions, emit: versions_tar
     when:
     task.ext.when == null || task.ext.when
 
