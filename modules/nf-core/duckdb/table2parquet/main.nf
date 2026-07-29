@@ -25,7 +25,7 @@ process DUCKDB_TABLE2PARQUET {
     def stem   = table.name.replaceAll(/\.(gz|zst)$/, '')
     def delim  = stem.endsWith('.tsv') ? '\\t' : stem.endsWith('.csv') ? ',' : null
     if ( ! delim ) {
-        error("DUCKDB_TABLE2PARQUET: cannot determine a delimiter for '${table.name}' -- expected a .csv or .tsv suffix, optionally followed by .gz")
+        error("DUCKDB_TABLE2PARQUET: cannot determine a delimiter for '${table.name}' -- expected a .csv or .tsv suffix, optionally followed by .gz or .zst")
     }
     """
     python3 <<PYEOF
