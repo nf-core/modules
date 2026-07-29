@@ -1,44 +1,46 @@
 nextflow_process {
 
-    name "Test Process XENIUMRANGER_IMPORT_SEGMENTATION"
+    name "Test Process XENIUMRANGER_IMPORTSEGMENTATION"
     script "../main.nf"
-    process "XENIUMRANGER_IMPORT_SEGMENTATION"
+    process "XENIUMRANGER_IMPORTSEGMENTATION"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "xeniumranger"
-    tag "xeniumranger/import-segmentation"
-    tag "unzip"
+    tag "xeniumranger/importsegmentation"
+    tag "untar"
 
 
     setup {
 
-        run("UNZIP") {
-            script "modules/nf-core/unzip/main.nf"
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
             process {
                 """
-                input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip', checkIfExists: true)]
+                input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialaxe/xenium_bundle.tar.gz', checkIfExists: true)]
                 """
             }
         }
 
     }
 
-    test("xeniumranger import-segmentation nuclei") {
+    test("xeniumranger importsegmentation nuclei") {
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive
+                input[0] = UNTAR.out.untar
                     .map { meta, bundle ->
                         [
-                            [id: "test_xeniumranger_import-segmentation"],
+                            [id: "test_xeniumranger_importsegmentation"],
                             bundle,
                             [],
                             [],
                             bundle + "/cells.zarr.zip",
                             [],
                             [],
-                            []
+                            [],
+                            5
                         ]
                     }
                 """
@@ -56,23 +58,24 @@ nextflow_process {
         }
     }
 
-    test("xeniumranger import-segmentation stub") {
+    test("xeniumranger importsegmentation stub") {
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive
+                input[0] = UNTAR.out.untar
                     .map { meta, bundle ->
                         [
-                            [id: "test_xeniumranger_import-segmentation"],
+                            [id: "test_xeniumranger_importsegmentation"],
                             bundle,
                             [],
                             [],
                             bundle + "/cells.zarr.zip",
                             [],
                             [],
-                            []
+                            [],
+                            5
                         ]
                     }
                 """
