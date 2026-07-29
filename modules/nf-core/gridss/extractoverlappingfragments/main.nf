@@ -15,27 +15,28 @@ process GRIDSS_EXTRACTOVERLAPPINGFRAGMENTS {
     tuple val(meta), path("*.subset.bam"),       emit: bam
     tuple val("${task.process}"), val('gridss'), eval("CallVariants --version 2>&1 | sed 's/-gridss//'"), topic: versions, emit: versions_gridss
 
-
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def prefix = task.ext.prefix ?: "${meta.id}.subset"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
-
-    gridss_extract_overlapping_fragments -w '.' \\
-        --targetbed  $target_bed                \\
-        -o ${prefix}.subset.bam $bam
-
-
+    gridss_extract_overlapping_fragments \\
+        -w '.' \\
+        --targetbed  ${target_bed}  \\
+        -o ${prefix}.bam \\
+        $bam
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def prefix = task.ext.prefix ?: "${meta.id}.subset"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
-    touch ${prefix}.subset.bam
-
+    touch ${prefix}.bam
     """
 }
