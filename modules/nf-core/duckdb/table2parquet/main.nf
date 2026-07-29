@@ -19,8 +19,10 @@ process DUCKDB_TABLE2PARQUET {
     task.ext.when == null || task.ext.when
 
     script:
+    def args   = task.ext.args   ? ", ${task.ext.args}"  : ''      // read_csv options
+    def args2  = task.ext.args2  ? ", ${task.ext.args2}" : ''  // Copy options
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def stem   = table.name.replaceAll(/\.gz$/, '')
+    def stem   = table.name.replaceAll(/\.(gz|zst)$/, '')
     def delim  = stem.endsWith('.tsv') ? '\\t' : stem.endsWith('.csv') ? ',' : null
     if ( ! delim ) {
         error("DUCKDB_TABLE2PARQUET: cannot determine a delimiter for '${table.name}' -- expected a .csv or .tsv suffix, optionally followed by .gz")
