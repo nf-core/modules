@@ -50,8 +50,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = []
                 input[4] = []
-                input[5] = 1
+                input[5] = []
                 input[6] = 1
+                input[7] = 1
                 """
             }
         }
@@ -110,8 +111,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = []
                 input[4] = file("${launchDir}/angsd_FIN.indF", checkIfExists: true)
-                input[5] = 1
-                input[6] = 2
+                input[5] = []
+                input[6] = 1
+                input[7] = 2
                 """
             }
         }
@@ -130,9 +132,26 @@ nextflow_process {
     // SUCCESS CASE 3: GL 3; doSAF 1; no ancestral
     // -------------------------------------------------------------------------
 
-    test("angsd - GL3 - two steps") {
+    test("angsd - GL3 - doSAF1") {
         config "./nextflow.config"
 
+        setup {
+            // Nextflow can't stage a directory straight off raw.githubusercontent.com,
+            // so pull the individual calibration-matrix files down and reassemble
+            // them into a local folder for the test to use.
+            def calibDir = new File("${launchDir}/soapsnp_calibration_matrix")
+            calibDir.mkdirs()
+            def base = "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/angsd/soapsnp_calibration_matrix/"
+            [
+                "0.counts0", "0.qual0",
+                "1.counts1", "1.qual1",
+                "2.counts2", "2.qual2",
+                "3.counts3", "3.qual3"
+            ].each { fname ->
+                new File("${calibDir}/${fname}").bytes = new URL("${base}${fname}").bytes
+            }
+        }
+        
         when {
             params {
                 angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
@@ -167,8 +186,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = []
                 input[4] = []
-                input[5] = 3
-                input[6] = 1
+                input[5] = [ file("${launchDir}/soapsnp_calibration_matrix") ]
+                input[6] = 3
+                input[7] = 1
                 """
             }
         }
@@ -228,8 +248,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = file("${launchDir}/angsd_syk.errors", checkIfExists: true)
                 input[4] = []
-                input[5] = 4
-                input[6] = 1
+                input[5] = []
+                input[6] = 4
+                input[7] = 1
                 """
             }
         }
@@ -287,8 +308,9 @@ nextflow_process {
                 ]
                 input[3] = []
                 input[4] = []
-                input[5] = 1
+                input[5] = []
                 input[6] = 1
+                input[7] = 1
                 """
             }
         }
@@ -343,8 +365,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = []
                 input[4] = []
-                input[5] = 1
+                input[5] = []
                 input[6] = 1
+                input[7] = 1
                 """
             }
         }
@@ -399,8 +422,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = []
                 input[4] = []
-                input[5] = 1
-                input[6] = 2
+                input[5] = []
+                input[6] = 1
+                input[7] = 2
                 """
             }
         }
@@ -459,8 +483,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = []
                 input[4] = []
-                input[5] = 1
-                input[6] = []
+                input[5] = []
+                input[6] = 1
+                input[7] = []
                 """
             }
         }
@@ -520,7 +545,8 @@ nextflow_process {
                 input[3] = []
                 input[4] = []
                 input[5] = []
-                input[6] = 1
+                input[6] = []
+                input[7] = 1
                 """
             }
         }
@@ -579,8 +605,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = []
                 input[4] = []
-                input[5] = 5
-                input[6] = 1
+                input[5] = []
+                input[6] = 5
+                input[7] = 1
                 """
             }
         }
@@ -638,8 +665,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = []
                 input[4] = []
-                input[5] = 4
-                input[6] = 1
+                input[5] = []
+                input[6] = 4
+                input[7] = 1
                 """}
         }
 
@@ -701,8 +729,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = []
                 input[4] = file("${launchDir}/angsd_FIN.indF", checkIfExists: true)
-                input[5] = 1
-                input[6] = 2
+                input[5] = []
+                input[6] = 1
+                input[7] = 2
                 """
             }
         }
@@ -765,8 +794,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = []
                 input[4] = file("${launchDir}/angsd_FIN.indF", checkIfExists: true)
-                input[5] = 1
-                input[6] = 2
+                input[5] = []
+                input[6] = 1
+                input[7] = 2
                 """
             }
         }
@@ -780,6 +810,67 @@ nextflow_process {
             assertAll(
                 { assert process.failed },
                 { assert caused.contains("-doSAF 2 requires -doMaf to be specified. Please include in ext.args.") }
+            )
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // FAILURE CASE 8: Missing soapsnp calibration directory (required by -GL 3)
+    // -------------------------------------------------------------------------
+
+    test("angsd - GL3 - missing calibration dir") {
+        config "./nextflow.config"
+        
+        when {
+            params {
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
+                min_ind_frac = 0
+            }
+
+            process {
+                """
+                input[0] = [
+                    [
+                        id: "FIN",
+                        population: "FIN",
+                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.chr20_1400000-1500000.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.chr20_1400000-1500000.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.chr20_1400000-1500000.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.chr20_1400000-1500000.bam")
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.chr20_1400000-1500000.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.chr20_1400000-1500000.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.chr20_1400000-1500000.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.chr20_1400000-1500000.bam.bai")
+                    ]
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
+                ]
+                input[2] = [ [], [] ]
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = 3
+                input[7] = 1
+                """
+            }
+        }
+
+        then {
+            def caused = process.errorReport
+                .split("Source block:")[0]
+                .split("Caused by:")[1]
+                .trim()
+
+            assertAll(
+                { assert process.failed },
+                { assert caused.contains("-GL 3 (soapSNP model) requires calibration directory") }
             )
         }
     }
@@ -826,8 +917,9 @@ nextflow_process {
                 input[2] = [ [], [] ]
                 input[3] = []
                 input[4] = []
-                input[5] = 1
+                input[5] = []
                 input[6] = 1
+                input[7] = 1
                 """
             }
         }
