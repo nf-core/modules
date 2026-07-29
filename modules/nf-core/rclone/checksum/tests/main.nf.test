@@ -3,19 +3,22 @@ nextflow_process {
     name "Test Process RCLONE_CHECKSUM"
     script "../main.nf"
     process "RCLONE_CHECKSUM"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "rclone"
     tag "rclone/checksum"
 
-    test("hello - md5") {
+    test("test - md5 - match") {
+
         when {
             process {
                 """
-                file('hello.md5').text = 'e59ff97941044f85df5297e1c302d260  hello.txt\\n'
+                file('rclone.config').text = '[s3]\\ntype = s3\\nprovider = AWS\\nregion = eu-west-1\\nenv_auth = false\\nno_check_bucket = true'
 
-                input[0] = [[id:'test'], file('hello.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'generic/txt/snpeff_cache_md5.txt', checkIfExists: true), 'MD5', "s3://annotation-cache/snpeff_cache/WBcel235.105/"]
+                input[1] = file('rclone.config')
                 """
             }
         }
@@ -23,20 +26,21 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_dst", "missing_on_src", "error"]) ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "match", "differ", "missing_on_dst", "missing_on_src", "error"]) ).match() }
             )
         }
     }
 
-    test("hello - md5 - stub") {
+    test("test - md5 - stub") {
         options "-stub"
 
         when {
             process {
                 """
-                file('hello.md5').text = 'e59ff97941044f85df5297e1c302d260  hello.txt\\n'
+                file('test.md5').text = 'e59ff97941044f85df5297e1c302d260  hello.txt\\n'
 
-                input[0] = [[id:'test'], file('hello.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
+                input[0] = [[id:'test'], file('test.md5'), 'MD5', "s3://nf-core-test-datasets/modules/data/delete_me/malt/"]
+                input[1] = []
                 """
             }
         }
@@ -49,13 +53,15 @@ nextflow_process {
         }
     }
 
-    test("hello - differs") {
+    test("test - md5 - differs") {
         when {
             process {
                 """
-                file('hello_bad.md5').text = '00000000000000000000000000000000  hello.txt\\n'
+                file('test_bad.md5').text = '00000000000000000000000000000000  hello.txt'
+                file('rclone.config').text = '[s3]\\ntype = s3\\nprovider = AWS\\nregion = eu-west-1\\nenv_auth = false\\nno_check_bucket = true'
 
-                input[0] = [[id:'test'], file('hello_bad.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
+                input[0] = [[id:'test'], file('test_bad.md5'), 'MD5', "s3://annotation-cache/snpeff_cache/WBcel235.105/"]
+                input[1] = file('rclone.config')
                 """
             }
         }
@@ -64,25 +70,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "match", "missing_on_dst", "missing_on_src", "error"]) ).match() }
-            )
-        }
-    }
-
-    test("missing destination") {
-        when {
-            process {
-                """
-                file('missing.md5').text = 'e59ff97941044f85df5297e1c302d260  missing.txt\\n'
-
-                input[0] = [[id:'test'], file('missing.md5'), 'MD5', file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "match", "missing_on_src", "error"])).match() }
             )
         }
     }
