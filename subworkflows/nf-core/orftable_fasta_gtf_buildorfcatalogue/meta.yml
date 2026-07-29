@@ -58,11 +58,11 @@ input:
         Structure: [ val(meta), path(fasta) ]
   - ch_gtf:
       description: |
-        Reference annotation GTF. Used by the ribocode and ribotish
-        normalisers to lift transcript coordinates to genomic blocks;
-        ignored by callers that already emit genomic coordinates
-        (ribotricer, rpbp, price). Pass `[ [:], [] ]` if no GTF is
-        available (caller subset must then exclude ribocode and ribotish).
+        Reference annotation GTF, used by every caller's normaliser:
+        ribocode, ribotish and ribotricer for genomic coordinates and
+        multi-exon blocks, rpbp and price to resolve `gene_id` from the
+        ORF's transcript id. Must cover every annotation the callers ran
+        against; unmatched transcripts lose `gene_id`.
         Structure: [ val(meta), path(gtf) ]
   - val_collapse:
       description: |
