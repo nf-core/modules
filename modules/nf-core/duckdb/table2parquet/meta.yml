@@ -23,7 +23,7 @@ input:
           e.g. `[ id:'sample1' ]`
     - table:
         type: file
-        description: A delimited text table to convert. The delimiter is picked from the filename -- `.tsv`/`.tsv.gz` for tab, `.csv`/`.csv.gz` for comma; any other suffix is an error.
+        description: A delimited text table to convert. The delimiter is picked from the filename -- `.tsv`/`.tsv.gz`/`.tsv.zst` for tab, `.csv`/`.csv.gz`/`.csv.zst` for comma; any other suffix is an error.
         pattern: "*.{csv,csv.gz,tsv,tsv.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_3752" # CSV
