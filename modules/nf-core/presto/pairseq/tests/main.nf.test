@@ -25,15 +25,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
 
-			    assert process.success
-			    assertAll(
-			        { assert snapshot(
-			            process.out.reads,
-			            process.out.findAll { key, val -> key.startsWith("versions") }
-			            snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match()
-			        { assert path(process.out.logs.get(0)).getText().contains("PASS") }
-			    )
+            assertAll(
+                { snapshot(sanitizeOutput(process.out,unstableKeys: ["logs"])).match()},
+                { assert path(process.out.logs.get(0)).getText().contains("PASS") }
+            )
         }
     }
 }
