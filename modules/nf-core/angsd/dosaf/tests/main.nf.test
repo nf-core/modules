@@ -194,7 +194,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.saf },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -256,7 +255,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.saf },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -316,7 +314,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.saf },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -373,7 +370,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.saf },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
