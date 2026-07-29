@@ -45,7 +45,7 @@ process HACKGAP_COUNT {
         --files ${reads} \\
         --out ${prefix}
     """
-    
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
