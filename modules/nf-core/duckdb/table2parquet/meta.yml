@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "duckdb_table2parquet"
+description: Convert a delimited text table (CSV or TSV, gzipped or not) to Parquet
+keywords:
+  - parquet
+  - csv
+  - tsv
+  - conversion
+tools:
+  - "duckdb":
+      description: "An in-process SQL OLAP database management system"
+      homepage: "https://duckdb.org"
+      documentation: "https://duckdb.org/docs/"
+      tool_dev_url: "https://github.com/duckdb/duckdb"
+      licence: ["MIT"]
+      identifier: "biotools:duckdb"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - table:
+        type: file
+        description: A delimited text table to convert. The delimiter is picked from the filename -- `.tsv`/`.tsv.gz` for tab, `.csv`/`.csv.gz` for comma; any other suffix is an error.
+        pattern: "*.{csv,csv.gz,tsv,tsv.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_3475" # TSV
+
+output:
+  parquet:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.parquet":
+          type: file
+          description: The input table, converted to Parquet
+          pattern: "*.parquet"
+          ontologies: []
+  versions_duckdb:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "duckdb":
+          type: string
+          description: The name of the tool
+      - "python3 -c 'import duckdb; print(duckdb.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - duckdb:
+          type: string
+          description: The name of the tool
+      - python3 -c 'import duckdb; print(duckdb.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
