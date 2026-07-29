@@ -27,7 +27,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     [ id: 'GRCh38' ],
-                    file('/home/xschmy/projects/nf-core-modules/GenomeSize.xml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
                 ]
                 // exclude regions not covered by test data
                 input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
@@ -70,7 +70,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     [ id: 'GRCh38' ],
-                    file('/home/xschmy/projects/nf-core-modules/GenomeSize.xml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
                 ]
                 input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
                     .map { file -> [[id:'GRCh38'], file]}
@@ -127,7 +127,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     [ id: 'GRCh38' ],
-                    file('/home/xschmy/projects/nf-core-modules/GenomeSize.xml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
                 ]
                 input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
                     .map { file -> [[id:'GRCh38'], file]}
@@ -170,7 +170,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     [ id: 'GRCh38' ],
-                    file('/home/xschmy/projects/nf-core-modules/GenomeSize.xml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
                 ]
                 // exclude regions not covered by test data
                 input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
@@ -206,7 +206,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     [ id: 'GRCh38' ],
-                    file('/home/xschmy/projects/nf-core-modules/GenomeSize.xml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
                 ]
                 // exclude regions not covered by test data
                 input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
@@ -246,7 +246,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     [ id: 'GRCh38' ],
-                    file('/home/xschmy/projects/nf-core-modules/GenomeSize.xml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
                 ]
                 input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
                     .map { file -> [[id:'GRCh38'], file]}
@@ -300,7 +300,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     [ id: 'GRCh38' ],
-                    file('/home/xschmy/projects/nf-core-modules/GenomeSize.xml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
                 ]
                 input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
                     .map { file -> [[id:'GRCh38'], file]}
@@ -340,7 +340,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     [ id: 'GRCh38' ],
-                    file('/home/xschmy/projects/nf-core-modules/GenomeSize.xml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
                 ]
                 // exclude regions not covered by test data
                 input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
