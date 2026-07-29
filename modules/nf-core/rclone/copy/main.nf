@@ -8,11 +8,11 @@ process RCLONE_COPY {
         : 'community.wave.seqera.io/library/rclone:1.65.0--ff88b2e0040147be'}"
 
     input:
-    tuple val(meta), val(source_path), val(destination_path)
+    tuple val(meta), val(source_path), val(destination_path), path(filter_file)
     path rclone_config
 
     output:
-    tuple val(meta), path("rclone-copy.log"), emit: log
+    tuple val(meta), path("*rclone-copy.log"), emit: log
     tuple val("${task.process}"), val('rclone'), eval("rclone --version | sed -n '1s/^rclone v//p'"), topic: versions, emit: versions_rclone
 
     when:
@@ -41,7 +41,7 @@ process RCLONE_COPY {
     rclone ${configArg} copy \\
         ${http_url_arg} \\
         ${args} \\
-        --log-file rclone-copy.log \\
+        --log-file "${meta.id}-rclone-copy.log" \\
         --transfers ${transfers} \\
         --checkers ${checkers} \\
         "${rclone_source}" \\

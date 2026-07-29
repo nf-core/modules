@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process RCLONE_CHECK"
+    script "../main.nf"
+    process "RCLONE_CHECK"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rclone"
+    tag "rclone/check"
+
+    test("match - malt") {
+        when {
+            process {
+                """
+                file('rclone.config').text = '[s3]\\ntype = s3\\nprovider = AWS\\nregion = eu-west-1\\nenv_auth = false\\nno_check_bucket = true'
+
+                input[0] = [[id:'test'], "s3://nf-core-test-datasets/modules/data/delete_me/malt/", "s3://nf-core-test-datasets/modules/data/delete_me/malt/"]
+                input[1] = file('rclone.config')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "match", "missing_on_dst", "missing_on_src", "error"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'], params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/', params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/']
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "match", "differ", "missing_on_dst", "missing_on_src", "error"])).match() }
+            )
+        }
+    }
+
+    test("different files") {
+        when {
+            process {
+                """
+                file('rclone.config').text = '[https]\\ntype = http\\n[s3]\\ntype = s3\\nprovider = AWS\\nregion = eu-west-1\\nenv_auth = false\\nno_check_bucket = true'
+
+                input[0] = [[id:'test'], "s3://nf-core-test-datasets/modules/data/delete_me/malt/", "s3://annotation-cache/snpeff_cache/WBcel235.105/"]
+                input[1] = file('rclone.config')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "match", "missing_on_dst", "missing_on_src", "error"])).match() }
+            )
+        }
+    }
+
+    test("differ and missing") {
+        when {
+            process {
+                """
+                file('rclone.config').text = '[https]\\ntype = http\\n[s3]\\ntype = s3\\nprovider = AWS\\nregion = eu-west-1\\nenv_auth = false\\nno_check_bucket = true'
+
+                input[0] = [[id:'test'], "s3://nf-core-test-datasets/modules/data/delete_me/mirtop/", "s3://nf-core-test-datasets/modules/data/delete_me/metabuli"]
+                input[1] = file('rclone.config')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["combined", "differ", "missing_on_dst", "missing_on_src", "error"])).match() }
+            )
+        }
+    }
+}
