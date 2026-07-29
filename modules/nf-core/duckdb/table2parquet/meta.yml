@@ -14,6 +14,12 @@ tools:
       tool_dev_url: "https://github.com/duckdb/duckdb"
       licence: ["MIT"]
       identifier: "biotools:duckdb"
+  - "python":
+      description: "Used to drive DuckDB via its Python bindings, since conda-forge's duckdb package doesn't ship a standalone CLI binary"
+      homepage: "https://www.python.org/"
+      documentation: "https://docs.python.org/3/"
+      licence: ["PSF-2.0"]
+      identifier: "biotools:python"
 
 input:
   - - meta:
@@ -51,6 +57,16 @@ output:
       - "python3 -c 'import duckdb; print(duckdb.__version__)'":
           type: eval
           description: The expression to obtain the version of the tool
+  versions_python:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "python":
+          type: string
+          description: The name of the tool
+      - "python3 --version | sed 's/^Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
@@ -61,6 +77,15 @@ topics:
           type: string
           description: The name of the tool
       - python3 -c 'import duckdb; print(duckdb.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python3 --version | sed 's/^Python //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

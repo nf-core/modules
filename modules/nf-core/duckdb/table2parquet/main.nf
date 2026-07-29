@@ -13,6 +13,7 @@ process DUCKDB_TABLE2PARQUET {
     output:
     tuple val(meta), path("*.parquet"), emit: parquet
     tuple val("${task.process}"), val('duckdb'), eval("python3 -c 'import duckdb; print(duckdb.__version__)'"), topic: versions, emit: versions_duckdb
+    tuple val("${task.process}"), val('python'), eval("python3 --version | sed 's/^Python //'"), topic: versions, emit: versions_python
 
     when:
     task.ext.when == null || task.ext.when
