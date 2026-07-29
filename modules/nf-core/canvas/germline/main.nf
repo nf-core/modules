@@ -6,13 +6,13 @@ process CANVAS_GERMLINE {
 
     input:
     tuple val(meta) , path(bam), path(bai)
-    tuple val(meta1), path(kmer_fasta, stageAs: 'Sequence/WholeGenomeFasta/genome.fa')
-    tuple val(meta2), path(genomesize, stageAs: 'Sequence/WholeGenomeFasta/GenomeSize.xml')
-    tuple val(meta3), path(filter_bed)
-    tuple val(meta4), path(sample_snv_vcf)
-    tuple val(meta5), path(population_snv_vcf)
-    tuple val(meta6), path(ploidy_vcf)
-    tuple val(meta7), path(common_cnvs_bed)
+    tuple val(meta2), path(kmer_fasta, stageAs: 'Sequence/WholeGenomeFasta/genome.fa')
+    tuple val(meta3), path(genomesize, stageAs: 'Sequence/WholeGenomeFasta/GenomeSize.xml')
+    tuple val(meta4), path(filter_bed)
+    tuple val(meta5), path(sample_snv_vcf)
+    tuple val(meta6), path(population_snv_vcf)
+    tuple val(meta7), path(ploidy_vcf)
+    tuple val(meta8), path(common_cnvs_bed)
 
     output:
     tuple val(meta), path("${prefix}.vcf.gz")                            , emit: vcf

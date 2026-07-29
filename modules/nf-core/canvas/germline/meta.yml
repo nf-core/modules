@@ -25,111 +25,91 @@ tools:
 input:
   - - meta:
         type: map
-        description: |
-          Groovy Map containing sample information.
-          e.g. `[ id:'sample1' ]`
-        ontologies: []
+        description: Groovy map containing sample information
     - bam:
         type: file
-        description: Sorted BAM file of aligned WGS reads.
+        description: BAM file for the sample
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
     - bai:
         type: file
-        description: BAM index file.
+        description: BAM index file for the sample
         pattern: "*.bai"
         ontologies:
           - edam: "http://edamontology.org/format_3327"
-  - germline_snv_vcf:
-      type: file
-      description: |
-        VCF (or gzipped VCF) containing germline SNV b-allele sites (PASS filter only).
-        Typically produced by a variant caller such as DNAscope or DeepVariant.
-      pattern: "*.{vcf,vcf.gz}"
-      ontologies:
-        - edam: "http://edamontology.org/format_3016"
-  - - sex:
-        type: string
-        description: |
-          Sample sex. Must be either "male" or "female". Used to select the
-          appropriate ploidy VCF for sex chromosomes.
-    - male_ploidy_vcf:
+  - - meta2:
+        type: map
+        description: Groovy map containing reference information
+    - kmer_fasta:
         type: file
-        description: |
-          VCF defining expected ploidy for sex chromosomes in male samples.
-          Both ploidy VCFs (male and female) must always be provided. The module
-          automatically selects the correct one based on the sex value.
-          The sample name in the VCF header is automatically updated to match the SM tag in the BAM header.
-          Expected format (hg38 example):
-
-          ```
-          ##fileformat=VCFv4.1
-          ##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the variant described in this record">
-          ##FORMAT=<ID=CN,Number=1,Type=Integer,Description="Copy number genotype for imprecise events">
-          #CHROM  POS      ID  REF  ALT    QUAL  FILTER  INFO              FORMAT  SAMPLE
-          chrX    0        .   N    <CNV>  .     PASS    END=10001         CN      1
-          chrX    2781479  .   N    <CNV>  .     PASS    END=155701383     CN      1
-          chrX    156030895 .  N    <CNV>  .     PASS    END=156040895     CN      1
-          chrY    0        .   N    <CNV>  .     PASS    END=57227415      CN      1
-          ```
-        pattern: "*.vcf"
+        description: Canvas-ready reference FASTA file with softmasked non-unique 35-mers
+        pattern: "*.{fa,fna,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta3:
+        type: map
+        description: Groovy map containing reference information
+    - genomesize:
+        type: file
+        description: Illumina-style Genome size XML file (GenomeSize.xml)
+        pattern: "*.xml"
+        ontologies:
+          - edam: "http://edamontology.org/format_2332"
+  - - meta4:
+        type: map
+        description: Groovy map containing reference information
+    - filter_bed:
+        type: file
+        description: BED file of regions to skip
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+  - - meta5:
+        type: map
+        description: Groovy map containing sample information
+    - sample_snv_vcf:
+        type: file
+        description: Multisample VCF file containing SNV b-allele sites (sample-specific). Either this or `population_snv_vcf` must be provided.
+        pattern: "*.vcf(.gz)?"
         ontologies:
           - edam: "http://edamontology.org/format_3016"
-    - female_ploidy_vcf:
+  - - meta6:
+        type: map
+        description: Groovy map containing meta information for population SNV VCF
+    - population_snv_vcf:
         type: file
-        description: |
-          VCF defining expected ploidy for sex chromosomes in female samples.
-          Both ploidy VCFs (male and female) must always be provided. The module
-          automatically selects the correct one based on the sex value.
-          The sample name in the VCF header is automatically updated to match the SM tag in the BAM header.
-          Expected format (hg38 example):
-
-          ```
-          ##fileformat=VCFv4.1
-          ##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the variant described in this record">
-          ##FORMAT=<ID=CN,Number=1,Type=Integer,Description="Copy number genotype for imprecise events">
-          #CHROM  POS  ID  REF  ALT    QUAL  FILTER  INFO          FORMAT  SAMPLE
-          chrY    0    .   N    <CNV>  .     PASS    END=57227415  CN      0
-          ```
-        pattern: "*.vcf"
+        description: VCF file containing SNV b-allele sites in the population. Either this or `sample_snv_vcf` must be provided.
+        pattern: "*.vcf(.gz)?"
         ontologies:
           - edam: "http://edamontology.org/format_3016"
-  - genomedir:
-      type: directory
-      description: |
-        Canvas genome reference directory containing genome.fa and GenomeSize.xml.
-        Available for GRCh37/hg19/GRCh38 from s3://canvas-cnv-public.
-  - reference:
-      type: file
-      description: |
-        Canvas-ready kmer reference file (kmer.fa).
-        Available from s3://canvas-cnv-public.
-      pattern: "*.fa"
-      ontologies:
-        - edam: "http://edamontology.org/format_1929"
-  - filter13:
-      type: file
-      description: |
-        BED file of regions to exclude from CNV calling (e.g. centromeres, telomeres).
-        Named filter13 following Canvas reference package conventions.
-        Available from s3://canvas-cnv-public.
-      pattern: "*.bed"
-      ontologies:
-        - edam: "http://edamontology.org/format_3003"
+  - - meta7:
+        type: map
+        description: Groovy map containing for ploidy VCF
+    - ploidy_vcf:
+        type: file
+        description: Multisample VCF file containing regions with expected ploidy different from 2. (See https://github.com/Illumina/canvas/wiki for an example)
+        pattern: "*.vcf(.gz)?"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+  - - meta8:
+        type: map
+        description: Groovy map containing reference information
+    - common_cnvs_bed:
+        type: file
+        description: BED file containing regions of known common CNVs
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
 output:
   vcf:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-            e.g. `[ id:'sample1' ]`
-          ontologies: []
       - ${prefix}.vcf.gz:
           type: file
-          description: |
-            Bgzipped VCF file containing germline CNV calls. Canvas:REF entries (non-variant regions)
-            are excluded. Requires further annotation for standard SV ALT notation.
+          description: Bgzipped VCF file containing germline CNV calls.
           pattern: "*.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
@@ -138,13 +118,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-            e.g. `[ id:'sample1' ]`
-          ontologies: []
       - ${prefix}.CoverageAndVariantFrequency.txt:
           type: file
           description: |
             Tab-separated file with per-bin coverage and variant allele frequency values.
-            Used as input for CANVAS_CREATESEG to generate segmentation files.
           pattern: "*.CoverageAndVariantFrequency.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
@@ -155,10 +132,10 @@ output:
       - canvas:
           type: string
           description: The name of the tool
-      - 1.40.0:
+      - Canvas --version:
           type: string
-          description: The version of the tool (hardcoded as Canvas is an archived
-            tool)
+          description: The version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -167,11 +144,13 @@ topics:
       - canvas:
           type: string
           description: The name of the tool
-      - 1.40.0:
+      - Canvas --version:
           type: string
           description: The version of the tool (hardcoded as Canvas is an archived
             tool)
 authors:
   - "@ktruve"
+  - "@Schmytzi"
 maintainers:
   - "@ktruve"
+  - "@Schmytzi"
