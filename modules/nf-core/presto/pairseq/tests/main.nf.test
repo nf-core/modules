@@ -26,17 +26,14 @@ nextflow_process {
 
         then {
             
-            assertAll(
-                { assert process.success},
-                { assert snapshot(
-                    process.out.reads.get(0).get(1),
-                    process.out.reads.get(0).get(2)
-                ).match("test_snap_out")},
-                { assert snapshot(
-                    process.out.versions_presto).match("test_snap_versions")
-                },  
-                { assert path(process.out.logs.get(0)).getText().contains("PASS") }
-            )
+			    assert process.success
+			    assertAll(
+			        { assert snapshot(
+			            process.out.reads,
+			            process.out.findAll { key, val -> key.startsWith("versions") }
+			        ).match() },
+			        { assert path(process.out.logs.get(0)).getText().contains("PASS") }
+			    )
         }
     }
 }
