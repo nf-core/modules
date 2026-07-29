@@ -9,6 +9,7 @@ process GAPSEQ_FIND {
 
     input:
     tuple val(meta), path(fasta)
+    path(db)
 
     output:
     tuple val(meta), path("*-all-Reactions.tbl"), emit: reactions
@@ -22,6 +23,7 @@ process GAPSEQ_FIND {
 
     script:
     def args = task.ext.args ?: ''
+    def db_arg = db ? "-D $db" : ''
     """
     gapseq \\
         find \\
@@ -30,6 +32,7 @@ process GAPSEQ_FIND {
         -b 200 \\
         -t Bacteria \
         -K ${task.cpus} \
+        $db_arg \\
         $args \
         $fasta
     """

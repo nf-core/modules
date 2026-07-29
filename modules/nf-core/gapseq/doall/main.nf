@@ -9,6 +9,7 @@ process GAPSEQ_DOALL {
 
     input:
     tuple val(meta), path(fasta), path(medium)
+    path(db)
 
     output:
     tuple val(meta), path("*.RDS")  , emit: model
@@ -25,12 +26,14 @@ process GAPSEQ_DOALL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def medium_arg = medium ? "-m $medium" : ''
+    def db_arg = db ? "-D $db" : ''
     """
     gapseq \\
         doall \\
         -t Bacteria \\
         $medium_arg \\
         -K ${task.cpus} \\
+        $db_arg \\
         $args \\
         $fasta
     """

@@ -48,7 +48,7 @@ output:
       - "fgumi":
           type: string
           description: The name of the tool
-      - "fgumi --version | sed \"s/^fgumi //\"":
+      - 'fgumi --version | sed "s/^fgumi //"':
           type: eval
           description: The expression to obtain the version of the tool
 

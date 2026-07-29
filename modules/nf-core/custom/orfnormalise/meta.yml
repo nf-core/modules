@@ -46,6 +46,10 @@ description: |
 
   Per-caller mapping notes (lossy collapses):
 
+    - PRICE's `Gene` column concatenates every gene overlapping an ORF's
+      genomic span, so `gene_id` is resolved from the GTF via the ORF's
+      transcript id; the `Gene` column is used only for transcripts absent
+      from the annotation, and can then carry a multi-gene value.
     - PRICE `iORF` (internal ORF), `intronic`, and `orphan` map to `other`.
       Cross-caller catalogue tracking still flags these via
       `called_by_price`, but the specific PRICE sub-type is not preserved.

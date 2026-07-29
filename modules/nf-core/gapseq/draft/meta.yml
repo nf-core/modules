@@ -1,5 +1,6 @@
 name: gapseq_draft
-description: Create draft metabolic model from pathway and transporter predictions
+description: Create draft metabolic model from pathway and transporter
+  predictions
 keywords:
   - metabolic model
   - draft reconstruction
@@ -62,6 +63,7 @@ output:
           pattern: "*.xml"
           ontologies:
             - edam: http://edamontology.org/format_2585
+            - edam: http://edamontology.org/format_2332
   log:
     - - meta:
           type: map
@@ -81,7 +83,7 @@ output:
           type: string
           description: The name of the tool
       - gapseq -v 2>&1 | grep -oP "\d+\.\d+\.\d+":
-          type: string
+          type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
@@ -92,7 +94,7 @@ topics:
           type: string
           description: The name of the tool
       - gapseq -v 2>&1 | grep -oP "\d+\.\d+\.\d+":
-          type: string
+          type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@brovolia"
