@@ -39,6 +39,6 @@ process PRESTO_PAIRSEQ {
     """
     touch ${prefix}-1_pair-pass.fastq.gz \\
           ${prefix}-2_pair-pass.fastq.gz \\
-          ${prefix}_command_log.txt 
+          ${prefix}_command_log.txt
     """
 }

@@ -13,7 +13,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_umi_R1.fastq.gz', checkIfExists: true),
@@ -25,7 +25,7 @@ nextflow_process {
         }
 
         then {
-            
+
 			    assert process.success
 			    assertAll(
 			        { assert snapshot(
