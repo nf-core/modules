@@ -59,6 +59,6 @@ process TAR {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip -c > ${prefix}.tar.gz
+    echo "" | gzip > ${prefix}.tar.gz
     """
 }
