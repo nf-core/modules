@@ -7,37 +7,19 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "ciri2"
-    tag "samtools/view"
 
-    setup {
-        run("SAMTOOLS_VIEW") {
-            script "../../samtools/view/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end: false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
-                    []
-                ]
-                input[1] = [
-                    [ id:'fasta' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true), [] ]
-                input[2] = [ [], [] ]
-                input[3] = [ [], [] ]
-                input[4] = []
-                """
-            }
-        }
-    }
-
-    test("homo_sapiens - sam - pairedend") {
+    test("homo_sapiens - bam - pairedend") {
 
         when {
             process {
                 """
-                input[0] = SAMTOOLS_VIEW.out.sam
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                input[2] = []
-                input[3] = []
+                input[0] = [
+                    [ id:'test', single_end: false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true)]
+                input[1] = [
+                    [ id:'fasta' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [ [:], []]
+                input[3] = [[:], []]
                 """
             }
         }
@@ -46,15 +28,43 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.circrna[0][1]).name,
-                    process.out.logfile ? file(process.out.logfile[0][1]).name : null,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    sanitizeOutput(process.out, unstableKeys: ["log", "circrna", "error_log"])
                 ).match() }
             )
         }
     }
 
-    test("homo_sapiens - sam - pairedend -- stub") {
+    test("homo_sapiens - cram - pairedend") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end: false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [:], [] ]
+                input[3] = [ [:], [] ]
+                """
+            }
+        }
+
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log", "circrna", "error_log"])
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam - pairedend -- stub") {
 
         options "-stub"
 
@@ -65,9 +75,12 @@ nextflow_process {
                     [ id:'test', single_end: false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true)
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                input[2] = []
-                input[3] = []
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [:], [] ]
+                input[3] = [ [:], [] ]
                 """
             }
         }
@@ -76,8 +89,38 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.circrna,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - cram - pairedend -- stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end: false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [:], [] ]
+                input[3] = [ [:], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out)
                 ).match() }
             )
         }
