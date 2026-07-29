@@ -1,0 +1,66 @@
+// nf-core modules test suppa/psiperisoform
+nextflow_process {
+
+    name "Test Process SUPPA_PSIPERISOFORM"
+    script "../main.nf"
+    process "SUPPA_PSIPERISOFORM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "suppa"
+    tag "suppa/psiperisoform"
+
+    setup {
+        def mock_expression = file("${outputDir}/mock_expression_matrix.txt")
+        mock_expression.text = """
+        sample1
+        ENST00000625012.1\t10.5
+        ENSE00003760353.1\t95.1
+        ENSE00003754925.1\t0.0
+        """.stripIndent().trim()
+    }
+
+    test("human - tpm") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'sample1' ], file("${outputDir}/mock_expression_matrix.txt", checkIfExists: true) ]
+                input[1] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                ).match() }
+            )
+        }
+
+    }
+
+    test("human - tpm - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'sample1' ], file("${outputDir}/mock_expression_matrix.txt", checkIfExists: true) ]
+                input[1] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
