@@ -1,28 +1,26 @@
 name: "hmmer_eslsfetch"
 description: |
   Retrieves one or more complete sequences or subsequences from a sequence
-  file. The esl-sfetch utility is an Easel miniapp bundled with the HMMER
-  package. Unless an existing SSI index is supplied, the module first
-  indexes the (uncompressed) sequence file (esl-sfetch --index), producing
-  an SSI index; if an index is supplied, indexing is skipped and the index
-  is passed through unchanged. If a keyfile is also given, it is used to
-  fetch the named sequences (-f), or, with ext.args = '-C', parsed as a
-  subsequence coordinate file (-Cf) to extract and rename subsequences
-  (giving from > to yields the reverse complement).
+  file using its pre-built SSI index. The esl-sfetch utility is an Easel
+  miniapp bundled with the HMMER package. This module only fetches: the SSI
+  index must be produced beforehand by the sibling module
+  `hmmer/eslsfetchindex`. The keyfile is used to fetch the named sequences
+  (-f), or, with ext.args = '-C', parsed as a subsequence coordinate file
+  (-Cf) to extract and rename subsequences (giving from > to yields the
+  reverse complement).
 keywords:
   - hmmer
   - easel
   - sequence retrieval
   - subsequence extraction
-  - indexing
   - fasta
 tools:
   - "hmmer":
       description: |
         Biosequence analysis using profile hidden Markov models. The
         esl-sfetch utility is an Easel miniapp bundled with the HMMER
-        package, used to index a sequence file and retrieve sequences or
-        subsequences from it.
+        package, used here to retrieve sequences or subsequences from an
+        SSI-indexed sequence file.
       homepage: "http://hmmer.org/"
       documentation: "http://eddylab.org/software/hmmer/Userguide.pdf"
       tool_dev_url: "https://github.com/EddyRivasLab/hmmer"
@@ -42,8 +40,7 @@ input:
         description: |
           Sequence file, in any format supported by esl-sfetch (fasta, embl,
           genbank, stockholm, a2m, afa, psiblast, clustal, phylip). Must NOT
-          be gzip-compressed: esl-sfetch --index cannot index a .gz file.
-          Mandatory.
+          be gzip-compressed. Mandatory.
         pattern: "*"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
@@ -54,43 +51,33 @@ input:
           - edam: http://edamontology.org/format_1997 # Phylip format
           - edam: http://edamontology.org/format_1984 # FASTA-aln (a2m/afa)
           - edam: http://edamontology.org/format_2554 # Alignment format (text) — covers PSI-BLAST and other Easel-readable formats without a dedicated EDAM term
-    - keyfile:
-        type: file
-        description: |
-          Optional (pass [] to skip): plain-text list of sequence
-          names/accessions to retrieve, one name/accession per line (first
-          whitespace-delimited field; blank lines and lines starting with
-          '#' are ignored), used with -f for multi-sequence retrieval. With
-          ext.args = '-C' (i.e. -Cf), instead parsed as a subsequence
-          coordinate file for -Cf retrieval: four whitespace-delimited
-          fields per line, new_name from to name/accession.
-        pattern: "*"
-        ontologies:
-          - edam: http://edamontology.org/format_3671 # Plain text
     - ssi:
         type: file
         description: |
-          Optional (pass [] to build a fresh index): pre-built SSI index of
-          seqfile, as produced by esl-sfetch --index. If supplied, the
-          indexing step is skipped and this file is reused as-is, then
-          re-emitted unchanged through the `ssi` output.
+          Mandatory. SSI index of seqfile, as produced by the sibling
+          module `hmmer/eslsfetchindex` (esl-sfetch --index). esl-sfetch
+          never receives the index path on the command line — it derives
+          it as `<seqfile>.ssi`, so callers must join seqfile and ssi such
+          that their basenames still match after Nextflow stages them
+          (e.g. `seqs.fasta` alongside `seqs.fasta.ssi`). The index is
+          required in every fetch mode: without a correctly matched index,
+          esl-sfetch exits 1 with "Failed to open SSI index".
         pattern: "*.ssi"
         ontologies: []
+    - keyfile:
+        type: file
+        description: |
+          Mandatory. The -f name file: a plain-text list of sequence
+          names/accessions to retrieve, one name/accession per line (first
+          whitespace-delimited field; blank lines and lines starting with
+          '#' are ignored). With ext.args = '-C' (i.e. -Cf), instead parsed
+          as a subsequence coordinate file: tab-separated columns
+          `newname start end origname`, one subsequence per line (giving
+          from > to yields the reverse complement).
+        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/format_3671 # Plain text
 output:
-  ssi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test' ]`
-      - "*.ssi":
-          type: file
-          description: |
-            SSI index of the sequence file. Freshly built by esl-sfetch
-            --index when no ssi input is supplied, otherwise the supplied
-            ssi passed through unchanged. Always produced.
-          pattern: "*.ssi"
-          ontologies: []
   sequences:
     - - meta:
           type: map
@@ -100,8 +87,7 @@ output:
       - ${prefix}.fasta:
           type: file
           description: |
-            Retrieved sequences or subsequences in FASTA format. Optional:
-            only produced when a keyfile is supplied.
+            Retrieved sequences or subsequences in FASTA format.
           pattern: "*.fasta"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
