@@ -30,7 +30,6 @@ process GRIDSS_EXTRACTOVERLAPPINGFRAGMENTS {
         -o ${prefix}.bam \\
         $bam
     """
-
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}.subset"
     if ("${bam}" == "${prefix}.bam") {
