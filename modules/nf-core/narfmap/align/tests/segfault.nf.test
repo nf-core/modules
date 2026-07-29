@@ -1,28 +1,5 @@
 nextflow_process {
 
-    def normalizeVersions = { versions ->
-        versions.collectEntries { key, val ->
-            if (key == 'versions_samtools') {
-                [(key): val.collect { row ->
-                    [row[0], row[1], row[2].toString().replaceFirst(/^1\.23(?:\.1)?$/, '1.23')]
-                }]
-            } else {
-                [(key): val]
-            }
-        }
-    }
-
-    def canonicalBamMd5 = [
-        '8a5f3bb56e228f9085001b5c816e94db': '44e5f5bdf0d7b1e20ec7be5fe45d720a'
-    ]
-
-    def normalizeBamSnapshots = { bamOutput ->
-        bamOutput.collect { meta, bamFile ->
-            def md5 = path(bamFile).md5
-            [meta, "${file(bamFile).name}:md5,${canonicalBamMd5.get(md5, md5)}"]
-        }
-    }
-
     name "Test Process NARFMAP_ALIGN"
     script "../main.nf"
     process "NARFMAP_ALIGN"
@@ -68,9 +45,9 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    normalizeBamSnapshots(process.out.bam),
+                    process.out.bam.collect { meta, bamFile -> [meta, "${file(bamFile).name}:readsMD5,${bam(bamFile).getReadsMD5()}"] },
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    normalizeVersions(process.out.findAll { key, val -> key.startsWith("versions") }),
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                 ).match()
                 }
             )
