@@ -36,6 +36,13 @@ input:
           path internally.
           Examples: `results/output`, `s3:bucket/output`, `gs:bucket/output`,
           `remote:path/to/output`.
+    - filter_file:
+        type: file
+        description: |
+          Optional plain text file containing one file path or pattern per line to be
+          passed to Rclone copy as a filter list (e.g. via `--files-from` or
+          `--include-from`). This input is only used when the corresponding rclone
+          filtering option is enabled through the module configuration.
   - rclone_config:
       type: file
       description: |
