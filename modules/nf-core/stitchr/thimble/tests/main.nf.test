@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process STITCHR_THIMBLE"
+    script "../main.nf"
+    process "STITCHR_THIMBLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "stitchr"
+    tag "stitchr/thimble"
+
+    test("human - tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/stitchr/stitchr_vdjdb.tsv', checkIfExists: true),
+                ]
+                  input[1] = [
+                    [ id: 'alt_codon_usage' ],
+                    []
+                ]
+                input[2] = [
+                    [ id: 'allele_preference' ],
+                    []
+                ]
+                input[3] = "human"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("human - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/stitchr/stitchr_vdjdb.tsv', checkIfExists: true),
+                ]
+                 input[1] = [
+                    [ id: 'alt_codon_usage' ],
+                    []
+                ]
+                input[2] = [
+                    [ id: 'allele_preference' ],
+                    []
+                ]
+                input[3] = "human"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                process.out,
+                process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+}
