@@ -1,0 +1,71 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "transrate"
+description: Reference-free and reference-based quality assessment of de novo transcriptome assemblies
+keywords:
+  - transcriptome
+  - assembly
+  - quality control
+  - qc
+  - de novo
+tools:
+  - "transrate":
+      description: "Reference free quality assessment of de-novo transcriptome assemblies"
+      homepage: "https://github.com/blahah/transrate/"
+      documentation: "http://hibberdlab.com/transrate/"
+      tool_dev_url: "https://github.com/blahah/transrate/"
+      doi: "10.1101/gr.196469.115"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - assembly:
+        type: file
+        description: Transcriptome assembly FASTA file to be evaluated
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+
+output:
+  multiqc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_mqc.csv":
+          type: file
+          description: Per-contig and summary assembly quality metrics, in a MultiQC-compatible custom-content CSV table
+          pattern: "*_mqc.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  versions_transrate:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "transrate":
+          type: string
+          description: The name of the tool
+      - "transrate --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - transrate:
+          type: string
+          description: The name of the tool
+      - transrate --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
