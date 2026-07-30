@@ -8,13 +8,14 @@ nextflow_process {
     tag "modules_nfcore"
     tag "propr"
     tag "propr/propd"
+    config "./nextflow.config"
 
     test("Test propr/propd using default params") {
 
-        tag "default"
-        config "./default.config"
-
         when {
+            params {
+                module_args = "--round_digits 5"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -38,12 +39,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.results_genewise,
-                    process.out.versions,
-                    file(process.out.genewise_plot[0][1]).name
+                    sanitizeOutput(process.out, unstableKeys: ["genewise_plot", "session_info"]),
+                    path(process.out.versions[0]).yaml
                 ).match()}
             )
         }
@@ -51,10 +51,10 @@ nextflow_process {
 
     test("Test propr/propd when saving all outputs") {
 
-        tag "save_all"
-        config "./save_all.config"
-
         when {
+            params {
+                module_args = "--save_pairwise_full true --save_pairwise true --save_adjacency true --save_rdata true --round_digits 5"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -78,16 +78,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.results_genewise,
-                    process.out.results_pairwise,
-                    process.out.results_pairwise_filtered,
-                    process.out.results_adjacency,
-                    process.out.versions,
-                    file(process.out.genewise_plot[0][1]).name,
-                    file(process.out.rdata[0][1]).name
+                    sanitizeOutput(process.out, unstableKeys: ["genewise_plot", "session_info", "rdata"]),
+                    path(process.out.versions[0]).yaml
                 ).match()}
             )
         }
@@ -95,10 +90,10 @@ nextflow_process {
 
     test("Test propr/propd when using Box-cox transformation") {
 
-        tag "boxcox"
-        config "./boxcox.config"
-
         when {
+            params {
+                module_args = "--alpha 0.1 --round_digits 5"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -122,12 +117,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.results_genewise,
-                    process.out.versions,
-                    file(process.out.genewise_plot[0][1]).name
+                    sanitizeOutput(process.out, unstableKeys: ["genewise_plot", "session_info"]),
+                    path(process.out.versions[0]).yaml
                 ).match()}
             )
         }
@@ -135,10 +129,10 @@ nextflow_process {
 
     test("Test propr/propd when using permutation tests") {
 
-        tag "permutation"
-        config "./permutation.config"
-
         when {
+            params {
+                module_args = "--permutation 10 --number_of_cutoffs 10 --seed 123 --round_digits 5"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -162,13 +156,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.results_genewise,
-                    process.out.fdr,
-                    process.out.versions,
-                    file(process.out.genewise_plot[0][1]).name
+                    sanitizeOutput(process.out, unstableKeys: ["genewise_plot", "session_info"]),
+                    path(process.out.versions[0]).yaml
                 ).match()}
             )
         }
@@ -178,6 +170,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] = [[:], '', '', '']
@@ -186,8 +181,8 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
