@@ -1,22 +1,22 @@
 nextflow_process {
 
-    name "Test Process FGUMI_FASTQ"
+    name "Test Process HMMER_ESLSFETCHINDEX"
     script "../main.nf"
-    process "FGUMI_FASTQ"
+    process "HMMER_ESLSFETCHINDEX"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "fgumi"
-    tag "fgumi/fastq"
+    tag "hmmer"
+    tag "hmmer/eslsfetchindex"
 
-    test("homo_sapiens - bam") {
+    test("sarscov2 - fasta") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.unsorted_tagged.bam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -31,7 +31,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - bam - stub") {
+    test("sarscov2 - fasta - stub") {
 
         options "-stub"
 
@@ -40,7 +40,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.unsorted_tagged.bam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
                 ]
                 """
             }
