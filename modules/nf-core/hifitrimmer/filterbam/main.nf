@@ -4,51 +4,58 @@ process HIFITRIMMER_FILTERBAM {
 
    conda "${moduleDir}/environment.yml"
    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/720bfb6a0c816137d958bc8658cbfd184f0a41e3e69d43e9fcdb93275620d128/data' :
-      'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:a06b8fcc843c1e68' }"
+      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d413393b4194a57d7508e03614d1f4b1ba64b7294a817fd9547613421bc9343/data' :
+      'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:3a74b5c5520eaff2' }"
 
    input:
    tuple val(meta), path(input), path(bed)
 
 
    output:
-   tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
-   tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
-   tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
-   tuple val("${task.process}"), val('hifi-trimmer'), eval("hifi-trimmer --version | cut -d' ' -f3"), emit: versions_hifitrimmer, topic: versions
+   tuple val(meta), path("*.fast{q,a}.gz"), emit: filtered
+   tuple val("${task.process}"), val('hifi_trimmer'), eval("hifi_trimmer --version | cut -d' ' -f3"), emit: versions_hifitrimmer, topic: versions
    tuple val("${task.process}"), val('samtools'), eval('samtools --version | head -1 | sed -e "s/samtools //"'), emit: versions_samtools, topic: versions
 
    when:
    task.ext.when == null || task.ext.when
 
    script:
-   prefix = task.ext.prefix ?: "${meta.id}"
+   def deprecation_message = """
+   WARNING: This module has been deprecated.
+
+   Reason:
+   Command filterbam is no longer supported by hifi-trimmer, please use hifitrimmer/trim module instead.
+   """
+   assert false: deprecation_message
+   def prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
    def args2 = task.ext.args2 ?: ''
    def args3 = task.ext.args3 ?: ''
-   def suffix = args.contains('-f cram') ? 'cram' : args.contains('-f sam') ? 'sam' : 'bam'
+   def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
    def input_convert = input.name.endsWith('cram') ? "<(samtools view ${input} -u ${args3} -@ ${task.cpus})" :
         !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ ${task.cpus})" : input
-
-   if (input.name == "${prefix}.${suffix}") {
-      error "ERROR: Output file '${prefix}.${suffix}' collides with input file name. Please set a different prefix via task.ext.prefix or meta.id."
-   }
-
    """
-   hifi-trimmer trim \\
+   hifi_trimmer filter_bam \\
       -t ${task.cpus} \\
       ${args} \\
       ${input_convert} \\
       ${bed} \\
-      > ${prefix}.${suffix}
+      ${prefix}.${suffix}
    """
 
    stub:
-   prefix = task.ext.prefix ?: "${meta.id}"
-   def args = task.ext.args ?: ''
-   def suffix = args.contains('-f cram') ? 'cram' : args.contains('-f sam') ? 'sam' : 'bam'
+   def deprecation_message = """
+   WARNING: This module has been deprecated.
+
+   Reason:
+   Command filterbam is no longer supported by hifi-trimmer, please use hifitrimmer/trim module instead.
    """
-   printf "stub\n" > ${prefix}.${suffix}
+   assert false: deprecation_message
+   def args = task.ext.args ?: ''
+   def prefix = task.ext.prefix ?: "${meta.id}"
+   def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
+   """
+   echo "stub" | gzip > ${prefix}.${suffix}
    echo ${args}
    """
 }
