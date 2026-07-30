@@ -12,7 +12,7 @@ process ANGSD_SFS {
     tuple val(meta2), path(pop2_saf_idx), path(pop2_saf_pos), path(pop2_saf) // Optional: use for 2-dimensional SFS estimation
 
     output:
-    tuple val(meta_out), path("*.sfs"), emit: sfs
+    tuple val(meta3), path("*.sfs"), emit: sfs
     tuple val("${task.process}"), val('angsd'), eval("angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'"), emit: versions_angsd, topic: versions
 
     when:
@@ -21,9 +21,9 @@ process ANGSD_SFS {
     script:
     def args = task.ext.args ?: ''
     def is_2d = meta2 as boolean
-    def meta_out = is_2d ? [id: "${meta.id}_${meta2.id}", pop1: meta.pop, pop2: meta2.pop] : meta
+    def meta3 = is_2d ? [id: "${meta.id}_${meta2.id}", populations: [meta.pop, meta2.pop]] : [id: "${meta.id}", populations: [meta.pop]]
     def pop2_input = is_2d ? "${pop2_saf_idx}" : ''
-    def prefix = task.ext.prefix ?: meta_out.id
+    def prefix = task.ext.prefix ?: meta3.id
     
     """
     realSFS \\
@@ -34,7 +34,9 @@ process ANGSD_SFS {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: meta_out.id
+    def is_2d = meta2 as boolean
+    def meta3 = is_2d ? [id: "${meta.id}_${meta2.id}", populations: [meta.pop, meta2.pop]] : [id: "${meta.id}", populations: [meta.pop]]
+    def prefix = task.ext.prefix ?: meta3.id
     """
     touch ${prefix}.sfs
     """
