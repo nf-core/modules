@@ -6,8 +6,7 @@ description: |
   index must be produced beforehand by the sibling module
   `hmmer/eslsfetchindex`. The keyfile is used to fetch the named sequences
   (-f), or, with ext.args = '-C', parsed as a subsequence coordinate file
-  (-Cf) to extract and rename subsequences (giving from > to yields the
-  reverse complement).
+  (-Cf) to extract and rename subsequences.
 keywords:
   - hmmer
   - easel
@@ -55,7 +54,7 @@ input:
         type: file
         description: |
           SSI index of seqfile, as produced by the
-         `hmmer/eslsfetchindex` module. The index is
+          `hmmer/eslsfetchindex` module. The index is
           required in every fetch mode: without a correctly matched index,
           esl-sfetch exits with "Failed to open SSI index".
         pattern: "*.ssi"
@@ -63,13 +62,13 @@ input:
     - keyfile:
         type: file
         description: |
-          Mandatory. The -f name file: a plain-text list of sequence
-          names/accessions to retrieve, one name/accession per line (first
-          whitespace-delimited field; blank lines and lines starting with
-          '#' are ignored). With ext.args = '-C' (i.e. -Cf), instead parsed
-          as a subsequence coordinate file: tab-separated columns
-          `newname start end origname`, one subsequence per line (giving
-          from > to yields the reverse complement).
+          A plain-text list of sequence names/accessions to
+          retrieve, one name/accession per line. With `ext.args = '-C'`
+          (i.e. -Cf), instead parsed as a subsequence coordinate file:
+          tab-separated columns `newname start end origname`, one
+          subsequence per line. Coordinates are 1-based and inclusive; a
+          start larger than the end (e.g. `myseq 200 100 chr1`) fetches the
+          reverse complement of that region.
         pattern: "*"
         ontologies:
           - edam: http://edamontology.org/format_3671 # Plain text
