@@ -158,6 +158,11 @@ process CELLRANGER_MULTI {
 
     for modality in gex vdj ab beam cmo crispr; do
         lane=1
+        n_fastq_dirs=\$(find fastqs/\${modality} -maxdepth 1 -type d -name "fastq_*" | wc -l)
+        if [ \$((n_fastq_dirs % 2)) -ne 0 ]; then
+            echo "ERROR: Found an odd number (\${n_fastq_dirs}) of staged FASTQ files for modality '\${modality}'. Expected R1/R2 pairs." >&2
+            exit 1
+        fi
         while IFS= read -r -d '' r1_dir && IFS= read -r -d '' r2_dir; do
             if [ "${skip_renaming}" = "true" ]; then
                 r1=\$(find "\${r1_dir}" -maxdepth 1 -name "*.fastq.gz" | head -1)
