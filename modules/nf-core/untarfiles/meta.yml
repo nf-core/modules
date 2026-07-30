@@ -44,7 +44,7 @@ output:
       - tar:
           type: string
           description: The name of the tool
-      - tar --version 2>&1 | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//':
+      - tar --version 2>&1 | sed '1s/^.*(GNU tar) //;q':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -56,7 +56,7 @@ topics:
       - tar:
           type: string
           description: The name of the tool
-      - tar --version 2>&1 | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//':
+      - tar --version 2>&1 | sed '1s/^.*(GNU tar) //;q':
           type: eval
           description: The expression to obtain the version of the tool
 
