@@ -28,7 +28,7 @@ input:
         type: file
         description: BLAST TSV output file used by hifi_trimmer (e.g. .blast, .out). Must be generated using "blastn -query <reads> -db <adapter_db> -outfmt '6 std qlen'".
         pattern: "*.{blast,out}"
-  - - meta1:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information

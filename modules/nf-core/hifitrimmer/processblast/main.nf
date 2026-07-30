@@ -9,7 +9,7 @@ process HIFITRIMMER_PROCESSBLAST {
 
    input:
    tuple val(meta), path(blast)
-   tuple val(meta1), path(yaml)
+   tuple val(meta2), path(yaml)
 
 
    output:
@@ -37,9 +37,8 @@ process HIFITRIMMER_PROCESSBLAST {
    stub:
    def prefix = task.ext.prefix ?: "${meta.id}"
    """
-   # gzip command is not available in env
-   echo "stub" > ${prefix}.bed
-   python3 -c "import gzip,shutil; shutil.copyfileobj(open('${prefix}.bed','rb'), gzip.open('${prefix}.bed.gz','wb'))"
+   # Create deterministic gzip output (fixed mtime) so stub md5 is stable across runs.
+   python3 -c "import gzip; open('${prefix}.bed.gz','wb').write(gzip.compress(b'stub\\n', mtime=0))"
    touch ${prefix}.summary.json
    touch ${prefix}.hits
    """
