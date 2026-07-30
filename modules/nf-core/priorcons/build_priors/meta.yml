@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "priorcons_buildpriors"
+description: Build empirical priors from alignment data for consensus sequence
+  generation
+keywords:
+  - alignment
+  - priors
+  - consensus
+  - genomics
+tools:
+  - "priorcons":
+      description: "Tool for integrating consensus sequences using prior information."
+      homepage: "https://github.com/zhliUU/PriorCons"
+      documentation: "https://github.com/zhliUU/PriorCons"
+      tool_dev_url: "https://github.com/zhliUU/PriorCons"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - alignment:
+        type: file
+        description: Multiple sequence alignment file
+        pattern: "*.aln"
+        ontologies:
+          - edam: "http://edamontology.org/format_1984" # Plain text alignment format
+  - ref_id:
+      type: string
+      description: Reference sequence ID within the alignment file
+
+output:
+  priors:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.parquet":
+          type: file
+          description: Empirical priors data in Parquet format
+          pattern: "*.parquet"
+          ontologies: []
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@zhliUU"
+maintainers:
+  - "@zhliUU"
