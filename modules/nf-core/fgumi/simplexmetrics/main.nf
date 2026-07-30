@@ -37,6 +37,7 @@ process FGUMI_SIMPLEXMETRICS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
     touch ${prefix}.family_sizes.txt
     touch ${prefix}.simplex_yield_metrics.txt
     touch ${prefix}.umi_counts.txt

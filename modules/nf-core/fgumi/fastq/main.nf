@@ -4,8 +4,8 @@ process FGUMI_FASTQ {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64e8f594b6f0dd879bc5abbe4ca70b6b761e1920e407d9e1c7d27b89004aac34/data':
-        'community.wave.seqera.io/library/fgumi:0.5.0--a2d14bf52f73eaef' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/9293544e5bd961eb471b82d28a66cdfca73fe7e70eaa504a4ce59a1b1c6e912d/data':
+        'community.wave.seqera.io/library/fgumi_gzip:b3703fa2b3e8e632' }"
 
     input:
     tuple val(meta), path(bam)
@@ -13,6 +13,7 @@ process FGUMI_FASTQ {
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
     tuple val("${task.process}"), val('fgumi'), eval('fgumi --version | sed "s/^fgumi //"'), topic: versions, emit: versions_fgumi
+    tuple val("${task.process}"), val('gzip'), eval("gzip --version 2>&1 | sed '1!d;s/gzip //'"), emit: versions_gzip, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,6 +35,7 @@ process FGUMI_FASTQ {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}    
     echo "" | gzip > ${prefix}.fastq.gz
     """
 }

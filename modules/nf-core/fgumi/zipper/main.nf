@@ -39,6 +39,7 @@ process FGUMI_ZIPPER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_zipped"
     """
+    echo ${args}
     touch ${prefix}.bam
     """
 }
