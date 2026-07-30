@@ -133,19 +133,19 @@ process CELLRANGER_MULTI {
     // Append sample sections if present
     if (has_cmo) {
         config_lines << '[samples]'
-        config_lines << cmo_barcodes.text.trim()
+        config_lines << "\$(cat ${cmo_barcodes})"
     }
     if (has_frna) {
         config_lines << '[samples]'
-        config_lines << frna_sampleinfo.text.trim()
+        config_lines << "\$(cat ${frna_sampleinfo})"
     }
     if (has_ocm) {
         config_lines << '[samples]'
-        config_lines << ocm_barcodes.text.trim()
+        config_lines << "\$(cat ${ocm_barcodes})"
     }
     if (has_beam) {
         config_lines << '[antigen-specificity]'
-        config_lines << beam_control_panel.text.trim()
+        config_lines << "\$(cat ${beam_control_panel})"
     }
     def config_content = config_lines.findAll { line -> line }.join('\n    ')
     """

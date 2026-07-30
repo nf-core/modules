@@ -127,9 +127,7 @@ input:
           e.g. [ id:'genome' ]
     - gex_reference:
         type: directory
-        description: Folder containing Cellranger gene expression reference. Can also
-          be a gzipped tarball
-        pattern: "*.tar.gz"
+        description: Folder containing Cellranger gene expression reference
   - gex_frna_probeset:
       type: file
       description: Fixed RNA profiling information containing custom probes in CSV format
@@ -144,9 +142,7 @@ input:
         - edam: http://edamontology.org/format_3752
   - vdj_reference:
       type: directory
-      description: Folder containing Cellranger V(D)J reference. Can also be a gzipped
-        tarball
-      pattern: "*.tar.gz"
+      description: Folder containing Cellranger V(D)J reference
   - vdj_primer_index:
       type: file
       description: List of custom V(D)J inner enrichment primers
