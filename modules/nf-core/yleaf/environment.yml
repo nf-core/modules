@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - python=3.9
+  - numpy=1.24.3
+  - pandas=1.0.0
+  - bcftools=1.18
+  # Edit this below only once yleaf 3.3.0 has been released to bioconda.
+  # - yleaf=3.3.0
+  # Otherwise, install from my local branch with pip:
+  - pip
+  - pip:
+    - -e /home/a/Yleaf
