@@ -36,6 +36,7 @@ nextflow_process {
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
+        }
     }
 
     test("hifi_trimmer filter_bam test - input fastq") {
@@ -62,6 +63,7 @@ nextflow_process {
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
+        }
     }
 
     test("hifi_trimmer filter_bam test - input fasta") {
@@ -88,6 +90,7 @@ nextflow_process {
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
+        }
     }
 
     test("hifi_trimmer filter_bam test - input cram") {
@@ -114,6 +117,7 @@ nextflow_process {
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
+        }
     }
 
     test("hifi_trimmer test - stub") {
@@ -142,5 +146,6 @@ nextflow_process {
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
+        }
     }
 }
