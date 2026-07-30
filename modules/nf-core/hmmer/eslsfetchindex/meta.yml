@@ -59,7 +59,7 @@ output:
       - ${seqfile}.ssi:
           type: file
           description: |
-            SSI index built by esl-sfetch --index. The filename is dictated
+            SSI index built by `esl-sfetch --index`. The filename is dictated
             by the tool: it is always the input seqfile's filename with
             `.ssi` appended (not a `${prefix}`-based name), so downstream
             consumers such as hmmer/eslsfetch see an index basename that
