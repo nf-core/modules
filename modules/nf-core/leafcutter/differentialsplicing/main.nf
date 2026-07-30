@@ -23,6 +23,9 @@ process LEAFCUTTER_DIFFERENTIALSPLICING {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export USER="\${USER:-nobody}"
+    export PYTHONHASHSEED=0
+
     leafcutter-ds \\
         $counts \\
         $groups \\
