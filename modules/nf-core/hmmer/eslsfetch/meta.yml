@@ -54,14 +54,10 @@ input:
     - ssi:
         type: file
         description: |
-          Mandatory. SSI index of seqfile, as produced by the sibling
-          module `hmmer/eslsfetchindex` (esl-sfetch --index). esl-sfetch
-          never receives the index path on the command line — it derives
-          it as `<seqfile>.ssi`, so callers must join seqfile and ssi such
-          that their basenames still match after Nextflow stages them
-          (e.g. `seqs.fasta` alongside `seqs.fasta.ssi`). The index is
+          SSI index of seqfile, as produced by the
+         `hmmer/eslsfetchindex` module. The index is
           required in every fetch mode: without a correctly matched index,
-          esl-sfetch exits 1 with "Failed to open SSI index".
+          esl-sfetch exits with "Failed to open SSI index".
         pattern: "*.ssi"
         ontologies: []
     - keyfile:
