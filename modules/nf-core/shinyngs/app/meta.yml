@@ -1,6 +1,5 @@
 name: "shinyngs_app"
-description: build and deploy Shiny apps for interactively mining differential abundance
-  data
+description: build and deploy Shiny apps for interactively mining differential abundance data
 keywords:
   - differential
   - expression
@@ -8,8 +7,7 @@ keywords:
   - deseq2
 tools:
   - "shinyngs":
-      description: "Provides Shiny applications for various array and NGS applications.
-        Currently very RNA-seq centric, with plans for expansion."
+      description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
       homepage: "https://github.com/pinin4fjords/shinyngs"
       documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
       tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
@@ -54,6 +52,19 @@ input:
   - contrast_stats_assay:
       type: file
       description: contrast statistics
+      ontologies: []
+  - gene_sets:
+      type: file
+      description: |
+        Optional: GMT-format gene set files used for enrichment, referenced in the
+        app via the shinyngs `--enrichment_gene_sets` argument.
+      pattern: "*.{gmt}"
+      ontologies: []
+  - enrichment_results:
+      type: file
+      description: |
+        Optional: per-contrast enrichment result tables (e.g. GSEA output), matched
+        to contrasts in the app via the shinyngs `--enrichment_filename_template` argument.
       ontologies: []
 output:
   app:
@@ -102,3 +113,27 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-shinyngs:3.2.1--d43071e62bc500d3
+      build_id: bd-d43071e62bc500d3_1
+      scan_id: sc-5ac2dcb847246bad_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/r-shinyngs:3.2.1--d168a374ce5dc1af
+      build_id: bd-d168a374ce5dc1af_1
+      scan_id: sc-0f3dfab20873614f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-shinyngs:3.2.1--b810af5b9efbb4b2
+      build_id: bd-b810af5b9efbb4b2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d5f79ef0afe3e3831496c61c81aeda56312f49ac324dc378d3312af7acae2ec6/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r-shinyngs:3.2.1--ed7d3904b821c0a8
+      build_id: bd-ed7d3904b821c0a8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/74/74ebb0b4cfa12e1174262987ffa0559ab388198ba94196a4fd295ce5a9051a22/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/shinyngs/app/.conda-lock/linux_amd64-bd-d43071e62bc500d3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/shinyngs/app/.conda-lock/linux_arm64-bd-d168a374ce5dc1af_1.txt

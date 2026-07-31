@@ -41,6 +41,7 @@ nextflow_process {
                 { assert process.out.volcano_plot.size() > 0 },
                 { assert process.out.composite_plot.size() > 0 },
                 { assert process.out.venn_plot.size() > 0 },
+                { assert process.out.heatmap_plot.size() > 0 },
                 { assert snapshot(
                     file(process.out.translation[0][1]).name,
                     file(process.out.dou[0][1]).name,
@@ -49,8 +50,45 @@ nextflow_process {
                     file(process.out.volcano_plot[0][1]).name,
                     file(process.out.composite_plot[0][1]).name,
                     file(process.out.venn_plot[0][1]).name,
+                    file(process.out.heatmap_plot[0][1]).name,
                     process.out.versions,
                     path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("human - count matrix + annotation - non-mORF main label") {
+
+        config "./non_morf_main.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cycling_vs_interphase' ],
+                    'condition',
+                    'Interphase',
+                    'Mitotic_Cycling'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/samplesheet.csv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/counts.tsv.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/dotseq/annotation_non_morf.tsv.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.heatmap_plot.size() > 0 },
+                { assert snapshot(
+                    file(process.out.dou[0][1]).name,
+                    file(process.out.heatmap_plot[0][1]).name,
+                    process.out.versions
                 ).match() }
             )
         }

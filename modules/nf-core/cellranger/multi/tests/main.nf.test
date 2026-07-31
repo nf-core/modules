@@ -19,7 +19,10 @@ nextflow_process {
             script "modules/nf-core/cellranger/mkgtf/main.nf"
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[0] = [
+                    [id: 'homo_sapiens_chr22'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -28,7 +31,10 @@ nextflow_process {
             script "modules/nf-core/cellranger/mkref/main.nf"
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[0] = channel.of([
+                    [id: 'homo_sapiens_chr22'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[1] = CELLRANGER_MKGTF.out.gtf
                 input[2] = 'homo_sapiens_chr22_reference'
                 """
@@ -227,18 +233,16 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta'  },
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta.fai'  },
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fastq'  },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
-                    process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
-                ).match() },
-                { assert snapshot(process.out.versions_cellranger).match("versions-PBMC") }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.findAll { key, val -> key.startsWith("versions") },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta' },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta.fai' },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fastq' },
+                process.out.outs[0][1].findAll { file(it).name.contains('consensus.bam.bai') },
+                process.out.outs[0][1].findAll { file(it).name == 'regions.fa' },
+                process.out.outs[0][1].findAll { file(it).name.contains('.json') }
+            ).match()
         }
 
     }
@@ -463,18 +467,16 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta'  },
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta.fai'  },
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fastq'  },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
-                    process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
-                ).match() },
-                { assert snapshot(process.out.versions_cellranger).match("versions-with-cmo") }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.findAll { key, val -> key.startsWith("versions") },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta' },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta.fai' },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fastq' },
+                process.out.outs[0][1].findAll { file(it).name.contains('consensus.bam.bai') },
+                process.out.outs[0][1].findAll { file(it).name == 'regions.fa' },
+                process.out.outs[0][1].findAll { file(it).name.contains('.json') }
+            ).match()
         }
 
     }
@@ -696,18 +698,16 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta'  },
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta.fai'  },
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fastq'  },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
-                    process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
-                ).match() },
-                { assert snapshot(process.out.versions_cellranger).match("versions-with-vdj") }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.findAll { key, val -> key.startsWith("versions") },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta' },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta.fai' },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fastq' },
+                process.out.outs[0][1].findAll { file(it).name.contains('consensus.bam.bai') },
+                process.out.outs[0][1].findAll { file(it).name == 'regions.fa' },
+                process.out.outs[0][1].findAll { file(it).name.contains('.json') }
+            ).match()
         }
 
     }
@@ -720,7 +720,10 @@ nextflow_process {
                 script "modules/nf-core/cellranger/mkgtf/main.nf"
                 process {
                     """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/reference/genes_chr1_32292083_32686211.gtf', checkIfExists: true)
+                    input[0] = [
+                        [id: 'homo_sapiens_chr1'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/reference/genes_chr1_32292083_32686211.gtf', checkIfExists: true)
+                    ]
                     """
                 }
             }
@@ -729,7 +732,10 @@ nextflow_process {
                 script "modules/nf-core/cellranger/mkref/main.nf"
                 process {
                     """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/reference/genome_chr1_32292083_32686211.fa', checkIfExists: true)
+                    input[0] = channel.of([
+                        [id: 'homo_sapiens_chr1'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/reference/genome_chr1_32292083_32686211.fa', checkIfExists: true)
+                    ])
                     input[1] = CELLRANGER_MKGTF_CRISPR.out.gtf
                     input[2] = 'homo_sapiens_chr1_32292083_32686211_reference'
                     """
@@ -839,18 +845,14 @@ nextflow_process {
         }
 
         then {
-
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.outs[0][1].findAll { file(it).name == 'metrics_summary.csv' },
-                    process.out.outs[0][1].findAll { file(it).name == 'raw_feature_bc_matrix.h5' },
-                    process.out.outs[0][1].findAll { file(it).name == 'sample_filtered_feature_bc_matrix.h5' },
-                    process.out.outs[0][1].findAll { file(it).name == 'protospacer_calls_per_cell.csv' },
-                ).match() },
-                { assert snapshot(process.out.versions_cellranger).match("versions-a549-crispr") }
-            )
-
+            assert process.success
+            assert snapshot(
+                process.out.findAll { key, val -> key.startsWith("versions") },
+                process.out.outs[0][1].findAll { file(it).name == 'metrics_summary.csv' },
+                process.out.outs[0][1].findAll { file(it).name == 'raw_feature_bc_matrix.h5' },
+                process.out.outs[0][1].findAll { file(it).name == 'sample_filtered_feature_bc_matrix.h5' },
+                process.out.outs[0][1].findAll { file(it).name == 'protospacer_calls_per_cell.csv' },
+            ).match()
         }
 
     }
@@ -946,17 +948,15 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.outs[0][1].findAll {  file(it).name == 'metrics_summary.csv'  },
-                    process.out.outs[0][1].findAll {  file(it).name == 'filtered_feature_bc_matrix.h5'  },
-                    process.out.outs[0][1].findAll {  file(it).name == 'raw_feature_bc_matrix.h5' },
-                    process.out.outs[0][1].findAll {  file(it).name == 'sample_filtered_feature_bc_matrix.h5' },
-                    process.out.outs[0][1].findAll {  file(it).name == 'sample_raw_feature_bc_matrix.h5' }
-                ).match() },
-                { assert snapshot(process.out.versions_cellranger).match("versions-flex-singleplex") }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.findAll { key, val -> key.startsWith("versions") },
+                process.out.outs[0][1].findAll { file(it).name == 'metrics_summary.csv' },
+                process.out.outs[0][1].findAll { file(it).name == 'filtered_feature_bc_matrix.h5' },
+                process.out.outs[0][1].findAll { file(it).name == 'raw_feature_bc_matrix.h5' },
+                process.out.outs[0][1].findAll { file(it).name == 'sample_filtered_feature_bc_matrix.h5' },
+                process.out.outs[0][1].findAll { file(it).name == 'sample_raw_feature_bc_matrix.h5' }
+            ).match()
         }
 
     }
