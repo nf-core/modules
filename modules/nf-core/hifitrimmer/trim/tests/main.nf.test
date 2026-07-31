@@ -1,22 +1,22 @@
 nextflow_process {
 
 
-    name "Test Process HIFITRIMMER_FILTERBAM"
+    name "Test Process HIFITRIMMER_TRIM"
     script "../main.nf"
-    process "HIFITRIMMER_FILTERBAM"
+    process "HIFITRIMMER_TRIM"
 
     tag "modules"
     tag "modules_nfcore"
     tag "hifitrimmer"
-    tag "hifitrimmer/filterbam"
+    tag "hifitrimmer/trim"
 
     config './nextflow.config'
 
-    test("hifi_trimmer filter_bam test - input bam") {
+    test("hifi_trimmer trim test - input bam") {
 
         when {
             params {
-                filter_bam_args    = "-f -p"
+                trim_args    = "-f sam"
             }
             process {
                 """
@@ -33,17 +33,21 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.sam.get(0).get(1), stringency: "silent").getReadsMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
             )
         }
     }
 
-    test("hifi_trimmer filter_bam test - input fastq") {
+    test("hifi_trimmer trim test - input fastq") {
 
         when {
             params {
-                filter_bam_args    = "-f"
+                trim_args    = "-f cram"
             }
             process {
                 """
@@ -60,17 +64,21 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                { assert process.success },
+                { assert snapshot(
+                    cram(process.out.cram.get(0).get(1), stringency: "silent").getReadsMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
             )
         }
     }
 
-    test("hifi_trimmer filter_bam test - input fasta") {
+    test("hifi_trimmer trim test - input fasta") {
 
         when {
             params {
-                filter_bam_args    = ""
+                trim_args    = ""
             }
             process {
                 """
@@ -87,17 +95,21 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam.get(0).get(1), stringency: "silent").getReadsMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
             )
         }
     }
 
-    test("hifi_trimmer filter_bam test - input cram") {
+    test("hifi_trimmer trim test - input cram") {
 
         when {
             params {
-                filter_bam_args    = ""
+                trim_args    = ""
             }
             process {
                 """
@@ -114,8 +126,12 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam.get(0).get(1), stringency: "silent").getReadsMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
             )
         }
     }
@@ -126,13 +142,13 @@ nextflow_process {
 
         when {
             params {
-                filter_bam_args    = ""
+                trim_args    = ""
             }
             process {
                 """
                 input[0] = Channel.of(
                     [
-                        [ id:'test' ], // meta map
+                        [ id:'test_stub' ], // meta map
                         file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
                     ]
@@ -143,8 +159,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
