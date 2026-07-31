@@ -10,7 +10,7 @@ nextflow_process {
     tag "plink2/vcf2bgen"
     config "./nextflow.config"
     test("plink2 - vcf2bgen - vcf - double-id") {
-        
+
         when {
             params {
                 plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"

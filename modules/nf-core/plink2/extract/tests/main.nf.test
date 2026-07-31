@@ -11,7 +11,7 @@ nextflow_process {
     config "./nextflow.config"
 
     test("plink2_extract") {
-        
+
         setup {
             run("PLINK2_VCF") {
                 script "../../vcf/main.nf"

@@ -35,7 +35,7 @@ process PLINK2_PCA {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.eigenvec 
+    touch ${prefix}.eigenvec
     touch ${prefix}.eigenval
     touch ${prefix}.log
     """
