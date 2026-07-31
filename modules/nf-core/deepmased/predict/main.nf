@@ -1,7 +1,6 @@
 process DEEPMASED_PREDICT {
     tag "$meta.id"
     label 'process_medium'
-    label 'process_gpu'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
@@ -21,13 +20,15 @@ process DEEPMASED_PREDICT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args     = task.ext.args ?: ''
+    def prefix   = task.ext.prefix ?: "${meta.id}"
+    def gpu_args = task.accelerator ? '' : '--cpu-only'
     """
     DeepMAsED predict \\
         ${feature_file_table} \\
         --n-procs ${task.cpus} \\
         --save-name ${prefix} \\
+        ${gpu_args} \\
         ${args}
     """
 
