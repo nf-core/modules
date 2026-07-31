@@ -28,7 +28,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("versions") },
 		        { assert path(process.out.demuxlet_result.get(0).get(1)).exists() },
             )
         }
@@ -66,7 +66,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("pileup-versions") },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("pileup-versions") },
                 { assert path(process.out.demuxlet_result.get(0).get(1)).exists() },
             )
         }
@@ -93,7 +93,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("stub-versions") },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("stub-versions") },
                 { assert path(process.out.demuxlet_result.get(0).get(1)).exists() },
             )
         }
