@@ -1,7 +1,5 @@
 name: "gridss_extractoverlappingfragments"
-description: Extract read fragments from a BAM file whose reads overlap a set of
-  target regions, producing a subset BAM for targeted GRIDSS structural variant
-  calling.
+description: Extract read fragments from a BAM file whose reads overlap a set of target regions, producing a subset BAM for targeted GRIDSS structural variant calling.
 keywords:
   - gridss
   - bam
@@ -42,8 +40,7 @@ input:
           e.g. `[ id:'targets' ]`
     - target_bed:
         type: file
-        description: BED file describing the target regions used to select
-          overlapping read fragments
+        description: BED file describing the target regions used to select overlapping read fragments
         pattern: "*.bed"
         ontologies:
           - edam: http://edamontology.org/format_3003
@@ -54,11 +51,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.subset.bam":
+      - ${prefix}.bam:
           type: file
-          description: BAM file containing only the read fragments that overlap
-            the target regions
-          pattern: "*.subset.bam"
+          description: BAM file containing read fragments overlapping the target regions
+          pattern: "*.bam"
           ontologies:
             - edam: http://edamontology.org/format_2572
   versions_gridss:
