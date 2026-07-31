@@ -14,7 +14,7 @@ process AMULETY_ESM2 {
 
     output:
     tuple val(meta), path("*.tsv"), emit: embedding
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('amulety'), eval("amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'"), emit: versions_amulety, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
