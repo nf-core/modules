@@ -28,12 +28,12 @@ process PRESTO_PAIRSEQ {
                -2 ${R2_reads} \\
                --outname ${prefix} \\
                $copyfield \\
-               $args > ${prefix}_command_log.txt
+               $args \\
+               | tee > ${prefix}_command_log.txt
 
     """
 
     stub:
-    def copyfield = (barcode_position == 'R1')? '--1f BARCODE' : (barcode_position == 'R2')? '--2f BARCODE' : (barcode_position == 'R1R2')? '--1f BARCODE --2f BARCODE' : (barcode_position == 'clustersets')? '--1f CLUSTER --2f CLUSTER' : ''
     def args = task.ext.args?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
