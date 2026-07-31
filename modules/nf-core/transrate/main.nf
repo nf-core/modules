@@ -8,13 +8,11 @@ process TRANSRATE {
 :         'community.wave.seqera.io/library/transrate_blast:092d9b5f119b9733' }"
 
     input:
-    tuple val(meta), path(assembly)
-    path reference
+    tuple val(meta), path(assembly), path(reference)
 
     output:
     tuple val(meta), path("*.assemblies.csv")                                       , emit: assemblies
     tuple val(meta), path("*.contigs.csv")                                          , emit: contigs
-    tuple val(meta), path("*_mqc.csv")                                              , emit: multiqc, optional: true
     tuple val("${task.process}"), val('transrate'), eval("transrate --version"), topic: versions, emit: versions_transrate
 
     when:
@@ -23,11 +21,6 @@ process TRANSRATE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Reference-based comparative metrics (blast+, packageable). Read-based metrics
-    // (--left/--right) are deliberately not supported: they hard-require the `bam-read`
-    // binary, which isn't published on any conda channel (only as a prebuilt GitHub
-    // release from Blahah/transrate-tools), and their aligner (snap-aligner, pinned to
-    // an old dev build) segfaults building an index for at least small test genomes.
     def reference_arg = reference ? "--reference ${reference}" : ''
     """
     transrate \\
@@ -44,8 +37,6 @@ process TRANSRATE {
     # column of the report; replace it with the sample prefix so the report content is
     # reproducible across environments and task work directories.
     sed -i "2s@^[^,]*@${prefix}@" ${prefix}.assemblies.csv
-
-    cp ${prefix}.assemblies.csv ${prefix}_mqc.csv
     """
 
     stub:

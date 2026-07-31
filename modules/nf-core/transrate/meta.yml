@@ -34,12 +34,12 @@ input:
         pattern: "*.{fasta,fa}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
-  - reference:
-      type: file
-      description: Optional reference proteome or transcriptome FASTA file, to enable reference-based comparative metrics. Pass `[]` to skip.
-      pattern: "*.{fasta,fa}"
-      ontologies:
-        - edam: "http://edamontology.org/format_1929" # FASTA
+    - reference:
+        type: file
+        description: Optional reference proteome or transcriptome FASTA file, to enable reference-based comparative metrics. Pass `[]` to skip.
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
 
 output:
   assemblies:
@@ -64,18 +64,6 @@ output:
           type: file
           description: Per-contig quality metrics
           pattern: "*.contigs.csv"
-          ontologies:
-            - edam: "http://edamontology.org/format_3752" # CSV
-  multiqc:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*_mqc.csv":
-          type: file
-          description: Optional copy of the assembly summary, named for MultiQC custom-content auto-detection. Only produced when `task.ext.make_mqc` is truthy.
-          pattern: "*_mqc.csv"
           ontologies:
             - edam: "http://edamontology.org/format_3752" # CSV
   versions_transrate:
