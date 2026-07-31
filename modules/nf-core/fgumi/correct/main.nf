@@ -4,8 +4,8 @@ process FGUMI_CORRECT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4a/4a62b457c53300603da026225f95b4db04d1c9f8ba7f734787818fc105d51323/data':
-        'community.wave.seqera.io/library/fgumi:0.4.0--1fb5dc6de05ce63b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64e8f594b6f0dd879bc5abbe4ca70b6b761e1920e407d9e1c7d27b89004aac34/data':
+        'community.wave.seqera.io/library/fgumi:0.5.0--a2d14bf52f73eaef' }"
 
     input:
     tuple val(meta), path(bam)
