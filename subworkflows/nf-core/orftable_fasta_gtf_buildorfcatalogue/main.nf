@@ -21,8 +21,8 @@ workflow ORFTABLE_FASTA_GTF_BUILDORFCATALOGUE {
                    //          all caller outputs flow through one channel with the
                    //          caller id carried as a per-record val (not in meta).
     ch_fasta       // channel: [ val(meta), path(fasta) ]   - reference genome FASTA
-    ch_gtf         // channel: [ val(meta), path(gtf)   ]   - reference GTF (used by
-                   //          ribocode/ribotish normalisers; ignored by rpbp/price)
+    ch_gtf         // channel: [ val(meta), path(gtf)   ]   - reference GTF (read by
+                   //          every normaliser except ribotricer)
     val_collapse   // boolean: cluster catalogue peptides by amino-acid identity
                    //          and fold duplicate small ORFs to one representative
                    //          each. When false the merged catalogue is emitted
