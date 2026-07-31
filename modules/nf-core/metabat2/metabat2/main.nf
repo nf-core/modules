@@ -48,11 +48,11 @@ process METABAT2_METABAT2 {
     def decompress_depth = depth ? "gzip -d -f ${depth}" : ""
     def depth_file = depth ? "-a ${depth.baseName}" : ""
     """
-    echo "" | gzip -c > ${prefix}.1.fa.gz
-    echo "" | gzip -c > ${prefix}.1.tooShort.fa.gz
-    echo "" | gzip -c > ${prefix}.1.lowDepth.fa.gz
-    echo "" | gzip -c > ${prefix}.1.unbinned.fa.gz
-    echo "" | gzip -c > ${prefix}.tsv.gz
+    echo "" | gzip > ${prefix}.1.fa.gz
+    echo "" | gzip > ${prefix}.1.tooShort.fa.gz
+    echo "" | gzip > ${prefix}.1.lowDepth.fa.gz
+    echo "" | gzip > ${prefix}.1.unbinned.fa.gz
+    echo "" | gzip > ${prefix}.tsv.gz
     echo "${args}"
     echo "${decompress_depth}"
     echo "${depth_file}"

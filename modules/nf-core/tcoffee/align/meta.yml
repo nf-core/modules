@@ -100,9 +100,10 @@ output:
       - tcoffee:
           type: string
           description: The name of the tool
-      - t_coffee -version | awk '{gsub("Version_", ""); print \$3}':
+      - t_coffee -version | sed -n 's/.*Version_\([^ ]*\).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
+
   versions_pigz:
     - - ${task.process}:
           type: string
@@ -121,9 +122,10 @@ topics:
       - tcoffee:
           type: string
           description: The name of the tool
-      - t_coffee -version | awk '{gsub("Version_", ""); print \$3}':
+      - t_coffee -version | sed -n 's/.*Version_\([^ ]*\).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
+
     - - ${task.process}:
           type: string
           description: The name of the process
