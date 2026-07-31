@@ -23,15 +23,10 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'test']`
-    - R1_reads:
+    - reads:
         type: file
-        description: compressed fastq file
-        pattern: "*.{fastq.gz}"
-        ontologies:
-          - edam: http://edamontology.org/format_1930
-    - R2_reads:
-        type: file
-        description: compressed fastq file
+        description: |
+          Two compressed FASTQ files (R1 and R2).
         pattern: "*.{fastq.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930
