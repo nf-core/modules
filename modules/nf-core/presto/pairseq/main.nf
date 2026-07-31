@@ -8,7 +8,7 @@ process PRESTO_PAIRSEQ {
         'quay.io/biocontainers/presto:0.7.9--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(R1_reads), path(R2_reads)
+    tuple val(meta), path(reads)
     val(barcode_position)
 
     output:
@@ -20,12 +20,17 @@ process PRESTO_PAIRSEQ {
     task.ext.when == null || task.ext.when
 
     script:
-    def copyfield = (barcode_position == 'R1')? '--1f BARCODE' : (barcode_position == 'R2')? '--2f BARCODE' : (barcode_position == 'R1R2')? '--1f BARCODE --2f BARCODE' : (barcode_position == 'clustersets')? '--1f CLUSTER --2f CLUSTER' : ''
+    def copyfield = [
+        R1         : '--1f BARCODE',
+        R2         : '--2f BARCODE',
+        R1R2       : '--1f BARCODE --2f BARCODE',
+        clustersets: '--1f CLUSTER --2f CLUSTER'
+        ].get(barcode_position, '')
     def args = task.ext.args?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    PairSeq.py -1 ${R1_reads} \\
-               -2 ${R2_reads} \\
+    PairSeq.py -1 ${reads[0]} \\
+               -2 ${reads[1]} \\
                --outname ${prefix} \\
                $copyfield \\
                $args \\
