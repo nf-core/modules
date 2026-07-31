@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "matlock_bam2juicer"
+description: Converts a BAM file to Juicer links format
+keywords:
+  - BAM
+  - HiC
+  - juicer
+tools:
+  - "matlock":
+      description: "Simple tools for working with Hi-C data"
+      homepage: "https://github.com/phasegenomics/matlock"
+      documentation: "https://github.com/phasegenomics/matlock"
+      tool_dev_url: "https://github.com/phasegenomics/matlock"
+      licence: ["GNU Affero General Public License v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_25722"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+
+output:
+  links_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.links.txt":
+          type: file
+          description: Juicer links file
+          pattern: "*links.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"
