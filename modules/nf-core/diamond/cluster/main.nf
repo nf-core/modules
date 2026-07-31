@@ -4,8 +4,8 @@ process DIAMOND_CLUSTER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/diamond:2.2.1--he361c42_0'
-        : 'quay.io/biocontainers/diamond:2.2.1--he361c42_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/63/63594b00a9e68e690f398d9b9788a883753442dedcce590b4ba5aa97cff200f1/data'
+        : 'community.wave.seqera.io/library/diamond:2.2.2--910ae987965d0d4d'}"
 
     input:
     tuple val(meta), path(db)

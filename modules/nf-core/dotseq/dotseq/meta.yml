@@ -65,12 +65,19 @@ input:
           Per-ORF annotation table (one row per ORF). Required columns:
           `orf_id` (matches the count matrix) and `gene_id` (parent gene;
           DOTSeq's DOU model groups child ORFs by gene). Optional columns:
-          `orf_type` (mORF / uORF / dORF; used by plotDOT()'s heatmap and
-          defaults to mORF when absent) and `chrom`, `start`, `end`,
-          `strand` (used only for downstream inspection - dummy ranges
-          are generated when absent because DOTSeq's fit does not depend
-          on genomic coordinates). Column names can be overridden via
-          task.ext.args (`--gene_id_col`, `--orf_type_col`, etc.).
+          `orf_type` (used by plotDOT()'s heatmap to pair a gene's main ORF
+          against its short ORFs; defaults to the main-ORF value when absent)
+          and `chrom`, `start`, `end`, `strand` (used only for downstream
+          inspection - dummy ranges are generated when absent because
+          DOTSeq's fit does not depend on genomic coordinates). Column names
+          can be overridden via task.ext.args (`--gene_id_col`,
+          `--orf_type_col`, etc.). plotDOT()'s heatmap hardcodes the literal
+          label `mORF` for a gene's main ORF and only accepts `uORF` or
+          `dORF` for the short-ORF bucket it is paired against; whichever
+          value in `orf_type` denotes the main ORF is remapped to `mORF`
+          internally (override the source value via `--orf_type_main_value`,
+          default `mORF`), but short-ORF rows must already be labelled
+          `uORF`/`dORF` or the heatmap is silently skipped.
         ontologies:
           - edam: "http://edamontology.org/format_3475"
 

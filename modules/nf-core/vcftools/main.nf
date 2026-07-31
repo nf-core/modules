@@ -4,8 +4,8 @@ process VCFTOOLS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcftools:0.1.16--he513fc3_4' :
-        'quay.io/biocontainers/vcftools:0.1.16--he513fc3_4' }"
+        'https://depot.galaxyproject.org/singularity/vcftools:0.1.17--pl5321h077b44d_0' :
+        'quay.io/biocontainers/vcftools:0.1.17--pl5321h077b44d_0' }"
 
     input:
     // Owing to the nature of vcftools we here provide solutions to working with optional bed files and optional
@@ -79,7 +79,7 @@ process VCFTOOLS {
     tuple val(meta), path("*.diff.indv")              , optional:true, emit: diff_indv
     tuple val(meta), path("*.diff.discordance.matrix"), optional:true, emit: diff_discd_matrix
     tuple val(meta), path("*.diff.switch")            , optional:true, emit: diff_switch_error
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('vcftools'), eval('vcftools --version 2>&1 | sed "s/^.*VCFtools (//;s/).*//"'), emit: versions_vcftools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -118,11 +118,6 @@ process VCFTOOLS {
         ${args_list.join(' ')} \\
         $bed_arg \\
         $diff_variant_arg
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcftools: \$(echo \$(vcftools --version 2>&1) | sed 's/^.*VCFtools (//;s/).*//')
-    END_VERSIONS
     """
 
     stub:
@@ -190,10 +185,5 @@ process VCFTOOLS {
     touch ${prefix}.diff.indv
     touch ${prefix}.diff.discordance.matrix
     touch ${prefix}.diff.switch
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcftools: \$(echo \$(vcftools --version 2>&1) | sed 's/^.*VCFtools (//;s/).*//')
-    END_VERSIONS
     """
 }

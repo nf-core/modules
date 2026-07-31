@@ -12,7 +12,8 @@ tools:
       homepage: https://github.com/nextstrain/nextclade
       documentation: https://github.com/nextstrain/nextclade
       tool_dev_url: https://github.com/nextstrain/nextclade
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:nextclade
 input:
   - dataset:
@@ -39,7 +40,17 @@ output:
           description: The tool name
       - "nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'":
           type: eval
-          description: The version of the tool
+          description: The expression to obtain the tool version
+  versions_nextclade_dataset:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - nextclade-dataset:
+          type: string
+          description: The dataset version used
+      - "grep 'tag' ${prefix}/pathogen.json | sed 's/.*tag.: .\\([0-9-]\\+Z\\).*/\\1/'":
+          type: eval
+          description: The expression to obtain the dataset version
 topics:
   versions:
     - - ${task.process}:
@@ -50,7 +61,16 @@ topics:
           description: The tool name
       - "nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'":
           type: eval
-          description: The version of the tool
+          description: The expression to obtain the tool version
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - nextclade-dataset:
+          type: string
+          description: The dataset version used
+      - "grep 'tag' ${prefix}/pathogen.json | sed 's/.*tag.: .\\([0-9-]\\+Z\\).*/\\1/'":
+          type: eval
+          description: The expression to obtain the dataset version
 authors:
   - "@antunderwood"
   - "@drpatelh"
