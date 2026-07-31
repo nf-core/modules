@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "amulety_antiberta2"
-description: A module to create antiberta2 embeddings of antibody (BCR) amino acid
-  sequences using amulety.
+description: A module to create antiberta2 embeddings of antibody (BCR) amino acid sequences using amulety.
 deprecated: true
 keywords:
   - embeddings
@@ -76,3 +74,27 @@ authors:
   - "@ggabernet"
 maintainers:
   - "@ggabernet"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/amulety:1.1--0e94f7a12e9db539
+      build_id: bd-0e94f7a12e9db539_1
+      scan_id: sc-c46ca325fe6783e0_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/amulety:1.1--5abbe5fc5e136fd3
+      build_id: bd-5abbe5fc5e136fd3_1
+      scan_id: sc-0a568678900ef142_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/amulety:1.1--e1b6039b9704c9e1
+      build_id: bd-e1b6039b9704c9e1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/ae2be6d5fd5a4e1024b78eb1acdfdcb6aab4326f002e98d7c2c97ef00aa979e2/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/amulety:1.1--d896faa5bf18336b
+      build_id: bd-d896faa5bf18336b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f0/f0688cb48089eebe2648c1b2359e4a75a93b1e70f4580faac2173d16c61b8053/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/amulety/antiberta2/.conda-lock/linux_amd64-bd-5abbe5fc5e136fd3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/amulety/antiberta2/.conda-lock/linux_arm64-bd-0e94f7a12e9db539_1.txt
