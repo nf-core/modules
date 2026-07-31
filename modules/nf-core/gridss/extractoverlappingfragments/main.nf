@@ -19,7 +19,7 @@ process GRIDSS_EXTRACTOVERLAPPINGFRAGMENTS {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}.subset"
+   prefix = task.ext.prefix ?: "${meta.id}.subset"
     if ("${bam}" == "${prefix}.bam") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
@@ -31,7 +31,7 @@ process GRIDSS_EXTRACTOVERLAPPINGFRAGMENTS {
         $bam
     """
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}.subset"
+   prefix = task.ext.prefix ?: "${meta.id}.subset"
     if ("${bam}" == "${prefix}.bam") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
