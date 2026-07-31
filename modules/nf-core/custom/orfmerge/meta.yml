@@ -45,6 +45,13 @@ description: |
 
   Emits a small MultiQC custom-content TSV (per-class counts) for
   inclusion in downstream MultiQC reports.
+
+  Alongside the full catalogue, emits a consensus view (`*.consensus.*`)
+  filtered to ORFs supported by at least `--min-callers` distinct callers
+  and recurring in at least `--min-samples` samples (both default 1, i.e.
+  no filtering, so the consensus view equals the full catalogue). Raising
+  either threshold yields a higher-confidence catalogue without altering
+  the full one.
 keywords:
   - orf
   - ribo-seq
@@ -134,6 +141,44 @@ output:
           description: |
             MultiQC custom-content TSV (per-class ORF counts).
           pattern: "*.mqc.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  consensus_bed12:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.consensus.bed12:
+          type: file
+          description: |
+            Consensus-filtered catalogue as BED12 (ORFs meeting the
+            `--min-callers` / `--min-samples` thresholds).
+          pattern: "*.consensus.bed12"
+          ontologies:
+            - edam: http://edamontology.org/format_3586 # BED
+  consensus_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.consensus.tsv:
+          type: file
+          description: |
+            Consensus-filtered per-ORF table, same columns as the full
+            catalogue TSV.
+          pattern: "*.consensus.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  consensus_orf_to_gene_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.consensus.orf_to_gene.tsv:
+          type: file
+          description: |
+            ORF-to-gene mapping restricted to the consensus-filtered ORFs.
+          pattern: "*.consensus.orf_to_gene.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions:

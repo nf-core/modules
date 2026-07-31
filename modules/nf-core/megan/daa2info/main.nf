@@ -4,8 +4,8 @@ process MEGAN_DAA2INFO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/megan:6.24.20--h9ee0642_0':
-        'quay.io/biocontainers/megan:6.24.20--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/megan:6.25.9--h9ee0642_0':
+        'quay.io/biocontainers/megan:6.25.9--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(daa)
@@ -14,7 +14,7 @@ process MEGAN_DAA2INFO {
     output:
     tuple val(meta), path("*.txt.gz"), emit: txt_gz
     tuple val(meta), path("*.megan") , emit: megan, optional: true
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('megan'), eval("daa2info 2>&1 | sed -n 's/.*version \\([^,]*\\).*/\\1/p'"), emit: versions_megan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,12 +29,7 @@ process MEGAN_DAA2INFO {
         -i ${daa} \\
         -o ${prefix}.txt.gz \\
         ${summary} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        megan: \$(echo \$(rma2info 2>&1) | grep version | sed 's/.*version //g;s/, built.*//g')
-    END_VERSIONS
+        ${args}
     """
 
     stub:
@@ -42,12 +37,7 @@ process MEGAN_DAA2INFO {
     def megan_cmd = megan_summary ? "touch ${prefix}.megan" : ""
 
     """
-    echo | gzip > ${prefix}.txt.gz
+    echo "" | gzip > ${prefix}.txt.gz
     ${megan_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        megan: \$(echo \$(rma2info 2>&1) | grep version | sed 's/.*version //g;s/, built.*//g')
-    END_VERSIONS
     """
 }

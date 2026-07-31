@@ -12,7 +12,7 @@ process CELLRANGER_MULTI {
     tuple val(meta5)           , path (beam_fastqs  , stageAs: "fastqs/beam/fastq_???/*")
     tuple val(meta6)           , path (cmo_fastqs   , stageAs: "fastqs/cmo/fastq_???/*")
     tuple val(meta7)           , path (crispr_fastqs, stageAs: "fastqs/crispr/fastq_???/*")
-    path gex_reference         , stageAs: "references/gex/*"
+    tuple val(meta8)           , path (gex_reference , stageAs: "references/gex/*")
     path gex_frna_probeset     , stageAs: "references/gex/probeset/*"
     path gex_targetpanel       , stageAs: "references/gex/targetpanel/*"
     path vdj_reference         , stageAs: "references/vdj/*"

@@ -30,7 +30,6 @@ nextflow_process {
         }
         when {
             params {
-                module_args = "-j test.json"
                 pileupcaller_args = "--majorityCall --sampleNames test --eigenstratOut test"
             }
             process {
@@ -54,31 +53,6 @@ nextflow_process {
 
         when {
             params {
-                module_args = "-j test.json"
-                pileupcaller_args = "--majorityCall --sampleNames test --eigenstratOut test"
-            }
-            process {
-                """
-                input[0] = [[id: "test"], [], [], []]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
-
-    test("homo_sapiens - eigenstrat - output tsv only - stub") {
-        tag "stub"
-
-        options '-stub'
-
-        when {
-            params {
-                module_args = ""
                 pileupcaller_args = "--majorityCall --sampleNames test --eigenstratOut test"
             }
             process {

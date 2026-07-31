@@ -34,11 +34,6 @@ process TRGT_GENOTYPE {
         ${karyo} \\
         --threads ${task.cpus} \\
         --output-prefix ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trgt: \$(trgt --version |& sed '1!d ; s/trgt //')
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process TRGT_GENOTYPE {
     """
     touch ${prefix}.spanning.bam
     echo "" | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trgt: \$(trgt --version |& sed '1!d ; s/trgt //')
-    END_VERSIONS
     """
 }

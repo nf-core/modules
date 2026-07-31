@@ -1,0 +1,84 @@
+// nf-core modules test misopy/index
+nextflow_process {
+
+    name "Test Process MISOPY_INDEX"
+    script "../main.nf"
+    process "MISOPY_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "misopy"
+    tag "misopy/index"
+
+    test("homo sapiens - gff3") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'homo_sapiens' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gff3", checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def stableFiles = []
+            def emptyFiles = []
+            def unstableFiles = []
+            file(process.out.miso_index.get(0)[1]).eachFileRecurse {
+                f ->
+                if (f.size() == 0) {
+                    emptyFiles.add(f.name)
+                } else if (f.name.toString().matches(~/.*shelve.*/)) {
+                    unstableFiles.add(f.getName().toString())
+                } else if (f.name.toString().matches(~/.*pickle/)) {
+                    unstableFiles.add(f.getName().toString())
+                } else {
+                    stableFiles.add(f)
+                }
+            }
+
+            def sortedStableFiles = stableFiles.sort()
+            def sortedUnstableFiles = unstableFiles.sort()
+            def sortedEmptyFiles = emptyFiles.sort()
+
+            assertAll(
+                { assert snapshot(
+                    sortedStableFiles,
+                    sortedEmptyFiles,
+                    sortedUnstableFiles,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - gff3 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'homo_sapiens' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gff3", checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
