@@ -2,10 +2,10 @@
 // Alignment with bwa aln and sort
 //
 
-include { BWA_ALN        } from '../../../modules/nf-core/bwa/aln/main'
-include { BWA_SAMSE      } from '../../../modules/nf-core/bwa/samse/main'
-include { BWA_SAMPE      } from '../../../modules/nf-core/bwa/sampe/main'
-include { SAMTOOLS_INDEX } from '../../../modules/nf-core/samtools/index/main'
+include { BWA_ALN        } from '../../../modules/nf-core/bwa/aln'
+include { BWA_SAMSE      } from '../../../modules/nf-core/bwa/samse'
+include { BWA_SAMPE      } from '../../../modules/nf-core/bwa/sampe'
+include { SAMTOOLS_INDEX } from '../../../modules/nf-core/samtools/index'
 
 workflow FASTQ_ALIGN_BWAALN {
     take:
@@ -41,7 +41,6 @@ workflow FASTQ_ALIGN_BWAALN {
         index: [meta, index]
     }
 
-
     // Set as independent channel to allow repeated joining but _with_ sample specific metadata
     // to ensure right reference goes with right sample
     ch_reads_newid = ch_prepped_input.map { meta, reads, _meta_index, _index -> [meta, reads] }
@@ -52,26 +51,22 @@ workflow FASTQ_ALIGN_BWAALN {
 
     ch_sai_for_bam = ch_reads_newid
         .join(BWA_ALN.out.sai)
-        .branch { meta, _reads, _sai ->
+        .join(ch_index_newid)
+        .branch { meta, _reads, _sai, _index ->
             pe: !meta.single_end
             se: meta.single_end
         }
 
     // Split as PE/SE have different SAI -> BAM commands
-    ch_sai_for_bam_pe = ch_sai_for_bam.pe
-        .join(ch_index_newid)
-        .multiMap { meta, reads, sai, index ->
-            reads: [meta, reads, sai]
-            index: [meta, index]
-        }
+    ch_sai_for_bam_pe = ch_sai_for_bam.pe.multiMap { meta, reads, sai, index ->
+        reads: [meta, reads, sai]
+        index: [meta, index]
+    }
 
-    ch_sai_for_bam_se = ch_sai_for_bam.se
-        .join(ch_index_newid)
-        .multiMap { meta, reads, sai, index ->
-            reads: [meta, reads, sai]
-            index: [meta, index]
-        }
-
+    ch_sai_for_bam_se = ch_sai_for_bam.se.multiMap { meta, reads, sai, index ->
+        reads: [meta, reads, sai]
+        index: [meta, index]
+    }
 
     BWA_SAMPE(ch_sai_for_bam_pe.reads, ch_sai_for_bam_pe.index)
 
