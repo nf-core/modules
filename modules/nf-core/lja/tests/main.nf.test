@@ -1,0 +1,63 @@
+// If more than one CPU is used, the output is unstable.
+// Thus, we not compare md5sums, just check if the pipeline finished successfully.
+
+nextflow_process {
+
+    name "Test Process LJA"
+    script "../main.nf"
+    process "LJA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "lja"
+
+    test("lja - fastq") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file('https://cloud.bioinformatics.unibe.ch/index.php/s/AQ9FqWmGaZjDNMn/download?path=%2Fplasmid_reads.fastq.gz
+', checkIfExists: true) // URL of plasmid_reads.fastq.gz
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.fasta.get(0).get(1) ==~ '.*/test.assembly.fasta.gz' },
+                { assert process.out.gfa.get(0).get(1) ==~ '.*/test.mdbg.gfa.gz' },
+                { assert process.out.stdout.get(0).get(1) ==~ '.*/test.lja.stdout' },
+                { assert path(process.out.stdout.get(0).get(1)).readLines().last().contains("INFO: LJA pipeline finished") } // The output is unstable, so do not compare md5sums
+            )
+        }
+
+    }
+
+    test("lja - fastq - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file('/data/projects/p904_nf-core-hackathon/franzen_17.fastq.gz', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.fasta.get(0).get(1) ==~ '.*/test.assembly.fasta.gz' },
+                { assert process.out.gfa.get(0).get(1) ==~ '.*/test.mdbg.gfa.gz' },
+                { assert process.out.stdout.get(0).get(1) ==~ '.*/test.lja.stdout' },
+                { assert path(process.out.stdout.get(0).get(1)).readLines().last().contains("INFO: LJA pipeline finished") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
