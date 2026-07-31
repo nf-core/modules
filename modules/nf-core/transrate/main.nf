@@ -31,12 +31,15 @@ process TRANSRATE {
         --output .
 
     mv assemblies.csv ${prefix}.assemblies.csv
-    mv */contigs.csv ${prefix}.contigs.csv
+    # transrate always writes contigs.csv into a subdirectory named after the assembly's
+    # own basename (not configurable via --output).
+    mv ${assembly.baseName}/contigs.csv ${prefix}.contigs.csv
 
     # transrate writes the resolved absolute path of the input assembly into the first
-    # column of the report; replace it with the sample prefix so the report content is
-    # reproducible across environments and task work directories.
-    sed -i "2s@^[^,]*@${prefix}@" ${prefix}.assemblies.csv
+    # column of the report; that path is task-work-directory-specific, so replace it with
+    # just the file's own name to keep the column meaningful without embedding a
+    # non-portable, non-reproducible absolute path.
+    sed -i "2s@^[^,]*@${assembly.name}@" ${prefix}.assemblies.csv
     """
 
     stub:
