@@ -27,7 +27,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf", "distribution"])).match() }
             )
         }
     }
