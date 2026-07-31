@@ -12,7 +12,7 @@ process GRIDSS_EXTRACTOVERLAPPINGFRAGMENTS {
     tuple val(meta2), path(target_bed)
 
     output:
-    tuple val(meta), path("*.subset.bam"),       emit: bam
+    tuple val(meta), path("${prefix}.bam"),       emit: bam
     tuple val("${task.process}"), val('gridss'), eval("CallVariants --version 2>&1 | sed 's/-gridss//'"), topic: versions, emit: versions_gridss
 
     when:
@@ -25,9 +25,9 @@ process GRIDSS_EXTRACTOVERLAPPINGFRAGMENTS {
     }
     """
     gridss_extract_overlapping_fragments \\
-        -w '.' \\
+        --workingdir '.' \\
         --targetbed  ${target_bed}  \\
-        -o ${prefix}.bam \\
+        --output ${prefix}.bam \\
         $bam
     """
     stub:
