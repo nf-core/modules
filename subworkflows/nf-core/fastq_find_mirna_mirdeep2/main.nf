@@ -11,19 +11,15 @@ workflow FASTQ_FIND_MIRNA_MIRDEEP2 {
     ch_mirna_mature_hairpin // channel: [ val(meta),  mature_mirna, hairpin_mirna ]
 
     main:
-    ch_versions = channel.empty()
 
     SEQKIT_FQ2FA(ch_reads)
 
     SEQKIT_REPLACE(SEQKIT_FQ2FA.out.fasta, 'fasta')
 
     MIRDEEP2_MAPPER(SEQKIT_REPLACE.out.fastx, ch_bowtie_index)
-    ch_versions = ch_versions.mix(MIRDEEP2_MAPPER.out.versions)
 
     MIRDEEP2_MIRDEEP2(MIRDEEP2_MAPPER.out.outputs, ch_genome_fasta, ch_mirna_mature_hairpin)
-    ch_versions = ch_versions.mix(MIRDEEP2_MIRDEEP2.out.versions)
 
     emit:
     outputs  = MIRDEEP2_MIRDEEP2.out.outputs // channel: [ val(meta), [ bed, csv, html ] ]
-    versions = ch_versions // channel: [ versions.yml ]
 }

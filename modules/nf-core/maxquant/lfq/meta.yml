@@ -1,17 +1,19 @@
 name: maxquant_lfq
-description: Run standard proteomics data analysis with MaxQuant, mostly dedicated
-  to label-free. Paths to fasta and raw files needs to be marked by "PLACEHOLDER"
+description: Run standard proteomics data analysis with MaxQuant, mostly
+  dedicated to label-free. Paths to fasta and raw files needs to be marked by
+  "PLACEHOLDER"
 keywords:
   - sort
   - proteomics
   - mass-spectroscopy
 tools:
   - maxquant:
-      description: MaxQuant is a quantitative proteomics software package designed for
-        analyzing large mass-spectrometric data sets. License restricted.
+      description: MaxQuant is a quantitative proteomics software package designed
+        for analyzing large mass-spectrometric data sets. License restricted.
       homepage: https://www.maxquant.org/
       documentation: http://coxdocs.org/doku.php?id=maxquant:start
-      licence: ["http://www.coxdocs.org/lib/exe/fetch.php?media=license_agreement.pdf"]
+      licence:
+        - "http://www.coxdocs.org/lib/exe/fetch.php?media=license_agreement.pdf"
       identifier: biotools:maxquant
 input:
   - - meta:
@@ -45,13 +47,29 @@ output:
           description: tables with peptides and protein information
           pattern: "*.{txt}"
           ontologies: []
+  versions_maxquant:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - maxquant:
+          type: string
+          description: The name of the tool
+      - maxquant --version 2>&1 | sed 's/MaxQuantCmd //' || true:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - maxquant:
+          type: string
+          description: The name of the tool
+      - maxquant --version 2>&1 | sed 's/MaxQuantCmd //' || true:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@veitveit"
 maintainers:
