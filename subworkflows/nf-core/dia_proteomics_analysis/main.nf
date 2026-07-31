@@ -262,7 +262,6 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         }
 
     QUANTMSUTILS_DIANNCFG(ch_config_input)
-    ch_versions = ch_versions.mix(QUANTMSUTILS_DIANNCFG.out.versions)
 
     //
     // MODULE: In-silico library generation. Needs to run once for every unique config/ FASTA dataset combination.
@@ -420,7 +419,6 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .unique()
 
     QUANTMSUTILS_MZMLSTATISTICS(ch_mzml_stats_input)
-    ch_versions = ch_versions.mix(QUANTMSUTILS_MZMLSTATISTICS.out.versions)
 
     ch_statistics = QUANTMSUTILS_MZMLSTATISTICS.out.ms_statistics   // [meta_input, ms_statistics]
         .map{ tuple -> [tuple[0].experiment, tuple[1]] }             // [meta_exp_searchdb, ms_statistics]
@@ -450,7 +448,6 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         }
 
     QUANTMSUTILS_DIANN2MZTAB(ch_diann2mztab_input)
-    ch_versions = ch_versions.mix(QUANTMSUTILS_DIANN2MZTAB.out.versions)
 
     emit:
     versions                = ch_versions
