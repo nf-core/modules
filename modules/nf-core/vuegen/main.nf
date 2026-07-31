@@ -10,7 +10,7 @@ process VUEGEN {
 
     output:
     path "*report", emit: output_folder
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('vuegen'), eval('python -c "import vuegen; print(vuegen.__version__)"'), emit: versions_vuegen, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +33,6 @@ process VUEGEN {
             echo "Running VueGen with directory: ${input_path}"
             vuegen --directory ${input_path} --report_type ${report_type} \$QUARTO_CHECK_FLAG ${args}
         fi
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            vuegen: \$( python -c "import vuegen; print(vuegen.__version__)" )
-        END_VERSIONS
         """
 
     stub:
@@ -45,10 +40,5 @@ process VUEGEN {
         echo "STUB MODE: Creating a generic report directory"
         mkdir -p report
         touch report/report.txt
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            vuegen: \$( python -c "import vuegen; print(vuegen.__version__)" )
-        END_VERSIONS
         """
 }

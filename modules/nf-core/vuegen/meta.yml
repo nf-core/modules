@@ -55,13 +55,27 @@ output:
           - If `report_type` is 'streamlit', a 'streamlit_report' directory is created, containing subfolders for each section with Python scripts corresponding to the web application's pages.
           - For other report types, a 'quarto_report' directory is generated, containing a Quarto Markdown (qmd) file that structures the entire report.
         pattern: "*report"
+  versions_vuegen:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vuegen:
+          type: string
+          description: The name of the tool
+      - 'python -c "import vuegen; print(vuegen.__version__)"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vuegen:
+          type: string
+          description: The name of the tool
+      - 'python -c "import vuegen; print(vuegen.__version__)"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sayalaruano"
   - "@enryH"
