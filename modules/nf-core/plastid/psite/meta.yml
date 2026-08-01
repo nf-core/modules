@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "plastid_psite"
 description: Estimate position of ribosomal P-site within ribosome profiling
   read alignments as a function of read length
@@ -8,14 +7,15 @@ keywords:
   - psite
 tools:
   - "plastid":
-      description: "Nucleotide-resolution analysis of next-generation sequencing and genomics data"
+      description: "Nucleotide-resolution analysis of next-generation sequencing and
+        genomics data"
       homepage: "https://github.com/joshuagryphon/plastid"
       documentation: "https://plastid.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/joshuagryphon/plastid"
       doi: "10.1186/s12864-016-3278-x"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:plastid
-
 input:
   - - meta:
         type: map
@@ -27,13 +27,13 @@ input:
         description: Genome BAM file
         pattern: "*.bam"
         ontologies:
-          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_2572
     - bam_index:
         type: file
         description: Genome BAM index file
         pattern: "*.bai"
         ontologies:
-          - edam: http://edamontology.org/format_3327 # BAI
+          - edam: http://edamontology.org/format_3327
   - - meta2:
         type: map
         description: |
@@ -69,7 +69,7 @@ output:
           description: Graphical illustration of metagene profiles
           pattern: "*_p_offsets.png"
           ontologies:
-            - edam: http://edamontology.org/format_3603 # PNG
+            - edam: http://edamontology.org/format_3603
   p_offsets:
     - - meta:
           type: map
@@ -81,13 +81,27 @@ output:
           description: Selected p-site offset for each read length
           pattern: "*_p_offsets.txt"
           ontologies: []
+  versions_plastid:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plastid:
+          type: string
+          description: The name of the tool
+      - 0.6.1:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plastid:
+          type: string
+          description: The name of the tool
+      - 0.6.1:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@suhrig"
 maintainers:
