@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "pbtk_bam2fastq"
 description: converts pacbio bam files to fastq.gz using PacBioToolKit (pbtk) bam2fastq
 keywords:
@@ -13,7 +12,8 @@ tools:
       documentation: "https://github.com/PacificBiosciences/pbtk#usage"
       tool_dev_url: "https://github.com/PacificBiosciences/pbtk"
       doi: "no DOI available"
-      licence: ["BSD-3-clause-Clear"]
+      licence:
+        - "BSD-3-clause-Clear"
       identifier: ""
 
 input:
@@ -49,7 +49,7 @@ output:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - bam2fastq:
+      - pbtk:
           type: string
           description: The name of the tool
       - bam2fastq --version 2>&1 | sed -n 's/.*bam2fastq //p' | cut -d' ' -f1:
@@ -60,7 +60,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - bam2fastq:
+      - pbtk:
           type: string
           description: The name of the tool
       - bam2fastq --version 2>&1 | sed -n 's/.*bam2fastq //p' | cut -d' ' -f1:

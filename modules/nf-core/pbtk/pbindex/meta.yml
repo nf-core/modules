@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "pbtk_pbindex"
-description: Minimalistic tool which creates an index file that enables random access
-  into PacBio BAM files
+description: Minimalistic tool which creates an index file that enables random access into PacBio BAM files
 keywords:
   - genomics
   - bam
@@ -13,7 +11,8 @@ tools:
       homepage: "https://github.com/PacificBiosciences/pbtk"
       documentation: "https://github.com/PacificBiosciences/pbtk"
       tool_dev_url: "https://github.com/PacificBiosciences/pbtk"
-      licence: ["BSD-3-clause-Clear"]
+      licence:
+        - "BSD-3-clause-Clear"
       identifier: ""
 
 input:
@@ -43,7 +42,7 @@ output:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - pbindex:
+      - pbtk:
           type: string
           description: The name of the tool
       - pbindex --version | head -n1 | cut -d' ' -f2:
@@ -54,7 +53,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - pbindex:
+      - pbtk:
           type: string
           description: The name of the tool
       - pbindex --version | head -n1 | cut -d' ' -f2:
