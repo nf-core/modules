@@ -62,6 +62,9 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = '--min_samples_per_group 2 --min_samples_per_intron 2'
+            }
             process {
                 """
                 def groups_content = '''ctrl_rep1\\tCONTROL
@@ -89,9 +92,14 @@ kd_rep2\\tKNOCKDOWN
 
     test("homo_sapiens - bam - differential splicing - stub") {
 
+        config "./nextflow.config"
+
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
