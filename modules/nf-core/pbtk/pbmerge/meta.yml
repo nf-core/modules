@@ -54,14 +54,27 @@ output:
           description: BAM Pacbio index file
           pattern: "*.bam.pbi"
           ontologies: []
+  versions_pbmerge:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbmerge:
+          type: string
+          description: The name of the tool
+      - pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbmerge:
+          type: string
+          description: The name of the tool
+      - pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@haidyi"
 maintainers:
