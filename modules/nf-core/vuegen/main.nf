@@ -27,6 +27,17 @@ process VUEGEN {
             QUARTO_CHECK_FLAG=""
         fi
 
+        # Same Quarto cache fix as modules/nf-core/quartonotebook.
+        # Fix Quarto for Apptainer (see https://community.seqera.io/t/confusion-over-why-a-tool-works-in-docker-but-fails-in-singularity-when-the-installation-doesnt-differ-i-e-using-wave-micromamba/1244)
+        export XDG_CACHE_HOME="./.xdg_cache_home"
+        export XDG_DATA_HOME="./.xdg_data_home"
+        ENV_QUARTO=/opt/conda/etc/conda/activate.d/quarto.sh
+        set +u
+        if [ -z "\${QUARTO_DENO}" ] && [ -f "\${ENV_QUARTO}" ]; then
+            source "\${ENV_QUARTO}"
+        fi
+        set -u
+
         # Execute VueGen based on the input type
         if [ "${input_type}" == "config" ]; then
             echo "Running VueGen with config file: ${input_path}"
