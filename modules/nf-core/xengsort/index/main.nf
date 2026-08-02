@@ -3,9 +3,9 @@ process XENGSORT_INDEX {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/xengsort:2.2.1--pyhdfd78af_0':
-        'quay.io/biocontainers/xengsort:2.2.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/xengsort:2.2.1--pyhdfd78af_0'
+        : 'biocontainers/xengsort:2.2.1--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(host_fasta, stageAs: "host/*")
