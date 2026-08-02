@@ -8,15 +8,15 @@ process XENGSORT_INDEX {
         'quay.io/biocontainers/xengsort:2.1.0--pyhdfd78af_0' }"
 
     input:
-    path(host_fasta, stageAs: "host/*")
-    path(graft_fasta, stageAs: "graft/*")
+    tuple val(meta), path(host_fasta, stageAs: "host/*")
+    tuple val(meta1), path(graft_fasta, stageAs: "graft/*")
     val index
     val nobjects
     val mask
 
     output:
-    path "${index}.hash"          , emit: hash
-    path "${index}.info"          , emit: info
+    tuple val(meta1), path("${index}.hash")          , emit: hash
+    tuple val(meta1), path("${index}.info")          , emit: info
     tuple val("${task.process}"), val('xengsort'), eval("xengsort --version"), topic: versions, emit: versions_xengsort
 
     when:
