@@ -29,6 +29,10 @@ process VUEGEN {
 
         # Same Quarto cache fix as modules/nf-core/quartonotebook.
         # Fix Quarto for Apptainer (see https://community.seqera.io/t/confusion-over-why-a-tool-works-in-docker-but-fails-in-singularity-when-the-installation-doesnt-differ-i-e-using-wave-micromamba/1244)
+        # HOME is also made writable so Quarto can install TinyTeX for PDF reports.
+        # Same fix as in modules/nf-core/memote/report and modules/nf-core/bcftools/plotvcfstats.
+        mkdir -p nxf_home
+        export HOME=\$PWD/nxf_home
         export XDG_CACHE_HOME="./.xdg_cache_home"
         export XDG_DATA_HOME="./.xdg_data_home"
         ENV_QUARTO=/opt/conda/etc/conda/activate.d/quarto.sh
