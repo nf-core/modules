@@ -64,7 +64,7 @@ nextflow_process {
         }
         then {
             assertAll(
-                { assert process.success},
+                { assert process.success },
                 {
                     // Guard against a silently vacuous merge (e.g. if the setup
                     // filesets were empty): the concatenated pvar must carry all
@@ -102,7 +102,7 @@ nextflow_process {
         }
         then {
             assertAll(
-                { assert process.success},
+                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
