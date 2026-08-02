@@ -1,7 +1,9 @@
 process VUEGEN {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "quay.io/nf-core/vuegen:0.5.1"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cd/cd83e0a51f0f2b0d4796e4c30cced46a1204f463a8707dad70ccd681e4ab588e/data'
+:         'community.wave.seqera.io/library/python_vuegen_xz:23a454c211b5c866' }"
 
     input:
     val input_type
