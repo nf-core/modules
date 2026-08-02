@@ -29,7 +29,7 @@ process LEAFCUTTER_DIFFERENTIALSPLICING {
     leafcutter-ds \\
         $counts \\
         $groups \\
-        --output_prefix ${prefix}_results \\
+        --output_prefix ${prefix} \\
         --num_threads $task.cpus \\
         $args
     """
