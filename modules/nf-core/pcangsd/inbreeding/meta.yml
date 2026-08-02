@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "pcangsd_inbreeding"
+description: write your description here
+keywords:
+  - pcangsd
+  - inbreeding coefficients
+  - genomics
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "pcangsd":
+      description: "Framework for analyzing low-depth next-generation sequencing (NGS)
+        data in heterogeneous/structured populations using principal component analysis
+        (PCA). "
+      homepage: "https://github.com/Rosemeis/pcangsd"
+      documentation: "https://github.com/Rosemeis/pcangsd"
+      tool_dev_url: "https://github.com/Rosemeis/pcangsd"
+      doi: "10.1534/genetics.118.301336"
+      licence: ["GPL v3-or-later"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing population information
+          e.g. [ id:'test', population:'population id', samples:'sample IDs' ]
+    - beagle_file:
+        type: file
+        description: Beagle genotype likelihood file produced by ANGSD
+        pattern: "*.beagle.gz"
+        ontologies: []
+output:
+  ### TODO nf-core: Add a description of all of the variables used as output
+  inbreeding_coefficients:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing population information
+            e.g. [ id:'test', population:'population id', samples:'sample IDs' ]
+      - "*.inbreed.samples":
+          type: file
+          description: Per-sample inbreeding coefficients file produced by pcangsd
+          pattern: "*.inbreed.samples"
+          ontologies: []
+  versions_pcangsd:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "pcangsd":
+          type: string
+          description: The name of the tool
+      - "pcangsd --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pcangsd:
+          type: string
+          description: The name of the tool
+      - pcangsd --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ASendellPrice"
+maintainers:
+  - "@ASendellPrice"
