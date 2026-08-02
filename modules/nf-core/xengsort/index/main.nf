@@ -5,16 +5,16 @@ process XENGSORT_INDEX {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/xengsort:2.2.1--pyhdfd78af_0'
-        : 'biocontainers/xengsort:2.2.1--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/xengsort:2.2.1--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(host_fasta, stageAs: "host/*")
-    tuple val(meta1), path(graft_fasta, stageAs: "graft/*")
+    tuple val(meta2), path(graft_fasta, stageAs: "graft/*")
     val nobjects
 
     output:
-    tuple val(meta1), path("*.hash")          , emit: hash
-    tuple val(meta1), path("*.info")          , emit: info
+    tuple val(meta2), path("*.hash")          , emit: hash
+    tuple val(meta2), path("*.info")          , emit: info
     tuple val("${task.process}"), val('xengsort'), eval("xengsort --version"), topic: versions, emit: versions_xengsort
 
     when:
