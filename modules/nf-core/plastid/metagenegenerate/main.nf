@@ -1,4 +1,4 @@
-process PLASTID_METAGENE_GENERATE {
+process PLASTID_METAGENEGENERATE {
     tag "$annotation"
     label "process_low"
 

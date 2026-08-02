@@ -1,4 +1,4 @@
-process PLASTID_MAKE_WIGGLE {
+process PLASTID_MAKEWIGGLE {
     tag "$meta.id"
     label "process_single"
 

@@ -1,14 +1,14 @@
 // nf-core modules test plastid
 nextflow_process {
 
-    name "Test Process PLASTID_MAKE_WIGGLE"
+    name "Test Process PLASTID_MAKEWIGGLE"
     script "../main.nf"
-    process "PLASTID_MAKE_WIGGLE"
+    process "PLASTID_MAKEWIGGLE"
 
     tag "modules"
     tag "modules_nfcore"
     tag "plastid"
-    tag "plastid/make_wiggle"
+    tag "plastid/makewiggle"
 
     test("human chr20 bam - fiveprime_variable") {
 

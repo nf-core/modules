@@ -1,14 +1,14 @@
 // nf-core modules test plastid
 nextflow_process {
 
-    name "Test Process PLASTID_METAGENE_GENERATE"
+    name "Test Process PLASTID_METAGENEGENERATE"
     script "../main.nf"
-    process "PLASTID_METAGENE_GENERATE"
+    process "PLASTID_METAGENEGENERATE"
 
     tag "modules"
     tag "modules_nfcore"
     tag "plastid"
-    tag "plastid/metagene_generate"
+    tag "plastid/metagenegenerate"
 
     test("human chr20 gtf") {
 
