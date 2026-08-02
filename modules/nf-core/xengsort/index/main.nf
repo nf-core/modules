@@ -10,13 +10,12 @@ process XENGSORT_INDEX {
     input:
     tuple val(meta), path(host_fasta, stageAs: "host/*")
     tuple val(meta1), path(graft_fasta, stageAs: "graft/*")
-    val index
     val nobjects
     val mask
 
     output:
-    tuple val(meta1), path("${index}.hash")          , emit: hash
-    tuple val(meta1), path("${index}.info")          , emit: info
+    tuple val(meta1), path("*.hash")          , emit: hash
+    tuple val(meta1), path("*.info")          , emit: info
     tuple val("${task.process}"), val('xengsort'), eval("xengsort --version"), topic: versions, emit: versions_xengsort
 
     when:
@@ -24,20 +23,22 @@ process XENGSORT_INDEX {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     xengsort \\
         index \\
         $args \\
-        --index $index \\
-        --host $host_fasta \\
-        --graft $graft_fasta \\
-        --nobjects $nobjects \\
-        --mask '$mask' \\
+        --index ${prefix} \\
+        --host ${host_fasta} \\
+        --graft ${graft_fasta} \\
+        --nobjects ${nobjects} \\
+        --mask '${mask}'
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${index}.info
-    touch ${index}.hash
+    touch ${prefix}.info
+    touch ${prefix}.hash
     """
 }
