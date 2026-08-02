@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "xengsort_index"
-description: Build a bucketed 3-way Cuckoo hash table index from host and graft
-  reference FASTA files for xenograft read sorting.
+description: Build a bucketed 3-way Cuckoo hash table index from host and graft reference FASTA files for xenograft read sorting.
 keywords:
   - index
   - xenograft
@@ -12,13 +10,13 @@ keywords:
   - graft
 tools:
   - "xengsort":
-      description: "Fast lightweight accurate xenograft sorting using 3-way bucketed
-        Cuckoo hashing"
+      description: "Fast lightweight accurate xenograft sorting using 3-way bucketed Cuckoo hashing"
       homepage: "https://gitlab.com/genomeinformatics/xengsort"
       documentation: "https://gitlab.com/genomeinformatics/xengsort"
       tool_dev_url: "https://gitlab.com/genomeinformatics/xengsort"
       doi: "10.4230/LIPIcs.WABI.2020.4"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 
 input:
@@ -32,7 +30,7 @@ input:
         description: Reference FASTA file(s) for the host organism.
         pattern: "*.{fasta,fa,fasta.gz,fa.gz,fasta.bz2,fa.bz2,fasta.xz,fa.xz}"
         ontologies: []
-  - - meta1:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing graft reference information
@@ -44,39 +42,39 @@ input:
         ontologies: []
   - nobjects:
       type: integer
-      description: Estimated total number of k-mers to be stored in the hash
-        table.
+      description: Estimated total number of k-mers to be stored in the hash table.
 
 output:
   hash:
-    - - meta1:
+    - - meta2:
           type: map
           description: |
-            Groovy Map containing graft reference information
-            e.g. `[ id:'graft_ref' ]`
+            Groovy Map containing metadata from the graft or combined reference.
       - "*.hash":
           type: file
           description: Binary Cuckoo hash table file.
           pattern: "*.hash"
           ontologies: []
   info:
-    - - meta1:
+    - - meta2:
           type: map
           description: |
-            Groovy Map containing graft reference information
-            e.g. `[ id:'graft_ref' ]`
+            Groovy Map containing metadata from the graft or combined reference.
       - "*.info":
           type: file
           description: Header and metadata file containing hash table parameters.
           pattern: "*.info"
           ontologies: []
   versions_xengsort:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "xengsort":
+      - xengsort:
           type: string
           description: The name of the tool
+      - xengsort --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
