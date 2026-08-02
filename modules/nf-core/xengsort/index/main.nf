@@ -5,13 +5,12 @@ process XENGSORT_INDEX {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/xengsort:2.0.5--pyhdfd78af_0':
-        'quay.io/biocontainers/xengsort:2.1.0--pyhdfd78af_0' }"
+        'quay.io/biocontainers/xengsort:2.2.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(host_fasta, stageAs: "host/*")
     tuple val(meta1), path(graft_fasta, stageAs: "graft/*")
     val nobjects
-    val mask
 
     output:
     tuple val(meta1), path("*.hash")          , emit: hash
@@ -48,8 +47,7 @@ process XENGSORT_INDEX {
         --index ${prefix} \\
         --host ${host_fasta} \\
         --graft ${graft_fasta} \\
-        --nobjects ${nobjects} \\
-        --mask '${mask}'
+        --nobjects ${nobjects}
     """
 
     stub:
