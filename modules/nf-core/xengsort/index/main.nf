@@ -24,10 +24,27 @@ process XENGSORT_INDEX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def cpus = task.cpus as int
+
+    def subtables = Math.max([(cpus / 2) as int - 1, cpus - 3, 19].min(), 1)
+    if ((subtables % 2) == 0) {
+        subtables += 1
+    }
+
+    def read_threads = Math.ceil(subtables / 10) as int
+
+    def split_threads = 2 * read_threads
+
+    if ((subtables + read_threads + split_threads) >= cpus) {
+        read_threads = 1
+        split_threads = 2
+    }
     """
-    xengsort \\
-        index \\
+    xengsort index \\
         $args \\
+        --threads-split ${split_threads} \\
+        --threads-read ${read_threads} \\
+        --subtables ${subtables} \\
         --index ${prefix} \\
         --host ${host_fasta} \\
         --graft ${graft_fasta} \\
