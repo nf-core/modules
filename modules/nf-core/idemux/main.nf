@@ -12,9 +12,9 @@ process IDEMUX {
 
     output:
     tuple val(meta), path("[!undetermined]*.fastq.gz"), emit: fastq
-    tuple val(meta), path("undetermined_R?.fastq.gz"), optional: true, emit: undetermined
-    path "demultipexing_stats.tsv", emit: stats
-    path "versions.yml", emit: versions
+    tuple val(meta), path("undetermined_R?.fastq.gz") , emit: undetermined, optional: true
+    tuple val(meta), path("demultipexing_stats.tsv")  , emit: stats
+    tuple val("${task.process}"), val("idemux"), eval("idemux --version |& sed '1!d ; s/idemux //'"), topic: versions, emit: versions_idemux
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,12 +29,6 @@ process IDEMUX {
         --sample-sheet ${samplesheet} \\
         --out . \\
         ${args}
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        idemux: \$(idemux --version |& sed '1!d ; s/idemux //')
-    END_VERSIONS
     """
 
     stub:
@@ -50,10 +44,5 @@ process IDEMUX {
     touch undetermined_R1.fastq
     touch undetermined_R2.fastq
     gzip *.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        idemux: \$(idemux --version |& sed '1!d ; s/idemux //')
-    END_VERSIONS
     """
 }

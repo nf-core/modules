@@ -10,7 +10,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "custom"
     tag "custom/geneticmapconvert"
-    tag "tabix/bgzip"
+    tag "htslib/bgziptabix"
 
     test("Convert map with pos\\tchr\\tcm - with header - meta.chr (glimpse format)") {
         when {
@@ -31,7 +31,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    sanitizeOutput(process.out, unstableKeys:["session_info"]),
                     path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
@@ -44,14 +44,19 @@ nextflow_process {
 
     test("Convert map with pos\\tchr\\tcM - with header - meta.chr (glimpse compressed format)") {
         setup {
-            run("TABIX_BGZIP"){
-                script "../../../tabix/bgzip/main.nf"
+            run("HTSLIB_BGZIPTABIX"){
+                script "../../../htslib/bgziptabix/main.nf"
                 process {
                     """
                     input[0] = [
                         [id: "test", chr:"chr21"],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map', checkIfExists: true),
+                        [],
+                        []
                     ]
+                    input[1] = "compress"
+                    input[2] = false
+                    input[3] = "map"
                     """
                 }
             }
@@ -62,7 +67,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = TABIX_BGZIP.out.output
+                input[0] = HTSLIB_BGZIPTABIX.out.output
                 """
             }
         }
@@ -71,7 +76,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    sanitizeOutput(process.out, unstableKeys:["session_info"]),
                     path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
@@ -101,7 +106,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    sanitizeOutput(process.out, unstableKeys:["session_info"]),
                     path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
@@ -131,7 +136,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    sanitizeOutput(process.out, unstableKeys:["session_info"]),
                     path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
@@ -230,7 +235,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    sanitizeOutput(process.out, unstableKeys:["session_info"]),
                     path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
@@ -387,7 +392,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    sanitizeOutput(process.out, unstableKeys:["session_info"]),
                     path(process.out.versions[0]).yaml,
                     path(process.out.glimpse_map[0][1]).readLines()[0..2],
                     path(process.out.plink_map[0][1]).readLines()[0..2],
@@ -445,7 +450,7 @@ nextflow_process {
 
         then {
             assert snapshot(
-                sanitizeOutput(process.out),
+                sanitizeOutput(process.out, unstableKeys:["session_info"]),
                 path(process.out.versions[0]).yaml
             ).match()
         }

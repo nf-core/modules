@@ -11,7 +11,8 @@ tools:
       homepage: https://github.com/PacificBiosciences/IsoSeq/blob/master/isoseq-clustering.md
       documentation: https://github.com/PacificBiosciences/IsoSeq/blob/master/isoseq-clustering.md
       tool_dev_url: https://github.com/PacificBiosciences/IsoSeq/blob/master/isoseq-clustering.md
-      licence: ["BSD-3-Clause-Clear"]
+      licence:
+        - "BSD-3-Clause-Clear"
       identifier: ""
 input:
   - - meta:
@@ -70,7 +71,7 @@ output:
           description: A table files clusters (transcripts) members (read)
           pattern: "*.transcripts.cluster_report.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   transcriptset:
     - - meta:
           type: map
@@ -82,7 +83,7 @@ output:
           description: A metadata xml file which contains full paths to data files
           pattern: "*.transcripts.transcriptset.xml"
           ontologies:
-            - edam: http://edamontology.org/format_2332 # XML
+            - edam: http://edamontology.org/format_2332
   hq_bam:
     - - meta:
           type: map
@@ -149,13 +150,27 @@ output:
           description: Pacbio index of unclustered reads (when --singletons is set)
           pattern: "*.transcripts.singletons.bam.pbi"
           ontologies: []
+  versions_isoseq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - isoseq:
+          type: string
+          description: The name of the tool
+      - isoseq cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - isoseq:
+          type: string
+          description: The name of the tool
+      - isoseq cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sguizard"
 maintainers:

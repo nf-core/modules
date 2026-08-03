@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "OPT_FLIP_TRACK_STAT"
+description: Off-target probe detection
+keywords:
+  - opt
+  - flip
+  - track
+  - stat
+  - off-target-probe-detection
+  - probes
+  - off-target probes
+components:
+  - opt/flip
+  - opt/track
+  - opt/stat
+input:
+  - ch_probe_fasta:
+      type: file
+      description: |
+        The input channel containing the probes used in spatial experiment
+        Structure: [ val(meta), path('probes.fasta') ]
+      pattern: "*.{fasta,fa}"
+  - ch_references:
+      type: file
+      description: |
+        The input channel containing the reference fasta and reference gtf/gff files
+        Structure: [ val(meta), ["reference_annotations.{gff/gtf}"], ["reference_annotations.fa"]]
+      pattern: "*{.gff,.gtf},*{.fa,.fasta}"
+  - ch_gene_synonyms:
+      type: file
+      description: |
+        The input channel containing the gene synonyms file
+        Structure: [ path('gene_synonyms.csv') ]
+      pattern: "*.csv"
+output:
+  - summary:
+      type: file
+      description: |
+        Channel containing the collapsed summary of the off-target probes
+        Structure: [ val(meta), path(collapsed_summary.tsv) ]
+      pattern: "*.tsv"
+authors:
+  - "@khersameesh24"
+maintainers:
+  - "@khersameesh24"

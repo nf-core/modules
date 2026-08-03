@@ -22,7 +22,7 @@ process ISOSEQ_CLUSTER {
     tuple val(meta), path("*.transcripts.lq.bam.pbi")        , optional: true, emit: lq_pbi
     tuple val(meta), path("*.transcripts.singletons.bam")    , optional: true, emit: singletons_bam
     tuple val(meta), path("*.transcripts.singletons.bam.pbi"), optional: true, emit: singletons_pbi
-    path  "versions.yml"                                     , emit: versions
+    tuple val("${task.process}"), val('isoseq'), eval("isoseq cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g'"), emit: versions_isoseq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process ISOSEQ_CLUSTER {
         $bam \\
         ${prefix}.transcripts.bam \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        isoseq: \$( isoseq cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g' )
-    END_VERSIONS
     """
 
     stub:
@@ -51,10 +46,5 @@ process ISOSEQ_CLUSTER {
     touch ${prefix}.transcripts.cluster
     touch ${prefix}.transcripts.cluster_report.csv
     touch ${prefix}.transcripts.transcriptset.xml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        isoseq: \$( isoseq cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g' )
-    END_VERSIONS
     """
 }

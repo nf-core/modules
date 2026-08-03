@@ -11,37 +11,29 @@ process TABIX_TABIX {
     tuple val(meta),  path(tab), path(tai), path(regions)
 
     output:
-    tuple val(meta), path("*.{tbi,csi}"),         emit: index,     optional: true
-    tuple val(meta), path("${prefix}.*gz"),       emit: extracted, optional: true
-    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'")   , topic: versions   , emit: versions_tabix
+    tuple val(meta), path("*.{tbi,csi}"), emit: index    , optional: true
+    tuple val(meta), path("output.*gz") , emit: extracted, optional: true
+    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'"), topic: versions, emit: versions_tabix
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix          = task.ext.prefix ?: "${meta.id}"
-    def tab_suffix  = tab.name.indexOf('.') >= 0 ? tab.name.substring(tab.name.indexOf('.')) : ''
-    def regions_arg = regions ? "-R ${regions}" : ""
-    def output_arg  = regions ? "| bgzip --threads ${task.cpus} > ${prefix}${tab_suffix}" : ""
-    """
-    tabix \\
-        ${regions_arg} \\
-        --threads $task.cpus \\
-        $args \\
-        $tab \\
-        ${output_arg}
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use HTSLIB/BGZIPTABIX instead.
 
-    """
+    Reason:
+    This module is duplicative of HTSLIB/BGZIPTABIX. The HTSLIB/BGZIPTABIX module is the canonical replacement and provides equivalent functionality through HTSlib with a more predictable behavior and better interface.
+    """.stripIndent()
+    assert false: deprecation_message
+
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def tab_suffix = tab.name.indexOf('.') >= 0 ? tab.name.substring(tab.name.indexOf('.')) : ''
-    def ext = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
-    def index     = regions ? "" : "touch ${tab}.${ext}"
-    def extracted = regions ? "echo | gzip > ${prefix}${tab_suffix}" : ""
-    """
-    ${index}
-    ${extracted}
-    """
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use HTSLIB/BGZIPTABIX instead.
+
+    Reason:
+    This module is duplicative of HTSLIB/BGZIPTABIX. The HTSLIB/BGZIPTABIX module is the canonical replacement and provides equivalent functionality through HTSlib with a more predictable behavior and better interface.
+    """.stripIndent()
+    assert false: deprecation_message
+
 }

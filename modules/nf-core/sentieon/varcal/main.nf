@@ -48,14 +48,18 @@ process SENTIEON_VARCAL {
         labels_command = processedResources.join(' ')
     }
     else if (labels_input instanceof List) {
-        // Process list input
-        def processedResources = labels_input.collect { label ->
-            def cleanedLabel = label.replaceFirst('^--resource:', '')
-            def items = cleanedLabel.split(' ', 2)
-            if (items.size() != 2) {
-                error("Expected the resource string '${cleanedLabel}' to contain two elements separated by a space.")
+        // Each list element may itself contain multiple `--resource:` directives
+        // (e.g. when params.known_indels_vqsr packs both `gatk` and `mills` into
+        // one string), so split each element on `--resource:` just like the
+        // String branch does, then process each individual resource.
+        def processedResources = labels_input.collectMany { label ->
+            label.split('--resource:').findAll().collect { resource_string ->
+                def items = resource_string.split(' ', 2)
+                if (items.size() != 2) {
+                    error("Expected the resource string '${resource_string}' to contain two elements separated by a space.")
+                }
+                "--resource ${items[1]} --resource_param ${items[0].replaceFirst('^--resource:', '')}"
             }
-            "--resource ${items[1]} --resource_param ${items[0].replaceFirst('^--resource:', '')}"
         }
         labels_command = processedResources.join(' ')
     }
@@ -69,7 +73,9 @@ process SENTIEON_VARCAL {
     """
     ${sentieonLicense}
 
-    sentieon driver -r ${fasta}  --algo VarCal \\
+    sentieon driver \\
+        -r ${fasta} \\
+        --algo VarCal \\
         -v ${vcf} \\
         --tranches_file ${prefix}.tranches \\
         ${labels_command} \\

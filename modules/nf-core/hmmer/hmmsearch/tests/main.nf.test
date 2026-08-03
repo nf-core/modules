@@ -9,15 +9,15 @@ nextflow_process {
     tag "hmmer"
     tag "hmmer/hmmsearch"
 
-    test("hmmer/hmmsearch") {
+    test("bacteria - [ hmm, fasta ] - txt") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
                     false,
                     false,
                     false
@@ -29,22 +29,22 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.output[0][1]).linesGzip.toString().contains('[ok]') },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
+                // the pipeline statistics footer (CPU time, Mc/sec) is run-dependent, so "output" is unstable
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["output"])).match() }
             )
         }
 
     }
 
-    test("hmmer/hmmsearch - optional") {
+    test("bacteria - [ hmm, fasta ] - txt - sto - tbl - domtbl") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
                     true,
                     true,
                     true
@@ -56,18 +56,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.output.get(0).get(1)).linesGzip.toString().contains('[ok]') },
-                { assert path(process.out.target_summary.get(0).get(1)).linesGzip.toString().contains('[ok]') },
-                { assert snapshot(
-                    process.out.alignments +
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                // "output" carries the CPU-time footer and "target_summary"/"domain_summary" carry a
+                // "Current dir"/"Date" comment block, all run-dependent
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["output", "target_summary", "domain_summary"])).match() }
             )
         }
 
     }
 
-    test("hmmer/hmmsearch - stub") {
+    test("bacteria - [ hmm, fasta ] - txt - stub") {
 
         options "-stub"
 
@@ -76,8 +73,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
                     false,
                     false,
                     false
@@ -89,13 +86,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
 
-    test("hmmer/hmmsearch - optional - stub") {
+    test("bacteria - [ hmm, fasta ] - txt - sto - tbl - domtbl - stub") {
 
         options "-stub"
 
@@ -104,8 +101,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
                     true,
                     true,
                     true
@@ -117,7 +114,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

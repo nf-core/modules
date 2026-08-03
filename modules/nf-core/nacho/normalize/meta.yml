@@ -20,7 +20,8 @@ tools:
       homepage: https://github.com/mcanouil/NACHO
       documentation: https://cran.r-project.org/web/packages/NACHO/vignettes/NACHO.html
       doi: "10.1093/bioinformatics/btz647"
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
       identifier: ""
       args_id: "$args"
 
@@ -56,7 +57,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - normalized_counts.tsv:
+      - ${prefix}.tsv:
           type: file
           description: |
             Tab-separated file with gene normalized counts for the samples
@@ -69,7 +70,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - normalized_counts_wo_HKnorm.tsv:
+      - ${prefix}_wo_HKnorm.tsv:
           type: file
           description: |
             Tab-separated file with gene normalized counts for the samples, without housekeeping genes.
@@ -84,7 +85,30 @@ output:
         pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alanmmobbs93"
 maintainers:
   - "@alanmmobbs93"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:bcd6d91c836e9200
+      build_id: bd-bcd6d91c836e9200_1
+      scan_id: sc-e5e004ec41ba8e12_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:f943fc99dde5724f
+      build_id: bd-f943fc99dde5724f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ad/ad421367a5d71eb73738675a68b5677e283686a8b0a6d5e5530f9ec203aadb30/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/nacho/normalize/.conda-lock/linux_amd64-bd-bcd6d91c836e9200_1.txt

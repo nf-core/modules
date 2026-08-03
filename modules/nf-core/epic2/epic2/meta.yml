@@ -1,0 +1,116 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "epic2_epic2"
+description: Domain calling of broad enriched genomic regions of ChIP-seq,
+  Cut&Run or Cut&Tag
+keywords:
+  - alignment
+  - chip-seq
+  - cut&run
+  - cut&tag
+  - domain-calling
+tools:
+  - epic2:
+      description: "Ultraperformant Chip-Seq broad domain finder based on SICER."
+      homepage: "https://github.com/biocore-ntnu/epic2"
+      documentation: "https://github.com/biocore-ntnu/epic2"
+      tool_dev_url: "https://github.com/biocore-ntnu/epic2"
+      doi: "10.1093/bioinformatics/btz232"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - ipbam:
+        type: file
+        description: Sorted BAM file for IP sample
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - controlbam:
+        type: file
+        description: Sorted BAM file for control sample
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bed":
+          type: file
+          description: BED file containing the called domains
+          pattern: "*.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
+  versions_epic2:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "epic2":
+          type: string
+          description: The name of the tool
+      - "epic2 --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "python":
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_setuptools:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "setuptools":
+          type: string
+          description: The name of the tool
+      - "python -c 'import setuptools; print(setuptools.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - epic2:
+          type: string
+          description: The name of the tool
+      - epic2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - setuptools:
+          type: string
+          description: The name of the tool
+      - python -c 'import setuptools; print(setuptools.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Kevin-Brockers"
+maintainers:
+  - "@Kevin-Brockers"
