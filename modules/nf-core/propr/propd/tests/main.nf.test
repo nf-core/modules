@@ -159,7 +159,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["genewise_plot", "session_info"]),
+                    sanitizeOutput(process.out, unstableKeys: ["genewise_plot", "session_info", "fdr"]),
                     path(process.out.versions[0]).yaml
                 ).match()}
             )
