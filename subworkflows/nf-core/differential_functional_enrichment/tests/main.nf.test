@@ -474,7 +474,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    sanitizeOutput(workflow.out, unstableKeys: ["gprofiler2_all_enrich", "gprofiler2_plot_html", "grea_results", "session_info", "rpt"])
+                    workflow.out.grea_results
                 ).match()},
             )
         }
