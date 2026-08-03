@@ -38,6 +38,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() },
                 // The two identical smORFs on different strands/loci collapse to one row.
+                // Four input rows fold to three, and the assertions below pin
+                // which row went and that its evidence moved to the survivor,
+                // so a silently empty eligible set cannot pass unnoticed.
                 { assert rows.size() == 3 },
                 { assert byId.containsKey('orf_00000001') },
                 { assert !byId.containsKey('orf_00000002') },
