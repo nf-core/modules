@@ -134,3 +134,17 @@ authors:
   - "@prototaxites"
 maintainers:
   - "@prototaxites"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/binette_gzip:3dad8d26ac1fc14c
+      build_id: bd-3dad8d26ac1fc14c_1
+      scan_id: sc-527eef64381060b8_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/binette_gzip:7c802b093c215096
+      build_id: bd-7c802b093c215096_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f4/f49d890620286da8d7663f73091c2caa1b7186ae05da2e885ef039f07d628a96/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/binette/.conda-lock/linux_amd64-bd-3dad8d26ac1fc14c_1.txt

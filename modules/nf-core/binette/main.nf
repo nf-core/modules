@@ -3,9 +3,9 @@ process BINETTE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/de7fccc12dc09b996ec3b65df6060b4e3ad284088c5491bc3d97c582e8e7c3f6/data':
-        'community.wave.seqera.io/library/binette:1.2.1--cc07d41be4a5b0b2' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f4/f49d890620286da8d7663f73091c2caa1b7186ae05da2e885ef039f07d628a96/data'
+:         'community.wave.seqera.io/library/binette_gzip:3dad8d26ac1fc14c' }"
 
     input:
     tuple val(meta) , path(contig2bin), path(bindirs), path(contigs), path(proteins)
