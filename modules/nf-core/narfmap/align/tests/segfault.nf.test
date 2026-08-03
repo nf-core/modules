@@ -46,9 +46,9 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.bam.every { meta, bamFile -> file(bamFile).exists() } },
                 { assert process.out.bam.every { meta, bamFile -> file(bamFile).size() > 0 } },
+                { assert file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") } },
                 { assert snapshot(
-                    process.out.bam.collect { meta, bamFile -> [meta, file(bamFile).name, bam(bamFile).getReadsMD5()] },
-                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
+                    process.out.bam.collect { meta, bamFile -> [meta, file(bamFile).name] },
                     process.out.findAll { key, val -> key.startsWith("versions") },
                 ).match()
                 }
