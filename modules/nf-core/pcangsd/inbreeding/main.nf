@@ -35,7 +35,7 @@ process PCANGSD_INBREEDING {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
-    
+
     touch ${prefix}.inbreed.samples
     """
 }
