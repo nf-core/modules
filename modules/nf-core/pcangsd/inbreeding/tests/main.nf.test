@@ -16,8 +16,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'FIN', population:'FIN', samples:['HG00349', 'HG00358', 'HG00350', 'HG00351'] ],
-                    file(params.modules_testdata_base_path + 'delete_me/pcangsd/FIN.beagle.gz', checkIfExists: true),
+                    [ id: "FIN", population: "FIN", samples: ["HG00349", "HG00358", "HG00350", "HG00351"] ],
+                    [ file(params.modules_testdata_base_path + 'delete_me/pcangsd/FIN.beagle.gz', checkIfExists: true) ]
                 ]
                 """
             }
@@ -40,8 +40,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'FIN', population:'FIN', samples:['HG00349', 'HG00358', 'HG00350', 'HG00351'] ],
-                    file(params.modules_testdata_base_path + 'delete_me/pcangsd/FIN.beagle.gz', checkIfExists: true),
+                    [ id: "FIN", population: "FIN", samples: ["HG00349", "HG00358", "HG00350", "HG00351"] ],
+                    [ file(params.modules_testdata_base_path + 'delete_me/pcangsd/FIN.beagle.gz', checkIfExists: true) ]
                 ]
                 """
             }
