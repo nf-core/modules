@@ -1,14 +1,14 @@
 // nf-core modules test plastid
 nextflow_process {
 
-    name "Test Process PLASTID_MAKE_WIGGLE"
+    name "Test Process PLASTID_MAKEWIGGLE"
     script "../main.nf"
-    process "PLASTID_MAKE_WIGGLE"
+    process "PLASTID_MAKEWIGGLE"
 
     tag "modules"
     tag "modules_nfcore"
     tag "plastid"
-    tag "plastid/make_wiggle"
+    tag "plastid/makewiggle"
 
     test("human chr20 bam - fiveprime_variable") {
 
@@ -30,7 +30,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.tracks.get(0).get(1).get(0)).getText().contains('track') },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }
@@ -56,8 +56,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.tracks.get(0).get(1).get(0)).exists() },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                    ).match()
+                },
             )
         }
     }

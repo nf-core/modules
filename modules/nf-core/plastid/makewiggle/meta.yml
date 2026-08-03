@@ -1,5 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "plastid_make_wiggle"
+name: "plastid_makewiggle"
 description: Create wiggle or bedGraph files from alignment files after applying
   a read mapping rule (e.g. to map ribosome-protected footprints at their
   P-sites), for visualization in a genome browser
@@ -17,9 +16,9 @@ tools:
       documentation: "https://plastid.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/joshuagryphon/plastid"
       doi: "10.1186/s12864-016-3278-x"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:plastid
-
 input:
   - - meta:
         type: map
@@ -31,13 +30,13 @@ input:
         description: Genome BAM file
         pattern: "*.bam"
         ontologies:
-          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_2572
     - bam_index:
         type: file
         description: Genome BAM index file
         pattern: "*.bai"
         ontologies:
-          - edam: http://edamontology.org/format_3327 # BAI
+          - edam: http://edamontology.org/format_3327
     - p_offsets:
         type: file
         description: |
@@ -49,7 +48,11 @@ input:
       type: string
       description: |
         Read mapping rule. Use 'fiveprime_variable' with p_offsets file to map reads to P-sites.
-      enum: ["fiveprime", "threeprime", "center", "fiveprime_variable"]
+      enum:
+        - "fiveprime"
+        - "threeprime"
+        - "center"
+        - "fiveprime_variable"
 output:
   tracks:
     - - meta:
@@ -62,15 +65,29 @@ output:
           description: wig/bedgraph tracks for forward and reverse strands
           pattern: "*.{wig,bedgraph}"
           ontologies:
-            - edam: http://edamontology.org/format_3005 # wig
-            - edam: http://edamontology.org/format_3583 # bedgraph
+            - edam: http://edamontology.org/format_3005
+            - edam: http://edamontology.org/format_3583
+  versions_plastid:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plastid:
+          type: string
+          description: The name of the tool
+      - 0.6.1:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plastid:
+          type: string
+          description: The name of the tool
+      - 0.6.1:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@suhrig"
 maintainers:
