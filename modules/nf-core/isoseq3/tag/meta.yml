@@ -12,9 +12,9 @@ tools:
       homepage: "https://github.com/PacificBiosciences/IsoSeq/tree/master"
       documentation: "https://isoseq.how/"
       tool_dev_url: "https://github.com/PacificBiosciences/IsoSeq/tree/master"
-      licence: ["BSD-3-clause-Clear"]
+      licence:
+        - "BSD-3-clause-Clear"
       identifier: biotools:isoseq3
-
 input:
   - - meta:
         type: map
@@ -55,13 +55,27 @@ output:
           description: Pacbio index file of full-length tagged reads
           pattern: "*.flt.bam.pbi"
           ontologies: []
+  versions_isoseq3:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - isoseq3:
+          type: string
+          description: The name of the tool
+      - isoseq tag --version | head -n 1 | sed 's/isoseq tag //g' | sed 's/ (.*//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - isoseq3:
+          type: string
+          description: The name of the tool
+      - isoseq tag --version | head -n 1 | sed 's/isoseq tag //g' | sed 's/ (.*//g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@skraettli"
 maintainers:
