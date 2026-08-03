@@ -1,0 +1,59 @@
+// nf-core modules test pcangsd/inbreeding
+nextflow_process {
+
+    name "Test Process PCANGSD_INBREEDING"
+    script "../main.nf"
+    process "PCANGSD_INBREEDING"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pcangsd"
+    tag "pcangsd/inbreeding"
+
+    test("pcangsd - beagle") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'FIN', population:'FIN', samples:['HG00349', 'HG00358', 'HG00350', 'HG00351'] ],
+                    file(params.modules_testdata_base_path + 'delete_me/pcangsd/FIN.beagle.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("pcangsd - beagle - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'FIN', population:'FIN', samples:['HG00349', 'HG00358', 'HG00350', 'HG00351'] ],
+                    file(params.modules_testdata_base_path + 'delete_me/pcangsd/FIN.beagle.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

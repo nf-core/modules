@@ -1,5 +1,4 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "pcangsd_inbreeding"
 description: write your description here
 keywords:
@@ -7,7 +6,6 @@ keywords:
   - inbreeding coefficients
   - genomics
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "pcangsd":
       description: "Framework for analyzing low-depth next-generation sequencing (NGS)
         data in heterogeneous/structured populations using principal component analysis
@@ -30,7 +28,6 @@ input:
         pattern: "*.beagle.gz"
         ontologies: []
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
   inbreeding_coefficients:
     - - meta:
           type: map

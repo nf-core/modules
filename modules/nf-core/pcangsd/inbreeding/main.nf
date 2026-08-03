@@ -2,10 +2,9 @@ process PCANGSD_INBREEDING {
     tag "$meta.id"
     label 'process_single'
 
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pcangsd%3A1.36.4--py313h5d164f8_1':
+        'https://depot.galaxyproject.org/singularity/pcangsd:1.36.4--py313h5d164f8_1':
         'quay.io/biocontainers/pcangsd:1.36.4--py313h5d164f8_1' }"
 
     input:
