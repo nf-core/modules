@@ -34,14 +34,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.hash[0][1]).exists() },
-                { assert path(process.out.info[0][1]).exists() },
-                { assert snapshot(
-                    path(process.out.hash[0][1]).getFileName().toString(),
-                    path(process.out.info[0][1]).getFileName().toString(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["hash", "info"])).match() }
             )
         }
 
@@ -71,14 +64,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.hash[0][1]).exists() },
-                { assert path(process.out.info[0][1]).exists() },
-                { assert snapshot(
-                    path(process.out.hash[0][1]).getFileName().toString(),
-                    path(process.out.info[0][1]).getFileName().toString(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["hash", "info"])).match() }
             )
         }
 
