@@ -16,7 +16,6 @@ process TRUST4 {
     val(umi_read)
     val(read_format)
 
-
     output:
     tuple val(meta), path("*.tsv")                  , emit: tsv
     tuple val(meta), path("*_airr.tsv")             , emit: airr_files
@@ -26,7 +25,7 @@ process TRUST4 {
     tuple val(meta), path("*.out")                  , emit: out
     tuple val(meta), path("*.fq")                   , emit: fq
     tuple val(meta), path("**")                     , emit: outs
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('trust4'), eval("run-trust4 2>&1 | grep -o 'v[0-9.]*-r[0-9]*' | sed 's/^/TRUST4 using /'"), emit: versions_trust4, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -80,11 +79,6 @@ process TRUST4 {
         ${reference} \\
         ${barcodeWhitelist} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trust4: \$(run-trust4 2>&1 | grep -o 'v[0-9.]*-r[0-9]*' | sed 's/^/TRUST4 using /' )
-    END_VERSIONS
     """
 
     stub:
@@ -99,10 +93,5 @@ process TRUST4 {
     touch ${prefix}_raw.out
     touch ${prefix}_final.out
     touch ${prefix}_toassemble.fq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trust4: \$(run-trust4 2>&1 | grep -o 'v[0-9.]*-r[0-9]*' | sed 's/^/TRUST4 using /' )
-    END_VERSIONS
     """
 }
