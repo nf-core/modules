@@ -1,22 +1,22 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "plastid_metagene_generate"
+name: "plastid_metagenegenerate"
 description: Compute a metagene profile of read alignments, counts, or
-  quantitative data over one or more regions of interest, optionally
-  applying a mapping rule
+  quantitative data over one or more regions of interest, optionally applying a
+  mapping rule
 keywords:
   - genomics
   - riboseq
   - psite
 tools:
   - "plastid":
-      description: "Nucleotide-resolution analysis of next-generation sequencing and genomics data"
+      description: "Nucleotide-resolution analysis of next-generation sequencing and
+        genomics data"
       homepage: "https://github.com/joshuagryphon/plastid"
       documentation: "https://plastid.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/joshuagryphon/plastid"
       doi: "10.1186/s12864-016-3278-x"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:plastid
-
 input:
   - - meta:
         type: map
@@ -28,10 +28,10 @@ input:
         description: annotation file of reference genome (BED, bigBed, GTF, GFF3)
         pattern: "*.{bed,bigbed,gtf,gff3}"
         ontologies:
-          - edam: http://edamontology.org/format_3003 # BED
-          - edam: http://edamontology.org/format_3004 # bigBed
-          - edam: http://edamontology.org/format_2306 # GTF
-          - edam: http://edamontology.org/format_1975 # GFF3
+          - edam: http://edamontology.org/format_3003
+          - edam: http://edamontology.org/format_3004
+          - edam: http://edamontology.org/format_2306
+          - edam: http://edamontology.org/format_1975
 output:
   rois_txt:
     - - meta:
@@ -58,14 +58,28 @@ output:
             browser. The thickly-rendered portion of a window indicates its landmark.
           pattern: "*_rois.bed"
           ontologies:
-            - edam: http://edamontology.org/format_3003 # BED
+            - edam: http://edamontology.org/format_3003
+  versions_plastid:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plastid:
+          type: string
+          description: The name of the tool
+      - 0.6.1:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plastid:
+          type: string
+          description: The name of the tool
+      - 0.6.1:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@suhrig"
 maintainers:
