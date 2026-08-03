@@ -341,7 +341,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.grea_results
+                    file(workflow.out.grea_results[0][1]).name,
                 ).match()},
             )
         }
@@ -474,7 +474,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.grea_results
+                    file(workflow.out.grea_results[0][1]).name,
                 ).match()},
             )
         }
