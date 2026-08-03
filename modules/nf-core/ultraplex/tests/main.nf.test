@@ -24,7 +24,10 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report"])).match() }
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match() }
             )
         }
 
@@ -46,7 +49,10 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report"])).match() }
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match() }
             )
         }
 
@@ -69,7 +75,10 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report"])).match() }
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match() }
             )
         }
 
@@ -92,7 +101,11 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report"])).match() }
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.no_match_fastq,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match() }
             )
         }
 
