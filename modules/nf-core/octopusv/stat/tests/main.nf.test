@@ -62,7 +62,7 @@ nextflow_process {
                 { assert process.out.txt.isEmpty() },
                 { assert file(process.out.html.get(0).get(1)).name == "test.html" },
                 { assert snapshot(
-                    process.out.html,
+                    process.out.json,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
