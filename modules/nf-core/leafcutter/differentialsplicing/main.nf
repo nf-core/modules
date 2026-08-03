@@ -37,7 +37,7 @@ process LEAFCUTTER_DIFFERENTIALSPLICING {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_results_cluster_significance.txt
-    touch ${prefix}_results_effect_sizes.txt
+    touch ${prefix}_cluster_significance.txt
+    touch ${prefix}_effect_sizes.txt
     """
 }
