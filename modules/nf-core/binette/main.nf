@@ -8,14 +8,14 @@ process BINETTE {
         'community.wave.seqera.io/library/binette:1.2.1--cc07d41be4a5b0b2' }"
 
     input:
-    tuple val(meta) , path(contig2bin), path(contigs), path(proteins)
+    tuple val(meta) , path(contig2bin), path(bindirs), path(contigs), path(proteins)
     tuple val(meta2), path(checkm2_db)
 
     output:
-    tuple val(meta), path("final_bins/*.fa.gz")                      , emit: final_bins
-    tuple val(meta), path("${prefix}.final_contig_to_bin.tsv")       , emit: contig2bin
-    tuple val(meta), path("input_bins_quality_reports/*.tsv")        , emit: input_bins_quality_reports
-    tuple val(meta), path("${prefix}.final_bins_quality_reports.tsv"), emit: final_bins_quality_report
+    tuple val(meta), path("final_bins/*.fa.gz")              , emit: final_bins
+    tuple val(meta), path("*.final_contig_to_bin.tsv")       , emit: contig2bin
+    tuple val(meta), path("input_bins_quality_reports/*.tsv"), emit: input_bins_quality_reports
+    tuple val(meta), path("*.final_bins_quality_reports.tsv"), emit: final_bins_quality_report
     tuple val("${task.process}"), val('binette'), eval("binette --version | sed 's/Binette //'"), topic: versions, emit: versions_binette
 
     when:
@@ -24,10 +24,16 @@ process BINETTE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+
+    if (contig2bin && bindirs) {
+        error("Error: contig2bin and bindirs both provided to Binette but they are mutually exclusive! ")
+    }
+
+    def input = contig2bin ? "--contig2bin_tables ${contig2bin}" : "--bin-dirs ${bindirs}"
     def proteins_input = proteins ? "--proteins ${proteins}" : ""
     """
     binette \\
-        --contig2bin_tables ${contig2bin} \\
+        ${input} \\
         --contigs ${contigs} \\
         ${proteins_input} \\
         --checkm2_db ${checkm2_db} \\

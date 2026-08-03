@@ -9,13 +9,14 @@ keywords:
 tools:
   - binette:
       description: |
-        Binette is a fast and accurate binning refinement tool designed t
+        Binette is a fast and accurate binning refinement tool designed to
         construct high-quality MAGs from the output of multiple binning tools.
       homepage: https://binette.readthedocs.io
       documentation: https://binette.readthedocs.io
       tool_dev_url: https://github.com/genotoul-bioinfo/Binette
       licence:
         - GPL-3.0
+      identifier: biotools:binette
 input:
   - - meta:
         type: map
@@ -24,10 +25,17 @@ input:
           e.g. [ id:'test', single_end:false ]
     - contig2bin:
         type: file
-        description: Contig to bin assignment file
+        description: |
+          List of contig2bin files (headerless TSV with format contigname\tbinname)
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
+    - bindirs:
+        type: directory
+        description: |
+          List of directories containing bin fasta files. All FASTA files should
+          have the same extension.
+        ontologies: []
     - contigs:
         type: file
         description: Fasta file containing contigs
@@ -58,7 +66,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "final_bins/*.fa.gz":
+      - final_bins/*.fa.gz:
           type: file
           description: Refined bins in fasta format
           pattern: "*.fa.gz"
@@ -71,7 +79,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.final_contig_to_bin.tsv":
+      - "*.final_contig_to_bin.tsv":
           type: file
           description: Final contig to bin assignment file
           pattern: "*.tsv"
@@ -83,7 +91,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "input_bins_quality_reports/*.tsv":
+      - input_bins_quality_reports/*.tsv:
           type: file
           description: Quality reports for input bins
           pattern: "*.tsv"
@@ -95,34 +103,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.final_bins_quality_reports.tsv":
+      - "*.final_bins_quality_reports.tsv":
           type: file
           description: Quality report for final refined bins
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions_binette:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - binette:
           type: string
           description: The name of the tool
-      - binette --version | sed 's/Binnette //':
+      - binette --version | sed 's/Binette //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - binette:
           type: string
           description: The name of the tool
-      - binette --version | sed 's/Binnette //':
+      - binette --version | sed 's/Binette //':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@prototaxites"
 maintainers:

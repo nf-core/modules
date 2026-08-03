@@ -22,15 +22,6 @@ nextflow_process {
             NZ_CP069563.1\tbin1
             NZ_CP069564.1\tbin2
             """.stripIndent().trim()
-
-            run("CHECKM2_DATABASEDOWNLOAD") {
-                script "../../checkm2/databasedownload/main.nf"
-                process {
-                    """
-                    input[0] = []
-                    """
-                }
-            }
         }
 
         when {
@@ -44,10 +35,11 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [file("${launchDir}/c2b_1.txt"), file("${launchDir}/c2b_2.txt")],
+                    [],
                     file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz"),
                     []
                 ]
-                input[1] = CHECKM2_DATABASEDOWNLOAD.out.database
+                input[1] = [[id: "db"], file(params.modules_testdata_base_path + "delete_me/binette_checkm2/binette_checkm2_small_db.dmnd")]
                 """
             }
         }
@@ -88,10 +80,11 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [file("${launchDir}/c2b_1.txt"), file("${launchDir}/c2b_2.txt")],
+                    [],
                     file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz"),
                     []
                 ]
-                input[1] = [[:],[]]
+                input[1] = [[id: "db"], file(params.modules_testdata_base_path + "delete_me/binette_checkm2/binette_checkm2_small_db.dmnd")]
                 """
             }
         }
