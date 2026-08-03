@@ -22,15 +22,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.fastq,
-                    process.out.no_match_fastq,
-                    process.out.versions).match()},
-                { assert process.out.report.get(0) ==~ ".*ultraplex_.*.log" }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report"])).match() }
             )
-
         }
 
     }
@@ -49,13 +44,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.fastq,
-                    process.out.no_match_fastq,
-                    process.out.versions).match()},
-                { assert process.out.report.get(0) ==~ ".*ultraplex_.*.log" }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report"])).match() }
             )
         }
 
@@ -76,13 +67,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.fastq,
-                    process.out.no_match_fastq,
-                    process.out.versions).match()},
-                { assert process.out.report.get(0) ==~ ".*ultraplex_.*.log" }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report"])).match() }
             )
         }
 
@@ -103,13 +90,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.fastq,
-                    process.out.no_match_fastq,
-                    process.out.versions).match()},
-                { assert process.out.report.get(0) ==~ ".*ultraplex_.*.log" }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report"])).match() }
             )
         }
 
@@ -132,9 +115,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
