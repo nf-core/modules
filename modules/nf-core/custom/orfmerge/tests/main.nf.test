@@ -174,4 +174,89 @@ nextflow_process {
         }
     }
 
+    test("cross-caller merging of transcript-anchored ORFs") {
+
+        when {
+            process {
+                """
+                def beds = channel
+                    .of(
+                            'chr1\t1000\t1300\tribotish|a\t0\t+\t1000\t1300\t0\t1\t300,\t0,',
+                            'chr1\t1000\t1300\tribocode|b\t0\t+\t1000\t1300\t0\t1\t300,\t0,',
+                            'chr1\t2000\t2300\tribotish|c\t0\t+\t2000\t2300\t0\t1\t300,\t0,'
+                    )
+                    .collectFile(name: 'synthetic.bed12', newLine: true, sort: false)
+                def tsvs = channel
+                    .of(
+                            'orf_id\tcaller\tsample_id\tchrom\tstart\tend\tstrand\tgene_id\ttranscript_id\torf_class\taa_length\tscore',
+                            'ribotish|a\tribotish\ts1\tchr1\t1000\t1300\t+\tg1\tt1\tuORF\t99\t0.01',
+                            'ribocode|b\tribocode\ts1\tchr1\t1000\t1300\t+\tg1\tt1\tuORF\t99\t0.01',
+                            'ribotish|c\tribotish\ts1\tchr1\t2000\t2300\t+\tg1\tt1\tuORF\t99\t0.01'
+                    )
+                    .collectFile(name: 'synthetic.tsv', newLine: true, sort: false)
+                input[0] = beds.combine(tsvs).map { bed, tsv -> [ [id: 'cohort'], [bed], [tsv] ] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.catalogue_tsv[0][1]).text.readLines()
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def rt    = cols.indexOf('called_by_ribotish')
+            def rc    = cols.indexOf('called_by_ribocode')
+            def cls   = cols.indexOf('orf_class')
+            assertAll(
+                { assert process.success },
+                // Two callers reporting one uORF at the same coordinates must
+                // collapse to a single row carrying both; a second uORF on the
+                // same transcript at a different span must stay separate.
+                { assert rows.size() == 2 },
+                { assert rows.count { it[rt] == '1' && it[rc] == '1' } == 1 },
+                { assert rows.every { it[cls] == 'uORF' } }
+            )
+        }
+    }
+
+    test("cross-caller merging of non-transcript-anchored ORFs by reciprocal overlap") {
+
+        when {
+            process {
+                """
+                def beds = channel
+                    .of(
+                            'chr1\t5000\t5300\tribotish|n1\t0\t+\t5000\t5300\t0\t1\t300,\t0,',
+                            'chr1\t5000\t5290\tribocode|n2\t0\t+\t5000\t5290\t0\t1\t290,\t0,'
+                    )
+                    .collectFile(name: 'synthetic.bed12', newLine: true, sort: false)
+                def tsvs = channel
+                    .of(
+                            'orf_id\tcaller\tsample_id\tchrom\tstart\tend\tstrand\tgene_id\ttranscript_id\torf_class\taa_length\tscore',
+                            'ribotish|n1\tribotish\ts1\tchr1\t5000\t5300\t+\tg1\tt1\tnovel_u\t99\t0.01',
+                            'ribocode|n2\tribocode\ts1\tchr1\t5000\t5290\t+\tg1\tt1\tnovel_u\t95\t0.01'
+                    )
+                    .collectFile(name: 'synthetic.tsv', newLine: true, sort: false)
+                input[0] = beds.combine(tsvs).map { bed, tsv -> [ [id: 'cohort'], [bed], [tsv] ] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.catalogue_tsv[0][1]).text.readLines()
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def rt    = cols.indexOf('called_by_ribotish')
+            def rc    = cols.indexOf('called_by_ribocode')
+            def cls   = cols.indexOf('orf_class')
+            assertAll(
+                { assert process.success },
+                // novel_u is clustered by reciprocal overlap rather than by an
+                // exact span, so two callers differing by 10 nt (0.97) merge.
+                { assert rows.size() == 1 },
+                { assert rows[0][rt] == '1' && rows[0][rc] == '1' },
+                { assert rows[0][cls] == 'novel_u' }
+            )
+        }
+    }
+
 }
