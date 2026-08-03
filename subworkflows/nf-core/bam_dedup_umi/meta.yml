@@ -213,6 +213,9 @@ output:
   - multiqc_files:
       description: Channel containing files for MultiQC
       structure:
+        - meta:
+            type: map
+            description: Metadata map
         - file:
             type: file
             description: File for MultiQC
