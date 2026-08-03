@@ -1,0 +1,171 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "snpclustering"
+description: >
+  Subworkflow for SNP clustering. Takes genotyped VCF files, imputes missing
+  genotypes with BEAGLE5, converts to PLINK2 pgen format, performs PCA,
+  converts eigenvec to TSV with awk, then runs PCA-based clustering,
+  cluster metrics, and cluster visualization.
+keywords:
+  - snp
+  - clustering
+  - pca
+  - plink2
+  - beagle
+  - imputation
+  - population genetics
+
+components:
+  - beagle5/beagle
+  - plink2/vcf
+  - plink2/pca
+  - custom/pcaclustering
+  - custom/clustermetrics
+  - custom/clustervisualization
+
+input:
+  - meta:
+      type: map
+      description: Groovy map containing sample metadata.
+    vcf:
+      type: file
+      description: Genotyped VCF file.
+      pattern: "*.{vcf,vcf.gz}"
+    vcf_index:
+      type: file
+      description: Index for the VCF file.
+      pattern: "*.{tbi,csi}"
+
+  - meta:
+      type: map
+      description: Groovy map for the optional reference panel.
+    refpanel:
+      type: file
+      description: Optional BEAGLE reference panel VCF.
+      pattern: "*.{vcf,vcf.gz}"
+    refpanel_index:
+      type: file
+      description: Optional index for the reference panel.
+      pattern: "*.{tbi,csi}"
+
+  - meta:
+      type: map
+      description: Groovy map for the optional genetic map.
+    genmap:
+      type: file
+      description: Optional genetic map file for BEAGLE.
+      pattern: "*.map"
+
+  - region:
+      type: val
+      description: Optional genomic region passed to BEAGLE.
+
+  - npcs:
+      type: val
+      description: Number of principal components to compute.
+
+  - use_approx:
+      type: val
+      description: Whether to use approximate PCA.
+
+  - algorithm:
+      type: val
+      description: Clustering algorithm to use.
+
+  - n_clusters:
+      type: val
+      description: Number of clusters for kmeans or similar methods.
+
+  - dbscan_eps:
+      type: val
+      description: DBSCAN eps parameter.
+
+  - dbscan_min_samples:
+      type: val
+      description: DBSCAN minimum samples parameter.
+
+output:
+  - imputed_vcf:
+      type: map
+      description: Groovy map of sample metadata.
+    vcf:
+      type: file
+      description: Imputed VCF from BEAGLE5.
+      pattern: "*.{vcf,vcf.gz}"
+
+  - pfiles:
+      type: map
+      description: Groovy map of sample metadata.
+    pgen:
+      type: file
+      description: PLINK2 pgen file.
+      pattern: "*.pgen"
+    psam:
+      type: file
+      description: PLINK2 psam file.
+      pattern: "*.psam"
+    pvar:
+      type: file
+      description: PLINK2 pvar file.
+      pattern: "*.pvar"
+
+  - pca:
+      type: map
+      description: Groovy map of sample metadata.
+    eigenvec:
+      type: file
+      description: PCA eigenvectors from PLINK2.
+      pattern: "*.eigenvec"
+    eigenval:
+      type: file
+      description: PCA eigenvalues from PLINK2.
+      pattern: "*.eigenval"
+
+  - eigenvec_tsv:
+      type: map
+      description: Groovy map of sample metadata.
+    tsv:
+      type: file
+      description: Tidy TSV converted from eigenvec by awk.
+      pattern: "*.tsv"
+
+  - cluster_labels:
+      type: map
+      description: Groovy map of sample metadata.
+    clusters:
+      type: file
+      description: Cluster labels output from PCA clustering.
+      pattern: "*.tsv"
+
+  - cluster_info:
+      type: map
+      description: Groovy map of sample metadata.
+    info:
+      type: file
+      description: Additional cluster info output.
+      pattern: "*.tsv"
+
+  - cluster_metrics:
+      type: map
+      description: Groovy map of sample metadata.
+    metrics:
+      type: file
+      description: Cluster quality metrics output.
+      pattern: "*.tsv"
+
+  - cluster_plots:
+      type: map
+      description: Groovy map of sample metadata.
+    plots:
+      type: file
+      description: Cluster visualization outputs.
+      pattern: "*.{png,pdf,html}"
+
+  - versions:
+      type: file
+      description: Software versions collected from the subworkflow.
+      pattern: "versions.yml"
+
+authors:
+  - "@dbaku42"
+maintainers:
+  - "@dbaku42"
