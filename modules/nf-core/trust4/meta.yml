@@ -151,7 +151,7 @@ output:
       - trust4:
           type: string
           description: The name of the tool
-      - run-trust4 2>&1 | grep -o 'v[0-9.]*-r[0-9]*' | sed 's/^/TRUST4 using /':
+      - run-trust4 2>&1 | sed '/^TRUST4/!d; s/.*TRUST4 v//; s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -163,7 +163,7 @@ topics:
       - trust4:
           type: string
           description: The name of the tool
-      - run-trust4 2>&1 | grep -o 'v[0-9.]*-r[0-9]*' | sed 's/^/TRUST4 using /':
+      - run-trust4 2>&1 | sed '/^TRUST4/!d; s/.*TRUST4 v//; s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
 

@@ -25,7 +25,7 @@ process TRUST4 {
     tuple val(meta), path("*.out")                  , emit: out
     tuple val(meta), path("*.fq")                   , emit: fq
     tuple val(meta), path("**")                     , emit: outs
-    tuple val("${task.process}"), val('trust4'), eval("run-trust4 2>&1 | grep -o 'v[0-9.]*-r[0-9]*' | sed 's/^/TRUST4 using /'"), emit: versions_trust4, topic: versions
+    tuple val("${task.process}"), val('trust4'), eval("run-trust4 2>&1 | sed '/^TRUST4/!d; s/.*TRUST4 v//; s/ .*//'"), emit: versions_trust4, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
