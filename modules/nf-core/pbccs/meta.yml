@@ -7,12 +7,12 @@ keywords:
   - subreads
 tools:
   - pbccs:
-      description: pbccs - Generate Highly Accurate Single-Molecule Consensus Reads (HiFi Reads)
+      description: pbccs - Generate Highly Accurate Single-Molecule Consensus Reads
+        (HiFi Reads)
       homepage: https://github.com/PacificBiosciences/pbbioconda
       documentation: https://ccs.how/
       tool_dev_url: https://github.com/PacificBiosciences/ccs
-      licence:
-        - "BSD-3-Clause-Clear"
+      licence: ["BSD-3-Clause-Clear"]
       identifier: ""
 input:
   - - meta:
@@ -95,29 +95,13 @@ output:
           pattern: "*.json.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
-  versions_pbccs:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - pbccs:
-          type: string
-          description: The name of the tool
-      - ccs --version 2>&1 | sed '1!d;s/^.*ccs //; s/ .*//':
-          type: eval
-          description: The expression to obtain the version of the tool
-
-topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - pbccs:
-          type: string
-          description: The name of the tool
-      - ccs --version 2>&1 | sed '1!d;s/^.*ccs //; s/ .*//':
-          type: eval
-          description: The expression to obtain the version of the tool
-
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sguizard"
 maintainers:
