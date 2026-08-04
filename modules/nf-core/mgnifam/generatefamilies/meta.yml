@@ -19,14 +19,15 @@ tools:
       tool_dev_url: "https://github.com/vagkaratzas/mgnifam"
       licence:
         - "MIT"
-      identifier: ""
+      args_id: "$args"
+      identifier: biotools:mgnifam
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - clusters_chunk:
+    - clustering:
         type: file
         description: Headerless TSV file of MMseqs2 sequence clusters, one representative-member
           pair per line (representative<TAB>member)
@@ -40,6 +41,14 @@ input:
         pattern: "*.{fa,fasta,fna,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
+    - fasta_index:
+        type: file
+        description: Optional. Precomputed Easel SSI index of the FASTA file, e.g.
+          from `esl-sfetch --index` (hmmer/eslsfetchindex). Used as given and never
+          rebuilt, so parallel chunk tasks can share one read-only index. Built
+          automatically when omitted
+        pattern: "*.ssi"
+        ontologies: []
 output:
   seed_msa:
     - - meta:

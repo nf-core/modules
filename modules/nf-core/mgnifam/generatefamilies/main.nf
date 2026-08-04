@@ -8,7 +8,7 @@ process MGNIFAM_GENERATEFAMILIES {
         'quay.io/biocontainers/mgnifam:2.0.0--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(clusters_chunk), path(fasta_file)
+    tuple val(meta), path(clustering), path(fasta_file), path(fasta_index)
 
     output:
     tuple val(meta), path("${prefix}/seed_msa/*.sto.gz")       , emit: seed_msa  , optional: true
@@ -28,15 +28,17 @@ process MGNIFAM_GENERATEFAMILIES {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args  = task.ext.args ?: ''
+    prefix    = task.ext.prefix ?: "${meta.id}"
+    def index = fasta_index ? "--fasta_index ${fasta_index}" : ''
     """
     mgnifam generate_families \\
-        --clusters_chunk ${clusters_chunk} \\
+        --clusters_chunk ${clustering} \\
         --fasta_file ${fasta_file} \\
         --output_dir ${prefix} \\
         --cpus ${task.cpus} \\
         --chunk_num ${prefix} \\
+        ${index} \\
         ${args}
     """
 
