@@ -25,6 +25,8 @@ nextflow_process {
         }
 
         then {
+            // As process is non-deterministic, we cannot check the output file contents, but we can check
+            // that the file exists and contains the expected number of lines (one line per sample).
             def inbreedFile = file(process.out.inbreeding_coefficients.get(0).get(1))
             def lines = inbreedFile.readLines()
 
