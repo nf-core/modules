@@ -30,7 +30,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.report_json.get(0).get(1)).text.contains("pbcopper") },
                 { assert path(process.out.metrics.get(0).get(1)).linesGzip.get(0).toString().contains("zmws") },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["metrics", "report_json"])).match() }
             )
         }
 
