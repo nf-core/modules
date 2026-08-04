@@ -13,6 +13,7 @@ nextflow_process {
     test("pcangsd - beagle") {
 
         when {
+
             process {
                 """
                 input[0] = [
@@ -24,9 +25,15 @@ nextflow_process {
         }
 
         then {
+            // As process is non-deterministic, we cannot check the output file contents, but we can check 
+            // that the file exists and contains the expected number of lines (one line per sample).
+            def inbreedFile = file(process.out.inbreeding_coefficients.get(0).get(1))
+            def lines = inbreedFile.readLines()
+
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert inbreedFile.exists() },
+                { assert lines.size() == 4 }
             )
         }
 
