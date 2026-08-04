@@ -1,11 +1,11 @@
 process BUSCO_DOWNLOAD {
-    tag "$lineage"
+    tag "${lineage}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c607f319867d96a38c8502f751458aa78bbd18fe4c7c4fa6b9d8350e6ba11ebe/data'
-        : 'community.wave.seqera.io/library/busco_sepp:f2dbc18a2f7a5b64'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/963bad66c10646cf0adb1967cc462ad04d02789ddbfae4fbb94182291dbddf8c/data'
+        : 'community.wave.seqera.io/library/busco:6.1.0--6d1f7006d91892b3'}"
 
     input:
     val lineage
@@ -21,8 +21,8 @@ process BUSCO_DOWNLOAD {
     def args = task.ext.args ?: ''
     """
     busco \\
-        --download $lineage \\
-        $args
+        --download ${lineage} \\
+        ${args}
     """
 
     stub:
