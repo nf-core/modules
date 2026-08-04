@@ -24,10 +24,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.tsv[0][1]).readLines()[0], // Two line file. Line 2 contains a path.
-                    process.out.versions
-                    ).match()
+                {
+                  assert snapshot(
+                      file(process.out.tsv[0][1]).readLines()[0],
+                      sanitizeOutput(process.out, unstableKeys: ["tsv"])
+                  ).match()
                 }
             )
         }
@@ -55,3 +56,5 @@ nextflow_process {
     }
 
 }
+
+
