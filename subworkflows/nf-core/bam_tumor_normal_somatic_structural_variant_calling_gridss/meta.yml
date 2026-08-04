@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_tumor_normal_somatic_structural_variant_calling_gridss"
+description: |
+  Call somatic structural variants from a tumor/normal BAM pair with GRIDSS.
+  Runs the full GRIDSS workflow (optional targeted fragment extraction, preprocess,
+  joint assembly, joint calling) followed by gridss_somatic_filter to separate
+  somatic events from germline and panel-of-normals artefacts.
+keywords:
+  - gridss
+  - structural variants
+  - somatic
+  - tumor
+  - normal
+  - bam
+  - vcf
+components:
+  - gridss/extractoverlappingfragments
+  - gridss/preprocess
+  - gridss/assemble
+  - gridss/call
+  - gridss/somaticfilter
+  - samtools/index
+input:
+  - ch_input_bam:
+      type: file
+      description: |
+        Channel containing the tumor/normal BAM pair and their indices.
+        The tumor entry must be first and the normal entry second in each list;
+        this is the sample order used for the joint GRIDSS call, so
+        gridss_somatic_filter must be given `--tumourordinal 1 --normalordinal 2`
+        via `ext.args` on GRIDSS_SOMATICFILTER.
+        Structure: [ val(meta), [ path(tumor_bam), path(normal_bam) ], [ path(tumor_bai), path(normal_bai) ] ]
+      pattern: "*.{bam,bam.bai}"
+  - ch_fasta_fai_bwaindex:
+      type: file
+      description: |
+        Channel containing the reference genome, its samtools index and the BWA index
+        directory. All BWA index files must share the basename of the FASTA.
+        Structure: [ val(meta2), path(fasta), path(fasta_fai), path(bwa_index) ]
+      pattern: "*.{fa,fna,fasta,fai}"
+  - ch_pondir:
+      type: directory
+      description: |
+        Directory containing the panel-of-normals BED/BEDPE files used by
+        gridss_somatic_filter to remove false positive somatic events.
+        Generate it with gridss.GeneratePonBedpe. Pass [ [], [] ] to filter without a PON.
+        Structure: [ val(meta3), path(pondir) ]
+  - ch_gridss_config:
+      type: file
+      description: |
+        Optional GRIDSS configuration file (Java .properties format) applied to the
+        assemble and call steps. Pass [ [], [] ] to use the GRIDSS defaults.
+        Structure: [ val(meta4), path(gridss_config) ]
+      pattern: "*.properties"
+  - val_target_bed:
+      type: string
+      description: |
+        Path to a BED file of target regions for panel/exome data. When set, reads
+        overlapping the targets are extracted with gridss_extract_overlapping_fragments
+        and re-indexed before preprocessing. Pass null to run on the full BAM files.
+        When set, `ext.prefix` must disambiguate the tumor and normal outputs of
+        GRIDSS_EXTRACTOVERLAPPINGFRAGMENTS, which otherwise both default to
+        `${meta.id}.subset`.
+      pattern: "*.bed"
+output:
+  - gridss_vcf:
+      type: file
+      description: |
+        Unfiltered joint (tumor + normal) structural variant calls from GRIDSS.
+        Structure: [ val(meta), path(vcf) ]
+      pattern: "*.sv.gridss.vcf.gz"
+  - all_somatic_vcf:
+      type: file
+      description: |
+        All somatic structural variants retained by gridss_somatic_filter.
+        Structure: [ val(meta), path(vcf) ]
+      pattern: "*.all_somatic.vcf.bgz"
+  - high_confidence_somatic_vcf:
+      type: file
+      description: |
+        High confidence subset of the somatic structural variant calls.
+        Structure: [ val(meta), path(vcf) ]
+      pattern: "*.high_confidence_somatic.vcf.bgz"
+authors:
+  - "@imsarath"
+maintainers:
+  - "@imsarath"
