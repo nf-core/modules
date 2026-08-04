@@ -32,7 +32,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["out", "tsv"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["outs", "tsv"])).match() }
             )
         }
 
@@ -62,7 +62,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["out", "tsv"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["outs", "tsv"])).match() }
             )
         }
 
