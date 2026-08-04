@@ -14,7 +14,7 @@ process PHYLOFLASH {
 
     output:
     tuple val(meta), path("${meta.id}*/*"), emit: results
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('phyloflash'), eval("phyloFlash.pl -version 2>&1 | sed 's/^.*phyloFlash v//'"), topic: versions, emit: versions_phyloflash
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,38 +25,28 @@ process PHYLOFLASH {
     if (meta.single_end) {
         """
         phyloFlash.pl \\
-            $args \\
+            ${args} \\
             -read1 ${reads[0]} \\
-            -lib $prefix \\
+            -lib ${prefix} \\
             -interleaved \\
             -dbhome . \\
-            -CPUs $task.cpus
+            -CPUs ${task.cpus}
 
-        mkdir $prefix
-        mv ${prefix}.* $prefix
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            phyloflash: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "s/^.*phyloFlash v//")
-        END_VERSIONS
+        mkdir ${prefix}
+        mv ${prefix}.* ${prefix}
         """
     } else {
         """
         phyloFlash.pl \\
-            $args \\
+            ${args} \\
             -read1 ${reads[0]} \\
             -read2 ${reads[1]} \\
-            -lib $prefix \\
+            -lib ${prefix} \\
             -dbhome . \\
-            -CPUs $task.cpus
+            -CPUs ${task.cpus}
 
-        mkdir $prefix
-        mv ${prefix}.* $prefix
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            phyloflash: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "s/^.*phyloFlash v//")
-        END_VERSIONS
+        mkdir ${prefix}
+        mv ${prefix}.* ${prefix}
         """
     }
 
@@ -66,10 +56,5 @@ process PHYLOFLASH {
     mkdir ${prefix}
     touch ${prefix}/${prefix}.SSU.collection.fasta
     touch ${prefix}/${prefix}.phyloFlash
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        phyloflash: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "s/^.*phyloFlash v//")
-    END_VERSIONS
     """
 }
