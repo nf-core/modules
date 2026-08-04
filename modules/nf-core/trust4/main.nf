@@ -19,7 +19,7 @@ process TRUST4 {
     output:
     tuple val(meta), path("*.tsv")                  , emit: tsv
     tuple val(meta), path("*_airr.tsv")             , emit: airr_files
-    tuple val(meta), path("${meta.id}_airr.tsv")    , emit: airr_tsv
+    tuple val(meta), path("${prefix}_airr.tsv")     , emit: airr_tsv
     tuple val(meta), path("*_report.tsv")           , emit: report_tsv
     tuple val(meta), path("*.fa")                   , emit: fasta
     tuple val(meta), path("*.out")                  , emit: out
@@ -32,7 +32,7 @@ process TRUST4 {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def bam_mode = bam ? "-b ${bam}" : ''
     def single_end_mode = reads && meta.single_end ? "-u ${reads}" : ''
     // reference is optional for fastq input
@@ -82,7 +82,7 @@ process TRUST4 {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_airr.tsv
     touch ${prefix}_airr_align.tsv

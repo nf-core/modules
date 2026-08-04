@@ -82,7 +82,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${meta.id}_airr.tsv:
+      - ${prefix}_airr.tsv:
           type: file
           description: TRUST4 results in AIRR format
           pattern: "*_airr.tsv"
