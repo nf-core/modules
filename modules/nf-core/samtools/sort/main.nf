@@ -33,7 +33,7 @@ process SAMTOOLS_SORT {
     def reference = fasta ? "--reference ${fasta}" : ""
     //setting default values
     def write_index = ""
-    def output_file = "${prefix}.${extension}"
+    output_file = "${prefix}.${extension}"
 
     // Update if index is requested
     if (index_format != '' && index_format) {
