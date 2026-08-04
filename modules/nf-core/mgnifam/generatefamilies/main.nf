@@ -4,8 +4,8 @@ process MGNIFAM_GENERATEFAMILIES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aa77afddce5309d57c80ddc131bb6ca7232d1227abe608f87011cb1caf36c4ff/data' :
-        'community.wave.seqera.io/library/pip_mgnifam:b23278d764db6a8f' }"
+        'https://depot.galaxyproject.org/singularity/mgnifam:2.0.0--pyhdfd78af_0' :
+        'quay.io/biocontainers/mgnifam:2.0.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(clusters_chunk), path(fasta_file)
@@ -23,7 +23,6 @@ process MGNIFAM_GENERATEFAMILIES {
     tuple val(meta), path("${prefix}/${prefix}_discarded.csv") , emit: discarded , optional: true
     tuple val(meta), path("${prefix}/${prefix}_converged.txt") , emit: converged , optional: true
     tuple val("${task.process}"), val('mgnifam'), eval("mgnifam --version 2>&1"), topic: versions, emit: versions_mgnifam
-    tuple val("${task.process}"), val('python'), eval("python3 --version 2>&1 | sed 's/Python //'"), topic: versions, emit: versions_python
 
     when:
     task.ext.when == null || task.ext.when
