@@ -84,7 +84,7 @@ kd_rep2\\tKNOCKDOWN
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["cluster_significance", "effect_sizes"])).match()}
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
 
