@@ -33,10 +33,7 @@ env:
 jobs:
   nf-test-changes:
     name: nf-test-changes
-    runs-on:
-      - runs-on=${{ github.run_id }}-nf-test-changes
-      - runner=4cpu-linux-x64
-      - image=ubuntu22-full-x64
+    runs-on: "ubuntu-latest"
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
       paths: ${{ steps.list.outputs.components }}
@@ -51,7 +48,7 @@ jobs:
           rm -rf ./* || true
           rm -rf ./.??* || true
           ls -la ./
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -89,10 +86,7 @@ jobs:
           echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test:
-    runs-on:
-      - runs-on=${{ github.run_id }}
-      - runner=4cpu-linux-${{ matrix.arch }}
-      - image=ubuntu24-full-${{ matrix.arch }}
+    runs-on: "ubuntu-latest"
     name: "${{ matrix.arch }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
@@ -112,7 +106,7 @@ jobs:
       filtered_paths: ${{ steps.filter.outputs.filtered_paths }}
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -172,10 +166,7 @@ jobs:
           paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
   confirm-pass-nf-test:
-    runs-on:
-      - runs-on=${{ github.run_id }}-confirm-pass-nf-test
-      - runner=4cpu-linux-x64
-      - image=ubuntu22-full-x64
+    runs-on: "ubuntu-latest"
     needs: [nf-test]
     if: always()
     steps:

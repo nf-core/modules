@@ -13,7 +13,8 @@ tools:
       homepage: https://github.com/jsh58/Genrich
       documentation: https://github.com/jsh58/Genrich#readme
       tool_dev_url: https://github.com/jsh58/Genrich
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -51,13 +52,16 @@ output:
             enrichment
           pattern: "*.{narrowPeak}"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_genrich:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genrich:
+          type: string
+          description: The name of the tool
+      - Genrich --version 2>&1 | head -n1 | sed 's/Genrich, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
   bedgraph_pvalues:
     - - meta:
           type: map
@@ -102,6 +106,17 @@ output:
           description: Text output file containing intervals corresponding to PCR duplicates
           pattern: "*.{intervals.txt}"
           ontologies: []
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genrich:
+          type: string
+          description: The name of the tool
+      - Genrich --version 2>&1 | head -n1 | sed 's/Genrich, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@JoseEspinosa"
   - "@samuelruizperez"

@@ -55,14 +55,27 @@ output:
           description: IGV file containing informative variants
           pattern: "*.igv"
           ontologies: []
+  versions_ngsbits:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngsbits:
+          type: string
+          description: The name of the tool
+      - UpdHunter --version 2>&1 | sed 's/UpdHunter //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngsbits:
+          type: string
+          description: The name of the tool
+      - UpdHunter --version 2>&1 | sed 's/UpdHunter //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
 maintainers:

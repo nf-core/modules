@@ -12,7 +12,7 @@ process VRHYME_LINKBINS {
 
     output:
     tuple val(meta), path("*_linked_bins.fasta")        , emit: linked_bins
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('vrhyme'), eval("vRhyme --version 2>&1 | sed 's/^.*vRhyme v//; s/Using.*\$//'"), emit: versions_vrhyme, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,27 +22,17 @@ process VRHYME_LINKBINS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     link_bin_sequences.py \\
-        -i $bins \\
+        -i ${bins} \\
         -o vRhyme_linked_bins \\
         -e fasta \\
-        $args
+        ${args}
 
     cat vRhyme_linked_bins/*.fasta > ${prefix}_linked_bins.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vrhyme: \$(echo \$(vRhyme --version 2>&1) | sed 's/^.*vRhyme v//; s/Using.*\$//' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_linked_bins.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vrhyme: \$(echo \$(vRhyme --version 2>&1) | sed 's/^.*vRhyme v//; s/Using.*\$//' )
-    END_VERSIONS
     """
 }

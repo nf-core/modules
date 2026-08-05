@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hasheddrops"
 description: Generating cell hashing calls from a matrix of count data.
 keywords:
@@ -14,9 +13,9 @@ tools:
       documentation: "https://rdrr.io/github/MarioniLab/DropletUtils/man/hashedDrops.html"
       tool_dev_url: "https://github.com/MarioniLab/DropletUtils"
       doi: "10.18129/B9.bioc.DropletUtils"
-      licence: ["GPL-3"]
+      licence:
+        - "GPL-3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -144,9 +143,18 @@ output:
   versions:
     - versions.yml:
         type: file
-        description: File containing software versions.
-
-        ontologies: []
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@LuisHeinzlmeier"
 maintainers:

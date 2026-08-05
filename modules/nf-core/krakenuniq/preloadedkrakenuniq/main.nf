@@ -31,7 +31,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     sequences = sequences instanceof List ? sequences : [sequences]
 
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def preload_mode = !task.ext.args.toString().contains('--preload-size')
     def preload_cmd = preload_mode ? "krakenuniq ${args} --db ${db} --preload --threads ${task.cpus}" : ''
 

@@ -13,7 +13,7 @@ process NUCMER {
     output:
     tuple val(meta), path("*.delta") , emit: delta
     tuple val(meta), path("*.coords"), emit: coords
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('nucmer'), eval("nucmer --version 2>&1  | sed -n 's/NUCmer (NUCleotide MUMmer) version //p'"), topic: versions, emit: versions_nucmer
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,24 +26,19 @@ process NUCMER {
     def fasta_name_ref      = ref.getName().replace(".gz", "")
     def fasta_name_query    = query.getName().replace(".gz", "")
     """
-    if [ "$is_compressed_ref" == "true" ]; then
-        gzip -c -d $ref > $fasta_name_ref
+    if [ "${is_compressed_ref}" == "true" ]; then
+        gzip -c -d ${ref} > ${fasta_name_ref}
     fi
-    if [ "$is_compressed_query" == "true" ]; then
-        gzip -c -d $query > $fasta_name_query
+    if [ "${is_compressed_query}" == "true" ]; then
+        gzip -c -d ${query} > ${fasta_name_query}
     fi
 
     nucmer \\
-        -p $prefix \\
+        -p ${prefix} \\
         --coords \\
-        $args \\
-        $fasta_name_ref \\
-        $fasta_name_query
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nucmer: \$( nucmer --version 2>&1  | grep "version" | sed -e "s/NUCmer (NUCleotide MUMmer) version //g; s/nucmer//g;" )
-    END_VERSIONS
+        ${args} \\
+        ${fasta_name_ref} \\
+        ${fasta_name_query}
     """
 
     stub:
@@ -51,10 +46,5 @@ process NUCMER {
     """
     touch ${prefix}.delta
     touch ${prefix}.coords
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nucmer: \$( nucmer --version 2>&1  | grep "version" | sed -e "s/NUCmer (NUCleotide MUMmer) version //g; s/nucmer//g;" )
-    END_VERSIONS
     """
 }

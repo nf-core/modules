@@ -1,6 +1,6 @@
 name: smoothxg
-description: Linearize and simplify variation graph in GFA format using blocked partial
-  order alignment
+description: Linearize and simplify variation graph in GFA format using blocked
+  partial order alignment
 keywords:
   - gfa
   - graph
@@ -14,7 +14,8 @@ tools:
         order alignment.
       homepage: https://github.com/pangenome/smoothxg
       documentation: https://github.com/pangenome/smoothxg
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -27,7 +28,7 @@ input:
         description: Variation graph in GFA 1.0 format
         pattern: "*.{gfa}"
         ontologies:
-          - edam: http://edamontology.org/format_3975 # GFA 1
+          - edam: http://edamontology.org/format_3975
 output:
   gfa:
     - - meta:
@@ -40,21 +41,35 @@ output:
           description: Linearized and simplified graph in GFA 1.0 format
           pattern: "*.smoothxg.{gfa}"
           ontologies:
-            - edam: http://edamontology.org/format_3975 # GFA 1
+            - edam: http://edamontology.org/format_3975
   maf:
     - "*.maf":
         type: file
-        description: write the multiple sequence alignments (MSAs) in MAF format in
-          this file (optional)
+        description: write the multiple sequence alignments (MSAs) in MAF format
+          in this file (optional)
         pattern: "*.{maf}"
         ontologies: []
+  versions_smoothxg:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - smoothxg:
+          type: string
+          description: The name of the tool
+      - smoothxg --version 2>&1 | sed 's/^v//; s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - smoothxg:
+          type: string
+          description: The name of the tool
+      - smoothxg --version 2>&1 | sed 's/^v//; s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@heuermh, @subwaystation"
 maintainers:

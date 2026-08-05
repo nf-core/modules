@@ -1,6 +1,6 @@
 name: "arcashla_extract"
-description: Extracts reads mapped to chromosome 6 and any HLA decoys or chromosome
-  6 alternates.
+description: Extracts reads mapped to chromosome 6 and any HLA decoys or
+  chromosome 6 alternates.
 keywords:
   - HLA
   - genotype
@@ -13,7 +13,8 @@ tools:
       documentation: "https://github.com/RabadanLab/arcasHLA"
       tool_dev_url: "https://github.com/RabadanLab/arcasHLA"
       doi: "10.1093/bioinformatics/btz474"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -23,8 +24,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - bam:
         type: file
-        description: BAM file. If the BAM file is not indexed, this tool will run samtools
-          index before extracting reads.
+        description: BAM file. If the BAM file is not indexed, this tool will run
+          samtools index before extracting reads.
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
@@ -37,7 +38,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.fq.gz":
           type: file
-          description: FASTQ file(s) containing chromosome 6 reads and related HLA sequences
+          description: FASTQ file(s) containing chromosome 6 reads and related HLA
+            sequences
           pattern: "*.fq.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930" # FASTQ
@@ -85,26 +87,28 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
   versions_arcashla:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "arcashla":
+      - arcashla:
           type: string
           description: The name of the tool
-      - "echo 0.5.0":
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 0.5.0:
+          type: string
+          description: The version of the tool
+
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "arcashla":
+      - arcashla:
           type: string
           description: The name of the tool
-      - "echo 0.5.0":
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 0.5.0:
+          type: string
+          description: The version of the tool
+
 authors:
   - "@christopher-mohr"
 maintainers:

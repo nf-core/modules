@@ -14,7 +14,7 @@ process IGV_JS {
     tuple val(meta), path("*_genome-browser.html"), emit: browser
     tuple val(meta), path(alignment), emit: align_files
     tuple val(meta), path(index), emit: index_files
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val("cat"), eval("cat --version |& sed '1!d;s/.*coreutils) //'"), topic: versions, emit: versions_cat
 
     when:
     task.ext.when == null || task.ext.when
@@ -56,21 +56,11 @@ process IGV_JS {
         </body>
     </html>
     IGV
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_genome-browser.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
-    END_VERSIONS
     """
 }

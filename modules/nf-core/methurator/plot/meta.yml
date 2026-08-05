@@ -1,0 +1,73 @@
+name: methurator_plot
+description: Plots results produced by methurator gtestimator.
+keywords:
+  - rrbs
+  - BS-seq
+  - methylation
+  - 5mC
+  - methylseq
+  - bisulphite
+  - bisulfite
+  - bam
+tools:
+  - methurator:
+      description: |
+        methurator is a Python package designed to estimate sequencing saturation
+        for DNA methylation sequencing data.
+      homepage: https://github.com/VIBTOBIlab/methurator
+      documentation: https://github.com/VIBTOBIlab/methurator/README.md
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - summary_report:
+        type: file
+        description: |
+          YAML file summarizing the saturation analysis results.
+        pattern: "methurator_*.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+output:
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - plots/*.html:
+          type: file
+          description: |
+            HTML plots generated from the saturation analysis.
+          pattern: "plots/*.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+  versions_methurator:
+    - - ${task.process}:
+          type: string
+          description: methurator plot
+      - methurator:
+          type: string
+          description: The name of the tool
+      - methurator --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: methurator plot
+      - methurator:
+          type: string
+          description: The name of the tool
+      - methurator --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@edogiuili"
+maintainers:
+  - "@edogiuili"

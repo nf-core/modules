@@ -12,7 +12,7 @@ process STAPHOPIASCCMEC {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('staphopiasccmec'), eval('staphopia-sccmec --version 2>&1 | sed "s/^.*staphopia-sccmec //"'), emit: versions_staphopiasccmec, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,10 +22,11 @@ process STAPHOPIASCCMEC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     staphopia-sccmec --assembly $fasta $args > ${prefix}.tsv
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        staphopiasccmec: \$(staphopia-sccmec --version 2>&1 | sed 's/^.*staphopia-sccmec //')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
     """
 }

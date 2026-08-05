@@ -1,0 +1,100 @@
+name: "fgumi_group"
+description: |
+  Groups reads together that appear to have come from the same original molecule.
+  Reads are grouped by template, and then templates are sorted by the 5' mapping positions
+  of the reads from the template. Reads that have the same end positions are then sub-grouped
+  by UMI sequence. This is a high-performance replacement for fgbio GroupReadsByUmi.
+keywords:
+  - umi
+  - groupreads
+  - bam
+tools:
+  - "fgumi":
+      description: "High-performance tools for working with UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://docs.rs/fgumi"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: |
+          BAM file containing reads with UMI tags. The file must be coordinate sorted.
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+  - strategy:
+      type: string
+      enum:
+        - "Identity"
+        - "Edit"
+        - "Adjacency"
+        - "Paired"
+      description: |
+        Required argument: defines the UMI assignment strategy.
+        Must be chosen among: Identity, Edit, Adjacency, Paired.
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: UMI-grouped BAM file
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  histogram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.family_size_histogram.txt":
+          type: file
+          description: Optional output of tag family size counts
+          pattern: "*.family_size_histogram.txt"
+  metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.grouping_metrics.txt":
+          type: file
+          description: Optional output of UMI grouping metrics
+          pattern: "*.grouping_metrics.txt"
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgumi:
+          type: string
+          description: The tool name
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgumi:
+          type: string
+          description: The tool name
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sppearce"
+maintainers:
+  - "@sppearce"

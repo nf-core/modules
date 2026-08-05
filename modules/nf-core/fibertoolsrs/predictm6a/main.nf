@@ -4,15 +4,15 @@ process FIBERTOOLSRS_PREDICTM6A {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fibertools-rs:0.7.1--h3b373d1_0':
-        'quay.io/biocontainers/fibertools-rs:0.7.1--h3b373d1_0' }"
+        'https://depot.galaxyproject.org/singularity/fibertools-rs:0.8.2--h3b373d1_0':
+        'quay.io/biocontainers/fibertools-rs:0.8.2--h3b373d1_0' }"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('fibertools-rs'), eval("ft --version | sed 's/fibertools-rs v//;s/\\t.*//'"), topic: versions, emit: versions_fibertoolsrs
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,29 +25,16 @@ process FIBERTOOLSRS_PREDICTM6A {
     """
     ft \\
         predict-m6a \\
-        $args \\
+        ${args} \\
         --threads ${task.cpus} \\
-        $bam \\
+        ${bam} \\
         ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fibertools-rs: \$(ft --version | sed -E 's/.* ([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_m6a"
 
     """
-    echo $args
-
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fibertools-rs: \$(ft --version | sed -E 's/.* ([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/' )
-    END_VERSIONS
     """
 }

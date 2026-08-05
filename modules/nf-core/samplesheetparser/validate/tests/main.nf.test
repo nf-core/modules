@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process SAMPLESHEETPARSER_VALIDATE"
+    script "../main.nf"
+    process "SAMPLESHEETPARSER_VALIDATE"
+
+    tag "samplesheetparser"
+    tag "samplesheetparser/validate"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("V1 dual-index sheet - validate") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_v1' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("V2 dual-index sheet - validate") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_v2' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v2.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("V1 dual-index sheet - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

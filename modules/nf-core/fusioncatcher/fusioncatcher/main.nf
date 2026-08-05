@@ -15,7 +15,7 @@ process FUSIONCATCHER_FUSIONCATCHER {
     tuple val(meta), path("*.fusion-genes.txt"), emit: fusions, optional: true
     tuple val(meta), path("*.summary.txt")     , emit: summary, optional: true
     tuple val(meta), path("*.log")             , emit: log
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('fusioncatcher'), eval("fusioncatcher --version |& sed 's/.* //'"), topic: versions, emit: versions_fusioncatcher
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +43,6 @@ process FUSIONCATCHER_FUSIONCATCHER {
     mv final-list_candidate-fusion-genes.txt ${prefix}.fusion-genes.txt
     mv summary_candidate_fusions.txt ${prefix}.summary.txt
     mv fusioncatcher.log ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fusioncatcher: "\$(fusioncatcher --version 2>&1 | awk '{print \$2}')"
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +51,5 @@ process FUSIONCATCHER_FUSIONCATCHER {
     touch ${prefix}.fusion-genes.txt
     touch ${prefix}.summary.txt
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fusioncatcher: "\$(fusioncatcher --version 2>&1 | awk '{print \$2}')"
-    END_VERSIONS
     """
 }
