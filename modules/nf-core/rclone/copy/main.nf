@@ -8,7 +8,7 @@ process RCLONE_COPY {
         : 'community.wave.seqera.io/library/rclone:1.65.0--ff88b2e0040147be'}"
 
     input:
-    tuple val(meta), val(source_path), val(destination_path)
+    tuple val(meta), val(source_path), val(destination_path), path(filter_file)
     path rclone_config
 
     output:
