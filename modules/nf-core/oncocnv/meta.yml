@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/BoevaLab/ONCOCNV/blob/master/README.md"
       tool_dev_url: "https://github.com/BoevaLab/ONCOCNV/"
       doi: "10.1093/bioinformatics/btu436"
-      license: ["GPL-3.0-or-later"]
+      license:
+        - "GPL-3.0-or-later"
       identifier: biotools:oncocnv
 input:
   - - meta:
@@ -83,13 +84,71 @@ output:
           description: TXT file containing summarized data
           pattern: "*.summary.txt"
           ontologies: []
+  versions_oncocnv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - oncocnv:
+          type: string
+          description: The name of the tool
+      - "7.0":
+          type: string
+          description: The expression to obtain the version of the tool
+
+  versions_perl:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - perl:
+          type: string
+          description: The name of the tool
+      - perl --version | sed '2!d;s/.*v//;s/).*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_r_base:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - R --version | sed '1!d; s/.*version //; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - oncocnv:
+          type: string
+          description: The name of the tool
+      - "7.0":
+          type: string
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - perl:
+          type: string
+          description: The name of the tool
+      - perl --version | sed '2!d;s/.*v//;s/).*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - R --version | sed '1!d; s/.*version //; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@marrip"
 maintainers:

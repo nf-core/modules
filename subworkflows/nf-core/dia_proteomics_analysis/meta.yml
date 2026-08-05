@@ -120,13 +120,6 @@ input:
         e.g. `file('assembly.log')`
       pattern: "*.log"
 output:
-  - versions:
-      description: File containing software versions
-      structure:
-        - versions:
-            type: file
-            description: File containing software versions
-            pattern: "versions.yml"
   - diann_report:
       description: Main DIA-NN report in TSV format containing quantification results
       structure:
