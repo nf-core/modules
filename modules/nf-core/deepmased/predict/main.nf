@@ -22,13 +22,12 @@ process DEEPMASED_PREDICT {
     script:
     def args     = task.ext.args ?: ''
     def prefix   = task.ext.prefix ?: "${meta.id}"
-    def gpu_args = task.accelerator ? '' : '--cpu-only'
     """
     DeepMAsED predict \\
         ${feature_file_table} \\
         --n-procs ${task.cpus} \\
         --save-name ${prefix} \\
-        ${gpu_args} \\
+        --cpu-only \\
         ${args}
     """
 
