@@ -42,6 +42,13 @@ process RCLONE_CHECK {
         ${source} \\
         ${destination} || echo \$? > ${prefix}.exit_code.txt
 
+    sort -k2 ${prefix}.combined.txt -o ${prefix}.combined.txt
+    sort ${prefix}.differ.txt -o ${prefix}.differ.txt
+    sort ${prefix}.missing_on_dst.txt -o ${prefix}.missing_on_dst.txt
+    sort ${prefix}.missing_on_src.txt -o ${prefix}.missing_on_src.txt
+    sort ${prefix}.match.txt -o ${prefix}.match.txt
+    sort ${prefix}.error.txt -o ${prefix}.error.txt
+
     # Do not emit empty output files
     for f in *.txt; do
         [ -s "\$f" ] || rm -f "\$f"
