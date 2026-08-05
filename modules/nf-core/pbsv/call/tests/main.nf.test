@@ -13,12 +13,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path +  'genomics/homo_sapiens/pacbio/svsig/NA03697B2_new.pbmm2.repeats.svsig.gz', checkIfExists: true)
                 ]
-
                 input[1] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
                 ]
                 """
@@ -26,14 +25,12 @@ nextflow_process {
         }
 
         then {
-            def vcfFile = path(process.out.vcf[0][1]).vcf
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.vcf[0][1]).name,
-                    process.out.versions,
-                    vcfFile.variantsMD5).match() },
-                { assert vcfFile.chromosomes == ['chr19:45760000-45770300'] as Set}
+                    sanitizeOutput(process.out, unstableKeys:["vcf"]),
+                    path(process.out.vcf[0][1]).vcf.variantsMD5)
+                .match() }
             )
         }
     }
@@ -46,12 +43,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path +  'genomics/homo_sapiens/pacbio/svsig/NA03697B2_new.pbmm2.repeats.svsig.gz', checkIfExists: true)
                 ]
-
                 input[1] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
                 ]
                 """
@@ -61,7 +57,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
