@@ -12,7 +12,7 @@ process SYLPH_SKETCHGENOMES {
 
     output:
     tuple val(meta), path('*.syldb'), emit: syldb
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('sylph'), eval('sylph -V | sed "s/sylph //g"'), topic: versions, emit: versions_sylph
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process SYLPH_SKETCHGENOMES {
         ${args} \\
         --gl genomes.txt \\
         -o ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sylph: \$(sylph -V|awk '{print \$2}')
-    END_VERSIONS
     """
 
     stub:
@@ -41,10 +36,5 @@ process SYLPH_SKETCHGENOMES {
     """
     echo "${args}"
     touch ${prefix}.syldb
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sylph: \$(sylph -V|awk '{print \$2}')
-    END_VERSIONS
     """
 }

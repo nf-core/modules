@@ -11,7 +11,7 @@ process RASTAIR_METHYLKIT {
 
     output:
     tuple val(meta), path("*methylkit.txt.gz"), emit: methylkit
-    path "versions.yml",                        emit: versions
+    tuple val("${task.process}"), val('rastair'), eval("rastair --version | sed 's/rastair //'"), topic: versions, emit: versions_rastair
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,21 +21,11 @@ process RASTAIR_METHYLKIT {
 
     """
     cat ${rastair_call_txt} | rastair_call_to_methylkit.sh | gzip -c > ${prefix}.rastair_methylkit.txt.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rastair: \$(rastair --version)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.methylkit.txt.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rastair: \$(rastair --version 2>&1 || echo "stub")
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.rastair_methylkit.txt.gz
     """
 }

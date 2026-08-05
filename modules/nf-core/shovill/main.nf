@@ -34,4 +34,12 @@ process SHOVILL {
         --outdir ./ \\
         --force
     """
+
+    stub:
+    """
+    touch contigs.fa
+    touch shovill.corrections
+    touch shovill.log
+    touch spades.fasta
+    """
 }

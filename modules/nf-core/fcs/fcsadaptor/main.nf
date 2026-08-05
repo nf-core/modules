@@ -16,8 +16,8 @@ process FCS_FCSADAPTOR {
     tuple val(meta), path("*.fcs_adaptor.log")        , emit: log
     tuple val(meta), path("*.pipeline_args.yaml")     , emit: pipeline_args
     tuple val(meta), path("*.skipped_trims.jsonl")    , emit: skipped_trims
-    tuple val("${task.process}"), val('fcsadaptor'), val("0.5.0"), emit: versions_fcsadaptor, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('fcsadaptor'), val("0.5.0"), emit: versions_fcsadaptor, topic: versions
 
     // Downstream handling of optional cleaned_assembly
     //
@@ -50,7 +50,7 @@ process FCS_FCSADAPTOR {
 
     av_screen_x \\
         -o output/ \\
-        $args \\
+        ${args} \\
         ${prefix}.id.only.fasta
 
     # compress and/or rename files with prefix

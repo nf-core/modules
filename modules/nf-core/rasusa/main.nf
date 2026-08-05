@@ -30,4 +30,13 @@ process RASUSA {
         --input $reads \\
         $output
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}_1.fastq.gz
+    if [ "${meta.single_end}" == "false" ]; then
+        echo "" | gzip > ${prefix}_2.fastq.gz
+    fi
+    """
 }

@@ -1,6 +1,6 @@
 name: "hamronization_amrfinderplus"
-description: Tool to convert and summarize AMRfinderPlus outputs using the hAMRonization
-  specification.
+description: Tool to convert and summarize AMRfinderPlus outputs using the
+  hAMRonization specification.
 keywords:
   - amr
   - antimicrobial resistance
@@ -15,20 +15,21 @@ tools:
       homepage: "https://github.com/pha4ge/hAMRonization/"
       documentation: "https://github.com/pha4ge/hAMRonization/"
       tool_dev_url: "https://github.com/pha4ge/hAMRonization"
-      licence: ["GNU Lesser General Public v3 (LGPL v3)"]
+      licence:
+        - "GNU Lesser General Public v3 (LGPL v3)"
       identifier: biotools:hamronization
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - report:
         type: file
         description: Output .tsv file from AMRfinderPlus
         pattern: "*.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   - format:
       type: string
       description: Type of report file to be produced
@@ -47,7 +48,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.json":
           type: file
           description: hAMRonised report in JSON format
@@ -59,20 +60,34 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.tsv":
           type: file
           description: hAMRonised report in TSV format
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_hamronization:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hamronization:
+          type: string
+          description: The name of the tool
+      - hamronize --version 2>&1 | sed 's/hamronize //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hamronization:
+          type: string
+          description: The name of the tool
+      - hamronize --version 2>&1 | sed 's/hamronize //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louperelo"
 maintainers:

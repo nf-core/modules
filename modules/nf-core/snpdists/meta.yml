@@ -11,7 +11,8 @@ tools:
       homepage: https://github.com/tseemann/snp-dists
       documentation: https://github.com/tseemann/snp-dists
       tool_dev_url: https://github.com/tseemann/snp-dists
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -37,13 +38,27 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_snpdists:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snpdists:
+          type: string
+          description: The name of the tool
+      - snp-dists -v 2>&1 | sed "s/snp-dists //;":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snpdists:
+          type: string
+          description: The name of the tool
+      - snp-dists -v 2>&1 | sed "s/snp-dists //;":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@abhi18av"
 maintainers:

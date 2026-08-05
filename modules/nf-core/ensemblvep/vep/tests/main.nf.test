@@ -88,7 +88,7 @@ nextflow_process {
                     file(process.out.tab[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions")
                 }).match() },
-                { assert path(process.out.tab[0][1]).linesGzip.contains("## ENSEMBL VARIANT EFFECT PREDICTOR v115.2") }
+                { assert path(process.out.tab[0][1]).linesGzip.contains("## ENSEMBL VARIANT EFFECT PREDICTOR v116.0") }
             )
         }
     }

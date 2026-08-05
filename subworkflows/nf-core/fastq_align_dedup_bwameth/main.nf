@@ -32,7 +32,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         */
         PARABRICKS_FQ2BAMMETH(
             ch_reads,
-            ch_fasta_fai,
+            ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
             ch_bwameth_index,
             [],
         )

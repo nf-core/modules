@@ -1,19 +1,34 @@
 {
-    "Should run without failures": {
+    "fastqscan - stub": {
         "content": [
             {
-                "0": [
+                "json": [
                     [
                         {
                             "id": "test",
                             "single_end": true
                         },
-                        "test.json:md5,2748bcc8d6dbe09ad2233ae5a22edcbe"
+                        "test.json:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "1": [
-                    "versions.yml:md5,900a4e8a5bd719abdee37e7b61c9339f"
-                ],
+                "versions_fastqscan": [
+                    [
+                        "FASTQSCAN",
+                        "fastqscan",
+                        "0.4.4"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-29T17:42:13.640813",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "Should run without failures": {
+        "content": [
+            {
                 "json": [
                     [
                         {
@@ -23,11 +38,19 @@
                         "test.json:md5,2748bcc8d6dbe09ad2233ae5a22edcbe"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,900a4e8a5bd719abdee37e7b61c9339f"
+                "versions_fastqscan": [
+                    [
+                        "FASTQSCAN",
+                        "fastqscan",
+                        "0.4.4"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2023-10-17T14:28:58.206046021"
+        "timestamp": "2026-04-29T17:42:08.229869",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }

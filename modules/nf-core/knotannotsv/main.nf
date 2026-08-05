@@ -11,8 +11,7 @@ process KNOTANNOTSV {
     tuple val(meta), path(annotsv_tsv), val(knot_out_xl)
 
     output:
-    tuple val(meta), path("*.html"), emit: html, optional: true
-    tuple val(meta), path("*.xlsm"), emit: xl, optional: true
+    tuple val(meta), path("*.{html,xlsm}"), emit: output_file
     // CHANGE bellow when UPDATE
     tuple val("${task.process}"), val('knotannotsv'), val('1.1.5'), emit: versions_knotannotsv, topic: versions
 

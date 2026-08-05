@@ -31,4 +31,14 @@ process BBMAP_CLUMPIFY {
         $args \\
         &> ${prefix}.clumpify.log
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_command = meta.single_end ?
+        "echo '' | gzip > ${prefix}.clumped.fastq.gz" :
+        "echo '' | gzip > ${prefix}_1.clumped.fastq.gz ; echo '' | gzip > ${prefix}_2.clumped.fastq.gz"
+    """
+    touch ${prefix}.clumpify.log
+    $output_command
+    """
 }

@@ -41,6 +41,10 @@ input:
         type: file
         description: BAM index file (optional but recommended)
         pattern: "*.bai"
+    - pedigree:
+        type: file
+        description: Pedigree file to improve phasing of multiple related individuals (optional)
+        pattern: "*.ped"
   - - meta2:
         type: map
         description: |

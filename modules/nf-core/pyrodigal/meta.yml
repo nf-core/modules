@@ -77,13 +77,27 @@ output:
           description: all potential genes (with scores)
           pattern: "*.{score.gz}"
           ontologies: []
+  versions_pyrodigal:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pyrodigal:
+          type: string
+          description: The name of the tool
+      - pyrodigal --version |& sed 's/pyrodigal v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pyrodigal:
+          type: string
+          description: The name of the tool
+      - pyrodigal --version |& sed 's/pyrodigal v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louperelo"
 maintainers:
