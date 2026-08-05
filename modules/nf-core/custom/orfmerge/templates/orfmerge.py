@@ -433,6 +433,12 @@ def main():
     if missing:
         sys.exit(f"orfmerge: normalised TSV is missing required column(s) {missing}")
 
+    # Checked on the input rows: representative() ranks an unknown class last, so
+    # a proxy would hide one behind a known class at the same structure.
+    unknown = sorted({r.get("orf_class", "other") for r in rows} - set(CLASS_ORDER))
+    if unknown:
+        sys.exit(f"orfmerge: unknown orf_class value(s) {unknown}; update CLASS_ORDER")
+
     # Class still selects the strategy, so callers disagreeing on class across a
     # strategy boundary would never merge. Collapse identical structures first and
     # cluster one proxy per structure, then restore the members.
@@ -446,10 +452,6 @@ def main():
     by_class = defaultdict(list)
     for r in merge_rows:
         by_class[r.get("orf_class", "other")].append(r)
-
-    unknown = sorted(set(by_class) - set(CLASS_ORDER))
-    if unknown:
-        sys.exit(f"orfmerge: unknown orf_class value(s) {unknown}; update CLASS_ORDER")
 
     proxy_clusters = []
     # Not transcript-anchored: one reciprocal-overlap pass over the union of

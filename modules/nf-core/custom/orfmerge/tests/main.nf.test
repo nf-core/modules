@@ -456,4 +456,39 @@ nextflow_process {
         }
     }
 
+
+    test("an unknown class sharing a structure with a known one still aborts") {
+
+        when {
+            process {
+                """
+                def beds = channel
+                    .of(
+                            'chr1\t1000\t1300\tribotish|a\t0\t+\t1000\t1300\t0\t1\t300,\t0,',
+                            'chr1\t1000\t1300\tribocode|b\t0\t+\t1000\t1300\t0\t1\t300,\t0,'
+                    )
+                    .collectFile(name: 'hidden.bed12', newLine: true, sort: false)
+                def tsvs = channel
+                    .of(
+                            'orf_id\tcaller\tsample_id\tchrom\tstart\tend\tstrand\tgene_id\ttranscript_id\torf_class\taa_length\tscore\torf_type_native\tis_smorf',
+                            "ribotish|a\tribotish\ts1\tchr1\t1000\t1300\t+\tg1\tt1\tuORF\t99\t0.01\t5'UTR\t1",
+                            'ribocode|b\tribocode\ts1\tchr1\t1000\t1300\t+\tg1\tt1\tNotAClass\t99\t0.01\tmystery\t1'
+                    )
+                    .collectFile(name: 'hidden.tsv', newLine: true, sort: false)
+                input[0] = beds.combine(tsvs).map { bed, tsv -> [ [id: 'cohort'], [bed], [tsv] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                // representative() ranks an unknown class last, so validating
+                // proxies instead of input rows would let this one through and
+                // re-emit the row as uORF.
+                { assert process.failed },
+                { assert process.errorReport.contains('NotAClass') }
+            )
+        }
+    }
+
 }
