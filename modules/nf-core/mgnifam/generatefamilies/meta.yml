@@ -19,14 +19,15 @@ tools:
       tool_dev_url: "https://github.com/vagkaratzas/mgnifam"
       licence:
         - "MIT"
-      identifier: ""
+      args_id: "$args"
+      identifier: biotools:mgnifam
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - clusters_chunk:
+    - clustering:
         type: file
         description: Headerless TSV file of MMseqs2 sequence clusters, one representative-member
           pair per line (representative<TAB>member)
@@ -40,6 +41,14 @@ input:
         pattern: "*.{fa,fasta,fna,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
+    - fasta_index:
+        type: file
+        description: Optional. Precomputed Easel SSI index of the FASTA file, e.g.
+          from `esl-sfetch --index` (hmmer/eslsfetchindex). Used as given and never
+          rebuilt, so parallel chunk tasks can share one read-only index. Built
+          automatically when omitted
+        pattern: "*.ssi"
+        ontologies: []
 output:
   seed_msa:
     - - meta:
@@ -187,16 +196,6 @@ output:
       - "mgnifam --version 2>&1":
           type: eval
           description: The expression to obtain the version of the tool
-  versions_python:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - python:
-          type: string
-          description: The name of the tool
-      - python3 --version 2>&1 | sed 's/Python //':
-          type: eval
-          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -206,15 +205,6 @@ topics:
           type: string
           description: The name of the tool
       - "mgnifam --version 2>&1":
-          type: eval
-          description: The expression to obtain the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - python:
-          type: string
-          description: The name of the tool
-      - python3 --version 2>&1 | sed 's/Python //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
