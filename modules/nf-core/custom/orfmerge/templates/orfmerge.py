@@ -433,37 +433,49 @@ def main():
     if missing:
         sys.exit(f"orfmerge: normalised TSV is missing required column(s) {missing}")
 
+    # Class still selects the strategy, so callers disagreeing on class across a
+    # strategy boundary would never merge. Collapse identical structures first and
+    # cluster one proxy per structure, then restore the members.
+    exact_groups = group_by(rows, lambda r: (r["chrom"], r["strand"], tuple(r["_blocks"])))
+    merge_rows = []
+    for members in exact_groups:
+        proxy = dict(representative(members))
+        proxy["_members"] = members
+        merge_rows.append(proxy)
+
     by_class = defaultdict(list)
-    for r in rows:
+    for r in merge_rows:
         by_class[r.get("orf_class", "other")].append(r)
 
     unknown = sorted(set(by_class) - set(CLASS_ORDER))
     if unknown:
         sys.exit(f"orfmerge: unknown orf_class value(s) {unknown}; update CLASS_ORDER")
 
-    clusters = []
+    proxy_clusters = []
     # Not transcript-anchored: one reciprocal-overlap pass over the union of
     # these classes, so calls disagreeing on class still reach one cluster.
     non_anchored = [r for cls in OVERLAP_CLASSES for r in by_class.get(cls, [])]
-    clusters.extend(cluster_by_reciprocal_overlap(non_anchored, frac=args.reciprocal_overlap))
+    proxy_clusters.extend(cluster_by_reciprocal_overlap(non_anchored, frac=args.reciprocal_overlap))
     # One annotated CDS per transcript, so the span stays out of the key --
     # but grouping on (transcript_id, strand) alone would fold a short
     # truncated variant into the full-length CDS and emit only the longest, so
     # cluster on exonic overlap within the transcript.
     loose = [r for cls in LOOSE_CLASSES for r in by_class.get(cls, [])]
     for grp in group_by(loose, lambda r: (r.get("transcript_id") or "", r["strand"])):
-        clusters.extend(cluster_by_reciprocal_overlap(grp, frac=args.reciprocal_overlap))
+        proxy_clusters.extend(cluster_by_reciprocal_overlap(grp, frac=args.reciprocal_overlap))
     # Transcript-anchored and non-unique per transcript, so the outer span
     # joins the key. Overlap clustering cannot be used here: it merges nested
     # ORFs, folding a uORF that covers most of the CDS into the CDS itself.
     keyed = set(OVERLAP_CLASSES) | set(LOOSE_CLASSES)
     anchored = [r for cls, rows_c in by_class.items() if cls not in keyed for r in rows_c]
-    clusters.extend(
+    proxy_clusters.extend(
         group_by(
             anchored,
             lambda r: (r.get("transcript_id") or "", r["strand"], int(r["start"]), int(r["end"])),
         )
     )
+
+    clusters = [[m for proxy in cluster for m in proxy["_members"]] for cluster in proxy_clusters]
 
     assigned = sum(len(c) for c in clusters)
     if assigned != len(rows):

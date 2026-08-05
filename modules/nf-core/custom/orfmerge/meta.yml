@@ -6,7 +6,12 @@ description: |
   (typically) `bedtools/getfasta` + `seqkit/translate` downstream to obtain
   the AA FASTA.
 
-  Rows are partitioned by clustering strategy. The harmonised `orf_class`
+  Rows sharing an identical exon structure are grouped first and clustered as a
+  single proxy chosen by class specificity, then the members are restored. Class
+  selects the strategy, so without this an ORF that two callers class differently
+  would be split across strategies and could never merge.
+
+  Proxies are then partitioned by clustering strategy. The harmonised `orf_class`
   written by `custom/orfnormalise` selects the strategy but is never part of a
   grouping key, because callers disagree on class for the same ORF (Ribo-TISH
   reports `5'UTR` for both uORFs and CDS-overlapping uORFs) and keying on it
@@ -22,8 +27,8 @@ description: |
                             keying on the outer span keeps them in
                             separate clusters while still merging
                             cross-caller calls that agree on coordinates.
-    - novel_u:              greedy reciprocal-overlap clustering on the
-                            outer genomic span at `--reciprocal-overlap`
+    - novel_u:              greedy reciprocal-overlap clustering on summed
+                            exon-block intersection at `--reciprocal-overlap`
                             (default 0.8). Catches fuzzy cross-caller
                             matches and exact-coordinate collapses in
                             one pass. Order-dependent at the boundary:

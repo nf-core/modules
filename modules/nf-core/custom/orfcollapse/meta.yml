@@ -19,11 +19,12 @@ description: |
   down to one representative.
 
   Only small ORFs are collapsed; larger ORFs are passed through untouched.
-  Eligibility is a length test independent of `orf_class`, so a short uORF and a
-  short novel ORF are both candidates. Among the members of a cluster the
-  representative is chosen by longest aa_length (ties broken by orf_id), so the
-  result does not depend on which sequence MMseqs2 labelled the cluster
-  representative. Catalogue row order is preserved; dropped members fold their
+  Eligibility is the catalogue's `is_smorf` flag, independent of `orf_class`, so
+  a short uORF and a short novel ORF are both candidates; `--smorf-max-aa`
+  re-derives the flag and aborts on disagreement. Among the members of a cluster
+  the representative is chosen by class specificity, then longest aa_length,
+  then orf_id, so the result does not depend on which sequence MMseqs2 labelled
+  the cluster representative. Catalogue row order is preserved; dropped members fold their
   `called_by_<caller>` / `score_<caller>` evidence, `n_samples` / `samples`
   recurrence and gene mappings into the survivor.
 keywords:

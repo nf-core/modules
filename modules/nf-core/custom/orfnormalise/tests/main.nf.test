@@ -9,6 +9,8 @@ nextflow_process {
     tag "custom"
     tag "custom/orfnormalise"
 
+    config "./nextflow.config"
+
     test("homo_sapiens [chr20] - ribocode") {
 
         when {
@@ -282,9 +284,11 @@ nextflow_process {
     }
 
     test("homo_sapiens [chr20] - ribotish - score-field override") {
-        config "./score_override.config"
-
         when {
+            params {
+                module_args = "--score-field RiboPvalue"
+            }
+
             process {
                 """
                 input[0] = channel.of([
@@ -355,9 +359,11 @@ nextflow_process {
 
     test("smorf-max-aa override widens is_smorf without touching orf_class") {
 
-        config "./smorf_max_aa.config"
-
         when {
+            params {
+                module_args = "--smorf-max-aa 150"
+            }
+
             process {
                 """
                 input[0] = channel
@@ -392,6 +398,35 @@ nextflow_process {
                 { assert a[smorf] == '1' && b[smorf] == '1' },
                 { assert a[cls] == 'uORF' && b[cls] == 'uORF' },
                 { assert parser_columns_line.contains('smorf_max_aa=150') }
+            )
+        }
+    }
+
+
+    test("an unmapped ORF type aborts rather than falling through to other") {
+
+        when {
+            process {
+                """
+                input[0] = channel
+                    .of(
+                        'ORF_ID\tORF_type\ttranscript_id\tgene_id\tchrom\tstrand\tORF_length\tORF_tstart\tORF_tstop\tpval_combined',
+                        'unknown_1\tTotallyNewLabel\tt1\tg1\tchr1\t+\t303\t1\t303\t0.001'
+                    )
+                    .collectFile(name: 'unknown.ribocode.txt', newLine: true, sort: false)
+                    .map { orfs -> [[id: 'sample1'], orfs, 'ribocode'] }
+                input[1] = channel
+                    .of('chr1\ttest\texon\t1001\t2000\t.\t+\t.\tgene_id "g1"; transcript_id "t1";')
+                    .collectFile(name: 'unknown.gtf', newLine: true)
+                    .map { gtf -> [[id: 'reference'], gtf] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('TotallyNewLabel') }
             )
         }
     }

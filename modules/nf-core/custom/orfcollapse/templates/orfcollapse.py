@@ -33,11 +33,13 @@ high-confidence subset of the de-redundified catalogue and a folded
 micropeptide is judged on its combined cross-caller / cross-sample evidence.
 
 Only small ORFs are collapsed; larger ORFs pass through untouched, preserving
-the deterministic coordinate/transcript merge from upstream. Eligibility is a
-length test, independent of `orf_class`, so a short uORF and a short novel ORF
-are both candidates. Among the members of a cluster the representative is chosen
-here (longest aa_length, ties broken by orf_id) so the result is independent of which
-sequence MMseqs2 labelled the cluster representative. Catalogue row order is
+the deterministic coordinate/transcript merge from upstream. Eligibility is the
+catalogue's `is_smorf` flag, independent of `orf_class`, so a short uORF and a
+short novel ORF are both candidates; `--smorf-max-aa` re-derives the flag and
+aborts on disagreement. Among the members of a cluster the representative is
+chosen here (class specificity, then longest aa_length, then orf_id) so the
+result is independent of which sequence MMseqs2 labelled the cluster
+representative. Catalogue row order is
 preserved; dropped members fold their cross-caller / cross-sample evidence and
 gene mappings into the survivor.
 """
@@ -171,15 +173,19 @@ def main():
     header = list(catalogue.columns)
     rows = catalogue.to_dict("records")
 
-    # The collapse scope is derived from these two columns, so a silent rename
+    # The collapse scope is derived from these columns, so a silent rename
     # upstream must abort rather than quietly collapse nothing.
-    missing = [c for c in ("orf_class", "aa_length") if c not in header]
+    missing = [c for c in ("orf_class", "aa_length", "is_smorf") if c not in header]
     if missing:
         sys.exit(f"orfcollapse: catalogue is missing required column(s) {missing}")
 
     unknown = sorted(set(catalogue["orf_class"]) - set(CLASS_ORDER))
     if unknown:
         sys.exit(f"orfcollapse: unknown orf_class value(s) {unknown}; update CLASS_ORDER")
+
+    invalid_smorf = sorted(set(catalogue["is_smorf"]) - {"0", "1"})
+    if invalid_smorf:
+        sys.exit(f"orfcollapse: invalid is_smorf value(s) {invalid_smorf}; expected 0 or 1")
 
     bed_index = {}
     with open("${bed12}") as fh:
@@ -191,8 +197,8 @@ def main():
     aa = read_fasta("${aa_fasta}")
     cluster_of = read_clusters("${cluster_tsv}")
 
-    # Eligibility is derived here from aa_length rather than read from a
-    # propagated flag, so the scope cannot silently drift from --smorf-max-aa.
+    # Eligibility is the catalogue's is_smorf; --smorf-max-aa is kept only to
+    # re-derive it, so a threshold mismatch between processes fails loudly.
     def is_small(row):
         try:
             aa = int(row.get("aa_length") or 0)
@@ -200,9 +206,17 @@ def main():
             return False
         return 0 < aa <= args.smorf_max_aa
 
+    diverged = [r["orf_id"] for r in rows if (r.get("is_smorf") == "1") != is_small(r)]
+    if diverged:
+        sys.exit(
+            f"orfcollapse: is_smorf disagrees with --smorf-max-aa={args.smorf_max_aa} on "
+            f"{len(diverged)} row(s) (first: {diverged[:3]}); pass the same --smorf-max-aa "
+            "to CUSTOM_ORFNORMALISE and CUSTOM_ORFCOLLAPSE"
+        )
+
     clusters = defaultdict(list)
     for r in rows:
-        if is_small(r):
+        if r.get("is_smorf") == "1":
             clusters[cluster_of.get(r["orf_id"], r["orf_id"])].append(r)
 
     remap, merged_rows, dropped = {}, {}, set()

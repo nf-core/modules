@@ -1011,6 +1011,11 @@ def main():
             )
         )
 
+    # An unmapped token would fall through to `other` and pick the wrong merge strategy.
+    if unmapped:
+        details = ", ".join(f"{token!r} ({count})" for token, count in sorted(unmapped.items()))
+        sys.exit(f"orfnormalise: unmapped ORF type value(s) for caller '{CALLER}': {details}")
+
     write_outputs(OUT_BED, OUT_TSV, bed_lines, tsv_rows, resolved_columns, unmapped, args.smorf_max_aa)
     write_versions()
 
