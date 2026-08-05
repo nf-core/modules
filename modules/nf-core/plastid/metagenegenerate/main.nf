@@ -1,4 +1,4 @@
-process PLASTID_METAGENE_GENERATE {
+process PLASTID_METAGENEGENERATE {
     tag "$annotation"
     label "process_low"
 
@@ -14,35 +14,23 @@ process PLASTID_METAGENE_GENERATE {
     output:
     tuple val(meta), path("*_rois.txt"), emit: rois_txt
     tuple val(meta), path("*_rois.bed"), emit: rois_bed
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('plastid'), val('0.6.1'), emit: versions_plastid, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION = "0.6.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     metagene generate \\
         "${annotation.baseName}" \\
         --annotation_files "$annotation" \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plastid: $VERSION
-    END_VERSIONS
     """
 
     stub:
-    def VERSION = "0.6.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${annotation.baseName}_rois.txt
     touch ${annotation.baseName}_rois.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plastid: $VERSION
-    END_VERSIONS
     """
 }

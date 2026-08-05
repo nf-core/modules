@@ -1,14 +1,14 @@
 // nf-core modules test plastid
 nextflow_process {
 
-    name "Test Process PLASTID_METAGENE_GENERATE"
+    name "Test Process PLASTID_METAGENEGENERATE"
     script "../main.nf"
-    process "PLASTID_METAGENE_GENERATE"
+    process "PLASTID_METAGENEGENERATE"
 
     tag "modules"
     tag "modules_nfcore"
     tag "plastid"
-    tag "plastid/metagene_generate"
+    tag "plastid/metagenegenerate"
 
     test("human chr20 gtf") {
 
@@ -25,7 +25,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.rois_txt.get(0).get(1)).getText().contains('ENSG') },
                 { assert path(process.out.rois_bed.get(0).get(1)).getText().contains('ENSG') },
-                { assert snapshot(process.out.versions).match('versions') }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match('versions') }
             )
         }
     }
@@ -45,9 +45,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.rois_txt.get(0).get(1)).exists() },
-                { assert file(process.out.rois_bed.get(0).get(1)).exists() },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                    ).match()
+                },
             )
         }
     }

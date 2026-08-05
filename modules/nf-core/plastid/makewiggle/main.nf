@@ -1,4 +1,4 @@
-process PLASTID_MAKE_WIGGLE {
+process PLASTID_MAKEWIGGLE {
     tag "$meta.id"
     label "process_single"
 
@@ -14,7 +14,7 @@ process PLASTID_MAKE_WIGGLE {
 
     output:
     tuple val(meta), path("*.{wig,bedgraph}"), emit: tracks
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('plastid'), val('0.6.1'), emit: versions_plastid, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +27,6 @@ process PLASTID_MAKE_WIGGLE {
     def args = task.ext.args ?: ""
     def offset_arg = mapping_rule == 'fiveprime_variable' ? "--offset $p_offsets" : ""
     def extension = args.contains('--output_format bedgraph') ? "bedgraph" : "wig"
-    def VERSION = "0.6.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     make_wiggle \\
         --count_files "$bam" \\
@@ -41,11 +40,6 @@ process PLASTID_MAKE_WIGGLE {
             mv "\$FILE" "\${FILE%.wig}.bedgraph"
         done
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plastid: $VERSION
-    END_VERSIONS
     """
 
     stub:
@@ -55,14 +49,8 @@ process PLASTID_MAKE_WIGGLE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
     def extension = args.contains('--output_format bedgraph') ? "bedgraph" : "wig"
-    def VERSION = "0.6.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}_fw.${extension}
     touch ${prefix}_rc.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plastid: $VERSION
-    END_VERSIONS
     """
 }
