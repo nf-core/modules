@@ -1,4 +1,4 @@
-name: "angsd_sfs"
+name: "angsd_realsfs"
 description: Estimate site frequency spectrum from site allele frequencies
 keywords:
   - angsd
@@ -20,8 +20,8 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing population / sample information for population 1
-          e.g. [ id:'test', population:'population id', samples:'sample IDs' ]
+          Groovy Map containing population id for an optional population 1
+          e.g. [ id:'population 1 ID']
     - pop1_saf_idx:
         type: file
         description: ANGSD site allele frequency index file
@@ -40,8 +40,8 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing population / sample information for an optional population 2
-          e.g. [ id:'test', population:'population id', samples:'sample IDs' ]
+          Groovy Map containing population id for an optional population 2
+          e.g. [ id:'population 2 ID']
     - pop2_saf_idx:
         type: file
         description: ANGSD site allele frequency index file
@@ -61,7 +61,7 @@ output:
   sfs:
     - - meta3:
           type: map
-          description: Groovy Map containing population / sample information for the output SFS
+          description: Groovy Map containing population ids for the output SFS
       - "*.sfs":
           type: file
           description: Site frequency spectrum file

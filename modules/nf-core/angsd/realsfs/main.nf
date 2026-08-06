@@ -21,7 +21,7 @@ process ANGSD_REALSFS {
     script:
     def args = task.ext.args ?: ''
     def is_2d = meta2 as boolean
-    meta3 = is_2d ? [id: "${meta.id}_${meta2.id}", populations: [meta.population, meta2.population]] : [id: "${meta.id}", populations: [meta.population]]
+    meta3 = is_2d ? [id: "${meta.id}_${meta2.id}"] : [id: "${meta.id}"]
     def pop2_input = is_2d ? "${pop2_saf_idx}" : ''
     def prefix = task.ext.prefix ?: meta3.id
     
@@ -35,7 +35,7 @@ process ANGSD_REALSFS {
 
     stub:
     def is_2d = meta2 as boolean
-    meta3 = is_2d ? [id: "${meta.id}_${meta2.id}", populations: [meta.population, meta2.population]] : [id: "${meta.id}", populations: [meta.population]]
+    meta3 = is_2d ? [id: "${meta.id}_${meta2.id}"] : [id: "${meta.id}"]
     def prefix = task.ext.prefix ?: meta3.id
     """
     touch ${prefix}.sfs
