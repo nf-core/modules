@@ -1,4 +1,4 @@
-process ANGSD_SFS {
+process ANGSD_REALSFS {
     tag "$meta.id"
     label 'process_single'
 

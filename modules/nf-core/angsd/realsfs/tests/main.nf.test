@@ -1,0 +1,109 @@
+// nf-core modules test angsd/realsfs
+nextflow_process {
+
+    name "Test Process ANGSD_REALSFS"
+    script "../main.nf"
+    process "ANGSD_REALSFS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "angsd"
+    tag "angsd/realsfs"
+
+    test("angsd - realsfs - 1D") {
+        config "./nextflow.config"
+
+        when {
+            
+            process {
+                """
+                input[0] = [
+                    [ id: "FIN", population: "FIN", samples: ["HG00349", "HG00358", "HG00350", "HG00351"] ],
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/FIN.saf.idx"),
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/FIN.saf.pos.gz"),
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/FIN.saf.gz")
+                ]
+                input[1] = [
+                    [], 
+                    [], 
+                    [], 
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+
+    test("angsd - realsfs - 2D") {
+        config "./nextflow.config"
+
+        when {
+            
+            process {
+                """
+                input[0] = [
+                    [ id: "FIN", population: "FIN", samples: ["HG00349", "HG00358", "HG00350", "HG00351"] ],
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/FIN.saf.idx"),
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/FIN.saf.pos.gz"),
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/FIN.saf.gz")
+                ]
+                input[1] = [
+                    [ id: "YRI", population: "YRI", samples: ["HG00100", "HG00101", "HG00102", "HG00103"] ],
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/YRI.saf.idx"),
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/YRI.saf.pos.gz"),
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/YRI.saf.gz")
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+
+    test("angsd - realsfs - stub") {
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id: "FIN", population: "FIN", samples: ["HG00349", "HG00358", "HG00350", "HG00351"] ],
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/FIN.saf.idx"),
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/FIN.saf.pos.gz"),
+                    file(params.modules_testdata_base_path + "delete_me/angsd/sfs/FIN.saf.gz")
+                ]
+                input[1] = [
+                    [], 
+                    [], 
+                    [], 
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}
