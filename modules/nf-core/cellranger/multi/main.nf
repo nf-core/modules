@@ -64,7 +64,7 @@ process CELLRANGER_MULTI {
     if (has_gex) {
         gex_section << '[gene-expression]'
         gex_section << "reference,\$PWD/${gex_reference.name}"
-        
+
         // still allow frna probe-set for flex, but avoid adding when CMO or OCM barcodes are present, since those are mutually exclusive with frna
         if (gex_frna_probeset && !has_cmo && !has_ocm) gex_section << "probe-set,\$PWD/${gex_frna_probeset.name}"
 
