@@ -431,4 +431,51 @@ nextflow_process {
         }
     }
 
+    test("ribotish composite ORF types map on the location, keeping the qualifier native") {
+
+        when {
+            process {
+                """
+                input[0] = channel
+                    .of(
+                        'Tid\tGid\tGenomePos\tTisType\tAALen\tFisherPvalue',
+                        't1\tg1\tchr1:1000-1100:+\tNovel:CDSFrameOverlap\t30\t0.001',
+                        "t1\tg1\tchr1:1100-1200:+\t3'UTR:CDSFrameOverlap\t30\t0.001",
+                        't1\tg1\tchr1:1200-1300:+\tInternal:CDSFrameOverlap\t30\t0.001',
+                        't1\tg1\tchr1:1300-1400:+\tNovel:Known\t30\t0.001'
+                    )
+                    .collectFile(name: 'composite.ribotish.pred.txt', newLine: true, sort: false)
+                    .map { orfs -> [[id: 'sample1'], orfs, 'ribotish'] }
+                input[1] = channel
+                    .of('chr1\ttest\texon\t1001\t2000\t.\t+\t.\tgene_id "g1"; transcript_id "t1";')
+                    .collectFile(name: 'composite.gtf', newLine: true)
+                    .map { gtf -> [[id: 'reference'], gtf] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.tsv[0][1]).text.readLines()
+            def header = lines.find { it.startsWith('orf_id') }.split('\t') as List
+            def data = lines.findAll { !it.startsWith('#') && !it.startsWith('orf_id') }
+            def i_class = header.indexOf('orf_class')
+            def i_native = header.indexOf('orf_type_native')
+            def classes = data.collect { it.split('\t')[i_class] } as Set
+            def natives = data.collect { it.split('\t')[i_native] }
+            def qualified = natives.findAll { it.contains(':') }
+            def provenance = lines.find { it.startsWith('# parser_columns:') }
+
+            assertAll(
+                // The colon-qualified tokens no longer abort the process: only the part
+                // before the colon is positional, so it alone selects the class.
+                { assert process.success },
+                { assert classes == ['novel_u', 'dORF', 'intORF'] as Set },
+                // The qualifier is dropped from orf_class but not lost.
+                { assert qualified.size() == natives.size() },
+                { assert natives.contains('Novel:CDSFrameOverlap') },
+                { assert provenance.contains('unmapped_orf_type=0') }
+            )
+        }
+    }
+
 }
