@@ -4,8 +4,8 @@ process ENSEMBLVEP_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/11/112b7b57f93b053ccd3f8b2f2207a5faa629fd4ea181af8e1a41a1fbd007e657/data'
-        : 'community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib:c4edd3fb4a233ae6'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/42/42395bfb0f82afd646493f279327c792d76ce8458ae4907cf00aa8d18f697955/data'
+        : 'community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib:037b358ef2f4ce79'}"
 
     input:
     tuple val(meta), val(assembly), val(species), val(cache_version)
