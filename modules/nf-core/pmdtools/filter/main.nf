@@ -14,8 +14,8 @@ process PMDTOOLS_FILTER {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    tuple val("${task.process}"), val('pmdtools'), eval("pmdtools --version | cut -f2 -d ' ' | sed 's/v//'"), topic: versions, emit: versions_pmdtools
-    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'")             , topic: versions, emit: versions_samtools
+    tuple val("${task.process}"), val('pmdtools'), eval("pmdtools --version | sed 's/.*v//'")  , topic: versions, emit: versions_pmdtools
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
