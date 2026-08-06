@@ -64,7 +64,7 @@ process CELLRANGER_MULTI {
     if (has_gex) {
         gex_section << '[gene-expression]'
         gex_section << "reference,\$PWD/${gex_reference.name}"
-        if (gex_frna_probeset) gex_section << "probe-set,\$PWD/${gex_frna_probeset.name}"
+        if (gex_frna_probeset && has_frna) gex_section << "probe-set,\$PWD/${gex_frna_probeset.name}"
 
         // GEX options forwarded from the gex_options input map
         ['filter-probes', 'r1-length', 'r2-length', 'chemistry', 'expect-cells', 'force-cells',
