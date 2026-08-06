@@ -18,7 +18,6 @@ import rpbp
 import yaml
 from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
 
-
 prefix = "${prefix}"
 
 parser = argparse.ArgumentParser()

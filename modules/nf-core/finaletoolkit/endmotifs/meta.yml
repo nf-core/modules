@@ -1,0 +1,88 @@
+name: "finaletoolkit_endmotifs"
+description: |
+  Measure the frequency of 5' k-mer end motifs.
+keywords:
+  - end-motifs
+  - genomics
+  - fragmentomics
+tools:
+  - "finaletoolkit":
+      description: "Extract cfDNA fragmentation features from sequencing data."
+      homepage: "https://epifluidlab.github.io/FinaleToolkit/"
+      documentation: "https://epifluidlab.github.io/FinaleToolkit/documentation/index.html"
+      tool_dev_url: "https://github.com/epifluidlab/FinaleToolkit"
+      doi: "10.1093/bioadv/vbaf236"
+      licence:
+        - "MIT"
+      identifier: biotools:finaletoolkit
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAM file index
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - genome:
+        type: file
+        description: |
+          FASTA or 2bit compressed genome file (must be the same as the one used for the
+          BAM file)
+        pattern: "*.2bit|*.fasta|*.fa"
+        ontologies:
+          - edam: "http://edamontology.org/format_3009"
+          - edam: "http://edamontology.org/format_1929"
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.tsv":
+          type: file
+          pattern: "*.tsv"
+          description: |
+            TSV file containing k-mer frequencies
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  versions_finaletoolkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - finaletoolkit:
+          type: string
+          description: The name of the tool
+      - finaletoolkit --version | sed 's/FinaleToolkit //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - finaletoolkit:
+          type: string
+          description: The name of the tool
+      - finaletoolkit --version | sed 's/FinaleToolkit //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lbeltrame"
+maintainers:
+  - "@lbeltrame"

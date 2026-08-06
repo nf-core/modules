@@ -9,13 +9,18 @@ keywords:
   - bam
   - sam
 tools:
-  - bwa:
+  - bwamem2:
       description: |
         BWA-mem2 is a software package for mapping DNA sequences against
         a large reference genome, such as the human genome.
       homepage: https://github.com/bwa-mem2/bwa-mem2
-      documentation: http://www.htslib.org/doc/samtools.html
-      arxiv: arXiv:1303.3997
+      documentation: https://github.com/bwa-mem2/bwa-mem2#usage
+      doi: "10.1109/IPDPS.2019.00041"
+      publication:
+        author: "Vasimuddin M., Misra S., Li H. & Aluru S."
+        year: 2018
+        source: "IEEE International Parallel and Distributed Processing Symposium (IPDPS)"
+        title: "Efficient Architecture-Aware Acceleration of BWA-MEM for Multicore Systems"
       licence:
         - "MIT"
       identifier: "biotools:bwa-mem2"

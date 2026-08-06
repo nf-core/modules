@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "regtools_junctionsextract"
-description: Extract exon-exon junctions from an RNAseq BAM file. The output is a
-  BED file in the BED12 format.
+description: Extract exon-exon junctions from an RNAseq BAM file. The output is a BED file in the BED12 format.
 keywords:
   - regtools
   - leafcutter
@@ -9,12 +7,12 @@ keywords:
   - splicing
 tools:
   - "regtools":
-      description: "RegTools is a set of tools that integrate DNA-seq and RNA-seq data
-        to help interpret mutations in a regulatory and splicing context."
+      description: "RegTools is a set of tools that integrate DNA-seq and RNA-seq data to help interpret mutations in a regulatory and splicing context."
       homepage: "https://regtools.readthedocs.io/en/latest/"
       documentation: "https://regtools.readthedocs.io/en/latest/#usage"
       tool_dev_url: "https://github.com/griffithlab/regtools"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:regtools
 
 input:
@@ -38,7 +36,10 @@ input:
       description: |
         Strand specificity of the RNA-seq library preparation.
         Options are 'XS', use XS tags provided by aligner; 'RF', first-strand; 'FR', second-strand.
-      enum: ["XS", "RF", "FR"]
+      enum:
+        - "XS"
+        - "RF"
+        - "FR"
 output:
   junc:
     - - meta:
@@ -52,13 +53,29 @@ output:
             BED12 file containing exon-exon "regtools_junctionsextract"
           pattern: "*.{junc}"
           ontologies: []
+  versions_repeatmasker:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - regtools:
+          type: string
+          description: The name of the tool
+      - "regtools --version 2>&1 | sed -n 's/Version:\t//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - regtools:
+          type: string
+          description: The name of the tool
+      - "regtools --version 2>&1 | sed -n 's/Version:\t//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@abartlett004"
 maintainers:

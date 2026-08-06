@@ -1,0 +1,161 @@
+
+nextflow_process {
+
+    name "Test Process ECHTVAR_ANNO"
+    script "../main.nf"
+    process "ECHTVAR_ANNO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "echtvar"
+    tag "echtvar/anno"
+    tag "echtvar/encode"
+    tag "bcftools/norm"
+
+    config "./nextflow.config"
+
+    setup {
+        run("BCFTOOLS_NORM") {
+            script "../../../bcftools/norm/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+            """
+            }
+        }
+
+        run("ECHTVAR_ENCODE") {
+            script "../../encode/main.nf"
+            process {
+                """
+                // Create dummy json config file for testing
+                def json_config = file("${moduleDir}/tests/config.json")
+                json_config.text = '[{"field": "DP", "alias": "gnomad_dp"}]'
+
+                input[0] = BCFTOOLS_NORM.out.vcf
+
+                input[1] = [
+                    [ id:'test_db' ],
+                    file(json_config)
+                ]
+                """
+            }
+        }
+    }
+
+    test("vcf - 1 annotation file") {
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = BCFTOOLS_NORM.out.vcf
+                input[1] = ECHTVAR_ENCODE.out.db
+                input[2] = ""
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                "${file(process.out.vcf[0][1]).name}:md5,${path(process.out.vcf[0][1]).vcf.variantsMD5}",
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
+        }
+    }
+
+    test("vcf - 2 annotation files - gnomad filter") {
+
+        when {
+            params {
+                module_args = " -i 'gnomad_dp < 0.01' "
+            }
+            process {
+                """
+                input[0] = BCFTOOLS_NORM.out.vcf
+                input[1] = ECHTVAR_ENCODE.out.db
+                                .map { meta, db_file ->
+                                    def source_file = file(db_file)
+                                    def dest_file   = source_file.parent.resolve("\${source_file.baseName}_copy.\${source_file.extension}")
+                                    source_file.copyTo(dest_file)
+                                    return [ meta, [ source_file, dest_file ] ]
+                                }
+                input[2] = "vcf.gz"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                "${file(process.out.vcf[0][1]).name}:md5,${path(process.out.vcf[0][1]).vcf.variantsMD5}",
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
+        }
+    }
+
+
+    test("vcf - 1 annotation file - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = BCFTOOLS_NORM.out.vcf
+                input[1] = ECHTVAR_ENCODE.out.db
+                input[2] = ""
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+    test("vcf - 2 annotation files - gnomad filter - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = " -i 'gnomad_dp < 1' "
+            }
+            process {
+                """
+                input[0] = BCFTOOLS_NORM.out.vcf
+                input[1] = ECHTVAR_ENCODE.out.db
+                                .map { meta, db_file ->
+                                    def source_file = file(db_file)
+                                    def dest_file   = source_file.parent.resolve("\${source_file.baseName}_copy.\${source_file.extension}")
+                                    source_file.copyTo(dest_file)
+                                    return [ meta, [ source_file, dest_file ] ]
+                                }
+                input[2] = ""
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+}

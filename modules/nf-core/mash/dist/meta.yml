@@ -12,7 +12,8 @@ tools:
       documentation: https://mash.readthedocs.io/en/latest/sketches.html
       tool_dev_url: https://github.com/marbl/Mash
       doi: "10.1186/s13059-016-0997-x"
-      licence: ["https://github.com/marbl/Mash/blob/master/LICENSE.txt"]
+      licence:
+        - "https://github.com/marbl/Mash/blob/master/LICENSE.txt"
       identifier: biotools:mash
 input:
   - - meta:
@@ -46,13 +47,27 @@ output:
           description: The results from mash dist
           pattern: "*.txt"
           ontologies: []
+  versions_mash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mash:
+          type: string
+          description: The name of the tool
+      - mash --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mash:
+          type: string
+          description: The name of the tool
+      - mash --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:

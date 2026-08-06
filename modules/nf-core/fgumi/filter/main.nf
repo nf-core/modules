@@ -4,8 +4,8 @@ process FGUMI_FILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a5/a510706f3481fae12ff6100d6e4ad298b8bf464a2d93a6afe35e9cf26542d080/data'
-        : 'community.wave.seqera.io/library/fgumi:0.2.0--fe028e7a64e5da27'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64e8f594b6f0dd879bc5abbe4ca70b6b761e1920e407d9e1c7d27b89004aac34/data'
+        : 'community.wave.seqera.io/library/fgumi:0.5.0--a2d14bf52f73eaef'}"
 
     input:
     tuple val(meta), path(bam)
