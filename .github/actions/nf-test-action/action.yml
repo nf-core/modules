@@ -58,7 +58,7 @@ runs:
       if: ${{contains(inputs.profile, 'conda')}}
       uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
       with:
-        auto-update-conda: true
+        miniconda-version: "py312_24.11.1-0"
         conda-solver: libmamba
         conda-remove-defaults: true
 
@@ -69,6 +69,13 @@ runs:
       run: |
         python -m pip install cryptography
         nextflow secrets set SENTIEON_AUTH_DATA $(python3 modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
+
+    - name: Configure conda to avoid broken compiler activation
+      if: ${{ contains(inputs.profile, 'conda') }}
+      shell: bash
+      run: |
+        conda config --set auto_activate_base false
+        conda config --set safety_checks warn
 
       # TODO Skip failing conda tests and document their failures
       # https://github.com/nf-core/modules/issues/7017
@@ -84,6 +91,13 @@ runs:
         NFT_WORKDIR=~
         TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
 
+        export BASHOPTS=
+        export SHELLOPTS=
+
+        echo "SHELLOPTS=$SHELLOPTS"
+        set -o | grep nounset
+        env | grep BASH
+
         nf-test test \
           --profile=${{ inputs.profile }} \
           --tap=test.tap \
@@ -96,23 +110,6 @@ runs:
 
           # Save the absolute path of the test.tap file to the output
           echo "tap_file_path=$(realpath test.tap)" >> $GITHUB_OUTPUT
-
-    - name: Inspect failed conda environment
-      if: failure()
-      shell: bash
-      run: |
-        ENV_DIR=$(find . -type d -name "env-*" | head -n1)
-
-        echo "Environment: $ENV_DIR"
-
-        if [ -n "$ENV_DIR" ]; then
-          SCRIPT="$ENV_DIR/etc/conda/deactivate.d/deactivate-gxx_linux-64.sh"
-
-          if [ -f "$SCRIPT" ]; then
-            echo "===== $SCRIPT ====="
-            nl -ba "$SCRIPT" | sed -n '55,80p'
-          fi
-        fi
 
     - name: Generate test summary
       if: ${{ failure() && steps.run-nf-test.conclusion == 'failure' }}
