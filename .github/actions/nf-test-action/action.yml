@@ -91,9 +91,6 @@ runs:
         NFT_WORKDIR=~
         TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
 
-        export BASHOPTS=
-        export SHELLOPTS=
-
         echo "SHELLOPTS=$SHELLOPTS"
         set -o | grep nounset
         env | grep BASH
