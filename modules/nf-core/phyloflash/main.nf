@@ -4,8 +4,8 @@ process PHYLOFLASH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/phyloflash:3.4.2--hdfd78af_1' :
-        'quay.io/biocontainers/phyloflash:3.4.2--hdfd78af_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d9/d993344c3f636cb0cca9519b11fcf30faafb13fca2fd33090104e5f52d8fd643/data' :
+        'community.wave.seqera.io/library/phyloflash:3.4.2--87628969a9477d43' }"
 
     input:
     tuple val(meta), path(reads)

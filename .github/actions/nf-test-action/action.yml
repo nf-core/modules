@@ -58,9 +58,17 @@ runs:
       if: ${{contains(inputs.profile, 'conda')}}
       uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
       with:
-        auto-update-conda: true
+        auto-update-conda: false
         conda-solver: libmamba
         conda-remove-defaults: true
+
+    - name: Debug conda
+      shell: bash
+      run: |
+        conda --version
+        mamba --version || true
+        conda info
+        conda config --show
 
     # Set up secrets
     - name: Set up Nextflow secrets
