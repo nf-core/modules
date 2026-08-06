@@ -91,10 +91,6 @@ runs:
         NFT_WORKDIR=~
         TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
 
-        echo "SHELLOPTS=$SHELLOPTS"
-        set -o | grep nounset
-        env | grep BASH
-
         nf-test test \
           --profile=${{ inputs.profile }} \
           --tap=test.tap \
