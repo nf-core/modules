@@ -78,6 +78,22 @@ runs:
         python -m pip install cryptography
         nextflow secrets set SENTIEON_AUTH_DATA $(python3 modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
 
+    - name: Debug shell environment
+      if: ${{ contains(inputs.profile, 'conda') }}
+      shell: bash
+      run: |
+        echo "=== Shell options ==="
+        set -o
+        echo
+        echo "=== SHELLOPTS ==="
+        echo "$SHELLOPTS"
+        echo
+        echo "=== BASHOPTS ==="
+        echo "$BASHOPTS"
+        echo
+        echo "=== Conda ==="
+        conda info
+
       # TODO Skip failing conda tests and document their failures
       # https://github.com/nf-core/modules/issues/7017
     - name: Run nf-test
@@ -102,6 +118,23 @@ runs:
 
           # Save the absolute path of the test.tap file to the output
           echo "tap_file_path=$(realpath test.tap)" >> $GITHUB_OUTPUT
+
+    - name: Inspect failed conda environment
+      if: failure()
+      shell: bash
+      run: |
+        ENV_DIR=$(find . -type d -name "env-*" | head -n1)
+
+        echo "Environment: $ENV_DIR"
+
+        if [ -n "$ENV_DIR" ]; then
+          SCRIPT="$ENV_DIR/etc/conda/deactivate.d/deactivate-gxx_linux-64.sh"
+
+          if [ -f "$SCRIPT" ]; then
+            echo "===== $SCRIPT ====="
+            nl -ba "$SCRIPT" | sed -n '55,80p'
+          fi
+        fi
 
     - name: Generate test summary
       if: ${{ failure() && steps.run-nf-test.conclusion == 'failure' }}
