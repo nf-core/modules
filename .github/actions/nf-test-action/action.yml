@@ -58,17 +58,9 @@ runs:
       if: ${{contains(inputs.profile, 'conda')}}
       uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
       with:
-        auto-update-conda: false
+        auto-update-conda: true
         conda-solver: libmamba
         conda-remove-defaults: true
-
-    - name: Debug conda
-      shell: bash
-      run: |
-        conda --version
-        mamba --version || true
-        conda info
-        conda config --show
 
     # Set up secrets
     - name: Set up Nextflow secrets
@@ -78,31 +70,17 @@ runs:
         python -m pip install cryptography
         nextflow secrets set SENTIEON_AUTH_DATA $(python3 modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
 
-    - name: Debug shell environment
-      if: ${{ contains(inputs.profile, 'conda') }}
-      shell: bash
-      run: |
-        echo "=== Shell options ==="
-        set -o
-        echo
-        echo "=== SHELLOPTS ==="
-        echo "$SHELLOPTS"
-        echo
-        echo "=== BASHOPTS ==="
-        echo "$BASHOPTS"
-        echo
-        echo "=== Conda ==="
-        conda info
-
       # TODO Skip failing conda tests and document their failures
       # https://github.com/nf-core/modules/issues/7017
     - name: Run nf-test
       id: run-nf-test
-      shell: bash
+      shell: bash {0}
       env:
         SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
+        set -e
+        set +u
         NFT_WORKDIR=~
         TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
 
