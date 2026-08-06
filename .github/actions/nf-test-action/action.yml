@@ -81,13 +81,11 @@ runs:
       # https://github.com/nf-core/modules/issues/7017
     - name: Run nf-test
       id: run-nf-test
-      shell: bash {0}
+      shell: bash
       env:
         SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
-        set -e
-        set +u
         NFT_WORKDIR=~
         TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
 
