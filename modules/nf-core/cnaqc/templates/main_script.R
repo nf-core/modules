@@ -61,7 +61,7 @@ opt <- list(
   muts_per_karyotype = 25,
   cutoff_QC_PASS = 0.1,
   method = "ENTROPY",
-  blacklist_indels = TRUE, 
+  blacklist_indels = TRUE,
   qc_chr = FALSE
 )
 opt_types <- lapply(opt, class)
@@ -158,10 +158,10 @@ ggplot2::ggsave(plot = pl_exp, filename = paste0(opt[["prefix"]], "_data.pdf"), 
 ggplot2::ggsave(plot = pl_qc, filename = paste0(opt[["prefix"]], "_qc.pdf"), width = 210, height = 297, units="mm", dpi = 200)
 
 if(opt[["qc_chr"]] == TRUE) {
-  
+
   x_by_chr = split_by_chromosome(x)
   x_by_chr = lapply(x_by_chr, function(dd) {
-      analyze_peaks(dd, 
+      analyze_peaks(dd,
           matching_strategy = opt[["matching_strategy"]],
           min_absolute_karyotype_mutations = as.numeric(opt[["min_absolute_karyotype_mutations"]]),
           purity_error = as.numeric(opt[["purity_error"]])
@@ -178,8 +178,8 @@ if(opt[["qc_chr"]] == TRUE) {
   # this is needed in order to plot the results without the 0 VAF mutations
   tmp_x <- x_by_chr
   tmp_x = lapply(tmp_x, function(chr) {
-      chr\$mutations <- chr\$mutations %>% 
-          dplyr::filter(VAF > 0)  
+      chr\$mutations <- chr\$mutations %>%
+          dplyr::filter(VAF > 0)
 
       new_id = paste(chr\$sample, unique(chr\$mutations\$chr), sep = '_')
 
@@ -190,13 +190,13 @@ if(opt[["qc_chr"]] == TRUE) {
 
   # plot per chr
   pa_plt = lapply(tmp_x, function(cc) {
-    
+
     qc = tryCatch({
       CNAqc::plot_qc(cc)
     }, error = function(e) {
       CNAqc:::eplot()
     })
-    
+
     pl_qc = ggpubr::ggarrange(
       plotlist = list(
         CNAqc::plot_peaks_analysis(cc, what = 'common', empty_plot = FALSE),
