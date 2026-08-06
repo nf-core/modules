@@ -7,7 +7,7 @@ process ANGSD_SFS {
         'https://depot.galaxyproject.org/singularity/angsd:0.940--h13024bc_4':
         'quay.io/biocontainers/angsd:0.940--h13024bc_4' }"
 
-    input:    
+    input:
     tuple val(meta), path(pop1_saf_idx), path(pop1_saf_pos), path(pop1_saf)
     tuple val(meta2), path(pop2_saf_idx), path(pop2_saf_pos), path(pop2_saf) // Optional: use for 2-dimensional SFS estimation
 
@@ -21,7 +21,7 @@ process ANGSD_SFS {
     script:
     def args = task.ext.args ?: ''
     def is_2d = meta2 as boolean
-    def meta3 = is_2d ? [id: "${meta.id}_${meta2.id}", populations: [meta.pop, meta2.pop]] : [id: "${meta.id}", populations: [meta.pop]]
+    meta3 = is_2d ? [id: "${meta.id}_${meta2.id}", populations: [meta.population, meta2.population]] : [id: "${meta.id}", populations: [meta.population]]
     def pop2_input = is_2d ? "${pop2_saf_idx}" : ''
     def prefix = task.ext.prefix ?: meta3.id
     
@@ -35,7 +35,7 @@ process ANGSD_SFS {
 
     stub:
     def is_2d = meta2 as boolean
-    def meta3 = is_2d ? [id: "${meta.id}_${meta2.id}", populations: [meta.pop, meta2.pop]] : [id: "${meta.id}", populations: [meta.pop]]
+    meta3 = is_2d ? [id: "${meta.id}_${meta2.id}", populations: [meta.population, meta2.population]] : [id: "${meta.id}", populations: [meta.population]]
     def prefix = task.ext.prefix ?: meta3.id
     """
     touch ${prefix}.sfs
