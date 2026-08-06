@@ -104,11 +104,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
-      - "*_by_chr_qc.rds":
+      - "*_qc_by_chr.rds":
           type: file
           description: R object containing results of the quality control by chromosomes
             for the sample
-          patten: "*_{_by_chr_qc.rds}"
+          patten: "*{_qc_by_chr.rds}"
           ontologies: []
   plot_qc_by_chr:
     - - meta:
@@ -116,11 +116,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
-      - "*_by_chr_qc_plot.rds":
+      - "*_qc_by_chr_plot.rds":
           type: file
           description: R object containing plots of the quality control results by chromosomes
             for the sample
-          patten: "*_{_by_chr_qc_plot.rds}"
+          patten: "*{_qc_by_chr_plot.rds}"
           ontologies: []
   plot_pdf_qc_by_chr:
     - - meta:
@@ -128,10 +128,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
-      - "*_by_chr_qc.pdf":
+      - "*_qc_by_chr.pdf":
           type: file
           description: plots of the quality control results by chromosomes for the sample
-          patten: "*_{_by_chr_qc.pdf}"
+          patten: "*{_qc_by_chr.pdf}"
           ontologies:
             - edam: "http://edamontology.org/format_3508"
   versions:
