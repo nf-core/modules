@@ -1,29 +1,114 @@
 {
-    "Should run without failures": {
+    "Should run without failures -- stub": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.proteinortho.tsv:md5,6380df9e790588f0f1c5869a96b452d9"
-                ]
-            ],
-            [
-                "versions.yml:md5,b6bd3e5a6568dee024c47d82585ea5c9"
-            ],
             {
-                "PROTEINORTHO": {
-                    "proteinortho": "6.3.0",
-                    "diamond": "2.1.8",
-                    "blast": "2.14.0"
-                }
+                "blastgraph": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.blast-graph:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "orthologgraph": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.proteinortho-graph:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "orthologgroups": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.proteinortho.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_blast": [
+                    [
+                        "PROTEINORTHO",
+                        "blast",
+                        "2.14.0"
+                    ]
+                ],
+                "versions_diamond": [
+                    [
+                        "PROTEINORTHO",
+                        "diamond",
+                        "2.1.8"
+                    ]
+                ],
+                "versions_proteinortho": [
+                    [
+                        "PROTEINORTHO",
+                        "proteinortho",
+                        "6.3.0"
+                    ]
+                ]
             }
         ],
-        "timestamp": "2026-02-16T21:52:53.036007453",
+        "timestamp": "2026-08-07T12:34:28.985000346",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "Should run without failures": {
+        "content": [
+            {
+                "blastgraph": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.blast-graph:md5,78c11bd8718dff83e322f965618e9d11"
+                    ]
+                ],
+                "orthologgraph": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.proteinortho-graph:md5,78c11bd8718dff83e322f965618e9d11"
+                    ]
+                ],
+                "orthologgroups": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.proteinortho.tsv:md5,6380df9e790588f0f1c5869a96b452d9"
+                    ]
+                ],
+                "versions_blast": [
+                    [
+                        "PROTEINORTHO",
+                        "blast",
+                        "2.14.0"
+                    ]
+                ],
+                "versions_diamond": [
+                    [
+                        "PROTEINORTHO",
+                        "diamond",
+                        "2.1.8"
+                    ]
+                ],
+                "versions_proteinortho": [
+                    [
+                        "PROTEINORTHO",
+                        "proteinortho",
+                        "6.3.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-07T12:34:20.637340504",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }
