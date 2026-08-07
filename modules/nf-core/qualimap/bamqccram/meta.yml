@@ -14,7 +14,8 @@ tools:
       homepage: http://qualimap.bioinfo.cipf.es/
       documentation: http://qualimap.conesalab.org/doc_html/index.html
       doi: 10.1093/bioinformatics/bts503
-      licence: ["GPL-2.0-only"]
+      licence:
+        - "GPL-2.0-only"
       identifier: biotools:qualimap
 input:
   - - meta:
@@ -58,13 +59,50 @@ output:
           type: directory
           description: Qualimap results dir
           pattern: "*/*"
+  versions_qualimap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - qualimap:
+          type: string
+          description: The name of the tool
+      - qualimap -h | sed -n 's/^QualiMap v.//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - qualimap:
+          type: string
+          description: The name of the tool
+      - qualimap -h | sed -n 's/^QualiMap v.//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@FriederikeHanssen"
 maintainers:
