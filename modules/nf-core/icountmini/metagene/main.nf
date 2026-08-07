@@ -13,6 +13,7 @@ process ICOUNTMINI_METAGENE {
 
     output:
     tuple val(meta), path("metagene_*/*plot_data.tsv"), emit: tsv
+    tuple val(meta), path("metagene_*/*.png"), emit: png
     tuple val("${task.process}"), val('iCount-Mini'), eval("iCount-Mini -v"), emit: versions_icount_mini, topic: versions
 
     when:
