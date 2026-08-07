@@ -72,7 +72,7 @@ process STRINGTIE_STRINGTIE {
         if (modes.contains('nascent-aware-assembly')) {
             mode_flags += ['-N', '--nasc']
         }
-        
+
         run_mode = mode_flags.join(' ')
     }
 
