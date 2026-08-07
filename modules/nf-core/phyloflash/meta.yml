@@ -1,19 +1,18 @@
 name: phyloflash
-description: phyloFlash is a pipeline to rapidly reconstruct the SSU rRNAs and explore
-  phylogenetic composition of an illumina (meta)genomic dataset.
+description: phyloFlash is a pipeline to rapidly reconstruct the SSU rRNAs and explore phylogenetic composition of an illumina (meta)genomic dataset.
 keywords:
   - metagenomics
   - illumina datasets
   - phylogenetic composition
 tools:
   - phyloflash:
-      description: phyloFlash is a pipeline to rapidly reconstruct the SSU rRNAs and
-        explore phylogenetic composition of an illumina (meta)genomic dataset.
+      description: phyloFlash is a pipeline to rapidly reconstruct the SSU rRNAs and explore phylogenetic composition of an illumina (meta)genomic dataset.
       homepage: https://hrgv.github.io/phyloFlash/
       documentation: https://hrgv.github.io/phyloFlash/usage.html
       tool_dev_url: https://github.com/HRGV/phyloFlash
       doi: "10.1128/mSystems.00920-20"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:phyloflash
 input:
   - - meta:
@@ -44,13 +43,29 @@ output:
           type: directory
           description: Folder containing the results of phyloFlash analysis
           pattern: "${prefix}*"
+  versions_phyloflash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - phyloflash:
+          type: string
+          description: The name of the tool
+      - phyloFlash.pl -version 2>&1 | sed 's/^.*phyloFlash v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - phyloflash:
+          type: string
+          description: The name of the tool
+      - phyloFlash.pl -version 2>&1 | sed 's/^.*phyloFlash v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@abhi18av"
 maintainers:
