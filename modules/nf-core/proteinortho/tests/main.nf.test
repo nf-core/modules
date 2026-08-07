@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process PROTEINORTHO"
     script "../main.nf"
+    config "./nextflow.config"
 
     process "PROTEINORTHO"
     tag "proteinortho"
@@ -9,7 +10,7 @@ nextflow_process {
     tag "modules_nfcore"
 
     test("Should run without failures") {
-
+        tag "test"
         when {
             process {
                 """

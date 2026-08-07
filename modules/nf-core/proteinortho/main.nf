@@ -26,6 +26,7 @@ process PROTEINORTHO {
     prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_sorted = fasta_files.sort { a, b -> a.name <=> b.name }.join(' ')
     """
+    export PERL_HASH_SEED=0 # Set seed for reproducibility
     proteinortho \\
         ${args} \\
         -cpus=${task.cpus} \\
