@@ -18,6 +18,7 @@ process BBMAP_BBSPLIT {
     output:
     path "bbsplit_index"                      , optional:true, emit: index
     tuple val(meta), path('*primary*fastq.gz'), optional:true, emit: primary_fastq
+    tuple val(meta), path('*unmapped*fastq.gz'), optional:true, emit: unmapped_fastq
     tuple val(meta), path('*fastq.gz')        , optional:true, emit: all_fastq
     tuple val(meta), path('*txt')             , optional:true, emit: stats
     tuple val(meta), path('*.log')            , optional:true, emit: log
@@ -46,6 +47,7 @@ process BBMAP_BBSPLIT {
     def fastq_out=''
     def index_files=''
     def refstats_cmd=''
+    def fastq_unmapped=''
     def use_index = index ? true : false
 
     if (only_build_index) {
@@ -64,6 +66,7 @@ process BBMAP_BBSPLIT {
         }
         fastq_in  = meta.single_end ? "in=${reads}" : "in=${reads[0]} in2=${reads[1]}"
         fastq_out = meta.single_end ? "basename=${prefix}_%.fastq.gz" : "basename=${prefix}_%_#.fastq.gz"
+        fastq_unmapped = meta.single_end ? "outu=${prefix}_unmapped.fastq.gz" : "outu=${prefix}_unmapped_#.fastq.gz"
         refstats_cmd = 'refstats=' + prefix + '.stats.txt'
     }
     """
@@ -93,6 +96,7 @@ process BBMAP_BBSPLIT {
         $fastq_in \\
         $fastq_out \\
         $refstats_cmd \\
+        $fastq_unmapped \\
         $args 2>| >(tee ${prefix}.log >&2)
 
     # Summary files will have an absolute path that will make the index
@@ -123,6 +127,7 @@ process BBMAP_BBSPLIT {
         echo '' | gzip >  ${prefix}_primary.fastq.gz
         ${other_refs}
         touch ${prefix}.stats.txt
+        touch ${prefix}_unmapped.fastq.gz
     fi
 
     touch ${prefix}.log
