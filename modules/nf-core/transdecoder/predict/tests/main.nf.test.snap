@@ -2,45 +2,6 @@
     "sarscov2 - uncompressed - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "genome.fasta.transdecoder.pep:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "genome.fasta.transdecoder.gff3:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "genome.fasta.transdecoder.cds:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "genome.fasta.transdecoder.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "4": [
-                    "versions.yml:md5,d68aca63cf424e1cc9f544b5b3aa9c99"
-                ],
                 "bed": [
                     [
                         {
@@ -77,16 +38,20 @@
                         "genome.fasta.transdecoder.pep:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,d68aca63cf424e1cc9f544b5b3aa9c99"
+                "versions_transdecoder": [
+                    [
+                        "TRANSDECODER_PREDICT",
+                        "transdecoder",
+                        "5.7.1"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-07-07T09:38:23.335590463",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
-        },
-        "timestamp": "2025-01-13T19:14:55.271439958"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "sarscov2 - uncompressed": {
         "content": [
@@ -94,15 +59,13 @@
             false,
             true,
             false,
-            [
-                "versions.yml:md5,d68aca63cf424e1cc9f544b5b3aa9c99"
-            ]
+            null
         ],
+        "timestamp": "2026-07-07T09:37:58.22349047",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
-        },
-        "timestamp": "2025-01-14T17:04:13.113096174"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "sarscov2 - compressed": {
         "content": [
@@ -110,14 +73,20 @@
             false,
             true,
             false,
-            [
-                "versions.yml:md5,d68aca63cf424e1cc9f544b5b3aa9c99"
-            ]
+            {
+                "versions_transdecoder": [
+                    [
+                        "TRANSDECODER_PREDICT",
+                        "transdecoder",
+                        "5.7.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-07-07T10:02:24.452990088",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
-        },
-        "timestamp": "2025-01-14T17:00:33.707348893"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }
