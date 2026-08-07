@@ -24,12 +24,13 @@ process PROTEINORTHO {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def fasta_sorted = fasta_files.sort { a, b -> a.name <=> b.name }.join(' ')
     """
     proteinortho \\
         ${args} \\
         -cpus=${task.cpus} \\
         -project=${prefix} \\
-        ${fasta_files}
+        ${fasta_sorted}
     """
 
     stub:
