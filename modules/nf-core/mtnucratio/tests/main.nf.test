@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process MTNUCRATIO"
@@ -14,10 +13,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-				file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true)]
-				input[1] = 'mt_id'
-
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = 'mt_id'
                 """
             }
         }
@@ -25,10 +25,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -39,10 +36,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-				file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true)]
-				input[1] = 'mt_id'
-
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = 'mt_id'
                 """
             }
         }
@@ -50,10 +48,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -7,7 +7,9 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "octopusv"
+    tag "octopusv/stat"
     tag "octopusv/plot"
+
 
     test("homo_sapiens - stat - txt") {
 
@@ -37,6 +39,60 @@ nextflow_process {
             )
         }
 
+    }
+
+    test("homo_sapiens - stat - json") {
+
+        setup {
+            run("OCTOPUSV_STAT") {
+                script "../../stat/main.nf"
+                config "../../stat/tests/nextflow.config"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(
+                            params.modules_testdata_base_path +
+                            'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf',
+                            checkIfExists: true
+                        )
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                // Applied to OCTOPUSV_STAT through its nextflow.config.
+                module_args = '--json'
+            }
+
+            process {
+                """
+                input[0] = OCTOPUSV_STAT.out.json
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.sv_sizes_png.size() == 1 },
+                { assert process.out.sv_types_png.size() == 1 },
+                { assert process.out.chromosome_distribution_png.size() == 1 },
+                { assert snapshot(
+                    path(process.out.sv_sizes_png.get(0).get(1)),
+                    path(process.out.sv_types_png.get(0).get(1)),
+                    path(process.out.chromosome_distribution_png.get(0).get(1)),
+                    file(process.out.sv_sizes_svg.get(0).get(1)).name,
+                    file(process.out.sv_types_svg.get(0).get(1)).name,
+                    file(process.out.chromosome_distribution_svg.get(0).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
     }
 
     test("homo_sapiens - stat - stub") {
