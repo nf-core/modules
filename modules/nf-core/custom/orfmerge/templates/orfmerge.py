@@ -1,14 +1,24 @@
 #!/usr/bin/env python3
 """Merge per-sample, per-caller normalised ORF BED12s into a unified catalogue.
 
-Strategy is class-aware (operating on the harmonised `orf_class` from
-custom/orfnormalise):
+Rows are partitioned by clustering *strategy*. The harmonised `orf_class`
+from custom/orfnormalise selects the strategy but is never part of a
+grouping key, because callers disagree on class for the same ORF and keying
+on it would emit one catalogue row per disagreeing caller:
 
-  - canonical_cds, uORF, dORF, other:  collapse by transcript_id (handles
-    multi-exon CDS correctly; uORF/dORF are anchored to a host transcript).
-  - novel_u, smORF: greedy reciprocal-overlap clustering on the outer
-    genomic span at `--reciprocal-overlap` (default 0.8). Catches fuzzy
-    cross-caller matches and exact-coordinate collapses in one pass.
+  - canonical_cds: grouped by (transcript_id, strand), then reciprocal-overlap
+    clustered within the transcript. Multi-exon CDSs from different callers
+    still meet, while a short truncated variant stays a separate row instead
+    of being folded into the full-length CDS.
+  - uORF, uoORF, dORF, doORF, intORF, other: collapse by (transcript_id,
+    strand, start, end). A transcript can host several, so the outer span
+    joins the key.
+  - novel_u: greedy reciprocal-overlap clustering on the outer genomic span
+    at `--reciprocal-overlap` (default 0.8). Catches fuzzy cross-caller
+    matches and exact-coordinate collapses together.
+
+Every input row must land in exactly one cluster; the run aborts if the
+class vocabulary grows beyond CLASS_ORDER or if any row goes unassigned.
 
 Cross-caller consensus is recorded in two column families on the output
 catalogue TSV:
@@ -59,7 +69,20 @@ SCORE_DIRECTIONS = {
     "price": "min",
 }
 
-CLASS_ORDER = ("canonical_cds", "uORF", "dORF", "novel_u", "smORF", "other")
+# Display order for the MultiQC per-class table.
+CLASS_ORDER = ("canonical_cds", "uORF", "uoORF", "dORF", "doORF", "intORF", "novel_u", "other")
+
+# Representative preference when a cluster's members disagree on class, most
+# specific first: a caller that resolved the CDS-overlap wins over one that
+# could not. Must cover exactly CLASS_ORDER; asserted at runtime.
+CLASS_SPECIFICITY = ("canonical_cds", "uoORF", "uORF", "doORF", "dORF", "intORF", "novel_u", "other")
+
+# Clustering strategy per class. `orf_class` is deliberately not part of any
+# grouping key: callers disagree on class for the same ORF (Ribo-TISH cannot
+# report the CDS-overlapping uORF form at all), so keying on it would split
+# those calls into separate catalogue rows.
+OVERLAP_CLASSES = ("novel_u",)
+LOOSE_CLASSES = ("canonical_cds",)
 
 
 def group_by(rows, keyfn):
@@ -71,48 +94,50 @@ def group_by(rows, keyfn):
 
 
 def cluster_by_reciprocal_overlap(rows, frac=0.8):
-    """Greedy clustering by reciprocal overlap >= ``frac`` on the outer span.
+    """Greedy clustering by reciprocal exonic overlap >= ``frac``.
 
-    Used to merge cross-caller calls of the same biological ORF when they
-    don't share a transcript_id (e.g. novel intergenic from different
-    callers). O(N^2) worst case but bounded by per-run ORF counts.
+    Overlap is measured on summed exon-block intersection, not on the outer
+    genomic span: for a spliced ORF the span is mostly intron, which makes
+    span-based overlap insensitive to real differences in coding sequence
+    (two ORFs differing by a quarter of their codons can still score >0.99).
 
-    Greedy and order-dependent: at the default frac=0.8 a chain A-B-C
-    where A overlaps B at 0.85, B overlaps C at 0.85, but A overlaps C
-    at 0.75 can either land as {A, B, C} or {A, B} + {C} depending on
-    iteration order. Acceptable in practice (overlap chains that
-    straddle the threshold are rare at frac=0.8) but worth flagging for
-    consumers that want strictly transitive clustering.
+    Linkage is complete, not single: a row joins a cluster only if it meets
+    ``frac`` against *every* member. Single-linkage would chain biologically
+    distinct ORFs on one transcript together through an intermediate that
+    overlaps both, folding a uORF and a dORF into one row.
+
+    O(N^2) in the bucket, bounded by per-run ORF counts. Seed order is
+    deterministic, so the outcome is reproducible across runs.
     """
     clusters = []
     assigned = [False] * len(rows)
     order = sorted(
         range(len(rows)),
-        key=lambda i: (rows[i]["chrom"], rows[i]["strand"], int(rows[i]["start"])),
+        key=lambda i: (rows[i]["chrom"], rows[i]["strand"], int(rows[i]["start"]), rows[i].get("orf_id", "")),
     )
+    lengths = {i: blocks_length(rows[i]["_blocks"]) for i in order}
     for i in order:
         if assigned[i]:
             continue
         ri = rows[i]
-        ri_start, ri_end = int(ri["start"]), int(ri["end"])
-        ri_len = ri_end - ri_start
         cluster = [ri]
+        members = [i]
         assigned[i] = True
         for j in order:
-            if assigned[j]:
+            if assigned[j] or lengths[j] <= 0:
                 continue
             rj = rows[j]
             if rj["chrom"] != ri["chrom"] or rj["strand"] != ri["strand"]:
                 continue
-            rj_start, rj_end = int(rj["start"]), int(rj["end"])
-            if rj_start >= ri_end or rj_end <= ri_start:
-                continue
-            ov = min(ri_end, rj_end) - max(ri_start, rj_start)
-            if ov <= 0:
-                continue
-            rj_len = rj_end - rj_start
-            if ri_len > 0 and rj_len > 0 and ov / ri_len >= frac and ov / rj_len >= frac:
+            if all(
+                lengths[m] > 0
+                and (ov := blocks_intersection(rows[m]["_blocks"], rj["_blocks"])) > 0
+                and ov / lengths[m] >= frac
+                and ov / lengths[j] >= frac
+                for m in members
+            ):
                 cluster.append(rj)
+                members.append(j)
                 assigned[j] = True
         clusters.append(cluster)
     return clusters
@@ -121,13 +146,17 @@ def cluster_by_reciprocal_overlap(rows, frac=0.8):
 def representative(cluster):
     """Pick a representative row from a cluster.
 
-    Preference order: canonical_cds, then uORF/dORF, then novel_u/smORF,
-    then other; ties broken by longest aa_length.
+    Class preference follows CLASS_SPECIFICITY, then longest aa_length, then
+    orf_id so the pick does not depend on input file order.
     """
-    rank = {"canonical_cds": 0, "uORF": 1, "dORF": 1, "novel_u": 2, "smORF": 2, "other": 3}
+    rank = {c: i for i, c in enumerate(CLASS_SPECIFICITY)}
     return sorted(
         cluster,
-        key=lambda r: (rank.get(r.get("orf_class", "other"), 3), -int(r.get("aa_length") or 0)),
+        key=lambda r: (
+            rank.get(r.get("orf_class", "other"), len(rank)),
+            -int(r.get("aa_length") or 0),
+            r.get("orf_id", ""),
+        ),
     )[0]
 
 
@@ -179,7 +208,49 @@ def load_normalised(tsv_paths, bed_paths):
                 orf_id = parts[3]
                 if orf_id not in bed_index:
                     bed_index[orf_id] = line.rstrip("\\n")
+    # Attach exon blocks so clustering can measure overlap on coding sequence
+    # rather than on the outer span, which for a spliced ORF is mostly intron.
+    for r in rows:
+        r["_blocks"] = bed_blocks(bed_index.get(r["orf_id"])) or [(int(r["start"]), int(r["end"]))]
     return rows, bed_index
+
+
+def bed_blocks(bed_line):
+    """Exon blocks as 0-based half-open (start, end) pairs from a BED12 line."""
+    if not bed_line:
+        return []
+    parts = bed_line.split("\\t")
+    if len(parts) < 12:
+        return []
+    try:
+        chrom_start = int(parts[1])
+        sizes = [int(x) for x in parts[10].rstrip(",").split(",") if x]
+        starts = [int(x) for x in parts[11].rstrip(",").split(",") if x != ""]
+    except ValueError:
+        return []
+    if not sizes or len(sizes) != len(starts):
+        return []
+    return sorted((chrom_start + s, chrom_start + s + sz) for s, sz in zip(starts, sizes))
+
+
+def blocks_length(blocks):
+    return sum(e - s for s, e in blocks)
+
+
+def blocks_intersection(a, b):
+    """Summed length of the intersection of two sorted block lists."""
+    total = 0
+    i = j = 0
+    while i < len(a) and j < len(b):
+        lo = max(a[i][0], b[j][0])
+        hi = min(a[i][1], b[j][1])
+        if hi > lo:
+            total += hi - lo
+        if a[i][1] <= b[j][1]:
+            i += 1
+        else:
+            j += 1
+    return total
 
 
 def write_catalogue(prefix, clusters, bed_index, min_callers=1, min_samples=1):
@@ -198,7 +269,7 @@ def write_catalogue(prefix, clusters, bed_index, min_callers=1, min_samples=1):
         ["orf_id", "chrom", "start", "end", "strand", "gene_id", "transcript_id", "orf_class", "aa_length"]
         + [f"called_by_{c}" for c in CALLERS]
         + [f"score_{c}" for c in CALLERS]
-        + ["n_samples", "samples"]
+        + ["n_samples", "samples", "orf_type_native", "is_smorf"]
     )
 
     per_class_counts = defaultdict(int)
@@ -256,6 +327,13 @@ def write_catalogue(prefix, clusters, bed_index, min_callers=1, min_samples=1):
 
             sample_ids = sorted({r.get("sample_id", "") for r in cluster if r.get("sample_id")})
             row_out += [str(len(sample_ids)), ",".join(sample_ids)]
+            # Every native label in the cluster, so a cross-caller class
+            # disagreement stays auditable after the harmonised class is picked.
+            natives = sorted({(r.get("orf_type_native") or "").strip() for r in cluster} - {""})
+            row_out += [",".join(natives)]
+            # Carried from the representative, so is_smorf always agrees with
+            # the aa_length emitted on the same row.
+            row_out += [rep.get("is_smorf", "0")]
             row_line = "\\t".join(row_out) + "\\n"
             th.write(row_line)
 
@@ -318,7 +396,7 @@ def main():
         "--reciprocal-overlap",
         type=float,
         default=0.8,
-        help="Reciprocal-overlap fraction for novel_u/smORF clustering (default: 0.8)",
+        help="Reciprocal-overlap fraction for novel_u and within-transcript CDS clustering (default: 0.8)",
     )
     parser.add_argument(
         "--min-callers",
@@ -334,6 +412,9 @@ def main():
     )
     args = parser.parse_args(shlex.split("${args}"))
 
+    if set(CLASS_SPECIFICITY) != set(CLASS_ORDER):
+        sys.exit("orfmerge: CLASS_SPECIFICITY and CLASS_ORDER must cover the same classes")
+
     bed_paths = sorted(Path(p) for p in glob.glob("beds/*"))
     tsv_paths = sorted(Path(p) for p in glob.glob("tsvs/*"))
 
@@ -345,25 +426,62 @@ def main():
         write_versions()
         return 0
 
+    # Every column the catalogue propagates, so an orfnormalise version skew
+    # aborts rather than emitting empty orf_type_native and is_smorf=0.
+    required = ("orf_class", "aa_length", "orf_type_native", "is_smorf")
+    missing = sorted({c for r in rows for c in required if c not in r})
+    if missing:
+        sys.exit(f"orfmerge: normalised TSV is missing required column(s) {missing}")
+
+    # Checked on the input rows: representative() ranks an unknown class last, so
+    # a proxy would hide one behind a known class at the same structure.
+    unknown = sorted({r.get("orf_class", "other") for r in rows} - set(CLASS_ORDER))
+    if unknown:
+        sys.exit(f"orfmerge: unknown orf_class value(s) {unknown}; update CLASS_ORDER")
+
+    # Class still selects the strategy, so callers disagreeing on class across a
+    # strategy boundary would never merge. Collapse identical structures first and
+    # cluster one proxy per structure, then restore the members.
+    exact_groups = group_by(rows, lambda r: (r["chrom"], r["strand"], tuple(r["_blocks"])))
+    merge_rows = []
+    for members in exact_groups:
+        proxy = dict(representative(members))
+        proxy["_members"] = members
+        merge_rows.append(proxy)
+
     by_class = defaultdict(list)
-    for r in rows:
+    for r in merge_rows:
         by_class[r.get("orf_class", "other")].append(r)
 
-    clusters = []
-    # canonical CDS: one per transcript by definition - collapse by (tid, strand).
-    clusters.extend(group_by(by_class.get("canonical_cds", []), lambda r: (r.get("transcript_id") or "", r["strand"])))
-    # uORF/dORF/other: a transcript can host multiple distinct ones, so
-    # additionally key on the outer span to keep them separate.
-    for cls in ("uORF", "dORF", "other"):
-        clusters.extend(
-            group_by(
-                by_class.get(cls, []),
-                lambda r: (r.get("transcript_id") or "", r["strand"], int(r["start"]), int(r["end"])),
-            )
+    proxy_clusters = []
+    # Not transcript-anchored: one reciprocal-overlap pass over the union of
+    # these classes, so calls disagreeing on class still reach one cluster.
+    non_anchored = [r for cls in OVERLAP_CLASSES for r in by_class.get(cls, [])]
+    proxy_clusters.extend(cluster_by_reciprocal_overlap(non_anchored, frac=args.reciprocal_overlap))
+    # One annotated CDS per transcript, so the span stays out of the key --
+    # but grouping on (transcript_id, strand) alone would fold a short
+    # truncated variant into the full-length CDS and emit only the longest, so
+    # cluster on exonic overlap within the transcript.
+    loose = [r for cls in LOOSE_CLASSES for r in by_class.get(cls, [])]
+    for grp in group_by(loose, lambda r: (r.get("transcript_id") or "", r["strand"])):
+        proxy_clusters.extend(cluster_by_reciprocal_overlap(grp, frac=args.reciprocal_overlap))
+    # Transcript-anchored and non-unique per transcript, so the outer span
+    # joins the key. Overlap clustering cannot be used here: it merges nested
+    # ORFs, folding a uORF that covers most of the CDS into the CDS itself.
+    keyed = set(OVERLAP_CLASSES) | set(LOOSE_CLASSES)
+    anchored = [r for cls, rows_c in by_class.items() if cls not in keyed for r in rows_c]
+    proxy_clusters.extend(
+        group_by(
+            anchored,
+            lambda r: (r.get("transcript_id") or "", r["strand"], int(r["start"]), int(r["end"])),
         )
-    # novel_u / smORF: not transcript-anchored - reciprocal-overlap clustering.
-    for cls in ("novel_u", "smORF"):
-        clusters.extend(cluster_by_reciprocal_overlap(by_class.get(cls, []), frac=args.reciprocal_overlap))
+    )
+
+    clusters = [[m for proxy in cluster for m in proxy["_members"]] for cluster in proxy_clusters]
+
+    assigned = sum(len(c) for c in clusters)
+    if assigned != len(rows):
+        sys.exit(f"orfmerge: clustering dropped rows ({assigned} of {len(rows)} assigned)")
 
     write_catalogue(prefix, clusters, bed_index, min_callers=args.min_callers, min_samples=args.min_samples)
     write_versions()
