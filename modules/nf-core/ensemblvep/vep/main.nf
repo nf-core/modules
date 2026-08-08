@@ -60,7 +60,7 @@ process ENSEMBLVEP_VEP {
     def file_extension = args.contains("--vcf") ? 'vcf' : args.contains("--json") ? 'json' : args.contains("--tab") ? 'tab' : 'vcf'
     def create_index = file_extension == "vcf" ? "touch ${prefix}.${file_extension}.gz.tbi" : ""
     """
-    echo "" | gzip > ${prefix}.${file_extension}.gz
+    echo "" | bgzip > ${prefix}.${file_extension}.gz
     ${create_index}
     touch ${prefix}_summary.html
     """
