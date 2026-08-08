@@ -12,7 +12,7 @@ process REPEATMASKER_RMOUTTOGFF3 {
 
     output:
     tuple val(meta), path("*.gff3") , emit: gff3
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('repeatmasker'), eval("RepeatMasker -v | sed 's/RepeatMasker version //1'"), topic: versions, emit: versions_repeatmasker
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process REPEATMASKER_RMOUTTOGFF3 {
     PERL5LIB=\$rm_path rmOutToGFF3.pl \\
         $out \\
         > ${prefix}.gff3
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        repeatmasker: \$(RepeatMasker -v | sed 's/RepeatMasker version //1')
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gff3
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        repeatmasker: \$(RepeatMasker -v | sed 's/RepeatMasker version //1')
-    END_VERSIONS
     """
 }
