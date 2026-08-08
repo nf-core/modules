@@ -2,26 +2,6 @@
     "sarscov2-genome_fasta-stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "test.nhr:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.nin:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.njs:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.nnd:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.nni:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.nog:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.nsq:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.translation:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,7944637266bc3e2726899eaad5e46c87"
-                ],
                 "db": [
                     [
                         {
@@ -39,31 +19,49 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,7944637266bc3e2726899eaad5e46c87"
+                "versions_repeatmodeler": [
+                    [
+                        "REPEATMODELER_BUILDDATABASE",
+                        "repeatmodeler",
+                        "2.0.5"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-08-03T13:44:38.119214327",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-04-02T12:06:44.261566"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
-    "versions": {
+    "sarscov2-genome_fasta": {
         "content": [
-            [
-                "versions.yml:md5,7944637266bc3e2726899eaad5e46c87"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-01-09T15:14:48.807063"
-    },
-    "stable_md5": {
-        "content": [
+            {
+                "db": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.nhr",
+                            "test.nin",
+                            "test.njs",
+                            "test.nnd",
+                            "test.nni",
+                            "test.nog",
+                            "test.nsq",
+                            "test.translation"
+                        ]
+                    ]
+                ],
+                "versions_repeatmodeler": [
+                    [
+                        "REPEATMODELER_BUILDDATABASE",
+                        "repeatmodeler",
+                        "2.0.5"
+                    ]
+                ]
+            },
             [
                 "test.nhr:md5,1a41cb6d0b00c28f62ad60e75ae2f6fc",
                 "test.nnd:md5,2002e13acf59079a1a5782c918894579",
@@ -73,20 +71,10 @@
                 "test.translation:md5,ccbb119522c09daa976a9015ba999329"
             ]
         ],
+        "timestamp": "2026-08-03T13:44:32.313232604",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-04-23T10:03:41.669433"
-    },
-    "db": {
-        "content": [
-            "[test.nhr, test.nin, test.njs, test.nnd, test.nni, test.nog, test.nsq, test.translation]"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-04-02T12:08:36.94713"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }
