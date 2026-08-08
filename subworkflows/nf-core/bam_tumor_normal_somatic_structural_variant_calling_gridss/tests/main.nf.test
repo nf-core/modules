@@ -1,0 +1,162 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_TUMOR_NORMAL_SOMATIC_STRUCTURAL_VARIANT_CALLING_GRIDSS"
+    script "../main.nf"
+    workflow "BAM_TUMOR_NORMAL_SOMATIC_STRUCTURAL_VARIANT_CALLING_GRIDSS"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_tumor_normal_somatic_structural_variant_calling_gridss"
+    tag "bwa/index"
+    tag "gridss"
+    tag "gridss/extractoverlappingfragments"
+    tag "gridss/preprocess"
+    tag "gridss/assemble"
+    tag "gridss/call"
+    tag "gridss/somaticfilter"
+    tag "samtools"
+    tag "samtools/index"
+
+    setup {
+        run("BWA_INDEX") {
+            script "../../../../modules/nf-core/bwa/index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("human - bam - tumor_normal - untargeted") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    ]
+                ])
+                input[1] = channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]).join(BWA_INDEX.out.index)
+                input[2] = channel.value([ [], [] ])
+                input[3] = channel.value([
+                    [ id:'gridss_config' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gridss/gridss.properties', checkIfExists: true)
+                ])
+                input[4] = null
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    path(workflow.out.gridss_vcf[0][1]).vcf.summary,
+                    workflow.out.all_somatic_vcf.collect { meta, vcf -> [ meta, file(vcf).name ] },
+                    workflow.out.high_confidence_somatic_vcf.collect { meta, vcf -> [ meta, file(vcf).name ] }
+                ).match() }
+            )
+        }
+    }
+
+    test("human - bam - tumor_normal - targeted") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    ]
+                ])
+                input[1] = channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]).join(BWA_INDEX.out.index)
+                input[2] = channel.value([ [], [] ])
+                input[3] = channel.value([
+                    [ id:'gridss_config' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gridss/gridss.properties', checkIfExists: true)
+                ])
+                input[4] = params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    path(workflow.out.gridss_vcf[0][1]).vcf.summary,
+                    workflow.out.all_somatic_vcf.collect { meta, vcf -> [ meta, file(vcf).name ] },
+                    workflow.out.high_confidence_somatic_vcf.collect { meta, vcf -> [ meta, file(vcf).name ] }
+                ).match() }
+            )
+        }
+    }
+
+    test("human - bam - tumor_normal - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    ]
+                ])
+                input[1] = channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]).join(BWA_INDEX.out.index)
+                input[2] = channel.value([ [], [] ])
+                input[3] = channel.value([
+                    [ id:'gridss_config' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gridss/gridss.properties', checkIfExists: true)
+                ])
+                input[4] = null
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            )
+        }
+    }
+
+}
