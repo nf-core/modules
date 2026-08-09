@@ -35,9 +35,8 @@ description: |
   `orf_type_native` carries the caller's own ORF-type label verbatim, so every
   harmonisation decision below stays auditable without re-running the caller.
   ORF-type tokens are matched exactly (casefolded) against each caller's closed
-  vocabulary. Where a caller qualifies a positional label after a colon, as
-  Ribo-TISH does with `Novel:CDSFrameOverlap`, only the part before the colon is
-  matched and the qualifier survives in `orf_type_native`. Tokens whose location
+  vocabulary, on the part before any colon so that a qualified label such as
+  Ribo-TISH's `Novel:CDSFrameOverlap` matches on `Novel`. Tokens whose location
   matches no entry cause the process to fail; successful outputs report
   `unmapped_orf_type=0` on the `# parser_columns:` provenance line.
 

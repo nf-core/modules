@@ -414,8 +414,7 @@ def write_outputs(bed_path, tsv_path, bed_lines, tsv_rows, parser_columns, unmap
 # exactly (casefolded) rather than by substring. Substring matching mis-fired
 # on the overlap forms, because "uorf" is a substring of "overlap_uorf".
 #
-# Keys hold the positional part only. Ribo-TISH qualifies it after a colon
-# (`Novel:CDSFrameOverlap`); classify() splits there, so no key may contain one.
+# No key may contain a colon: classify() matches only the part before one.
 # ----------------------------------------------------------------------------
 
 CLASS_TOKENS = {
@@ -501,12 +500,8 @@ CLASS_TOKENS = {
 def classify(caller, orf_type):
     """Map a caller's native ORF-type token to the harmonised class.
 
-    Callers may qualify a positional label rather than replace it: Ribo-TISH
-    emits `Novel:CDSFrameOverlap`, `3'UTR:CDSFrameOverlap` and similar. Only the
-    part before the first colon describes where the ORF sits, and `orf_class`
-    is positional, so the qualifier is dropped here and preserved verbatim in
-    `orf_type_native`. No CLASS_TOKENS key contains a colon, so this cannot
-    shorten a token that was meant to match whole.
+    Only the part before the first colon is matched; the full token survives in
+    `orf_type_native`.
 
     Returns (orf_class, matched); `matched` is False when a non-empty token's
     location matched no entry, so unmapped labels can be counted rather than

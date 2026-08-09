@@ -466,11 +466,10 @@ nextflow_process {
             def provenance = lines.find { it.startsWith('# parser_columns:') }
 
             assertAll(
-                // The colon-qualified tokens no longer abort the process: only the part
-                // before the colon is positional, so it alone selects the class.
+                // The part before the colon selects the class; the qualifier survives
+                // in orf_type_native.
                 { assert process.success },
                 { assert classes == ['novel_u', 'dORF', 'intORF'] as Set },
-                // The qualifier is dropped from orf_class but not lost.
                 { assert qualified.size() == natives.size() },
                 { assert natives.contains('Novel:CDSFrameOverlap') },
                 { assert provenance.contains('unmapped_orf_type=0') }
