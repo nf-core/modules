@@ -436,20 +436,15 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = channel
-                    .of(
-                        'Tid\tGid\tGenomePos\tTisType\tAALen\tFisherPvalue',
-                        't1\tg1\tchr1:1000-1100:+\tNovel:CDSFrameOverlap\t30\t0.001',
-                        "t1\tg1\tchr1:1100-1200:+\t3'UTR:CDSFrameOverlap\t30\t0.001",
-                        't1\tg1\tchr1:1200-1300:+\tInternal:CDSFrameOverlap\t30\t0.001',
-                        't1\tg1\tchr1:1300-1400:+\tNovel:Known\t30\t0.001'
-                    )
-                    .collectFile(name: 'composite.ribotish.pred.txt', newLine: true, sort: false)
-                    .map { orfs -> [[id: 'sample1'], orfs, 'ribotish'] }
-                input[1] = channel
-                    .of('chr1\ttest\texon\t1001\t2000\t.\t+\t.\tgene_id "g1"; transcript_id "t1";')
-                    .collectFile(name: 'composite.gtf', newLine: true)
-                    .map { gtf -> [[id: 'reference'], gtf] }
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.extended.pred.txt', checkIfExists: true),
+                    'ribotish'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -464,14 +459,25 @@ nextflow_process {
             def natives = data.collect { it.split('\t')[i_native] }
             def qualified = natives.findAll { it.contains(':') }
             def provenance = lines.find { it.startsWith('# parser_columns:') }
+            def class_carries_qualifier = classes.any { it.contains(':') }
+            def expected_qualified = [
+                "Novel:CDSFrameOverlap",
+                "5'UTR:Known",
+                "5'UTR:CDSFrameOverlap",
+                "3'UTR:CDSFrameOverlap",
+                "Truncated:Known",
+                "Novel:Known",
+                "Internal:CDSFrameOverlap",
+            ]
 
             assertAll(
                 // The part before the colon selects the class; the qualifier survives
                 // in orf_type_native.
                 { assert process.success },
-                { assert classes == ['novel_u', 'dORF', 'intORF'] as Set },
-                { assert qualified.size() == natives.size() },
-                { assert natives.contains('Novel:CDSFrameOverlap') },
+                { assert classes == ['canonical_cds', 'uORF', 'dORF', 'intORF', 'novel_u'] as Set },
+                { assert !class_carries_qualifier },
+                { assert natives.containsAll(expected_qualified) },
+                { assert qualified.size() == expected_qualified.size() },
                 { assert provenance.contains('unmapped_orf_type=0') }
             )
         }
