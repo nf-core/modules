@@ -8,7 +8,7 @@ process GATK4SPARK_BASERECALIBRATOR {
         : 'community.wave.seqera.io/library/gatk4-spark:4.6.2.0--8b5cd67ee60a714e'}"
 
     // Spark's native UnixLoginModule fails to resolve a username for the container's UID
-    // (LoginException: invalid null input: name), because the container's own /etc/passwd
+    // (LoginException "invalid null input" for name), because the container's own /etc/passwd
     // has no entry for the host UID that docker.runOptions maps it to. Bind-mounting the
     // host's /etc/passwd/group (which do have that entry) fixes the native lookup.
     containerOptions { workflow.containerEngine in ['docker', 'podman'] ? '-v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro' : '' }
