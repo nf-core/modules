@@ -11,9 +11,7 @@ process GATK4SPARK_MARKDUPLICATES {
     // (LoginException: invalid null input: name), because the container's own /etc/passwd
     // has no entry for the host UID that docker.runOptions maps it to. Bind-mounting the
     // host's /etc/passwd/group (which do have that entry) fixes the native lookup.
-    containerOptions { workflow.containerEngine in ['singularity', 'apptainer']
-        ? '--bind /etc/passwd:/etc/passwd:ro,/etc/group:/etc/group:ro'
-        : '-v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro' }
+    containerOptions { workflow.containerEngine in ['docker', 'podman'] ? '-v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro' : '' }
 
     input:
     tuple val(meta), path(bam)
