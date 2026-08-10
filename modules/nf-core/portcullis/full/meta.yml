@@ -7,14 +7,12 @@ keywords:
   - junction
 tools:
   - "portcullis":
-      description: "Portcullis is a tool that filters out invalid splice junctions from
-        RNA-seq alignment data. It accepts BAM files from various RNA-seq mappers, analyzes
-        splice junctions and removes likely false positives, outputting filtered results
-        in multiple formats for downstream analysis."
+      description: "Portcullis is a tool that filters out invalid splice junctions from RNA-seq alignment data. It accepts BAM files from various RNA-seq mappers, analyzes splice junctions and removes likely false positives, outputting filtered results in multiple formats for downstream analysis."
       homepage: "https://portcullis.readthedocs.io/en/latest/index.html"
       documentation: "https://portcullis.readthedocs.io/en/latest/using.html"
       doi: "10.1101/217620"
-      license: ["GPL-3.0"]
+      license:
+        - "GPL-3.0"
       identifier: biotools:portcullis
 input:
   - - meta:
@@ -88,8 +86,7 @@ output:
             e.g. [ id:'sample1', single_end:false ]
       - "*.portcullis.log":
           type: file
-          description: Log file containing Portcullis execution details, processing
-            steps, and filtering statistics
+          description: Log file containing Portcullis execution details, processing steps, and filtering statistics
           pattern: "*.log"
           ontologies:
             - edam: "http://edamontology.org/format_2330"
@@ -145,13 +142,29 @@ output:
           pattern: "*spliced.bam.bai"
           ontologies:
             - edam: "http://edamontology.org/format_3327"
+  versions_portcullis:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - portcullis:
+          type: string
+          description: The name of the tool
+      - portcullis --version |& sed '1!d ; s/portcullis //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750"
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - portcullis:
+          type: string
+          description: The name of the tool
+      - portcullis --version |& sed '1!d ; s/portcullis //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jblancoheredia"
 maintainer:
