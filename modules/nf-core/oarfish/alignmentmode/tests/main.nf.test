@@ -19,7 +19,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [id:'test'],
-                        file('https://raw.githubusercontent.com/khersameesh24/test-datasets/modules/data/genomics/homo_sapiens/pacbio/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
                     ]
                     input[1] = [[], [], []]
                     """
@@ -54,7 +54,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [id:'test'],
-                        file('https://raw.githubusercontent.com/khersameesh24/test-datasets/modules/data/genomics/homo_sapiens/pacbio/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
                     ]
                     input[1] = [[], [], []]
                     """
@@ -87,7 +87,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [id:'test'],
-                        file('https://raw.githubusercontent.com/khersameesh24/test-datasets/modules/data/genomics/homo_sapiens/nanopore/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
                     ]
                     input[1] = [[], [], []]
                     """
@@ -122,7 +122,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [id:'test'],
-                        file('https://raw.githubusercontent.com/khersameesh24/test-datasets/modules/data/genomics/homo_sapiens/nanopore/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
                     ]
                     input[1] = [[], [], []]
                     """

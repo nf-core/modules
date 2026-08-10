@@ -3,7 +3,7 @@ process OARFISH_READMODE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/890d90ebb61b3756527fabe481d801a8e203453fde05a67ccc01640a9a445cd9/data':
         'community.wave.seqera.io/library/oarfish:0.10.3--837f9667a3c87dbb' }"
 
