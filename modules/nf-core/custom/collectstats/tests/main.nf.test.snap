@@ -1,0 +1,79 @@
+{
+    "two samples - optional inputs absent": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "run"
+                    },
+                    "run.overall_stats.tsv.gz:md5,5416d3f0dffa3daf38f8b94a9d05901f"
+                ]
+            ],
+            [
+                "sample\tn_post_trimming\tidxs_n_mapped\tidxs_n_unmapped\tCDS\trRNA",
+                "sample1\tNA\t550\t15\t200\t30",
+                "sample2\tNA\t180\t5\t40\t10"
+            ]
+        ],
+        "timestamp": "2026-08-11T18:01:26.181733702",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "two samples - all optional inputs provided": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "run"
+                    },
+                    "run.overall_stats.tsv.gz:md5,a8b49c37b2ba7f951b8f59049032f28d"
+                ]
+            ],
+            [
+                "sample\tn_post_trimming\tn_non_contaminated\tidxs_n_mapped\tidxs_n_unmapped\tCDS\trRNA\tn_annotated_taxa\tn_annotated_functions",
+                "sample1\t600\t580\t550\t15\t200\t30\t42\t17",
+                "sample2\t150\t150\t180\t5\t40\t10\t30\t12"
+            ]
+        ],
+        "timestamp": "2026-08-11T18:01:12.836767669",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "two samples - all optional inputs provided - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "run"
+                        },
+                        "run.overall_stats.tsv.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,001066e0d0280c54be5b59207f58c713"
+                ],
+                "overall_stats": [
+                    [
+                        {
+                            "id": "run"
+                        },
+                        "run.overall_stats.tsv.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,001066e0d0280c54be5b59207f58c713"
+                ]
+            }
+        ],
+        "timestamp": "2026-08-11T18:01:38.464349767",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    }
+}
