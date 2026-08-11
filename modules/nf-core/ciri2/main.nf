@@ -37,8 +37,6 @@ process CIRI2 {
     def sam_file = is_sam ? input.name : "${prefix}.sam"
     def convert_cmd = is_sam ? '' : "samtools view -h $cram_ref $input > ${sam_file}"
     def cleanup_cmd = is_sam ? '' : "rm ${sam_file}"
-
-
     """
     $convert_cmd
     CIRI2.pl \\
