@@ -35,8 +35,10 @@ description: |
   `orf_type_native` carries the caller's own ORF-type label verbatim, so every
   harmonisation decision below stays auditable without re-running the caller.
   ORF-type tokens are matched exactly (casefolded) against each caller's closed
-  vocabulary. Tokens matching no entry cause the process to fail; successful
-  outputs report `unmapped_orf_type=0` on the `# parser_columns:` provenance line.
+  vocabulary, on the part before any colon so that a qualified label such as
+  Ribo-TISH's `Novel:CDSFrameOverlap` matches on `Novel`. Tokens whose location
+  matches no entry cause the process to fail; successful outputs report
+  `unmapped_orf_type=0` on the `# parser_columns:` provenance line.
 
   `orf_class` is purely positional: it records where the ORF sits relative to
   the annotated CDS and never encodes its length. Select small ORFs with the
