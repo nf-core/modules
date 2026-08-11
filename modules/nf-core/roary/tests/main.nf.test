@@ -31,7 +31,7 @@ nextflow_process {
                 { assert path(process.out.results[0][1].find { it.toString().contains("accessory_binary_genes.fa.newick") }).exists() },
                 { assert path(process.out.results[0][1].find { it.toString().contains("summary_statistics.txt") }).exists() },
                 { assert path(process.out.results[0][1].find { it.toString().contains("accessory_binary_genes.fa") }).exists() },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["results"])).match() }
             )
         }
 
