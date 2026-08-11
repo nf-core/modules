@@ -11,7 +11,7 @@ process CSVTK_JOIN {
     tuple val(meta), path(csv)
 
     output:
-    tuple val(meta), path("${prefix}.${out_extension}"), emit: csv
+    tuple val(meta), path("${prefix}.${out_extension}"), emit: out_file
     tuple val("${task.process}"), val('csvtk'), eval("csvtk version | sed -e 's/csvtk v//g'"), emit: versions_csvtk, topic: versions
 
     when:
