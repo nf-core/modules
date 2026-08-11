@@ -24,7 +24,7 @@ process ANGSD_REALSFS {
     meta3 = is_2d ? [id: "${meta.id}_${meta2.id}"] : [id: "${meta.id}"]
     def pop2_input = is_2d ? "${pop2_saf_idx}" : ''
     def prefix = task.ext.prefix ?: meta3.id
-    
+
     """
     realSFS \\
         ${pop1_saf_idx} \\
