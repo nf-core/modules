@@ -49,7 +49,7 @@ nextflow_process {
                     process.out.ped_check_csv,
                     process.out.sex_check_csv,
                     process.out.ped_check_rel_difference_csv,
-                    process.out.versions_peddy
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
 
             )
