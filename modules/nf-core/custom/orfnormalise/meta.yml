@@ -30,19 +30,48 @@ description: |
 
   Output sidecar TSV columns:
     orf_id caller sample_id chrom start end strand gene_id transcript_id
-    orf_class aa_length score
+    orf_class aa_length score orf_type_native is_smorf
+
+  `orf_type_native` carries the caller's own ORF-type label verbatim, so every
+  harmonisation decision below stays auditable without re-running the caller.
+  ORF-type tokens are matched exactly (casefolded) against each caller's closed
+  vocabulary, on the part before any colon so that a qualified label such as
+  Ribo-TISH's `Novel:CDSFrameOverlap` matches on `Novel`. Tokens whose location
+  matches no entry cause the process to fail; successful outputs report
+  `unmapped_orf_type=0` on the `# parser_columns:` provenance line.
+
+  `orf_class` is purely positional: it records where the ORF sits relative to
+  the annotated CDS and never encodes its length. Select small ORFs with the
+  `is_smorf` column (`aa_length` <= `--smorf-max-aa`, default 100).
+
+  `aa_length` is derived as `(nucleotide_length - 3) // 3` for every caller
+  except Ribo-TISH, whose `AALen` column is taken verbatim. If `AALen` counts
+  the stop codon, `is_smorf` is caller-dependent by one residue exactly at the
+  `--smorf-max-aa` boundary. Not reconciled: it needs a Ribo-TISH run whose
+  nucleotide lengths can be compared against `AALen` directly.
 
   Harmonised `orf_class` vocabulary written into the sidecar TSV:
 
     - canonical_cds: ORF maps to an annotated CDS (including truncated /
                      extended variants of one).
-    - uORF:          upstream ORF (5'UTR-resident).
-    - dORF:          downstream ORF (3'UTR-resident).
+    - uORF:          upstream ORF, not overlapping the CDS.
+    - uoORF:         upstream ORF overlapping the CDS out of frame.
+    - dORF:          downstream ORF, not overlapping the CDS.
+    - doORF:         downstream ORF overlapping the CDS out of frame.
+    - intORF:        ORF contained within the CDS, out of frame.
     - novel_u:       novel / intergenic ORF not assigned to an annotated CDS.
-    - smORF:         small ORF (aa_length <= 100); promoted regardless of
-                     location-based class so downstream tools can treat
-                     smORFs uniformly.
-    - other:         internal / overlap / frame variants and anything else.
+    - other:         anything a caller cannot place.
+
+  Not every caller can report every class, so the absence of a class for one
+  caller is a tool limitation rather than evidence about the ORF:
+
+    - Ribo-TISH's `5'UTR` covers both uORF and uoORF, and `3'UTR` both dORF
+      and doORF: `tisType()` tests only the start position.
+    - PRICE's vocabulary has no doORF.
+    - ribotricer's `internal` is the terminal fall-through of
+      `check_orf_type()` rather than a positive out-of-frame call, so it maps
+      to `other`; mapping it to intORF would assert a frame relationship
+      ribotricer never tested.
 
   Per-caller mapping notes (lossy collapses):
 
@@ -50,9 +79,10 @@ description: |
       genomic span, so `gene_id` is resolved from the GTF via the ORF's
       transcript id; the `Gene` column is used only for transcripts absent
       from the annotation, and can then carry a multi-gene value.
-    - PRICE `iORF` (internal ORF), `intronic`, and `orphan` map to `other`.
-      Cross-caller catalogue tracking still flags these via
-      `called_by_price`, but the specific PRICE sub-type is not preserved.
+    - PRICE `iORF` maps to `intORF` and `orphan` to `novel_u` (it is both the
+      not-transcript-consistent label and PRICE's fall-through). `intronic`
+      has no positional equivalent and maps to `other`. The exact PRICE
+      sub-type is preserved in `orf_type_native`.
     - Rp-Bp's predicted-orfs BED carries no ORF-type column; this module
       defaults every Rp-Bp call to `canonical_cds` (the post-
       selectfinalpredictionset curated set is dominated by canonical
@@ -180,7 +210,8 @@ output:
           description: |
             Per-ORF metadata sidecar with columns: orf_id, caller,
             sample_id, chrom, start, end, strand, gene_id, transcript_id,
-            orf_class, aa_length, score (native).
+            orf_class, aa_length, score (native), orf_type_native
+            (the caller's own ORF-type label), is_smorf.
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
