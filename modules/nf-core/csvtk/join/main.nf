@@ -33,7 +33,7 @@ process CSVTK_JOIN {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    out_extension = args.contains('--out-delimiter "\t"') || args.contains('-D "\t"') || args.contains("-D \$'\t'")|| args.contains("-T")|| args.contains("--out-tabs") ? "tsv" : "csv"
+    out_extension = args.contains('--out-delimiter "\t"') || args.contains('-D "\t"') || args.contains("-D \$'\t'") || args.contains("-T") || args.contains("--out-tabs") ? "tsv" : "csv"
     """
     touch ${prefix}.${out_extension}
     """
