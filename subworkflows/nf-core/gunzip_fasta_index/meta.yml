@@ -7,12 +7,9 @@ keywords:
   - gunzip
   - fasta
 components:
-  - gunzip:
-      git_remote: https://github.com/nf-core/modules.git
-  - gawk:
-      git_remote: https://github.com/nf-core/modules.git
-  - samtools/faidx:
-      git_remote: https://github.com/nf-core/modules.git
+  - gunzip
+  - gawk
+  - samtools/faidx
 
 input:
   - ch_reference:

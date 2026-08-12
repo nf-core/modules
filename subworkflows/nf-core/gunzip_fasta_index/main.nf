@@ -2,7 +2,7 @@ include { GUNZIP                        } from "../../../modules/nf-core/gunzip/
 include { GAWK as GAWK_UPPER_SEQUENCE   } from '../../../modules/nf-core/gawk/main'
 include { SAMTOOLS_FAIDX                } from "../../../modules/nf-core/samtools/faidx/main"
 
-workflow SETUP_FASTA {
+workflow GUNZIP_FASTA_INDEX {
     take:
     ch_reference          // channel.of( [meta], reference )
     val_get_chromsizes    // boolean: emit chromsizes
