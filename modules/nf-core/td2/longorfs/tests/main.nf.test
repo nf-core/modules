@@ -15,9 +15,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test_td2_longorfs' ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true),
                 ]
+                input[1] = [[id: 'test'], 24, 24]
+                input[2] = [[], []]
                 """
             }
         }
@@ -25,13 +27,9 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.orfs,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("td2.longorfs - transcriptome.fasta -stub") {
@@ -42,9 +40,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test_td2_longorfs' ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true),
                 ]
+                input[1] = [[id: 'test'], 24, 24]
+                input[2] = [[], []]
                 """
             }
         }
@@ -52,13 +52,9 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.orfs,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
 }
