@@ -16,7 +16,7 @@ process CUSTOM_COLLECTSTATS {
 :         'community.wave.seqera.io/library/custom_collectstats:c1f477e6251c36bb' }"
 
     input:
-    tuple val(meta), val(samples), path(trimlogs), path(bblogs), path(idxstats), path(fcs), path(mergetab)
+    tuple val(meta), val(samples_meta), path(trimlogs), path(bblogs), path(idxstats), path(fcs), path(mergetab)
 
     output:
     tuple val(meta), path("${outfile}"), emit: overall_stats
@@ -31,10 +31,10 @@ process CUSTOM_COLLECTSTATS {
 
     def read_trimlogs = ""
     if ( trimlogs ) {
-        def se_trimlogs = samples
+        def se_trimlogs = samples_meta
             .findAll { s -> s.single_end }
             .collect { s -> "${rq(s.id)}, ${rq(s.id + '.*_trimming_report.txt')}, 1," }
-        def pe_trimlogs = samples
+        def pe_trimlogs = samples_meta
             .findAll { s -> ! s.single_end }
             .collect { s -> "${rq(s.id)}, ${rq(s.id + '_1.*_trimming_report.txt')}, 2," }
 
@@ -93,7 +93,7 @@ process CUSTOM_COLLECTSTATS {
     library(tidyr)
     library(stringr)
 
-    start    <- tibble(sample = c(${samples.collect { s -> rq(s.id) }.join(', ')}))
+    start    <- tibble(sample = c(${samples_meta.collect { s -> rq(s.id) }.join(', ')}))
 
     ${read_trimlogs}
 
