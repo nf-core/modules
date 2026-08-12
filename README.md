@@ -136,6 +136,10 @@ If you wish to contribute a new module, please see the documentation on the [nf-
 
 > Please be kind to our code reviewers and submit one pull request per module :)
 
+### Dependency management
+
+All required dependencies for module development are listed in `pixi.toml` and can be installed with `pixi install`. Please see the [pixi documentation](https://nf-co.re/developers/pixi) for more information.
+
 ## Help
 
 For further information or help, don't hesitate to get in touch on [Slack `#modules` channel](https://nfcore.slack.com/channels/modules) (you can join with [this invite](https://nf-co.re/join/slack)).
