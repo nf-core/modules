@@ -12,7 +12,7 @@ process OSFCLIENT_FETCH {
 
     output:
     tuple val(meta), path("${outname}"), emit: download_files
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('osfclient'), eval("osf --version | sed 's/osf //'"), emit: versions_osfclient, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,21 +24,12 @@ process OSFCLIENT_FETCH {
     osf \\
         -p ${project_id} \\
         fetch ${path} \\
-        ${args} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        osfclient: \$(osf --version  | sed 's/osf //g')
-    END_VERSIONS
+        ${args}
     """
 
     stub:
     outname = path.tokenize('/').last()
     """
     touch ${outname}
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        osfclient: \$(osf --version  | sed 's/osf //g')
-    END_VERSIONS
     """
 }

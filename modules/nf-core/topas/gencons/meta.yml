@@ -1,6 +1,6 @@
 name: "topas_gencons"
-description: Create fasta consensus with TOPAS toolkit with options to penalize substitutions
-  for typical DNA damage present in ancient DNA
+description: Create fasta consensus with TOPAS toolkit with options to penalize
+  substitutions for typical DNA damage present in ancient DNA
 keywords:
   - consensus
   - fasta
@@ -15,7 +15,8 @@ tools:
       documentation: "https://github.com/subwaystation/TOPAS/wiki/Overview-Modules"
       tool_dev_url: "https://github.com/subwaystation/TOPAS"
       doi: "10.1038/s41598-017-17723-1"
-      licence: ["CC-BY"]
+      licence:
+        - "CC-BY"
       identifier: biotools:TOPAS
 input:
   - - meta:
@@ -25,8 +26,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - vcf:
         type: file
-        description: Gzipped compressed vcf file generated with GATK UnifiedGenotyper
-          containing the called snps
+        description: Gzipped compressed vcf file generated with GATK
+          UnifiedGenotyper containing the called snps
         pattern: "*.vcf.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
@@ -37,8 +38,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - vcf_indels:
         type: file
-        description: Optional gzipped compressed vcf file generated with GATK UnifiedGenotyper
-          containing the called indels
+        description: Optional gzipped compressed vcf file generated with GATK
+          UnifiedGenotyper containing the called indels
         pattern: "*.vcf.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
@@ -64,8 +65,8 @@ input:
         ontologies: []
   - vcf_output:
       type: boolean
-      description: Boolean value to indicate if a compressed vcf file with the consensus
-        calls included as SNPs should be produced
+      description: Boolean value to indicate if a compressed vcf file with the
+        consensus calls included as SNPs should be produced
 output:
   fasta:
     - - meta:
@@ -75,8 +76,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.fasta.gz":
           type: file
-          description: Gzipped consensus fasta file with bases under threshold replaced
-            with Ns
+          description: Gzipped consensus fasta file with bases under threshold
+            replaced with Ns
           pattern: "*.fasta.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -88,8 +89,9 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.vcf.gz":
           type: file
-          description: Gzipped vcf file with updated calls for the SNPs used in the
-            consensus generation and for bases under threshold replaced with Ns
+          description: Gzipped vcf file with updated calls for the SNPs used in
+            the consensus generation and for bases under threshold replaced with
+            Ns
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -101,8 +103,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.ccf":
           type: file
-          description: Statistics file containing information about the consensus calls
-            in the fasta file
+          description: Statistics file containing information about the consensus
+            calls in the fasta file
           pattern: "*.ccf"
           ontologies: []
   log:
@@ -116,13 +118,29 @@ output:
           description: Log file
           pattern: "*.log"
           ontologies: []
+  versions_topas:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - topas:
+          type: string
+          description: The name of the tool
+      - 1.0.1:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - topas:
+          type: string
+          description: The name of the tool
+      - 1.0.1:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@aidaanva"
 maintainers:

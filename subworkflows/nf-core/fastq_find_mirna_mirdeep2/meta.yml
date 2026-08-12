@@ -39,12 +39,6 @@ output:
         The output channel containing the BED, CSV, and HTML files with the identified miRNAs.
         Structure: [ val(meta), path(bed), path(csv), path(html) ]
       pattern: "*.{bed,csv,html}"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@atrigila"
 maintainers:
