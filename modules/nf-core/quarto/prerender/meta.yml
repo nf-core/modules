@@ -69,7 +69,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
-      - params.yml:
+      - ${prefix}-params.yml:
           type: file
           description: Parameters used during rendering.
           pattern: "*"

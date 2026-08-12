@@ -19,7 +19,7 @@ process QUARTO_PRERENDER {
     output:
     tuple val(meta), path("${prefix}{.md,_files}")                                             , emit: rendered
     tuple val(meta), path(notebook)                                                            , emit: notebook
-    tuple val(meta), path("params.yml")                                                        , emit: params_yaml
+    tuple val(meta), path("${prefix}-params.yml")                                              , emit: params_yaml
     tuple val(meta), path("${notebook_parameters.artifact_dir}/*")                             , emit: artifacts, optional: true
     path "versions.yml"                                                                        , emit: versions , optional: true, topic: versions
     tuple val("${task.process}"), val('quarto')   , eval('quarto -v')                          , emit: versions_quarto          , topic: versions
@@ -46,7 +46,7 @@ process QUARTO_PRERENDER {
     def yaml_content = yamlBuilder.toString().tokenize('\n').join("\n    ")
     """
     # Dump parameters to yaml file
-    cat <<- END_YAML_PARAMS > params.yml
+    cat <<- END_YAML_PARAMS > ${prefix}-params.yml
     ${yaml_content}
     END_YAML_PARAMS
 
@@ -76,7 +76,7 @@ process QUARTO_PRERENDER {
         ${notebook} \\
         ${args} \\
         --to markdown \\
-        --execute-params params.yml \\
+        --execute-params ${prefix}-params.yml \\
         --output ${prefix}.md
     """
 
@@ -97,6 +97,6 @@ process QUARTO_PRERENDER {
     set -u
 
     touch ${prefix}.md
-    touch params.yml
+    touch ${prefix}-params.yml
     """
 }
