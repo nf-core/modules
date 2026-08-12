@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "quarto_prerender"
 description: Pre-render a Quarto document to markdown, including parametrization
 keywords:
@@ -51,7 +50,8 @@ output:
             Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
       - ${prefix}{.md,_files}:
           type: file
-          description: Rendered output (a markdown file) and associated files (a directory; optional).
+          description: Rendered output (a markdown file) and associated files (a
+            directory; optional).
           pattern: "${prefix}{.md,_files}.md"
           ontologies: []
   notebook:
@@ -61,7 +61,8 @@ output:
             Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
       - notebook:
           type: file
-          description: The original Quarto notebook; allows the user to continue working on the notebook.
+          description: The original Quarto notebook; allows the user to continue
+            working on the notebook.
           pattern: "*.qmd"
           ontologies: []
   params_yaml:
@@ -84,6 +85,13 @@ output:
           description: Artifacts generated during rendering.
           pattern: "*"
           ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: Optional YAML file containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
   versions_quarto:
     - - ${task.process}:
           type: string
@@ -106,6 +114,12 @@ output:
           description: The expression to obtain the version of the tool
 topics:
   versions:
+    - versions.yml:
+        type: file
+        description: Optional YAML file containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
     - - ${task.process}:
           type: string
           description: The name of the process
