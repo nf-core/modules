@@ -1,0 +1,1 @@
+FROM docker.io/biodepot/star-suite@sha256:0ced4e4941b8a7347c1583598381e6abe25d798df09759c59ede0e6c6dc4e1d3
