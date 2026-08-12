@@ -1,0 +1,119 @@
+nextflow_workflow {
+    name "Test Subworkflow SETUP_FASTA"
+    script "../main.nf"
+    workflow "SETUP_FASTA"
+
+    tag "subworkflows"
+    tag "subworkflows_sangertol"
+    tag "subworkflows/setup_fasta"
+    tag "subworkflows/../../modules/nf-core/gunzip"
+    tag "subworkflows/../../modules/nf-core/gawk"
+    tag "subworkflows/../../modules/nf-core/samtools/faidx"
+    tag "modules/nf-core/gunzip"
+    tag "modules/nf-core/gawk"
+    tag "modules/nf-core/samtools/faidx"
+    tag "../../../modules/nf-core/gunzip"
+    tag "../../../modules/nf-core/gawk"
+    tag "../../../modules/nf-core/samtools/faidx"
+
+
+    setup {
+        nfcoreInitialise("${launchDir}/library/")
+        nfcoreInstall(
+            "${launchDir}/library/",
+            [
+                "gunzip",
+                "gawk",
+                "samtools/faidx"
+            ]
+        )
+        nfcoreLink("${launchDir}/library/", "${baseDir}/modules/")
+    }
+
+    test("Undibacterium_unclassified genome [fasta] w/ index") {
+        when {
+
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'Undibacterium_unclassified/assembly/draft/baUndUnlc1.bp.hap1.p_ctg.fa.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = true
+                """
+            }
+
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+
+        cleanup {
+            nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/nf-core")
+        }
+    }
+
+    test("Undibacterium_unclassified genome [fasta] w/ index no sizes") {
+        when {
+
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'Undibacterium_unclassified/assembly/draft/baUndUnlc1.bp.hap1.p_ctg.fa.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = false
+                """
+            }
+
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+
+        cleanup {
+            nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/nf-core")
+        }
+    }
+
+    test("Undibacterium_unclassified genome - stub") {
+        options "-stub"
+        when {
+
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'Undibacterium_unclassified/assembly/draft/baUndUnlc1.bp.hap1.p_ctg.fa.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+
+        cleanup {
+            nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/nf-core")
+        }
+    }
+}
