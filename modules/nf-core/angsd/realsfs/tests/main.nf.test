@@ -11,7 +11,6 @@ nextflow_process {
     tag "angsd/realsfs"
 
     test("angsd - realsfs - 1D") {
-        config "./nextflow.config"
 
         when {
 
@@ -43,7 +42,6 @@ nextflow_process {
 
 
     test("angsd - realsfs - 2D") {
-        config "./nextflow.config"
 
         when {
 
@@ -76,7 +74,6 @@ nextflow_process {
 
     test("angsd - realsfs - stub") {
         options "-stub"
-        config "./nextflow.config"
 
         when {
 
