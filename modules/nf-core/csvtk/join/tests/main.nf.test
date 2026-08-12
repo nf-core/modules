@@ -39,6 +39,34 @@ nextflow_process {
 
     }
 
+    test("join - csv - tsv output") {
+
+        when {
+            params {
+                module_args = "--fields 'ID;ID' -p -e -d \"\t\" -T"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true),
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
     test("join - csv - stub") {
 
         options "-stub"
