@@ -1,15 +1,15 @@
 nextflow_process {
 
-    name "Test Process QUARTO_PARTIAL"
+    name "Test Process QUARTO_PRERENDER"
     script "../main.nf"
-    process "QUARTO_PARTIAL"
+    process "QUARTO_PRERENDER"
 
     tag "modules"
     tag "modules_nfcore"
     tag "quarto"
-    tag "quarto/partial"
+    tag "quarto/prerender"
 
-    test("test partial - r") {
+    test("test prerender - r") {
 
         when {
             process {
@@ -31,24 +31,24 @@ nextflow_process {
                     process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.artifacts,
                     process.out.params_yaml,
-                    process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    process.out.rendered[0][1].find { it.toString().endsWith('.md') }
                 ).match() },
                 // Explicitly check that output contains executed code. The
-                // `partial` output contains both a markdown file (the partial)
-                // and any associated files in a `_files/` directory, but only
-                // if the partial contains figures or other required resources,
-                // hence the explicit `endsWith` statement.
+                // `rendered` output contains both a markdown file and any
+                // associated files in a `_files/` directory, but only if the
+                // output contains figures or other required resources, hence
+                // the explicit `endsWith` statement.
                 {
-                    def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    def md = process.out.rendered[0][1].find { it.toString().endsWith('.md') }
                     assert path(md).readLines().any { it.contains('Hello World 1') }
                 },
-                { assert process.out.partial[0][1].find { it.toString().endsWith('_files') } != null }
+                { assert process.out.rendered[0][1].find { it.toString().endsWith('_files') } != null }
             )
         }
 
     }
 
-    test("test partial - python") {
+    test("test prerender - python") {
 
         when {
             process {
@@ -70,19 +70,19 @@ nextflow_process {
                     process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.artifacts,
                     process.out.params_yaml,
-                    process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    process.out.rendered[0][1].find { it.toString().endsWith('.md') }
                 ).match() },
                 {
-                    def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    def md = process.out.rendered[0][1].find { it.toString().endsWith('.md') }
                     assert path(md).readLines().any { it.contains('Hello World 1') }
                 },
-                { assert process.out.partial[0][1].find { it.toString().endsWith('_files') } != null }
+                { assert process.out.rendered[0][1].find { it.toString().endsWith('_files') } != null }
             )
         }
 
     }
 
-    test("test partial - parametrized - r") {
+    test("test prerender - parametrized - r") {
 
         when {
             process {
@@ -104,19 +104,19 @@ nextflow_process {
                     process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.artifacts,
                     process.out.params_yaml,
-                    process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    process.out.rendered[0][1].find { it.toString().endsWith('.md') }
                 ).match() },
                 {
-                    def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    def md = process.out.rendered[0][1].find { it.toString().endsWith('.md') }
                     assert path(md).readLines().any { it.contains('Hello World 12') }
                 },
-                { assert process.out.partial[0][1].find { it.toString().endsWith('_files') } != null }
+                { assert process.out.rendered[0][1].find { it.toString().endsWith('_files') } != null }
             )
         }
 
     }
 
-    test("test partial - parametrized - python") {
+    test("test prerender - parametrized - python") {
 
         when {
             process {
@@ -138,19 +138,19 @@ nextflow_process {
                     process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.artifacts,
                     process.out.params_yaml,
-                    process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    process.out.rendered[0][1].find { it.toString().endsWith('.md') }
                 ).match() },
                 {
-                    def md = process.out.partial[0][1].find { it.toString().endsWith('.md') }
+                    def md = process.out.rendered[0][1].find { it.toString().endsWith('.md') }
                     assert path(md).readLines().any { it.contains('Hello World 12') }
                 },
-                { assert process.out.partial[0][1].find { it.toString().endsWith('_files') } != null }
+                { assert process.out.rendered[0][1].find { it.toString().endsWith('_files') } != null }
             )
         }
 
     }
 
-    test("test partial - stub - r") {
+    test("test prerender - stub - r") {
 
         options "-stub"
 

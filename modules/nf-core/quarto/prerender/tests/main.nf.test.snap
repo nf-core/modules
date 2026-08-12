@@ -1,17 +1,17 @@
 {
-    "test partial - python": {
+    "test prerender - python": {
         "content": [
             {
                 "versions_papermill": [
                     [
-                        "QUARTO_PARTIAL",
+                        "QUARTO_PRERENDER",
                         "papermill",
                         "2.6.0"
                     ]
                 ],
                 "versions_quarto": [
                     [
-                        "QUARTO_PARTIAL",
+                        "QUARTO_PRERENDER",
                         "quarto",
                         "1.7.31"
                     ]
@@ -35,25 +35,25 @@
             ],
             "quarto_python.md:md5,2e2dc1e7dcfa0e8f5ac8471e5b090315"
         ],
-        "timestamp": "2026-06-29T10:37:37.061321",
+        "timestamp": "2026-08-12T09:52:47.429998",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"
         }
     },
-    "test partial - r": {
+    "test prerender - parametrized - r": {
         "content": [
             {
                 "versions_papermill": [
                     [
-                        "QUARTO_PARTIAL",
+                        "QUARTO_PRERENDER",
                         "papermill",
                         "2.6.0"
                     ]
                 ],
                 "versions_quarto": [
                     [
-                        "QUARTO_PARTIAL",
+                        "QUARTO_PRERENDER",
                         "quarto",
                         "1.7.31"
                     ]
@@ -72,60 +72,18 @@
                     {
                         "id": "test"
                     },
-                    "params.yml:md5,8b9e438c0eb4850e20035a1222cd151e"
-                ]
-            ],
-            "quarto_r.md:md5,406ad0baf6c27a7a8287d997b885eb78"
-        ],
-        "timestamp": "2026-06-29T10:37:27.14031",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
-        }
-    },
-    "test partial - parametrized - python": {
-        "content": [
-            {
-                "versions_papermill": [
-                    [
-                        "QUARTO_PARTIAL",
-                        "papermill",
-                        "2.6.0"
-                    ]
-                ],
-                "versions_quarto": [
-                    [
-                        "QUARTO_PARTIAL",
-                        "quarto",
-                        "1.7.31"
-                    ]
-                ]
-            },
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "artifact.txt:md5,8ddd8be4b179a529afa5f2ffae4b9858"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
                     "params.yml:md5,0dbcd58276179f0700e144e45d8d3c76"
                 ]
             ],
-            "quarto_python.md:md5,1b9b10928f1ed3ddd048f232c0b38b30"
+            "quarto_r.md:md5,f23da813661ebb77d10914c155002507"
         ],
-        "timestamp": "2026-06-29T10:37:55.445441",
+        "timestamp": "2026-08-12T09:52:56.369793",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"
         }
     },
-    "test partial - stub - r": {
+    "test prerender - stub - r": {
         "content": [
             {
                 "0": [
@@ -153,24 +111,24 @@
                     ]
                 ],
                 "3": [
-
+                    
                 ],
                 "4": [
                     [
-                        "QUARTO_PARTIAL",
+                        "QUARTO_PRERENDER",
                         "quarto",
                         "1.7.31"
                     ]
                 ],
                 "5": [
                     [
-                        "QUARTO_PARTIAL",
+                        "QUARTO_PRERENDER",
                         "papermill",
                         "2.6.0"
                     ]
                 ],
                 "artifacts": [
-
+                    
                 ],
                 "notebook": [
                     [
@@ -188,7 +146,7 @@
                         "params.yml:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "partial": [
+                "rendered": [
                     [
                         {
                             "id": "test"
@@ -198,39 +156,81 @@
                 ],
                 "versions_papermill": [
                     [
-                        "QUARTO_PARTIAL",
+                        "QUARTO_PRERENDER",
                         "papermill",
                         "2.6.0"
                     ]
                 ],
                 "versions_quarto": [
                     [
-                        "QUARTO_PARTIAL",
+                        "QUARTO_PRERENDER",
                         "quarto",
                         "1.7.31"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-06-26T20:14:01.188355",
+        "timestamp": "2026-08-12T09:59:20.540606",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"
         }
     },
-    "test partial - parametrized - r": {
+    "test prerender - parametrized - python": {
         "content": [
             {
                 "versions_papermill": [
                     [
-                        "QUARTO_PARTIAL",
+                        "QUARTO_PRERENDER",
                         "papermill",
                         "2.6.0"
                     ]
                 ],
                 "versions_quarto": [
                     [
-                        "QUARTO_PARTIAL",
+                        "QUARTO_PRERENDER",
+                        "quarto",
+                        "1.7.31"
+                    ]
+                ]
+            },
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "artifact.txt:md5,8ddd8be4b179a529afa5f2ffae4b9858"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "params.yml:md5,0dbcd58276179f0700e144e45d8d3c76"
+                ]
+            ],
+            "quarto_python.md:md5,1b9b10928f1ed3ddd048f232c0b38b30"
+        ],
+        "timestamp": "2026-08-12T09:53:06.250027",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "test prerender - r": {
+        "content": [
+            {
+                "versions_papermill": [
+                    [
+                        "QUARTO_PRERENDER",
+                        "papermill",
+                        "2.6.0"
+                    ]
+                ],
+                "versions_quarto": [
+                    [
+                        "QUARTO_PRERENDER",
                         "quarto",
                         "1.7.31"
                     ]
@@ -249,12 +249,12 @@
                     {
                         "id": "test"
                     },
-                    "params.yml:md5,0dbcd58276179f0700e144e45d8d3c76"
+                    "params.yml:md5,8b9e438c0eb4850e20035a1222cd151e"
                 ]
             ],
-            "quarto_r.md:md5,f23da813661ebb77d10914c155002507"
+            "quarto_r.md:md5,406ad0baf6c27a7a8287d997b885eb78"
         ],
-        "timestamp": "2026-06-29T10:37:45.572784",
+        "timestamp": "2026-08-12T09:52:33.997791",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"

@@ -3,7 +3,7 @@
 // for you from the environment.yml. You'll at least need Quarto itself,
 // Papermill and whatever language you are running your analyses on; you can see
 // an example in this module's environment file.
-process QUARTO_PARTIAL {
+process QUARTO_PRERENDER {
     tag "${prefix}"
     label 'process_low'
     conda "${moduleDir}/environment.yml"
@@ -17,7 +17,7 @@ process QUARTO_PARTIAL {
     path input_files
 
     output:
-    tuple val(meta), path("${prefix}{.md,_files}")                                             , emit: partial
+    tuple val(meta), path("${prefix}{.md,_files}")                                             , emit: rendered
     tuple val(meta), path(notebook)                                                            , emit: notebook
     tuple val(meta), path("params.yml")                                                        , emit: params_yaml
     tuple val(meta), path("${notebook_parameters.artifact_dir}/*")                             , emit: artifacts, optional: true
@@ -29,7 +29,6 @@ process QUARTO_PARTIAL {
 
     script:
     def args = task.ext.args ?: ''
-    // Partial is meant to be run once (not per sample), hence the naming scheme
     prefix = task.ext.prefix ?: "${notebook.baseName}"
     // Implicit parameters can be overwritten by supplying a value with parameters
     notebook_parameters = [
@@ -71,7 +70,7 @@ process QUARTO_PARTIAL {
     export OMP_NUM_THREADS="${task.cpus}"
     export NUMBA_NUM_THREADS="${task.cpus}"
 
-    # Render partial
+    # Render notebook to markdown
     quarto render \\
         ${notebook} \\
         ${args} \\
