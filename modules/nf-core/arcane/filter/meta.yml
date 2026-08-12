@@ -27,7 +27,7 @@ input:
         description: Reference genome FASTA file
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
         ontology:
-        - edam: "http://edamontology.org/format_1929"
+          - edam: "http://edamontology.org/format_1929"
   - - meta2:
         type: map
         description: |
@@ -38,7 +38,7 @@ input:
         description: Genome annotation GTF file
         pattern: "*.{gtf,gtf.gz}"
         ontology:
-        - edam: "http://edamontology.org/format_2306"
+          - edam: "http://edamontology.org/format_2306"
 
 output:
   genes:
@@ -52,7 +52,7 @@ output:
           description: Gene IDs, one per line, in gene_number order
           pattern: "*/*_genes.txt"
           ontology:
-          - edam: "http://edamontology.org/format_2330"
+            - edam: "http://edamontology.org/format_2330"
   pickle:
     - - meta:
           type: map
@@ -74,7 +74,7 @@ output:
           description: CSV file mapping internal gene numbers to original annotation gene IDs and coordinates
           pattern: "*/*_new_id_to_original.csv"
           ontology:
-          - edam: "http://edamontology.org/format_3752"
+            - edam: "http://edamontology.org/format_3752"
   reference:
     - - meta:
           type: map
@@ -86,7 +86,7 @@ output:
           description: Filtered sequence reference FASTA file ready for indexing
           pattern: "*/*_ref.fa.gz"
           ontology:
-          - edam: "http://edamontology.org/format_1929"
+            - edam: "http://edamontology.org/format_1929"
   extracted_genes:
     - - meta:
           type: map
@@ -100,7 +100,7 @@ output:
             Only produced when `--extract_genes` is provided in `task.ext.args`.
           pattern: "*/*_extracted_genes.fa.gz"
           ontology:
-          - edam: "http://edamontology.org/format_1929"
+            - edam: "http://edamontology.org/format_1929"
   versions_arcane:
     - - "${task.process}":
           type: string
