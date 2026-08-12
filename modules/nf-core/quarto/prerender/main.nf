@@ -34,7 +34,7 @@ process QUARTO_PRERENDER {
     notebook_parameters = [
         meta: meta,
         cpus: task.cpus,
-        artifact_dir: "artifacts",
+        artifact_dir: "${prefix}-artifacts",
     ] + (parameters ?: [:])
     // Parse parameters through a YAML file, which is better than CLI because:
     //  - No issue with escaping
