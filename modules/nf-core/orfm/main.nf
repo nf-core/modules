@@ -48,7 +48,7 @@ process ORFM {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    """    
+    """
     touch ${prefix}.fasta
     """
 }
