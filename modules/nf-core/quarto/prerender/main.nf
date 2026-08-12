@@ -21,8 +21,9 @@ process QUARTO_PRERENDER {
     tuple val(meta), path(notebook)                                                            , emit: notebook
     tuple val(meta), path("params.yml")                                                        , emit: params_yaml
     tuple val(meta), path("${notebook_parameters.artifact_dir}/*")                             , emit: artifacts, optional: true
-    tuple val("${task.process}"), val('quarto')   , eval('quarto -v')                          , emit: versions_quarto   , topic: versions
-    tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "'), emit: versions_papermill, topic: versions
+    path "versions.yml"                                                                        , emit: versions , optional: true, topic: versions
+    tuple val("${task.process}"), val('quarto')   , eval('quarto -v')                          , emit: versions_quarto          , topic: versions
+    tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "'), emit: versions_papermill       , topic: versions
 
     when:
     task.ext.when == null || task.ext.when
