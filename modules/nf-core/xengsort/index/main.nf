@@ -25,6 +25,8 @@ process XENGSORT_INDEX {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def cpus = task.cpus as int
 
+    // The presented thread allocation behavior is taken from the tools source code
+    // https://gitlab.com/genomeinformatics/xengsort/-/blob/master/xengsort/xengsort/xengsort_index.py?ref_type=heads
     def subtables = Math.max([(cpus / 2) as int - 1, cpus - 3, 19].min(), 1)
     if ((subtables % 2) == 0) {
         subtables += 1
