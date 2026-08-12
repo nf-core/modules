@@ -57,7 +57,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.overall_stats,
-                    path(process.out.overall_stats.get(0).get(1)).linesGzip
+                    path(process.out.overall_stats.get(0).get(1)).linesGzip,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -106,7 +107,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.overall_stats,
-                    path(process.out.overall_stats.get(0).get(1)).linesGzip
+                    path(process.out.overall_stats.get(0).get(1)).linesGzip,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
