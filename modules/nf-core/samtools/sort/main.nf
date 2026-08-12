@@ -1,6 +1,7 @@
 process SAMTOOLS_SORT {
     tag "${meta.id}"
     label 'process_medium'
+    ext prefix: "${meta.id}", args: ''
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -13,32 +14,30 @@ process SAMTOOLS_SORT {
     val index_format
 
     output:
-    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
-    tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
-    tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
-    tuple val(meta), path("${prefix}.${extension}.{crai,csi,bai}"), emit: index, optional: true
+    tuple val(meta), path("${task.ext.prefix}.bam"), emit: bam, optional: true
+    tuple val(meta), path("${task.ext.prefix}.cram"), emit: cram, optional: true
+    tuple val(meta), path("${task.ext.prefix}.sam"), emit: sam, optional: true
+    tuple val(meta), path("${task.ext.prefix}.${extension}.{crai,csi,bai}"), emit: index, optional: true
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
-    when:
+    when: 
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    extension = args.contains("--output-fmt sam")
+    extension = task.ext.args.contains("--output-fmt sam")
         ? "sam"
-        : args.contains("--output-fmt cram")
+        : task.ext.args.contains("--output-fmt cram")
             ? "cram"
             : "bam"
     def reference = fasta ? "--reference ${fasta}" : ""
     //setting default values
     def write_index = ""
-    def output_file = "${prefix}.${extension}"
+    def output_file = "${task.ext.prefix}.${extension}"
 
     // Update if index is requested
     if (index_format != '' && index_format) {
         write_index = "--write-index"
-        output_file = "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format}"
+        output_file = "${task.ext.prefix}.${extension}##idx##${task.ext.prefix}.${extension}.${index_format}"
     }
     def is_sam = (bam instanceof List ? bam[0] : bam).name.endsWith('.sam')
     if (index_format) {
@@ -49,10 +48,10 @@ process SAMTOOLS_SORT {
             error("Indexing not compatible with SAM output")
         }
     }
-    if ("${bam}" == "${prefix}.bam") {
+    if ("${bam}" == "${task.ext.prefix}.bam") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
-    if ("${bam}" == "${prefix}.bam") {
+    if ("${bam}" == "${task.ext.prefix}.bam") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
 
@@ -61,8 +60,8 @@ process SAMTOOLS_SORT {
 
     """
     ${pre_command}samtools sort \\
-        ${args} \\
-        -T ${prefix} \\
+        ${task.ext.args} \\
+        -T ${task.ext.prefix} \\
         --threads ${task.cpus} \\
         ${reference} \\
         -o ${output_file} \\
@@ -71,11 +70,9 @@ process SAMTOOLS_SORT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    extension = args.contains("--output-fmt sam")
+    extension = task.ext.args.contains("--output-fmt sam")
         ? "sam"
-        : args.contains("--output-fmt cram")
+        : task.ext.args.contains("--output-fmt cram")
             ? "cram"
             : "bam"
 
@@ -88,10 +85,10 @@ process SAMTOOLS_SORT {
         }
     }
 
-    index = index_format ? "touch ${prefix}.${extension}.${index_format}" : ""
+    index = index_format ? "touch ${task.ext.prefix}.${extension}.${index_format}" : ""
 
     """
-    touch ${prefix}.${extension}
+    touch ${task.ext.prefix}.${extension}
     ${index}
     """
 }
