@@ -15,6 +15,7 @@ process ENSEMBLVEP_VEP {
     tuple val(meta2), path(cache)
     tuple val(meta3), path(fasta)
     path extra_files
+    tuple path(gtf), path(gtf_tbi) // optional: [ path(gtf), path(gtf_tbi) ] -- mutually exclusive with cache
 
     output:
     tuple val(meta), path("${prefix}.vcf.gz"), emit: vcf, optional: true
@@ -37,6 +38,11 @@ process ENSEMBLVEP_VEP {
     prefix = task.ext.prefix ?: "${meta.id}"
     def dir_cache = cache ? "\${PWD}/${cache}" : "/.vep"
     def reference = fasta ? "--fasta ${fasta}" : ""
+    // gtf and cache are mutually exclusive annotation sources: use a GTF
+    // (e.g. for a custom/non-standard reference with no Ensembl cache)
+    // when supplied, otherwise fall back to the existing cache behaviour
+    // unchanged.
+    def annotation_source = gtf ? "--gtf ${gtf}" : "--cache --cache_version ${cache_version} --dir_cache ${dir_cache}"
     def create_index = file_extension == "vcf" ? "tabix ${args2} ${prefix}.${file_extension}.gz" : ""
     """
     vep \\
@@ -47,9 +53,7 @@ process ENSEMBLVEP_VEP {
         ${reference} \\
         --assembly ${genome} \\
         --species ${species} \\
-        --cache \\
-        --cache_version ${cache_version} \\
-        --dir_cache ${dir_cache} \\
+        ${annotation_source} \\
         --fork ${task.cpus}
 
     ${create_index}
