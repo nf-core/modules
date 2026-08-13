@@ -39,7 +39,7 @@ nextflow_process {
             assert snapshot(
                 process.out.bed[0][1].findAll { file(it).size() > 0 },
                 process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
             ).match()
         }
     }
@@ -72,7 +72,7 @@ nextflow_process {
             assert snapshot(
                 process.out.bed[0][1].findAll { file(it).size() > 0 },
                 process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
             ).match()
         }
     }
@@ -105,7 +105,7 @@ nextflow_process {
             assert snapshot(
                 process.out.bed[0][1].findAll { file(it).size() > 0 },
                 process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
             ).match()
         }
     }
@@ -135,7 +135,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["cns"])).match()
         }
     }
 
@@ -196,7 +196,7 @@ nextflow_process {
             assert snapshot(
                 process.out.bed[0][1].findAll { file(it).size() > 0 },
                 process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
             ).match()
         }
 
@@ -230,7 +230,7 @@ nextflow_process {
             assert snapshot(
                 process.out.bed[0][1].findAll { file(it).size() > 0 },
                 process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
             ).match()
         }
     }
@@ -264,7 +264,7 @@ nextflow_process {
             assert snapshot(
                 process.out.bed[0][1].findAll { file(it).size() > 0 },
                 process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
             ).match()
         }
     }
@@ -305,7 +305,7 @@ nextflow_process {
             assert snapshot(
                 process.out.bed[0][1].findAll { file(it).size() > 0 },
                 process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+                sanitizeOutput(process.out, ignoreKeys: ["bed"])
             ).match()
         }
     }
