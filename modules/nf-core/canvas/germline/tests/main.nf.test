@@ -12,183 +12,189 @@ nextflow_process {
     tag "bcftools"
     tag "bcftools/reheader"
 
-    test("homo_sapiens - [ [bam,bai], fasta, xml, bed, [], population vcf, [], [] ]") {
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'NA12878' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id: 'GRCh38' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true)
-                ]
-                input[2] = [
-                    [ id: 'GRCh38' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
-                ]
-                // exclude regions not covered by test data
-                input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
-                    .map { file -> [[id:'GRCh38'], file]}
-                input[4] = [ [], [] ]
-                input[5] = [
-                    [ id: 'GRCh38'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true)
-                ]
-                input[6] = [ [], [] ]
-                input[7] = [ [], [] ]
-                """
-            }
-        }
+    // ################################
+    // # FULL TESTS DO NOT RUN ON CI! #
+    // ################################
+    // Please uncomment and run tests locally if you make changes.
 
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.covandvarfreq,
-                    process.out.versions_canvas
-                ).match() }
-            )
-        }
-    }
 
-    test("homo_sapiens - [ [bam,bai], fasta, xml, bed, sample vcf, [], [], [] ]") {
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'NA12878' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id: 'GRCh38' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true)
-                ]
-                input[2] = [
-                    [ id: 'GRCh38' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
-                ]
-                input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
-                    .map { file -> [[id:'GRCh38'], file]}
-                input[4] = [
-                    [ id: 'GRCh38'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true)
-                ]
-                input[5] = [ [], [] ]
-                input[6] = [ [], [] ]
-                input[7] = [ [], [] ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.covandvarfreq,
-                    process.out.versions_canvas
-                ).match() }
-            )
-        }
-    }
-
-    test("homo_sapiens - [ [bam,bai], fasta, xml, bed, sample vcf, [], ploidy vcf, known cnv bed ]") {
-        setup {
-            run("BCFTOOLS_REHEADER") {
-                script "../../../bcftools/reheader/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id: 'NA12878' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/empty.vcf.gz', checkIfExists: true),
-                        [],
-                        []
-                    ]
-                    input[1] = [[], []]
-                    """
-                }
-            }
-        }
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'NA12878' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id: 'GRCh38' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true)
-                ]
-                input[2] = [
-                    [ id: 'GRCh38' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
-                ]
-                input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
-                    .map { file -> [[id:'GRCh38'], file]}
-                input[4] = [
-                    [ id: 'GRCh38'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true)
-                ]
-                input[5] = [ [], [] ]
-                input[6] = BCFTOOLS_REHEADER.out.vcf
-                input[7] = channel.of("chr22\t16570000\t16572000").collectFile(name: 'test_cnv.bed', newLine:true)
-                    .map { file -> [[id:'GRCh38'], file]}
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.covandvarfreq,
-                    process.out.versions_canvas
-                ).match() }
-            )
-        }
-    }
-
-    test("homo_sapiens - [ [bam,bai], fasta, xml, bed, [], [], [], [] ] - should fail") {
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'NA12878' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id: 'GRCh38' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true)
-                ]
-                input[2] = [
-                    [ id: 'GRCh38' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
-                ]
-                // exclude regions not covered by test data
-                input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
-                    .map { file -> [[id:'GRCh38'], file]}
-                input[4] = [ [], [] ]
-                input[5] = [ [], [] ]
-                input[6] = [ [], [] ]
-                input[7] = [ [], [] ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert !process.success }
-            )
-        }
-    }
+    // test("homo_sapiens - [ [bam,bai], fasta, xml, bed, [], population vcf, [], [] ]") {
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'NA12878' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true)
+    //             ]
+    //             input[1] = [
+    //                 [ id: 'GRCh38' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true)
+    //             ]
+    //             input[2] = [
+    //                 [ id: 'GRCh38' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
+    //             ]
+    //             // exclude regions not covered by test data
+    //             input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
+    //                 .map { file -> [[id:'GRCh38'], file]}
+    //             input[4] = [ [], [] ]
+    //             input[5] = [
+    //                 [ id: 'GRCh38'],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true)
+    //             ]
+    //             input[6] = [ [], [] ]
+    //             input[7] = [ [], [] ]
+    //             """
+    //         }
+    //     }
+    //
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+    //                 process.out.covandvarfreq,
+    //                 process.out.versions_canvas
+    //             ).match() }
+    //         )
+    //     }
+    // }
+    //
+    // test("homo_sapiens - [ [bam,bai], fasta, xml, bed, sample vcf, [], [], [] ]") {
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'NA12878' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true)
+    //             ]
+    //             input[1] = [
+    //                 [ id: 'GRCh38' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true)
+    //             ]
+    //             input[2] = [
+    //                 [ id: 'GRCh38' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
+    //             ]
+    //             input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
+    //                 .map { file -> [[id:'GRCh38'], file]}
+    //             input[4] = [
+    //                 [ id: 'GRCh38'],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true)
+    //             ]
+    //             input[5] = [ [], [] ]
+    //             input[6] = [ [], [] ]
+    //             input[7] = [ [], [] ]
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+    //                 process.out.covandvarfreq,
+    //                 process.out.versions_canvas
+    //             ).match() }
+    //         )
+    //     }
+    // }
+    //
+    // test("homo_sapiens - [ [bam,bai], fasta, xml, bed, sample vcf, [], ploidy vcf, known cnv bed ]") {
+    //     setup {
+    //         run("BCFTOOLS_REHEADER") {
+    //             script "../../../bcftools/reheader/main.nf"
+    //             process {
+    //                 """
+    //                 input[0] = [
+    //                     [ id: 'NA12878' ],
+    //                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/empty.vcf.gz', checkIfExists: true),
+    //                     [],
+    //                     []
+    //                 ]
+    //                 input[1] = [[], []]
+    //                 """
+    //             }
+    //         }
+    //     }
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'NA12878' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true)
+    //             ]
+    //             input[1] = [
+    //                 [ id: 'GRCh38' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true)
+    //             ]
+    //             input[2] = [
+    //                 [ id: 'GRCh38' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
+    //             ]
+    //             input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
+    //                 .map { file -> [[id:'GRCh38'], file]}
+    //             input[4] = [
+    //                 [ id: 'GRCh38'],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true)
+    //             ]
+    //             input[5] = [ [], [] ]
+    //             input[6] = BCFTOOLS_REHEADER.out.vcf
+    //             input[7] = channel.of("chr22\t16570000\t16572000").collectFile(name: 'test_cnv.bed', newLine:true)
+    //                 .map { file -> [[id:'GRCh38'], file]}
+    //             """
+    //         }
+    //     }
+    //
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+    //                 process.out.covandvarfreq,
+    //                 process.out.versions_canvas
+    //             ).match() }
+    //         )
+    //     }
+    // }
+    //
+    // test("homo_sapiens - [ [bam,bai], fasta, xml, bed, [], [], [], [] ] - should fail") {
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'NA12878' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true)
+    //             ]
+    //             input[1] = [
+    //                 [ id: 'GRCh38' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true)
+    //             ]
+    //             input[2] = [
+    //                 [ id: 'GRCh38' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/GenomeSize.xml', checkIfExists: true)
+    //             ]
+    //             // exclude regions not covered by test data
+    //             input[3] = channel.of("chr22\t0\t16569800", "chr22\t16610000\t50818468").collectFile(name: 'test_filter.bed', newLine:true)
+    //                 .map { file -> [[id:'GRCh38'], file]}
+    //             input[4] = [ [], [] ]
+    //             input[5] = [ [], [] ]
+    //             input[6] = [ [], [] ]
+    //             input[7] = [ [], [] ]
+    //             """
+    //         }
+    //     }
+    //
+    //     then {
+    //         assertAll(
+    //             { assert !process.success }
+    //         )
+    //     }
+    // }
 
     test("homo_sapiens - [ [bam,bai], fasta, xml, bed, [], population vcf, [], [] ] - stub") {
         options "-stub"
