@@ -37,9 +37,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.bed[0][1].findAll { file(it).size() > 0 },
-                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
+                sanitizeOutput(process.out, unstableKeys: ["cns", "bed"])
             ).match()
         }
     }
@@ -70,9 +68,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.bed[0][1].findAll { file(it).size() > 0 },
-                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
+                sanitizeOutput(process.out, unstableKeys: ["cns", "bed"])
             ).match()
         }
     }
@@ -103,9 +99,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.bed[0][1].findAll { file(it).size() > 0 },
-                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
+                sanitizeOutput(process.out, unstableKeys: ["cns", "bed"])
             ).match()
         }
     }
@@ -194,9 +188,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.bed[0][1].findAll { file(it).size() > 0 },
-                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
+                sanitizeOutput(process.out, unstableKeys: ["cns", "bed"])
             ).match()
         }
 
@@ -228,9 +220,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.bed[0][1].findAll { file(it).size() > 0 },
-                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
+                sanitizeOutput(process.out, unstableKeys: ["cns", "bed"])
             ).match()
         }
     }
@@ -262,9 +252,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.bed[0][1].findAll { file(it).size() > 0 },
-                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                sanitizeOutput(process.out, unstableKeys: ["cns"], ignoreKeys: ["bed"])
+                sanitizeOutput(process.out, unstableKeys: ["cns", "bed"])
             ).match()
         }
     }
@@ -303,9 +291,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.bed[0][1].findAll { file(it).size() > 0 },
-                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
-                sanitizeOutput(process.out, ignoreKeys: ["bed"])
+                sanitizeOutput(process.out, unstableKeys: ["bed"])
             ).match()
         }
     }

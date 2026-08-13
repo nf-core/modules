@@ -221,12 +221,6 @@
     },
     "cnvkit batch tumour only mode, no reference - bam": {
         "content": [
-            [
-                "genome.target.bed:md5,4b8adfc6c806db32028b9e40a0fb067a"
-            ],
-            [
-                "genome.antitarget.bed"
-            ],
             {
                 "bed": [
                     [
@@ -234,8 +228,8 @@
                             "id": "test"
                         },
                         [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.target.bed:md5,4b8adfc6c806db32028b9e40a0fb067a"
+                            "genome.antitarget.bed",
+                            "genome.target.bed"
                         ]
                     ]
                 ],
@@ -293,7 +287,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-08-13T10:04:50.354969152",
+        "timestamp": "2026-08-13T12:32:39.3060915",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -301,12 +295,6 @@
     },
     "cnvkit batch germline hybrid mode - bam": {
         "content": [
-            [
-                "baits.target.bed:md5,26d25ff2d6c45b6d92169b3559c6acdb"
-            ],
-            [
-                "baits.antitarget.bed"
-            ],
             {
                 "bed": [
                     [
@@ -314,8 +302,8 @@
                             "id": "test"
                         },
                         [
-                            "baits.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "baits.target.bed:md5,26d25ff2d6c45b6d92169b3559c6acdb"
+                            "baits.antitarget.bed",
+                            "baits.target.bed"
                         ]
                     ]
                 ],
@@ -375,7 +363,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-08-13T10:05:56.266328169",
+        "timestamp": "2026-08-13T12:33:41.32637537",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -383,13 +371,6 @@
     },
     "cnvkit batch wgs - bam": {
         "content": [
-            [
-                "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
-            ],
-            [
-                "genome.antitarget.bed"
-            ],
             {
                 "bed": [
                     [
@@ -397,9 +378,9 @@
                             "id": "test"
                         },
                         [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                            "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
+                            "genome.antitarget.bed",
+                            "genome.bed",
+                            "genome.target.bed"
                         ]
                     ]
                 ],
@@ -459,7 +440,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-08-13T10:03:35.788397238",
+        "timestamp": "2026-08-13T12:31:23.657359408",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -467,12 +448,6 @@
     },
     "cnvkit batch hybrid mode - bam": {
         "content": [
-            [
-                "baits.target.bed:md5,26d25ff2d6c45b6d92169b3559c6acdb"
-            ],
-            [
-                "baits.antitarget.bed"
-            ],
             {
                 "bed": [
                     [
@@ -480,8 +455,8 @@
                             "id": "test"
                         },
                         [
-                            "baits.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "baits.target.bed:md5,26d25ff2d6c45b6d92169b3559c6acdb"
+                            "baits.antitarget.bed",
+                            "baits.target.bed"
                         ]
                     ]
                 ],
@@ -541,7 +516,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-08-13T10:03:18.550914102",
+        "timestamp": "2026-08-13T12:31:07.753550942",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -549,13 +524,6 @@
     },
     "cnvkit batch wgs - cram": {
         "content": [
-            [
-                "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
-            ],
-            [
-                "genome.antitarget.bed"
-            ],
             {
                 "bed": [
                     [
@@ -563,9 +531,9 @@
                             "id": "test"
                         },
                         [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                            "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
+                            "genome.antitarget.bed",
+                            "genome.bed",
+                            "genome.target.bed"
                         ]
                     ]
                 ],
@@ -625,7 +593,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-08-13T10:03:52.331177432",
+        "timestamp": "2026-08-13T12:31:39.306164933",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -633,13 +601,6 @@
     },
     "cnvkit batch pon mode - bam": {
         "content": [
-            [
-                "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
-            ],
-            [
-                "genome.antitarget.bed"
-            ],
             {
                 "bed": [
                     [
@@ -647,9 +608,9 @@
                             "id": "test"
                         },
                         [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                            "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
+                            "genome.antitarget.bed",
+                            "genome.bed",
+                            "genome.target.bed"
                         ]
                     ]
                 ],
@@ -695,7 +656,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-08-13T10:06:11.524087535",
+        "timestamp": "2026-08-13T12:33:55.142042852",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -703,13 +664,6 @@
     },
     "cnvkit batch germline mode - cram": {
         "content": [
-            [
-                "multi_intervals.antitarget.bed:md5,3d4d20f9f23b39970865d29ef239d20b",
-                "multi_intervals.target.bed:md5,86d30493bb2e619a93f4ebc2923d29f3"
-            ],
-            [
-                
-            ],
             {
                 "bed": [
                     [
@@ -717,8 +671,8 @@
                             "id": "test"
                         },
                         [
-                            "multi_intervals.antitarget.bed:md5,3d4d20f9f23b39970865d29ef239d20b",
-                            "multi_intervals.target.bed:md5,86d30493bb2e619a93f4ebc2923d29f3"
+                            "multi_intervals.antitarget.bed",
+                            "multi_intervals.target.bed"
                         ]
                     ]
                 ],
@@ -776,7 +730,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-08-13T10:05:39.13339564",
+        "timestamp": "2026-08-13T12:33:26.562989613",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
