@@ -33,7 +33,10 @@ env:
 jobs:
   nf-test-changes:
     name: nf-test-changes
-    runs-on: "ubuntu-latest"
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-test-changes
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
       paths: ${{ steps.list.outputs.components }}
@@ -86,7 +89,11 @@ jobs:
           echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test:
-    runs-on: "ubuntu-latest"
+    runs-on:
+      - runs-on=${{ github.run_id }}
+      - runner=4cpu-linux-${{ matrix.arch }}
+      - image=ubuntu24-full-${{ matrix.arch }}
+      - volume=40gb
     name: "${{ matrix.arch }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
@@ -166,7 +173,10 @@ jobs:
           paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
   confirm-pass-nf-test:
-    runs-on: "ubuntu-latest"
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-nf-test
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     needs: [nf-test]
     if: always()
     steps:
