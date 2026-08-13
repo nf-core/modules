@@ -20,7 +20,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = [[id: 'test'], 24, 24]
-                input[2] = [[], []]
+                input[2] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/gene2transcript_mapping.tsv', checkIfExists: true)
+                ]
                 """
             }
         }

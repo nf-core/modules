@@ -27,7 +27,7 @@ input:
         description: Fasta file containing the target transcript sequences
         pattern: "*.{fasta}"
         ontologies:
-          - edam: http://edamontology.org/format_1929
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -53,7 +53,7 @@ input:
         description: Gene to transcript mapping file, default=none
         pattern: "*.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   orfs:
     - - meta:
@@ -66,9 +66,9 @@ output:
           description: Longest ORFs in the transcript sequences
           pattern: "*.{cds,pep,gff3}"
           ontologies:
-            - edam: http://edamontology.org/format_1929
-            - edam: http://edamontology.org/format_1960
-            - edam: http://edamontology.org/format_3603
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_1960 # GFF3
+            - edam: http://edamontology.org/format_3603 # PEP
   versions_td2:
     - - ${task.process}:
           type: string
