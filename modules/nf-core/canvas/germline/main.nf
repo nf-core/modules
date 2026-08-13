@@ -3,9 +3,10 @@ process CANVAS_GERMLINE {
     label 'process_high'
 
     container "quay.io/nf-core/canvas:1.40.0"
+    conda "${moduleDir}/environment.yml"
 
     input:
-    tuple val(meta) , path(bam), path(bai)
+    tuple val(meta),  path(bam), path(bai)
     tuple val(meta2), path(kmer_fasta, stageAs: 'Sequence/WholeGenomeFasta/genome.fa')
     tuple val(meta3), path(genomesize, stageAs: 'Sequence/WholeGenomeFasta/GenomeSize.xml')
     tuple val(meta4), path(filter_bed)
@@ -32,7 +33,7 @@ process CANVAS_GERMLINE {
     def args = task.ext.args ?: ""
     def sample_vcf_arg = sample_snv_vcf ? "--sample-b-allele-vcf ${sample_snv_vcf}" : ""
     def population_vcf_arg = population_snv_vcf ? "--population-b-allele-vcf ${population_snv_vcf}" : ""
-    def ploidy_arg = ploidy_vcf ? "--ploidy-vcf $ploidy_vcf" : ""
+    def ploidy_arg = ploidy_vcf ? "--ploidy-vcf ${ploidy_vcf}" : ""
     def common_cnvs_arg = common_cnvs_bed ? "--common-cnvs-bed ${common_cnvs_bed}" : ""
 
     """

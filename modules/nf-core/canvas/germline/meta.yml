@@ -71,7 +71,7 @@ input:
     - sample_snv_vcf:
         type: file
         description: Multisample VCF file containing SNV b-allele sites (sample-specific). Either this or `population_snv_vcf` must be provided.
-        pattern: "*.vcf(.gz)?"
+        pattern: "*.vcf{,.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_3016"
   - - meta6:
@@ -80,16 +80,16 @@ input:
     - population_snv_vcf:
         type: file
         description: VCF file containing SNV b-allele sites in the population. Either this or `sample_snv_vcf` must be provided.
-        pattern: "*.vcf(.gz)?"
+        pattern: "*.vcf{,.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_3016"
   - - meta7:
         type: map
-        description: Groovy map containing for ploidy VCF
+        description: Groovy map containing meta information for ploidy VCF
     - ploidy_vcf:
         type: file
         description: Multisample VCF file containing regions with expected ploidy different from 2. (See https://github.com/Illumina/canvas/wiki for an example)
-        pattern: "*.vcf(.gz)?"
+        pattern: "*.vcf{,.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_3016"
   - - meta8:
@@ -146,8 +146,7 @@ topics:
           description: The name of the tool
       - Canvas --version:
           type: string
-          description: The version of the tool (hardcoded as Canvas is an archived
-            tool)
+          description: The version of the tool
 authors:
   - "@ktruve"
   - "@Schmytzi"
