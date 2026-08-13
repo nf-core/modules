@@ -25,7 +25,7 @@ input:
         description: Single-end or paired-end nucleotide sequences in FASTQ or FASTA format
         pattern: "*.{fastq,fastq.gz,fq,fq.gz,fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - card:
       type: directory
       description: Directory containing the CARD database. This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
@@ -46,7 +46,7 @@ output:
           description: JSON formatted file with RGI results
           pattern: "*.{json}"
           ontologies:
-            - edam: http://edamontology.org/format_3464
+            - edam: http://edamontology.org/format_3464 # JSON
   tsv:
     - - meta:
           type: map

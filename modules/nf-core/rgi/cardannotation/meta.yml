@@ -1,19 +1,18 @@
 name: rgi_cardannotation
-description: Preprocess the CARD database for RGI to predict antibiotic resistance
-  from protein or nucleotide data
+description: Preprocess the CARD database for RGI to predict antibiotic resistance from protein or nucleotide data
 keywords:
   - bacteria
   - fasta
   - antibiotic resistance
 tools:
   - rgi:
-      description: This module preprocesses the downloaded Comprehensive Antibiotic
-        Resistance Database (CARD) which can then be used as input for RGI.
+      description: This module preprocesses the downloaded Comprehensive Antibiotic Resistance Database (CARD) which can then be used as input for RGI.
       homepage: https://card.mcmaster.ca
       documentation: https://github.com/arpcard/rgi
       tool_dev_url: https://github.com/arpcard/rgi
       doi: "10.1093/nar/gkz935"
-      licence: ["https://card.mcmaster.ca/about"]
+      licence:
+        - "https://card.mcmaster.ca/about"
       identifier: ""
 input:
   - card:
@@ -29,20 +28,55 @@ output:
   tool_version:
     - RGI_VERSION:
         type: string
-        description: The version of the tool in string format (useful for downstream
-          tools such as hAMRronization)
+        description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
   db_version:
     - DB_VERSION:
         type: string
-        description: The version of the used database in string format (useful for downstream
-          tools such as hAMRronization)
+        description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
+  versions_rgi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi:
+          type: string
+          description: The name of the tool
+      - rgi main --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_db:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi-database:
+          type: string
+          description: The name of the tool
+      - echo \$DB_VERSION:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi:
+          type: string
+          description: The name of the tool
+      - rgi main --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi-database:
+          type: string
+          description: The name of the tool
+      - echo \$DB_VERSION:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
   - "@jfy133"
