@@ -4,8 +4,8 @@ process HIFITRIMMER_PROCESSBLAST {
 
    conda "${moduleDir}/environment.yml"
    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1b/1b30f66d13fc3da362a0a9abb9365a6b5e2b90e6aff316c59ae58471c707bdd6/data' :
-      'community.wave.seqera.io/library/hifi_trimmer:4.0.0--41f93366a6098f77' }"
+      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/21/2153598b48eda939e4ac790e5f6e0d28d714faa2293dc04539a9a3f51b5a943d/data' :
+      'community.wave.seqera.io/library/hifi_trimmer:5.0.0--c5b9bef0c5bd186f' }"
 
    input:
    tuple val(meta), path(blast)
