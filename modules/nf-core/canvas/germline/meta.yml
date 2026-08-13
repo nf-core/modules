@@ -76,7 +76,7 @@ input:
           - edam: "http://edamontology.org/format_3016"
   - - meta6:
         type: map
-        description: Groovy map containing meta information for population SNV VCF
+        description: Groovy map containing population SNV meta information
     - population_snv_vcf:
         type: file
         description: VCF file containing SNV b-allele sites in the population. Either this or `sample_snv_vcf` must be provided.
@@ -85,7 +85,7 @@ input:
           - edam: "http://edamontology.org/format_3016"
   - - meta7:
         type: map
-        description: Groovy map containing meta information for ploidy VCF
+        description: Groovy map containing ploidy VCF meta information
     - ploidy_vcf:
         type: file
         description: Multisample VCF file containing regions with expected ploidy different from 2. (See https://github.com/Illumina/canvas/wiki for an example)
