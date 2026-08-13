@@ -12,7 +12,7 @@ process LISSERO {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('lissero'), val('0.4.9'), emit: versions_lissero, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,21 +25,11 @@ process LISSERO {
         $args \\
         $fasta \\
         > ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        lissero: \$( echo \$(lissero --version 2>&1) | sed 's/^.*LisSero //' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        lissero: \$( echo \$(lissero --version 2>&1) | sed 's/^.*LisSero //' )
-    END_VERSIONS
     """
 }
