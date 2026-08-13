@@ -37,4 +37,28 @@ nextflow_workflow {
         }
     }
 
+    test("Should skip merge when no BAM files are provided") {
+        tag "empty_input"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.empty()
+                input[1] = Channel.value("mix-reads-assembly")
+                input[2] = Channel.of([
+                                [ id:'annotation' ],
+                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true)
+                            ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.stringtie_gtf.size() == 0 },
+            )
+        }
+    }
+
 }
