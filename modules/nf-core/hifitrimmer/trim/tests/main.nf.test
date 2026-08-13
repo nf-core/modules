@@ -12,7 +12,7 @@ nextflow_process {
 
     config './nextflow.config'
 
-    test("hifi_trimmer trim test - input bam") {
+    test("hifi_trimmer trim test - input bam - output sam") {
 
         when {
             params {
@@ -43,7 +43,7 @@ nextflow_process {
         }
     }
 
-    test("hifi_trimmer trim test - input fastq") {
+    test("hifi_trimmer trim test - input fastq - output cram") {
 
         when {
             params {
@@ -74,7 +74,7 @@ nextflow_process {
         }
     }
 
-    test("hifi_trimmer trim test - input fasta") {
+    test("hifi_trimmer trim test - input fasta -output fasta") {
 
         when {
             params {
@@ -97,7 +97,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam.get(0).get(1), stringency: "silent").getReadsMD5(),
+                    process.out.fasta,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
@@ -105,11 +105,11 @@ nextflow_process {
         }
     }
 
-    test("hifi_trimmer trim test - input cram") {
+    test("hifi_trimmer trim test - input cram - output fastq") {
 
         when {
             params {
-                trim_args    = ""
+                trim_args    = "-f fastq"
             }
             process {
                 """
@@ -128,7 +128,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam.get(0).get(1), stringency: "silent").getReadsMD5(),
+                    process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }

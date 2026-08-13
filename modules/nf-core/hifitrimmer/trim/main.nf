@@ -4,14 +4,16 @@ process HIFITRIMMER_TRIM {
 
    conda "${moduleDir}/environment.yml"
    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/720bfb6a0c816137d958bc8658cbfd184f0a41e3e69d43e9fcdb93275620d128/data' :
-      'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:a06b8fcc843c1e68' }"
+      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/21/2153598b48eda939e4ac790e5f6e0d28d714faa2293dc04539a9a3f51b5a943d/data' :
+      'community.wave.seqera.io/library/hifi_trimmer:5.0.0--c5b9bef0c5bd186f' }"
 
    input:
    tuple val(meta), path(input), path(bed)
 
 
    output:
+   tuple val(meta), path("${prefix}.fasta"), emit: fasta, optional: true
+   tuple val(meta), path("${prefix}.fastq"), emit: fastq, optional: true
    tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
    tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
@@ -24,11 +26,10 @@ process HIFITRIMMER_TRIM {
    script:
    prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
-   def args2 = task.ext.args2 ?: ''
-   def args3 = task.ext.args3 ?: ''
-   def suffix = args.contains('-f cram') ? 'cram' : args.contains('-f sam') ? 'sam' : 'bam'
-   def input_convert = input.name.endsWith('cram') ? "<(samtools view ${input} -u ${args3} -@ ${task.cpus})" :
-        !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ ${task.cpus})" : input
+   def suffix = args.contains('-f cram') ? 'cram' 
+      : args.contains('-f sam') ? 'sam' 
+      : args.contains('-f bam') ? 'bam'
+      : args.contains('-f fastq') ? 'fastq' : 'fasta'
 
    if (input.name == "${prefix}.${suffix}") {
       error "ERROR: Output file '${prefix}.${suffix}' collides with input file name. Please set a different prefix via task.ext.prefix or meta.id."
@@ -38,7 +39,7 @@ process HIFITRIMMER_TRIM {
    hifi-trimmer trim \\
       -t ${task.cpus} \\
       ${args} \\
-      ${input_convert} \\
+      ${input} \\
       ${bed} \\
       > ${prefix}.${suffix}
    """
@@ -46,7 +47,10 @@ process HIFITRIMMER_TRIM {
    stub:
    prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
-   def suffix = args.contains('-f cram') ? 'cram' : args.contains('-f sam') ? 'sam' : 'bam'
+   def suffix = args.contains('-f cram') ? 'cram' 
+      : args.contains('-f sam') ? 'sam' 
+      : args.contains('-f bam') ? 'bam'
+      : args.contains('-f fastq') ? 'fastq' : 'fasta'
    """
    printf "stub\n" > ${prefix}.${suffix}
    echo ${args}
