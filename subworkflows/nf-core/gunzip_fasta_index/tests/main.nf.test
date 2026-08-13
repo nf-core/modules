@@ -11,7 +11,7 @@ nextflow_workflow {
     tag "samtools/faidx"
 
 
-    test("Undibacterium_unclassified genome [fasta] w/ index") {
+    test("Bacteroides fragilis genome [fasta] w/ index") {
         when {
 
             workflow {
@@ -40,7 +40,7 @@ nextflow_workflow {
         }
     }
 
-    test("Undibacterium_unclassified genome [fasta] w/ index no sizes") {
+    test("Bacteroides fragilis genome [fasta] w/ index no sizes") {
         when {
 
             workflow {
@@ -69,7 +69,7 @@ nextflow_workflow {
         }
     }
 
-    test("Undibacterium_unclassified genome - stub") {
+    test("Bacteroides fragilis genome - stub") {
         options "-stub"
         when {
 
