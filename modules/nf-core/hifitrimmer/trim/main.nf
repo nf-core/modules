@@ -12,8 +12,8 @@ process HIFITRIMMER_TRIM {
 
 
    output:
-   tuple val(meta), path("${prefix}.fasta"), emit: fasta, optional: true
-   tuple val(meta), path("${prefix}.fastq"), emit: fastq, optional: true
+   tuple val(meta), path("${prefix}.fasta.gz"), emit: fasta, optional: true
+   tuple val(meta), path("${prefix}.fastq.gz"), emit: fastq, optional: true
    tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
    tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
@@ -29,11 +29,11 @@ process HIFITRIMMER_TRIM {
    def suffix = args.contains('-f cram') ? 'cram'
       : args.contains('-f sam') ? 'sam'
       : args.contains('-f bam') ? 'bam'
-      : args.contains('-f fastq') ? 'fastq' : 'fasta'
+      : args.contains('-f fastq') ? 'fastq.gz' : 'fasta.gz'
 
    // Check compatibility of input-output format combinations before the process runs
    def inputName = input.name.toLowerCase()
-   if (inputName =~ /\.(fa|fasta)(\.gz)?$/ && suffix != 'fasta') {
+   if (inputName =~ /\.(fa|fasta)(\.gz)?$/ && suffix != 'fasta.gz') {
       error "ERROR: FASTA input can only produce FASTA output, but '-f ${suffix}' was requested."
    }
    if (inputName =~ /\.(fq|fastq)(\.gz)?$/ && suffix in ['bam', 'sam', 'cram']) {
@@ -47,9 +47,9 @@ process HIFITRIMMER_TRIM {
    hifi-trimmer trim \\
       -t ${task.cpus} \\
       ${args} \\
+      -o ${prefix}.${suffix} \\
       ${input} \\
-      ${bed} \\
-      > ${prefix}.${suffix}
+      ${bed}
    """
 
    stub:
@@ -58,9 +58,9 @@ process HIFITRIMMER_TRIM {
    def suffix = args.contains('-f cram') ? 'cram'
       : args.contains('-f sam') ? 'sam'
       : args.contains('-f bam') ? 'bam'
-      : args.contains('-f fastq') ? 'fastq' : 'fasta'
+      : args.contains('-f fastq') ? 'fastq.gz' : 'fasta.gz'
    """
-   printf "stub\n" > ${prefix}.${suffix}
+   ${suffix.endsWith('.gz') ? "python3 -c \"import gzip; open('${prefix}.${suffix}','wb').write(gzip.compress(b'stub\\\\n', mtime=0))\"" : "printf 'stub\\n' > ${prefix}.${suffix}"}
    echo ${args}
    """
 }
