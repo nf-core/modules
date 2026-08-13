@@ -191,7 +191,8 @@ nextflow_process {
     //
     //     then {
     //         assertAll(
-    //             { assert !process.success }
+    //             { assert !process.success },
+    //             { assert process.errorReport.contains("Either sample_snv_vcf or population_snv_vcf must be supplied")}
     //         )
     //     }
     // }
@@ -361,7 +362,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert !process.success }
+                { assert !process.success },
+                { assert process.errorReport.contains("Either sample_snv_vcf or population_snv_vcf must be supplied") }
             )
         }
     }
