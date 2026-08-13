@@ -26,7 +26,7 @@ input:
     - sequence:
         type: file
         description: nucleic_acid_sequence file
-        pattern: "*.{fasta,fastq}"
+        pattern: "*.{fasta,fastq,fa,fq}"
         ontologies:
           - edam: http://edamontology.org/format_1929
           - edam: http://edamontology.org/format_1930
@@ -36,10 +36,10 @@ input:
           id:'sample1' ]`
     - min_len:
         type: string
-        description: The minimum length of the ORF to be reported (default - 96)
+        description: The minimum length of the ORF to be reported (default - 96). The provided minimum ORF length should be in a multiple of 3.
     - codon_table_id:
         type: string
-        description: The codon table to use for translation (default - 1)
+        description: The codon table to use for translation (default - 1), Codon table should be a valid integer.
 output:
   fasta:
     - - meta:
