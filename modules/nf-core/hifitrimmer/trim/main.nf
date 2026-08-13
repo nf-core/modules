@@ -26,8 +26,8 @@ process HIFITRIMMER_TRIM {
    script:
    prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
-   def suffix = args.contains('-f cram') ? 'cram' 
-      : args.contains('-f sam') ? 'sam' 
+   def suffix = args.contains('-f cram') ? 'cram'
+      : args.contains('-f sam') ? 'sam'
       : args.contains('-f bam') ? 'bam'
       : args.contains('-f fastq') ? 'fastq' : 'fasta'
 
@@ -47,8 +47,8 @@ process HIFITRIMMER_TRIM {
    stub:
    prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
-   def suffix = args.contains('-f cram') ? 'cram' 
-      : args.contains('-f sam') ? 'sam' 
+   def suffix = args.contains('-f cram') ? 'cram'
+      : args.contains('-f sam') ? 'sam'
       : args.contains('-f bam') ? 'bam'
       : args.contains('-f fastq') ? 'fastq' : 'fasta'
    """
