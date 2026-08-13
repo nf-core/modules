@@ -31,6 +31,14 @@ process HIFITRIMMER_TRIM {
       : args.contains('-f bam') ? 'bam'
       : args.contains('-f fastq') ? 'fastq' : 'fasta'
 
+   // Check compatibility of input-output format combinations before the process runs
+   def inputName = input.name.toLowerCase()
+   if (inputName =~ /\.(fa|fasta)(\.gz)?$/ && suffix != 'fasta') {
+      error "ERROR: FASTA input can only produce FASTA output, but '-f ${suffix}' was requested."
+   }
+   if (inputName =~ /\.(fq|fastq)(\.gz)?$/ && suffix in ['bam', 'sam', 'cram']) {
+      error "ERROR: FASTQ input cannot produce ${suffix.toUpperCase()} output."
+   }
    if (input.name == "${prefix}.${suffix}") {
       error "ERROR: Output file '${prefix}.${suffix}' collides with input file name. Please set a different prefix via task.ext.prefix or meta.id."
    }

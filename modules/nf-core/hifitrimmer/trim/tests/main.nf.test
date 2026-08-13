@@ -12,6 +12,37 @@ nextflow_process {
 
     config './nextflow.config'
 
+    test("hifi_trimmer trim test - input bam - output cram") {
+
+        when {
+            params {
+                trim_args    = "-f cram"
+            }
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test_bam' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.cram.get(0).get(1), stringency: "silent").getReadsMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
     test("hifi_trimmer trim test - input bam - output sam") {
 
         when {
@@ -43,18 +74,18 @@ nextflow_process {
         }
     }
 
-    test("hifi_trimmer trim test - input fastq - output cram") {
+    test("hifi_trimmer trim test - input bam - output fasta") {
 
         when {
             params {
-                trim_args    = "-f cram"
+                trim_args    = "-f fastq"
             }
             process {
                 """
                 input[0] = Channel.of(
                     [
-                        [ id:'test_fastq' ], // meta map
-                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.fastq.gz', checkIfExists: true),
+                        [ id:'test_bam' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
                     ]
                 )
@@ -66,7 +97,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    cram(process.out.cram.get(0).get(1), stringency: "silent").getReadsMD5(),
+                    process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
@@ -74,18 +105,18 @@ nextflow_process {
         }
     }
 
-    test("hifi_trimmer trim test - input fasta -output fasta") {
+    test("hifi_trimmer trim test - input cram - output sam") {
 
         when {
             params {
-                trim_args    = ""
+                trim_args    = "-f sam"
             }
             process {
                 """
                 input[0] = Channel.of(
                     [
-                        [ id:'test_fasta' ], // meta map
-                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.fasta.gz', checkIfExists: true),
+                        [ id:'test_cram' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.cram', checkIfExists: true),
                         file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
                     ]
                 )
@@ -97,7 +128,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.fasta,
+                    bam(process.out.sam.get(0).get(1), stringency: "silent").getReadsMD5(),
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
@@ -129,6 +160,68 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fastq,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("hifi_trimmer trim test - input fastq - output fasta") {
+
+        when {
+            params {
+                trim_args    = "-f fasta"
+            }
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test_fastq' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fasta,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("hifi_trimmer trim test - input fasta - output fasta") {
+
+        when {
+            params {
+                trim_args    = ""
+            }
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test_fasta' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.fasta.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fasta,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
