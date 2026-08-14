@@ -13,8 +13,8 @@ process RGI_MAIN {
     path wildcard
 
     output:
-    tuple val(meta), path("*.json"), emit: json
-    tuple val(meta), path("*.txt"), emit: tsv
+    tuple val(meta), path("${prefix}.json"), emit: json
+    tuple val(meta), path("${prefix}.txt"), emit: tsv
     tuple val(meta), path("temp/"), emit: tmp
     env 'RGI_VERSION', emit: tool_version
     env 'DB_VERSION', emit: db_version
@@ -30,7 +30,7 @@ process RGI_MAIN {
     // This customizes the command: rgi load
     def args2 = task.ext.args2 ?: ''
     // This customizes the command: rgi main
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def load_wildcard = ""
 
     if (wildcard) {
@@ -71,10 +71,11 @@ process RGI_MAIN {
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p temp
-    touch test.json
-    touch test.txt
+    touch ${prefix}.json
+    touch ${prefix}.txt
 
     RGI_VERSION=\$(rgi main --version)
     DB_VERSION=stub_version
