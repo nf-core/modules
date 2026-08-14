@@ -34,12 +34,12 @@ env:
 
 jobs:
   pre-commit:
-    runs-on: "ubuntu-latest"
+    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
       - name: Run prek
-        uses: j178/prek-action@5337cb91e0fa35a7ff31b9ca345126d8bbbcdf16 # v2.0.6
+        uses: j178/prek-action@4e14d07f9231acabce116ccfca13b13dd9755ece # v3.0.0
 
   ###################
   # nf-core linting #
@@ -48,7 +48,10 @@ jobs:
   # https://github.com/nf-core/tools/pull/3141
   nf-core-changes:
     name: nf-core-changes
-    runs-on: "ubuntu-latest"
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-core-changes
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     outputs:
       # https://github.com/dorny/paths-filter?tab=readme-ov-file#custom-processing-of-changed-files
       modules: ${{ steps.filter.outputs.modules }}
@@ -65,7 +68,7 @@ jobs:
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
 
-      - uses: dorny/paths-filter@7b450fff21473bca461d4b92ce414b9d0420d706 # v4
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
         id: filter
         with:
           filters: |
@@ -109,7 +112,10 @@ jobs:
           echo ${{ steps.subworkflow_names.outputs.result }}
 
   nf-core-lint-modules:
-    runs-on: "ubuntu-latest"
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-core-lint-modules
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     name: nf-core lint modules
     needs: nf-core-changes
     if: ${{ needs.nf-core-changes.outputs.modules_files != '[]' }}
@@ -154,7 +160,10 @@ jobs:
         run: nf-core modules lint ${{ matrix.module }}
 
   nf-core-lint-subworkflows:
-    runs-on: "ubuntu-latest"
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-core-lint-subworkflows
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     name: nf-core lint subworkflows
     needs: nf-core-changes
     if: ${{ needs.nf-core-changes.outputs.subworkflows_files != '[]' }}
@@ -183,7 +192,10 @@ jobs:
         run: nf-core subworkflows lint ${{ matrix.subworkflow }}
 
   confirm-pass-lint:
-    runs-on: "ubuntu-latest"
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-lint
+      - runner=2cpu-linux-x64
+      - image=ubuntu22-full-x64
     needs: [nf-core-lint-modules, nf-core-lint-subworkflows]
     if: always()
     steps:

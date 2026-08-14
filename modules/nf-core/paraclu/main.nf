@@ -14,7 +14,8 @@ process PARACLU {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml"           , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('paraclu'), val("10"), topic: versions, emit: versions_paraclu
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,30 +24,17 @@ process PARACLU {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '10' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-
     awk -F "\t" '{print\$1"\t"\$6"\t"\$2"\t"\$5}' < $bed > ${bed}_4P
     sort -k1,1 -k3n ${bed}_4P > ${bed}_4Ps
     paraclu ${args} ${min_cluster} ${bed}_4Ps > ${prefix}.clustered
     paraclu-cut ${args2} ${prefix}.clustered >  ${prefix}.clustered.simplified
     awk -F '\t' '{print \$1"\t"\$3"\t"\$4"\t"\$1":"\$3".."\$4","\$2"\t"\$6"\t"\$2}' ${prefix}.clustered.simplified >  ${prefix}.clustered.simplified.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        paraclu: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '10' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.clustered.simplified.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        paraclu: $VERSION
-    END_VERSIONS
     """
 }
