@@ -60,7 +60,7 @@ process HIFITRIMMER_TRIM {
       : args.contains('-f bam') ? 'bam'
       : args.contains('-f fastq') ? 'fastq.gz' : 'fasta.gz'
    """
-   ${suffix.endsWith('.gz') ? "echo 'stub' | gzip -n > ${prefix}.${suffix}" : "echo 'stub' > ${prefix}.${suffix}"}
+   ${suffix.endsWith('.gz') ? "echo \"\" | gzip > ${prefix}.${suffix}" : "echo \"\" > ${prefix}.${suffix}"}
    echo ${args}
    """
 }

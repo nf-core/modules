@@ -37,8 +37,7 @@ process HIFITRIMMER_PROCESSBLAST {
    stub:
    def prefix = task.ext.prefix ?: "${meta.id}"
    """
-   # Create deterministic gzip output (fixed mtime) so stub md5 is stable across runs.
-   echo 'stub' | gzip -n > ${prefix}.bed.gz
+   echo "" | gzip > ${prefix}.bed.gz
    touch ${prefix}.summary.json
    touch ${prefix}.hits
    """
