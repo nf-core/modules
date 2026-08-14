@@ -16,7 +16,7 @@ nextflow_process {
 
         when {
             params {
-                process_blast_args = "-hf"
+                process_blast_args = "--hits"
             }
             process {
                 """
@@ -58,7 +58,7 @@ nextflow_process {
 
         when {
             params {
-                process_blast_args = "-hf"
+                process_blast_args = "--hits"
             }
             process {
                 """

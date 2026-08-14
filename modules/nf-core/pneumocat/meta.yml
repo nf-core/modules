@@ -1,20 +1,18 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "pneumocat"
-description: Determine Streptococcus pneumoniae serotype from Illumina paired-end
-  reads
+description: Determine Streptococcus pneumoniae serotype from Illumina paired-end reads
 keywords:
   - fastq
   - serotype
   - Streptococcus pneumoniae
 tools:
   - "pneumocat":
-      description: "PneumoCaT (Pneumococcal Capsular Typing) uses a two-step step approach
-        to assign capsular type to S.pneumoniae genomic data (Illumina)"
+      description: "PneumoCaT (Pneumococcal Capsular Typing) uses a two-step step approach to assign capsular type to S.pneumoniae genomic data (Illumina)"
       homepage: "https://github.com/ukhsa-collaboration/PneumoCaT"
       documentation: "https://github.com/ukhsa-collaboration/PneumoCaT"
       tool_dev_url: "https://github.com/ukhsa-collaboration/PneumoCaT"
       doi: "10.7717/peerj.2477"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -51,13 +49,29 @@ output:
           description: A detailed description of the predicted serotype
           pattern: "*.txt"
           ontologies: []
+  versions_pneumocat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pneumocat:
+          type: string
+          description: The name of the tool
+      - 1.2.1:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pneumocat:
+          type: string
+          description: The name of the tool
+      - 1.2.1:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
 maintainers:
