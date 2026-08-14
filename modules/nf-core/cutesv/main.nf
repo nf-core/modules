@@ -4,8 +4,8 @@ process CUTESV {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/78/78322fdee2a195b18a56432f8b3bbc92b75015b6c921b364d82f0655461992f5/data' :
-        'community.wave.seqera.io/library/cutesv:2.1.3--858bd1cbe0a6dc2f' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4e/4e499f094cacf5729232e96b56c3f13b770e2153e19d45e4ca3093969fafa22e/data' :
+        'community.wave.seqera.io/library/cutesv:2.1.4--f0ec240b872b2a98' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
