@@ -8,7 +8,7 @@ process RIBOTRICER_DETECTORFS {
         'quay.io/biocontainers/ribotricer:1.3.3--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai), val(strandedness)
     tuple val(meta2), path(candidate_orfs)
 
     output:
@@ -22,7 +22,7 @@ process RIBOTRICER_DETECTORFS {
     tuple val(meta), path('*_pos.wig')                  , emit: pos_wig
     tuple val(meta), path('*_neg.wig')                  , emit: neg_wig
     tuple val(meta), path('*_translating_ORFs.tsv')     , emit: orfs
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('ribotricer'), eval("ribotricer --version 2>&1 | grep ribotricer | sed '1!d ; s/ribotricer, version //'"), topic: versions, emit: versions_ribotricer
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,9 +32,9 @@ process RIBOTRICER_DETECTORFS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def strandedness_cmd = ''
 
-    if (meta.strandedness == "forward") {
+    if (strandedness == "forward") {
         strandedness_cmd = "--stranded yes"
-    } else if (meta.strandedness == "reverse") {
+    } else if (strandedness == "reverse") {
         strandedness_cmd = "--stranded reverse"
     }
     //
@@ -48,16 +48,11 @@ process RIBOTRICER_DETECTORFS {
     //    break
     """
     ribotricer detect-orfs \\
-        --bam $bam \\
-        --ribotricer_index $candidate_orfs \\
-        --prefix $prefix \\
-        $strandedness_cmd \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ribotricer: \$(ribotricer --version 2>&1 | grep ribotricer | sed '1!d ; s/ribotricer, version //')
-    END_VERSIONS
+        --bam ${bam} \\
+        --ribotricer_index ${candidate_orfs} \\
+        --prefix ${prefix} \\
+        ${strandedness_cmd} \\
+        ${args}
     """
 
     stub:
@@ -73,10 +68,5 @@ process RIBOTRICER_DETECTORFS {
     touch ${prefix}_pos.wig
     touch ${prefix}_neg.wig
     touch ${prefix}_translating_ORFs.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ribotricer: \$(ribotricer --version 2>&1 | grep ribotricer | sed '1!d ; s/ribotricer, version //')
-    END_VERSIONS
     """
 }
