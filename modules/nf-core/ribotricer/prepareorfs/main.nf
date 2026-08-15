@@ -12,7 +12,7 @@ process RIBOTRICER_PREPAREORFS {
 
     output:
     tuple val(meta), path("*_candidate_orfs.tsv"), emit: candidate_orfs
-    tuple val("${task.process}"), val('ribotricer'), eval("ribotricer --version 2>&1 | grep ribotricer | sed '1!d ; s/ribotricer, version //'"), topic: versions, emit: versions_ribotricer
+    tuple val("${task.process}"), val('ribotricer'), eval("ribotricer --version 2>&1 | sed -n 's/^ribotricer, version //p'"), topic: versions, emit: versions_ribotricer
 
     when:
     task.ext.when == null || task.ext.when

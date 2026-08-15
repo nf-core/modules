@@ -53,7 +53,7 @@ output:
       - ribotricer:
           type: string
           description: The name of the tool
-      - ribotricer --version 2>&1 | grep ribotricer | sed '1!d ; s/ribotricer, version //':
+      - ribotricer --version 2>&1 | sed -n 's/^ribotricer, version //p':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -65,7 +65,7 @@ topics:
       - ribotricer:
           type: string
           description: The name of the tool
-      - ribotricer --version 2>&1 | grep ribotricer | sed '1!d ; s/ribotricer, version //':
+      - ribotricer --version 2>&1 | sed -n 's/^ribotricer, version //p':
           type: eval
           description: The expression to obtain the version of the tool
 
