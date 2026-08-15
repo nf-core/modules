@@ -33,6 +33,10 @@ process BIGSCAPE_BIGSCAPE {
         --output-dir ${prefix} \\
         --cores ${task.cpus} \\
         ${args}
+
+    if [[ "${pfam_hmm}" == *.gz ]]; then
+        rm -f ${pfam_file}
+    fi
     """
 
     stub:
