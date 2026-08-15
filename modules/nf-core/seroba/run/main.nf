@@ -20,7 +20,7 @@ process SEROBA_RUN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     seroba \\
         runSerotyping \\
@@ -34,7 +34,7 @@ process SEROBA_RUN {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
     touch ${prefix}/${prefix}.tsv
