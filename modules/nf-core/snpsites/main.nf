@@ -13,7 +13,7 @@ process SNPSITES {
     path "*.fas"        , emit: fasta
     path "*.sites.txt"  , emit: constant_sites
     env 'CONSTANT_SITES', emit: constant_sites_string
-    tuple val("${task.process}"), val('snpsites'), eval('snp-sites -V 2>&1 | sed "s/snp-sites //"'), topic: versions, emit: versions_snpsites
+    tuple val("${task.process}"), val('snpsites'), eval('snp-sites -V 2>&1 | sed "s/snp-sites //"'), topic: versions
 
     when:
     task.ext.when == null || task.ext.when
