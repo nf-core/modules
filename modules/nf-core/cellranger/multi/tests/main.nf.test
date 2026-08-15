@@ -731,4 +731,120 @@ nextflow_process {
         }
 
     }
+    test("cellranger - multi - 10k - PBMC - with cmo - pipeline scenario where different references might be available for different samples") {
+
+        when {
+            process {
+                """
+                //
+                // preparation: unfortunately have to repeat data load
+                //
+
+                /**********************************/
+                /*** stage 10k PBMC w/ CMO data ***/
+                /**********************************/
+
+                // stage 3' CMO FASTQ test data
+                cmo_fastqs_10k_pbmc_cmo = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/cmo/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_multiplexing_capture_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/cmo/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_multiplexing_capture_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                def cmo_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
+
+                // stage 3' gene expression FASTQ test data
+                threepgex_fastqs_10k_pbmc_cmo = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                def threepgex_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
+
+                // stage feature barcode reference for antibody capture
+                cmo_reference_10k_pbmc_cmo = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/10k_pbmc_cmo_count_feature_reference.csv', checkIfExists: true)
+
+                // CMO needs a barcode file
+                cmo_barcodes_csv = file("cmo_barcodes.csv")
+                cmo_barcodes_csv.text = "sample_id,cmo_ids,description\\nPBMCs_human_1,CMO301,PBMCs_human_1\\nPBMCs_human_2,CMO302,PBMCs_human_2"
+
+
+                /**************************************/
+                /*** end stage 10k PBMC w/ CMO data ***/
+                /**************************************/
+
+                probeset = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/flex/Chromium_Human_Transcriptome_Probe_Set_v1.1.0_GRCh38-2024-A.chr22.csv', checkIfExists: true)
+
+                // create empty channels to fill unused cellranger multi arguments
+                // fastqs need a [ meta, ref ] structure
+                // references just need a path
+                ch_gex_fastqs            = [ [:], [], [:] ]
+                ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_ab_fastqs             = [ [:], [], [:] ]
+                ch_beam_fastqs           = [ [:], [], [:] ]
+                ch_cmo_fastqs            = [ [:], [], [:] ]
+                ch_crispr_fastqs         = [ [:], [], [:] ]
+                ch_gex_frna_probeset     = []
+                ch_gex_targetpanel       = []
+                ch_vdj_reference         = []
+                ch_vdj_primer_index      = []
+                ch_fb_reference          = []
+                ch_beam_antigen_panel    = []
+                ch_beam_control_panel    = []
+                ch_cmo_reference         = []
+                ch_cmo_barcodes          = []
+                ch_ocm_barcodes          = []
+                ch_cmo_sample_assignment = []
+                ch_frna_sampleinfo       = []
+
+                // collect references and fastq files for staging
+                ch_gex_fastqs_10k_pbmc_cmo = Channel.of( threepgex_fastqs_10k_pbmc_cmo )
+                    .collect()
+                    .map { reads -> [ [ id:threepgex_fastq_samplename_10k_pbmc_cmo ], reads, [ "expect-cells":"1000", chemistry:"SC3Pv3", "create-bam":false, "no-secondary":true ] ] }
+                ch_cmo_fastqs_10k_pbmc_cmo  = Channel.of( cmo_fastqs_10k_pbmc_cmo )
+                    .collect()
+                    .map { reads -> [ [ id:cmo_fastq_samplename_10k_pbmc_cmo ], reads, [:] ] }
+                ch_cmo_reference_10k_pbmc_cmo = Channel.of( cmo_reference_10k_pbmc_cmo )
+
+                // CMO analysis needs barcodes
+                ch_cmo_barcodes_10k_pbmc_cmo = Channel.fromPath( cmo_barcodes_csv )
+
+                //
+                // execution
+                //
+                input[0]  = [ id:'subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K', single_end:false ]
+                input[1]  = ch_gex_fastqs_10k_pbmc_cmo
+                input[2]  = ch_vdj_fastqs
+                input[3]  = ch_ab_fastqs
+                input[4]  = ch_beam_fastqs
+                input[5]  = ch_cmo_fastqs_10k_pbmc_cmo
+                input[6]  = ch_crispr_fastqs
+                input[7]  = CELLRANGER_MKREF.out.reference
+                input[8]  = probeset
+                input[9]  = ch_gex_targetpanel
+                input[10] = ch_vdj_reference
+                input[11] = ch_vdj_primer_index
+                input[12] = ch_fb_reference
+                input[13] = ch_beam_antigen_panel
+                input[14] = ch_beam_control_panel
+                input[15] = ch_cmo_reference_10k_pbmc_cmo
+                input[16] = ch_cmo_barcodes_10k_pbmc_cmo
+                input[17] = ch_cmo_sample_assignment
+                input[18] = ch_frna_sampleinfo
+                input[19] = ch_ocm_barcodes
+                input[20] = false // default to false to guarantee renaming during test
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.findAll { key, val -> key.startsWith("versions") },
+                process.out.outs[0][1].findAll { file(it).name == 'assignment_confidence_table.csv' },
+                process.out.outs[0][1].findAll { file(it).name == 'tag_calls_summary.csv' },
+                process.out.outs[0][1].findAll { file(it).name == 'cells_per_tag.json' },
+                process.out.outs[0][1].findAll { file(it).name.contains('metrics_summary.csv') },
+                process.out.outs[0][1].findAll { file(it).name.contains('sample_filtered_feature_bc_matrix.h5') }
+            ).match()
+        }
+
+    }
 }
