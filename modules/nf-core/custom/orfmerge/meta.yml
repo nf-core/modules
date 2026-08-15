@@ -6,19 +6,29 @@ description: |
   (typically) `bedtools/getfasta` + `seqkit/translate` downstream to obtain
   the AA FASTA.
 
-  Strategy is class-aware (operating on the harmonised `orf_class` written
-  by `custom/orfnormalise`):
+  Rows sharing an identical exon structure are grouped first and clustered as a
+  single proxy chosen by class specificity, then the members are restored. Class
+  selects the strategy, so without this an ORF that two callers class differently
+  would be split across strategies and could never merge.
 
-    - canonical_cds:        collapse by (transcript_id, strand). One
-                            canonical CDS per transcript by definition.
-    - uORF, dORF, other:    collapse by (transcript_id, strand, start,
-                            end). A single transcript can host multiple
+  Proxies are then partitioned by clustering strategy. The harmonised `orf_class`
+  written by `custom/orfnormalise` selects the strategy but is never part of a
+  grouping key, because callers disagree on class for the same ORF (Ribo-TISH
+  reports `5'UTR` for both uORFs and CDS-overlapping uORFs) and keying on it
+  would emit one catalogue row per disagreeing caller:
+
+    - canonical_cds:        grouped by (transcript_id, strand), then
+                            reciprocal-overlap clustered within the
+                            transcript so a short truncated variant is
+                            not folded into the full-length CDS.
+    - uORF, uoORF, dORF,    collapse by (transcript_id, strand, start,
+      doORF, intORF, other: end). A single transcript can host multiple
                             distinct uORFs / dORFs / internal ORFs, so
                             keying on the outer span keeps them in
                             separate clusters while still merging
                             cross-caller calls that agree on coordinates.
-    - novel_u, smORF:       greedy reciprocal-overlap clustering on the
-                            outer genomic span at `--reciprocal-overlap`
+    - novel_u:              greedy reciprocal-overlap clustering on summed
+                            exon-block intersection at `--reciprocal-overlap`
                             (default 0.8). Catches fuzzy cross-caller
                             matches and exact-coordinate collapses in
                             one pass. Order-dependent at the boundary:
@@ -112,7 +122,9 @@ output:
             Per-ORF table with `called_by_<caller>` and `score_<caller>`
             columns for each supported caller, `n_samples` / `samples`
             cross-sample recurrence columns, plus orf_class, aa_length,
-            and host gene_id / transcript_id.
+            host gene_id / transcript_id, `orf_type_native` listing every
+            caller-native ORF-type label in the cluster, and the
+            `is_smorf` length flag.
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV

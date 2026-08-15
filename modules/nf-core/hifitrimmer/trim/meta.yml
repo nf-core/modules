@@ -2,11 +2,12 @@
 name: "hifitrimmer_trim"
 description: |
   Run hifi-trimmer trim to filter and trim adapter-hit regions from PacBio HiFi reads.
-  Supports BAM/CRAM/FASTA/FASTQ input and emits SAM/BAM/CRAM according to the selected output format.
+  Supports BAM/CRAM/FASTA/FASTQ input and emits gzip-compressed FASTA (default) or FASTQ, or SAM, BAM, or CRAM according to the selected output format.
 keywords:
   - pacbio
   - bam
   - fasta
+  - fastq
   - hifi_trimmer
   - filtering
   - trimming
@@ -44,6 +45,30 @@ input:
         description: Input gzipped bed file contains regions to filter/trim
         pattern: "*.bed.gz"
 output:
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.fasta.gz":
+          type: file
+          description: Gzip-compressed FASTA output from hifi-trimmer (default format)
+          pattern: "*.fasta.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.fastq.gz":
+          type: file
+          description: Gzip-compressed FASTQ output from hifi-trimmer when `-f fastq` is selected
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930" # FASTQ
   sam:
     - - meta:
           type: map
