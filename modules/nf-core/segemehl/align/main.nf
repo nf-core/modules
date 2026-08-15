@@ -17,7 +17,7 @@ process SEGEMEHL_ALIGN {
     tuple val(meta), path("${prefix}/${prefix}.trns.txt") , emit: trans_alignments, optional: true
     tuple val(meta), path("${prefix}/${prefix}.mult.bed") , emit: multi_bed, optional: true
     tuple val(meta), path("${prefix}/${prefix}.sngl.bed") , emit: single_bed, optional: true
-    path "versions.yml"                                   , emit: versions
+    tuple val("${task.process}"), val('segemehl'), eval("segemehl.x 2>&1 | grep 'ge5dee' | awk -F Z '{print substr(\$1, 2, 6)}'"), topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +37,6 @@ process SEGEMEHL_ALIGN {
         $reads_opt \\
         $args \\
         -o ${prefix}/${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        segemehl: \$(echo \$(segemehl.x 2>&1 | grep "ge5dee" | awk -F Z '{print substr(\$1, 2, 6)}' ))
-    END_VERSIONS
     """
 
     stub:
@@ -50,10 +45,5 @@ process SEGEMEHL_ALIGN {
     """
     mkdir -p $prefix
     touch ${prefix}/${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        segemehl: \$(echo \$(segemehl.x 2>&1 | grep "ge5dee" | awk -F Z '{print substr(\$1, 2, 6)}' ))
-    END_VERSIONS
     """
 }

@@ -93,12 +93,15 @@ output:
           pattern: "*.sngl.bed"
           ontologies: []
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "task.process":
+            type: string
+            description: The process name
+        - "segemehl":
+            type: string
+            description: The tool name
+        - "version":
+            type: string
+            description: Software version, emitted via topic channel
 authors:
   - "@BarryDigby"
   - "@nictru"
