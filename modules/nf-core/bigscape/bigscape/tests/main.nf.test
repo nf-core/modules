@@ -1,0 +1,77 @@
+nextflow_process {
+
+    name "Test Process BIGSCAPE_BIGSCAPE"
+    script "../main.nf"
+    process "BIGSCAPE_BIGSCAPE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bigscape"
+    tag "bigscape/bigscape"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_gbk' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/streptomyces_coelicolor/fixtures_bigslice_gbk.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("streptomyces_coelicolor - bigscape - cluster") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/Pfam-A.hmm.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def resultDir = file(process.out.output[0][1])
+            assertAll(
+                { assert resultDir.isDirectory() },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("streptomyces_coelicolor - bigscape - cluster - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/Pfam-A.hmm.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+}
