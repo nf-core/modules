@@ -27,7 +27,8 @@ nextflow_process {
             def lines = path(process.out.skf[0][1]).readLines()
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions,
+                { assert snapshot(
+                                    process.out.versions_ska,
                                     lines[0..2],
                                     lines.size()).match() },
             )
