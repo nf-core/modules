@@ -47,19 +47,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.pheno_table,
-                    process.out.resfinder_hit_in_genome_seq,
-                    process.out.resfinder_resistance_gene_seq,
-                    process.out.resfinder_results_table,
-                    process.out.resfinder_results_tab,
-                    process.out.resfinder_results,
-                    process.out.versions
-                    ).match()
-                },
-                { assert file(process.out.json.get(0).get(1)).exists() }
+                    sanitizeOutput(process.out, unstableKeys: ["json"])
+                    ).match() },
             )
         }
 
@@ -88,19 +80,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.pheno_table,
-                    process.out.resfinder_hit_in_genome_seq,
-                    process.out.resfinder_resistance_gene_seq,
-                    process.out.resfinder_results_table,
-                    process.out.resfinder_results_tab,
-                    process.out.resfinder_results,
-                    process.out.versions
-                    ).match()
-                },
-                { assert file(process.out.json.get(0).get(1)).exists() }
+                    sanitizeOutput(process.out, unstableKeys: ["json"])
+                    ).match() },
             )
         }
 
@@ -128,19 +112,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.pheno_table,
-                    process.out.resfinder_hit_in_genome_seq,
-                    process.out.resfinder_resistance_gene_seq,
-                    process.out.resfinder_results_table,
-                    process.out.resfinder_results_tab,
-                    process.out.resfinder_results,
-                    process.out.versions
-                    ).match()
-                },
-                { assert file(process.out.json.get(0).get(1)).exists() }
+                    sanitizeOutput(process.out, unstableKeys: ["json"])
+                    ).match() },
             )
         }
 
@@ -170,9 +146,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
 
