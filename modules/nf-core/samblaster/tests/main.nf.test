@@ -27,7 +27,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getHeaderMD5(),
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    sanitizeOutput(process.out, unstableKeys: ["bam"])).match() 
+                    sanitizeOutput(process.out, unstableKeys: ["bam"])).match()
                     ).match()
                 }
             )
