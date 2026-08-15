@@ -11,7 +11,8 @@ tools:
       documentation: https://github.com/abyzovlab/CNVpytor
       tool_dev_url: https://github.com/abyzovlab/CNVpytor
       doi: "10.1101/2021.01.27.428472v1"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:cnvpytor
 input:
   - - meta:
@@ -26,7 +27,8 @@ input:
         ontologies: []
   - bin_sizes:
       type: string
-      description: list of binsizes separated by space e.g. "1000 10000" and "1000"
+      description: list of binsizes separated by space e.g. "1000 10000" and
+        "1000"
 output:
   pytor:
     - - meta:
@@ -36,17 +38,31 @@ output:
             e.g. [ id:'test' ]
       - ${pytor.baseName}.pytor:
           type: file
-          description: pytor file containing read depth histograms binned based on given
-            bin size(s)
+          description: pytor file containing read depth histograms binned based on
+            given bin size(s)
           pattern: "*.{pytor}"
           ontologies: []
+  versions_cnvpytor:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvpytor:
+          type: string
+          description: The name of the tool
+      - 1.3.2:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvpytor:
+          type: string
+          description: The name of the tool
+      - 1.3.2:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@sima-r"
   - "@ramprasadn"

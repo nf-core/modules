@@ -4,8 +4,8 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/atlas-gene-annotation-manipulation%3A1.1.1--hdfd78af_0':
-        'biocontainers/atlas-gene-annotation-manipulation:1.1.1--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0dc845564dcc40319d4b76a9f7298fd83ccd9eb271153c688f41660cda7de0f/data':
+        'community.wave.seqera.io/library/atlas-gene-annotation-manipulation:1.1.1--b9e8c32c92709512' }"
 
     input:
     tuple val(meta), path(gtf)
@@ -14,7 +14,8 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     output:
     tuple val(meta), path("*.anno.tsv"), emit: feature_annotation
     tuple val(meta), path("*.fa.gz")   , emit: filtered_cdna, optional: true
-    path("versions.yml")               , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('atlas-gene-annotation-manipulation'), val("1.1.1"), emit: versions_atlasgeneannotationmanipulation, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +24,6 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_cdna = fasta ? "--parse-cdnas ${fasta}" : ""
-    def VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     gtf2featureAnnotation.R \\
@@ -31,23 +31,12 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
         --output-file ${prefix}.anno.tsv \\
         ${reference_cdna} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        atlas-gene-annotation-manipulation: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.anno.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        atlas-gene-annotation-manipulation: ${VERSION}
-    END_VERSIONS
     """
 
 }

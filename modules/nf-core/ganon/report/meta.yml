@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "ganon_report"
 description: Generate a ganon report file from the output of ganon classify
 keywords:
@@ -17,7 +16,8 @@ tools:
       documentation: "https://github.com/pirovc/ganon"
       tool_dev_url: "https://github.com/pirovc/ganon"
       doi: "10.1093/bioinformatics/btaa458"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:ganon
 input:
   - - meta:
@@ -44,17 +44,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.tre":
           type: file
-          description: Output ganon report containing taxonomic profile information.
-            Formatting of contents depends on --output-format.
+          description: Output ganon report containing taxonomic profile
+            information. Formatting of contents depends on --output-format.
           pattern: "*.tre"
           ontologies: []
+  versions_ganon:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ganon:
+          type: string
+          description: The name of the tool
+      - ganon --version 2>1 | sed 's/.*ganon //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ganon:
+          type: string
+          description: The name of the tool
+      - ganon --version 2>1 | sed 's/.*ganon //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

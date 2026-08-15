@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_align_chromap"
-description: Align high throughput chromatin profiles using Chromap then sort with samtools
+description: Align high throughput chromatin profiles using Chromap, updating readgroups if neccessary and then sort with samtools
 keywords:
   - align
   - fasta
@@ -12,6 +12,7 @@ keywords:
   - hic
 components:
   - chromap/chromap
+  - picard/addorreplacereadgroups
   - samtools/sort
   - samtools/index
   - samtools/stats
@@ -41,12 +42,12 @@ input:
         Structure: [val(meta2), path(index)]
         Chromap genome index files
       pattern: "*.index"
-  - ch_fasta:
+  - ch_fasta_fai:
       type: file
       description: |
-        Structure: [val(meta2), path(fasta)]
-        Reference fasta file
-      pattern: "*.{fasta,fa}"
+        Structure: [val(meta2), path(fasta), path(fai)]
+        Reference fasta file and index
+      pattern: "*.{fasta,fa},*.fai"
   - ch_barcodes:
       type: file
       description: |
@@ -67,6 +68,11 @@ input:
       description: |
         Structure: [path(pairs_chr_order)]
         Natural chromosome order for pairs flipping
+  - update_readgroups:
+      type: boolean
+      description: |
+        Boolean controling whether the readgroups should be added or updated
+        after chromap alignment
 output:
   - meta:
       type: map

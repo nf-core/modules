@@ -21,11 +21,9 @@ nextflow_process {
         then {
             assert process.success
             assert path(process.out.dbcan_db.get(0)).exists()
-            assert path(process.out.versions[0]).exists()
             assertAll(
                 { assert snapshot(
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -47,8 +45,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     file(process.out.dbcan_db.get(0)).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process CNVKIT_SEGMENT"
+    script "../main.nf"
+    process "CNVKIT_SEGMENT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cnvkit"
+    tag "cnvkit/segment"
+
+    test("test-cnvkit-segment - cns") {
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cnvkit/test.cnr', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match()}
+            )
+        }
+
+    }
+
+    test("test-cnvkit-segment - cns - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cnvkit/test.cnr', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

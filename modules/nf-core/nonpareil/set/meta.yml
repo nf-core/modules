@@ -42,13 +42,27 @@ output:
           description: PNG file of all the Nonpareil curves of the input npo files
           pattern: "*.png"
           ontologies: []
+  versions_nonpareil:
+    - - ${task.process}:
+          type: string
+          description: Process which generated the version
+      - Nonpareil:
+          type: string
+          description: Tool name
+      - Rscript -e "library(Nonpareil); cat(paste(unlist(packageVersion('Nonpareil')), collapse = '.'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Process which generated the version
+      - Nonpareil:
+          type: string
+          description: Tool name
+      - Rscript -e "library(Nonpareil); cat(paste(unlist(packageVersion('Nonpareil')), collapse = '.'))":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

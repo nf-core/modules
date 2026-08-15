@@ -3,9 +3,9 @@ process UCSC_LIFTOVER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-liftover:482--h0b57e2e_0' :
-        'biocontainers/ucsc-liftover:482--h0b57e2e_0' }"
+        'quay.io/biocontainers/ucsc-liftover:482--h0b57e2e_0' }"
 
     input:
     tuple val(meta), path(bed)

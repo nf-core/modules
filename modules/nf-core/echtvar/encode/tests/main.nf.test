@@ -1,0 +1,93 @@
+nextflow_process {
+
+    name "Test Process ECHTVAR_ENCODE"
+    script "../main.nf"
+    process "ECHTVAR_ENCODE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "echtvar"
+    tag "echtvar/encode"
+    tag "bcftools/norm"
+
+    config "./nextflow.config"
+
+    setup {
+        run("BCFTOOLS_NORM") {
+            script "../../../bcftools/norm/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+            """
+            }
+        }
+    }
+
+    test("homo_sapiens - vcf") {
+
+        when {
+            process {
+                """
+                // Create dummy json config file for testing
+                def json_config = file("${moduleDir}/tests/config.json")
+                json_config.text = '[{"field": "DP", "alias": "gnomad_dp"}]'
+
+                input[0] = BCFTOOLS_NORM.out.vcf
+
+                input[1] = [
+                    [ id:'test_db' ],
+                    file(json_config)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // Create dummy json config file for testing
+                def json_config = file("${moduleDir}/tests/config.json")
+                json_config.text = '[{"field": "DP", "alias": "gnomad_dp"}]'
+
+                input[0] = BCFTOOLS_NORM.out.vcf
+
+                input[1] = [
+                    [ id:'test_db' ],
+                    file(json_config)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+    }
+}

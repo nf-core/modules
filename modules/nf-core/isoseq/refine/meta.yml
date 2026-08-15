@@ -12,7 +12,8 @@ tools:
       homepage: https://github.com/PacificBiosciences/IsoSeq/blob/master/isoseq-clustering.md
       documentation: https://github.com/PacificBiosciences/IsoSeq/blob/master/isoseq-clustering.md
       tool_dev_url: https://github.com/PacificBiosciences/IsoSeq/blob/master/isoseq-clustering.md
-      licence: ["BSD-3-Clause-Clear"]
+      licence:
+        - "BSD-3-Clause-Clear"
       identifier: ""
 input:
   - - meta:
@@ -65,7 +66,7 @@ output:
           description: Metadata about read library
           pattern: "*.xml"
           ontologies:
-            - edam: http://edamontology.org/format_2332 # XML
+            - edam: http://edamontology.org/format_2332
   summary:
     - - meta:
           type: map
@@ -78,7 +79,7 @@ output:
             non chimeric reads and full length non chimeric polyA reads
           pattern: "*.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
   report:
     - - meta:
           type: map
@@ -91,14 +92,28 @@ output:
             length, strand, primer name)
           pattern: "*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
+  versions_isoseq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - isoseq:
+          type: string
+          description: The name of the tool
+      - isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\+//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - isoseq:
+          type: string
+          description: The name of the tool
+      - isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\+//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sguizard"
 maintainers:

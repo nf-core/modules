@@ -3,9 +3,9 @@ process TRIMMOMATIC {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trimmomatic:0.39--hdfd78af_2':
-        'biocontainers/trimmomatic:0.39--hdfd78af_2' }"
+        'quay.io/biocontainers/trimmomatic:0.39--hdfd78af_2' }"
 
     input:
     tuple val(meta), path(reads)

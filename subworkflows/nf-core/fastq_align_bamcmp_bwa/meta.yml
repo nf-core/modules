@@ -35,11 +35,11 @@ input:
       type: boolean
       description: If true sort resulting primary bam files.
       pattern: "true|false"
-  - ch_primary_fasta:
+  - ch_primary_fasta_fai:
       type: file
       description: |
         Optional reference fasta file for the primary genome. This only needs to be given if val_sort_bam = true
-        Structure: [ path(fasta) ]
+        Structure: [ path(fasta), path(fai) ]
 output:
   - bam:
       description: |

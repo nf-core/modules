@@ -3,16 +3,16 @@ process HMMER_HMMRANK {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-b2ec1fea5791d428eebb8c8ea7409c350d31dada:a447f6b7a6afde38352b24c30ae9cd6e39df95c4-1' :
-        'biocontainers/mulled-v2-b2ec1fea5791d428eebb8c8ea7409c350d31dada:a447f6b7a6afde38352b24c30ae9cd6e39df95c4-1' }"
+        'quay.io/biocontainers/mulled-v2-b2ec1fea5791d428eebb8c8ea7409c350d31dada:a447f6b7a6afde38352b24c30ae9cd6e39df95c4-1' }"
 
     input:
     tuple val(meta), path(tblouts)      // HMMER_HMMSEARCH.out.target_summary
 
     output:
     tuple val(meta), path("*.hmmrank.tsv.gz"), emit: hmmrank
-    path "versions.yml"                      , emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,8 +47,8 @@ process HMMER_HMMRANK {
     writeLines(
         c(
             "\\"${task.process}\\":",
-            paste0("    R: ", paste0(R.Version()[c("major","minor")], collapse = ".")),
-            paste0("    tidyverse: ", packageVersion('tidyverse'))
+            paste0("    r-base: ", paste0(R.Version()[c("major","minor")], collapse = ".")),
+            paste0("    r-tidyverse: ", packageVersion('tidyverse'))
         ),
         "versions.yml"
     )
@@ -57,12 +57,13 @@ process HMMER_HMMRANK {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo \"profile\taccno\tprofile_desc\tevalue\tscore\trank\" | gzip -c > ${prefix}.hmmrank.tsv.gz
+    echo 'profile\taccno\tprofile_desc\tevalue\tscore\trank'  > ${prefix}.hmmrank.tsv
+    gzip ${prefix}.hmmrank.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        R: 4.0
-        tidyverse: 2.0
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        r-tidyverse: \$(Rscript -e "cat(as.character(packageVersion('tidyverse')))")
     END_VERSIONS
     """
 }

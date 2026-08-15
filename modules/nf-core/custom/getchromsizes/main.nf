@@ -3,9 +3,9 @@ process CUSTOM_GETCHROMSIZES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
-        'biocontainers/samtools:1.22.1--h96c455f_0' }"
+        'quay.io/biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -14,7 +14,7 @@ process CUSTOM_GETCHROMSIZES {
     tuple val(meta), path ("*.sizes"), emit: sizes
     tuple val(meta), path ("*.fai")  , emit: fai
     tuple val(meta), path ("*.gzi")  , emit: gzi, optional: true
-    path  "versions.yml"             , emit: versions
+    path  "versions.yml"             , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

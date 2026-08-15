@@ -11,60 +11,90 @@ tools:
         a human genome on a desktop computer in a day. The output of Minia is a set of contigs.
       homepage: https://github.com/GATB/minia
       documentation: https://github.com/GATB/minia
-      licence: ["AGPL-3.0-or-later"]
+      licence:
+        - "AGPL-3.0-or-later"
       identifier: biotools:minia
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - reads:
         type: file
         description: Input reads in FastQ format
         pattern: "*.{fastq.gz, fastq}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
   contigs:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.contigs.fa":
+            e.g. [ id:'test' ]
+      - "*.contigs.fa.gz":
           type: file
           description: The assembled contigs
-          pattern: "*.contigs.fa"
-          ontologies: []
+          pattern: "*.contigs.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   unitigs:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.unitigs.fa":
+            e.g. [ id:'test' ]
+      - "*.unitigs.fa.gz":
           type: file
           description: The assembled unitigs
-          pattern: "*.unitigs.fa"
-          ontologies: []
+          pattern: "*.unitigs.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   h5:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.h5":
           type: file
-          description: Minia output h5 file
-          pattern: "*{.h5}"
+          description: Minia assembly graph in binary h5 format
+          pattern: "*.h5"
           ontologies: []
+
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*-minia.log":
+          type: file
+          description: Minia assembly log file
+          pattern: "*-minia.log"
+          ontologies: []
+  versions_minia:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minia:
+          type: string
+          description: The name of the tool
+      - minia -v | sed -n 's/Minia version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minia:
+          type: string
+          description: The name of the tool
+      - minia -v | sed -n 's/Minia version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@drpatelh"
   - "@kevinmenden"

@@ -22,7 +22,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - bed:
         type: file
         description: Input bed12 file
@@ -47,7 +47,7 @@ output:
       - agat:
           type: string
           description: The name of the tool
-      - agat_convert_bed2gff.pl --help | grep Version | cut -d" " -f11:
+      - agat --version | sed 's/v//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -58,7 +58,7 @@ topics:
       - agat:
           type: string
           description: The name of the tool
-      - agat_convert_bed2gff.pl --help | grep Version | cut -d" " -f11:
+      - agat --version | sed 's/v//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

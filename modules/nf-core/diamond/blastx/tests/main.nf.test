@@ -45,7 +45,7 @@ nextflow_process {
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("11 queries aligned.") },
                 { assert snapshot(
                     process.out.txt,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -74,7 +74,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.daa },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("11 queries aligned.") },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 

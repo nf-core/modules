@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process FGUMI_DEDUP"
+    script "../main.nf"
+    process "FGUMI_DEDUP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgumi"
+    tag "fgumi/dedup"
+    tag "fgumi/sort"
+
+    setup {
+        run("FGUMI_SORT") {
+            script "../../sort/main.nf"
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_grouped.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - grouped bam") {
+
+        when {
+            process {
+                """
+                input[0] = FGUMI_SORT.out.bam
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - grouped bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = FGUMI_SORT.out.bam
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

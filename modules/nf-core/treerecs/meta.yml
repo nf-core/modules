@@ -1,0 +1,79 @@
+name: "treerecs"
+description: Treerecs is an open-source (species- and gene-) tree reconciliation
+  software distributed under the GNU AGPL licence. It can correct, rearrange and
+  (re-)root gene trees with regard to a given species tree. It was designed to
+  be both efficient and easy to install and to use.
+keywords:
+  - tree reconciliation
+  - species tree
+  - gene tree
+tools:
+  - "treerecs":
+      description: "correct, rearrange and (re-)root gene trees with regard to a given
+        species tree"
+      homepage: "https://project.inria.fr/treerecs/"
+      documentation: "https://project.inria.fr/treerecs/treerecs-options/"
+      tool_dev_url: "https://gitlab.inria.fr/Phylophile/Treerecs"
+      doi: "10.1093/bioinformatics/btaa615"
+      licence:
+        - "AGPL"
+      identifier: biotools:Treerecs
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - genetree:
+        type: file
+        description: Phylogenetic gene tree in text or xml format
+        pattern: "*.{tree, txt, nwk, newick, nhx, phyloxml, xml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1910"
+          - edam: "http://edamontology.org/format_3159"
+    - speciestree:
+        type: file
+        description: Phylogenetic species tree in text or xml format
+        pattern: "*.{tree, txt, nwk, newick, nhx, phyloxml, xml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1910"
+          - edam: "http://edamontology.org/format_3159"
+output:
+  rectree:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.xml":
+          type: file
+          description: Reconciled phylogenetic tree
+          pattern: "*.{tree, txt, nwk, newick, nhx, phyloxml, xml}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1910"
+            - edam: "http://edamontology.org/format_3159"
+  versions_treerecs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - treerecs:
+          type: string
+          description: The name of the tool
+      - treerecs --version | sed -n 's/^Treerecs \([0-9.]*\)\$/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - treerecs:
+          type: string
+          description: The name of the tool
+      - treerecs --version | sed -n 's/^Treerecs \([0-9.]*\)\$/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@leapicard"
+maintainers:
+  - "@leapicard"

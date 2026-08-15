@@ -36,27 +36,41 @@ input:
       type: list
       description: list umi-tagged reads
       pattern: "[ *.{fastq.gz/fq.gz} ]"
-  - fasta:
+  - fasta_fai_dict:
       type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
-  - read_structure:
-      type: string
-      description: |
-        A read structure should always be provided for each of the fastq files.
-        If single end, the string will contain only one structure (i.e. "2M11S+T"), if paired-end the string
-        will contain two structures separated by a blank space (i.e. "2M11S+T 2M11S+T").
-        If the read does not contain any UMI, the structure will be +T (i.e. only template of any length).
-        https://github.com/fulcrumgenomics/fgbio/wiki/Read-Structures
+      description: The reference fasta file, index and dictionary
+      pattern: "*.{fa,fasta,fna,fai,dict}"
+  - bwa_index:
+      type: file
+      description: The reference genome bwa index files
+      pattern: "*.{fa,fasta,fna,amb,ann,bwt,pac,sa}"
   - groupreadsbyumi_strategy:
       type: string
-      description: ""
+      description: Defines the UMI assignment strategy.
       Required argument: defines the UMI assignment strategy.
       enum:
         - Identity
         - Edit
         - Adjacency
         - Paired
+  - aligner:
+      type: string
+      description: The aligner to use for mapping the reads to the reference genome. Options are bwa-mem and bwamem2.
+      enum:
+        - bwa-mem
+        - bwamem2
+  - duplex:
+      type: boolean
+      description: Whether the library contains duplex UMIs.
+  - min_reads:
+      type: integer
+      description: One integer (for non-duplex) or a string of up-to three space-separated numbers for duplex sequencing
+  - min_baseq:
+      type: integer
+      description: Minimum base quality for bases to be considered in consensus calling.
+  - max_base_error_rate:
+      type: integer
+      description: Maximum base error rate for consensus building
 output:
   - ubam:
       type: file
@@ -71,6 +85,12 @@ output:
       description: |
         mapped bam file, where reads are created as consensus of those
         belonging to the same UMI group
+      pattern: "*.bam"
+  - mappedconsensusbam:
+      type: file
+      description: |
+        mapped bam file, where reads are created as consensus of those
+        belonging to the same UMI group and filtered for minimum base quality and maximum error rate
       pattern: "*.bam"
 authors:
   - "@lescai"

@@ -47,7 +47,7 @@ nextflow_process {
                 { assert path("${process.out.log[0][1]}").exists() },
                 { assert path("${process.out.predict_speclib[0][1]}").exists() },
                 { assert snapshot(
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -73,7 +73,7 @@ nextflow_process {
                 { assert path("${process.out.log[0][1]}").exists() },
                 { assert snapshot(
                     process.out.diann_quant,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -99,7 +99,7 @@ nextflow_process {
                 { assert path("${process.out.log[0][1]}").exists() },
                 { assert path("${process.out.final_speclib[0][1]}").exists() },
                 { assert snapshot(
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -125,7 +125,7 @@ nextflow_process {
                 { assert path("${process.out.log[0][1]}").exists() },
                 { assert snapshot(
                     process.out.diann_quant,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -157,7 +157,7 @@ nextflow_process {
                     process.out.report_stats,
                     process.out.pr_matrix,
                     process.out.pg_matrix,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

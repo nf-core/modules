@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "foldseek_easysearch"
-description: Search for protein structural hits against a foldseek database of protein
-  structures
+description: Search for protein structural hits against a foldseek database of
+  protein structures
 keywords:
   - protein
   - structure
@@ -13,7 +12,8 @@ tools:
       documentation: "https://github.com/steineggerlab/foldseek"
       tool_dev_url: "https://github.com/steineggerlab/foldseek"
       doi: "10.1038/s41587-023-01773-0"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:foldseek
 input:
   - - meta:
@@ -23,11 +23,13 @@ input:
           e.g. `[ id:'test', single_end:false ]`
     - pdb:
         type: file
-        description: Protein structure(s) in PDB, mmCIF or mmJSON format to compare
-          against a foldseek database (also works with folder input)
+        description: Protein structure(s) in PDB, mmCIF or mmJSON format to
+          compare against a foldseek database (also works with folder input)
         pattern: "*.{pdb,mmcif,mmjson}"
-        ontologies: []
-  - - meta_db:
+        ontologies:
+          - edam: "http://edamontology.org/format_1476" # PDB
+          - edam: "http://edamontology.org/format_1477" # mmCIF
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information for the foldseek db
@@ -43,7 +45,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - ${meta.id}.m8:
+      - ${prefix}.m8:
           type: file
           description: |
             Structural comparisons file output
@@ -51,12 +53,26 @@ output:
             Query start, Query end, Target start, Target end, E-value, Bit score
           pattern: "*.{m8}"
           ontologies: []
+  versions_foldseek:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - foldseek:
+          type: string
+          description: The name of the tool
+      - "foldseek --help |& sed -n 's/.*Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - foldseek:
+          type: string
+          description: The name of the tool
+      - "foldseek --help |& sed -n 's/.*Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"

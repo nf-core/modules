@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process MEMOTE_REPORT"
+    script "../main.nf"
+    process "MEMOTE_REPORT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "memote"
+    tag "memote/report"
+
+    test("candidatus_portiera - xml - html") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/test.xml', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report"])).match() }
+            )
+        }
+    }
+
+    test("candidatus_portiera - xml - html - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/gapseq/test.xml', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+    }
+}
