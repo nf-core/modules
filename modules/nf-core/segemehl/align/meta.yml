@@ -93,15 +93,15 @@ output:
           pattern: "*.sngl.bed"
           ontologies: []
   versions:
-    - - "task.process":
-            type: string
-            description: The process name
-        - "segemehl":
-            type: string
-            description: The tool name
-        - "version":
-            type: string
-            description: Software version, emitted via topic channel
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - segemehl:
+          type: string
+          description: The name of the tool
+      - "segemehl.x 2>&1 | grep 'ge5dee' | awk -F Z '{print substr($1, 2, 6)}'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@BarryDigby"
   - "@nictru"
