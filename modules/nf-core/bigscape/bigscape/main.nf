@@ -24,7 +24,7 @@ process BIGSCAPE_BIGSCAPE {
     def pfam_file = pfam_hmm.name.endsWith('.gz') ? pfam_hmm.baseName : pfam_hmm
     """
     if [[ "${pfam_hmm}" == *.gz ]]; then
-        gzip -dc ${pfam_hmm} > ${pfam_file}
+        python -c "import gzip, shutil; shutil.copyfileobj(gzip.open('${pfam_hmm}', 'rb'), open('${pfam_file}', 'wb'))"
     fi
 
     bigscape cluster \\
