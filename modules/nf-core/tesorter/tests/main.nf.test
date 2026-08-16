@@ -35,8 +35,8 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.domtbl[0][1]).text,
                     process.out.dom_tsv,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match()
+                    sanitizeOutput(process.out)
+                .match() }
                 }
             )
         }
