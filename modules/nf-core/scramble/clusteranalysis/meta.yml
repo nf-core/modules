@@ -80,26 +80,25 @@ output:
   versions_scramble:
     - - ${task.process}:
           type: string
-          description: The name of the process
+          description: The process the versions were collected from
       - scramble:
           type: string
-          description: The name of the tool
+          description: The tool name
       - "1.0.2":
           type: string
-          description: The version of the tool
-          # WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+          description: The version of the tool (hardcoded, not available via CLI)
+
 topics:
   versions:
     - - ${task.process}:
           type: string
-          description: The name of the process
+          description: The process the versions were collected from
       - scramble:
           type: string
-          description: The name of the tool
+          description: The tool name
       - "1.0.2":
           type: string
-          description: The version of the tool
-          # WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+          description: The version of the tool (hardcoded, not available via CLI)
 authors:
   - "@nvnieuwk"
 maintainers:
