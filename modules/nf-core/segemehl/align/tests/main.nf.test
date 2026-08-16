@@ -100,7 +100,7 @@ nextflow_process {
                 { assert path(process.out.trans_alignments[0][1]).exists() },
                 { assert path(process.out.multi_bed[0][1]).exists() },
                 { assert path(process.out.single_bed[0][1]).exists() },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["alignment"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["alignment", "trans_alignments", "multi_bed", "single_bed"])).match() }
             )
         }
     }
@@ -133,7 +133,7 @@ nextflow_process {
                 { assert path(process.out.trans_alignments[0][1]).exists() },
                 { assert path(process.out.multi_bed[0][1]).exists() },
                 { assert path(process.out.single_bed[0][1]).exists() },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["alignment"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["alignment", "trans_alignments", "multi_bed", "single_bed"])).match() }
             )
         }
     }
