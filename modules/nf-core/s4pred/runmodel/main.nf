@@ -2,6 +2,7 @@ process S4PRED_RUNMODEL {
     tag "$meta.id"
     label 'process_high'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/s4pred:1.2.1--pyhdfd78af_1':
@@ -12,7 +13,8 @@ process S4PRED_RUNMODEL {
 
     output:
     tuple val(meta), path("${prefix}"), emit: preds
-    tuple val("${task.process}"), val('s4pred'), val('1.2.1'), topic: versions, emit: versions_s4pred // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('s4pred'), val('1.2.1'), topic: versions, emit: versions_s4pred
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
