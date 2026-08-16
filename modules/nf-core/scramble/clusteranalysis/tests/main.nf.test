@@ -51,7 +51,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.meis_tab,
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions_scramble
+                    sanitizeOutput(process.out, unstableKeys: ["meis_tab", "vcf"])
                     ).match() }
             )
         }
@@ -97,7 +97,7 @@ nextflow_process {
                     process.out.meis_tab,
                     process.out.dels_tab,
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions_scramble
+                    sanitizeOutput(process.out, unstableKeys: ["meis_tab", "dels_tab", "vcf"])
                     ).match() }
             )
         }

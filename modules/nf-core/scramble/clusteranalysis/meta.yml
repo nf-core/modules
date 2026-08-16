@@ -79,12 +79,26 @@ output:
           ontologies: []
   versions_scramble:
     - - ${task.process}:
-    
+          type: string
+          description: The name of the process
       - scramble:
-    
+          type: string
+          description: The name of the tool
       - "1.0.2":
           type: string
-          description: Version of scramble used
+          description: The version of the tool
+          # WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - scramble:
+          type: string
+          description: The name of the tool
+      - "1.0.2":
+          type: string
+          description: The version of the tool
           # WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 authors:
   - "@nvnieuwk"
