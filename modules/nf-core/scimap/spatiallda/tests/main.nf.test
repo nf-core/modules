@@ -49,12 +49,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.spatial_lda_output,
-                    process.out.composition_plot,
-                    process.out.versions_scimap
-                ).match() },
-                { assert path(process.out.motif_location_plot[0][1]).exists() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

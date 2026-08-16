@@ -2,7 +2,7 @@ process SCIMAP_SPATIALLDA {
     tag "$meta.id"
     label 'process_single'
 
-    container "docker.io/miguelib/scimap:0.0.3"
+    container "ghcr.io/schapirolabor/scimap:0.0.6"
 
     input:
     tuple val(meta), path(phenotyped)
