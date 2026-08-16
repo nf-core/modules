@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "spotiflow"
 description: Spotiflow, accurate and efficient spot detection with stereographic flow.
 keywords:
@@ -11,13 +10,13 @@ keywords:
   - detection
 tools:
   - "spotiflow":
-      description: "Spotiflow allows for accurate and efficient spot detection with
-        stereographic flow"
+      description: "Spotiflow allows for accurate and efficient spot detection with stereographic flow"
       homepage: "https://weigertlab.github.io/spotiflow/"
       documentation: "https://weigertlab.github.io/spotiflow/"
       tool_dev_url: "https://github.com/weigertlab/spotiflow"
       doi: "10.1101/2024.02.01.578426"
-      licence: ["BSD-3"]
+      licence:
+        - "BSD-3"
       identifier: ""
 
 ## Spotiflow requires only an input image file
@@ -46,6 +45,17 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
   versions_spotiflow:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "spotiflow":
+          type: string
+          description: The name of the tool
+      - "python -m pip show spotiflow | grep 'Version' | sed -e 's/Version: //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
     - - "${task.process}":
           type: string
           description: The name of the process
