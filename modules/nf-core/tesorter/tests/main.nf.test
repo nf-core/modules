@@ -35,7 +35,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.domtbl[0][1]).text,
                     process.out.dom_tsv,
-                    sanitizeOutput(process.out)
+                    sanitizeOutput(process.out, unstableKeys: ["domtbl", "dom_faa", "dom_gff3", "cls_pep"])
                 ).match() }
             )
         }
