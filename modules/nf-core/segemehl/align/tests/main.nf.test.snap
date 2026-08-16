@@ -15,6 +15,78 @@
             "nextflow": "26.04.0"
         }
     },
+    "homo_sapiens - single_end": {
+        "content": [
+            {
+                "alignment": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.sam"
+                    ]
+                ],
+                "multi_bed": [
+                    
+                ],
+                "single_bed": [
+                    
+                ],
+                "trans_alignments": [
+                    
+                ],
+                "versions_segemehl": [
+                    [
+                        "SEGEMEHL_ALIGN",
+                        "segemehl",
+                        "0.3.4"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-16T02:29:22.239144",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
+        }
+    },
+    "homo_sapiens - paired_end": {
+        "content": [
+            {
+                "alignment": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.sam"
+                    ]
+                ],
+                "multi_bed": [
+                    
+                ],
+                "single_bed": [
+                    
+                ],
+                "trans_alignments": [
+                    
+                ],
+                "versions_segemehl": [
+                    [
+                        "SEGEMEHL_ALIGN",
+                        "segemehl",
+                        "0.3.4"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-16T02:29:32.772393",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
+        }
+    },
     "homo_sapiens - single_end - versions": {
         "content": [
             [
@@ -61,6 +133,114 @@
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
+        }
+    },
+    "homo_sapiens - split - single_end": {
+        "content": [
+            {
+                "alignment": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.sam"
+                    ]
+                ],
+                "multi_bed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.mult.bed:md5,90ae08f20596400e56ac62f3a82d6e63"
+                    ]
+                ],
+                "single_bed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.sngl.bed:md5,7b821c1eec3e886193f82c7d57c981ef"
+                    ]
+                ],
+                "trans_alignments": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.trns.txt:md5,0c6546423e04e66fcc9dcb9cd9cd6b34"
+                    ]
+                ],
+                "versions_segemehl": [
+                    [
+                        "SEGEMEHL_ALIGN",
+                        "segemehl",
+                        "0.3.4"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-16T02:29:45.537274",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
+        }
+    },
+    "homo_sapiens - split - paired_end": {
+        "content": [
+            {
+                "alignment": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.sam"
+                    ]
+                ],
+                "multi_bed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.mult.bed:md5,7143dcd31422e7e1fb0340203562438d"
+                    ]
+                ],
+                "single_bed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.sngl.bed:md5,6a10b4b409411657e5122e54316915b1"
+                    ]
+                ],
+                "trans_alignments": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.trns.txt:md5,ce78ef433bcbeaa9de0a614d86e4d4de"
+                    ]
+                ],
+                "versions_segemehl": [
+                    [
+                        "SEGEMEHL_ALIGN",
+                        "segemehl",
+                        "0.3.4"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-16T02:30:06.555653",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
         }
     }
 }
