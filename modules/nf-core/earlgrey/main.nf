@@ -1,0 +1,112 @@
+process EARLGREY {
+    tag "${meta.id}"
+    label 'process_medium'
+
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/earlgrey:7.0.3--hd63eeec_0'
+        : 'biocontainers/earlgrey:7.0.3--hd63eeec_0'}"
+
+    input:
+    tuple val(meta), path(genome)
+    val famdb
+
+    output:
+    tuple val(meta), path("${meta.id}"), emit: output_directory
+    tuple val(meta), path("*/*/${meta.id}_summaryFiles/*.gff"), emit: gff
+    tuple val(meta), path("*/*/${meta.id}_summaryFiles/*family*.kable"), emit: summary_family_kable
+    tuple val(meta), path("*/*/${meta.id}_summaryFiles/*family*.txt"), emit: summary_family_txt
+    tuple val(meta), path("*/*/${meta.id}_summaryFiles/*highLevel*.kable"), emit: summary_highLevel_kable
+    tuple val(meta), path("*/*/${meta.id}_summaryFiles/*highLevel*.txt"), emit: summary_highLevel_txt
+    tuple val(meta), path("*/*/${meta.id}_summaryFiles/*.summaryPie.pdf"), emit: summary_plot
+    tuple val(meta), path("*/*/${meta.id}_summaryFiles/*classification*.pdf"), emit: classification_landscape_plot
+    tuple val(meta), path("*/*/${meta.id}_summaryFiles/*split_class*.pdf"), emit: split_class_landscape_plot
+    tuple val("${task.process}"), val('earlgrey'), eval('earlGrey -h | grep version | cut -d" " -f3'), topic: versions, emit: versions_earlgrey
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def input = genome.toString() - ~/\.gz$/
+    def decompress = genome.getExtension() == "gz" ? "gunzip -c ${genome} > ${input}" : ""
+    def famdb_dir = "/usr/local/share/RepeatMasker/Libraries/famdb/"
+    def localdb = famdb ? "mv */*.h5.gz ${famdb_dir}" : ""
+    def decompress_h5 = famdb ? "gunzip -f ${famdb_dir}/*.h5.gz" : ""
+
+    """
+    # unzip genome
+    ${decompress}
+
+    # Move partitions ot famdb directory
+    ${localdb}
+
+    # capture current working directory
+    INPUT_DIR=\$PWD
+
+    # Change directory to the famdb library location
+    cd ${localdb}
+
+    # Decompress partitions
+    ${decompress_h5}
+
+    # move up to RepeatMasker main directory
+    cd /usr/local/share/RepeatMasker/
+
+    # Rerun RepeatMasker configuration
+    perl ./configure \\
+            -libdir /usr/local/share/RepeatMasker/Libraries/ \\
+            -trf_prgm /usr/local/bin/trf \\
+            -rmblast_dir /usr/local/bin \\
+            -hmmer_dir /usr/local/bin \\
+            -abblast_dir /usr/local/bin \\
+            -crossmatch_dir /usr/local/bin \\
+            -default_search_engine rmblast
+
+    cd \$INPUT_DIR
+
+    mkdir ${prefix}
+
+    set +e
+    earlGrey \\
+        ${args} \\
+        -g ${input} \\
+        -s ${prefix} \\
+        -t ${task.cpus} \\
+        -o ${prefix} > earlgrey.log 2>&1
+    EXIT_STATUS=\$?
+    set -e
+
+    # Check for specific message in the log and run again (necessary for testing with 0 partition)
+    if [ \$EXIT_STATUS -eq 2 ] && grep -q "If you only want partition 0" earlgrey.log; then
+        echo "Message found in first run, executing second run..."
+        earlGrey \\
+            ${args} \\
+            -g ${input} \\
+            -s ${prefix} \\
+            -t ${task.cpus} \\
+            -o ${prefix}
+    else
+        echo "Message not found, skipping second run"
+    fi
+
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo ${args}
+
+    mkdir -p ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.filteredRepeats.gff
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.familyLevelCount.kable
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.familyLevelCount.txt
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.highLevelCount.kable
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.highLevelCount.txt
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}.summaryPie.pdf
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}_classification_landscape.pdf
+    touch ${prefix}/${prefix}_EarlGrey/${prefix}_summaryFiles/${prefix}_split_class_landscape.pdf
+    """
+}

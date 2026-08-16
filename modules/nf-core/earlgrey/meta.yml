@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "earlgrey"
+description: write your description here
+keywords:
+  - sort
+  - transposable_elements
+  - genomics
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "earlgrey":
+      description: "Earl Grey: A fully automated TE curation and annotation pipeline."
+      homepage: "https://github.com/TobyBaril/EarlGrey/blob/v7.0.3/README.md"
+      documentation: "https://github.com/TobyBaril/EarlGrey/blob/v7.0.3/README.md"
+      tool_dev_url: "https://github.com/TobyBaril/EarlGrey"
+      doi: "10.5281/zenodo.10683832"
+      licence: ["OSL-2.1"]
+
+input:
+  ### TODO nf-core: Add a description of all of the variables used as input
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+          - edam: "http://edamontology.org/format_3462" # SAM
+
+output:
+  ### TODO nf-core: Add a description of all of the variables used as output
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Sorted BAM/CRAM/SAM file
+          pattern: "*.{bam,cram,sam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2573" # CRAM
+            - edam: "http://edamontology.org/format_3462" # SAM
+  versions_earlgrey:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "earlgrey":
+          type: string
+          description: The name of the tool
+      - "earlgrey --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - earlgrey:
+          type: string
+          description: The name of the tool
+      - earlgrey --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@cintiaoi"
+maintainers:
+  - "@cintiaoi"

@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process EARLGREY"
+    script "../main.nf"
+    process "EARLGREY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "earlgrey"
+
+    test("Should run without failures") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) //file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.summary_plot },
+                { assert process.out.classification_landscape_plot },
+                { assert process.out.split_class_landscape_plot },
+                { assert snapshot(
+                    process.out.gff,
+                    process.out.summary_family_kable,
+                    process.out.summary_family_txt,
+                    process.out.summary_highLevel_kable,
+                    process.out.summary_highLevel_txt,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("Should run with stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.summary_plot },
+                { assert process.out.classification_landscape_plot },
+                { assert process.out.split_class_landscape_plot },
+                { assert snapshot(
+                    process.out.gff,
+                    process.out.summary_family_kable,
+                    process.out.summary_family_txt,
+                    process.out.summary_highLevel_kable,
+                    process.out.summary_highLevel_txt,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+}
