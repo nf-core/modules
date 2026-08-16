@@ -31,19 +31,19 @@ process STAR_STARSOLO {
 
     // Handle solotype argument logic
     if (solotype == "CB_UMI_Simple") {
-        solotype_args = meta.umi_len ? "--soloUMIlen ${meta.umi_len} " : ""
+        solotype_args = meta['umi_len'] ? "--soloUMIlen ${meta['umi_len']} " : ""
         solotype_args = solotype_args + (opt_whitelist.name != 'NO_FILE' ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None ")
-        solotype_args = solotype_args + (meta.umi_start ? "--soloUMIstart ${meta.umi_start} " : "")
-        solotype_args = solotype_args + (meta.cb_len ? "--soloCBlen ${meta.cb_len} " : "")
-        solotype_args = solotype_args + (meta.cb_start ? "--soloCBstart ${meta.cb_start} " : "")
-        solotype_args = solotype_args + (meta.barcode_len ? "--soloBarcodeReadLength ${meta.barcode_len} " : "")
-        solotype_args = solotype_args + (meta.barcode_mate ? "--soloBarcodeMate ${meta.barcode_mate} " : "")
+        solotype_args = solotype_args + (meta['umi_start'] ? "--soloUMIstart ${meta['umi_start']} " : "")
+        solotype_args = solotype_args + (meta['cb_len'] ? "--soloCBlen ${meta['cb_len']} " : "")
+        solotype_args = solotype_args + (meta['cb_start'] ? "--soloCBstart ${meta['cb_start']} " : "")
+        solotype_args = solotype_args + (meta['barcode_len'] ? "--soloBarcodeReadLength ${meta['barcode_len']} " : "")
+        solotype_args = solotype_args + (meta['barcode_mate'] ? "--soloBarcodeMate ${meta['barcode_mate']} " : "")
     } else if (solotype == "CB_UMI_Complex") {
-        solotype_args = meta.cb_position ? "--soloCBposition ${meta.cb_position}" : ""
+        solotype_args = meta['cb_position'] ? "--soloCBposition ${meta['cb_position']}" : ""
         solotype_args = solotype_args + (opt_whitelist.name != 'NO_FILE' ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None ")
-        solotype_args = solotype_args + (meta.umi_position ? "--soloUMIposition ${meta.umi_position} " : "")
-        solotype_args = solotype_args + (meta.adapter_seq ? "--soloAdapterSequence ${meta.adapter_seq} " : "")
-        solotype_args = solotype_args + (meta.max_mismatch_adapter ? "--soloAdapterMismatchesNmax ${meta.max_mismatch_adapter} " : "")
+        solotype_args = solotype_args + (meta['umi_position'] ? "--soloUMIposition ${meta['umi_position']} " : "")
+        solotype_args = solotype_args + (meta['adapter_seq'] ? "--soloAdapterSequence ${meta['adapter_seq']} " : "")
+        solotype_args = solotype_args + (meta['max_mismatch_adapter'] ? "--soloAdapterMismatchesNmax ${meta['max_mismatch_adapter']} " : "")
     } else {
         log.warn("Unknown output solotype (${solotype})")
     }
