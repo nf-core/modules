@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "SCANPY_HASHSOLO"
 description: Probabilistic demultiplexing of cell hashing data
 keywords:
@@ -76,6 +75,14 @@ output:
           pattern: "*_params_hashsolo.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
   versions:
     - versions.yml:
         type: file
