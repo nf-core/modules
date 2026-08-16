@@ -32,7 +32,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.results_pin, process.out.results_tsv, process.out.versions).match() }
+                { assert snapshot(sanitizeOutput(process.out), ['results_json']).match() }
             )
         }
 
@@ -52,7 +52,7 @@ nextflow_process {
 	        ])
 		input[2] = Channel.of([
 		    [id:'test'], // meta3 map
-		   file(params.modules_testdata_base_path + 'proteomics/parameter/sage_base_config.json', checkIfExists: true)
+		    file(params.modules_testdata_base_path + 'proteomics/parameter/sage_base_config.json', checkIfExists: true)
 	        ])
                 """
             }
@@ -60,7 +60,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

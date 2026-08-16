@@ -85,13 +85,18 @@ output:
           description: pin format output results
           pattern: "results.sage.pin"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_sageproteomics:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - sageproteomics:
+          type: string
+          description: The name of the tool
+      - "sage --version |& sed '1!d ; s/sage //'":
+          type: string
+          description: The version of the tool
+          ontologies:
+            - edam: http://edamontology.org/data_0953 # Version information
   tmt_tsv:
     - - meta:
           type: map
