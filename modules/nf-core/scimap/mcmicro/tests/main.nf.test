@@ -28,9 +28,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.csv[0][1]).readLines()[0],  // unstable
-                    file(process.out.h5ad[0][1]).name, // unstable
-                    ["versions_scimap": process.out.versions_scimap]
+                    file(process.out.csv[0][1]).readLines()[0],
+                    file(process.out.h5ad[0][1]).name,
+                    sanitizeOutput(process.out, unstableKeys: ["csv", "h5ad"])
                     ).match()
                 }
             )
@@ -55,7 +55,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

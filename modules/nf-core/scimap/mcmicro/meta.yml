@@ -10,10 +10,10 @@ tools:
       homepage: "https://scimap.xyz/"
       documentation: "https://scimap.xyz/All%20Functions/A.%20Pre%20Processing/sm.pp.mcmicro_to_scimap/"
       tool_dev_url: "https://github.com/labsyspharm/scimap"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: biotools:SCIMAP
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -59,8 +59,9 @@ output:
           description: The name of the tool
       - "2.1.3":
           type: string
-          description: The version of the tool
-          # WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+          description:
+            The version of the tool
+            # WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
 topics:
   versions:
@@ -72,7 +73,10 @@ topics:
           description: The name of the tool
       - "2.1.3":
           type: string
-          description: The version of the tool
+          description:
+            The version of the tool
+            # WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
 authors:
   - "@luiskuhn"
 maintainers:
