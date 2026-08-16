@@ -30,7 +30,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.csv[0][1]).readLines()[0],  // unstable
                     file(process.out.h5ad[0][1]).name, // unstable
-                    ["versions_scimap": process.out.versions_scimap]
+                    process.out.versions_scimap
                     ).match()
                 }
             )
