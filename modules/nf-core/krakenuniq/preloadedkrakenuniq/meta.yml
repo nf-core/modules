@@ -13,7 +13,8 @@ tools:
       homepage: https://github.com/fbreitwieser/krakenuniq
       documentation: https://github.com/fbreitwieser/krakenuniq
       doi: 10.1186/s13059-018-1568-0
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:KrakenUniq
 input:
   - - meta:
@@ -23,8 +24,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - sequences:
         type: file
-        description: List of input files containing sequences. All of them must be either
-          in FASTA or FASTQ format.
+        description: List of input files containing sequences. All of them must be
+          either in FASTA or FASTQ format.
         ontologies: []
     - prefixes:
         type: string
@@ -34,8 +35,8 @@ input:
           length to the 'sequences', or to the number of sequencing pairs.
   - sequence_type:
       type: string
-      description: Format of all given sequencing files as literal string, either 'fasta'
-        or 'fastq'.
+      description: Format of all given sequencing files as literal string, either
+        'fasta' or 'fastq'.
       pattern: "{fasta,fastq}"
   - db:
       type: directory
@@ -51,8 +52,8 @@ input:
       description: Whether to generate a report of relative abundances.
   - save_output:
       type: boolean
-      description: Whether to save a file reporting the taxonomic classification of
-        each input read.
+      description: Whether to save a file reporting the taxonomic classification
+        of each input read.
 output:
   classified_reads:
     - - meta:
@@ -67,7 +68,7 @@ output:
             in the KrakenUniq reference database.
           pattern: "*.classified.{fastq,fasta}.gz"
           ontologies:
-            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_1930
   unclassified_reads:
     - - meta:
           type: map
@@ -81,7 +82,7 @@ output:
             in the KrakenUniq reference database.
           pattern: "*.unclassified.{fastq,fasta}.gz"
           ontologies:
-            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_1930
   classified_assignment:
     - - meta:
           type: map
@@ -108,13 +109,27 @@ output:
             and unclassified reads.
           pattern: "*.krakenuniq.report.txt"
           ontologies: []
+  versions_krakenuniq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krakenuniq:
+          type: string
+          description: The name of the tool
+      - krakenuniq --version | sed '1!d;s/KrakenUniq version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krakenuniq:
+          type: string
+          description: The name of the tool
+      - krakenuniq --version | sed '1!d;s/KrakenUniq version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mjamy"
   - "@Midnighter"

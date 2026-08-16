@@ -2,9 +2,9 @@ process METABULI_BUILD {
     tag "$meta.id"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metabuli:1.1.1--pl5321h0bb26bb_0':
-        'biocontainers/metabuli:1.1.1--pl5321h0bb26bb_0' }"
+        'quay.io/biocontainers/metabuli:1.1.1--pl5321h0bb26bb_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -43,7 +43,6 @@ process METABULI_BUILD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p "$prefix"

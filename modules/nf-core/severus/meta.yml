@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "severus"
-description: Severus is a somatic structural variation (SV) caller for long reads
-  (both PacBio and ONT)
+description: Severus is a somatic structural variation (SV) caller for long
+  reads (both PacBio and ONT)
 keywords:
   - structural
   - variation
@@ -15,9 +14,9 @@ tools:
       documentation: "https://github.com/KolmogorovLab/Severus"
       tool_dev_url: "https://github.com/KolmogorovLab/Severus"
       doi: "10.1101/2024.03.22.24304756"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -26,8 +25,8 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - target_input:
         type: file
-        description: path to one or multiple target BAM/CRAM files (e.g. tumor, must
-          be indexed)
+        description: path to one or multiple target BAM/CRAM files (e.g. tumor,
+          must be indexed)
         pattern: "*.{bam,cram}"
         ontologies: []
     - target_index:
@@ -37,7 +36,8 @@ input:
         ontologies: []
     - control_input:
         type: file
-        description: path to the control BAM/CRAM file (e.g. normal, must be indexed)
+        description: path to the control BAM/CRAM file (e.g. normal, must be
+          indexed)
         pattern: "*.{bam,cram}"
         ontologies: []
     - control_index:
@@ -47,8 +47,8 @@ input:
         ontologies: []
     - vcf:
         type: file
-        description: path to vcf file used for phasing (if using haplotype specific
-          SV calling
+        description: path to vcf file used for phasing (if using haplotype
+          specific SV calling
         pattern: "*.{vcf,vcf.gz}"
         ontologies: []
   - - meta2:
@@ -67,7 +67,6 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/severus.log:
           type: file
           description: |
@@ -79,7 +78,6 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/read_qual.txt:
           type: file
           description: |
@@ -91,7 +89,6 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/breakpoints_double.csv:
           type: file
           description: |
@@ -103,10 +100,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/read_alignments:
           type: file
           description: |
+            A directory containing read alignments in BAM format for all samples, intended for an advanced user.
           pattern: "${prefix}/read_alignments"
           ontologies: []
   read_ids:
@@ -114,22 +111,21 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/read_ids.csv:
           type: file
           description: |
             Contains supporting read IDs for each SV
-          pattern: "${prefix}/read_ids"
+          pattern: "${prefix}/read_ids.csv"
           ontologies: []
   collapsed_dup:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/severus_collaped_dup.bed:
           type: file
           description: |
+            BED file containing collapsed duplications
           pattern: "${prefix}/severus_collaped_dup"
           ontologies: []
   loh:
@@ -137,7 +133,6 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/severus_LOH.bed:
           type: file
           description: |
@@ -149,18 +144,17 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/all_SVs/severus_all.vcf:
           type: map
           description: |
             VCF file containing somatic and germline structural variants
           pattern: "${prefix}/all_SVs/severus_all.vcf"
+          ontologies: []
   all_breakpoints_clusters_list:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/all_SVs/breakpoints_clusters_list.tsv:
           type: file
           description: |
@@ -172,7 +166,6 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/all_SVs/breakpoints_clusters.tsv:
           type: file
           description: |
@@ -184,19 +177,17 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
-      - ${prefix}/all_SVs/plots/severus_*.html:
+      - ${prefix}/all_SVs/plots/severus*.html:
           type: file
           description: |
-            Plotly graph containing of somatic and germline breakpoint clusters
-          pattern: "${prefix}/all_SVs/plots/*.html"
+            HTML files containing plots for all SVs
+          pattern: "${prefix}/all_SVs/plots/severus*.html"
           ontologies: []
   somatic_vcf:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/somatic_SVs/severus_somatic.vcf:
           type: file
           description: |
@@ -208,7 +199,6 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/somatic_SVs/breakpoints_clusters_list.tsv:
           type: file
           description: |
@@ -220,7 +210,6 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
       - ${prefix}/somatic_SVs/breakpoints_clusters.tsv:
           type: file
           description: |
@@ -232,20 +221,33 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "${prefix}/severus.log"
-      - ${prefix}/somatic_SVs/plots/severus_*.html:
+      - ${prefix}/somatic_SVs/plots/severus*.html:
           type: file
           description: |
-            Plotly graph of somatic breakpoint clusters
-          pattern: "${prefix}/somatic_SVs/plots/*.html"
+            HTML files containing plots for somatic SVs
+          pattern: "${prefix}/somatic_SVs/plots/severus*.html"
           ontologies: []
+  versions_severus:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - severus:
+          type: string
+          description: The name of the tool
+      - severus --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - severus:
+          type: string
+          description: The name of the tool
+      - severus --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@fellen31"
 maintainers:

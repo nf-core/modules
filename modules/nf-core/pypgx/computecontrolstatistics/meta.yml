@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "pypgx_computecontrolstatistics"
 description: Compute summary statistics for control gene from BAM files.
 keywords:
@@ -12,7 +11,8 @@ tools:
       documentation: "https://pypgx.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/sbslee/pypgx"
       doi: "10.1371/journal.pone.0272129"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -48,13 +48,27 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.{zip}"
+  versions_pypgx:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pypgx:
+          type: string
+          description: The name of the tool
+      - pypgx -v 2>&1 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pypgx:
+          type: string
+          description: The name of the tool
+      - pypgx -v 2>&1 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jorisvansteenbrugge"
 maintainers:

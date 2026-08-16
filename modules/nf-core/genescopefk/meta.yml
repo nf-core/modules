@@ -9,7 +9,8 @@ tools:
       description: "A derivative of GenomeScope2.0 modified to work with FastK"
       homepage: "https://github.com/thegenemyers/GENESCOPE.FK"
       tool_dev_url: "https://github.com/thegenemyers/GENESCOPE.FK"
-      licence: ["https://github.com/thegenemyers/GENESCOPE.FK/blob/main/LICENSE"]
+      license:
+        - "https://github.com/thegenemyers/GENESCOPE.FK/blob/main/LICENSE"
       identifier: ""
 input:
   - - meta:
@@ -19,8 +20,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fastk_histex_histogram:
         type: file
-        description: A histogram formatted for GeneScope using the -G parameter from
-          Fastk Histex
+        description: A histogram formatted for GeneScope using the -G parameter
+          from Fastk Histex
         pattern: "*.hist"
         ontologies: []
 output:
@@ -100,13 +101,38 @@ output:
           type: float
           description: Average kmer coverage value extracted from summary file
           pattern: "[0-9.]+"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_genescopefk.log":
+          type: file
+          description: GeneScopeFK command stdout log
+          pattern: "*_genescopefk.log"
+          ontologies: []
+  versions_genescopefk:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - genescopefk:
+          type: string
+          description: Name of the tool
+      - "R --version | sed '1!d; s/.*version //; s/ .*//'":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - genescopefk:
+          type: string
+          description: Name of the tool
+      - "R --version | sed '1!d; s/.*version //; s/ .*//'":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:

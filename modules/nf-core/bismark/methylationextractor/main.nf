@@ -3,9 +3,9 @@ process BISMARK_METHYLATIONEXTRACTOR {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/38e61d14ccaed82f60c967132963eb467d0fa4bccb7a21404c49b4f377735f03/data' :
-        'community.wave.seqera.io/library/bismark:0.25.1--1f50935de5d79c47' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bddea334e6ccbce005ce540214747acf822b040185d2198220dcfbb4b258c331/data' :
+        'community.wave.seqera.io/library/bismark:3.1.0--9557d6ab108a83e4' }"
 
     input:
     tuple val(meta), path(bam)
@@ -17,7 +17,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
     tuple val(meta), path("*.cov.gz")              , emit: coverage
     tuple val(meta), path("*_splitting_report.txt"), emit: report
     tuple val(meta), path("*.M-bias.txt")          , emit: mbias
-    tuple val("${task.process}"), val('bismark'), eval("bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), emit: versions_bismark, topic: versions
+    tuple val("${task.process}"), val('bismark'), eval("bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'"), emit: versions_bismark, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,9 +48,9 @@ process BISMARK_METHYLATIONEXTRACTOR {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.bedGraph.gz
-    echo | gzip > ${prefix}.txt.gz
-    echo | gzip > ${prefix}.cov.gz
+    echo "" | gzip > ${prefix}.bedGraph.gz
+    echo "" | gzip > ${prefix}.txt.gz
+    echo "" | gzip > ${prefix}.cov.gz
     touch ${prefix}_splitting_report.txt
     touch ${prefix}.M-bias.txt
     """

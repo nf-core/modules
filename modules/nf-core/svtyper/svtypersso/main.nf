@@ -3,9 +3,9 @@ process SVTYPER_SVTYPERSSO {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svtyper:0.7.1--py_0':
-        'biocontainers/svtyper:0.7.1--py_0' }"
+        'quay.io/biocontainers/svtyper:0.7.1--py_0' }"
 
     input:
     tuple val(meta), path(bam), path(bam_index), path(vcf)
@@ -14,7 +14,7 @@ process SVTYPER_SVTYPERSSO {
     output:
     tuple val(meta), path("*.vcf") , emit: gt_vcf
     tuple val(meta), path("*.json"), emit: json
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('svtyper'), eval("svtyper-sso -h 2>&1 | grep 'version:' | sed 's/^version: v//'"), emit: versions_svtyper, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,18 +28,13 @@ process SVTYPER_SVTYPERSSO {
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     svtyper-sso \\
-        --bam $bam \\
-        $vcf_opt \\
-        $fasta_opt \\
+        --bam ${bam} \\
+        ${vcf_opt} \\
+        ${fasta_opt} \\
         --output_vcf ${prefix}.vcf \\
         --lib_info ${prefix}.json \\
-        --cores $task.cpus \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svtyper: \$(echo \$(svtyper-sso -h 2>&1 | grep "version:" | sed 's/^version: v//'))
-    END_VERSIONS
+        --cores ${task.cpus} \\
+        ${args}
     """
 
     stub:
@@ -47,10 +42,5 @@ process SVTYPER_SVTYPERSSO {
     """
     touch ${prefix}.json
     touch ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svtyper: \$(echo \$(svtyper-sso -h 2>&1 | grep "version:" | sed 's/^version: v//'))
-    END_VERSIONS
     """
 }

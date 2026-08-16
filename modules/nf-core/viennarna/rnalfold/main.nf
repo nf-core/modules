@@ -3,16 +3,16 @@ process VIENNARNA_RNALFOLD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1':
-        'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
+        'quay.io/biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
 
     input:
     path fasta
 
     output:
-    path "*.lfold"        , emit: rnalfold_txt
-    path "versions.yml"   , emit: versions
+    path "*.lfold"                                                                       , emit: rnalfold_txt
+    tuple val("${task.process}"), val('RNALfold'), eval("RNALfold --version 2>&1 | sed -n '1s/RNALfold //p'"), emit: versions_rnalfold, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,21 +24,11 @@ process VIENNARNA_RNALFOLD {
         ${args} \\
         --infile=$fasta \\
         --outfile=${fasta.baseName}.lfold
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RNALfold: \$( RNAfold --version |& sed '1!d ; s/RNALfold //')
-    END_VERSIONS
     """
 
     stub:
     """
     touch ${fasta.baseName}.lfold
     touch ${fasta}.ps
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RNALfold: \$( RNAfold --version |& sed '1!d ; s/RNALfold //')
-    END_VERSIONS
     """
 }

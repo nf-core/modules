@@ -13,18 +13,12 @@ components:
   - bwameth/index
   - samtools/faidx
 input:
-  - fasta:
+  - fasta_fai:
       type: file
       description: |
         Reference genome
-        Structure: [ val(meta), path(fasta) ]
-      pattern: "*.{fa/fa.gz}"
-  - fasta_index:
-      type: file
-      description: |
-        Reference genome index file
-        Structure: [ val(meta), path(fasta) ]
-      pattern: "*.fai"
+        Structure: [ val(meta), path(fasta), path(fai) ]
+      pattern: "*.{fa/fa.gz,fai}"
   - bismark_index:
       type: file
       description: |
@@ -39,27 +33,17 @@ input:
       type: string
       description: |
         Aligner name (bismark, bismark_hisat, or bwameth)
-  - collecthsmetrics:
-      type: boolean
-      description: |
-        Whether to run picard collecthsmetrics tool
   - use_mem2:
       type: boolean
       description: |
         Build a mem2 index when bwameth is chosen as an aligner, and an index path is not supplied
 output:
-  - fasta:
+  - fasta_fai:
       type: file
       description: |
         Reference genome
-        Structure: [ val(meta), path(fasta) ]
-      pattern: "*.fa"
-  - fasta_index:
-      type: file
-      description: |
-        Reference genome index file
-        Structure: [ val(meta), path(fasta) ]
-      pattern: "*.fai"
+        Structure: [ val(meta), path(fasta), path(fai) ]
+      pattern: "*.{fa/fa.gz,fai}"
   - bismark_index:
       type: file
       description: |

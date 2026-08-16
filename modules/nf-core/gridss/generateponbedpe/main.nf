@@ -3,9 +3,9 @@ process GRIDSS_GENERATEPONBEDPE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/gridss:2.13.2--h270b39a_0'
-        : 'biocontainers/gridss:2.13.2--h270b39a_0'}"
+        : 'quay.io/biocontainers/gridss:2.13.2--h270b39a_0'}"
 
     input:
     tuple val(meta), path(vcf), path(bedpe), path(bed)
@@ -16,7 +16,7 @@ process GRIDSS_GENERATEPONBEDPE {
     output:
     tuple val(meta), path("*.bedpe"), emit: bedpe
     tuple val(meta), path("*.bed"), emit: bed
-    tuple val("${task.process}"), val('gridss'), eval("echo \$(GeneratePonBedpe --version 2>&1) | sed 's/-gridss//'"), topic: versions, emit: versions_gridss
+    tuple val("${task.process}"), val('gridss'), eval("GeneratePonBedpe --version 2>&1 | sed 's/-gridss//'"), topic: versions, emit: versions_gridss
 
     when:
     task.ext.when == null || task.ext.when

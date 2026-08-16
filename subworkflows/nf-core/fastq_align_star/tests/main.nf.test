@@ -47,9 +47,10 @@ nextflow_workflow {
                 input[3] = true       // star_ignore_sjdbgtf
                 input[4] = Channel.of([
                     [ id:'test_fasta' ], // meta map
-                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[5] = Channel.of([[:], []])
+                input[5] = Channel.of([[:], [], []])
                 """
             }
         }
@@ -95,9 +96,10 @@ nextflow_workflow {
                 input[3] = true       // star_ignore_sjdbgtf
                 input[4] = Channel.of([
                     [ id:'test_fasta' ], // meta map
-                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[5] = Channel.of([[:], []])
+                input[5] = Channel.of([[:], [], []])
                 """
             }
         }
@@ -154,9 +156,10 @@ nextflow_workflow {
                 input[3] = true       // star_ignore_sjdbgtf
                 input[4] = Channel.of([
                     [ id:'test_fasta' ], // meta map
-                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[5] = RSEM_PREPAREREFERENCE.out.transcript_fasta.map{[[:], it]}
+                input[5] = RSEM_PREPAREREFERENCE.out.transcript_fasta.map{[[:], it, []]}
                 """
             }
         }
@@ -208,9 +211,10 @@ nextflow_workflow {
                 input[3] = true       // star_ignore_sjdbgtf
                 input[4] = Channel.of([
                     [ id:'test_fasta' ], // meta map
-                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[5] = Channel.of([[:], []])
+                input[5] = Channel.of([[:], [], []])
                 """
             }
         }

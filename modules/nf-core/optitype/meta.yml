@@ -10,7 +10,8 @@ tools:
       homepage: https://github.com/FRED-2/OptiType
       documentation: https://github.com/FRED-2/OptiType
       doi: "10.1093/bioinformatics/btu548"
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifier: biotools:optitype
 input:
   - - meta:
@@ -51,13 +52,27 @@ output:
           description: OptiType coverage plot
           pattern: "${prefix}/*.pdf"
           ontologies: []
+  versions_optitype:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - optitype:
+          type: string
+          description: The name of the tool
+      - 'grep "Version:" $(which OptiTypePipeline.py) | sed "s/Version: //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - optitype:
+          type: string
+          description: The name of the tool
+      - 'grep "Version:" $(which OptiTypePipeline.py) | sed "s/Version: //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@apeltzer"
 maintainers:

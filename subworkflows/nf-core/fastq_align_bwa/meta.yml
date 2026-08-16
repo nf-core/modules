@@ -29,11 +29,11 @@ input:
       type: boolean
       description: If true bwa modules sort resulting bam files
       pattern: "true|false"
-  - ch_fasta:
+  - ch_fasta_fai:
       type: file
       description: |
-        Optional reference fasta file. This only needs to be given if val_sort_bam = true.
-        Structure: [ val(meta), path(fasta) ]
+        Optional reference fasta file and index. This only needs to be given if val_sort_bam = true.
+        Structure: [ val(meta), path(fasta), path(fai) ]
 output:
   - bam_orig:
       description: |
@@ -63,10 +63,6 @@ output:
       description: |
         File containing samtools idxstats output
         Structure: [ val(meta), path(idxstats) ]
-  - versions:
-      description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
 authors:
   - "@JoseEspinosa"
 maintainers:
