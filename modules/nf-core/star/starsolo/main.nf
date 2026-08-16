@@ -1,4 +1,4 @@
-process STARSOLO {
+process STAR_STARSOLO {
     tag "$meta.id"
     label 'process_high'
 
@@ -38,7 +38,7 @@ process STARSOLO {
         solotype_args = solotype_args + (meta.cb_start ? "--soloCBstart ${meta.cb_start} " : "")
         solotype_args = solotype_args + (meta.barcode_len ? "--soloBarcodeReadLength ${meta.barcode_len} " : "")
         solotype_args = solotype_args + (meta.barcode_mate ? "--soloBarcodeMate ${meta.barcode_mate} " : "")
-    } else if (solotype == "CB_UMI_Simple") {
+    } else if (solotype == "CB_UMI_Complex") {
         solotype_args = meta.cb_position ? "--soloCBposition ${meta.cb_position}" : ""
         solotype_args = solotype_args + (opt_whitelist.name != 'NO_FILE' ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None ")
         solotype_args = solotype_args + (meta.umi_position ? "--soloUMIposition ${meta.umi_position} " : "")
