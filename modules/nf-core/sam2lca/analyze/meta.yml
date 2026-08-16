@@ -1,6 +1,5 @@
 name: "sam2lca_analyze"
-description: Calling lowest common ancestors from multi-mapped reads in SAM/BAM/CRAM
-  files
+description: Calling lowest common ancestors from multi-mapped reads in SAM/BAM/CRAM files
 keywords:
   - LCA
   - alignment
@@ -14,7 +13,8 @@ tools:
       homepage: "https://github.com/maxibor/sam2lca"
       documentation: "https://sam2lca.readthedocs.io"
       doi: "10.21105/joss.04360"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -70,8 +70,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bam":
           type: file
-          description: Optional sorted BAM/CRAM/SAM file annotated with LCA taxonomic
-            information
+          description: Optional sorted BAM/CRAM/SAM file annotated with LCA taxonomic information
           pattern: "*.bam"
           ontologies: []
   versions:
