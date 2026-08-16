@@ -17,6 +17,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'imaging/segmentation/nuclear_image.tif', checkIfExists: true)
                 ]
+                input[1] = [ '2D_versatile_fluo', [] ]
                 """
             }
         }
@@ -41,6 +42,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'imaging/segmentation/nuclear_image.tif', checkIfExists: true)
                 ]
+                input[1] = [ '2D_versatile_fluo', [] ]
                 """
             }
         }

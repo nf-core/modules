@@ -1,0 +1,107 @@
+nextflow_process {
+
+    name "Test Process ABYSS_ABYSSPE"
+    script "../main.nf"
+    process "ABYSS_ABYSSPE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "abyss"
+    tag "abyss/abysspe"
+
+
+    test("sarscov2 - fastq - pe only") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:"test", single_end:false],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true)
+                    ],
+                    []  // No merged reads for PE-only mode
+                ]
+                input[1] = 21
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.contigs,
+                    process.out.scaffolds,
+                    process.out.stats,
+                    process.out.log,
+                    process.out.versions_abyss
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - pe + se") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:"test", single_end:false],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz", checkIfExists: true)  // Using R1 as merged placeholder
+                ]
+                input[1] = 21
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.contigs,
+                    process.out.scaffolds,
+                    process.out.stats,
+                    process.out.log,
+                    process.out.versions_abyss
+                ).match() }
+            )
+        }
+    }
+
+
+    test("sarscov2 - pe - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:"test", single_end:false],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true)
+                    ],
+                    []
+                ]
+                input[1] = 21
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

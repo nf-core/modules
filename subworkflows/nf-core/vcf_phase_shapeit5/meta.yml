@@ -6,8 +6,8 @@ description: |
   then genotypes are phased with shapeit5/phasecommon and
   finally the chunks are merged back together by shapeit5/ligate by chromosomes.
   Meta map of all channels will be used to perform joint operations.
-  "regionout" key will be added to the meta map to distinguish the different file
-  before ligation and therefore should not be used.
+  "regionout", "regionoutPadded", "regionSize" keys will be added to the meta map to distinguish
+  the different files before ligation and therefore should not be used.
 keywords:
   - VCF
   - phase

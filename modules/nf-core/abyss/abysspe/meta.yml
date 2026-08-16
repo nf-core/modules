@@ -1,0 +1,119 @@
+name: "abyss_abysspe"
+description: "ABySS is a de novo sequence assembler intended for short paired-end reads and genomes of all sizes."
+keywords:
+  - genome
+  - assembly
+  - genome assembler
+  - short reads
+  - de novo assembler
+tools:
+  - "abyss":
+      description: "Assembly By Short Sequences - a de novo, parallel, paired-end short
+        read sequence assembler."
+      homepage: "https://github.com/bcgsc/abyss/blob/v2.3.10/README.md"
+      documentation: "https://github.com/bcgsc/abyss/blob/v2.3.10/README.md"
+      tool_dev_url: "https://github.com/bcgsc/abyss"
+      doi: "10.1101/gr.214346.116"
+      licence:
+        - "GPL v3"
+      identifier: biotools:abyss
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: |
+          List of input paired-end FastQ files (R1 and R2).
+          Must be paired-end reads; ABySS requires paired reads for assembly.
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+    - merged:
+        type: file
+        description: |
+          Optional merged/overlapping paired-end reads or supplementary single-end reads.
+          Use empty list `[]` if not available.
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - kmersize:
+      type: integer
+      description: |
+        K-mer size for assembly. Must be an odd number.
+output:
+  contigs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-contigs.fa.gz":
+          type: file
+          description: Assembled contigs in FASTA format
+          pattern: "*-contigs.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/data_0925 # sequence assembly
+            - edam: http://edamontology.org/format_1929 # FASTA
+  scaffolds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-scaffolds.fa.gz":
+          type: file
+          description: Assembled scaffolds in FASTA format
+          pattern: "*-scaffolds.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/data_0925 # sequence assembly
+            - edam: http://edamontology.org/format_1929 # FASTA
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-stats":
+          type: file
+          description: Assembly statistics file
+          pattern: "*-stats"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-abyss.log":
+          type: file
+          description: ABySS assembly log file
+          pattern: "*-abyss.log"
+          ontologies: []
+  versions_abyss:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abyss:
+          type: string
+          description: The name of the tool
+      - 'abyss-pe version | grep abyss | cut -d" " -f3':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abyss:
+          type: string
+          description: The name of the tool
+      - 'abyss-pe version | grep abyss | cut -d" " -f3':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@LiaOb21"
+maintainers:
+  - "@LiaOb21"

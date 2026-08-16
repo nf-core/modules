@@ -3,9 +3,9 @@ process BLAT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-blat:472--h9b8f530_0':
-        'biocontainers/ucsc-blat:472--h664eb37_1' }"
+        'quay.io/biocontainers/ucsc-blat:472--h664eb37_1' }"
 
     input:
     tuple val(meta) , path(query)
@@ -13,7 +13,7 @@ process BLAT {
 
     output:
     tuple val(meta), path("*.psl"), emit: psl
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("blat"), eval("blat 2>&1 | sed '1!d;s/^.*BLAT v. //;s/ fast.*//'"), topic: versions, emit: versions_blat
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,21 +41,11 @@ process BLAT {
     then
         rm ${prefix}.fasta
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blat: \$(echo \$(blat 2>&1) | sed 's/^.*BLAT v. //; s/ fast.*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.psl
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blat: \$(echo \$(blat 2>&1) | sed 's/^.*BLAT v. //; s/ fast.*\$//')
-    END_VERSIONS
     """
 }

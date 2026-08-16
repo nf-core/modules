@@ -12,8 +12,7 @@ components:
   - ensemblvep/vep
   - snpeff/download
   - snpeff/snpeff
-  - tabix/tabix
-  - tabix/bgzip
+  - htslib/bgziptabix
   - bcftools/pluginscatter
   - bcftools/concat
   - bcftools/sort
@@ -60,6 +59,11 @@ input:
       description: |
         The amount of variants per scattered VCF.
         Set this value to `null`, `[]` or `false` to disable scattering.
+  - ch_vep_gtf:
+      description: |
+        sorted, bgzipped GTF file (+ tabix index) to annotate with instead of a cache for ensemblvep (optional).
+        Mutually exclusive with ch_vep_cache.
+        Structure: [ path(gtf), path(gtf_tbi) ]
 output:
   - vcf_tbi:
       description: |
@@ -82,10 +86,6 @@ output:
         txt (tab separated) file having counts of the number of variants
         affecting each transcript and gene
         Structure: [ val(meta), path(txt) ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
 authors:
   - "@maxulysse"
   - "@matthdsm"

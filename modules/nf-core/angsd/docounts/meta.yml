@@ -1,6 +1,6 @@
 name: "angsd_docounts"
-description: Calculates base frequency statistics across reference positions from
-  BAM.
+description: Calculates base frequency statistics across reference positions
+  from BAM.
 keywords:
   - angsd
   - population genetics
@@ -82,7 +82,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.pos.gz":
           type: file
-          description: Various types of depth statistics (depending on value for -dumpCounts)
+          description: Various types of depth statistics (depending on value for
+            -dumpCounts)
           pattern: "*.pos.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3675" # Compressed file
@@ -107,8 +108,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.icnts.gz":
           type: file
-          description: Internal format for dumping binary single chrs. Useful for ANGSD
-            contamination
+          description: Internal format for dumping binary single chrs. Useful for
+            ANGSD contamination
           pattern: "*.icnts.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -119,7 +120,7 @@ output:
       - angsd:
           type: string
           description: The name of the tool
-      - 'angsd 2>&1 | grep version | head -n 1 | sed "s/.*version: //g;s/ .*//g"':
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -130,7 +131,7 @@ topics:
       - angsd:
           type: string
           description: The name of the tool
-      - 'angsd 2>&1 | grep version | head -n 1 | sed "s/.*version: //g;s/ .*//g"':
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

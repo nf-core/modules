@@ -4,6 +4,8 @@ nextflow_process {
     script "../main.nf"
     process "CSVTK_JOIN"
 
+    config "./nextflow.config"
+
     tag "modules"
     tag "modules_nfcore"
     tag "csvtk"
@@ -12,10 +14,13 @@ nextflow_process {
     test("join - csv") {
 
         when {
+            params {
+                module_args = "--fields 'ID;ID' -p -e -d \"\t\" -D \",\""
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [
                         file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
                         file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true),
@@ -28,7 +33,35 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("join - csv - tsv output") {
+
+        when {
+            params {
+                module_args = "--fields 'ID;ID' -p -e -d \"\t\" -T"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true),
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -39,10 +72,13 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = "--fields 'ID;ID' -p -e -d \"\t\" -D \",\""
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [
                         file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
                         file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true),
@@ -55,7 +91,37 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("join - csv - tsv output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--fields 'ID;ID' -p -e -d \"\t\" -T"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true),
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

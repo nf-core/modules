@@ -3,9 +3,9 @@ process EMBOSS_SEQRET {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/emboss:6.6.0--hf657eab_5':
-        'biocontainers/emboss:6.6.0--h440b012_4' }"
+        'quay.io/biocontainers/emboss:6.6.0--h440b012_4' }"
 
     input:
     tuple val(meta), path(sequence)
@@ -13,7 +13,7 @@ process EMBOSS_SEQRET {
 
     output:
     tuple val(meta), path("*.${out_ext}"), emit: outseq
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val("emboss"), eval("revseq -version 2>&1 | sed 's/EMBOSS://'"), topic: versions, emit: versions_emboss
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,10 +28,12 @@ process EMBOSS_SEQRET {
         -sequence ${sequence} \\
         ${osformat} \\
         -outseq ${prefix}.${out_ext}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        emboss: \$(echo \$(seqret -version 2>&1) | sed 's/EMBOSS://')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.${out_ext}
     """
 }

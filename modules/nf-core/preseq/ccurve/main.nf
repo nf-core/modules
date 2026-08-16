@@ -4,9 +4,9 @@ process PRESEQ_CCURVE {
     label 'error_ignore'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/preseq:3.2.0--hdcf5f25_6':
-        'biocontainers/preseq:3.2.0--hdcf5f25_6' }"
+        'quay.io/biocontainers/preseq:3.2.0--hdcf5f25_6' }"
 
     input:
     tuple val(meta), path(bam)
@@ -14,7 +14,7 @@ process PRESEQ_CCURVE {
     output:
     tuple val(meta), path("*.c_curve.txt"), emit: c_curve
     tuple val(meta), path("*.log")        , emit: log
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('preseq'), eval("preseq 2>&1 | sed -n 's/Version: //p'"), emit: versions_preseq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,16 +26,11 @@ process PRESEQ_CCURVE {
     """
     preseq \\
         c_curve \\
-        $args \\
-        $paired_end \\
+        ${args} \\
+        ${paired_end} \\
         -output ${prefix}.c_curve.txt \\
-        $bam
+        ${bam}
     cp .command.err ${prefix}.command.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        preseq: \$(echo \$(preseq 2>&1) | sed 's/^.*Version: //; s/Usage:.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +38,5 @@ process PRESEQ_CCURVE {
     """
     touch ${prefix}.c_curve.txt
     touch ${prefix}.command.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        preseq: \$(echo \$(preseq 2>&1) | sed 's/^.*Version: //; s/Usage:.*\$//')
-    END_VERSIONS
     """
 }

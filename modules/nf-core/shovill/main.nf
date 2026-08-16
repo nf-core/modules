@@ -3,9 +3,9 @@ process SHOVILL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shovill:1.1.0--0' :
-        'biocontainers/shovill:1.1.0--0' }"
+        'quay.io/biocontainers/shovill:1.1.0--0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -33,5 +33,13 @@ process SHOVILL {
         --ram $memory \\
         --outdir ./ \\
         --force
+    """
+
+    stub:
+    """
+    touch contigs.fa
+    touch shovill.corrections
+    touch shovill.log
+    touch spades.fasta
     """
 }

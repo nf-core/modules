@@ -3,9 +3,9 @@ process FUSIONREPORT_DETECT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed32f46746a5b33a1b5d597cfe2f62d3b1cfa54638f57cadc5d5158d6a4959d2/data' :
-        'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:78488bd99166aa9a'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/32/3240b594c095a3682b14e92571b2bc721c7925990a74f9df3b54ce82d4e05daa/data' :
+        'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:15d1184d4eac76b8'}"
 
     input:
     tuple val(meta), path(arriba_fusions), path(starfusion_fusions), path(fusioncatcher_fusions)
@@ -19,7 +19,7 @@ process FUSIONREPORT_DETECT {
     tuple val(meta), path("*_*.html")                    , emit: html                 , optional:true
     tuple val(meta), path("*.csv")                       , emit: csv                  , optional:true
     tuple val(meta), path("*.json")                      , emit: json                 , optional:true
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('fusion_report'), eval("fusion_report --version |& sed 's/fusion-report //'"), topic: versions, emit: versions_fusionreport
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,19 +32,17 @@ process FUSIONREPORT_DETECT {
     tools    += fusioncatcher_fusions ? "--fusioncatcher ${fusioncatcher_fusions} " : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    fusion_report run $meta.id . $fusionreport_ref $tools --allow-multiple-gene-symbols --tool-cutoff $tools_cutoff $args $args2
+    fusion_report run ${prefix} . \\
+        ${fusionreport_ref} ${tools} \\
+        --allow-multiple-gene-symbols \\
+        --tool-cutoff ${tools_cutoff} \\
+        ${args} ${args2}
 
     mv fusion_list.tsv ${prefix}.fusionreport.tsv
     mv fusion_list_filtered.tsv ${prefix}.fusionreport_filtered.tsv
     mv index.html ${prefix}_fusionreport_index.html
     [ ! -f fusions.csv ] || mv fusions.csv ${prefix}.fusions.csv
     [ ! -f fusions.json ] || mv fusions.json ${prefix}.fusions.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fusion_report: \$(fusion_report --version | sed 's/fusion-report //')
-        fusion_report DB retrieval: \$(cat $fusionreport_ref/DB-timestamp.txt)
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +54,5 @@ process FUSIONREPORT_DETECT {
     touch AAA_BBB.html
     touch ${prefix}.fusions.csv
     touch ${prefix}.fusions.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fusion_report: \$(fusion_report --version | sed 's/fusion-report //')
-    END_VERSIONS
     """
 }

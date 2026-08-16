@@ -1,17 +1,18 @@
 name: fasttree
-description: Produces a Newick format phylogeny from a multiple sequence alignment.
-  Capable of bacterial genome size alignments.
+description: Produces a Newick format phylogeny from a multiple sequence
+  alignment. Capable of bacterial genome size alignments.
 keywords:
   - phylogeny
   - newick
   - alignment
 tools:
   - fasttree:
-      description: FastTree infers approximately-maximum-likelihood phylogenetic trees
-        from alignments of nucleotide or protein sequences
+      description: FastTree infers approximately-maximum-likelihood phylogenetic
+        trees from alignments of nucleotide or protein sequences
       homepage: http://www.microbesonline.org/fasttree/
       documentation: http://www.microbesonline.org/fasttree/#Usage
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: biotools:fasttree
 input:
   - alignment:
@@ -26,13 +27,27 @@ output:
         description: A phylogeny in Newick format
         pattern: "*.{tre}"
         ontologies: []
+  versions_fasttree:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fasttree:
+          type: string
+          description: The name of the tool
+      - fasttree -help 2>&1 | head -1 | sed 's/^FastTree \([0-9.]*\) .*$/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fasttree:
+          type: string
+          description: The name of the tool
+      - fasttree -help 2>&1 | head -1 | sed 's/^FastTree \([0-9.]*\) .*$/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@aunderwo"
 maintainers:

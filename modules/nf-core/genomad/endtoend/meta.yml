@@ -200,15 +200,32 @@ output:
           pattern: "*_virus_summary.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_genomad:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - genomad:
+          type: string
+          description: The name of the tool
+      - "genomad --version 2>&1 | sed 's/^.*geNomad, version //; s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - genomad:
+          type: string
+          description: The name of the tool
+      - "genomad --version 2>&1 | sed 's/^.*geNomad, version //; s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@CarsonJM"
+
 maintainers:
   - "@CarsonJM"
   - "@gallvp"

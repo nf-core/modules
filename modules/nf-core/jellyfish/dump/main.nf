@@ -3,16 +3,16 @@ process JELLYFISH_DUMP {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kmer-jellyfish:2.3.1--py310h184ae93_5':
-        'biocontainers/kmer-jellyfish:2.3.1--py310h184ae93_5' }"
+        'quay.io/biocontainers/kmer-jellyfish:2.3.1--py310h184ae93_5' }"
 
     input:
     tuple val(meta), path(jf)
 
     output:
     tuple val(meta), path("${prefix}.${extension}"), emit: output
-    path "versions.yml"                            , emit: versions
+    tuple val("${task.process}"), val("jellyfish"), eval("jellyfish --version |& sed '1!d;s/jellyfish //'"), topic: versions, emit: versions_jellyfish
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,13 +24,8 @@ process JELLYFISH_DUMP {
     """
     jellyfish \\
         dump \\
-        $args \\
+        ${args} \\
         ${jf} > ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jellyfish: \$(jellyfish --version |& sed '1!d ; s/jellyfish //')
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process JELLYFISH_DUMP {
     extension = args.contains("-c") ? "txt" : "fa"
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jellyfish: \$(jellyfish --version |& sed '1!d ; s/jellyfish //')
-    END_VERSIONS
     """
 }

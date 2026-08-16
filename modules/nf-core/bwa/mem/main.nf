@@ -3,7 +3,7 @@ process BWA_MEM {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d7e24dc1e4d93ca4d3a76a78d4c834a7be3985b0e1e56fddd61662e047863a8a/data' :
         'community.wave.seqera.io/library/bwa_htslib_samtools:83b50ff84ead50d0' }"
 
@@ -16,6 +16,7 @@ process BWA_MEM {
     output:
     tuple val(meta), path("*.bam")  , emit: bam,    optional: true
     tuple val(meta), path("*.cram") , emit: cram,   optional: true
+    tuple val(meta), path("*.sam")  , emit: sam,    optional: true
     tuple val(meta), path("*.csi")  , emit: csi,    optional: true
     tuple val(meta), path("*.crai") , emit: crai,   optional: true
     tuple val("${task.process}"), val('bwa'), eval('bwa 2>&1 | sed -n "s/^Version: //p"'), topic: versions, emit: versions_bwa
@@ -36,6 +37,15 @@ process BWA_MEM {
                     "bam"
     def reference = fasta && extension=="cram"  ? "--reference ${fasta}" : ""
     if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
+    //
+    // For SAM output we can skip samtools view
+    //
+    def pipe_command = ""
+    if (extension == "sam") {
+        pipe_command = "> ${prefix}.${extension}"
+    } else {
+        pipe_command = "| samtools $samtools_command $args2 ${reference} --threads $task.cpus -o ${prefix}.${extension} -"
+    }
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
@@ -44,7 +54,7 @@ process BWA_MEM {
         -t $task.cpus \\
         \$INDEX \\
         $reads \\
-        | samtools $samtools_command $args2 ${reference} --threads $task.cpus -o ${prefix}.${extension} -
+        $pipe_command
     """
 
     stub:

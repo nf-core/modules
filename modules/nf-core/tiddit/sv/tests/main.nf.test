@@ -35,7 +35,8 @@ nextflow_process {
                         ]
                 // fasta
                 input[1] = [ [id: 'test'],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                         ]
                 // bwa_index
                 input[2] = BWA_INDEX.out.index
@@ -66,7 +67,8 @@ nextflow_process {
                         ]
                 // fasta
                 input[1] = [ [id: 'test'],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                         ]
                 // bwa_index
                 input[2] = [ [], [] ]
@@ -93,7 +95,8 @@ nextflow_process {
                 process {
                     """
                     input[0] =  [ [id: 'test'],
-                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                             ]
                     """
                 }
@@ -109,7 +112,8 @@ nextflow_process {
                         ]
                 // fasta
                 input[1] = [ [id: 'test'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                         ]
                 // bwa_index
                 input[2] = BWA_INDEX.out.index
@@ -139,7 +143,8 @@ nextflow_process {
                         ]
                 // fasta
                 input[1] = [ [id: 'test'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                         ]
                 // bwa_index
                 input[2] = [ [], [] ]
@@ -169,7 +174,8 @@ nextflow_process {
                         ]
                 // fasta
                 input[1] = [ [id: 'test'],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                         ]
                 // bwa_index
                 input[2] = [ [], [] ]

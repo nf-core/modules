@@ -1,0 +1,66 @@
+name: staphscan
+description: staphscan is a tool to screen genome assemblies of Staphylococcus
+  aureus
+keywords:
+  - screen
+  - assembly
+  - Staphylococcus
+  - aureus
+tools:
+  - staphscan:
+      description: a genomic surveillance framework for Staphylococcus aureus
+      homepage: https://github.com/riccabolla/StaphSCAN
+      documentation: https://staphscan.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/riccabolla/StaphSCAN
+      doi: 10.5281/zenodo.18458858
+      licence:
+        - "MIT"
+      identifier: biotools:staphscan
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastas:
+        type: list
+        description: Staphylococcus aureus genome assemblies to be screened
+        pattern: "*.fasta"
+output:
+  tsv:
+    - - meta:
+          type: string
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: Result file generated after screening
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_staphscan:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - staphscan:
+          type: string
+          description: The tool name
+      - staphscan --version | sed 's/staphscan //;':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - staphscan:
+          type: string
+          description: The tool name
+      - staphscan --version | sed 's/staphscan //;':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@riccabolla"
+maintainers:
+  - "@riccabolla"

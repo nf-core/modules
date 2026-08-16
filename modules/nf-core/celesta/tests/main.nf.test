@@ -31,9 +31,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.celltypes},
-                { assert process.out.quality},
-                { assert snapshot(process.out.versions).match('versions') }
+                { assert snapshot(
+                    file(process.out.quality[0][1]).name, // Unstable
+                    file(process.out.celltypes[0][1]).name, // Unstable
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
 
@@ -65,7 +67,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

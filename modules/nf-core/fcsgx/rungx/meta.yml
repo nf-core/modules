@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fcsgx_rungx"
-description: Runs FCS-GX (Foreign Contamination Screen - Genome eXtractor) to screen
-  and remove foreign contamination from genome assemblies
+description: Runs FCS-GX (Foreign Contamination Screen - Genome eXtractor) to
+  screen and remove foreign contamination from genome assemblies
 keywords:
   - genome
   - assembly
@@ -17,9 +16,9 @@ tools:
       documentation: "https://github.com/ncbi/fcs/wiki/"
       tool_dev_url: "https://github.com/ncbi/fcs-gx"
       doi: "10.1186/s13059-024-03198-7"
-      licence: ["NCBI-PD"]
+      licence:
+        - "NCBI-PD"
       identifier: "biotools:ncbi_fcs"
-
 input:
   - - meta:
         type: map
@@ -40,7 +39,6 @@ input:
   - ramdisk_path:
       type: string
       description: Path to RAM disk for improved performance (optional)
-
 output:
   fcsgx_report:
     - - meta:
@@ -50,8 +48,9 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.fcs_gx_report.txt":
           type: file
-          description: Final contamination report with contaminant cleaning actions.
-            Interpreted by gx clean genome to separate cleaned sequences from contaminants.
+          description: Final contamination report with contaminant cleaning
+            actions. Interpreted by gx clean genome to separate cleaned sequences
+            from contaminants.
           ontologies: []
   taxonomy_report:
     - - meta:
@@ -61,7 +60,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.taxonomy.rpt":
           type: file
-          description: Intermediate report with assigned taxonomies to individual sequences.
+          description: Intermediate report with assigned taxonomies to individual
+            sequences.
           pattern: "*.taxonomy.rpt"
           ontologies: []
   log:
@@ -86,14 +86,28 @@ output:
           description: Save intermediate alignments
           pattern: "*.hits.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_fcsgx:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fcsgx:
+          type: string
+          description: The name of the tool
+      - gx --help | sed '/build/!d; s/.*:v//; s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fcsgx:
+          type: string
+          description: The name of the tool
+      - gx --help | sed '/build/!d; s/.*:v//; s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@tillenglert"
   - "@mahesh-panchal"

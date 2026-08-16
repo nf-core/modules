@@ -1,0 +1,134 @@
+name: "disambiguate"
+description: |
+  Disambiguates reads aligned to two different organisms (e.g. human and mouse)
+  from the same source of FASTQ files. Useful in explant RNA/DNA-Seq workflows
+  where reads from two species are present. For reads aligned to both organisms,
+  the algorithm compares alignment quality scores to determine the most likely
+  species of origin. Produces four BAM files (uniquely assigned to species A or B,
+  ambiguous for species A or B) and a summary file.
+keywords:
+  - disambiguation
+  - xenograft
+  - explant
+  - rna-seq
+  - alignment
+  - bam
+tools:
+  - "ngs-disambiguate":
+      description: "Disambiguation algorithm for reads aligned to two different organisms\
+        \ using Tophat, Hisat2, BWA or STAR alignments."
+      homepage: "https://github.com/AstraZeneca-NGS/disambiguate"
+      documentation: "https://github.com/AstraZeneca-NGS/disambiguate"
+      tool_dev_url: "https://github.com/AstraZeneca-NGS/disambiguate"
+      doi: "10.12688/f1000research.10082.2"
+      licence:
+        - "MIT"
+      identifier: biotools:disambiguate
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam_a:
+        type: file
+        description: BAM file with alignments to species A (e.g. human). Mandatory.
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bam_b:
+        type: file
+        description: BAM file with alignments to species B (e.g. mouse). Mandatory.
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+output:
+  disambiguated_bam_a:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*disambiguatedSpeciesA.bam":
+          type: file
+          description: Reads uniquely assigned to species A.
+          pattern: "*disambiguatedSpeciesA.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  disambiguated_bam_b:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*disambiguatedSpeciesB.bam":
+          type: file
+          description: Reads uniquely assigned to species B.
+          pattern: "*disambiguatedSpeciesB.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  ambiguous_bam_a:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*ambiguousSpeciesA.bam":
+          type: file
+          description: Reads aligned to species A that also aligned to species B but
+            could not be uniquely assigned.
+          pattern: "*ambiguousSpeciesA.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  ambiguous_bam_b:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*ambiguousSpeciesB.bam":
+          type: file
+          description: Reads aligned to species B that also aligned to species A but
+            could not be uniquely assigned.
+          pattern: "*ambiguousSpeciesB.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_summary.txt":
+          type: file
+          description: Summary of read counts uniquely assigned to species A, species
+            B, and ambiguous reads.
+          pattern: "*_summary.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_ngs_disambiguate:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngs-disambiguate:
+          type: string
+          description: The name of the tool
+      - 2018.05.03:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngs-disambiguate:
+          type: string
+          description: The name of the tool
+      - 2018.05.03:
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ctuni"
+maintainers:
+  - "@ctuni"

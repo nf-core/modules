@@ -3,9 +3,9 @@ process HELITRONSCANNER_SCAN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/helitronscanner:1.0--hdfd78af_0':
-        'biocontainers/helitronscanner:1.0--hdfd78af_0' }"
+        'quay.io/biocontainers/helitronscanner:1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -15,7 +15,7 @@ process HELITRONSCANNER_SCAN {
 
     output:
     tuple val(meta), path("*.$command") , emit: scan
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('helitronscanner'), eval("HelitronScanner |& sed -n 's/HelitronScanner V//p'"), topic: versions, emit: versions_helitronscanner
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,30 +42,20 @@ process HELITRONSCANNER_SCAN {
     fi
 
     HelitronScanner \\
-        $subcommand \\
+        ${subcommand} \\
         -Xmx${avail_mem}g \\
-        $lcv_arg \\
-        -genome $fasta \\
-        -buffer_size $buffer_size \\
-        -threads_LCV $task.cpus \\
-        $args \\
+        ${lcv_arg} \\
+        -genome ${fasta} \\
+        -buffer_size ${buffer_size} \\
+        -threads_LCV ${task.cpus} \\
+        ${args} \\
         -output ${prefix}.${command}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        helitronscanner: \$(HelitronScanner |& sed -n 's/HelitronScanner V\\(.*\\)/V\\1/p')
-    END_VERSIONS
     """
 
     stub:
     if ( command !in [ 'head', 'tail' ] ) error "[HELITRONSCANNER_SCAN] command argument should be 'head' or 'tail'"
-    def prefix      = task.ext.prefix   ?: "${meta.id}"
+    def prefix = task.ext.prefix   ?: "${meta.id}"
     """
     touch ${prefix}.${command}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        helitronscanner: \$(HelitronScanner |& sed -n 's/HelitronScanner V\\(.*\\)/V\\1/p')
-    END_VERSIONS
     """
 }
