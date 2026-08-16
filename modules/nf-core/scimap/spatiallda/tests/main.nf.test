@@ -26,9 +26,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.spatial_lda_output,
-                    process.out.composition_plot,
-                    process.out.versions_scimap
+                    sanitizeOutput(process.out, unstableKeys: ["motif_location_plot"])
                 ).match() },
                 { assert path(process.out.motif_location_plot[0][1]).exists() }
             )
