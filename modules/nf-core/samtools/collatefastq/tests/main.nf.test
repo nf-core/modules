@@ -30,12 +30,13 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.fastq,
-                ["versions_samtools": process.out.versions_samtools]
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
         }
-
     }
 
     test("human - bam - single_end") {
@@ -59,12 +60,13 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.fastq_other,
-                ["versions_samtools": process.out.versions_samtools]
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    process.out.fastq_other,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
         }
-
     }
 
     test("human - cram") {
@@ -88,12 +90,13 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.fastq,
-                ["versions_samtools": process.out.versions_samtools]
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
         }
-
     }
 
     test("human - bam - paired_end - interleaved") {
@@ -117,18 +120,21 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.fastq_interleaved,
-                process.out.fastq_singleton,
-                process.out.fastq,
-                ["versions_samtools": process.out.versions_samtools]
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    process.out.fastq_interleaved,
+                    process.out.fastq_singleton,
+                    process.out.fastq,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
         }
-
     }
 
-    test("human - bam - paired_end -stub") {
+    test("human - bam - paired_end - stub") {
+
         options "-stub"
+
         when {
             process {
                 """
@@ -147,13 +153,17 @@ nextflow_process {
         }
 
         then {
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 
     test("human - bam - single_end - stub") {
+
         options "-stub"
+
         when {
             process {
                 """
@@ -172,13 +182,17 @@ nextflow_process {
         }
 
         then {
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 
     test("human - cram - stub") {
+
         options "-stub"
+
         when {
             process {
                 """
@@ -197,13 +211,17 @@ nextflow_process {
         }
 
         then {
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 
     test("human - bam - paired_end - interleaved - stub") {
+
         options "-stub"
+
         when {
             process {
                 """
@@ -222,9 +240,10 @@ nextflow_process {
         }
 
         then {
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
-
 }

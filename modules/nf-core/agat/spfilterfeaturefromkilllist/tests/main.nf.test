@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
                 ]
 
@@ -45,7 +45,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
                 ]
 
@@ -55,7 +55,7 @@ nextflow_process {
 
                 input[1] = kill_list_file.toPath()
 
-                input[2] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.4.2/share/agat_config.yaml', checkIfExists: true)
+                input[2] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.6.1/share/agat_config.yaml', checkIfExists: true)
                 """
             }
         }
@@ -77,7 +77,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
                 ]
 

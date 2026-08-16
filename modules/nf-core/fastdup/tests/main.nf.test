@@ -1,0 +1,138 @@
+nextflow_process {
+
+    name "Test Process FASTDUP"
+    script "../main.nf"
+    process "FASTDUP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastdup"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    file(process.out.metrics[0][1]).readLines()[0..2],
+                    process.out.bai,
+                    process.out.csi,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - create bai index") {
+
+        config "./nextflow.config"
+
+        when {
+            params{
+                module_args = "--create-index"
+            }
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    file(process.out.metrics[0][1]).name,
+                    process.out.bai,
+                    process.out.csi,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - create csi index") {
+
+        config "./nextflow.config"
+
+        when {
+            params{
+                module_args = "--create-index --index-format CSI"
+            }
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    file(process.out.metrics[0][1]).name,
+                    process.out.bai,
+                    process.out.csi,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+
+                ).match() }
+            )
+        }
+
+    }
+
+}

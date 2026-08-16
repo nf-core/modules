@@ -3,7 +3,7 @@ process SIGPROFILER {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3e160064566f2529f87874cfc606b160d9f58c606fbb1842ca46023da2afe8d3/data':
         'community.wave.seqera.io/library/pip_sigprofilerassignment_sigprofilerextractor_sigprofilermatrixgenerator_pruned:02a3f95da35d8c9a' }"
 
@@ -24,23 +24,12 @@ process SIGPROFILER {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def context_types = task.ext.context_type?.split(',') ?: ['96','DINUC','ID']
-
-    // Map context to signature type
-    def context_map = [
-        '96'    : 'SBS96',
-        'DINUC' : 'DBS78',
-        'ID'    : 'ID83'
-    ]
-    def signatures = context_types.collect { index -> context_map[index] }
-
     """
     mkdir -p results/input
     touch results/input/input_data.txt
 
     # Create per-context outputs
-
-    for sig in ${signatures.join(" ")}; do
+    for sig in SBS96 DBS78 ID83; do
 
         mkdir -p results/\$sig/\$sig/Suggested_Solution/COSMIC_\${sig}_Decomposed_Solution/Signatures/
         touch    results/\$sig/\$sig/Samples.txt

@@ -3,9 +3,9 @@ process COPTR_MERGE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/coptr:1.1.4--pyhdfd78af_3':
-        'biocontainers/coptr:1.1.4--pyhdfd78af_3' }"
+        'quay.io/biocontainers/coptr:1.1.4--pyhdfd78af_3' }"
 
     input:
     tuple val(meta), path(bams)

@@ -4,7 +4,7 @@ process AMULETY_ESM2 {
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/amulety_igblast:b2a7736f645c40e5':
         'community.wave.seqera.io/library/amulety_igblast:659eaa872785adeb' }"
 

@@ -61,7 +61,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = BOWTIE2.out.untar
                 input[3] = params.skip_deduplication
@@ -87,7 +88,7 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
+
                     ).match() }
             )
         }
@@ -113,7 +114,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = BOWTIE2.out.untar
                 input[3] = params.skip_deduplication
@@ -139,7 +141,6 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
                     ).match() }
             )
         }
@@ -164,7 +165,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = BOWTIE2.out.untar
                 input[3] = params.skip_deduplication
@@ -190,7 +192,6 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
                     ).match() }
             )
         }
@@ -215,7 +216,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = BOWTIE2.out.untar
                 input[3] = params.skip_deduplication
@@ -241,7 +243,6 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
                     ).match() }
             )
         }
@@ -264,7 +265,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = HISAT2.out.untar
                 input[3] = params.skip_deduplication
@@ -290,7 +292,6 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
                     ).match() }
             )
         }
@@ -316,7 +317,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = HISAT2.out.untar
                 input[3] = params.skip_deduplication
@@ -342,7 +344,6 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
                     ).match() }
             )
         }
@@ -367,7 +368,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = HISAT2.out.untar
                 input[3] = params.skip_deduplication
@@ -393,7 +395,6 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
                     ).match() }
             )
         }
@@ -418,7 +419,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = HISAT2.out.untar
                 input[3] = params.skip_deduplication
@@ -444,7 +446,6 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
                     ).match() }
             )
         }

@@ -11,7 +11,7 @@ nextflow_process {
 
     config "./nextflow.config"
 
-    test("sarscov2_bedgz_tbi") {
+    test("sarscov2 - bed gz - deprecated") {
         when {
             params {
                 module_args = '-p bed'
@@ -20,7 +20,9 @@ nextflow_process {
                 """
                 input[0] = [
                                 [ id:'tbi_bed' ],
-                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed.gz', checkIfExists: true) ]
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed.gz', checkIfExists: true),
+                                [],
+                                []
                             ]
                 """
             }
@@ -28,22 +30,25 @@ nextflow_process {
 
         then {
             assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
             )
         }
     }
 
-    test("sarscov2_gff_tbi") {
+    test("sarscov2 - bed gz - deprecated - stub") {
+        options "-stub"
         when {
             params {
-                module_args = '-p gff'
+                module_args = '-p bed'
             }
             process {
                 """
                 input[0] = [
-                                [ id:'tbi_gff' ],
-                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true) ]
+                                [ id:'tbi_bed_stub' ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed.gz', checkIfExists: true),
+                                [],
+                                []
                             ]
                 """
             }
@@ -51,81 +56,8 @@ nextflow_process {
 
         then {
             assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
-    test("sarscov2_vcf_tbi") {
-        when {
-            params {
-                module_args = '-p vcf'
-            }
-            process {
-                """
-                input[0] =  [
-                                [ id:'tbi_vcf' ],
-                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true) ]
-                            ]
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
-    test("sarscov2_vcf_csi") {
-        when {
-            params {
-                module_args = '-p vcf --csi'
-            }
-            process {
-                """
-                input[0] =  [
-                                [ id:'vcf_csi' ],
-                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true) ]
-                            ]
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
-    test("sarscov2_vcf_csi_stub") {
-        options "-stub"
-        when {
-            params {
-                module_args = '-p vcf --csi'
-            }
-            process {
-                """
-                input[0] =  [
-                                [ id:'vcf_csi_stub' ],
-                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true) ]
-                            ]
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
             )
         }
     }

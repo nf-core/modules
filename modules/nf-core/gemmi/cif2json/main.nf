@@ -3,7 +3,7 @@ process GEMMI_CIF2JSON {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/993d88cc40cbb0e8a42a8d173f7efdae2feb0924077d41c974c11459d49b6e5b/data':
         'community.wave.seqera.io/library/python_pip_gemmi-program:6276064ce54c78fb' }"
 

@@ -16,10 +16,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:true ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
-				]
-
+                    [ id:'test', single_end:true ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                ]
                 """
             }
         }
@@ -28,13 +27,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					file(process.out.good_reads[0][1]).name, // unstable
-					process.out.single_reads,
-					process.out.bad_reads,
-					file(process.out.log[0][1]).name,
-					process.out.versions
-					).match()
-				}
+                    sanitizeOutput(process.out, unstableKeys: ["good_reads", "bad_reads", "log"])
+                    ).match()
+                }
             )
         }
     }
@@ -45,13 +40,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-				    [
+                    [ id:'test', single_end:false ],
+                    [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
-				]
-
+                ]
                 """
             }
         }
@@ -60,13 +54,31 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					process.out.good_reads[0][1].collect { file(it).name }, // unstable
-					process.out.single_reads[0][1].collect { file(it).name }, // empty: d41d8cd98f00b204e9800998ecf8427e
-					process.out.bad_reads,
-					file(process.out.log[0][1]).name,
-					process.out.versions
-					).match()
-				}
+                    sanitizeOutput(process.out, unstableKeys: ["good_reads", "single_reads", "bad_reads", "log"])
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-prinseqplusplus-stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

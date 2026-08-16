@@ -1,6 +1,6 @@
 name: "propr_logratio"
-description: Transform the data matrix using centered logratio transformation (CLR)
-  or additive logratio transformation (ALR)
+description: Transform the data matrix using centered logratio transformation
+  (CLR) or additive logratio transformation (ALR)
 keywords:
   - alr
   - clr
@@ -15,7 +15,8 @@ tools:
       documentation: "https://rdrr.io/cran/propr/man/propr.html"
       tool_dev_url: "https://github.com/tpq/propr"
       doi: "10.1038/s41598-017-16520-0"
-      licence: ["GPL-2"]
+      licence:
+        - "GPL-2"
       identifier: biotools:propr
 input:
   - - meta:
@@ -44,8 +45,8 @@ output:
             [id: 'test', ...]
       - "*.logratio.tsv":
           type: file
-          description: ALR/CLR transformed data matrix. With rows = variables or genes,
-            columns = samples or cells.
+          description: ALR/CLR transformed data matrix. With rows = variables or
+            genes, columns = samples or cells.
           pattern: "*.logratio.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -68,6 +69,11 @@ output:
         pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@suzannejin"
   - "@oprana22"

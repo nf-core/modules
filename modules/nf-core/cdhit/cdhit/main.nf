@@ -3,9 +3,9 @@ process CDHIT_CDHIT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cd-hit%3A4.8.1--h5b5514e_7':
-        'biocontainers/cd-hit:4.8.1--h5b5514e_7' }"
+        'quay.io/biocontainers/cd-hit:4.8.1--h5b5514e_7' }"
 
     input:
     tuple val(meta), path(sequences)

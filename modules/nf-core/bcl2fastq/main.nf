@@ -2,7 +2,7 @@ process BCL2FASTQ {
     tag "${ meta.lane ? meta.id + "." + meta.lane : meta.id }"
     label 'process_high'
 
-    container "nf-core/bcl2fastq:2.20.0.422"
+    container "quay.io/nf-core/bcl2fastq:2.20.0.422"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)

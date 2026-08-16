@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "bandage"
     tag "bandage/image"
-    tag "tabix/bgzip"
+    tag "htslib/bgziptabix"
 
     test("test-bandage-image") {
 
@@ -41,14 +41,19 @@ nextflow_process {
     test("test-bandage-image - gzip") {
 
         setup {
-            run("TABIX_BGZIP"){
-                script "../../../tabix/bgzip/main.nf"
+            run("HTSLIB_BGZIPTABIX"){
+                script "../../../htslib/bgziptabix/main.nf"
                 process {
                     """
                     input[0] = [
     				    [ id:'B-3106' ], // meta map
-    				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+    				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true),
+					[],
+					[]
     				]
+                    input[1] = "compress"
+                    input[2] = false
+                    input[3] = "gfa"
                     """
                 }
             }
@@ -57,7 +62,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TABIX_BGZIP.out.output
+                input[0] = HTSLIB_BGZIPTABIX.out.output
                 """
             }
         }

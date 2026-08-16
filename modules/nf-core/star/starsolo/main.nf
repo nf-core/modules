@@ -1,9 +1,9 @@
-process STARSOLO {
+process STAR_STARSOLO {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/26/268b4c9c6cbf8fa6606c9b7fd4fafce18bf2c931d1a809a0ce51b105ec06c89d/data' :
         'community.wave.seqera.io/library/htslib_samtools_star_gawk:ae438e9a604351a4' }"
 
@@ -18,7 +18,8 @@ process STARSOLO {
     tuple val(meta),  path('*Log.out')           , emit: log_out
     tuple val(meta),  path('*Log.progress.out')  , emit: log_progress
     tuple val(meta),  path('*/Gene/Summary.csv') , emit: summary
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('star'), eval('STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_star
+
     when:
     task.ext.when == null || task.ext.when
 
@@ -30,19 +31,19 @@ process STARSOLO {
 
     // Handle solotype argument logic
     if (solotype == "CB_UMI_Simple") {
-        solotype_args = meta.umi_len ? "--soloUMIlen ${meta.umi_len} " : ""
+        solotype_args = meta['umi_len'] ? "--soloUMIlen ${meta['umi_len']} " : ""
         solotype_args = solotype_args + (opt_whitelist.name != 'NO_FILE' ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None ")
-        solotype_args = solotype_args + (meta.umi_start ? "--soloUMIstart ${meta.umi_start} " : "")
-        solotype_args = solotype_args + (meta.cb_len ? "--soloCBlen ${meta.cb_len} " : "")
-        solotype_args = solotype_args + (meta.cb_start ? "--soloCBstart ${meta.cb_start} " : "")
-        solotype_args = solotype_args + (meta.barcode_len ? "--soloBarcodeReadLength ${meta.barcode_len} " : "")
-        solotype_args = solotype_args + (meta.barcode_mate ? "--soloBarcodeMate ${meta.barcode_mate} " : "")
-    } else if (solotype == "CB_UMI_Simple") {
-        solotype_args = meta.cb_position ? "--soloCBposition ${meta.cb_position}" : ""
+        solotype_args = solotype_args + (meta['umi_start'] ? "--soloUMIstart ${meta['umi_start']} " : "")
+        solotype_args = solotype_args + (meta['cb_len'] ? "--soloCBlen ${meta['cb_len']} " : "")
+        solotype_args = solotype_args + (meta['cb_start'] ? "--soloCBstart ${meta['cb_start']} " : "")
+        solotype_args = solotype_args + (meta['barcode_len'] ? "--soloBarcodeReadLength ${meta['barcode_len']} " : "")
+        solotype_args = solotype_args + (meta['barcode_mate'] ? "--soloBarcodeMate ${meta['barcode_mate']} " : "")
+    } else if (solotype == "CB_UMI_Complex") {
+        solotype_args = meta['cb_position'] ? "--soloCBposition ${meta['cb_position']}" : ""
         solotype_args = solotype_args + (opt_whitelist.name != 'NO_FILE' ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None ")
-        solotype_args = solotype_args + (meta.umi_position ? "--soloUMIposition ${meta.umi_position} " : "")
-        solotype_args = solotype_args + (meta.adapter_seq ? "--soloAdapterSequence ${meta.adapter_seq} " : "")
-        solotype_args = solotype_args + (meta.max_mismatch_adapter ? "--soloAdapterMismatchesNmax ${meta.max_mismatch_adapter} " : "")
+        solotype_args = solotype_args + (meta['umi_position'] ? "--soloUMIposition ${meta['umi_position']} " : "")
+        solotype_args = solotype_args + (meta['adapter_seq'] ? "--soloAdapterSequence ${meta['adapter_seq']} " : "")
+        solotype_args = solotype_args + (meta['max_mismatch_adapter'] ? "--soloAdapterMismatchesNmax ${meta['max_mismatch_adapter']} " : "")
     } else {
         log.warn("Unknown output solotype (${solotype})")
     }
@@ -61,11 +62,6 @@ process STARSOLO {
     if [ -d ${prefix}.Solo.out ]; then
         find ${prefix}.Solo.out \\( -name "*.tsv" -o -name "*.mtx" \\) -exec gzip {} \\;
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        star: \$(STAR --version | sed -e "s/STAR_//g")
-    END_VERSIONS
     """
 
     stub:
@@ -76,10 +72,5 @@ process STARSOLO {
     touch ${prefix}.Log.out
     touch ${prefix}.Log.progress.out
     touch ${prefix}.Solo.out/Gene/Summary.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        star: \$(STAR --version | sed -e "s/STAR_//g")
-    END_VERSIONS
     """
 }

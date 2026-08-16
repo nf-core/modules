@@ -3,9 +3,9 @@ process MIDAS_RUN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/midas:1.3.2--pyh7cba7a3_7':
-        'biocontainers/midas:1.3.2--pyh7cba7a3_7' }"
+        'quay.io/biocontainers/midas:1.3.2--pyh7cba7a3_7' }"
 
     input:
     tuple val(meta), path(reads)
@@ -14,7 +14,8 @@ process MIDAS_RUN {
 
     output:
     tuple val(meta), path("${prefix}/*"), emit: results
-    path "versions.yml"                 , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('midas'), val("1.3.2"), emit: versions_midas, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,8 +23,6 @@ process MIDAS_RUN {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-
-    VERSION = '1.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (meta.single_end) {
         """
@@ -34,11 +33,6 @@ process MIDAS_RUN {
             ${args} \\
             -1 ${reads[0]} \\
             -t ${task.cpus}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            midas: ${VERSION}
-        END_VERSIONS
         """
     } else {
         """
@@ -50,27 +44,15 @@ process MIDAS_RUN {
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
             -t ${task.cpus}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            midas: ${VERSION}
-        END_VERSIONS
         """
     }
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    VERSION = '1.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     mkdir -p ${prefix}/species
     touch "${prefix}/species/species_profile.tsv"
     touch "${prefix}/species/log.txt"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        midas: ${VERSION}
-    END_VERSIONS
     """
 }

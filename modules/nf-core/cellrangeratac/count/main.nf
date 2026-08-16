@@ -2,7 +2,7 @@ process CELLRANGERATAC_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger-atac:2.1.0"
+    container "quay.io/nf-core/cellranger-atac:2.1.0"
 
     input:
     tuple val(meta), path(reads)

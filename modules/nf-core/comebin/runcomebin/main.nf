@@ -3,9 +3,9 @@ process COMEBIN_RUNCOMEBIN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/comebin:1.0.4--hdfd78af_0':
-        'biocontainers/comebin:1.0.4--hdfd78af_0' }"
+        'quay.io/biocontainers/comebin:1.0.4--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(assembly), path(bam, stageAs: "bam/*")

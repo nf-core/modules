@@ -1,0 +1,150 @@
+name: "telomerehunter"
+description: "In silico estimation of telomere content and composition from cancer
+  genomes"
+keywords:
+  - bam
+  - genomics
+  - telomere
+  - telomerehunter
+  - cancer
+tools:
+  - "telomerehunter":
+      description: "In silico estimation of telomere content and composition from cancer
+        genomes"
+      homepage: "https://github.com/linasieverling/TelomereHunter"
+      documentation: "https://github.com/linasieverling/TelomereHunter"
+      tool_dev_url: "https://github.com/linasieverling/TelomereHunter"
+      doi: "10.1186/s12859-019-2851-0"
+      licence:
+        - "GPL v3"
+      args_id: "$args"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - tumor_bam:
+        type: file
+        description: Indexed BAM/CRAM file of the tumor sample. CRAM files are
+          automatically converted to BAM (telomerehunter uses pysam in BAM-only
+          mode).
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - tumor_bai:
+        type: file
+        description: BAM/CRAM index file for the tumor sample
+        pattern: "*.{bai,crai}"
+        ontologies: []
+    - control_bam:
+        type: file
+        description: Optional indexed BAM/CRAM file of the control sample
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - control_bai:
+        type: file
+        description: Optional BAM/CRAM index file for the control sample
+        pattern: "*.{bai,crai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference FASTA file (required when input is CRAM)
+        pattern: "*.{fa,fasta,fna}"
+        ontologies: []
+    - fai:
+        type: file
+        description: Reference FASTA index
+        pattern: "*.fai"
+        ontologies: []
+    - cytoband:
+        type: file
+        description: |
+          Optional cytoband file for the reference genome.
+          When not provided ([]), telomerehunter uses its bundled hg19 cytoband.
+          Must be supplied for hg38 data to avoid an IndexError caused by
+          chromosomes that are longer in hg38 than hg19.
+        pattern: "*.txt"
+        ontologies: []
+output:
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/${prefix}_summary.tsv:
+          type: file
+          description: Combined summary TSV with telomere content estimates
+          pattern: "*_summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  tumor:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/tumor_TelomerCnt_${prefix}/:
+          type: directory
+          description: Directory with tumor telomere analysis results
+          ontologies: []
+  control:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/control_TelomerCnt_${prefix}/:
+          type: directory
+          description: Directory with control telomere analysis results
+          ontologies: []
+  versions_telomerehunter:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - telomerehunter:
+          type: string
+          description: The name of the tool
+      - "pip show telomerehunter | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version |& sed '1!d; s/^.*samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - telomerehunter:
+          type: string
+          description: The name of the tool
+      - "pip show telomerehunter | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version |& sed '1!d; s/^.*samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

@@ -3,7 +3,7 @@ process GFASTATS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f7150110bea918bd523e41aab58f3be2eda949bbe7f715500681b01965e5f667/data':
         'community.wave.seqera.io/library/gfastats:1.3.11--692f8595aa6b06a8' }"
 

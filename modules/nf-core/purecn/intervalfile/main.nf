@@ -3,7 +3,7 @@ process PURECN_INTERVALFILE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b7fc3a4982b55672638cd95e6eb7a884206cc2c296de5a182462c316139f08ab/data':
         'community.wave.seqera.io/library/bioconductor-dnacopy_bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_pruned:ca4b5595ad5ac8ff' }"
 
@@ -17,7 +17,7 @@ process PURECN_INTERVALFILE {
     tuple val(meta), path("*.txt"), emit: txt
     // Only produced if --export is used
     tuple val(meta), path("*.bed"), emit: bed, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('purecn'), eval("Rscript -e 'cat(as.character(packageVersion(\"PureCN\")))'"), emit: versions_purecn, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,10 +35,6 @@ process PURECN_INTERVALFILE {
         --genome ${genome} \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: \$(Rscript -e 'packageVersion("PureCN")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
-    END_VERSIONS
     """
 
     stub:
@@ -50,9 +46,5 @@ process PURECN_INTERVALFILE {
     """
     touch ${prefix}.txt
     ${bed}
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: \$(Rscript -e 'packageVersion("PureCN")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
-    END_VERSIONS
     """
 }

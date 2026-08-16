@@ -2,7 +2,7 @@ process CELLRANGER_VDJ {
     tag "${meta.id}"
     label 'process_high'
 
-    container "nf-core/cellranger:10.0.0"
+    container "quay.io/nf-core/cellranger:10.0.0"
 
     input:
     tuple val(meta), path(reads)
@@ -10,7 +10,7 @@ process CELLRANGER_VDJ {
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

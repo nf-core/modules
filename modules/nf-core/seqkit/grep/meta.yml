@@ -37,6 +37,11 @@ input:
       pattern: "*.{txt,tsv}"
       ontologies:
         - edam: http://edamontology.org/format_3475
+  - out_ext:
+      type: string
+      description: >
+        Output file extension. Leave empty to auto-detect from input (for example
+        `fa` or `fq`)
 output:
   filter:
     - - meta:
