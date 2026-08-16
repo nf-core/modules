@@ -18,7 +18,8 @@ process STARSOLO {
     tuple val(meta),  path('*Log.out')           , emit: log_out
     tuple val(meta),  path('*Log.progress.out')  , emit: log_progress
     tuple val(meta),  path('*/Gene/Summary.csv') , emit: summary
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('star'), eval('STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_star
+
     when:
     task.ext.when == null || task.ext.when
 
@@ -61,11 +62,6 @@ process STARSOLO {
     if [ -d ${prefix}.Solo.out ]; then
         find ${prefix}.Solo.out \\( -name "*.tsv" -o -name "*.mtx" \\) -exec gzip {} \\;
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        star: \$(STAR --version | sed -e "s/STAR_//g")
-    END_VERSIONS
     """
 
     stub:
@@ -76,10 +72,5 @@ process STARSOLO {
     touch ${prefix}.Log.out
     touch ${prefix}.Log.progress.out
     touch ${prefix}.Solo.out/Gene/Summary.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        star: \$(STAR --version | sed -e "s/STAR_//g")
-    END_VERSIONS
     """
 }
