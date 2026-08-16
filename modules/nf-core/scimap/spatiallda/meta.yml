@@ -69,13 +69,16 @@ output:
           description: Plot with the locations of the motifs.
           pattern: "*.{html}"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_scimap:
+    - - task_process:
+          type: string
+          description: The Nextflow task process name
+      - tool_name:
+          type: string
+          description: Tool name (scimap)
+      - version:
+          type: string
+          description: Version of scimap/spatialLDA
 authors:
   - "@migueLib"
   - "@chiarasch"
