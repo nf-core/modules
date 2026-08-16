@@ -25,8 +25,7 @@ input:
           e.g. `[ id:'test' ]`
     - reads:
         type: file
-        description: Input long reads in FASTQ or FASTA format (FASTQ preferred for
-          base quality information)
+        description: Input long reads in FASTQ or FASTA format (FASTQ preferred for base quality information)
         pattern: "*.{fastq,fq,fastq.gz,fq.gz,fasta,fa,fasta.gz,fa.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
@@ -139,3 +138,17 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/myloasm:0.6.0--4ee38265ad9e0a04
+      build_id: bd-4ee38265ad9e0a04_1
+      scan_id: sc-82f6692d18a76843_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/myloasm:0.6.0--90ec28ab9f040682
+      build_id: bd-90ec28ab9f040682_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8369a41d8a2d92487caa26e8604015f6b2cfd48a78fbe732e891f7c5cd1f1861/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/myloasm/.conda-lock/linux_amd64-bd-4ee38265ad9e0a04_1.txt
