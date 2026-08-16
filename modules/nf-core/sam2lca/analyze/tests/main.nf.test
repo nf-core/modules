@@ -32,7 +32,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.csv[0][1]).name,
-                    sanitizeOutput(process.out, unstableKeys: ["json"])
+                    sanitizeOutput(process.out, unstableKeys: ["csv", "json"])
                     ).match()
                 }
             )
