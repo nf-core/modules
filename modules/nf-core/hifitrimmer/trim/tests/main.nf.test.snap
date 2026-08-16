@@ -1,5 +1,5 @@
 {
-    "hifi_trimmer trim test - input fasta": {
+    "hifi_trimmer trim test - input bam - output cram": {
         "content": [
             "41f5c3128da504e5bcb6b24b28542e21",
             {
@@ -7,77 +7,91 @@
                     [
                         "HIFITRIMMER_TRIM",
                         "hifi-trimmer",
-                        "4.0.0"
+                        "5.0.1"
                     ]
                 ],
                 "versions_samtools": [
                     [
                         "HIFITRIMMER_TRIM",
                         "samtools",
-                        "1.24"
+                        ""
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-07-29T23:32:53.055211625",
+        "timestamp": "2026-08-14T11:19:02.915126424",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
         }
     },
-    "hifi_trimmer trim test - input fastq": {
+    "hifi_trimmer trim test - input cram - output fastq": {
         "content": [
-            "41f5c3128da504e5bcb6b24b28542e21",
+            [
+                [
+                    {
+                        "id": "test_cram"
+                    },
+                    "test_cram.fastq.gz:md5,7a1bbfa8bef6df98d0cedd214b17f588"
+                ]
+            ],
             {
                 "versions_hifitrimmer": [
                     [
                         "HIFITRIMMER_TRIM",
                         "hifi-trimmer",
-                        "4.0.0"
+                        "5.0.1"
                     ]
                 ],
                 "versions_samtools": [
                     [
                         "HIFITRIMMER_TRIM",
                         "samtools",
-                        "1.24"
+                        ""
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-07-29T23:32:33.711485684",
+        "timestamp": "2026-08-14T11:19:47.293198251",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
         }
     },
-    "hifi_trimmer trim test - input cram": {
+    "hifi_trimmer trim test - input fastq - output fasta": {
         "content": [
-            "41f5c3128da504e5bcb6b24b28542e21",
+            [
+                [
+                    {
+                        "id": "test_fastq"
+                    },
+                    "test_fastq.fasta.gz:md5,80f9c060bfc39f9d12a8e70c112d05cc"
+                ]
+            ],
             {
                 "versions_hifitrimmer": [
                     [
                         "HIFITRIMMER_TRIM",
                         "hifi-trimmer",
-                        "4.0.0"
+                        "5.0.1"
                     ]
                 ],
                 "versions_samtools": [
                     [
                         "HIFITRIMMER_TRIM",
                         "samtools",
-                        "1.24"
+                        ""
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-07-29T23:41:32.843797735",
+        "timestamp": "2026-08-14T11:19:58.74977546",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
         }
     },
-    "hifi_trimmer trim test - input bam": {
+    "hifi_trimmer trim test - input bam - output sam": {
         "content": [
             "41f5c3128da504e5bcb6b24b28542e21",
             {
@@ -85,19 +99,52 @@
                     [
                         "HIFITRIMMER_TRIM",
                         "hifi-trimmer",
-                        "4.0.0"
+                        "5.0.1"
                     ]
                 ],
                 "versions_samtools": [
                     [
                         "HIFITRIMMER_TRIM",
                         "samtools",
-                        "1.24"
+                        ""
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-07-29T23:35:46.641735715",
+        "timestamp": "2026-08-14T11:19:16.461277291",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "hifi_trimmer trim test - input fasta - output fasta": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test_fasta"
+                    },
+                    "test_fasta.fasta.gz:md5,80f9c060bfc39f9d12a8e70c112d05cc"
+                ]
+            ],
+            {
+                "versions_hifitrimmer": [
+                    [
+                        "HIFITRIMMER_TRIM",
+                        "hifi-trimmer",
+                        "5.0.1"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "HIFITRIMMER_TRIM",
+                        "samtools",
+                        ""
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-14T11:20:11.572400523",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
@@ -107,14 +154,20 @@
         "content": [
             {
                 "bam": [
+                    
+                ],
+                "cram": [
+                    
+                ],
+                "fasta": [
                     [
                         {
                             "id": "test_stub"
                         },
-                        "test_stub.bam:md5,f50b84b1db4b83ba62ec1deacc69c260"
+                        "test_stub.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "cram": [
+                "fastq": [
                     
                 ],
                 "sam": [
@@ -124,19 +177,78 @@
                     [
                         "HIFITRIMMER_TRIM",
                         "hifi-trimmer",
-                        "4.0.0"
+                        "5.0.1"
                     ]
                 ],
                 "versions_samtools": [
                     [
                         "HIFITRIMMER_TRIM",
                         "samtools",
-                        "1.24"
+                        ""
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-07-31T09:39:38.686143412",
+        "timestamp": "2026-08-14T11:43:04.023976064",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "hifi_trimmer trim test - input cram - output sam": {
+        "content": [
+            "41f5c3128da504e5bcb6b24b28542e21",
+            {
+                "versions_hifitrimmer": [
+                    [
+                        "HIFITRIMMER_TRIM",
+                        "hifi-trimmer",
+                        "5.0.1"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "HIFITRIMMER_TRIM",
+                        "samtools",
+                        ""
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-14T11:19:37.536489827",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "hifi_trimmer trim test - input bam - output fasta": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test_bam"
+                    },
+                    "test_bam.fastq.gz:md5,7a1bbfa8bef6df98d0cedd214b17f588"
+                ]
+            ],
+            {
+                "versions_hifitrimmer": [
+                    [
+                        "HIFITRIMMER_TRIM",
+                        "hifi-trimmer",
+                        "5.0.1"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "HIFITRIMMER_TRIM",
+                        "samtools",
+                        ""
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-14T11:19:26.440187616",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
