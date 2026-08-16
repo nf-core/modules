@@ -28,10 +28,11 @@ nextflow_process {
                 { assert process.out.spatial_lda_output },
                 { assert process.out.composition_plot },
                 { assert process.out.motif_location_plot },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
     }
+
     test("spatiallda - stub") {
         options "-stub"
         when {

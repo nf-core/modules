@@ -11,7 +11,7 @@ process SCIMAP_SPATIALLDA {
     tuple val(meta), path("*.csv") , emit: spatial_lda_output
     tuple val(meta), path("*.png") , emit: composition_plot
     tuple val(meta), path("*.html"), emit: motif_location_plot
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('scimap'), eval('python /scimap/scripts/spatialLDA.py --version'), emit: versions_scimap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -19,19 +19,15 @@ process SCIMAP_SPATIALLDA {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${phenotyped}" == "${prefix}.csv") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate."
 
     """
-    python /scimap/scripts/spatialLDA.py \
-        --input $phenotyped \
-        --output "${prefix}.csv" \
-        --neighborhood-composition-plot "${prefix}.png" \
-        --motif-locations-plot "${prefix}.html" \
+    python /scimap/scripts/spatialLDA.py \\
+        --input $phenotyped \\
+        --output "${prefix}.csv" \\
+        --neighborhood-composition-plot "${prefix}.png" \\
+        --motif-locations-plot "${prefix}.html" \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        scimap/spatialLDA: \$(python /scimap/scripts/spatialLDA.py --version)
-    END_VERSIONS
     """
 
     stub:
@@ -41,10 +37,5 @@ process SCIMAP_SPATIALLDA {
     touch "${prefix}.csv"
     touch "${prefix}.png"
     touch "${prefix}.html"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        scimap/spatialLDA: \$(python /scimap/scripts/spatialLDA.py --version)
-    END_VERSIONS
     """
 }
