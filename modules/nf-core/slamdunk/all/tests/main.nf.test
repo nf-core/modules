@@ -54,7 +54,7 @@ nextflow_process {
                     process.out.tsv,
                     process.out.plus_bedgraph,
                     process.out.mins_bedgraph,
-                    process.out.versions
+                    process.out.versions_slamdunk
                 ).match() }
             )
         }
@@ -88,16 +88,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.bam,
-                    process.out.filtered_bam,
-                    process.out.filtered_bai,
-                    process.out.vcf,
-                    process.out.tsv,
-                    process.out.plus_bedgraph,
-                    process.out.mins_bedgraph,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
