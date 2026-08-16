@@ -36,8 +36,7 @@ nextflow_process {
                     path(process.out.domtbl[0][1]).text,
                     process.out.dom_tsv,
                     sanitizeOutput(process.out)
-                .match() }
-                }
+                ).match() }
             )
         }
 
