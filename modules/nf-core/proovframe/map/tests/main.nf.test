@@ -15,15 +15,15 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'fa', single_end:false ], // meta map
+                    [ id:'fa' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id:'fa', single_end:false ], // meta map
+                    [ id:'fa' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                 ]
                 input[2] = [
-                    [ id:'fa', single_end:false ], // meta map
+                    [ id:'fa' ],
                     file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.dmnd', checkIfExists: true)
                 ]
                 """
@@ -34,10 +34,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.tsv[0][1]).text.contains('MT192765.1	sp|Q460N5|PAR14_HUMAN	28.4	176	105	5	3424	3918	818	983') },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("sarscov2 - provided faa") {
@@ -46,11 +45,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'fa', single_end:false ], // meta map
+                    [ id:'fa' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id:'fa', single_end:false ], // meta map
+                    [ id:'fa' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                 ]
                 input[2] = [[:], []]
@@ -62,28 +61,26 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.tsv[0][1]).text.contains('MT192765.1	ENSSASP00005000002.1	100.0	7096	1	0	259	21545	1') },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("sarscov2 - tsv - stub") {
         options '-stub'
-
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test2', single_end:false ], // meta map
+                    [ id:'test2' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id:'fa', single_end:false ], // meta map
+                    [ id:'fa' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                 ]
                 input[2] = [
-                    [ id:'fa', single_end:false ], // meta map
+                    [ id:'fa' ],
                     file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.dmnd', checkIfExists: true)
                 ]
                 """
@@ -93,9 +90,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
-
 }

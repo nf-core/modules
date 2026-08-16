@@ -10,7 +10,7 @@ process SPOTIFLOW {
 
     output:
     tuple val(meta), path("*.csv"), emit: spots
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('spotiflow'), eval("python -m pip show spotiflow | grep 'Version' | sed -e 's/Version: //g'"), emit: versions_spotiflow, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,21 +22,11 @@ process SPOTIFLOW {
         ${image_2d} \\
         --out-dir . \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spotiflow: \$( python -m pip show --version spotiflow | grep "Version" | sed -e "s/Version: //g" )
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spotiflow: \$( python -m pip show --version spotiflow | grep "Version" | sed -e "s/Version: //g" )
-    END_VERSIONS
     """
 }

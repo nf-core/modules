@@ -155,7 +155,6 @@ The following `ext` options are allowed in nf-core:
 - `ext.args`: arguments for the underlying tool, passed directly if present (for multi-tool modules, `args2` through `args99` are allowed as well)
 - `ext.prefix`: prefix used to name output files
 - `ext.prefix2`: a second prefix used in case of multiple outputs; you **MUST NOT** use it for other purposes, e.g. file formats
-- `ext.use_gpu`: a flag to determine whether a module with optional acceleration should use GPUs
 
 Modules **MUST NOT** assume the presence of other `ext` options.
 

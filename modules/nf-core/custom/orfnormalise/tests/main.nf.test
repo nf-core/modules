@@ -431,4 +431,56 @@ nextflow_process {
         }
     }
 
+    test("ribotish composite ORF types map on the location, keeping the qualifier native") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.extended.pred.txt', checkIfExists: true),
+                    'ribotish'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.tsv[0][1]).text.readLines()
+            def header = lines.find { it.startsWith('orf_id') }.split('\t') as List
+            def data = lines.findAll { !it.startsWith('#') && !it.startsWith('orf_id') }
+            def i_class = header.indexOf('orf_class')
+            def i_native = header.indexOf('orf_type_native')
+            def classes = data.collect { it.split('\t')[i_class] } as Set
+            def natives = data.collect { it.split('\t')[i_native] }
+            def qualified = natives.findAll { it.contains(':') }
+            def provenance = lines.find { it.startsWith('# parser_columns:') }
+            def class_carries_qualifier = classes.any { it.contains(':') }
+            def expected_qualified = [
+                "Novel:CDSFrameOverlap",
+                "5'UTR:Known",
+                "5'UTR:CDSFrameOverlap",
+                "3'UTR:CDSFrameOverlap",
+                "Truncated:Known",
+                "Novel:Known",
+                "Internal:CDSFrameOverlap",
+            ]
+
+            assertAll(
+                // The part before the colon selects the class; the qualifier survives
+                // in orf_type_native.
+                { assert process.success },
+                { assert classes == ['canonical_cds', 'uORF', 'dORF', 'intORF', 'novel_u'] as Set },
+                { assert !class_carries_qualifier },
+                { assert natives.containsAll(expected_qualified) },
+                { assert qualified.size() == expected_qualified.size() },
+                { assert provenance.contains('unmapped_orf_type=0') }
+            )
+        }
+    }
+
 }

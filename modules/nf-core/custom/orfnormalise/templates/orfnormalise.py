@@ -413,6 +413,8 @@ def write_outputs(bed_path, tsv_path, bed_lines, tsv_rows, parser_columns, unmap
 # Every caller's ORF-type vocabulary is a closed enum, so tokens are matched
 # exactly (casefolded) rather than by substring. Substring matching mis-fired
 # on the overlap forms, because "uorf" is a substring of "overlap_uorf".
+#
+# No key may contain a colon: classify() matches only the part before one.
 # ----------------------------------------------------------------------------
 
 CLASS_TOKENS = {
@@ -498,13 +500,17 @@ CLASS_TOKENS = {
 def classify(caller, orf_type):
     """Map a caller's native ORF-type token to the harmonised class.
 
-    Returns (orf_class, matched); `matched` is False when a non-empty token
-    matched no entry, so unmapped labels can be counted rather than silently
-    absorbed into `other`.
+    Only the part before the first colon is matched; the full token survives in
+    `orf_type_native`.
+
+    Returns (orf_class, matched); `matched` is False when a non-empty token's
+    location matched no entry, so unmapped labels can be counted rather than
+    silently absorbed into `other`.
     """
     if not orf_type:
         return "other", True
-    cls = CLASS_TOKENS[caller].get(orf_type.strip().casefold())
+    location = orf_type.split(":", 1)[0]
+    cls = CLASS_TOKENS[caller].get(location.strip().casefold())
     if cls is None:
         return "other", False
     return cls, True
