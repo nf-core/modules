@@ -11,19 +11,19 @@ process TBPROFILER_PROFILE {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("bam/*.bam")     , emit: bam
-    tuple val(meta), path("results/*.csv") , emit: csv, optional: true
+    tuple val(meta), path("bam/*.bam"),      emit: bam
+    tuple val(meta), path("results/*.csv"),  emit: csv, optional: true
     tuple val(meta), path("results/*.json"), emit: json
-    tuple val(meta), path("results/*.txt") , emit: txt, optional: true
-    tuple val(meta), path("vcf/*.vcf.gz")  , emit: vcf
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("results/*.txt"),  emit: txt, optional: true
+    tuple val(meta), path("vcf/*.vcf.gz"),   emit: vcf
+    tuple val("${task.process}"), val('tb-profiler'), eval('tb-profiler --version'), emit: versions_tb_profiler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     def input_reads = meta.single_end ? "--read1 $reads" : "--read1 ${reads[0]} --read2 ${reads[1]}"
     """
     tb-profiler \\
@@ -32,10 +32,5 @@ process TBPROFILER_PROFILE {
         --prefix ${prefix} \\
         --threads $task.cpus \\
         $input_reads
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tbprofiler:  \$( echo \$(tb-profiler --version 2>&1) | sed 's/TBProfiler version //')
-    END_VERSIONS
     """
 }
