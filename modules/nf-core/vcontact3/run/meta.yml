@@ -25,6 +25,12 @@ input:
         description: Input FASTA or GenBank files with viral sequences
         pattern: "*.{fasta,fa,faa,gbk,gb}"
         ontologies: []
+  - database:
+      type: file
+      description: VCONTACT3 reference database directory produced by
+        VCONTACT3_PREPAREDDATABASES
+      pattern: "*"
+      ontologies: []
 output:
   results:
     - - meta:

@@ -9,6 +9,7 @@ process VCONTACT3_RUN {
 
     input:
     tuple val(meta), path(genomes)
+    path database
 
     output:
     tuple val(meta), path("vcontact3_output/"), emit: results
@@ -25,6 +26,7 @@ process VCONTACT3_RUN {
         -n ${genomes.join(' ')} \\
         -o vcontact3_output/ \\
         --threads ${task.cpus} \\
+        -d ${database} \\
         ${args}
     """
 
