@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "mgnifam"
     tag "mgnifam/generatefamilies"
+    tag "hmmer/eslsfetchindex"
 
     config "./nextflow.config"
 
@@ -22,7 +23,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                    []
                 ]
                 """
             }
@@ -31,8 +33,77 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                // "log" contains a wall-clock timestamp on every line, so only its
-                // filename is stable across runs.
+                // "log" contains wall-clock timestamps
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+
+    }
+
+    test("mgnify - faa - mgnifams - esl-sfetch index") {
+
+        setup {
+            run("HMMER_ESLSFETCHINDEX") {
+                script "../../../hmmer/eslsfetchindex/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = HMMER_ESLSFETCHINDEX.out.ssi.map { meta, ssi ->
+                    [
+                        meta,
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                        ssi
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+
+    }
+
+    test("mgnify - faa - mgnifams - prefetch_targets") {
+
+        when {
+            params {
+                module_args = '--prefetch_targets'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
             )
         }
@@ -52,7 +123,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                    []
                 ]
                 """
             }
@@ -69,8 +141,8 @@ nextflow_process {
 
     // Extra `generate_families --help` options that main.nf does not already
     // hardcode, as documentation (default values as comments):
-    // `--fasta_index` is skipped: it takes a path to a precomputed sequence
-    // index, not a tunable value, and is optional (auto-built when omitted).
+    // `--fasta_index` is skipped here: it is a module input, not an ext.arg,
+    // and is covered by the `esl-sfetch index` test below.
     test("mgnify - faa - mgnifams - custom_args - stub") {
 
         options "-stub"
@@ -93,7 +165,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                    []
                 ]
                 """
             }

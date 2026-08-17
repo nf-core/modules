@@ -4,14 +4,16 @@ process HIFITRIMMER_TRIM {
 
    conda "${moduleDir}/environment.yml"
    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/720bfb6a0c816137d958bc8658cbfd184f0a41e3e69d43e9fcdb93275620d128/data' :
-      'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:a06b8fcc843c1e68' }"
+      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/653461311faa0a2175b75d08405548c1a9b8e704c6b6b70b133c4970cb3d7e5c/data' :
+      'community.wave.seqera.io/library/hifi_trimmer_gzip:e72290a9b8b5d246' }"
 
    input:
    tuple val(meta), path(input), path(bed)
 
 
    output:
+   tuple val(meta), path("${prefix}.fasta.gz"), emit: fasta, optional: true
+   tuple val(meta), path("${prefix}.fastq.gz"), emit: fastq, optional: true
    tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
    tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
@@ -24,12 +26,19 @@ process HIFITRIMMER_TRIM {
    script:
    prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
-   def args2 = task.ext.args2 ?: ''
-   def args3 = task.ext.args3 ?: ''
-   def suffix = args.contains('-f cram') ? 'cram' : args.contains('-f sam') ? 'sam' : 'bam'
-   def input_convert = input.name.endsWith('cram') ? "<(samtools view ${input} -u ${args3} -@ ${task.cpus})" :
-        !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ ${task.cpus})" : input
+   def suffix = args.contains('-f cram') ? 'cram'
+      : args.contains('-f sam') ? 'sam'
+      : args.contains('-f bam') ? 'bam'
+      : args.contains('-f fastq') ? 'fastq.gz' : 'fasta.gz'
 
+   // Check compatibility of input-output format combinations before the process runs
+   def inputName = input.name.toLowerCase()
+   if (inputName =~ /\.(fa|fasta)(\.gz)?$/ && suffix != 'fasta.gz') {
+      error "ERROR: FASTA input can only produce FASTA output, but '-f ${suffix}' was requested."
+   }
+   if (inputName =~ /\.(fq|fastq)(\.gz)?$/ && suffix in ['bam', 'sam', 'cram']) {
+      error "ERROR: FASTQ input cannot produce ${suffix.toUpperCase()} output."
+   }
    if (input.name == "${prefix}.${suffix}") {
       error "ERROR: Output file '${prefix}.${suffix}' collides with input file name. Please set a different prefix via task.ext.prefix or meta.id."
    }
@@ -38,17 +47,20 @@ process HIFITRIMMER_TRIM {
    hifi-trimmer trim \\
       -t ${task.cpus} \\
       ${args} \\
-      ${input_convert} \\
-      ${bed} \\
-      > ${prefix}.${suffix}
+      -o ${prefix}.${suffix} \\
+      ${input} \\
+      ${bed}
    """
 
    stub:
    prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
-   def suffix = args.contains('-f cram') ? 'cram' : args.contains('-f sam') ? 'sam' : 'bam'
+   def suffix = args.contains('-f cram') ? 'cram'
+      : args.contains('-f sam') ? 'sam'
+      : args.contains('-f bam') ? 'bam'
+      : args.contains('-f fastq') ? 'fastq.gz' : 'fasta.gz'
    """
-   printf "stub\n" > ${prefix}.${suffix}
+   ${suffix.endsWith('.gz') ? "echo \"\" | gzip > ${prefix}.${suffix}" : "echo \"\" > ${prefix}.${suffix}"}
    echo ${args}
    """
 }

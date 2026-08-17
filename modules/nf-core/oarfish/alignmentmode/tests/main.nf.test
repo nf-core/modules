@@ -1,0 +1,148 @@
+nextflow_process {
+
+    name "Test Process OARFISH_ALIGNMENTMODE"
+    script "../main.nf"
+    process "OARFISH_ALIGNMENTMODE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "oarfish"
+    tag "oarfish/alignmentmode"
+    tag "samtools/collate"
+
+    test("long-read pacbio - bam") {
+
+        setup {
+            run("SAMTOOLS_COLLATE") {
+                script "modules/nf-core/samtools/collate/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
+                    ]
+                    input[1] = [[], [], []]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_COLLATE.out.bam
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['meta_info'])).match() }
+            )
+        }
+    }
+
+    test("long-read pacbio - bam - stub") {
+
+        options "-stub"
+
+        setup {
+            run("SAMTOOLS_COLLATE") {
+                script "modules/nf-core/samtools/collate/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
+                    ]
+                    input[1] = [[], [], []]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_COLLATE.out.bam
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("long-read ont - bam") {
+
+        setup {
+            run("SAMTOOLS_COLLATE") {
+                script "modules/nf-core/samtools/collate/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
+                    ]
+                    input[1] = [[], [], []]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_COLLATE.out.bam
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['meta_info'])).match() }
+            )
+        }
+    }
+
+    test("long-read ont - bam - stub") {
+
+        options "-stub"
+
+        setup {
+            run("SAMTOOLS_COLLATE") {
+                script "modules/nf-core/samtools/collate/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test_sample.mmaligned.sorted.bam', checkIfExists: true)
+                    ]
+                    input[1] = [[], [], []]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_COLLATE.out.bam
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

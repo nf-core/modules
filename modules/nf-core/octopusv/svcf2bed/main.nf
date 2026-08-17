@@ -4,8 +4,8 @@ process OCTOPUSV_SVCF2BED {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/octopusv:0.4.0--pyhdfd78af_0':
-        'quay.io/biocontainers/octopusv:0.4.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/octopusv:0.4.1--pyhdfd78af_0':
+        'quay.io/biocontainers/octopusv:0.4.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(svcf)
