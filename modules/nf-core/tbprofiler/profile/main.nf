@@ -33,4 +33,14 @@ process TBPROFILER_PROFILE {
         --threads $task.cpus \\
         $input_reads
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p bam results vcf
+    touch bam/${prefix}.bam
+    touch results/${prefix}.results.json
+    echo "" | gzip > vcf/${prefix}.targets.csq.vcf.gz
+    """
 }
+
