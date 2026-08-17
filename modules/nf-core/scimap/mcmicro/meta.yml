@@ -10,10 +10,10 @@ tools:
       homepage: "https://scimap.xyz/"
       documentation: "https://scimap.xyz/"
       tool_dev_url: "https://github.com/labsyspharm/scimap"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: biotools:SCIMAP
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -50,13 +50,33 @@ output:
           description: Sorted H5AD file
           pattern: "*.{h5ad}"
           ontologies: []
+  versions_scimap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - scimap:
+          type: string
+          description: The name of the tool
+      - "2.1.3":
+          type: string
+          description:
+            The version of the tool
+            # WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - scimap:
+          type: string
+          description: The name of the tool
+      - "2.1.3":
+          type: string
+          description:
+            The version of the tool
+            # WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
 authors:
   - "@luiskuhn"
 maintainers:
