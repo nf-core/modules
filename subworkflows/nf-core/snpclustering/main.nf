@@ -1,8 +1,8 @@
-include { BEAGLE5_BEAGLE } from '../../../modules/nf-core/beagle5/beagle/main'
-include { PLINK2_VCF } from '../../../modules/nf-core/plink2/vcf/main'
-include { PLINK2_PCA } from '../../../modules/nf-core/plink2/pca/main'
-include { CUSTOM_PCACLUSTERING } from '../../../modules/nf-core/custom/pcaclustering/main'
-include { CUSTOM_CLUSTERMETRICS } from '../../../modules/nf-core/custom/clustermetrics/main'
+include { BEAGLE5_BEAGLE              } from '../../../modules/nf-core/beagle5/beagle'
+include { PLINK2_VCF                  } from '../../../modules/nf-core/plink2/vcf/main'
+include { PLINK2_PCA                  } from '../../../modules/nf-core/plink2/pca/main'
+include { CUSTOM_PCACLUSTERING        } from '../../../modules/nf-core/custom/pcaclustering/main'
+include { CUSTOM_CLUSTERMETRICS       } from '../../../modules/nf-core/custom/clustermetrics/main'
 include { CUSTOM_CLUSTERVISUALIZATION } from '../../../modules/nf-core/custom/clustervisualization/main'
 
 workflow SNPCLUSTERING {
@@ -26,9 +26,6 @@ workflow SNPCLUSTERING {
      * Build BEAGLE input tuple:
      * tuple val(meta), path(vcf), path(vcf_index), path(refpanel), path(refpanel_index),
      *       path(genmap), path(exclsamples), path(exclmarkers), val(region)
-     *
-     * For now, refpanel/genmap/exclusion files are optional and passed as empty lists
-     * when not provided by the caller.
      */
     ch_beagle_input = vcf_ch.map { meta, vcf, vcf_index ->
         tuple(
@@ -74,7 +71,6 @@ workflow SNPCLUSTERING {
 
     /*
      * PCA clustering
-     * Signature inferred from your successful wiring so far:
      * CUSTOM_PCACLUSTERING(tsv, algorithm, n_clusters, dbscan_eps, dbscan_min_samples)
      */
     CUSTOM_PCACLUSTERING(
@@ -133,6 +129,7 @@ workflow SNPCLUSTERING {
 }
 
 process EIGENVEC_TO_TSV {
+
     tag "${meta.id}"
     label 'process_single'
 
@@ -145,8 +142,18 @@ process EIGENVEC_TO_TSV {
 
     script:
     """
-    awk 'NR==1 { sub(/^#/, ""); \$1 = ""; sub(/^\\t/, ""); sub(/^IID\\t/, "sample_id\\t"); print; next }
-    { \$1 = ""; sub(/^\\t/, ""); print }' OFS='\\t' ${eigenvec} > ${meta.id}.tsv
+    awk '
+    NR==1 {
+        sub(/^#/, "")
+        if (\$1 == "IID") {
+            \$1="sample_id"
+        }
+        print
+        next
+    }
+    {
+        print
+    }' OFS='\\t' ${eigenvec} > ${meta.id}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -154,3 +161,4 @@ process EIGENVEC_TO_TSV {
     END_VERSIONS
     """
 }
+
