@@ -91,9 +91,9 @@ process QUARTO_PRERENDER {
     fi
 
     # Write notebook package versions to YAML
-    cat <<-END_VERSIONS > versions.yml
+    cat <<- END_VERSIONS > versions.yml
     "${task.process}_${prefix}":
-    \$(awk -F',' '{printf "    %s: %s\n", \$1, \$2}' versions.csv)
+    \$(awk -F',' '{printf "    %s: %s\\n", \$1, \$2}' versions.csv)
     END_VERSIONS
     """
 
