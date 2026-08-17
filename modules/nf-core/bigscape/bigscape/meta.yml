@@ -1,0 +1,96 @@
+name: "bigscape_bigscape"
+description: |
+  BiG-SCAPE (Biosynthetic Gene Similarity Clustering and Prospecting Engine) clusters
+  biosynthetic gene clusters (BGCs) into gene cluster families (GCFs) based on sequence
+  similarity networks. It takes antiSMASH-annotated GenBank files and a Pfam database as
+  input, and produces similarity networks and clustering results.
+keywords:
+  - biosynthetic gene clusters
+  - BGC
+  - clustering
+  - similarity network
+  - antiSMASH
+  - gene cluster families
+  - secondary metabolites
+  - natural products
+tools:
+  - "bigscape":
+      description: Biosynthetic Gene Similarity Clustering and Prospecting Engine for clustering BGCs into gene cluster families using similarity networks
+      homepage: "https://github.com/medema-group/BiG-SCAPE"
+      documentation: "https://bigscape-corason.secondarymetabolites.org/BiG-SCAPE/"
+      tool_dev_url: "https://github.com/medema-group/BiG-SCAPE"
+      doi: "10.1038/s41589-019-0400-9"
+      licence:
+        - "AGPL v3-or-later"
+      identifier: "biotools:BiG-SCAPE"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - gbk_dir:
+        type: directory
+        description: |
+          Directory containing antiSMASH-annotated GenBank (.gbk) files representing
+          biosynthetic gene cluster regions. This is typically the output directory from
+          an antiSMASH run.
+        pattern: "*"
+        ontologies: []
+  - pfam_hmm:
+      type: file
+      description: |
+        Path to a Pfam HMM database file (e.g. Pfam-A.hmm or Pfam-A.hmm.gz).
+        BiG-SCAPE will run `hmmpress` if needed. Can be obtained from the
+        Pfam FTP site.
+      pattern: "*.{hmm,hmm.gz}"
+      ontologies: []
+output:
+  output:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}:
+          type: directory
+          description: |
+            BiG-SCAPE output directory containing similarity network files,
+            clustering results, and HTML visualisation content.
+          pattern: "${prefix}"
+  versions_bigscape:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bigscape:
+          type: string
+          description: The name of the tool
+      - bigscape --version | sed 's/BiG-SCAPE //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bigscape:
+          type: string
+          description: The name of the tool
+      - bigscape --version | sed 's/BiG-SCAPE //':
+          type: eval
+          description: The expression to obtain the version of the tool
+containers:
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bigscape/bigscape/.conda-lock/linux_amd64-bd-aed310da2cd1ca1d_1.txt
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bigscape:2.0.3--aed310da2cd1ca1d
+      build_id: bd-aed310da2cd1ca1d_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bigscape:2.0.3--aed310da2cd1ca1d
+      build_id: bd-aed310da2cd1ca1d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ac/acb20daff43670baa2f5599e97ef0d96f3eeeaaaeb31e7dfa7a23066c908b44a/data
+authors:
+  - "@jvfe"
+maintainers:
+  - "@jvfe"
