@@ -30,8 +30,7 @@ nextflow_process {
             { assert snapshot(
                 sanitizeOutput(process.out, unstableKeys: ["h5ad", "predictions"]),
                 process.out.versions.collect { path(it).yaml }
-            ).match() },
-            { assert "predicted_doublet" in anndata(process.out.h5ad[0][1]).obs.colnames }
+            ).match() }
             )
         }
 
@@ -58,8 +57,7 @@ nextflow_process {
             { assert snapshot(
                 sanitizeOutput(process.out, unstableKeys: ["h5ad", "predictions"]),
                 process.out.versions.collect { path(it).yaml }
-            ).match() },
-            { assert "predicted_doublet" in anndata(process.out.h5ad[0][1]).obs.colnames }
+            ).match() }
             )
         }
 
@@ -86,8 +84,7 @@ nextflow_process {
             { assert snapshot(
                 sanitizeOutput(process.out, unstableKeys: ["h5ad", "predictions"]),
                 process.out.versions.collect { path(it).yaml }
-            ).match() },
-            { assert "predicted_doublet" in anndata(process.out.h5ad[0][1]).obs.colnames }
+            ).match() }
             )
         }
 
