@@ -30,12 +30,12 @@ input:
     - assembly:
         type: file
         description: FASTA file containing a single primary haplotype
-        pattern: "*.fasta.gz"
+        pattern: "*.{fasta.gz,fasta}"
         ontologies: []
     - haplotigs:
         type: file
         description: FASTA file, or list of FASTA files, containing an alternate haplotype or set of haplotypes
-        pattern: "*.fasta.gz"
+        pattern: "*.{fasta.gz,fasta}"
         ontologies: []
   - - meta2:
         type: map
