@@ -17,8 +17,7 @@ process SCRAMBLE_CLUSTERANALYSIS {
     tuple val(meta), path("*_MEIs.txt")              , emit: meis_tab, optional:true
     tuple val(meta), path("*_PredictedDeletions.txt"), emit: dels_tab, optional:true
     tuple val(meta), path("*.vcf")                   , emit: vcf     , optional:true
-    tuple val("${task.process}"), val('scramble'), val('1.0.2'), topic: versions, emit: versions_scramble
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('scramble'), val('1.0.2'), topic: versions, emit: versions_scramble // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
