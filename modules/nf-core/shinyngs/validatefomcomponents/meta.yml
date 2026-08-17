@@ -9,7 +9,7 @@ tools:
   - "shinyngs":
       description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
       homepage: "https://github.com/pinin4fjords/shinyngs"
-      documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
+      documentation: "https://pinin4fjords.github.io/shinyngs/"
       tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
       licence: ["AGPL v3"]
       identifier: ""
@@ -128,24 +128,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/r-shinyngs:3.1.1--b5595b301bfbfd4d
-      build_id: bd-b5595b301bfbfd4d_2
-      scan_id: sc-73b4cbdd1930464e_1
+      name: community.wave.seqera.io/library/r-shinyngs:3.2.1--d43071e62bc500d3
+      build_id: bd-d43071e62bc500d3_1
+      scan_id: sc-5ac2dcb847246bad_1
     linux/arm64:
-      name: community.wave.seqera.io/library/r-shinyngs:3.1.1--4d71a4d10942e43f
-      build_id: bd-4d71a4d10942e43f_2
-      scan_id: sc-72596f6b93ff3200_1
+      name: community.wave.seqera.io/library/r-shinyngs:3.2.1--d168a374ce5dc1af
+      build_id: bd-d168a374ce5dc1af_1
+      scan_id: sc-0f3dfab20873614f_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/r-shinyngs:3.1.1--60831a2d7cd7ae94
-      build_id: bd-60831a2d7cd7ae94_2
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6f/6fff209824ab2042c6f09b68d257d59ae4e0ea7410dad923089db9c5c0dbd683/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/r-shinyngs:3.1.1--791778d7e2758322
-      build_id: bd-791778d7e2758322_2
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8a/8acde9b0bc0374d51ca50f3e49fb0f26a6fb394d277b3af5e276de8bf1786610/data
+      name: oras://community.wave.seqera.io/library/r-shinyngs:3.2.1--b810af5b9efbb4b2
+      build_id: bd-b810af5b9efbb4b2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d5f79ef0afe3e3831496c61c81aeda56312f49ac324dc378d3312af7acae2ec6/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r-shinyngs:3.2.1--ed7d3904b821c0a8
+      build_id: bd-ed7d3904b821c0a8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/74/74ebb0b4cfa12e1174262987ffa0559ab388198ba94196a4fd295ce5a9051a22/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/shinyngs/validatefomcomponents/.conda-lock/linux_amd64-bd-b5595b301bfbfd4d_2.txt
+      lock_file: modules/nf-core/shinyngs/validatefomcomponents/.conda-lock/linux_amd64-bd-d43071e62bc500d3_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/shinyngs/validatefomcomponents/.conda-lock/linux_arm64-bd-4d71a4d10942e43f_2.txt
+      lock_file: modules/nf-core/shinyngs/validatefomcomponents/.conda-lock/linux_arm64-bd-d168a374ce5dc1af_1.txt

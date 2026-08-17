@@ -15,14 +15,14 @@ nextflow_process {
         setup {
             run("PHAROKKA_INSTALLDATABASES") {
                 script "../../installdatabases/main.nf"
-                }
             }
+        }
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = PHAROKKA_INSTALLDATABASES.out.pharokka_db
@@ -33,13 +33,29 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.cds_functions,
-                    process.out.length_gc_cds_density,
-                    process.out.versions
-                    ).match()
-                },
-                { assert file(process.out.cds_final_merged_output[0][1]).exists() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["cds_final_merged_output"])).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - genome - fasta -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }

@@ -1,0 +1,108 @@
+name: "transrate"
+description: |
+  Reference-free and reference-based quality assessment of de novo transcriptome
+  assemblies. Only sequence-based (--assembly) and reference-based (--reference) metrics
+  are supported. Read-based metrics (--left/--right) are not: they hard-require the
+  `bam-read` binary, which isn't published on any conda channel, and their aligner
+  (snap-aligner, pinned to an old dev build) segfaults building an index for at least
+  small test genomes.
+keywords:
+  - transcriptome
+  - assembly
+  - quality control
+  - qc
+  - de novo
+tools:
+  - "transrate":
+      description: "Reference free quality assessment of de-novo transcriptome assemblies"
+      homepage: "https://github.com/blahah/transrate/"
+      documentation: "http://hibberdlab.com/transrate/"
+      tool_dev_url: "https://github.com/blahah/transrate/"
+      doi: "10.1101/gr.196469.115"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - assembly:
+        type: file
+        description: Transcriptome assembly FASTA file to be evaluated
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - reference:
+        type: file
+        description: Optional reference proteome or transcriptome FASTA file, to enable reference-based comparative metrics. Pass `[]` to skip.
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+
+output:
+  assemblies:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.assemblies.csv":
+          type: file
+          description: One-row-per-assembly summary of quality metrics
+          pattern: "*.assemblies.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  contigs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.contigs.csv":
+          type: file
+          description: Per-contig quality metrics
+          pattern: "*.contigs.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  versions_transrate:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "transrate":
+          type: string
+          description: The name of the tool
+      - "transrate --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - transrate:
+          type: string
+          description: The name of the tool
+      - transrate --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/transrate_blast:092d9b5f119b9733
+      build_id: bd-092d9b5f119b9733_1
+      scan_id: sc-86f86f9ce18504a2_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/transrate_blast:682e9a1225c61a61
+      build_id: bd-682e9a1225c61a61_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c3f7b24e30eab0cde846c0d31556293afc7818492d016e6770a1fef561042405/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/transrate/.conda-lock/linux_amd64-bd-092d9b5f119b9733_1.txt

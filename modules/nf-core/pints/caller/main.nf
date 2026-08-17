@@ -13,11 +13,12 @@ process PINTS_CALLER {
     val assay_type
 
     output:
-    tuple val(meta), path("*_divergent_peaks.bed")     , optional:true, emit: divergent_TREs
-    tuple val(meta), path("*_bidirectional_peaks.bed") , optional:true, emit: bidirectional_TREs
-    tuple val(meta), path("*_unidirectional_peaks.bed"), optional:true, emit: unidirectional_TREs
-    tuple val(meta), path("peakcalling_*.log")                        , emit: peakcalling_log
-    path  "versions.yml"                                              , emit: versions
+    tuple val(meta), path("*_divergent_peaks.bed")     , emit: divergent_TREs     , optional:true
+    tuple val(meta), path("*_bidirectional_peaks.bed") , emit: bidirectional_TREs , optional:true
+    tuple val(meta), path("*_unidirectional_peaks.bed"), emit: unidirectional_TREs, optional:true
+    tuple val(meta), path("peakcalling_*.log")         , emit: peakcalling_log
+    tuple val("${task.process}"), val('pints') , eval("pints_caller --version")               , emit: versions_pints , topic: versions
+    tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //g'"), emit: versions_python, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,18 +32,22 @@ process PINTS_CALLER {
     //                    error "Please use bam or BigWig files"
     """
     pints_caller \\
-        --bam-file $bams \\
+        --bam-file ${bams} \\
         --save-to . \\
-        --file-prefix $prefix \\
-        --thread $task.cpus \\
+        --file-prefix ${prefix} \\
+        --thread ${task.cpus} \\
         --dont-check-updates \\
-        --exp-type $assay_type \\
-        $args
+        --exp-type ${assay_type} \\
+        ${args}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        python: \$(python --version | sed 's/Python //g')
-        pints: \$(pints_caller --version)
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}_divergent_peaks.bed
+    touch ${prefix}_bidirectional_peaks.bed
+    touch ${prefix}_unidirectional_peaks.bed
+    touch peakcalling_2026_08_05_14_20_53_41.log
     """
 }
