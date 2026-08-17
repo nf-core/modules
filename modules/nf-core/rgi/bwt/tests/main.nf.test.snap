@@ -2,56 +2,6 @@
     "rgi/bwt - minigut - test_fastq_gz - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.json:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            
-                        ]
-                    ]
-                ],
-                "3": [
-                    [
-                        "RGI_BWT",
-                        "rgi",
-                        "6.0.8"
-                    ]
-                ],
-                "4": [
-                    [
-                        "RGI_BWT",
-                        "rgi-database",
-                        "stub_version"
-                    ]
-                ],
-                "5": [
-                    [
-                        "RGI_BWT",
-                        "kma",
-                        "1.6.11"
-                    ]
-                ],
                 "json": [
                     [
                         {
@@ -104,7 +54,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-08-13T15:45:34.756647206",
+        "timestamp": "2026-08-17T08:23:55.264483205",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -113,19 +63,46 @@
     "rgi/bwt - minigut - test_fastq_gz": {
         "content": [
             {
-                "output": [
-                    "ARO Term\tARO Accession\tReference Model Type\tReference DB\tAlleles with Mapped Reads\tReference Allele(s) Identity to CARD Reference Protein (%)\tResistomes & Variants: Observed in Genome(s)\tResistomes & Variants: Observed in Plasmid(s)\tResistomes & Variants: Observed Pathogen(s)\tCompletely Mapped Reads\tMapped Reads with Flanking Sequence\tAll Mapped Reads\tAverage Percent Coverage\tAverage Length Coverage (bp)\tAverage MAPQ (Completely Mapped Reads)\tNumber of Mapped Baits\tNumber of Mapped Baits with Reads\tAverage Number of reads per Bait\tNumber of reads per Bait Coefficient of Variation (%)\tNumber of reads mapping to baits and mapping to complete gene\tNumber of reads mapping to baits and mapping to complete gene (%)\tMate Pair Linkage (# reads)\tReference Length\tAMR Gene Family\tDrug Class\tResistance Mechanism",
-                    "Escherichia coli acrA\t3004043\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tEscherichia coli\t51.00\t0.00\t51.00\t100.00\t1194.00\t188.71\t0\t0\t0\t0\tN/A\tN/A\t\t1194\tresistance-nodulation-cell division (RND) antibiotic efflux pump\tfluoroquinolone antibiotic; cephalosporin; glycylcycline; penicillin beta-lactam; tetracycline antibiotic; rifamycin antibiotic; phenicol antibiotic; disinfecting agents and antiseptics\tantibiotic efflux",
-                    "Escherichia coli emrE\t3004039\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tEscherichia coli\t23.00\t0.00\t23.00\t100.00\t333.00\t175.96\t0\t0\t0\t0\tN/A\tN/A\t\t333\tsmall multidrug resistance (SMR) antibiotic efflux pump\tmacrolide antibiotic\tantibiotic efflux",
-                    "LptD\t3005059\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tKlebsiella pneumoniae\t38.00\t0.00\t38.00\t44.57\t1047.00\t131.34\t0\t0\t0\t0\tN/A\tN/A\t\t2349\tATP-binding cassette (ABC) antibiotic efflux pump\tcarbapenem; peptide antibiotic; aminocoumarin antibiotic; rifamycin antibiotic\tantibiotic efflux",
-                    "acrB\t3000216\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tEscherichia coli\t133.00\t0.00\t133.00\t100.00\t3150.00\t191.36\t0\t0\t0\t0\tN/A\tN/A\t\t3150\tresistance-nodulation-cell division (RND) antibiotic efflux pump\tfluoroquinolone antibiotic; cephalosporin; glycylcycline; penicillin beta-lactam; tetracycline antibiotic; rifamycin antibiotic; phenicol antibiotic; disinfecting agents and antiseptics\tantibiotic efflux",
-                    "kdpE\t3003841\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tEscherichia coli\t45.00\t0.00\t45.00\t100.00\t678.00\t175.80\t0\t0\t0\t0\tN/A\tN/A\t\t678\tkdpDE\taminoglycoside antibiotic\tantibiotic efflux",
-                    "leuO\t3003843\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tEscherichia coli\t55.00\t0.00\t55.00\t100.00\t945.00\t173.55\t0\t0\t0\t0\tN/A\tN/A\t\t945\tmajor facilitator superfamily (MFS) antibiotic efflux pump\tnucleoside antibiotic; disinfecting agents and antiseptics\tantibiotic efflux",
-                    "rmtH\t3003198\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tKlebsiella pneumoniae\t4.00\t0.00\t4.00\t6.59\t50.00\t79.00\t0\t0\t0\t0\tN/A\tN/A\t\t759\t16S rRNA methyltransferase (G1405)\taminoglycoside antibiotic\tantibiotic target alteration",
-                    "tet(Q)\t3000191\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tBacteroides fragilis\t138.00\t0.00\t138.00\t100.00\t1974.00\t179.62\t0\t0\t0\t0\tN/A\tN/A\t\t1974\ttetracycline-resistant ribosomal protection protein\ttetracycline antibiotic\tantibiotic target protection"
-                ]
-            },
-            {
+                "json": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.allele_mapping_data.json:md5,81b06efc8024b99ecd87599a7e1eec74"
+                    ]
+                ],
+                "tmp": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.temp.sam.temp.fsa:md5,bd47f4f8e6eefb9f9e70deb5cd42e7f9"
+                        ]
+                    ]
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.allele_mapping_data.txt",
+                            "test.artifacts_mapping_stats.txt",
+                            "test.coverage.temp.txt",
+                            "test.coverage_all_positions.summary.temp.txt",
+                            "test.coverage_all_positions.temp.txt",
+                            "test.gene_mapping_data.txt",
+                            "test.overall_mapping_stats.txt",
+                            "test.reference_mapping_stats.txt",
+                            "test.seqs.temp.txt",
+                            "test.temp.txt"
+                        ]
+                    ]
+                ],
                 "versions_db": [
                     [
                         "RGI_BWT",
@@ -147,9 +124,20 @@
                         "6.0.8"
                     ]
                 ]
-            }
+            },
+            [
+                "ARO Term\tARO Accession\tReference Model Type\tReference DB\tAlleles with Mapped Reads\tReference Allele(s) Identity to CARD Reference Protein (%)\tResistomes & Variants: Observed in Genome(s)\tResistomes & Variants: Observed in Plasmid(s)\tResistomes & Variants: Observed Pathogen(s)\tCompletely Mapped Reads\tMapped Reads with Flanking Sequence\tAll Mapped Reads\tAverage Percent Coverage\tAverage Length Coverage (bp)\tAverage MAPQ (Completely Mapped Reads)\tNumber of Mapped Baits\tNumber of Mapped Baits with Reads\tAverage Number of reads per Bait\tNumber of reads per Bait Coefficient of Variation (%)\tNumber of reads mapping to baits and mapping to complete gene\tNumber of reads mapping to baits and mapping to complete gene (%)\tMate Pair Linkage (# reads)\tReference Length\tAMR Gene Family\tDrug Class\tResistance Mechanism",
+                "Escherichia coli acrA\t3004043\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tEscherichia coli\t51.00\t0.00\t51.00\t100.00\t1194.00\t188.71\t0\t0\t0\t0\tN/A\tN/A\t\t1194\tresistance-nodulation-cell division (RND) antibiotic efflux pump\tfluoroquinolone antibiotic; cephalosporin; glycylcycline; penicillin beta-lactam; tetracycline antibiotic; rifamycin antibiotic; phenicol antibiotic; disinfecting agents and antiseptics\tantibiotic efflux",
+                "Escherichia coli emrE\t3004039\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tEscherichia coli\t23.00\t0.00\t23.00\t100.00\t333.00\t175.96\t0\t0\t0\t0\tN/A\tN/A\t\t333\tsmall multidrug resistance (SMR) antibiotic efflux pump\tmacrolide antibiotic\tantibiotic efflux",
+                "LptD\t3005059\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tKlebsiella pneumoniae\t38.00\t0.00\t38.00\t44.57\t1047.00\t131.34\t0\t0\t0\t0\tN/A\tN/A\t\t2349\tATP-binding cassette (ABC) antibiotic efflux pump\tcarbapenem; peptide antibiotic; aminocoumarin antibiotic; rifamycin antibiotic\tantibiotic efflux",
+                "acrB\t3000216\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tEscherichia coli\t133.00\t0.00\t133.00\t100.00\t3150.00\t191.36\t0\t0\t0\t0\tN/A\tN/A\t\t3150\tresistance-nodulation-cell division (RND) antibiotic efflux pump\tfluoroquinolone antibiotic; cephalosporin; glycylcycline; penicillin beta-lactam; tetracycline antibiotic; rifamycin antibiotic; phenicol antibiotic; disinfecting agents and antiseptics\tantibiotic efflux",
+                "kdpE\t3003841\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tEscherichia coli\t45.00\t0.00\t45.00\t100.00\t678.00\t175.80\t0\t0\t0\t0\tN/A\tN/A\t\t678\tkdpDE\taminoglycoside antibiotic\tantibiotic efflux",
+                "leuO\t3003843\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tEscherichia coli\t55.00\t0.00\t55.00\t100.00\t945.00\t173.55\t0\t0\t0\t0\tN/A\tN/A\t\t945\tmajor facilitator superfamily (MFS) antibiotic efflux pump\tnucleoside antibiotic; disinfecting agents and antiseptics\tantibiotic efflux",
+                "rmtH\t3003198\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tKlebsiella pneumoniae\t4.00\t0.00\t4.00\t6.59\t50.00\t79.00\t0\t0\t0\t0\tN/A\tN/A\t\t759\t16S rRNA methyltransferase (G1405)\taminoglycoside antibiotic\tantibiotic target alteration",
+                "tet(Q)\t3000191\tprotein homolog model\tCARD\t1\t100.0\tno data\tno data\tBacteroides fragilis\t138.00\t0.00\t138.00\t100.00\t1974.00\t179.62\t0\t0\t0\t0\tN/A\tN/A\t\t1974\ttetracycline-resistant ribosomal protection protein\ttetracycline antibiotic\tantibiotic target protection"
+            ]
         ],
-        "timestamp": "2026-08-13T15:45:06.31701317",
+        "timestamp": "2026-08-17T08:23:28.080752378",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
