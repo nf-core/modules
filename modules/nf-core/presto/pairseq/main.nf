@@ -8,11 +8,11 @@ process PRESTO_PAIRSEQ {
         'quay.io/biocontainers/presto:0.7.9--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(R1_read), path(R2_read)
     val(barcode_position)
 
     output:
-    tuple val(meta), path("*1_pair-pass.fastq.gz"), path("*2_pair-pass.fastq.gz") , emit: reads
+    tuple val(meta), path("*1_pair-pass.fastq.gz"), path("*2_pair-pass.fastq.gz"), emit: reads
     path "*_command_log.txt", emit: logs
     tuple val("${task.process}"), val('presto'), eval('PairSeq.py --version | grep -o "[0-9][0-9.]*" | head -n 1'), emit: versions_presto, topic: versions
 
@@ -29,12 +29,12 @@ process PRESTO_PAIRSEQ {
     def args = task.ext.args?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    PairSeq.py -1 ${reads[0]} \\
-               -2 ${reads[1]} \\
+    PairSeq.py -1 ${R1_read} \\
+               -2 ${R2_read} \\
                --outname ${prefix} \\
                $copyfield \\
                $args \\
-               | tee > ${prefix}_command_log.txt
+               | tee  ${prefix}_command_log.txt
 
     """
 
