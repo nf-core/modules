@@ -16,7 +16,7 @@ process TBPROFILER_PROFILE {
     tuple val(meta), path("results/*.json"), emit: json
     tuple val(meta), path("results/*.txt"),  emit: txt, optional: true
     tuple val(meta), path("vcf/*.vcf.gz"),   emit: vcf
-    tuple val("${task.process}"), val('tb-profiler'), eval('tb-profiler --version'), emit: versions_tb_profiler, topic: versions
+    tuple val("${task.process}"), val('tb-profiler'), eval("tb-profiler --version | sed 's/TBProfiler version //'"), emit: versions_tb_profiler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -91,7 +91,7 @@ output:
       - tb-profiler:
           type: string
           description: The tool name
-      - tb-profiler --version:
+      - "tb-profiler --version | sed 's/TBProfiler version //'":
           type: eval
           description: The version of the tool
 
@@ -103,7 +103,7 @@ topics:
       - tb-profiler:
           type: string
           description: The tool name
-      - tb-profiler --version:
+      - "tb-profiler --version | sed 's/TBProfiler version //'":
           type: eval
           description: The version of the tool
 

@@ -10,9 +10,12 @@ nextflow_process {
     tag "tbprofiler/profile"
 
     test("test-tbprofiler-profile-illumina") {
-        config "./nextflow.illumina.config"
+        config "./nextflow.config"
 
         when {
+            params {
+                module_args = '--platform illumina'
+            }
             process {
                 """
                 input[0] = [
@@ -43,9 +46,12 @@ nextflow_process {
     }
 
     test("test-tbprofiler-profile-nanopore") {
-        config "./nextflow.nanopore.config"
+        config "./nextflow.config"
 
         when {
+            params {
+                module_args = '--platform nanopore'
+            }
             process {
                 """
                 input[0] = [
