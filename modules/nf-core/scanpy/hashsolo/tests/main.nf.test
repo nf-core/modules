@@ -158,7 +158,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["assignment", "h5ad"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["assignment", "h5ad"])).match() },
+                { assert snapshot(process.out.versions.collect { path(it).yaml }).match("versions") }
             )
         }
 
