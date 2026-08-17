@@ -1,24 +1,18 @@
 name: "scimap_spatiallda"
-description: SpatialLDA uses an LDA based approach for the identification of cellular
-  neighborhoods, using cell type identities.
+description: SpatialLDA uses an LDA based approach for the identification of cellular neighborhoods, using cell type identities.
 keywords:
   - spatial_neighborhoods
   - scimap
   - spatial_omics
 tools:
   - "scimap":
-      description: "Scimap is a scalable toolkit for analyzing spatial molecular data.
-        The underlying framework is generalizable to spatial datasets mapped to XY coordinates.
-        The package uses the anndata framework making it easy to integrate with other
-        popular single-cell analysis toolkits. It includes preprocessing, phenotyping,
-        visualization, clustering, spatial analysis and differential spatial testing.
-        The Python-based implementation efficiently deals with large datasets of millions
-        of cells."
+      description: "Scimap is a scalable toolkit for analyzing spatial molecular data. The underlying framework is generalizable to spatial datasets mapped to XY coordinates. The package uses the anndata framework making it easy to integrate with other popular single-cell analysis toolkits. It includes preprocessing, phenotyping, visualization, clustering, spatial analysis and differential spatial testing. The Python-based implementation efficiently deals with large datasets of millions of cells."
       homepage: "https://scimap.xyz/"
       documentation: "https://scimap.xyz/"
       tool_dev_url: "https://github.com/labsyspharm/scimap"
       doi: "10.5281/zenodo.7854095"
-      licence: ["MIT licence"]
+      licence:
+        - "MIT licence"
       identifier: biotools:SCIMAP
 input:
   - - meta:
@@ -28,8 +22,7 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - phenotyped:
         type: file
-        description: Phenotyped CSV file, it must contain the columns, sampleID, X,
-          Y and Phenotype.
+        description: Phenotyped CSV file, it must contain the columns, sampleID, X, Y and Phenotype.
         pattern: "*.{csv}"
         ontologies:
           - edam: http://edamontology.org/format_3752 # CSV
@@ -54,8 +47,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.png":
           type: file
-          description: Plot with the motif composition and the cell type composition
-            of motifs.
+          description: Plot with the motif composition and the cell type composition of motifs.
           pattern: "*.{png}"
           ontologies: []
   motif_location_plot:
@@ -69,13 +61,29 @@ output:
           description: Plot with the locations of the motifs.
           pattern: "*.{html}"
           ontologies: []
+  versions_scimap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - scimap:
+          type: string
+          description: The name of the tool
+      - python /scimap/scripts/spatialLDA.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - scimap:
+          type: string
+          description: The name of the tool
+      - python /scimap/scripts/spatialLDA.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@migueLib"
   - "@chiarasch"
