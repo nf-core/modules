@@ -43,4 +43,3 @@ process TBPROFILER_PROFILE {
     echo "" | gzip > vcf/${prefix}.targets.csq.vcf.gz
     """
 }
-
