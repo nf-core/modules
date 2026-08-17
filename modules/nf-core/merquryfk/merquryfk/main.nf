@@ -3,12 +3,12 @@ process MERQURYFK_MERQURYFK {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/56641ad3d1130e668134edc752fdf0bed1cc31da3b3d74730aa6edf40527493a/data' :
-        'community.wave.seqera.io/library/merquryfk:1.2--f21b6c1cbbbbfe64' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fb9dbdf098779f2b84401de5e6e8569dd9120018a47b92126876260a0bb621a6/data'
+        : 'community.wave.seqera.io/library/merquryfk:1.2--5ac50fb470d146e0' }"
 
     input:
-    tuple val(meta) , path(fastk_hist), path(fastk_ktab), path(assembly), path(haplotigs)
+    tuple val(meta) , path(fastk_hist), path(fastk_ktab), path(assembly), path(haplotigs, arity:'0..*')
     tuple val(meta2), path(mathaptab) // optional, trio mode
     tuple val(meta3), path(pathaptab) // optional, trio mode
 
@@ -39,16 +39,30 @@ process MERQURYFK_MERQURYFK {
     def fk_ktab     = fastk_ktab ? "${fastk_ktab.find { path -> path.toString().endsWith(".ktab") }}" : ''
     def mat_hapktab = mathaptab  ? "${mathaptab.find { path -> path.toString().endsWith(".ktab") }}"  : ''
     def pat_hapktab = pathaptab  ? "${pathaptab.find { path -> path.toString().endsWith(".ktab") }}"  : ''
+
+    // Concatenate multiple haps if provided into a "pseudo" second haplotype for polyploid genome assessment
+    def concatenate_haps = haplotigs.size() > 1
+    if(concatenate_haps && haplotigs.collect { hap -> hap.getExtension() }.unique().size() > 1) {
+        error("Error: Multiple haplotigs with different extensions found!")
+    }
+    def concat_out = haplotigs ? "temp.${haplotigs[0].getExtension() == 'gz' ? haplotigs[0].getName().split('\\.')[-2..-1].join('.') : haplotigs[0].getExtension()}" : ""
+    def concat_command = concatenate_haps ? "cat ${haplotigs} > ${concat_out}" : ""
+    def cleanup_command = concatenate_haps ? "rm ${concat_out}" : ""
+    def hap_input = haplotigs && concatenate_haps ? "${concat_out}" : haplotigs
     """
+    ${concat_command}
+
     MerquryFK \\
-        $args \\
+        ${args} \\
         -T$task.cpus \\
         ${fk_ktab} \\
         ${mat_hapktab} \\
         ${pat_hapktab} \\
-        $assembly \\
-        $haplotigs \\
-        $prefix
+        ${assembly} \\
+        ${hap_input} \\
+        ${prefix}
+
+    ${cleanup_command}
     """
 
     stub:
