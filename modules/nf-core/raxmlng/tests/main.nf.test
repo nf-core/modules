@@ -53,7 +53,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: "phylogeny_bootstrapped")).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["phylogeny_bootstrapped"])).match() }
             )
         }
 
