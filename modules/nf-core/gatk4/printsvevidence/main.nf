@@ -77,7 +77,7 @@ process GATK4_PRINTSVEVIDENCE {
                     ? "rd"
                     : false
     """
-    echo "" | gzip -c > ${prefix}.${file_type}.txt.gz
+    echo "" | gzip > ${prefix}.${file_type}.txt.gz
     touch ${prefix}.${file_type}.txt.gz.tbi
     """
 }

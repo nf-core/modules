@@ -52,7 +52,7 @@ process GATK4_SITEDEPTHTOBAF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo "" | gzip -c > ${prefix}.baf.txt.gz
+    echo "" | gzip > ${prefix}.baf.txt.gz
     touch ${prefix}.baf.txt.gz.tbi
     """
 }
