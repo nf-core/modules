@@ -3,7 +3,7 @@ process CADD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container 'docker.io/clinicalgenomics/cadd-with-scripts:1.7.3'
+    container 'docker.io/clinicalgenomics/cadd-with-scripts:1.7.3-fix'
 
     containerOptions {
         if (prescored_dir) {
