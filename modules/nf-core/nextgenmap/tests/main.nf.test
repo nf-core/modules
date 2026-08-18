@@ -31,7 +31,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					bam(process.out.bam[0][1]).getReadsMD5(),
-					process.out.versions
+					process.out.versions_nextgenmap
 					).match()
 				}
             )
@@ -61,7 +61,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					bam(process.out.bam[0][1]).getReadsMD5(),
-					process.out.versions
+					process.out.versions_nextgenmap
 					).match()
 				}
             )

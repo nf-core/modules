@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "clusty"
 description: Clusty is a tool for large-scale clustering using sparse distance
   matrices, suitable for datasets with millions of objects.
@@ -16,7 +15,8 @@ tools:
       documentation: "https://github.com/refresh-bio/clusty"
       tool_dev_url: "https://github.com/refresh-bio/clusty"
       doi: "10.1038/s41592-025-02701-7"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: ""
 
 input:
@@ -42,7 +42,6 @@ input:
         pattern: "*.tsv"
         ontologies:
           - edam: "http://edamontology.org/format_3475" # TSV
-
 output:
   assignments:
     - - meta:
@@ -63,9 +62,10 @@ output:
       - clusty:
           type: string
           description: The name of the tool
-      - "echo $(clusty --version 2>&1":
-          type: string
-          description: The version of the tool
+      - clusty --version 2>&1 || true:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -74,9 +74,10 @@ topics:
       - clusty:
           type: string
           description: The name of the tool
-      - "echo $(clusty --version 2>&1":
-          type: string
-          description: The version of the tool
+      - clusty --version 2>&1 || true:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@Joon-Klaps"
 maintainers:

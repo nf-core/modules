@@ -12,7 +12,7 @@ process TRYCYCLER_SUBSAMPLE {
 
     output:
     tuple val(meta), path("*/*.fastq.gz") , emit: subreads
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('trycycler'), eval("trycycler --version | sed 's/Trycycler v//'"), emit: versions_trycycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,17 +25,12 @@ process TRYCYCLER_SUBSAMPLE {
     """
     trycycler \\
         subsample \\
-        $args \\
+        ${args} \\
         --reads ${reads} \\
         --threads $task.cpus \\
         --out_dir ${prefix}
 
-    gzip $args2 ${prefix}/*.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trycycler: \$(trycycler --version | sed 's/Trycycler v//')
-    END_VERSIONS
+    gzip ${args2} ${prefix}/*.fastq
     """
 
     stub:
@@ -51,10 +46,5 @@ process TRYCYCLER_SUBSAMPLE {
         mkdir -p ${prefix}
         echo "" | gzip > ${prefix}/sample_\${i}.fastq.gz
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trycycler: \$(trycycler --version | sed 's/Trycycler v//')
-    END_VERSIONS
     """
 }

@@ -27,4 +27,22 @@ process PROPR_PROPD {
 
     script:
     template 'propd.R'
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.propd.genewise.tsv
+    touch ${prefix}.propd.genewise.png
+    touch ${prefix}.propd.rds
+    touch ${prefix}.propd.pairwise.tsv
+    touch ${prefix}.propd.pairwise_filtered.tsv
+    touch ${prefix}.propd.adjacency.csv
+    touch ${prefix}.propd.fdr.tsv
+    touch ${prefix}.R_sessionInfo.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-propr: \$(Rscript -e "cat(as.character(packageVersion('propr')))")
+    END_VERSIONS
+    """
 }

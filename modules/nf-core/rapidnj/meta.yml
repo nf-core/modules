@@ -46,9 +46,10 @@ output:
       - rapidnj:
           type: string
           description: The name of the tool
-      - echo 2.3.2:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 2.3.2:
+          type: string
+          description: The version of the tool
+
   versions_biopython:
     - - ${task.process}:
           type: string
@@ -67,9 +68,10 @@ topics:
       - rapidnj:
           type: string
           description: The name of the tool
-      - echo 2.3.2:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 2.3.2:
+          type: string
+          description: The version of the tool
+
     - - ${task.process}:
           type: string
           description: The name of the process
