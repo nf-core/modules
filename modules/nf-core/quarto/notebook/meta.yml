@@ -12,16 +12,17 @@ tools:
       homepage: https://quarto.org/
       documentation: https://quarto.org/docs/reference/
       tool_dev_url: https://github.com/quarto-dev/quarto-cli
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
   - papermill:
       description: Parameterize, execute, and analyze notebooks
       homepage: https://github.com/nteract/papermill
       documentation: http://papermill.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/nteract/papermill
-      licence: ["BSD 3-clause"]
+      licence:
+        - "BSD 3-clause"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -70,8 +71,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`.
       - notebook:
           type: file
-          description: The Quarto notebook that was rendered. Allows user to
-            continue working on the notebook.
+          description: The Quarto notebook that was rendered. Allows user to continue working on the notebook.
           pattern: "*.{qmd}"
           ontologies: []
   params_yaml:
@@ -107,6 +107,13 @@ output:
           description: Quarto extensions used during report rendering.
           pattern: "*"
           ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: Optional YAML file containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
   versions_quarto:
     - - ${task.process}:
           type: string
@@ -127,9 +134,14 @@ output:
       - papermill --version | cut -f1 -d" ":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
+    - versions.yml:
+        type: file
+        description: Optional YAML file containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
     - - ${task.process}:
           type: string
           description: The name of the process
@@ -148,7 +160,6 @@ topics:
       - papermill --version | cut -f1 -d" ":
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@fasterius"
 maintainers:

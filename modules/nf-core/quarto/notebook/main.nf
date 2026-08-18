@@ -1,8 +1,13 @@
-// NB: You'll likely want to override this with a container containing all
+// NB 1: You'll likely want to override this with a container containing all
 // required dependencies for your analyses. Or use wave to build the container
 // for you from the environment.yml You'll at least need Quarto itself,
 // Papermill and whatever language you are running your analyses on; you can see
 // an example in this module's environment file.
+//
+// NB 2: You'll need to export the versions of the packages you are using inside
+// your notebook to a `versions.csv` file (formatted as `package,version`),
+// which will be added to the `versions` topic; module versions are handled
+// separately by `eval()` statements.
 process QUARTO_NOTEBOOK {
     tag "${meta.id}"
     label 'process_low'
@@ -23,7 +28,8 @@ process QUARTO_NOTEBOOK {
     tuple val(meta), path("params.yml")                                                        , emit: params_yaml
     tuple val(meta), path("${notebook_parameters.artifact_dir}/*")                             , emit: artifacts  , optional: true
     tuple val(meta), path("_extensions")                                                       , emit: extensions , optional: true
-    tuple val("${task.process}"), val('quarto'), eval('quarto -v'), emit: versions_quarto, topic: versions
+    path "versions.yml"                                                                        , emit: versions          , topic: versions
+    tuple val("${task.process}"), val('quarto'), eval('quarto -v')                             , emit: versions_quarto   , topic: versions
     tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "'), emit: versions_papermill, topic: versions
 
     when:
@@ -78,6 +84,18 @@ process QUARTO_NOTEBOOK {
         ${args} \\
         --execute-params params.yml \\
         --output ${prefix}.html
+
+    # Check that notebook package versions is exported
+    if [ ! -f versions.csv ]; then
+        echo "ERROR: versions.csv not found; the .qmd script must write out [tool,version] pairs used within the notebook." >&2
+        exit 1
+    fi
+
+    # Write notebook package versions to YAML
+    cat <<- END_VERSIONS > versions.yml
+    "${task.process}":
+    \$(awk -F',' '{printf "    %s: %s\\n", \$1, \$2}' versions.csv)
+    END_VERSIONS
     """
 
     stub:
@@ -100,5 +118,6 @@ process QUARTO_NOTEBOOK {
 
     touch ${prefix}.html
     touch params.yml
+    touch versions.yml
     """
 }
