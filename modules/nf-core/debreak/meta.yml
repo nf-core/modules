@@ -1,0 +1,85 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "debreak"
+description: Structural variant calling from long-read sequencing data using DeBreak
+keywords:
+  - debreak
+  - structural variants
+  - long-read
+  - SV calling
+tools:
+  - "debreak":
+      description: "A structural variant caller for long-read sequencing data that uses partial-order alignment for breakpoint refinement and local assembly for large insertion detection"
+      homepage: "https://github.com/Maggi-Chen/DeBreak"
+      documentation: "https://github.com/Maggi-Chen/DeBreak"
+      tool_dev_url: "https://github.com/Maggi-Chen/DeBreak"
+      doi: "10.1038/s41467-023-37619-3"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file. Required for breakpoint refinement (--poa) and large insertion detection (--rescue_large_ins). Pass [] to skip.
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}/*.vcf":
+          type: file
+          description: VCF file containing detected structural variants
+          pattern: "*.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  versions_debreak:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "debreak":
+          type: string
+          description: The name of the tool
+      - 'debreak --version | sed "s/debreak //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - debreak:
+          type: string
+          description: The name of the tool
+      - 'debreak --version | sed "s/debreak //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@aksenia"
+maintainers:
+  - "@aksenia"
