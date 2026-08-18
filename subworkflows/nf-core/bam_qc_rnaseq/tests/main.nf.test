@@ -71,8 +71,8 @@ nextflow_workflow {
                 { assert workflow.out.per_sample_mqc_bundle[0][1].size() >= 12 },
                 { assert snapshot(
                     workflow.out.dupradar_dupmatrix,
-                    workflow.out.dupradar_intercept_slope.collect{ meta, slopeFile -> [meta, file(slopeFile).name]}, // Floating number unstable
-                    workflow.out.dupradar_multiqc.collect{ meta, qcFiles -> [meta, qcFiles.collect{qcFile -> file(qcFile).name}]}, // Floating number unstable
+                    workflow.out.dupradar_intercept_slope,
+                    workflow.out.dupradar_multiqc,
                     workflow.out.bamstat_txt,
                     workflow.out.inferexperiment_txt,
                     workflow.out.readdistribution_txt,
@@ -83,7 +83,7 @@ nextflow_workflow {
     }
 
     test("saccharomyces_cerevisiae single-end [bam] - all modules") {
-        tag "test2"
+
         when {
             workflow {
                 """
@@ -136,8 +136,8 @@ nextflow_workflow {
                 { assert workflow.out.per_sample_mqc_bundle[0][1].size() >= 11 },
                 { assert snapshot(
                     workflow.out.dupradar_dupmatrix,
-                    workflow.out.dupradar_intercept_slope.collect{ meta, slopeFile -> [meta, file(slopeFile).name]}, // Floating number unstable
-                    workflow.out.dupradar_multiqc.collect{ meta, qcFiles -> [meta, qcFiles.collect{qcFile -> file(qcFile).name}]}, // Floating number unstable
+                    workflow.out.dupradar_intercept_slope,
+                    workflow.out.dupradar_multiqc,
                     workflow.out.bamstat_txt,
                     workflow.out.inferexperiment_txt,
                     workflow.out.readdistribution_txt,

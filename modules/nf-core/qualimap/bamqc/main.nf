@@ -26,6 +26,13 @@ process QUALIMAP_BAMQC {
     def memory = (task.memory.mega*0.8).intValue() + 'M'
     def regions = gff ? "--gff ${gff}" : ''
 
+    def strandedness = 'non-strand-specific'
+    if (meta.strandedness == 'forward') {
+        strandedness = 'strand-specific-forward'
+    } else if (meta.strandedness == 'reverse') {
+        strandedness = 'strand-specific-reverse'
+    }
+
     """
     unset DISPLAY
     mkdir -p tmp
@@ -36,6 +43,7 @@ process QUALIMAP_BAMQC {
         ${args} \\
         -bam ${bam} \\
         ${regions} \\
+        -p ${strandedness} \\
         ${collect_pairs} \\
         -outdir ${prefix} \\
         -nt ${task.cpus}

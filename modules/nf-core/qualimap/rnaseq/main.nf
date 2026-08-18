@@ -24,6 +24,12 @@ process QUALIMAP_RNASEQ {
     def paired_end = meta.single_end ? '' : '-pe'
     def memory = (task.memory.mega*0.8).intValue() + 'M'
 
+    def strandedness = 'non-strand-specific'
+    if (meta.strandedness == 'forward') {
+        strandedness = 'strand-specific-forward'
+    } else if (meta.strandedness == 'reverse') {
+        strandedness = 'strand-specific-reverse'
+    }
     """
     unset DISPLAY
     mkdir -p tmp
@@ -34,6 +40,7 @@ process QUALIMAP_RNASEQ {
         ${args} \\
         -bam ${bam} \\
         -gtf ${gtf} \\
+        -p ${strandedness} \\
         ${paired_end} \\
         -outdir ${prefix}
     """
