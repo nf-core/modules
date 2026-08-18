@@ -166,6 +166,13 @@ nextflow_process {
     test("test notebook - parametrized - [ipynb]") {
 
         when {
+            params {
+                // The Jupyter Notebook test need to explicitly execute the code
+                // in the notebook instead of just rendering the notebook to
+                // HTML (which is the default), in order to correctly output
+                // `versions.csv`.
+                module_args = '--execute'
+            }
             process {
                 """
                 input[0] = [

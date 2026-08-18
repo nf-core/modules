@@ -87,7 +87,7 @@ process QUARTO_NOTEBOOK {
 
     # Check that notebook package versions is exported
     if [ ! -f versions.csv ]; then
-        echo "ERROR: versions.csv not found; the .qmd script must write out [tool,version] pairs used within the notebook." >&2
+        echo "ERROR: versions.csv not found; the notebook must write out [tool,version] pairs used within it." >&2
         exit 1
     fi
 
