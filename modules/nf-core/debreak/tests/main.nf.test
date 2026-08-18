@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process DEBREAK"
     script "../main.nf"
     process "DEBREAK"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
