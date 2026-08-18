@@ -13,15 +13,15 @@ process DEBREAK {
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}/*.vcf"), emit: vcf
+    tuple val(meta), path("*.vcf"), emit: vcf
     tuple val("${task.process}"), val('debreak'), val('1.3'), emit: versions_debreak, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def args  = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
     def ref_arg = fasta ? "-r ${fasta}" : ""
     """
     debreak \\
@@ -30,12 +30,13 @@ process DEBREAK {
         -t ${task.cpus} \\
         ${ref_arg} \\
         ${args}
+
+    mv ${prefix}/debreak.vcf ${prefix}.vcf
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}
-    touch ${prefix}/debreak.vcf
+    touch ${prefix}.vcf
     """
 }

@@ -51,7 +51,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "${prefix}/*.vcf":
+      - "*.vcf":
           type: file
           description: VCF file containing detected structural variants
           pattern: "*.vcf"
