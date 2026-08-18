@@ -5,7 +5,7 @@ process GATK4_NVSCOREVARIANTS {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ced519873646379e287bc28738bdf88e975edd39a92e7bc6a34bccd37153d9d0/data'
-        : 'broadinstitute/gatk:4.7.0.0'}"
+        : 'community.wave.seqera.io/library/gatk4-main:4.7.0.0--b8e8676903b345d8'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
