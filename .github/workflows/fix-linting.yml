@@ -8,6 +8,7 @@ permissions: {}
 
 jobs:
   prepare-fix:
+    # Only run if comment is on a PR with the main repo, and if it contains the magic keywords.
     # The write token is used only before untrusted pull request code runs.
     if: >
       contains(github.event.comment.html_url, '/pull/') &&
@@ -23,6 +24,7 @@ jobs:
       has_patch: ${{ steps.patch.outputs.has_patch }}
       prek_outcome: ${{ steps.prek.outcome }}
     steps:
+      # indication that the linting is being fixed
       - name: React on comment
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         with:
@@ -33,6 +35,8 @@ jobs:
         with:
           persist-credentials: false
 
+      # Action runs on the issue comment, so we don't get the PR by default.
+      # Use the gh cli to check out the PR.
       - name: Checkout pull request
         id: pr
         env:
@@ -137,6 +141,7 @@ jobs:
           git -c core.hooksPath=/dev/null -c commit.gpgsign=false commit --no-verify -m "[automated] Fix code linting"
           git -c core.hooksPath=/dev/null push --no-verify
 
+      # indication that the linting has finished
       - name: React if linting finished successfully
         if: needs.prepare-fix.outputs.prek_outcome == 'success'
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5

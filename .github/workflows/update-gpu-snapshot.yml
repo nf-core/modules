@@ -15,6 +15,7 @@ env:
 
 jobs:
   prepare-gpu-update:
+    # Only run if comment is on a PR with the main repo, and if it contains the magic keywords.
     if: >
       contains(github.event.comment.html_url, '/pull/') &&
       contains(github.event.comment.body, '@nf-core-bot update gpu snapshot') &&
@@ -30,6 +31,7 @@ jobs:
       test_path: ${{ steps.path.outputs.test_path }}
       valid_path: ${{ steps.path.outputs.valid_path }}
     steps:
+      # indication that the snapshot is being updated
       - name: React on comment
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         with:
@@ -195,6 +197,8 @@ jobs:
         with:
           persist-credentials: false
 
+      # Action runs on the issue comment, so we don't get the PR by default.
+      # Use the gh cli to check out the PR.
       - name: Checkout exact pull request head
         env:
           EXPECTED_HEAD_SHA: ${{ needs.prepare-gpu-update.outputs.head_sha }}
