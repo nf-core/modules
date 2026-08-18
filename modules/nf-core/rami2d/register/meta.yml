@@ -32,13 +32,24 @@ input:
         description: Absolute path of the image stack containing the moving image
         pattern: "*.{tif,tiff,ome.tif,ome.tiff,svs,avs,vms,dcm,vmus,ndpi,scn,mrxs,svslide,bif,czi}"
         ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing metadata information for the markers file
+          e.g. [ id:'markers' ]
+    - markers:
+        type: file
+        description: Path to a csv file with a column named marker_name, each row is the name of the channel in the ome metadata of the output image
+        pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752
   - ifix:
-      type: integer
-      description: O-based Index of the channel to be used for the registration in the
+      type: string
+      description: Integer or string h,e,d. 0-based index of channel to be used for registration. If string it converts your H&E into Hematoxylin, Eosin or DAB.
         fixed image stack
   - imov:
-      type: integer
-      description: O-based Index of the channel to be used for the registration in the
+      type: string
+      description: Integer or string h,e,d. 0-based index of channel to be used for registration. If string it converts your H&E into Hematoxylin, Eosin or DAB.
         moving image stack
   - mpp_fix:
       type: float
@@ -62,18 +73,6 @@ output:
           description: Registered output image in pyramidal OME TIFF format
           pattern: "*.ome.tif"
           ontologies: []
-  csv:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'sample1' ]
-      - "${prefix}/*.csv":
-          type: file
-          description: Output CSV file containing registration metrics
-          pattern: "*.csv"
-          ontologies:
-            - edam: http://edamontology.org/format_3752
   qc_dir:
     - - meta:
           type: map
@@ -82,7 +81,7 @@ output:
             e.g. [ id:'sample1' ]
       - "${prefix}/qc":
           type: directory
-          description: Directory containing QC outputs including refchns keypoints and
+          description: Directory containing QC outputs including subdirectories refchns, keypoints and
             fullres transformations
           pattern: "qc"
   versions_rami2d:

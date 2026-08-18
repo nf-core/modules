@@ -4,8 +4,8 @@ process RAMI2D_TRANSFORM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/009a819a706893896160b3ea33fcf25254d705f7bdccedf2baa63bcdd009c826/data':
-        'community.wave.seqera.io/library/rami2d-env:80a2c0ef1e678902' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cd/cde38bd19f190e920f5f99178fd6802f841e5e52f596e2efe13f95c733637850/data':
+        'community.wave.seqera.io/library/pip_python_tifffile_ome-types_pruned:d3b5c8c723a6348d' }"
 
     input:
     tuple val(meta), path(image_file), path(transform_dir)

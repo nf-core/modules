@@ -21,11 +21,12 @@ nextflow_process {
                     file('https://raw.githubusercontent.com/VictorDidier/RAMI2D/sample_data/data/imf_and_he/multiplexed.ome.tif', checkIfExists: true),
                     file('https://raw.githubusercontent.com/VictorDidier/RAMI2D/sample_data/data/imf_and_he/HE.ome.tif', checkIfExists: true)
                 ]
-                input[1] = 0 // ifix
-                input[2] = 'h' // imov
-                input[3] = 0.21 // mpp_fix
-                input[4] = 0.27 // mpp_mov
-                input[5] = 1 // mpp_reg
+                input[1] = [[],[]]
+                input[2] = 0 // ifix
+                input[3] = 'h' // imov
+                input[4] = 0.21 // mpp_fix
+                input[5] = 0.27 // mpp_mov
+                input[6] = 1 // mpp_reg
                 """
             }
         }
@@ -54,11 +55,12 @@ nextflow_process {
                     file('https://raw.githubusercontent.com/VictorDidier/RAMI2D/sample_data/data/imf_and_he/multiplexed.ome.tif', checkIfExists: true),
                     file('https://raw.githubusercontent.com/VictorDidier/RAMI2D/sample_data/data/imf_and_he/HE.ome.tif', checkIfExists: true),
                 ]
-                input[1] = 0 // ifix
-                input[2] = 'h' // imov
-                input[3] = 0.21 // mpp_fix
-                input[4] = 0.27 // mpp_mov
-                input[5] = 1 // mpp_reg
+                input[1] = [[],[]]
+                input[2] = 0 // ifix
+                input[3] = 'h' // imov
+                input[4] = 0.21 // mpp_fix
+                input[5] = 0.27 // mpp_mov
+                input[6] = 1 // mpp_reg
                 """
             }
         }

@@ -60,11 +60,12 @@ nextflow_process {
                         file('https://raw.githubusercontent.com/VictorDidier/RAMI2D/sample_data/data/imf_and_he/multiplexed.ome.tif', checkIfExists: true),
                         file('https://raw.githubusercontent.com/VictorDidier/RAMI2D/sample_data/data/imf_and_he/HE.ome.tif', checkIfExists: true)
                     ]
-                    input[1] = 0
-                    input[2] = 'h'
-                    input[3] = 0.21
-                    input[4] = 0.27
-                    input[5] = 1
+                    input[1] = [[],[]]
+                    input[2] = 0
+                    input[3] = 'h'
+                    input[4] = 0.21
+                    input[5] = 0.27
+                    input[6] = 1
                     """
                 }
             }
