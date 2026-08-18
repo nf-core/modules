@@ -13,7 +13,7 @@ process RAXMLNG {
     // either bestTree or bootstraps file is created, depending on options given
     tuple val(meta), path("*.raxml.bestTree")  , emit: phylogeny             , optional:true
     tuple val(meta), path("*.raxml.bootstraps"), emit: phylogeny_bootstrapped, optional:true
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('raxmlng'), eval("raxml-ng --version 2>&1 | sed '/RAxML-NG v/!d;s/.*v. //;s/ .*//'"), emit: versions_raxmlng, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,16 +25,11 @@ process RAXMLNG {
     if (!(args ==~ /.*--seed.*/)) {args += " --seed=42"}
     """
     raxml-ng \\
-        $args \\
-        --msa $alignment \\
-        --model $model \\
-        --threads $task.cpus \\
+        ${args} \\
+        --msa ${alignment} \\
+        --model ${model} \\
+        --threads ${task.cpus} \\
         --prefix ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        raxmlng: \$(echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -42,13 +37,6 @@ process RAXMLNG {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def touch_files = args.contains('--bootstrap') || args.contains('--bs-trees') ? "touch ${prefix}.raxml.bootstraps" : "touch ${prefix}.raxml.bestTree"
     """
-    # Create stub output files
     ${touch_files}
-
-    # Create versions.yml
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        raxmlng: \$(echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//')
-    END_VERSIONS
     """
 }

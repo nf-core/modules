@@ -42,7 +42,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment[0][1]).exists() },
-                { assert snapshot(process.out.versions).match("homo_sapiens - single_end - versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["alignment"])).match() }
             )
         }
     }
@@ -70,7 +70,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment[0][1]).exists() },
-                { assert snapshot(process.out.versions).match("homo_sapiens - paired_end - versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["alignment"])).match() }
             )
         }
     }
@@ -100,7 +100,7 @@ nextflow_process {
                 { assert path(process.out.trans_alignments[0][1]).exists() },
                 { assert path(process.out.multi_bed[0][1]).exists() },
                 { assert path(process.out.single_bed[0][1]).exists() },
-                { assert snapshot(process.out.versions).match("homo_sapiens - split - single_end - versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["alignment", "trans_alignments", "multi_bed", "single_bed"])).match() }
             )
         }
     }
@@ -133,7 +133,7 @@ nextflow_process {
                 { assert path(process.out.trans_alignments[0][1]).exists() },
                 { assert path(process.out.multi_bed[0][1]).exists() },
                 { assert path(process.out.single_bed[0][1]).exists() },
-                { assert snapshot(process.out.versions).match("homo_sapiens - split - paired_end - versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["alignment", "trans_alignments", "multi_bed", "single_bed"])).match() }
             )
         }
     }
