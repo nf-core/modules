@@ -19,7 +19,10 @@ process STARFUSION_BUILD {
 
     output:
     tuple val(meta), path("${prefix}_genome_lib_build_dir"), emit: reference
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('gunzip'), eval('echo $(gunzip --version 2>&1) | sed \'s/^.*(gzip) //; s/ Copyright.*$//\''), topic: versions, emit: versions_gunzip
+    tuple val("${task.process}"), val('hmmer'), eval('echo $(hmmpress -h | grep HMMER | sed \'s/# HMMER //\' | sed \'s/ .*//\' 2>&1)'), topic: versions, emit: versions_hmmer
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('star-fusion'), val('1.15.1'), topic: versions, emit: versions_starfusion
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +30,6 @@ process STARFUSION_BUILD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.15.1' // WARN: This is the actual version of the STAR-FUSION, but version information of tool is not updated and prints '1.15.0'
     """
     gunzip ${pfam_url} && hmmpress Pfam-A.hmm
 
@@ -41,18 +43,10 @@ process STARFUSION_BUILD {
         --CPU $task.cpus \\
         --output_dir ${prefix}_genome_lib_build_dir \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gunzip: \$(echo \$(gunzip --version 2>&1) | sed 's/^.*(gzip) //; s/ Copyright.*\$//')
-        hmmer: \$(echo \$(hmmpress -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-        STAR-Fusion: $VERSION
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.15.1' // WARN: This is the actual version of the STAR-FUSION, but version information of tool is not updated and prints '1.15.0'
     """
     mkdir -p ${prefix}_genome_lib_build_dir
 
@@ -136,13 +130,6 @@ process STARFUSION_BUILD {
     touch ${prefix}_genome_lib_build_dir/trans.blast.align_coords.align_coords.dat
     touch ${prefix}_genome_lib_build_dir/trans.blast.align_coords.align_coords.dbm
     echo | gzip > ${prefix}_genome_lib_build_dir/trans.blast.dat.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gunzip: \$(echo \$(gunzip --version 2>&1) | sed 's/^.*(gzip) //; s/ Copyright.*\$//')
-        hmmer: \$(echo \$(hmmpress -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-        STAR-Fusion: $VERSION
-    END_VERSIONS
     """
 
 }

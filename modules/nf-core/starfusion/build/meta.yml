@@ -12,7 +12,8 @@ tools:
       documentation: https://github.com/STAR-Fusion/STAR-Fusion/wiki/installing-star-fusion
       tool_dev_url: https://github.com/STAR-Fusion/STAR-Fusion
       doi: "10.1186/s13059-019-1842-9"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 
 input:
@@ -56,13 +57,47 @@ output:
           type: directory
           description: Genome library build directory
           pattern: "*_genome_lib_build_dir"
+  versions_gunzip:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gunzip:
+          type: string
+          description: The tool name
+      - version:
+          type: string
+          description: The version of gunzip
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hmmer:
+          type: string
+          description: The tool name
+      - version:
+          type: string
+          description: The version of HMMER
+  versions_starfusion:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - star-fusion:
+          type: string
+          description: The tool name
+      - "1.15.1":
+          type: string
+          description: The version of STAR-Fusion (hardcoded, not available via CLI)
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tool_name:
+          type: string
+          description: The tool name
+      - version:
+          type: string
+          description: The version of the tool
 authors:
   - "@praveenraj2018"
   - "@martings"
