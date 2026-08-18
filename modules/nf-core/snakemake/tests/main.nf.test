@@ -18,7 +18,7 @@ nextflow_process {
             []
         ]
 // Snakefile
-    Channel.of('''
+    channel.of('''
 rule all:
     input: "hello.txt"
 
@@ -42,12 +42,57 @@ rule hello_world:
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.outputs, process.out.versions).match() }
+                { assert snapshot(
+                    process.out.outputs,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
+    test("Should run without failures - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+        // Input file
+        input[0] = [
+            [ id: 'input'],
+            []
+        ]
+// Snakefile
+    channel.of('''
+rule all:
+    input: "hello.txt"
 
+rule hello_world:
+    output: "hello.txt"
+    shell: "echo Hello World > hello.txt"
+
+'''
+        )
+        .collectFile(name: 'Snakefile')
+        .map { file ->
+            [
+                [id: 'Snakefile'],
+                file
+            ]}
+        .set{ snakefile }
+
+        input[1] = snakefile
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.outputs,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
 }

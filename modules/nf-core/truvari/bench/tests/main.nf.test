@@ -10,7 +10,7 @@ nextflow_process {
     tag "truvari"
     tag "truvari/bench"
 
-    test("without bed") {
+    test("homo sapiens - simulated sv - without bed") {
 
         when {
             process {
@@ -46,9 +46,9 @@ nextflow_process {
                     file(process.out.tp_base_tbi[0][1]).name,
                     path(process.out.tp_comp_vcf[0][1]).vcf.summary,
                     file(process.out.tp_comp_tbi[0][1]).name,
-                    path(process.out.versions[0]).yaml,
+                    file(process.out.log[0][1]).name,
                     process.out.summary,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -56,7 +56,7 @@ nextflow_process {
     }
 
 
-    test("with bed") {
+    test("homo sapiens - simulated sv - with bed") {
 
         when {
             process {
@@ -92,9 +92,9 @@ nextflow_process {
                     file(process.out.tp_base_tbi[0][1]).name,
                     path(process.out.tp_comp_vcf[0][1]).vcf.summary,
                     file(process.out.tp_comp_tbi[0][1]).name,
-                    path(process.out.versions[0]).yaml,
+                    file(process.out.log[0][1]).name,
                     process.out.summary,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -102,7 +102,7 @@ nextflow_process {
     }
 
 
-    test("without bed -- stub") {
+    test("homo sapiens - simulated sv - without bed -- stub") {
         options '-stub'
         when {
             process {
@@ -131,7 +131,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

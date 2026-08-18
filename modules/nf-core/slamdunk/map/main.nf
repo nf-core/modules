@@ -3,9 +3,9 @@ process SLAMDUNK_MAP {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/slamdunk:0.4.3--py_0'
-        : 'biocontainers/slamdunk:0.4.3--py_0'}"
+        : 'quay.io/biocontainers/slamdunk:0.4.3--py_0'}"
 
     input:
     tuple val(meta), path(input)
@@ -13,7 +13,7 @@ process SLAMDUNK_MAP {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('slamdunk'), eval("slamdunk --version | sed 's/^slamdunk //'"), topic: versions, emit: versions_slamdunk
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,15 +35,9 @@ process SLAMDUNK_MAP {
         ${input}
 
     mv outputs/*.bam ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        slamdunk: \$(echo \$(slamdunk --version) | sed 's/^slamdunk //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if ("${input}" == "${prefix}.bam") {
@@ -51,10 +45,5 @@ process SLAMDUNK_MAP {
     }
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        slamdunk: \$(echo \$(slamdunk --version) | sed 's/^slamdunk //')
-    END_VERSIONS
     """
 }

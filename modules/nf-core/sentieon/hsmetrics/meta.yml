@@ -1,0 +1,103 @@
+name: sentieon_hsmetrics
+description: Collects hybrid-selection (HS) metrics for a SAM or BAM file.
+keywords:
+  - metrics
+  - bam
+  - sentieon
+tools:
+  - sentieon:
+      description: |
+        Sentieon® provides complete solutions for secondary DNA/RNA analysis for a variety of sequencing platforms, including short and long reads.
+        Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
+      homepage: https://www.sentieon.com/
+      documentation: https://www.sentieon.com/
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test']`
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: Index of the BAM/CRAM/SAM file
+        pattern: "*.{bai,crai,sai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+    - bait_intervals:
+        type: file
+        description: An interval file that contains the locations of the baits
+          used.
+        pattern: "*.{interval_list,bed,bed.gz}"
+        ontologies: []
+    - target_intervals:
+        type: file
+        description: An interval file that contains the locations of the targets.
+        pattern: "*.{interval_list,bed,bed.gz}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - fasta:
+        type: file
+        description: Genome fasta file
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - fai:
+        type: file
+        description: Index of the genome fasta file
+        pattern: "*.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3326"
+output:
+  metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.txt":
+          type: file
+          description: Alignment metrics related to how many reads overlap the target/bait regions.
+          pattern: "*.txt"
+          ontologies: []
+  versions_sentieon:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - sentieon driver --version | sed 's/.*-//g':
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - sentieon driver --version | sed 's/.*-//g':
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@sppearce"
+maintainers:
+  - "@sppearce"

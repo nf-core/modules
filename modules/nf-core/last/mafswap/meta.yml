@@ -22,8 +22,8 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - maf:
         type: file
-        description: Multiple Alignment Format (MAF) file, optionally compressed with
-          gzip
+        description: Multiple Alignment Format (MAF) file, optionally compressed
+          with gzip
         pattern: "*.{maf.gz,maf}"
         ontologies: []
 output:
@@ -38,13 +38,27 @@ output:
           description: Multiple Alignment Format (MAF) file, compressed with gzip
           pattern: "*.{maf.gz}"
           ontologies: []
+  versions_last:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - last:
+          type: string
+          description: The name of the tool
+      - "lastal --version | sed 's/lastal //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - last:
+          type: string
+          description: The name of the tool
+      - "lastal --version | sed 's/lastal //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@charles-plessy"
 maintainers:

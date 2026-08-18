@@ -11,7 +11,6 @@ keywords:
 components:
   - freebayes
   - bcftools/sort
-  - bcftools/index
 input:
   - meta:
       type: map
@@ -73,22 +72,9 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - versions:
+  - vcf_index:
       type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - vcf:
-      type: file
-      description: Sorted VCF file
-      pattern: "*.{vcf.gz}"
-  - csi:
-      type: file
-      description: Default VCF file index file
-      pattern: "*.csi"
-  - tbi:
-      type: file
-      description: Alternative VCF file index file (activated with -t parameter)
-      pattern: "*.tbi"
+      description: Sorted VCF file with index
 authors:
   - "@priyanka-surana"
   - "@FriederikeHanssen"

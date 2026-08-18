@@ -3,16 +3,16 @@ process FQ_SUBSAMPLE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fq:0.12.0--h9ee0642_0':
-        'biocontainers/fq:0.12.0--h9ee0642_0' }"
+        'quay.io/biocontainers/fq:0.12.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fastq)
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('fq'), eval("fq subsample --version | sed 's/fq-subsample //; s/ .*//'"), emit: versions_fq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,11 +46,6 @@ process FQ_SUBSAMPLE {
         $fastq \\
         $fastq1_output \\
         $fastq2_output
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fq: \$(echo \$(fq subsample --version | sed 's/fq-subsample //g'))
-    END_VERSIONS
     """
 
     stub:
@@ -58,10 +53,5 @@ process FQ_SUBSAMPLE {
     """
     echo '' | gzip >  ${prefix}_R1.fastq.gz
     echo '' | gzip >  ${prefix}_R2.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fq: \$(echo \$(fq subsample --version | sed 's/fq-subsample //g'))
-    END_VERSIONS
     """
 }

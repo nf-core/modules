@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "proteinortho"
 description: Proteinortho is a tool to detect orthologous genes within different species.
 keywords:
@@ -11,15 +10,14 @@ keywords:
   - genomics
 tools:
   - "proteinortho":
-      description: "Proteinortho is a tool to detect orthologous genes within different
-        species."
+      description: "Proteinortho is a tool to detect orthologous genes within different species."
       homepage: "https://gitlab.com/paulklemm_PHD/proteinortho"
       documentation: "https://gitlab.com/paulklemm_PHD/proteinortho#proteinortho"
       tool_dev_url: "https://gitlab.com/paulklemm_PHD/proteinortho"
       doi: "10.3389/fbinf.2023.1322477"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:proteinortho
-
 input:
   - - meta:
         type: map
@@ -28,8 +26,7 @@ input:
           e.g. `[ id:'test' ]`
     - fasta_files:
         type: file
-        description: Input fasta files (proteomes or transcriptomes), at least 2 are
-          needed
+        description: Input fasta files (proteomes or transcriptomes), at least 2 are needed
         pattern: "*.{fa,fasta,faa,fna,fn}"
         ontologies: []
 output:
@@ -40,7 +37,7 @@ output:
           pattern: "*.proteinortho.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-      - ${meta.id}.proteinortho.tsv:
+      - ${prefix}.proteinortho.tsv:
           type: file
           description: Orthology table
           pattern: "*.proteinortho.tsv"
@@ -53,7 +50,7 @@ output:
           pattern: "*.proteinortho.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-      - ${meta.id}.proteinortho-graph:
+      - ${prefix}.proteinortho-graph:
           type: file
           description: Orthology graph
           pattern: "*.proteinortho-graph"
@@ -65,18 +62,76 @@ output:
           pattern: "*.proteinortho.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-      - ${meta.id}.blast-graph:
+      - ${prefix}.blast-graph:
           type: file
           description: BLAST graph
           pattern: "*.blast-graph"
           ontologies: []
+  versions_proteinortho:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - proteinortho:
+          type: string
+          description: The name of the tool
+      - proteinortho --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_diamond:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diamond:
+          type: string
+          description: The name of the tool
+      - diamond version 2>/dev/null | sed '1!d;s/^.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_blast:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blast:
+          type: string
+          description: The name of the tool
+      - "blastp -version 2>/dev/null | sed '1!d;s/^.*: //;s/+//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - proteinortho:
+          type: string
+          description: The name of the tool
+      - proteinortho --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diamond:
+          type: string
+          description: The name of the tool
+      - diamond version 2>/dev/null | sed '1!d;s/^.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blast:
+          type: string
+          description: The name of the tool
+      - "blastp -version 2>/dev/null | sed '1!d;s/^.*: //;s/+//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@pmjklemm"
 maintainers:

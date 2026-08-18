@@ -3,9 +3,9 @@ process PINDEL_PINDEL {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pindel:0.2.5b9--h06e5f0a_6':
-        'biocontainers/pindel:0.2.5b9--h06e5f0a_6' }"
+        'quay.io/biocontainers/pindel:0.2.5b9--h06e5f0a_6' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -24,7 +24,7 @@ process PINDEL_PINDEL {
     tuple val(meta), path("*_RP")            , emit: rp
     tuple val(meta), path("*_SI")            , emit: si
     tuple val(meta), path("*_TD")            , emit: td
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('pindel'), eval("pindel | grep '^Pindel version' | uniq | sed 's/Pindel version //; s/, [0-9]\\+.//'"), topic: versions, emit: versions_pindel
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,24 +34,26 @@ process PINDEL_PINDEL {
     def args2 = task.ext.args2 ?: '500'
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if (bam instanceof nextflow.util.BlankSeparatedList) {
-        error "pindel/pindel only takes a single bam file as input"
+    if (bam instanceof Collection) {
+        error "pindel/pindel only accepts a single BAM file as input, but received multiple files: ${bam}"
     }
 
     """
     echo -e "${bam}\t${args2}\t${prefix}" > pindel.cfg
 
     pindel \\
-        $args \\
-        -T $task.cpus \\
-        -o $prefix \\
-        -f $fasta \\
-        -j $bed \\
+        ${args} \\
+        -T ${task.cpus} \\
+        -o ${prefix} \\
+        -f ${fasta} \\
+        -j ${bed} \\
         -i pindel.cfg
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pindel: \$(pindel | grep '^Pindel version' | uniq | sed 's/Pindel version //; s/, [0-9]\\+.//' ))
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}_{BP,CloseEndMapped,D,INT_final,INV,LI,RP,SI,TD}
     """
 }

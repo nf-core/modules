@@ -1,6 +1,6 @@
 name: "somalier_relate"
-description: Somalier can extract informative sites, evaluate relatedness, and perform
-  quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
+description: Somalier can extract informative sites, evaluate relatedness, and
+  perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
 keywords:
   - relatedness
   - QC
@@ -21,7 +21,8 @@ tools:
       documentation: "https://github.com/brentp/somalier/blob/master/README.md"
       tool_dev_url: "https://github.com/brentp/somalier"
       doi: "10.1186/s13073-020-00761-2"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:somalier
 input:
   - - meta:
@@ -36,17 +37,17 @@ input:
         ontologies: []
     - ped:
         type: file
-        description: optional path to a ped or fam file indicating the expected relationships
-          among samples
+        description: optional path to a ped or fam file indicating the expected
+          relationships among samples
         pattern: "*.{ped,fam}"
         ontologies: []
   - sample_groups:
       type: file
-      description: optional path to expected groups of samples such as tumor normal
-        pairs specified as comma-separated groups per line
+      description: optional path to expected groups of samples such as tumor
+        normal pairs specified as comma-separated groups per line
       pattern: "*.{txt,csv}"
       ontologies:
-        - edam: http://edamontology.org/format_3752 # CSV
+        - edam: http://edamontology.org/format_3752
 output:
   html:
     - - meta:
@@ -70,7 +71,7 @@ output:
           description: tsv file with output stats for pairs of samples
           pattern: "*.pairs.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   samples_tsv:
     - - meta:
           type: file
@@ -82,14 +83,28 @@ output:
           description: tsv file with sample-level information
           pattern: "*.samples.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_somalier:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - somalier:
+          type: string
+          description: The name of the tool
+      - "somalier 2>&1 | sed -n 's/.*version: \\([0-9.]*\\).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - somalier:
+          type: string
+          description: The name of the tool
+      - "somalier 2>&1 | sed -n 's/.*version: \\([0-9.]*\\).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ashotmarg"
   - "@nvnieuwk"

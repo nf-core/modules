@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process MACS2_CALLPEAK"
     script "../main.nf"
+    config "./nextflow.config"
     process "MACS2_CALLPEAK"
 
     tag "modules"
@@ -12,11 +13,13 @@ nextflow_process {
     test("homo_sapiens - callpeak - bed") {
 
         when {
-            config "./bed.config"
+            params {
+                module_args = '--format BED --qval 10 --nomodel --extsize 200'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bed/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.merged.aligned_tc.bed', checkIfExists: true) ],
                     []
                 ]
@@ -28,7 +31,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -37,11 +40,13 @@ nextflow_process {
     test("homo_sapiens - callpeak - bam") {
 
         when {
-            config "./bam.config"
+            params {
+                module_args = '--qval 0.1'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true) ],
                     []
                 ]
@@ -53,7 +58,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -62,11 +67,13 @@ nextflow_process {
     test("homo_sapiens - callpeak - control - bam") {
 
         when {
-            config "./bam.config"
+            params {
+                module_args = '--qval 0.1'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true) ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true) ]
                 ]
@@ -78,7 +85,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -89,10 +96,13 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ],
                     []
                 ]
@@ -104,7 +114,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

@@ -1,7 +1,8 @@
 name: "muscle5_super5"
-description: Muscle is a program for creating multiple alignments of amino acid or
-  nucleotide sequences. This particular module uses the super5 algorithm for very
-  big alignments. It can permutate the guide tree according to a set of flags.
+description: Muscle is a program for creating multiple alignments of amino acid
+  or nucleotide sequences. This particular module uses the super5 algorithm for
+  very big alignments. It can permutate the guide tree according to a set of
+  flags.
 keywords:
   - align
   - msa
@@ -12,7 +13,8 @@ tools:
       homepage: "https://drive5.com/muscle5/"
       documentation: "https://drive5.com/muscle5/manual/"
       doi: "10.1101/2021.06.20.449169"
-      licence: ["Public Domain"]
+      licence:
+        - "Public Domain"
       identifier: ""
   - "pigz":
       description: "Parallel implementation of the gzip algorithm."
@@ -34,9 +36,9 @@ input:
           - edam: http://edamontology.org/format_1929 # FASTA
   - compress:
       type: boolean
-      description: Flag representing whether the output MSA should be compressed. Set
-        to true to enable/false to disable compression. Compression is done using pigz,
-        and is multithreaded.
+      description: Flag representing whether the output MSA should be compressed.
+        Set to true to enable/false to disable compression. Compression is done
+        using pigz, and is multithreaded.
 output:
   alignment:
     - - meta:
@@ -46,20 +48,54 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.aln{.gz,}":
           type: file
-          description: Multiple sequence alignment produced in gzipped FASTA format.
-            If '-perm all' is passed in ext.args, this will be multiple files per input!
+          description: Multiple sequence alignment produced in gzipped FASTA
+            format. If '-perm all' is passed in ext.args, this will be multiple
+            files per input!
           pattern: "*.{aln.gz}"
           ontologies:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_muscle:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - muscle:
+          type: string
+          description: The name of the tool
+      - muscle -version | head -n 1 | cut -d " " -f 2 | sed "s/.linux64//":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - muscle:
+          type: string
+          description: The name of the tool
+      - muscle -version | head -n 1 | cut -d " " -f 2 | sed "s/.linux64//":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@alessiovignoli"
   - "@JoseEspinosa"

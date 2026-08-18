@@ -39,13 +39,15 @@ nextflow_process {
             }
         }
     }
-    
+
     test("homo_sapiens - sigxls") {
         when {
             process {
                 """
                 input[0] = ICOUNTMINI_SIGXLS.out.sigxls
-                    .combine(Channel.of(file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/crosslinks/clippy.bed", checkIfExists: true)))
+                    .combine(channel.of(
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/crosslinks/clippy.bed", checkIfExists: true)
+                    ))
                     .map{ meta, sigxls, bed -> [ meta, bed, sigxls ] }
                 """
             }
@@ -53,22 +55,21 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    path(process.out.peaks[0][1]).linesGzip
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
-    
-    
+
+
     test("homo_sapiens - sigxls -- stub") {
         options '-stub'
         when {
             process {
                 """
-                input[0] = input[0] = ICOUNTMINI_SIGXLS.out.sigxls
-                    .combine(Channel.of(file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/crosslinks/clippy.bed", checkIfExists: true)))
+                input[0] = ICOUNTMINI_SIGXLS.out.sigxls
+                    .combine(channel.of(
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/crosslinks/clippy.bed", checkIfExists: true)
+                    ))
                     .map{ meta, sigxls, bed -> [ meta, bed, sigxls ] }
                 """
             }
@@ -76,10 +77,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

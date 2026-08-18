@@ -41,7 +41,7 @@ nextflow_process {
                         path(it[1]).json[0].findAll{it.key != "timestamp"}.toString().md5()
                     ]},
                     process.out.problems,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -78,7 +78,7 @@ nextflow_process {
                         path(it[1]).json[0].findAll{it.key != "timestamp"}.toString().md5()
                     ]},
                     process.out.problems.collect{ file(it[1]).name },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -115,7 +115,7 @@ nextflow_process {
                         path(it[1]).json[0].findAll{it.key != "timestamp"}.toString().md5()
                     ]},
                     process.out.problems,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -152,7 +152,7 @@ nextflow_process {
                         path(it[1]).json[0].findAll{it.key != "timestamp"}.toString().md5()
                     ]},
                     process.out.problems,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -189,7 +189,7 @@ nextflow_process {
                         path(it[1]).json[0].findAll{it.key != "timestamp"}.toString().md5()
                     ]},
                     process.out.problems,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -224,7 +224,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    process.out.versions.collect { path(it).yaml }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

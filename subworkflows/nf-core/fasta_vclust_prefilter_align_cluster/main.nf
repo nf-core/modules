@@ -13,10 +13,7 @@ workflow FASTA_VCLUST_PREFILTER_ALIGN_CLUSTER {
     ani            // float
 
     main:
-    ch_versions = Channel.empty()
-
     VCLUST_PREFILTER ( ch_fasta )
-    ch_versions = ch_versions.mix(VCLUST_PREFILTER.out.versions.first())
 
     // Join to ensure in sync in case of multiple sequence files
     ch_align_in = VCLUST_PREFILTER.out.txt
@@ -27,10 +24,8 @@ workflow FASTA_VCLUST_PREFILTER_ALIGN_CLUSTER {
         }
 
     VCLUST_ALIGN ( ch_align_in.fasta, ch_align_in.filter, save_alignment )
-    ch_versions = ch_versions.mix(VCLUST_ALIGN.out.versions.first())
 
     VCLUST_CLUSTER ( VCLUST_ALIGN.out.tsv, VCLUST_ALIGN.out.ids, metric, tani, gani, ani )
-    ch_versions = ch_versions.mix(VCLUST_CLUSTER.out.versions.first())
 
     // Join to ensure in sync in case of multiple sequence files
     ch_out = VCLUST_CLUSTER.out.clusters
@@ -45,5 +40,4 @@ workflow FASTA_VCLUST_PREFILTER_ALIGN_CLUSTER {
     clusters  = ch_out.tsv             // channel: [ val(meta), [ tsv ] ]
     alignment = VCLUST_ALIGN.out.aln   // channel: [ val(meta), [ aln ] ]
     ids       = VCLUST_ALIGN.out.ids   // channel: [ val(meta), [ ids ] ]
-    versions  = ch_versions            // channel: [ versions.yml ]
 }

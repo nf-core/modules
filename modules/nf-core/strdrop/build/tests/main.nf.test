@@ -1,0 +1,101 @@
+nextflow_process {
+
+    name "Test Process STRDROP_BUILD"
+    script "../main.nf"
+    process "STRDROP_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "strdrop"
+    tag "strdrop/build"
+    tag "samtools/faidx"
+    tag "gunzip"
+    tag "trgt/genotype"
+
+    setup {
+        run("GUNZIP"){
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id : 'chr22' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true)
+                ]
+            """
+            }
+        }
+        run("SAMTOOLS_FAIDX"){
+            script "../../../samtools/faidx/main.nf"
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                    .combine(channel.of([[]]))
+                input[1] = false
+                """
+            }
+        }
+        run("TRGT_GENOTYPE"){
+            script "../../../trgt/genotype/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
+                    'XX'
+                ]
+                input[1] = GUNZIP.out.gunzip
+                input[2] = SAMTOOLS_FAIDX.out.fai
+                input[3] = Channel.of('chr22\t18890357\t18890451\tID=TEST;MOTIFS=AT;STRUC=(AT)n')
+                            .collectFile(name : 'repeats.bed', newLine: false)
+                            .map { file -> [ [ id : 'chr22' ], file ] }
+                """
+            }
+        }
+    }
+
+    test("test") {
+        when {
+            process {
+                """
+                input[0] = TRGT_GENOTYPE.out.vcf
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("test-stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = TRGT_GENOTYPE.out.vcf
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+}

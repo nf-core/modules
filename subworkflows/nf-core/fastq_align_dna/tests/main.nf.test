@@ -30,7 +30,10 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bowtie2/build/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    input[0] = Channel.value([
+                        [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
                     """
                 }
             }
@@ -40,7 +43,10 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[2] = Channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[3] = "bowtie2"
                 input[4] = true
                 """
@@ -52,7 +58,6 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
-                    workflow.out.versions[0]
                 ).match() }
             )
         }
@@ -64,7 +69,10 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bowtie2/build/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    input[0] = Channel.value([
+                        [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
                     """
                 }
             }
@@ -86,7 +94,6 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
-                    workflow.out.versions[0]
                 ).match() }
             )
         }
@@ -121,7 +128,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -157,7 +163,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -193,7 +198,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -229,7 +233,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -264,7 +267,6 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(workflow.out.versions[0]).name
                 ).match() }
             )
         }
@@ -298,7 +300,6 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(workflow.out.versions[0]).name
                 ).match() }
             )
         }

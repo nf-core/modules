@@ -3,17 +3,19 @@ process ENSEMBLVEP_FILTERVEP {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4b/4b5a8c173dc9beaa93effec76b99687fc926b1bd7be47df5d6ce19d7d6b4d6b7/data'
-        : 'community.wave.seqera.io/library/ensembl-vep:115.2--90ec797ecb088e9a'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/90/9021c17a89ce9034b23f85736fd7ce906c44716e612f8e34d2a5e7ceeeb372d8/data'
+        : 'community.wave.seqera.io/library/ensembl-vep_htslib_perl-math-cdf_gzip_tar:35e34ac4f7e9d58a'}"
 
     input:
     tuple val(meta), path(input)
     path feature_file
+    val extension
 
     output:
     tuple val(meta), path("*.${extension}"), emit: output
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('ensemblvep'), eval("vep --help | sed -n '/ensembl-vep/s/.*: //p'"), topic: versions, emit: versions_ensemblvep
+    tuple val("${task.process}"), val('perl-math-cdf'), eval("perl -MMath::CDF -e 'print \\\$Math::CDF::VERSION'"), topic: versions, emit: versions_perlmathcdf
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,29 +23,19 @@ process ENSEMBLVEP_FILTERVEP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    extension = task.ext.suffix ?: "vcf"
+    def suffix = extension ?: "vcf"
     """
     filter_vep \\
         ${args} \\
         --input_file ${input} \\
-        --output_file ${prefix}.${extension} \\
+        --output_file ${prefix}.${suffix} \\
         --only_matched
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ensemblvep: \$( echo \$(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    extension = task.ext.suffix ?: "vcf"
+    def suffix = extension ?: "vcf"
     """
-    touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ensemblvep: \$( echo \$(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*\$//')
-    END_VERSIONS
+    touch ${prefix}.${suffix}
     """
 }

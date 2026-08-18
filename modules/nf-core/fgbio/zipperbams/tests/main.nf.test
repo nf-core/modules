@@ -13,22 +13,21 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                fgbio_args  = ''
+                fgbio_args2 = '--tags-to-reverse Consensus --tags-to-revcomp Consensus'
+            }
             process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_mapped.bam', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_unmapped.bam', checkIfExists: true)
                         ]
                 input[1] = [
-                            [ id:'test', single_end:false ],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_mapped.bam', checkIfExists: true)
-                        ]
-                input[2] = [
-                            [ id:'test'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                        ]
-                input[3] = [
-                            [ id:'test'],
+                            [ id:'genome'],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                         ]
                 """
@@ -49,22 +48,21 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                fgbio_args  = ''
+                fgbio_args2 = '--tags-to-reverse Consensus --tags-to-revcomp Consensus'
+            }
             process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_mapped.bam', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_unmapped.bam', checkIfExists: true)
                         ]
                 input[1] = [
-                            [ id:'test', single_end:false ],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_mapped.bam', checkIfExists: true)
-                        ]
-                input[2] = [
-                            [ id:'test'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                        ]
-                input[3] = [
-                            [ id:'test'],
+                            [ id:'genome'],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                         ]
                 """

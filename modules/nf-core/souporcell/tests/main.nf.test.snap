@@ -1,4 +1,23 @@
 {
+    "homo sapiens - bam and barcodes - ext.args": {
+        "content": [
+            null,
+            [
+                "versions.yml:md5,f337670d0ed16cb68e4609c40ae11fdb"
+            ],
+            {
+                "SOUPORCELL": {
+                    "souporcell": 2.5
+                }
+            },
+            false
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.3"
+        },
+        "timestamp": "2025-11-12T09:06:11.001555"
+    },
     "homo sapience - bam and barcodes - stub": {
         "content": [
             {
@@ -8,7 +27,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "cluster_genotypes.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "clusters.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -17,13 +36,31 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "clusters.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "cluster_genotypes.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,5dd3b7155192b796f88699e754edd1e0"
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "ambient_rna.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
-                "tsv": [
+                "3": [
+                    "versions.yml:md5,f337670d0ed16cb68e4609c40ae11fdb"
+                ],
+                "ambient_rna": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "ambient_rna.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "clusters": [
                     [
                         {
                             "id": "test",
@@ -42,7 +79,7 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,5dd3b7155192b796f88699e754edd1e0"
+                    "versions.yml:md5,f337670d0ed16cb68e4609c40ae11fdb"
                 ]
             }
         ],
@@ -50,31 +87,25 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.3"
         },
-        "timestamp": "2025-07-07T16:54:07.136893281"
+        "timestamp": "2025-11-11T22:51:43.492074"
     },
     "homo sapiens - bam and barcodes": {
         "content": [
+            null,
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    [
-                        "clusters.tsv:md5,8d32a971f1860c3c1e068bfe589f1caf",
-                        "clusters_tmp.tsv:md5,67eb4894d5f4dbaf3933b4c074a16f18"
-                    ]
-                ]
+                "versions.yml:md5,f337670d0ed16cb68e4609c40ae11fdb"
             ],
-            [
-                "versions.yml:md5,c5e0a5d959d8dd98afe614d97beceffd"
-            ],
+            {
+                "SOUPORCELL": {
+                    "souporcell": 2.5
+                }
+            },
             false
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "25.04.3"
         },
-        "timestamp": "2025-07-07T11:33:27.65735944"
+        "timestamp": "2025-11-12T09:03:53.134935"
     }
 }

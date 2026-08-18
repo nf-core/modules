@@ -10,9 +10,6 @@ nextflow_process {
 
     test("extract_fingerprint") {
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 bam = [
@@ -37,10 +34,44 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert process.out.vcf.get(0).get(1) ==~ ".*.vcf.gz" },
-                { assert process.out.tbi.get(0).get(1) ==~ ".*.vcf.gz.tbi" },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(path(process.out.vcf.get(0).get(1)).linesGzip[0]).match() }
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    file(process.out.tbi[0][1]).name,
+                    path(process.out.vcf[0][1]).linesGzip[0],
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("extract_fingerprint - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                bam = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ]
+                fasta = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                fai   = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                dict  = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)]
+                haplotype_map  = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/haplotype_map.txt', checkIfExists: true)]
+
+                input[0] = bam
+                input[1] = haplotype_map
+                input[2] = fasta
+                input[3] = fai
+                input[4] = dict
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

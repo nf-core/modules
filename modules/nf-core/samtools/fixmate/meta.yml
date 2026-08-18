@@ -37,6 +37,23 @@ input:
           - edam: http://edamontology.org/format_2572 # BAM
           - edam: http://edamontology.org/format_3462 # CRAM
           - edam: http://edamontology.org/format_2573 # SAM
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        optional: true
+        ontologies: []
+    - fai:
+        type: file
+        description: Reference genome FASTA index file
+        pattern: "*.{fai}"
+        optional: true
+        ontologies: []
 output:
   bam:
     - - meta:
@@ -89,15 +106,30 @@ output:
           pattern: "*.{sam}"
           ontologies:
             - edam: http://edamontology.org/format_2573
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@sppearce"
 maintainers:
   - "@sppearce"
   - "@GallVp"
+  - "@matthdsm"

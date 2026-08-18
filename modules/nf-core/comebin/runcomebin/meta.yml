@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "comebin_runcomebin"
 description: Effective binning of metagenomic contigs using COntrastive
   Multi-viEw representation learning
@@ -14,8 +13,9 @@ tools:
       documentation: "https://github.com/ziyewang/COMEBin"
       tool_dev_url: "https://github.com/ziyewang/COMEBin"
       doi: "10.1038/s41467-023-44290-z"
-      licence: ["GPL v3"]
-
+      licence:
+        - "GPL v3"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -27,14 +27,14 @@ input:
         description: FASTA file of contigs for binning
         pattern: "*.{fa,fas,fasta,fna,fa.gz,fas.gz,fasta.gz,fna.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
     - bam:
         type: file
         description: |
           List of sorted bam files of reads mapped to the reference assembly. Not compatible with TSV input.
         pattern: "*.bam"
         ontologies:
-          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_2572
 output:
   bins:
     - - meta:
@@ -46,8 +46,8 @@ output:
           description: List of FASTA files of binned contigs
           pattern: "*.fna.gz"
           ontologies:
-            - edam: http://edamontology.org/format_1929 # FASTA
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_1929
+            - edam: http://edamontology.org/format_3989
   tsv:
     - - meta:
           type: map
@@ -59,7 +59,7 @@ output:
             TSV mapping the output clusters to contigs
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   log:
     - - meta:
           type: map
@@ -71,7 +71,7 @@ output:
             COMEBin log file
           pattern: "*.log"
           ontologies:
-            - edam: http://edamontology.org/format_3671 # Text
+            - edam: http://edamontology.org/format_3671
   embeddings:
     - - meta:
           type: map
@@ -83,7 +83,7 @@ output:
             TSV describing the embeddings of the contigs
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   covembeddings:
     - - meta:
           type: map
@@ -95,15 +95,28 @@ output:
             TSV describing the embeddings of the contigs
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_comebin:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - comebin:
+          type: string
+          description: The name of the tool
+      - "run_comebin.sh | sed '2!d;s/COMEBin version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - comebin:
+          type: string
+          description: The name of the tool
+      - "run_comebin.sh | sed '2!d;s/COMEBin version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@prototaxites"
 maintainers:

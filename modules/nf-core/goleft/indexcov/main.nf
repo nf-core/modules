@@ -3,9 +3,9 @@ process GOLEFT_INDEXCOV {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/goleft:0.2.4--h9ee0642_1'
-        : 'biocontainers/goleft:0.2.4--h9ee0642_1'}"
+        : 'quay.io/biocontainers/goleft:0.2.4--h9ee0642_1'}"
 
     input:
     tuple val(meta), path(bams), path(indexes)
@@ -19,7 +19,8 @@ process GOLEFT_INDEXCOV {
     tuple val(meta), path("${prefix}/*roc"),        emit: roc,       optional: true
     tuple val(meta), path("${prefix}/*html"),       emit: html,      optional: true
     tuple val(meta), path("${prefix}/*png"),        emit: png,       optional: true
-    path "versions.yml",                            emit: versions
+    tuple val("${task.process}"), val('goleft'), eval("goleft --version |& sed '1!d;s/^.*goleft Version: //'"), topic: versions, emit: versions_goleft
+    tuple val("${task.process}"), val('tabix'), eval("tabix -h |& sed -n 's/^.*Version: //p'"), topic: versions, emit: versions_tabix
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,8 +29,8 @@ process GOLEFT_INDEXCOV {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     // indexcov uses BAM files or CRAI
-    def input_files = bams.findAll { it.name.endsWith(".bam") } + indexes.findAll { it.name.endsWith(".crai") }
-    def extranormalize = input_files.any { it.name.endsWith(".crai") } ? " --extranormalize " : ""
+    def input_files = bams.findAll {bam_file -> bam_file.name.endsWith(".bam") } + indexes.findAll {index_file -> index_file.name.endsWith(".crai") }
+    def extranormalize = input_files.any {input_file -> input_file.name.endsWith(".crai") } ? " --extranormalize " : ""
     """
     goleft indexcov \\
         --fai ${fai}  \\
@@ -39,27 +40,15 @@ process GOLEFT_INDEXCOV {
         ${input_files.join(" ")}
 
     if [ -f "${prefix}/${prefix}-indexcov.bed.gz" ] ; then
-        tabix -p bed "${prefix}/${prefix}-indexcov.bed.gz"
+        tabix -p bed ${prefix}/${prefix}-indexcov.bed.gz
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        goleft: \$(goleft --version 2>&1 | head -n 1 | sed 's/^.*goleft Version: //')
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir "${prefix}"
-    echo "" | gzip > "${prefix}/${prefix}-indexcov.bed.gz"
-    touch "${prefix}/${prefix}-indexcov.bed.gz.tbi"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        goleft: \$(goleft --version 2>&1 | head -n 1 | sed 's/^.*goleft Version: //')
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
+    mkdir ${prefix}
+    echo "" | gzip > ${prefix}/${prefix}-indexcov.bed.gz
+    touch ${prefix}/${prefix}-indexcov.bed.gz.tbi
     """
 }

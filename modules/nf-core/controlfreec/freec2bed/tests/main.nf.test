@@ -12,53 +12,52 @@ nextflow_process {
     tag "controlfreec/freec"
     tag "untar"
 
-    setup {
+    test("human - freec_ratio") {
 
-        run("UNTAR") {
-                script "../../../../nf-core/untar/main.nf"
+        setup {
+
+            run("UNTAR") {
+                    script "../../../../nf-core/untar/main.nf"
+                    process {
+                        """
+                        input[0] =  [ [],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chromosomes.tar.gz', checkIfExists: true)
+                        ]
+                        """
+                    }
+            }
+
+            run("CONTROLFREEC_FREEC") {
+                script "../../../../nf-core/controlfreec/freec/main.nf"
                 process {
                     """
-                    input[0] =  [ [],
-                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chromosomes.tar.gz', checkIfExists: true)
-                            ]
+                    input[0] =  [ [ id:'test', single_end:false, sex:'XX' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test.mpileup.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test2.mpileup.gz', checkIfExists: true),
+                        [],[],[],[]
+                    ]
+                    // fasta
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    // fai
+                    input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    // snp_position
+                    input[3] = []
+                    // known_snps
+                    input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/dbsnp_138.hg38.vcf.gz', checkIfExists: true)
+                    // known_snps_tbi
+                    input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/dbsnp_138.hg38.vcf.gz.tbi', checkIfExists: true)
+                    // chr_directory
+                    input[6] = UNTAR.out.untar.map{ it[1] }
+                    // mappability
+                    input[7] = []
+                    // target_bed
+                    input[8] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+                    // gccontent_profile
+                    input[9] = []
                     """
                 }
-        }
-
-        run("CONTROLFREEC_FREEC") {
-            script "../../../../nf-core/controlfreec/freec/main.nf"
-            process {
-                """
-                input[0] =  [ [ id:'test', single_end:false, sex:'XX' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test.mpileup.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test2.mpileup.gz', checkIfExists: true),
-                            [],[],[],[]
-                        ]
-                // fasta
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
-                // fai
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
-                // snp_position
-                input[3] = []
-                // known_snps
-                input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/dbsnp_138.hg38.vcf.gz', checkIfExists: true)
-                // known_snps_tbi
-                input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/dbsnp_138.hg38.vcf.gz.tbi', checkIfExists: true)
-                // chr_directory
-                input[6] = UNTAR.out.untar.map{ it[1] }
-                // mappability
-                input[7] = []
-                // target_bed
-                input[8] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
-                // gccontent_profile
-                input[9] = []
-                """
             }
         }
-
-    }
-
-    test("human - freec_ratio") {
 
         when {
             process {
@@ -69,13 +68,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(path(process.out.bed.get(0).get(1)).readLines()[0]).match() },
-                { assert snapshot(process.out.versions).match("version") }
+                { assert snapshot(
+                    path(process.out.bed[0][1]).readLines()[0],
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() },
             )
         }
-
     }
 //    test("human - freec_ratio - single") {
 
@@ -125,8 +125,8 @@ nextflow_process {
 //         }
 
 //         then {
+//             assert process.success
 //             assertAll(
-//                 { assert process.success },
 //                 { assert snapshot(process.out).match() }
 //             )
 //         }
@@ -140,19 +140,19 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = CONTROLFREEC_FREEC.out.ratio
+                input[0] = [
+                    [ id:'test', single_end:false, sex:'XX' ],
+                    file("${projectDir}/ratio")
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }
-

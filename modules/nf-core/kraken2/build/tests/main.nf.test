@@ -69,7 +69,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db.get(0).get(1) ==~ ".*/test" },
+                { assert process.out.db.get(0).get(1) ==~ ".*/kraken2-database" },
                 { assert snapshot (
                         path("${process.out.db[0][1]}/hash.k2d"),
                         path("${process.out.db[0][1]}/taxo.k2d"),
@@ -121,7 +121,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db.get(0).get(1) ==~ ".*/test" },
+                { assert process.out.db.get(0).get(1) ==~ ".*/kraken2-database" },
                 { assert snapshot (
                         path("${process.out.db[0][1]}/hash.k2d"),
                         path("${process.out.db[0][1]}/taxo.k2d"),

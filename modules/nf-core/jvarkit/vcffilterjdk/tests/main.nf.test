@@ -23,11 +23,11 @@ nextflow_process {
                     [],
                     []
                 ]
-                input[1] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
-                input[2] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
-                input[3] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true) ]
-                input[4] = [ [] , []]
-                input[5] = [ [] , []]
+                input[1] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[3] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true) ]
+                input[4] = [ [] , [] ]
+                input[5] = [ [] , [] ]
                 """
             }
         }
@@ -37,15 +37,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions
-                    ).match()
-                }
+                    sanitizeOutput(process.out, unstableKeys: ['vcf']),
+                ).match() }
             )
         }
-
     }
-
-
 
     test("sarscov2 - vcf+bed") {
 
@@ -58,11 +54,11 @@ nextflow_process {
                     [],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 ]
-                input[1] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
-                input[2] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
-                input[3] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true) ]
-                input[4] = [ [] , []]
-                input[5] = [ [] , []]
+                input[1] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[3] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true) ]
+                input[4] = [ [] , [] ]
+                input[5] = [ [] , [] ]
                 """
             }
         }
@@ -70,15 +66,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.vcf[0][1]).exists() },
-                { assert snapshot(process.out.versions).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['vcf'])).match() }
             )
         }
     }
-
-
-
 
     test("sarscov2 - vcf - stub") {
 
@@ -93,11 +84,11 @@ nextflow_process {
                     [],
                     []
                 ]
-                input[1] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
-                input[2] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
-                input[3] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true) ]
-                input[4] = [ [] , []]
-                input[5] = [ [] , []]
+                input[1] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[3] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true) ]
+                input[4] = [ [] , [] ]
+                input[5] = [ [] , [] ]
                 """
             }
         }
@@ -105,15 +96,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.vcf[0][1]),
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
-
 }

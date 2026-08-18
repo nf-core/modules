@@ -18,8 +18,8 @@ nextflow_process {
                 process {
                     """
                     input[0] =  [ [],
-                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chromosomes.tar.gz', checkIfExists: true)
-                            ]
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chromosomes.tar.gz', checkIfExists: true)
+                    ]
                     """
                 }
         }
@@ -29,10 +29,10 @@ nextflow_process {
             process {
                 """
                 input[0] =  [ [ id:'test', single_end:false, sex:'XX' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test.mpileup.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test2.mpileup.gz', checkIfExists: true),
-                            [],[],[],[]
-                        ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test.mpileup.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test2.mpileup.gz', checkIfExists: true),
+                    [],[],[],[]
+                ]
                 // fasta
                 input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 // fai
@@ -54,7 +54,6 @@ nextflow_process {
                 """
             }
         }
-
     }
 
     test("human - freec_ratio") {
@@ -70,12 +69,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match("version") }
+                { assert snapshot(
+                        process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
-
     }
 
     // test("human - freec_ratio - single") {
@@ -114,7 +114,6 @@ nextflow_process {
     //                 """
     //             }
     //         }
-
     //     }
 
     //     when {
@@ -131,7 +130,6 @@ nextflow_process {
     //             { assert snapshot(process.out).match() }
     //         )
     //     }
-
     // }
 
     test("human - freec_ratio - stub") {
@@ -150,12 +148,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }

@@ -3,9 +3,9 @@ process ABACAS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/abacas:1.3.1--pl526_0' :
-        'biocontainers/abacas:1.3.1--pl526_0' }"
+        'quay.io/biocontainers/abacas:1.3.1--pl526_0' }"
 
     input:
     tuple val(meta), path(scaffold)
@@ -13,8 +13,7 @@ process ABACAS {
 
     output:
     tuple val(meta), path("${prefix}.*"), emit: results
-    path "versions.yml"                 , emit: versions
-
+    tuple val("${task.process}"), val('abacas'), eval("abacas.pl --version 2>&1 | grep 'ABACAS\\.' | sed 's/ABACAS\\.//' || true"), topic: versions, emit: versions_abacas
     when:
     task.ext.when == null || task.ext.when
 
@@ -33,11 +32,6 @@ process ABACAS {
     mv nucmer.filtered.delta ${prefix}.nucmer.filtered.delta
     mv nucmer.tiling ${prefix}.nucmer.tiling
     mv unused_contigs.out ${prefix}.unused.contigs.out
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        abacas: \$(echo \$(abacas.pl -v 2>&1) | sed 's/^.*ABACAS.//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -55,9 +49,5 @@ process ABACAS {
     touch ${prefix}.nucmer.tiling
     touch ${prefix}.unused.contigs.out
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        abacas: \$(echo \$(abacas.pl -v 2>&1) | sed 's/^.*ABACAS.//; s/ .*\$//')
-    END_VERSIONS
     """
 }

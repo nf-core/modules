@@ -54,7 +54,7 @@ nextflow_process {
                     process.out.batch_summary[0][1],
                     process.out.full_table[0][1],
                     process.out.missing_busco_list[0][1],
-                    process.out.versions[0]
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match()
 
             with(file(process.out.seq_dir[0][1]).listFiles().collect { it.name }) {
@@ -136,7 +136,7 @@ nextflow_process {
             assert snapshot(
                     process.out.full_table[0][1],
                     process.out.missing_busco_list[0][1],
-                    process.out.versions[0]
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match()
 
             with(file(process.out.seq_dir[0][1][0]).listFiles().collect { it.name }) {
@@ -192,7 +192,7 @@ nextflow_process {
 
             assert snapshot(
                     process.out.batch_summary[0][1],
-                    process.out.versions[0]
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match()
 
             with(path(process.out.log[0][1]).text) {
@@ -256,7 +256,7 @@ nextflow_process {
                     process.out.batch_summary[0][1],
                     process.out.full_table[0][1],
                     process.out.missing_busco_list[0][1],
-                    process.out.versions[0]
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match()
 
             with(file(process.out.seq_dir[0][1]).listFiles().collect { it.name }) {
@@ -324,7 +324,7 @@ nextflow_process {
                     process.out.missing_busco_list[0][1],
                     process.out.translated_dir[0][1],
                     process.out.single_copy_proteins[0][1],
-                    process.out.versions[0]
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match()
 
             with(file(process.out.seq_dir[0][1]).listFiles().collect { it.name }) {
@@ -372,7 +372,7 @@ nextflow_process {
                     process.out.batch_summary[0][1],
                     process.out.full_table[0][1],
                     process.out.missing_busco_list[0][1],
-                    process.out.versions[0]
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match()
 
             with(path(process.out.log[0][1]).text) {
@@ -414,7 +414,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.batch_summary,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }

@@ -3,10 +3,10 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     label 'process_medium'
 
     //Conda is not supported at the moment
-    container "docker.io/google/deepvariant:1.9.0"
+    container "docker.io/google/deepvariant:1.10.0"
 
     input:
-    tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords), path(small_model_calls), path(intervals)
+    tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords), path(small_model_calls), path(phase_inputs), path(intervals)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
@@ -16,7 +16,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     tuple val(meta), path("${prefix}.vcf.gz.{tbi,csi}")   , emit: vcf_index
     tuple val(meta), path("${prefix}.g.vcf.gz")           , emit: gvcf
     tuple val(meta), path("${prefix}.g.vcf.gz.{tbi,csi}") , emit: gvcf_index
-    path "versions.yml"                                   , emit: versions
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
     task.ext.when == null || task.ext.when
@@ -56,7 +56,25 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
         small_model_arg = "--small_model_cvo_records ${small_model_tfrecords_logical_name}"
     }
 
+    // The following block determines whether phase info was outputted, and if so, adds the info from it
+    // to the argument --phased_reads_input_path.
+    def phased_inputs_arg = ""
+    if (phase_inputs) {
+        phase_inputs_matcher = (phase_inputs[0].baseName =~ /^(.+)-\d{5}-of-(\d{5})$/)
+        if (!phase_inputs_matcher.matches()) {
+            throw new IllegalArgumentException("read-phasing_debug baseName '" + phase_inputs[0].baseName + "' doesn't match the expected pattern")
+        }
+        phase_input_name = phase_inputs_matcher[0][1]
+        phase_input_shardCount = phase_inputs_matcher[0][2]
+        // Reconstruct the logical name. Example: test_call_variant_outputs.examples.tfrecord@12.gz
+        phase_input_logical_name = "${phase_input_name}@${phase_input_shardCount}.gz"
+        phased_inputs_arg = "--phased_reads_input_path ${phase_input_logical_name}"
+    }
+
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+    mkdir -p \$MPLCONFIGDIR
+
     /opt/deepvariant/bin/postprocess_variants \\
         ${args} \\
         --ref "${fasta}" \\
@@ -66,12 +84,9 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
         --gvcf_outfile "${prefix}.g.vcf.gz" \\
         ${regions} \\
         ${small_model_arg} \\
+        ${phased_inputs_arg} \\
         --cpus $task.cpus
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_postprocessvariants: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -86,9 +101,5 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     echo "" | gzip > ${prefix}.g.vcf.gz
     touch ${prefix}.g.vcf.gz.tbi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_callvariants: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 }

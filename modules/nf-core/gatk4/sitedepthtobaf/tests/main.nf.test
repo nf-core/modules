@@ -49,8 +49,8 @@ nextflow_process {
             process {
                 """
                 sitedepthtobaf_input = GATK4_COLLECTSVEVIDENCE.out.site_depths
-                                    .combine(GATK4_COLLECTSVEVIDENCE.out.site_depths_index, by:0)
-                                    .map({ meta, file, index -> [ [id:'test'], file, index ]}).groupTuple()
+                    .combine(GATK4_COLLECTSVEVIDENCE.out.site_depths_index, by:0)
+                    .map({ meta, file, index -> [ [id:'test'], file, index ]}).groupTuple()
 
                 input[0] = sitedepthtobaf_input
                 input[1] = [
@@ -65,12 +65,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     file(process.out.baf[0][1]).name,
-                    file(process.out.baf_tbi[0][1]).name
+                    file(process.out.baf_tbi[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -85,8 +85,8 @@ nextflow_process {
             process {
                 """
                 sitedepthtobaf_input = GATK4_COLLECTSVEVIDENCE.out.site_depths
-                                    .combine(GATK4_COLLECTSVEVIDENCE.out.site_depths_index, by:0)
-                                    .map({ meta, file, index -> [ [id:'test'], file, index ]}).groupTuple()
+                    .combine(GATK4_COLLECTSVEVIDENCE.out.site_depths_index, by:0)
+                    .map({ meta, file, index -> [ [id:'test'], file, index ]}).groupTuple()
 
                 input[0] = sitedepthtobaf_input
                 input[1] = [
@@ -101,16 +101,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    file(process.out.baf[0][1]).name,
-                    file(process.out.baf_tbi[0][1]).name
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

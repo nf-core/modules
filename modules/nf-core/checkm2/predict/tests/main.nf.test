@@ -37,7 +37,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.checkm2_tsv, process.out.versions).match() }
+                { assert snapshot(process.out.checkm2_tsv, process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }
@@ -61,7 +61,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.checkm2_tsv, process.out.versions).match() }
+                { assert snapshot(process.out.checkm2_tsv, process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }

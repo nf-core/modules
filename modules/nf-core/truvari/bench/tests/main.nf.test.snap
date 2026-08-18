@@ -1,71 +1,5 @@
 {
-    "without bed": {
-        "content": [
-            "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=136, phased=false, phasedAutodetect=false]",
-            "test.fn.vcf.gz.tbi",
-            "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=136, phased=false, phasedAutodetect=false]",
-            "test.fp.vcf.gz.tbi",
-            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
-            "test.tp-base.vcf.gz.tbi",
-            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
-            "test.tp-comp.vcf.gz.tbi",
-            {
-                "TRUVARI_BENCH": {
-                    "truvari": "5.3.0)"
-                }
-            },
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.summary.json:md5,aff467e3dbccf2c00a7aa81c2a36f62a"
-                ]
-            ],
-            [
-                "versions.yml:md5,4af58a090ba71ffe3af4c39b26cae34e"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-08-12T14:51:20.447022824"
-    },
-    "with bed": {
-        "content": [
-            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
-            "test.fn.vcf.gz.tbi",
-            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
-            "test.fp.vcf.gz.tbi",
-            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
-            "test.tp-base.vcf.gz.tbi",
-            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
-            "test.tp-comp.vcf.gz.tbi",
-            {
-                "TRUVARI_BENCH": {
-                    "truvari": "5.3.0)"
-                }
-            },
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.summary.json:md5,397452f6fd093809aee763a3d2310552"
-                ]
-            ],
-            [
-                "versions.yml:md5,4af58a090ba71ffe3af4c39b26cae34e"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-08-12T14:51:43.149369686"
-    },
-    "without bed -- stub": {
+    "homo sapiens - simulated sv - without bed -- stub": {
         "content": [
             {
                 "0": [
@@ -82,6 +16,13 @@
                             "id": "test"
                         },
                         "test.fn.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "10": [
+                    [
+                        "TRUVARI_BENCH",
+                        "truvari",
+                        "5.4.0"
                     ]
                 ],
                 "2": [
@@ -141,7 +82,12 @@
                     ]
                 ],
                 "9": [
-                    "versions.yml:md5,4af58a090ba71ffe3af4c39b26cae34e"
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.log.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "fn_tbi": [
                     [
@@ -173,6 +119,14 @@
                             "id": "test"
                         },
                         "test.fp.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.log.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "summary": [
@@ -215,20 +169,98 @@
                         "test.tp-comp.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,4af58a090ba71ffe3af4c39b26cae34e"
+                "versions_truvari": [
+                    [
+                        "TRUVARI_BENCH",
+                        "truvari",
+                        "5.4.0"
+                    ]
                 ]
             },
             {
-                "TRUVARI_BENCH": {
-                    "truvari": "5.3.0)"
-                }
+                "versions_truvari": [
+                    [
+                        "TRUVARI_BENCH",
+                        "truvari",
+                        "5.4.0"
+                    ]
+                ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2025-08-12T14:40:52.165219769"
+        "timestamp": "2026-02-13T14:56:31.307328807"
+    },
+    "homo sapiens - simulated sv - without bed": {
+        "content": [
+            "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=136, phased=false, phasedAutodetect=false]",
+            "test.fn.vcf.gz.tbi",
+            "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=136, phased=false, phasedAutodetect=false]",
+            "test.fp.vcf.gz.tbi",
+            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
+            "test.tp-base.vcf.gz.tbi",
+            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
+            "test.tp-comp.vcf.gz.tbi",
+            "test.log.txt",
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.summary.json:md5,aff467e3dbccf2c00a7aa81c2a36f62a"
+                ]
+            ],
+            {
+                "versions_truvari": [
+                    [
+                        "TRUVARI_BENCH",
+                        "truvari",
+                        "5.4.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
+        },
+        "timestamp": "2026-02-13T14:55:57.915305217"
+    },
+    "homo sapiens - simulated sv - with bed": {
+        "content": [
+            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
+            "test.fn.vcf.gz.tbi",
+            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
+            "test.fp.vcf.gz.tbi",
+            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
+            "test.tp-base.vcf.gz.tbi",
+            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
+            "test.tp-comp.vcf.gz.tbi",
+            "test.log.txt",
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.summary.json:md5,397452f6fd093809aee763a3d2310552"
+                ]
+            ],
+            {
+                "versions_truvari": [
+                    [
+                        "TRUVARI_BENCH",
+                        "truvari",
+                        "5.4.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
+        },
+        "timestamp": "2026-02-13T14:56:15.650693746"
     }
 }

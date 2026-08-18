@@ -3,7 +3,7 @@ process TAR {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/98/98946ea8217c35441352a94f3e0cd1dfa24137c323e8b0f5dfcb3123b465d0b1/data':
         'community.wave.seqera.io/library/bzip2_gzip_lzip_lzop_pruned:5a822ddcf829e7af' }"
 
@@ -13,7 +13,7 @@ process TAR {
 
     output:
     tuple val(meta), path("*.tar${compress_type}"), emit: archive
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('tar'), eval('tar --version | sed -n "s/.*tar)//p"'), topic: versions, emit: versions_tar
 
     when:
     task.ext.when == null || task.ext.when
@@ -54,22 +54,11 @@ process TAR {
         ${args} \\
         -f ${prefix}.tar${compress_type} \\
         ${input}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tar: \$(tar --version | grep tar | sed 's/.*) //g')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip -c > ${prefix}.tar.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tar: \$(tar --version | grep tar | sed 's/.*) //g')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.tar.gz
     """
 }

@@ -1,6 +1,6 @@
 name: "concoct_concoct"
-description: Unsupervised binning of metagenomic contigs by using nucleotide composition
-  - kmer frequencies - and coverage data for multiple samples
+description: Unsupervised binning of metagenomic contigs by using nucleotide
+  composition - kmer frequencies - and coverage data for multiple samples
 keywords:
   - contigs
   - fragment
@@ -18,7 +18,8 @@ tools:
       documentation: "https://concoct.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
-      licence: ["FreeBSD"]
+      licence:
+        - "FreeBSD"
       identifier: biotools:concoct
 input:
   - - meta:
@@ -28,13 +29,15 @@ input:
           e.g. [ id:'test', single_end:false ]
     - coverage_file:
         type: file
-        description: Subcontig coverage TSV table (typically generated with concoct_coverage_table.py)
+        description: Subcontig coverage TSV table (typically generated with
+          concoct_coverage_table.py)
         pattern: "*.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
     - fasta:
         type: file
-        description: FASTA file containing subcontigs (typically generated with cutup_fasta.py)
+        description: FASTA file containing subcontigs (typically generated with
+          cutup_fasta.py)
         pattern: "*.fasta"
         ontologies: []
 output:
@@ -57,11 +60,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_clustering_gt1000.csv":
           type: file
-          description: CSV containing information which subcontig is assigned to which
-            cluster
+          description: CSV containing information which subcontig is assigned to
+            which cluster
           pattern: "*_clustering_gt1000.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   log_txt:
     - - meta:
           type: map
@@ -84,7 +87,7 @@ output:
           description: Original CONCOCT GT1000 output
           pattern: "*_original_data_gt1000.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   pca_components_csv:
     - - meta:
           type: map
@@ -96,7 +99,7 @@ output:
           description: Untransformed PCA component values
           pattern: "*_PCA_components_data_gt1000.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   pca_transformed_csv:
     - - meta:
           type: map
@@ -108,14 +111,28 @@ output:
           description: Transformed PCA component values
           pattern: "*_PCA_transformed_data_gt1000.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
+  versions_concoct:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - concoct:
+          type: string
+          description: The name of the tool
+      - concoct --version | cut -d " " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - concoct:
+          type: string
+          description: The name of the tool
+      - concoct --version | cut -d " " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

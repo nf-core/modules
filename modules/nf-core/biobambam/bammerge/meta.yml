@@ -11,7 +11,8 @@ tools:
       homepage: https://gitlab.com/german.tischler/biobambam2
       documentation: https://gitlab.com/german.tischler/biobambam2/-/blob/master/README.md
       doi: 10.1186/1751-0473-9-13
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -22,7 +23,8 @@ input:
     - bam:
         type: file
         description: List containing 1 or more bam files
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2572
 output:
   bam:
     - - meta:
@@ -34,7 +36,8 @@ output:
           type: file
           description: Merged BAM file
           pattern: "*.bam"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2572
   bam_index:
     - - meta:
           type: map
@@ -44,8 +47,9 @@ output:
       - "*.bai":
           type: file
           description: BAM index file
-          pattern: "*"
-          ontologies: []
+          pattern: "*.bai"
+          ontologies:
+            - edam: http://edamontology.org/format_2573
   checksum:
     - - meta:
           type: map
@@ -55,15 +59,30 @@ output:
       - "*.md5":
           type: file
           description: Checksum file
-          pattern: "*"
-          ontologies: []
+          pattern: "*.md5"
+          ontologies:
+            - edam: http://edamontology.org/format_2330
+  versions_biobambam:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biobambam:
+          type: string
+          description: The name of the tool
+      - bammerge --version |& sed '1!d; s/.*version //; s/.\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biobambam:
+          type: string
+          description: The name of the tool
+      - bammerge --version |& sed '1!d; s/.*version //; s/.\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
 maintainers:

@@ -1,0 +1,36 @@
+nextflow_workflow {
+
+    name "Test Subworkflow MAFFT_ALIGN"
+    script "../main.nf"
+    workflow "MAFFT_ALIGN"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/mafft_align"
+    tag "mafft"
+    tag "mafft/align"
+
+
+    test("seatoxin-ref - fasta") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ [ id:'test' ] ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/anemonia_sulcata/seatoxin-ref.aln', checkIfExists: true),
+                ]
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out
+                ).match() }
+            )
+        }
+    }
+
+}

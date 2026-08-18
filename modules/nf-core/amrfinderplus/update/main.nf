@@ -3,13 +3,13 @@ process AMRFINDERPLUS_UPDATE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:4.0.23--hf69ffd2_0':
-        'biocontainers/ncbi-amrfinderplus:4.0.23--hf69ffd2_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:4.2.7--hf69ffd2_0':
+        'quay.io/biocontainers/ncbi-amrfinderplus:4.2.7--hf69ffd2_0' }"
 
     output:
     path "amrfinderdb.tar.gz", emit: db
-    path "versions.yml"      , emit: versions
+    tuple val("${task.process}"), val('amrfinder'), eval('amrfinder --version'), emit: versions_amrfinder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -18,21 +18,11 @@ process AMRFINDERPLUS_UPDATE {
     """
     amrfinder_update -d amrfinderdb
     tar czvf amrfinderdb.tar.gz -C amrfinderdb/\$(readlink amrfinderdb/latest) ./
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amrfinderplus: \$(amrfinder --version)
-    END_VERSIONS
     """
 
     stub:
     """
     touch amrfinderdb.tar
     gzip amrfinderdb.tar
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amrfinderplus: \$(amrfinder --version)
-    END_VERSIONS
     """
 }

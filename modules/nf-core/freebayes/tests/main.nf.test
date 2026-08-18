@@ -36,7 +36,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
@@ -72,7 +72,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     path(process.out.vcf[0][1]).vcf.summary, // the created vcf file has no variants
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
@@ -80,7 +80,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [ cram, crai ] - fasta - fai") {
+    test("homo_sapiens - [ cram, crai ] - fasta - fai") {
 
         when {
             process {
@@ -108,7 +108,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
@@ -116,7 +116,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [ bam, bai, bam, bai ] - fasta - fai") {
+    test("homo_sapiens - [ bam, bai, bam, bai ] - fasta - fai") {
 
         when {
             process {
@@ -144,7 +144,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
@@ -152,7 +152,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [ cram, crai, cram, crai, bed ] - fasta - fai") {
+    test("homo_sapiens - [ cram, crai, cram, crai, bed ] - fasta - fai") {
 
         when {
             process {
@@ -180,7 +180,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
@@ -215,10 +215,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()
+                { assert snapshot(process.out).match()
                 }
             )
         }

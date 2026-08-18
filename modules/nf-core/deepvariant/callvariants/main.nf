@@ -4,14 +4,14 @@ process DEEPVARIANT_CALLVARIANTS {
     label 'process_high'
 
     //Conda is not supported at the moment
-    container "docker.io/google/deepvariant:1.9.0"
+    container "docker.io/google/deepvariant:1.10.0"
 
     input:
     tuple val(meta), path(make_examples_tfrecords)
 
     output:
     tuple val(meta), path("${prefix}.call-*-of-*.tfrecord.gz"), emit: call_variants_tfrecords
-    path "versions.yml",                                        emit: versions
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,15 +34,14 @@ process DEEPVARIANT_CALLVARIANTS {
     def examples_tfrecords_logical_name = "${examples_tfrecord_name}@${shardCount}.gz"
 
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+    mkdir -p \$MPLCONFIGDIR
+
     /opt/deepvariant/bin/call_variants \\
         ${args} \\
         --outfile "${prefix}.call.tfrecord.gz" \\
         --examples "${examples_tfrecords_logical_name}"
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_callvariants: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -50,9 +49,5 @@ process DEEPVARIANT_CALLVARIANTS {
     """
     echo "" | gzip > ${prefix}.call-00000-of-00001.tfrecord.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_callvariants: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 }

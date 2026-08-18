@@ -1,40 +1,5 @@
 {
-    "test_cat_unzipped_unzipped": {
-        "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fasta:md5,f44b33a0e441ad58b2d3700270e2dbe2"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
-                ],
-                "file_out": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fasta:md5,f44b33a0e441ad58b2d3700270e2dbe2"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
-        },
-        "timestamp": "2023-10-16T14:32:18.500464399"
-    },
-    "test_cat_zipped_unzipped": {
+    "sarscov2 - [ gff3_gz, maf_gz ] - unzipped": {
         "content": [
             {
                 "0": [
@@ -47,7 +12,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
                 ],
                 "file_out": [
                     [
@@ -58,90 +27,257 @@
                         "cat.txt:md5,c439d3b60e7bc03e8802a451a0d9a5d9"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
+                "versions_cat": [
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2023-10-16T14:32:49.642741302"
+        "timestamp": "2025-12-10T09:08:31.479828"
     },
-    "test_cat_zipped_zipped": {
+    "sarscov2 - fasta - unzipped - stub": {
         "content": [
-            [
-                "MT192765.1\tGenbank\ttranscript\t259\t29667\t.\t+\t.\tID=unknown_transcript_1;geneID=orf1ab;gene_name=orf1ab",
-                "MT192765.1\tGenbank\tgene\t259\t21548\t.\t+\t.\tParent=unknown_transcript_1",
-                "MT192765.1\tGenbank\tCDS\t259\t13461\t.\t+\t0\tParent=unknown_transcript_1;exception=\"ribosomal slippage\";gbkey=CDS;gene=orf1ab;note=\"pp1ab;translated=by -1 ribosomal frameshift\";product=\"orf1ab polyprotein\";protein_id=QIK50426.1",
-                "MT192765.1\tGenbank\tCDS\t13461\t21548\t.\t+\t0\tParent=unknown_transcript_1;exception=\"ribosomal slippage\";gbkey=CDS;gene=orf1ab;note=\"pp1ab;translated=by -1 ribosomal frameshift\";product=\"orf1ab polyprotein\";protein_id=QIK50426.1",
-                "MT192765.1\tGenbank\tCDS\t21556\t25377\t.\t+\t0\tParent=unknown_transcript_1;gbkey=CDS;gene=S;note=\"structural protein\";product=\"surface glycoprotein\";protein_id=QIK50427.1",
-                "MT192765.1\tGenbank\tgene\t21556\t25377\t.\t+\t.\tParent=unknown_transcript_1"
-            ],
-            78,
-            [
-                "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
-            ]
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
+                ],
+                "file_out": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_cat": [
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-22T11:51:46.802978"
+        "timestamp": "2025-12-10T16:16:28.118094"
     },
-    "test_cat_name_conflict": {
+    "sarscov2 - [ fasta, sizes ] - zipped": {
         "content": [
-            [
-                
-            ]
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "cat.txt.gz:md5,f44b33a0e441ad58b2d3700270e2dbe2"
+                    ]
+                ],
+                "1": [
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
+                ],
+                "file_out": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "cat.txt.gz:md5,f44b33a0e441ad58b2d3700270e2dbe2"
+                    ]
+                ],
+                "versions_cat": [
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-22T11:51:29.45394"
+        "timestamp": "2025-12-10T16:15:56.529595"
     },
-    "test_cat_one_file_unzipped_zipped": {
+    "sarscov2 - genome - error: name conflict": {
         "content": [
-            [
-                ">MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome",
-                "GTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGT",
-                "GTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAG",
-                "TAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTTGTCCGG",
-                "GTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTT",
-                "ACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAG"
-            ],
-            374,
-            [
-                "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
-            ]
+            {
+                "0": [
+
+                ],
+                "1": [
+
+                ],
+                "file_out": [
+
+                ],
+                "versions_cat": [
+
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-22T11:52:02.774016"
+        "timestamp": "2025-12-10T16:14:54.496538"
     },
-    "test_cat_unzipped_zipped": {
+    "sarscov2 - [ fasta, sizes ] - unzipped": {
         "content": [
-            [
-                ">MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome",
-                "GTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGT",
-                "GTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAG",
-                "TAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTTGTCCGG",
-                "GTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTT",
-                "ACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAG"
-            ],
-            375,
-            [
-                "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
-            ]
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fasta:md5,f44b33a0e441ad58b2d3700270e2dbe2"
+                    ]
+                ],
+                "1": [
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
+                ],
+                "file_out": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fasta:md5,f44b33a0e441ad58b2d3700270e2dbe2"
+                    ]
+                ],
+                "versions_cat": [
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-22T11:51:57.581523"
+        "timestamp": "2025-12-10T11:26:29.942203"
+    },
+    "sarscov2 - [ gff3_gz, maf_gz ] - zipped": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.gff3.gz:md5,c439d3b60e7bc03e8802a451a0d9a5d9"
+                    ]
+                ],
+                "1": [
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
+                ],
+                "file_out": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.gff3.gz:md5,c439d3b60e7bc03e8802a451a0d9a5d9"
+                    ]
+                ],
+                "versions_cat": [
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-10T11:26:45.679401"
+    },
+    "sarscov2 - fasta - zipped": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "cat.txt.gz:md5,6e9fe4042a72f2345f644f239272b7e6"
+                    ]
+                ],
+                "1": [
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
+                ],
+                "file_out": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "cat.txt.gz:md5,6e9fe4042a72f2345f644f239272b7e6"
+                    ]
+                ],
+                "versions_cat": [
+                    [
+                        "CAT_CAT",
+                        "pigz",
+                        "2.8"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-10T16:16:12.439911"
     }
 }

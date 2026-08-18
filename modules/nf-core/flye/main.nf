@@ -3,7 +3,7 @@ process FLYE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa1c1e961de38d24cf36c424a8f4a9920ddd07b63fdb4cfa51c9e3a593c3c979/data' :
         'community.wave.seqera.io/library/flye:2.9.5--d577924c8416ccd8' }"
 
@@ -18,7 +18,7 @@ process FLYE {
     tuple val(meta), path("*.txt")     , emit: txt
     tuple val(meta), path("*.log")     , emit: log
     tuple val(meta), path("*.json")    , emit: json
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('flye'), eval('flye --version'), emit: versions_flye, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +43,6 @@ process FLYE {
     mv assembly_info.txt ${prefix}.assembly_info.txt
     mv flye.log ${prefix}.flye.log
     mv params.json ${prefix}.params.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        flye: \$( flye --version )
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +54,5 @@ process FLYE {
     echo contig_1 > ${prefix}.assembly_info.txt
     echo stub > ${prefix}.flye.log
     echo stub > ${prefix}.params.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        flye: \$( flye --version )
-    END_VERSIONS
     """
 }

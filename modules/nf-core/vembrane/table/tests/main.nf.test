@@ -1,0 +1,134 @@
+nextflow_process {
+
+    name "Test Process VEMBRANE_TABLE"
+    script "../main.nf"
+    process "VEMBRANE_TABLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vembrane"
+    tag "vembrane/table"
+
+    test("homo_sapiens - [vcf] - tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
+                ]
+                input[1] = 'CHROM, POS, REF, ALT, QUAL'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [bcf.gz] - tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bcf.gz', checkIfExists: true)
+                ]
+                input[1] = 'CHROM, POS, REF, ALT, QUAL'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [vcf] - csv - custom_separator") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                vembrane_args = '--separator ,'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
+                ]
+                input[1] = 'CHROM, POS, REF, ALT'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [vcf] - tsv - custom_header") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                vembrane_args = '--header "Chromosome,Position,Variant_ID,Quality"'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
+                ]
+                input[1] = 'CHROM, POS, ID, QUAL'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [vcf] - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
+                ]
+                input[1] = 'CHROM, POS, REF, ALT, QUAL'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

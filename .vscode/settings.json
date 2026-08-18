@@ -1,3 +1,8 @@
 {
-    "nextflow.formatting.harshilAlignment": true
+    "nextflow.formatting.harshilAlignment": true,
+    "yaml.schemas": {
+        "./modules/meta-schema.json": ["modules/nf-core/**/meta.yml"],
+        "./modules/environment-schema.json": ["modules/nf-core/**/environment.yml"],
+        "./subworkflows/yaml-schema.json": ["subworkflows/nf-core/**/meta.yml"]
+    }
 }

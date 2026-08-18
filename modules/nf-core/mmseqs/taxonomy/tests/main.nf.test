@@ -50,7 +50,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.db_taxonomy[0][1]).list().sort(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -78,4 +78,3 @@ nextflow_process {
         }
     }
 }
-

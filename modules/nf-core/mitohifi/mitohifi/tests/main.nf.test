@@ -40,17 +40,12 @@ nextflow_process {
                 input[1] = Channel.of(
                     [
                         [id: "ref"],
-                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true)
-                    ]
-                )
-                input[2] = Channel.of(
-                    [
-                        [id: "ref"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true),
                         file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true)
                     ]
                 )
-                input[3] = Channel.of('contigs')
-                input[4] = Channel.of(5)
+                input[2] = Channel.of('contigs')
+                input[3] = Channel.of(5)
                 """
             }
         }
@@ -69,7 +64,7 @@ nextflow_process {
                     process.out.final_mitogenome_coverage,
                     process.out.shared_genes,
                     process.out.contigs_annotations,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
@@ -91,17 +86,12 @@ nextflow_process {
                 input[1] = Channel.of(
                     [
                         [id: "ref"],
-                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true)
-                    ]
-                )
-                input[2] = Channel.of(
-                    [
-                        [id: "ref"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true),
                         file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true)
                     ]
                 )
-                input[3] = Channel.of('reads')
-                input[4] = Channel.of(5)
+                input[2] = Channel.of('reads')
+                input[3] = Channel.of(5)
                 """
             }
         }
@@ -120,7 +110,56 @@ nextflow_process {
                     process.out.final_mitogenome_coverage,
                     process.out.shared_genes,
                     process.out.contigs_annotations,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("mitohifi - mitohifi - deilephila_porcellus - reads mode - multiple inputs") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id:"ilDeiPorc1"],
+                        [
+                            file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.HiFi.reads.fa", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/pacbio/fasta/alz.ccs.fasta", checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1] = Channel.of(
+                    [
+                        [id: "ref"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true)
+                    ]
+                )
+                input[2] = Channel.of('reads')
+                input[3] = Channel.of(5)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fasta,
+                    file(process.out.stats.get(0).get(1)).name, // not stable
+                    process.out.gb,
+                    process.out.gff,
+                    process.out.contigs_annotations,
+                    process.out.coverage_plot,
+                    process.out.final_mitogenome_annotation,
+                    process.out.final_mitogenome_coverage,
+                    process.out.shared_genes,
+                    process.out.contigs_annotations,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
@@ -144,17 +183,12 @@ nextflow_process {
                 input[1] = Channel.of(
                     [
                         [id: "ref"],
-                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true)
-                    ]
-                )
-                input[2] = Channel.of(
-                    [
-                        [id: "ref"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true),
                         file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true)
                     ]
                 )
-                input[3] = Channel.of('contigs')
-                input[4] = Channel.of(5)
+                input[2] = Channel.of('contigs')
+                input[3] = Channel.of(5)
                 """
             }
         }

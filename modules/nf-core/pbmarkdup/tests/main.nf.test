@@ -1,0 +1,134 @@
+
+nextflow_process {
+
+    name "Test Process PBMARKDUP"
+    script "../main.nf"
+    process "PBMARKDUP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pbmarkdup"
+
+    config './nextflow.config'
+
+    test("deilephila porcellus - fasta") {
+
+        when {
+
+            params {
+                pbmarkdup_args = "--clobber"
+            }
+
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.HiFi.reads.fa', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("acropora cervicornis - multiple input with dupfile logfile and remove duplicates") {
+
+        when {
+
+            params {
+                pbmarkdup_args = "--clobber --dup-file test.dup.bam --log-level INFO"
+            }
+
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.1.bam', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.2.bam', checkIfExists: true)
+                        ]
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("acropora cervicornis - Multiple input types - with dupfile logfile and remove duplicates") {
+        when {
+            params {
+                pbmarkdup_args = "--clobber --dup-file test.dup.fastq.gz --log-level INFO"
+            }
+
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.2.bam', checkIfExists: true)
+                        ]
+                    ]
+                )
+                """
+            }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+        }
+    }
+
+    test("deilephila porcellus - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                pbmarkdup_args = ""
+            }
+
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.HiFi.reads.fa', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

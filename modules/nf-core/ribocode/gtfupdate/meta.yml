@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "ribocode_gtfupdate"
+description: Update GTF annotation file for RiboCode compatibility
+keywords:
+  - ribo-seq
+  - ribosome profiling
+  - gtf
+  - annotation
+tools:
+  - "ribocode":
+      description: "A package for detecting the actively translated ORFs using ribosome-profiling
+        data"
+      homepage: "https://github.com/xryanglab/RiboCode"
+      documentation: "https://github.com/xryanglab/RiboCode"
+      tool_dev_url: "https://github.com/xryanglab/RiboCode"
+      doi: "10.1093/nar/gky179"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - gtf:
+        type: file
+        description: GTF annotation file to update (uncompressed)
+        pattern: "*.{gtf}"
+        ontologies: []
+output:
+  gtf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.gtf":
+          type: file
+          description: Updated GTF annotation file
+          pattern: "*_updated.gtf"
+  versions_ribocode:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@JackCurragh"

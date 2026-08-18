@@ -3,9 +3,9 @@ process PILON {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pilon:1.24--hdfd78af_0':
-        'biocontainers/pilon:1.24--hdfd78af_0' }"
+        'quay.io/biocontainers/pilon:1.24--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -18,7 +18,8 @@ process PILON {
     tuple val(meta), path("*.change"), emit: change_record     , optional : true
     tuple val(meta), path("*.bed")   , emit: tracks_bed        , optional : true
     tuple val(meta), path("*.wig")   , emit: tracks_wig        , optional : true
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('pilon'), eval("pilon --version | sed 's/^.*version //; s/ .*\$//'"), emit: versions_pilon, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +44,6 @@ process PILON {
         --output ${prefix} \\
         $args \\
         --$pilon_mode $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -60,11 +56,6 @@ process PILON {
     touch ${prefix}.change
     touch ${prefix}.bed
     touch ${prefix}.wig
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
 }

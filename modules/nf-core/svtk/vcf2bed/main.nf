@@ -3,16 +3,16 @@ process SVTK_VCF2BED {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svtk:0.0.20190615--py37h73a75cf_2':
-        'biocontainers/svtk:0.0.20190615--py37h73a75cf_2' }"
+        'quay.io/biocontainers/svtk:0.0.20190615--py37h73a75cf_2' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('svtk'), val('0.0.20190615'), topic: versions, emit: versions_svtk
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,30 +21,18 @@ process SVTK_VCF2BED {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     svtk vcf2bed \\
         ${vcf} \\
         ${prefix}.bed \\
-        ${args} \\
+        ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svtk: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     touch ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svtk: ${VERSION}
-    END_VERSIONS
     """
 }

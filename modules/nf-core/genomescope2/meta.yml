@@ -1,6 +1,6 @@
 name: "genomescope2"
-description: Estimate genome heterozygosity, repeat content, and size from sequencing
-  reads using a kmer-based statistical approach
+description: Estimate genome heterozygosity, repeat content, and size from
+  sequencing reads using a kmer-based statistical approach
 keywords:
   - "genome size"
   - "genome heterozygosity"
@@ -12,7 +12,8 @@ tools:
       documentation: "https://github.com/tbenavi1/genomescope2.0/blob/master/README.md"
       tool_dev_url: "https://github.com/tbenavi1/genomescope2.0"
       doi: "10.1038/s41467-020-14998-3"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
 input:
   - - meta:
@@ -114,13 +115,39 @@ output:
           description: A genomescope2 fitted histogram plot in PNG format
           pattern: "*_fitted_hist.png"
           ontologies: []
+  json_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.json":
+          type: file
+          description: A JSON format report of the genomescope2 model
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_genomescope2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genomescope2:
+          type: string
+          description: The name of the tool
+      - genomescope2 -v | sed "s/GenomeScope //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genomescope2:
+          type: string
+          description: The name of the tool
+      - genomescope2 -v | sed "s/GenomeScope //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:

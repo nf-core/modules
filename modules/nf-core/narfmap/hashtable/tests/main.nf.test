@@ -28,7 +28,7 @@ nextflow_process {
                 { assert snapshot(
                         file(process.out.hashmap[0][1]).name,
                         file(process.out.versions[0]).name
-                    ).match() 
+                    ).match()
                 }
             )
         }
@@ -56,7 +56,7 @@ nextflow_process {
                 { assert snapshot(
                         file(process.out.hashmap[0][1]).name,
                         file(process.out.versions[0]).name
-                    ).match() 
+                    ).match()
                 }
             )
         }

@@ -1,6 +1,6 @@
 name: stranger
-description: Annotates output files from ExpansionHunter with the pathologic implications
-  of the repeat sizes.
+description: Annotates output files from ExpansionHunter with the pathologic
+  implications of the repeat sizes.
 keywords:
   - STR
   - repeat_expansions
@@ -56,13 +56,50 @@ output:
           type: map
           description: Index of the annotated VCF file
           pattern: "*.{vcf.gz.tbi}"
+  versions_stranger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stranger:
+          type: string
+          description: The name of the tool
+      - stranger --version | sed 's/stranger, version //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_tabix:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tabix:
+          type: string
+          description: The tool name
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stranger:
+          type: string
+          description: The name of the tool
+      - stranger --version | sed 's/stranger, version //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tabix:
+          type: string
+          description: The tool name
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@ljmesi"
 maintainers:

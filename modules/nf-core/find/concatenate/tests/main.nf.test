@@ -49,12 +49,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out,
-                        process.out.versions,
-                        path(process.out.versions[0]).yaml
-                    ).match()
-                },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
     }
@@ -76,16 +71,9 @@ nextflow_process {
             }
         }
         then {
-            def lines = path(process.out.file_out.get(0).get(1)).linesGzip
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    lines[0..5],
-                    lines.size(),
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
     }
@@ -111,12 +99,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
 
@@ -139,16 +122,9 @@ nextflow_process {
             }
         }
         then {
-            def lines = path(process.out.file_out.get(0).get(1)).linesGzip
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    lines[0..5],
-                    lines.size(),
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
     }
@@ -169,16 +145,9 @@ nextflow_process {
             }
         }
         then {
-            def lines = path(process.out.file_out.get(0).get(1)).linesGzip
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    lines[0..5],
-                    lines.size(),
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
     }

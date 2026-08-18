@@ -13,7 +13,8 @@ tools:
       documentation: "https://1drv.ms/b/s!AhuEg_0yZD86hcpblUt-muHKYsG8fA?e=R8ogug"
       tool_dev_url: "https://github.com/amplab/snap"
       doi: "10.1101/2021.11.23.469039"
-      licence: ["Apache v2"]
+      licence:
+        - "Apache v2"
       identifier: ""
 input:
   - - meta:
@@ -24,21 +25,25 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929
     - altcontigfile:
         type: file
         description: Optional file with a list of alt contig names, one per line.
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3750
     - nonaltcontigfile:
         type: file
-        description: Optional file that contains a list of contigs (one per line) that
-          will not be marked ALT regardless of size.
-        ontologies: []
+        description: Optional file that contains a list of contigs (one per line)
+          that will not be marked ALT regardless of size.
+        ontologies:
+          - edam: http://edamontology.org/format_3750
     - altliftoverfile:
         type: file
-        description: Optional file containing ALT-to-REF mappings (SAM format). e.g.,
-          hs38DH.fa.alt from bwa-kit.
-        ontologies: []
+        description: Optional file containing ALT-to-REF mappings (SAM format).
+          e.g., hs38DH.fa.alt from bwa-kit.
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 output:
   index:
     - - meta:
@@ -51,13 +56,27 @@ output:
           description: SNAP genome index files
           pattern: "{Genome,GenomeIndex,GenomeIndexHash,OverflowTable}"
           ontologies: []
+  versions_snapaligner:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snap-aligner:
+          type: string
+          description: The name of the tool
+      - snap-aligner 2>&1 | sed 's/^.*version //;s/.\$//;q':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snap-aligner:
+          type: string
+          description: The name of the tool
+      - snap-aligner 2>&1 | sed 's/^.*version //;s/.\$//;q':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
 maintainers:

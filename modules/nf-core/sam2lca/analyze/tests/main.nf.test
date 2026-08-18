@@ -32,16 +32,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.csv[0][1]).name,
-                    process.out.json,
-                    process.out.bam,
-                    process.out.versions
+                    sanitizeOutput(process.out, unstableKeys: ["csv", "json"])
                     ).match()
                 }
             )
         }
     }
 
-    test("test-sam2lca-analyze-stub") {
+    test("test-sam2lca-analyze - stub") {
         options '-stub'
 
         when {
@@ -61,7 +59,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

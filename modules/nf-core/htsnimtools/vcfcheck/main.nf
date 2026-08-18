@@ -3,9 +3,9 @@ process HTSNIMTOOLS_VCFCHECK {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hts-nim-tools:0.3.11--hbeb723e_0':
-        'biocontainers/hts-nim-tools:0.3.11--hbeb723e_0' }"
+        'quay.io/biocontainers/hts-nim-tools:0.3.11--hbeb723e_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -13,7 +13,7 @@ process HTSNIMTOOLS_VCFCHECK {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('htsnimtools'), eval("hts_nim_tools | sed -n 's/version: //p'"), emit: versions_htsnimtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,26 +24,15 @@ process HTSNIMTOOLS_VCFCHECK {
     """
     hts_nim_tools \\
         vcf-check \\
-        $args \\
-        $background_vcf \\
-        $vcf \\
+        ${args} \\
+        ${background_vcf} \\
+        ${vcf} \\
         > ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        htsnimtools: \$(hts_nim_tools | grep "version" | sed -e 's/version: //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        htsnimtools: \$(hts_nim_tools | grep "version" | sed -e 's/version: //')
-    END_VERSIONS
     """
 }

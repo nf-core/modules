@@ -2,14 +2,47 @@
     "test-picard-fixmateinformation": {
         "content": [
             "ddd0dc8f0cf1996d19dae51681187114",
-            [
-                "versions.yml:md5,5f35b2cd1bd9a863a9f2a96dfb999c3a"
-            ]
+            {
+                "versions_picard": [
+                    [
+                        "PICARD_FIXMATEINFORMATION",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-02-19T17:42:15.911330009",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
-        },
-        "timestamp": "2025-09-15T10:52:47.590159871"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "test-picard-fixmateinformation - stub": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.fixed.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_picard": [
+                    [
+                        "PICARD_FIXMATEINFORMATION",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-02-20T10:37:51.412043933",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

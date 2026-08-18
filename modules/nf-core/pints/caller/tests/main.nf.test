@@ -31,25 +31,24 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
+                { assert snapshot( // Ignore peakcalling_log as file name has time stamp
                     process.out.divergent_TREs,
                     process.out.bidirectional_TREs,
-                    file(process.out.unidirectional_TREs.get(0).get(1).get(0)).name,
-                    path(process.out.versions.get(0)).yaml,
-                ).match("bams")
-                },
+                    process.out.unidirectional_TREs.collect{meta, beds -> [meta, beds.collect{bed -> file(bed).name}]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
-
     }
 
     test("groHMM data - [bam], fasta") {
+        tag "test"
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file("https://raw.githubusercontent.com/Kraus-Lab/groHMM/master/inst/extdata/S0mR1.bam", checkIfExists: true),
                     [],
                 ]
@@ -61,14 +60,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
+                { assert snapshot( // Ignore peakcalling_log as file name has time stamp
                     process.out.divergent_TREs,
                     process.out.bidirectional_TREs,
-                    file(process.out.unidirectional_TREs[0][1]).name,
-                    path(process.out.versions.get(0)).yaml,
-                ).match("single_bam")
-                },
-                { assert snapshot(path(process.out.versions.get(0)).yaml).match("versions") },
+                    process.out.unidirectional_TREs.collect{meta, bed -> [meta, file(bed).name]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -79,8 +76,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                     [],
                 ]
                 input[1] = "GROseq"
@@ -92,6 +89,32 @@ nextflow_process {
             assertAll(
                 { assert process.failed },
                 { assert process.exitStatus == 1 },
+            )
+        }
+    }
+
+    test("groHMM data - [bam, bam], fasta -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file("https://raw.githubusercontent.com/Kraus-Lab/groHMM/master/inst/extdata/S0mR1.bam", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/Kraus-Lab/groHMM/master/inst/extdata/S40mR1.bam", checkIfExists: true)
+                    ],
+                    [],
+                ]
+                input[1] = "GROseq"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

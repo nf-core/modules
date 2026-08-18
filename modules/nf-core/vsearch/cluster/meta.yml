@@ -1,23 +1,25 @@
 name: "vsearch_cluster"
-description: Cluster sequences using a single-pass, greedy centroid-based clustering
-  algorithm.
+description: Cluster sequences using a single-pass, greedy centroid-based
+  clustering algorithm.
 keywords:
   - vsearch
   - clustering
   - microbiome
 tools:
   - vsearch:
-      description: VSEARCH is a versatile open-source tool for microbiome analysis,
-        including chimera detection, clustering, dereplication and rereplication, extraction,
-        FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction
-        site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification
-        of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH
+      description: VSEARCH is a versatile open-source tool for microbiome
+        analysis, including chimera detection, clustering, dereplication and
+        rereplication, extraction, FASTA/FASTQ/SFF file processing, masking,
+        orienting, pair-wise alignment, restriction site cutting, searching,
+        shuffling, sorting, subsampling, and taxonomic classification of amplicon
+        sequences for metagenomics, genomics, and population genetics. (USEARCH
         alternative)
       homepage: https://github.com/torognes/vsearch
-      documentation: https://github.com/torognes/vsearch/releases/download/v2.21.1/vsearch_manual.pdf
+      documentation: https://github.com/torognes/vsearch/releases/download/v2.31.0/vsearch_manual.pdf
       tool_dev_url: https://github.com/torognes/vsearch
       doi: 10.7717/peerj.2584
-      licence: ["GPL v3-or-later OR BSD-2-clause"]
+      licence:
+        - "GPL v3-or-later OR BSD-2-clause"
       identifier: biotools:vsearch
 input:
   - - meta:
@@ -40,7 +42,7 @@ output:
           description: Results in pairwise alignment format
           pattern: "*.aln.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   biom:
     - - meta:
           type: map
@@ -52,7 +54,7 @@ output:
           description: Results in an OTU table in the biom version 1.0 file format
           pattern: "*.biom.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   mothur:
     - - meta:
           type: map
@@ -61,11 +63,11 @@ output:
             e.g. [ id:'test' ]
       - "*.mothur.tsv.gz":
           type: file
-          description: Results in an OTU table in the mothur ’shared’ tab-separated
-            plain text file format
+          description: Results in an OTU table in the mothur ’shared’
+            tab-separated plain text file format
           pattern: "*.mothur.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   otu:
     - - meta:
           type: map
@@ -74,11 +76,11 @@ output:
             e.g. [ id:'test' ]
       - "*.otu.tsv.gz":
           type: file
-          description: Results in an OTU table in the classic tab-separated plain text
-            format
+          description: Results in an OTU table in the classic tab-separated plain
+            text format
           pattern: "*.otu.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   bam:
     - - meta:
           type: map
@@ -101,7 +103,7 @@ output:
           description: Results in tab-separated output, columns defined by user
           pattern: "*.out.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   blast:
     - - meta:
           type: map
@@ -113,7 +115,7 @@ output:
           description: Tab delimited results in blast-like tabular format
           pattern: "*.blast.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   uc:
     - - meta:
           type: map
@@ -122,10 +124,11 @@ output:
             e.g. [ id:'test' ]
       - "*.uc.tsv.gz":
           type: file
-          description: Tab delimited results in a uclust-like format with 10 columns
+          description: Tab delimited results in a uclust-like format with 10
+            columns
           pattern: "*.uc.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   centroids:
     - - meta:
           type: map
@@ -137,7 +140,7 @@ output:
           description: Centroid sequences in FASTA format
           pattern: "*.centroids.fasta.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   clusters:
     - - meta:
           type: map
@@ -149,7 +152,7 @@ output:
           description: Clustered sequences in FASTA format
           pattern: "*.clusters.fasta*.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   profile:
     - - meta:
           type: map
@@ -161,7 +164,7 @@ output:
           description: Profile of the clustering results
           pattern: "*.profile.txt.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   msa:
     - - meta:
           type: map
@@ -173,14 +176,47 @@ output:
           description: Multiple sequence alignment of the centroids
           pattern: "*.msa.fasta.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_vsearch:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vsearch:
+          type: string
+          description: The tool name
+      - vsearch --version 2>&1 | sed -n "1s/.*v\([0-9.]*\).*/\\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vsearch:
+          type: string
+          description: The tool name
+      - vsearch --version 2>&1 | sed -n "1s/.*v\([0-9.]*\).*/\\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mirpedrol"
 maintainers:

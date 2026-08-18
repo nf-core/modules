@@ -2,33 +2,6 @@
     "sarscov2 - bam - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.ds10.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.ds10.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        ""
-                    ]
-                ],
-                "3": [
-                    "versions.yml:md5,8f094cb0fbbfb472432484fb38ade2ea"
-                ],
                 "bai": [
                     [
                         {
@@ -53,22 +26,23 @@
                         ""
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,8f094cb0fbbfb472432484fb38ade2ea"
+                "versions_picard": [
+                    [
+                        "PICARD_POSITIONBASEDDOWNSAMPLESAM",
+                        "picard",
+                        "3.4.0"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-02-19T17:44:05.527656714",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
-        },
-        "timestamp": "2024-06-27T05:11:00.828032096"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 - bam": {
         "content": [
-            [
-                "versions.yml:md5,8f094cb0fbbfb472432484fb38ade2ea"
-            ],
             [
                 "62ae8d31fc37f00a00ec62737802ee63"
             ],
@@ -82,12 +56,21 @@
                     },
                     "test.ds200.bai:md5,ea4e440cbb1d4e5be16dbe76981e8d44"
                 ]
-            ]
+            ],
+            {
+                "versions_picard": [
+                    [
+                        "PICARD_POSITIONBASEDDOWNSAMPLESAM",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-02-19T17:43:57.639826437",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
-        },
-        "timestamp": "2025-09-15T13:38:16.976534"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

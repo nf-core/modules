@@ -40,8 +40,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     process.out.bai,
-                    process.out.versions,
-                    path(process.out.versions.get(0)).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -82,8 +81,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     process.out.bai,
-                    process.out.versions,
-                    path(process.out.versions.get(0)).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -123,8 +121,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     process.out.bai,
-                    process.out.versions,
-                    path(process.out.versions.get(0)).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -165,8 +162,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     process.out.bai,
-                    process.out.versions,
-                    path(process.out.versions.get(0)).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -211,8 +207,7 @@ nextflow_process {
                     bam(process.out.bam.get(0).get(1).get(0)).getReadsMD5(),
                     bam(process.out.bam.get(0).get(1).get(1)).getReadsMD5(),
                     process.out.bai,
-                    process.out.versions,
-                    path(process.out.versions.get(0)).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -269,8 +264,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     process.out.bai,
-                    process.out.versions,
-                    path(process.out.versions.get(0)).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }

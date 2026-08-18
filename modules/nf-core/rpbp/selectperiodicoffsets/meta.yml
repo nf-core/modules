@@ -1,0 +1,77 @@
+name: "rpbp_selectperiodicoffsets"
+description: |
+  Pick the single best P-site offset for each read length from the
+  per-(length, offset) Bayes factor table produced upstream. For each
+  read length, the offset with the highest periodicity Bayes-factor mean
+  is selected - this is the offset that, when added to a read's 5' end,
+  is estimated to land closest to the ribosomal P-site (the codon being
+  decoded). Downstream, these offsets are used to convert raw read
+  5'-end coordinates into P-site positions when counting reads against
+  candidate ORFs.
+
+  Emits one row per read length (length, best offset, supporting Bayes
+  factor statistics). The next step
+  (`rpbp/getperiodiclengthsoffsets`) filters this table to the high-quality
+  pairs that pass user-specified count / signal thresholds before
+  P-site counting in `rpbp/extractorfprofiles`.
+keywords:
+  - rpbp
+  - psite
+  - offset
+  - orf
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1350"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - bayes_factors:
+        type: file
+        description: Metagene periodicity Bayes factors CSV from `rpbp/estimatemetagenebayesfactors`.
+        pattern: "*.metagene-periodicity-bayes-factors.csv.gz"
+        ontologies: []
+output:
+  periodic:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "${prefix}.csv.gz":
+          type: file
+          description: Selected periodic offsets per read length.
+          pattern: "*.csv.gz"
+          ontologies: []
+  versions_rpbp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

@@ -26,11 +26,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-	            { assert path(process.out.cel.get(0).get(1)).exists() },
-		        { assert path(process.out.var.get(0).get(1)).exists() },
-		        { assert path(process.out.umi.get(0).get(1)).exists() },
-		        { assert path(process.out.plp.get(0).get(1)).exists() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['cel', 'var', 'umi', 'plp'])).match() }
             )
         }
 
@@ -42,7 +38,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'sample1' ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
@@ -55,11 +51,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("stub-versions") },
-                { assert path(process.out.cel.get(0).get(1)).exists() },
-                { assert path(process.out.var.get(0).get(1)).exists() },
-                { assert path(process.out.umi.get(0).get(1)).exists() },
-                { assert path(process.out.plp.get(0).get(1)).exists() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['cel', 'var', 'umi', 'plp'])).match() }
             )
         }
 

@@ -1,26 +1,29 @@
 #!/usr/bin/env python
 
 import os
-os.environ[ 'NUMBA_CACHE_DIR' ] = '/tmp/'
+
+os.environ["NUMBA_CACHE_DIR"] = "/tmp/"
+
+import sys
 
 import metaspace_converter as mc
 from metaspace import SMInstance
-import sys
+
 
 def str_to_bool(value):
-    if value.lower() in ['true', '1', 't', 'y', 'yes']:
+    if value.lower() in ["true", "1", "t", "y", "yes"]:
         return True
-    elif value.lower() in ['false', '0', 'f', 'n', 'no']:
+    elif value.lower() in ["false", "0", "f", "n", "no"]:
         return False
     else:
-        raise ValueError('Boolean value expected.')
+        raise ValueError("Boolean value expected.")
+
 
 sm = SMInstance()
-ds = sm.dataset(id = "${ds_id}")
+ds = sm.dataset(id="${ds_id}")
 
-annot_dbs = [(db.name,db.version) for db in ds.database_details]
-annot_lengths = [len(ds.annotations(database = i,
-                                    fdr = float("${fdr}"))) for i in annot_dbs]
+annot_dbs = [(db.name, db.version) for db in ds.database_details]
+annot_lengths = [len(ds.annotations(database=i, fdr=float("${fdr}"))) for i in annot_dbs]
 max_annot_idx = annot_lengths.index(max(annot_lengths))
 input_db = ("${database_name}", "${database_version}")
 if input_db not in annot_dbs:
@@ -30,26 +33,32 @@ else:
 
 adata = mc.metaspace_to_anndata(
     dataset=ds,
-    use_tic = str_to_bool("${use_tic}"),
-    metadata_as_obs = str_to_bool("${metadata_as_obs}"),
+    use_tic=str_to_bool("${use_tic}"),
+    metadata_as_obs=str_to_bool("${metadata_as_obs}"),
     fdr=float("${fdr}"),
-    database=db
+    database=db,
 )
 
 sdata = mc.metaspace_to_spatialdata(
     dataset=ds,
-    use_tic = str_to_bool("${use_tic}"),
-    metadata_as_obs = str_to_bool("${metadata_as_obs}"),
+    use_tic=str_to_bool("${use_tic}"),
+    metadata_as_obs=str_to_bool("${metadata_as_obs}"),
     fdr=float("${fdr}"),
-    database=db)
+    database=db,
+)
 
 adata.write_h5ad("AnnData_${ds_id}.h5ad")
 sdata.write("SpatialData_${ds_id}.zarr", overwrite=True)
 
 # Versions
 # TODO: version for metaspace-converter will be automatically populated once the version attribute is added to the package
-versions = {"${task.process}": {"python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
-                                "metaspace_converter": "1.1.1"}}
+versions = {
+    "${task.process}": {
+        "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+        "metaspace_converter": "1.1.1",
+    }
+}
+
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
     """Formats a dictionary to a YAML-like string.
@@ -69,6 +78,7 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
         else:
             yaml_str += f"{spaces}{key}: {value}\\n"
     return yaml_str
+
 
 with open("versions.yml", "w") as f:
     f.write(format_yaml_like(versions))

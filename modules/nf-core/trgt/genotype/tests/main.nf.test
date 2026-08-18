@@ -29,8 +29,8 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = [[],[]]
-                input[2] = false
+                    .combine(channel.of([[]]))
+                input[1] = false
                 """
             }
         }
@@ -57,9 +57,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+					path(process.out.vcf[0][1]).vcf.summary,
+					bam(process.out.bam[0][1]).getReadsMD5(),
+                    sanitizeOutput(process.out, unstableKeys: ["vcf", "bam"])
+                    ).match() }
             )
         }
 
@@ -86,9 +90,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+					path(process.out.vcf[0][1]).vcf.summary,
+					bam(process.out.bam[0][1]).getReadsMD5(),
+                    sanitizeOutput(process.out, unstableKeys: ["vcf", "bam"])
+                    ).match() }
             )
         }
 
@@ -116,16 +124,17 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
+
 
     }
 
     test("homo sapiens - [bam,bai,[]], [fa,fai], bed - stub") {
-
+        options "-stub"
         when {
             process {
                 """
@@ -145,9 +154,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

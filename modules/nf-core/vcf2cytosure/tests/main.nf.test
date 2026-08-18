@@ -31,8 +31,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.cgh).match("cgh") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.cgh,
+                    process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
 
@@ -63,8 +64,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.cgh).match("cgh - stub") },
-                { assert snapshot(process.out.versions).match("versions - stub") }
+                { assert snapshot(
+                    process.out.cgh,
+                    process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
 

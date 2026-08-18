@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "agat_spextractsequences"
 description: |
   This script extracts sequences in fasta format according to features described
@@ -18,7 +17,8 @@ tools:
       documentation: "https://agat.readthedocs.io/en/latest/tools/agat_sp_extract_sequences.html"
       tool_dev_url: "https://github.com/NBISweden/AGAT"
       doi: "10.5281/zenodo.3552717"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:AGAT
 input:
   - - meta:
@@ -55,13 +55,27 @@ output:
           description: Output FASTA file.
           pattern: "*.fasta"
           ontologies: []
+  versions_agat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agat:
+          type: string
+          description: The name of the tool
+      - agat --version | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agat:
+          type: string
+          description: The name of the tool
+      - agat --version | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
 maintainers:

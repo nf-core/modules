@@ -3,9 +3,9 @@ process SLAMDUNK_ALL {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/slamdunk:0.4.3--py_0':
-        'biocontainers/slamdunk:0.4.3--py_0' }"
+        'quay.io/biocontainers/slamdunk:0.4.3--py_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -21,14 +21,13 @@ process SLAMDUNK_ALL {
     tuple val(meta), path("outputs/count/*.tsv")          , emit: tsv
     tuple val(meta), path("outputs/count/*_plus.bedgraph"), emit: plus_bedgraph
     tuple val(meta), path("outputs/count/*_mins.bedgraph"), emit: mins_bedgraph
-    path "versions.yml"                                   , emit: versions
+    tuple val("${task.process}"), val('slamdunk'), eval("slamdunk --version | sed 's/^slamdunk //'"), topic: versions, emit: versions_slamdunk
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def filterbed = filter_bed ? "-fb ${filter_bed}" : ""
     """
     slamdunk \\
@@ -40,17 +39,10 @@ process SLAMDUNK_ALL {
         $args \\
         $filterbed \\
         $input
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        slamdunk: \$(echo \$(slamdunk --version) | sed 's/^slamdunk //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def filterbed = filter_bed ? "-fb ${filter_bed}" : ""
     """
     mkdir -p outputs/map
     mkdir -p outputs/filter
@@ -64,10 +56,5 @@ process SLAMDUNK_ALL {
     touch outputs/count/${prefix}.tsv
     touch outputs/count/${prefix}_plus.bedgraph
     touch outputs/count/${prefix}_mins.bedgraph
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        slamdunk: \$(echo \$(slamdunk --version) | sed 's/^slamdunk //')
-    END_VERSIONS
     """
 }

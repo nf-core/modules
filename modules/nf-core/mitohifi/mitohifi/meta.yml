@@ -12,7 +12,8 @@ tools:
       documentation: https://github.com/marcelauliano/MitoHiFi
       tool_dev_url: https://github.com/marcelauliano/MitoHiFi
       doi: "10.1101/2022.12.23.521667"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:mitohifi
 input:
   - - meta:
@@ -33,15 +34,11 @@ input:
           e.g. [ id:'test', single_end:false ]
     - ref_fa:
         type: file
-        description: Reference mitochondrial genome to align reads or contigs against
+        description: Reference mitochondrial genome to align reads or contigs
+          against
         pattern: "*.{fa,fasta}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - ref_gb:
         type: file
         description: Reference mitochondrial genome annotation
@@ -118,7 +115,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - all_potential_contigs.fa:
           type: file
-          description: Fasta file containing sequences of all potential mitogenome contigs
+          description: Fasta file containing sequences of all potential mitogenome
+            contigs
           pattern: "all_potential_contigs.fa"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
@@ -150,7 +148,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "contigs_filtering/":
+      - contigs_filtering/:
           type: directory
           description: Contains files with initial blast matches
           pattern: "contigs_filtering/"
@@ -160,7 +158,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "coverage_mapping/":
+      - coverage_mapping/:
           type: directory
           description: Contains statistics on coverage mapping
           pattern: "coverage_mapping/"
@@ -220,9 +218,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "potential_contigs/":
+      - potential_contigs/:
           type: directory
-          description: Files with sequences and annotations of the potential contigs
+          description: Files with sequences and annotations of the potential
+            contigs
           pattern: "potential_contigs/"
   reads_mapping_and_assembly:
     - - meta:
@@ -246,14 +245,53 @@ output:
           pattern: "shared_genes.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: directory
+          description: Log file describing Mitohifi run
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/data_3671 # Text
+  all_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*":
+          type: file
+          description: All files output by Mitohifi in a single channel.
+          ontologies: []
+  versions_mitohifi:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - mitohifi:
+          type: string
+          description: The name of the tool
+      - 3.2.3:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - mitohifi:
+          type: string
+          description: The name of the tool
+      - 3.2.3:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@ksenia-krasheninnikova"
+  - "@prototaxites"
 maintainers:
   - "@ksenia-krasheninnikova"

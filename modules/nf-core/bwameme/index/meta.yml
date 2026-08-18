@@ -36,13 +36,27 @@ output:
           description: BWA-MEME genome index files
           pattern: "*.{0123,amb,ann,pac,pos_packed,suffixarray_uint64,suffixarray_uint64_L0_PARAMETERS,suffixarray_uint64_L1_PARAMETERS,suffixarray_uint64_L2_PARAMETERS}"
           ontologies: []
+  versions_bwameme:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwameme:
+          type: string
+          description: The name of the tool
+      - 1.0.6:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwameme:
+          type: string
+          description: The name of the tool
+      - 1.0.6:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

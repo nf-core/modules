@@ -1,7 +1,7 @@
 name: bamcmp
-description: Bamcmp (Bam Compare) is a tool for assigning reads between a primary
-  genome and a contamination genome. For instance, filtering out mouse reads from
-  patient derived xenograft mouse models (PDX).
+description: Bamcmp (Bam Compare) is a tool for assigning reads between a
+  primary genome and a contamination genome. For instance, filtering out mouse
+  reads from patient derived xenograft mouse models (PDX).
 keywords:
   - filter
   - xenograft
@@ -11,16 +11,17 @@ keywords:
   - mouse
 tools:
   - bamcmp:
-      description: Bamcmp is a tool for deconvolving host and graft reads, using two
-        bam files. Reads should be mapped to two genomes, and the mapped, sorted bam
-        files supplied to the tool. It is highly recommended to use the "-s as" option
-        not the "-s mapq" option, else reads which multimap to the contamination genome
-        will be spuriously kept.
+      description: Bamcmp is a tool for deconvolving host and graft reads, using
+        two bam files. Reads should be mapped to two genomes, and the mapped,
+        sorted bam files supplied to the tool. It is highly recommended to use the
+        "-s as" option not the "-s mapq" option, else reads which multimap to the
+        contamination genome will be spuriously kept.
       homepage: https://github.com/CRUKMI-ComputationalBiology/bamcmp
       documentation: https://github.com/CRUKMI-ComputationalBiology/bamcmp
       tool_dev_url: https://github.com/CRUKMI-ComputationalBiology/bamcmp
       doi: "10.1158/1541-7786.MCR-16-0431"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -30,14 +31,14 @@ input:
           e.g. [ id:'test']
     - primary_aligned_bam:
         type: file
-        description: BAM/CRAM/SAM file with the reads aligned to the primary genome
-          (the one you want to keep)
+        description: BAM/CRAM/SAM file with the reads aligned to the primary
+          genome (the one you want to keep)
         pattern: "*.{bam,cram,sam}"
         ontologies: []
     - contaminant_aligned_bam:
         type: file
-        description: BAM/CRAM/SAM file with the reads aligned to the contaminant genome
-          (the one you want to filter out)
+        description: BAM/CRAM/SAM file with the reads aligned to the contaminant
+          genome (the one you want to filter out)
         pattern: "*.{bam,cram,sam}"
         ontologies: []
 output:
@@ -47,8 +48,8 @@ output:
           description: Groovy Map containing sample information
       - ${prefix}.bam:
           type: file
-          description: Bam file containing the reads which align better to the primary
-            genome.
+          description: Bam file containing the reads which align better to the
+            primary genome.
           pattern: "*.{bam,cram,sam}"
           ontologies: []
   contamination_bam:
@@ -57,17 +58,52 @@ output:
           description: Groovy Map containing sample information
       - ${prefix2}.bam:
           type: file
-          description: Bam file containing the reads which align better to the contaminant
-            genome.
+          description: Bam file containing the reads which align better to the
+            contaminant genome.
           pattern: "*.{bam,cram,sam}"
           ontologies: []
+  versions_bamcmp:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bamcmp:
+          type: string
+          description: The tool name
+      - "2.2":
+          type: string
+          description: The version of the tool
+
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bamcmp:
+          type: string
+          description: The tool name
+      - "2.2":
+          type: string
+          description: The version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@kmurat1"
   - "@sppearce"

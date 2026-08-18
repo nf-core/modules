@@ -4,21 +4,18 @@ include { DEEPVARIANT_POSTPROCESSVARIANTS } from '../../../modules/nf-core/deepv
 
 workflow DEEPVARIANT {
     take:
-    ch_input   // channel: [ val(meta), path(input), path(index), path(intervals)]
-    ch_fasta   // channel: [ val(meta2), path(fasta) ]
-    ch_fai     // channel: [ val(meta3), path(fail) ]
-    ch_gzi     // channel: [ val(meta4), path(gzi) ]
-    ch_par_bed // channel: [ val(meta5), path(par_bed) ]
+    ch_input     // channel: [ val(meta), path(input), path(index), path(intervals)]
+    ch_fasta     // channel: [ val(meta2), path(fasta) ]
+    ch_fai       // channel: [ val(meta3), path(fail) ]
+    ch_gzi       // channel: [ val(meta4), path(gzi) ]
+    ch_par_bed   // channel: [ val(meta5), path(par_bed) ]
+    with_phasing //     val: boolean
 
     main:
 
-    ch_versions = Channel.empty()
-
-    DEEPVARIANT_MAKEEXAMPLES(ch_input, ch_fasta, ch_fai, ch_gzi, ch_par_bed)
-    ch_versions = ch_versions.mix(DEEPVARIANT_MAKEEXAMPLES.out.versions.first())
+    DEEPVARIANT_MAKEEXAMPLES(ch_input, ch_fasta, ch_fai, ch_gzi, ch_par_bed, with_phasing)
 
     DEEPVARIANT_CALLVARIANTS(DEEPVARIANT_MAKEEXAMPLES.out.examples)
-    ch_versions = ch_versions.mix(DEEPVARIANT_CALLVARIANTS.out.versions.first())
 
     // Input to postprocessing step needs both the gvcfs from MAKEEXAMPLES and the variant
     // calls from CALLVARIANTS. Joining on meta, which is assumed to be unique.
@@ -29,6 +26,9 @@ workflow DEEPVARIANT {
         failOnMismatch: true
     ).join(
         DEEPVARIANT_MAKEEXAMPLES.out.small_model_calls,
+        failOnMismatch: true
+    ).join(
+        DEEPVARIANT_MAKEEXAMPLES.out.read_phase_inputs,
         failOnMismatch: true
     ).join(
         ch_intervals,
@@ -42,12 +42,9 @@ workflow DEEPVARIANT {
         ch_gzi
     )
 
-    ch_versions = ch_versions.mix(DEEPVARIANT_POSTPROCESSVARIANTS.out.versions.first())
-
     emit:
     vcf        = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf
     vcf_index  = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf_index
     gvcf       = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf
     gvcf_index = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf_index
-    versions   = ch_versions
 }

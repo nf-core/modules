@@ -1,0 +1,138 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_classify_catpack"
+description: Taxonomic classification of binned MAGs and contigs using CAT/BAT (CAT_pack).
+keywords:
+  - metagenomics
+  - taxonomy
+  - classification
+  - bins
+  - MAGs
+  - contigs
+  - CAT
+  - BAT
+components:
+  - catpack/addnames
+  - catpack/bins
+  - catpack/contigs
+  - catpack/download
+  - catpack/prepare
+  - catpack/summarise
+  - untar
+input:
+  - ch_bins:
+      type: file
+      description: |
+        Channel containing binned MAG FASTA files.
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fa,fasta,fna}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929" # FASTA
+  - ch_contigs:
+      type: file
+      description: |
+        Channel containing contig FASTA files. Provide channel.empty() to skip
+        contig classification.
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fa,fasta,fna}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929" # FASTA
+  - ch_cat_db:
+      type: directory
+      description: |
+        Channel containing a pre-built CAT/BAT database. Can be a directory with db/ and tax/
+        subdirectories, or a .tar.gz archive of such a directory. Provide channel.empty() to
+        trigger automatic database download using ch_cat_db_download_id. Supplying both
+        ch_cat_db and ch_cat_db_download_id will cause a runtime error.
+        Structure: [ val(meta), path(db) ]
+      ontologies:
+        - edam: "http://edamontology.org/data_1049" # Genome identifier (database)
+  - ch_cat_db_download_id:
+      type: string
+      description: |
+        Channel containing the database identifier to download via CATPACK_DOWNLOAD (e.g. 'nr').
+        Only used when ch_cat_db is channel.empty(). Provide channel.empty() when supplying a
+        pre-built database via ch_cat_db. Supplying both inputs will cause a runtime error.
+        Structure: [ val(meta), val(db_id) ]
+  - run_summarise:
+      type: boolean
+      description: |
+        Whether to run CATPACK_SUMMARISE on the classification outputs. Requires
+        ext.args = "--only_official" to be set on CATPACK_ADDNAMES_BINS and
+        CATPACK_ADDNAMES_CONTIGS in the pipeline configuration, as CATPACK_SUMMARISE
+        requires official-rank headers in its input.
+  - bin_suffix:
+      type: string
+      description: |
+        File extension of the bin FASTA files passed to CATPACK_BINS (e.g. '.fa').
+output:
+  - bin2classification:
+      type: file
+      description: |
+        Raw per-bin taxonomic classification file produced by CATPACK_BINS, before human-readable
+        names are added by CATPACK_ADDNAMES. Useful for downstream tools that consume the raw
+        CAT_pack output directly.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.bin2classification.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # Textual format (TSV)
+  - bat_classification:
+      type: file
+      description: |
+        Per-bin taxonomic classification with human-readable names added by CATPACK_ADDNAMES.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # Textual format (TSV)
+  - bat_summary:
+      type: file
+      description: |
+        Summary of bin classifications produced by CATPACK_SUMMARISE. Empty channel when
+        run_summarise is false.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # Textual format (TSV)
+  - contig2classification:
+      type: file
+      description: |
+        Raw per-contig taxonomic classification file produced by CATPACK_CONTIGS, before
+        human-readable names are added by CATPACK_ADDNAMES. Empty channel when ch_contigs
+        is channel.empty(). Useful for downstream tools that consume the raw CAT_pack output directly.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.contig2classification.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # Textual format (TSV)
+  - contigs_classification:
+      type: file
+      description: |
+        Per-contig taxonomic classification with human-readable names added by CATPACK_ADDNAMES.
+        Empty channel when ch_contigs is channel.empty().
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # Textual format (TSV)
+  - contigs_summary:
+      type: file
+      description: |
+        Summary of contig classifications produced by CATPACK_SUMMARISE. Empty channel when
+        ch_contigs is channel.empty() or run_summarise is false.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # Textual format (TSV)
+  - versions:
+      type: file
+      description: |
+        Channel containing software versions.
+        Structure: versions
+authors:
+  - "@mberacochea"
+  - "@dialvarezs"
+maintainers:
+  - "@mberacochea"
+  - "@dialvarezs"
+  - "@jfy133"
+  - "@prototaxites"
+  - "@dialvarezs"
+  - "@d4straub"
+  - "@muabnezor"

@@ -29,11 +29,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("Scoring long reads")},
-                { assert snapshot(
-                    process.out.reads,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -61,11 +57,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("Scoring long reads")},
-                { assert snapshot(
-                    process.out.reads,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -96,11 +88,35 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("Scoring long reads")},
-                { assert snapshot(
-                    process.out.reads,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 nanopore [fastq] - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

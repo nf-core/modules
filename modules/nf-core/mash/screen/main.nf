@@ -3,9 +3,9 @@ process MASH_SCREEN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1':
-        'biocontainers/mash:2.3--he348c14_1' }"
+        'quay.io/biocontainers/mash:2.3--he348c14_1' }"
 
     input:
     tuple val(meta) , path(query)
@@ -13,7 +13,7 @@ process MASH_SCREEN {
 
     output:
     tuple val(meta), path("*.screen"), emit: screen
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val("mash"), eval("mash --version 2>&1"), emit: versions_mash, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,27 +24,16 @@ process MASH_SCREEN {
     """
     mash \\
         screen \\
-        $args \\
-        -p $task.cpus \\
-        $sequences_sketch \\
-        $query \\
+        ${args} \\
+        -p ${task.cpus} \\
+        ${sequences_sketch} \\
+        ${query} \\
         > ${prefix}.screen
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mash: \$( mash --version )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.screen
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mash: \$( mash --version )
-    END_VERSIONS
     """
 }

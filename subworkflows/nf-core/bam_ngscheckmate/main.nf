@@ -6,18 +6,16 @@ workflow BAM_NGSCHECKMATE {
     take:
     ch_input            // channel: [ val(meta1), bam/cram ]
     ch_snp_bed          // channel: [ val(meta2), bed ]
-    ch_fasta            // channel: [ val(meta3), fasta ]
+    ch_fasta            // channel: [ val(meta3), fasta, fai ]
 
     main:
-
-    ch_versions = Channel.empty()
-    ch_input_bed = ch_input.combine(ch_snp_bed)
-                        .map{ input_meta, input_file, _bed_meta, bed_file ->
-                            [input_meta, input_file, bed_file]
-                        }
+    ch_input_bed = ch_input
+        .combine(ch_snp_bed)
+        .map{ input_meta, input_file, _bed_meta, bed_file ->
+            [input_meta, input_file, bed_file, []]
+        }
 
     BCFTOOLS_MPILEUP (ch_input_bed, ch_fasta.collect(), false)
-    ch_versions = ch_versions.mix(BCFTOOLS_MPILEUP.out.versions)
 
     BCFTOOLS_MPILEUP
     .out
@@ -33,7 +31,6 @@ workflow BAM_NGSCHECKMATE {
     .set {ch_vcfs}
 
     NGSCHECKMATE_NCM (ch_vcfs, ch_snp_bed, ch_fasta)
-    ch_versions = ch_versions.mix(NGSCHECKMATE_NCM.out.versions)
 
     emit:
     corr_matrix  = NGSCHECKMATE_NCM.out.corr_matrix  // channel: [ meta, corr_matrix ]
@@ -41,6 +38,5 @@ workflow BAM_NGSCHECKMATE {
     all          = NGSCHECKMATE_NCM.out.all          // channel: [ meta, all ]
     vcf          = BCFTOOLS_MPILEUP.out.vcf          // channel: [ meta, vcf ]
     pdf          = NGSCHECKMATE_NCM.out.pdf          // channel: [ meta, pdf ]
-    versions     = ch_versions                       // channel: [ versions.yml ]
 
 }

@@ -2,7 +2,6 @@ nextflow_process {
 
     name "Test Process GATK4SPARK_APPLYBQSR"
     script "../main.nf"
-    config "./nextflow.config"
     process "GATK4SPARK_APPLYBQSR"
 
     tag "modules"
@@ -13,10 +12,6 @@ nextflow_process {
     test("sarscov2 - bam") {
 
         when {
-            params {
-                module_suffix = "bam"
-            }
-
             process {
                 """
                 input[0] = [
@@ -29,13 +24,14 @@ nextflow_process {
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                input[4] = "bam"
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -56,16 +52,17 @@ nextflow_process {
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                input[4] = "cram"
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    file(process.out.cram[0][1]).name
+                    file(process.out.cram[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -74,10 +71,6 @@ nextflow_process {
     test("sarscov2 - bam - intervals") {
 
         when {
-            params {
-                module_suffix = "bam"
-            }
-
             process {
                 """
                 input[0] = [
@@ -90,13 +83,14 @@ nextflow_process {
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                input[4] = "bam"
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -117,16 +111,17 @@ nextflow_process {
                 input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                input[4] = "cram"
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    file(process.out.cram[0][1]).name
+                    file(process.out.cram[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -149,13 +144,14 @@ nextflow_process {
                 input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                input[4] = "cram"
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -165,10 +161,6 @@ nextflow_process {
 
         options "-stub"
         when {
-            params {
-                module_suffix = "bam"
-            }
-
             process {
                 """
                 input[0] = [
@@ -181,13 +173,14 @@ nextflow_process {
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                input[4] = "bam"
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }

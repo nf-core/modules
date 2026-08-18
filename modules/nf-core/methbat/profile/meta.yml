@@ -1,0 +1,90 @@
+name: "methbat_profile"
+description: Runs methbat profile command to create methylation profiles for
+  regions of interest from CpG metrics.
+keywords:
+  - methylation
+  - epigenetics
+  - pacbio
+tools:
+  - "methbat":
+      description: "A battery of methylation tools for PacBio HiFi reads"
+      homepage: "https://github.com/PacificBiosciences/MethBat"
+      documentation: "https://github.com/PacificBiosciences/MethBat/tree/main/docs"
+      tool_dev_url: "https://github.com/PacificBiosciences/MethBat"
+      licence:
+        - "BSD-3-clause-Clear"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - files:
+        type: file
+        description: Zipped pb-cpg-tools output files and index files
+        pattern: "*.{bed.gz, bed.gz.tbi}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - regions:
+        type: file
+        description: Background profile with regions of interest
+        pattern: "*.{tsv,csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3752
+output:
+  region_profile:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.tsv":
+          type: file
+          description: Methylation profile for regions of interest
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  asm_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.bed":
+          type: file
+          description: BED file with individual ASM CpG loci, produced by
+            '--output-asm-bed' flag
+          pattern: "*.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3586"
+  versions_methbat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - methbat:
+          type: string
+          description: The name of the tool
+      - methbat --version 2>&1 | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - methbat:
+          type: string
+          description: The name of the tool
+      - methbat --version 2>&1 | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@inemesb"
+maintainers:
+  - "@inemesb"

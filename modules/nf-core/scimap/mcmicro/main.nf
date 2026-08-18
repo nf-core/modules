@@ -2,7 +2,7 @@ process SCIMAP_MCMICRO {
     tag "$meta.id"
     label 'process_single'
 
-    // WARN: Version information not provided by tool on CLI. Please update the VERSION variable when bumping
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     container "docker.io/labsyspharm/scimap:2.1.3"
 
     input:
@@ -11,7 +11,8 @@ process SCIMAP_MCMICRO {
     output:
     tuple val(meta), path("*.csv")      , emit: csv     , optional:true
     tuple val(meta), path("*.h5ad")     , emit: h5ad    , optional:true
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('scimap'), val('2.1.3'), topic: versions, emit: versions_scimap
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,19 +22,11 @@ process SCIMAP_MCMICRO {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Scimap module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION='2.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     mkdir numba_cache_dir
     export NUMBA_CACHE_DIR='./numba_cache_dir'
 
     scimap-mcmicro $cellbyfeature -o .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        scimap: $VERSION
-    END_VERSIONS
     """
 
     stub:
@@ -41,17 +34,9 @@ process SCIMAP_MCMICRO {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Scimap module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION='2.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     touch ${cellbyfeature.baseName}.h5ad.csv
     touch ${cellbyfeature.baseName}.h5ad
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        scimap: $VERSION
-    END_VERSIONS
     """
 
 }

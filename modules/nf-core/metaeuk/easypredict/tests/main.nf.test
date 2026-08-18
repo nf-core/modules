@@ -29,19 +29,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
-    
+
     test("homo_sapiens - fasta - mmseqs db") {
         setup {
             run("MMSEQS_DATABASES") {
                 script "../../../mmseqs/databases/main.nf"
-                
+
                 process {
                     """
-                    input[0] = 'UniProtKB/Swiss-Prot'
+                    input[0] = 'Kalamari'
                     """
                 }
             }
@@ -60,12 +60,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["codon", "faa", "gff", "tsv"])).match() }
             )
         }
     }
-    
-    
+
+
     test("homo_sapiens - fasta - fasta -- stub") {
         options '-stub'
         when {
@@ -84,10 +84,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

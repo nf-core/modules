@@ -3,10 +3,11 @@ process PNEUMOCAT {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pneumocat:1.2.1--0':
-        'biocontainers/pneumocat:1.2.1--0' }"
+        'quay.io/biocontainers/pneumocat:1.2.1--0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -14,39 +15,26 @@ process PNEUMOCAT {
     output:
     tuple val(meta), path("*.xml"), emit: xml
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('pneumocat'), val("1.2.1"), topic: versions, emit: versions_pneumocat
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     PneumoCaT.py \\
         --input_directory ./ \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         --output_dir .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pneumocat: $VERSION
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.results.xml
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pneumocat: $VERSION
-    END_VERSIONS
     """
 }

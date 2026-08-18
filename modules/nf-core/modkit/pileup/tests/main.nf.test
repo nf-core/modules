@@ -7,10 +7,14 @@ nextflow_process {
     tag "modkit"
     tag "modkit/pileup"
     process "MODKIT_PILEUP"
+    config "./nextflow.config"
 
     test("[bam, bai], [], []") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -36,6 +40,9 @@ nextflow_process {
     test("[bam, bai], [fasta, fai], []") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -65,6 +72,9 @@ nextflow_process {
     test("[bam, bai], [fasta, fai], bed") {
 
         when {
+            params {
+                module_args = '--modified-bases 5mC 5hmC'
+                }
             process {
                 """
                 input[0] = [
@@ -93,11 +103,12 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], [fasta, fai], bed - traditional") {
-
-        config "./nextflow.traditional.config"
+    test("[bam, bai], [fasta, fai], [], phased") {
 
         when {
+            params {
+                module_args = '--phased --modified-bases 5mC 5hmC'
+                }
             process {
                 """
                 input[0] = [
@@ -110,9 +121,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[2] = Channel.of('chr22\t0\t1000')
-                    .collectFile(name: 'chr22.bed', newLine: true)
-                    .map { file -> [ [ id:'chr22' ], file ] }
+                input[2] = [[],[]]
                 """
             }
         }
@@ -126,44 +135,12 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], [fasta, fai], bed - traditional, HP") {
-
-        config "./nextflow.traditional_hp.config"
+    test("[bam, bai], [fasta, fai], bed, phased") {
 
         when {
-            process {
-                """
-                input[0] = [
-                    [ id: 'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
-                ]
-                input[2] = Channel.of('chr22\t0\t1000')
-                    .collectFile(name: 'chr22.bed', newLine: true)
-                    .map { file -> [ [ id:'chr22' ], file ] }
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
-    test("[bam, bai], [fasta, fai], bed - traditional, HP, bedgraph") {
-
-        config "./nextflow.traditional_hp_bedgraph.config"
-
-        when {
+            params {
+                module_args = '--phased --modified-bases 5mC 5hmC'
+                }
             process {
                 """
                 input[0] = [
@@ -197,6 +174,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -224,6 +204,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -251,10 +234,12 @@ nextflow_process {
     }
 
     test("[bam, bai], [fasta, fai], bed - stub") {
-
         options "-stub"
 
         when {
+            params {
+                module_args = '--modified-bases 5mC 5hmC'
+                }
             process {
                 """
                 input[0] = [
@@ -283,12 +268,14 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], [fasta, fai], bed - traditional - stub") {
+    test("[bam, bai], [fasta, fai], [], phased - stub") {
 
-        config "./nextflow.traditional.config"
         options "-stub"
 
         when {
+            params {
+                module_args = '--phased --modified-bases 5mC 5hmC'
+                }
             process {
                 """
                 input[0] = [
@@ -301,9 +288,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[2] = Channel.of('chr22\t0\t1000')
-                    .collectFile(name: 'chr22.bed', newLine: true)
-                    .map { file -> [ [ id:'chr22' ], file ] }
+                input[2] = [[],[]]
                 """
             }
         }
@@ -317,46 +302,14 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], [fasta, fai], bed - traditional, HP - stub") {
+    test("[bam, bai], [fasta, fai], bed, phased - stub") {
 
-        config "./nextflow.traditional_hp.config"
         options "-stub"
 
         when {
-            process {
-                """
-                input[0] = [
-                    [ id: 'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
-                ]
-                input[2] = Channel.of('chr22\t0\t1000')
-                    .collectFile(name: 'chr22.bed', newLine: true)
-                    .map { file -> [ [ id:'chr22' ], file ] }
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
-    test("[bam, bai], [fasta, fai], bed - traditional, HP, bedgraph - stub") {
-
-        config "./nextflow.traditional_hp_bedgraph.config"
-        options "-stub"
-
-        when {
+            params {
+                module_args = '--phased --modified-bases 5mC 5hmC'
+                }
             process {
                 """
                 input[0] = [

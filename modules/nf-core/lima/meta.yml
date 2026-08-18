@@ -67,13 +67,16 @@ output:
             are same/different, and how many reads have been filtered.
           pattern: "*.summary"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_lima:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - lima:
+          type: string
+          description: The tool name
+      - "lima --version | head -n1 | sed 's/lima //g' | sed 's/ (.\\+//g'":
+          type: string
+          description: The command used to generate the version of the tool
   bam:
     - - meta:
           type: map
@@ -102,7 +105,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.{fa, fasta}":
+      - "*.{fa,fasta}":
           type: file
           description: A fasta file of ccs purged of primers.
           pattern: "*.fa"
@@ -113,7 +116,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.{fa.gz, fasta.gz}":
+      - "*.{fa.gz,fasta.gz}":
           type: file
           description: A fasta.gz file of ccs purged of primers.
           pattern: "*.fasta.gz"
@@ -191,6 +194,17 @@ output:
             available)
           pattern: "*.guess"
           ontologies: []
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - lima:
+          type: string
+          description: The tool name
+      - "lima --version | head -n1 | sed 's/lima //g' | sed 's/ (.\\+//g'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@sguizard"
 maintainers:

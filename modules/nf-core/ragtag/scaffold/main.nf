@@ -3,9 +3,9 @@ process RAGTAG_SCAFFOLD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/ragtag:2.1.0--pyhb7b1952_0'
-        : 'biocontainers/ragtag:2.1.0--pyhb7b1952_0'}"
+        : 'quay.io/biocontainers/ragtag:2.1.0--pyhb7b1952_0'}"
 
     input:
     tuple val(meta), path(assembly, name: 'assembly/*')
@@ -17,7 +17,7 @@ process RAGTAG_SCAFFOLD {
     tuple val(meta), path("*.fasta"),   emit: corrected_assembly
     tuple val(meta), path("*.agp"),     emit: corrected_agp
     tuple val(meta), path("*.stats"),   emit: corrected_stats
-    path "versions.yml",                emit: versions
+    tuple val("${task.process}"), val('ragtag'), eval("ragtag.py -v | sed 's/v//'"), emit: versions_ragtag, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -57,11 +57,6 @@ process RAGTAG_SCAFFOLD {
     mv ${prefix}/ragtag.scaffold.fasta ${prefix}.fasta
     mv ${prefix}/ragtag.scaffold.agp ${prefix}.agp
     mv ${prefix}/ragtag.scaffold.stats ${prefix}.stats
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ragtag: \$(echo \$(ragtag.py -v | sed 's/v//'))
-    END_VERSIONS
     """
 
     stub:
@@ -74,9 +69,5 @@ process RAGTAG_SCAFFOLD {
     touch ${prefix}.fasta
     touch ${prefix}.agp
     touch ${prefix}.stats
-
-    cat <<-END_VERSIONS > versions.yml
-        ragtag: \$(echo \$(ragtag.py -v | sed 's/v//'))
-    END_VERSIONS
     """
 }

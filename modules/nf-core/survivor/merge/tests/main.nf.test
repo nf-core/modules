@@ -27,7 +27,7 @@ nextflow_process {
 				input[3] = 0
 				input[4] = 0
 				input[5] = 0
-				input[6] = 20
+				input[6] = 0
 
                 """
             }
@@ -38,7 +38,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					path(process.out.vcf[0][1]).vcf.summary,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )
@@ -62,7 +62,7 @@ nextflow_process {
 				input[3] = 0
 				input[4] = 0
 				input[5] = 0
-				input[6] = 20
+				input[6] = 0
 
                 """
             }

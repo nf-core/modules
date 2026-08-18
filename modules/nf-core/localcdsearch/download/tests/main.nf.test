@@ -1,0 +1,102 @@
+nextflow_process {
+
+    name "Test Process LOCALCDSEARCH_DOWNLOAD"
+    script "../main.nf"
+    process "LOCALCDSEARCH_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "localcdsearch"
+    tag "localcdsearch/download"
+
+    test("Download one database - Smart") {
+
+        when {
+            process {
+                """
+                input[0] = ['smart']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.db,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("Download one database - Smart - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = ['smart']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.db,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+
+   test("Download multiple databases - Smart, Tigr") {
+
+        when {
+            process {
+                """
+                input[0] = ['smart', 'tigr']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.db,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+   test("Download multiple databases - Smart, Tigr - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = ['smart', 'tigr']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.db,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+}

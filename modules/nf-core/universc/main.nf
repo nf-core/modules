@@ -2,16 +2,11 @@ process UNIVERSC {
     tag "$meta.id"
     label 'process_medium'
 
-    container "nf-core/universc:1.2.5.1"
-    containerOptions {
-        ['singularity', 'apptainer'].contains(workflow.containerEngine)
-            ? "-B /var/tmp --writable-tmpfs"
-            : workflow.containerEngine == 'docker'
-                ? "--privileged"
-                : workflow.containerEngine == 'podman'
-                    ? "--runtime crun --userns=keep-id --systemd=always"
-                    : ''
-    }
+    container "quay.io/nf-core/universc:1.2.5.1"
+    containerOptions "${ ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
+        "-B /var/tmp --writable-tmpfs" : workflow.containerEngine == 'docker' ?
+        "--privileged" : workflow.containerEngine == 'podman' ?
+        "--runtime crun --userns=keep-id --systemd=always" : '' }"
 
     input:
     tuple val(meta), path(reads)

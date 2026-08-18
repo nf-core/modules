@@ -3,9 +3,9 @@ process PRESIDENT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/president:0.6.8--pyhdfd78af_0' :
-        'biocontainers/president:0.6.8--pyhdfd78af_0' }"
+        'quay.io/biocontainers/president:0.6.8--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -17,7 +17,7 @@ process PRESIDENT {
     tuple val(meta), path("${prefix}_invalid.fasta*"), emit: invalid_fasta
     tuple val(meta), path("*.tsv")                   , emit: report
     tuple val(meta), path("*.log")                   , emit: log
-    path "versions.yml"                              , emit: versions
+    tuple val("${task.process}"), val('president'), eval("president --version |& sed '1!d;s/president v//'"), topic: versions, emit: versions_president
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,25 +32,19 @@ process PRESIDENT {
     if ("${fasta}" == "${prefix}_invalid.fasta.gz" && compress) error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     president \\
-        --query $fasta \\
-        --reference $reference \\
+        --query ${fasta} \\
+        --reference ${reference} \\
         --path . \\
-        --threads $task.cpus \\
+        --threads ${task.cpus} \\
         --prefix "${prefix}_" \\
-        $args
+        ${args}
 
-    if [ "$compress" = true ] ; then
+    if [ "${compress}" = true ] ; then
         gzip ${prefix}*.fasta;
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        president: \$(president --version |& sed '1!d ; s/president v//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     compress_command = compress ? "gzip ${prefix}*.fasta" : ""
 
@@ -59,11 +53,6 @@ process PRESIDENT {
     touch ${prefix}_president_logger.log
     touch ${prefix}_valid.fasta
     touch ${prefix}_invalid.fasta
-    $compress_command
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        president: \$(president --version |& sed '1!d ; s/president v//')
-    END_VERSIONS
+    ${compress_command}
     """
 }

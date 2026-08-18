@@ -3,16 +3,16 @@ process SEQCLUSTER_COLLAPSE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqcluster:1.2.9--pyh5e36f6f_0':
-        'biocontainers/seqcluster:1.2.9--pyh5e36f6f_0' }"
+        'quay.io/biocontainers/seqcluster:1.2.9--pyh5e36f6f_0' }"
 
     input:
     tuple val(meta), path(fastq)
 
     output:
     tuple val(meta), path("*.fastq.gz") , emit: fastq
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('seqcluster'), eval("seqcluster --version 2>&1 | tail -n 1 | sed 's/^seqcluster //'"), topic: versions, emit: versions_seqcluster
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,22 +30,11 @@ process SEQCLUSTER_COLLAPSE {
 
     gzip collapsed/*_trimmed.fastq
     mv collapsed/*_trimmed.fastq.gz ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqcluster: \$(echo \$(seqcluster --version 2>&1) | sed 's/^.*seqcluster //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqcluster: \$(echo \$(seqcluster --version 2>&1) | sed 's/^.*seqcluster //')
-    END_VERSIONS
     """
 }

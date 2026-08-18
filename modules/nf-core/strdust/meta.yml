@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "STRdust"
 description: Tandem repeat genotyper for long reads
 keywords:
@@ -12,9 +11,9 @@ tools:
       documentation: "https://github.com/wdecoster/STRdust/blob/main/README.md"
       tool_dev_url: "https://github.com/wdecoster/STRdust"
       doi: "10.1101/gr.279265.124 "
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -67,7 +66,6 @@ input:
         type: file
         description: BED file containing STR regions to genotype (optional)
         pattern: "*.bed"
-
         ontologies: []
 output:
   vcf:
@@ -83,7 +81,7 @@ output:
             Sorted if `--sorted` command line argument was specified.
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   tbi:
     - - meta:
           type: map
@@ -97,14 +95,46 @@ output:
             Output only if VCF is sorted (i.e. `--sorted` was specified).
           pattern: "*.tbi"
           ontologies: []
+  versions_strdust:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - strdust:
+          type: string
+          description: The name of the tool
+      - STRdust --version |& sed '1!d ; s/STRdust //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version |& sed '1!d ; s/bgzip (htslib) //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - strdust:
+          type: string
+          description: The name of the tool
+      - STRdust --version |& sed '1!d ; s/STRdust //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version |& sed '1!d ; s/bgzip (htslib) //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Schmytzi"
 maintainers:

@@ -34,13 +34,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 //{ assert snapshot(file(process.out.updatedb.get(0).get(1)).list().sort()).match() }
                 //{ assert snapshot(process.out.intervallist.get(0).get(1)).match() }
                 { assert snapshot(
                     file(process.out.genomicsdb.get(0).get(1)).list().sort(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -74,13 +74,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 //{ assert snapshot(file(process.out.genomicsdb.get(0).get(1)).list().sort()).match() }
                 //{ assert snapshot(file(process.out.updatedb.get(0).get(1)).list().sort()).match() }
                 { assert snapshot(
                     process.out.intervallist.get(0).get(1),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -114,13 +114,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 //{ assert snapshot(file(process.out.genomicsdb.get(0).get(1)).list().sort()).match() }
                 //{ assert snapshot(process.out.intervallist.get(0).get(1)).match() }
                 { assert snapshot(
                     file(process.out.updatedb.get(0).get(1)).list().sort(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -151,8 +151,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match()}
             )
         }

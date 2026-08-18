@@ -1,0 +1,193 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "t1k_run"
+description: write your description here
+keywords:
+  - polymorphic
+  - genes
+  - HLA
+  - Kir
+tools:
+  - "t1k":
+      description: "T1K is a versatile methods to genotype highly polymorphic genes
+        (e.g. KIR, HLA) with RNA-seq, WGS or WES data."
+      homepage: "https://github.com/mourisl/T1K/blob/v1.0.8/README.md"
+      documentation: "https://github.com/mourisl/T1K/blob/v1.0.8/README.md"
+      tool_dev_url: "https://github.com/mourisl/T1K"
+      doi: "10.1101/gr.277585.122"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample id and single_end label for fastq input files.
+          e.g. `[ id:'sample1', single_end:false ]`
+    - input:
+        type: file
+        description: BAM or FASTQ file(s).
+        pattern: "*.{bam,fastq}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_1930 # FASTQ
+    - fasta:
+        type: file
+        description: Reference fasta file.
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - cordinates:
+        type: file
+        description: A fasta file with the coordinates of the gene alleles in the
+          header as created form the t1k/build
+        pattern: "*.fa"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - barcodes:
+        type: file
+        description: A file with a list of barcodes.
+        pattern: "*.txt"
+        ontologies:
+          - edam: http://edamontology.org/format_2330
+    - barcodewhitelist:
+        type: file
+        description: A file with a whitelist of barcodes.
+        pattern: "*.txt"
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # TXT
+
+output:
+  genotype_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_genotype.tsv":
+          type: file
+          description: Genotyping file where the allele for each gene has its own
+            line.
+          pattern: "*_genotype.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 #TSV
+  allele_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_allele.tsv":
+          type: file
+          description: File with the representative alleles and their quality
+            scores.
+          pattern: "*_allele.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  allele_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_allele.vcf":
+          type: file
+          description: A vcf file with the novel SNPs.
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+  candidate_reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_candidate*.fq":
+          type: file
+          description: Fastq file containing candidate reads extracted from raw
+            data for genotyping.
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  aligned_reads_single:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_aligned.fa":
+          type: file
+          description: Aligned reads in fasta format from single-end input.
+          pattern: "*_aligned.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  aligned_reads_paired:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_aligned_{1,2}.fa":
+          type: file
+          description: Aligned reads in fasta format from paired-end input.
+          pattern: "*_aligned_{1,2}.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  barcode_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_barcode_expr.tsv":
+          type: file
+          description: Data matrix where rows are the barcodes and columns are the
+            allele abundances.
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  barcode_candidate:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_candidate_bc.fa":
+          type: file
+          description: Barcodes form candidate reads.
+          pattern: "*_candidate_bc.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  barcode_aligned:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_aligned_bc.fa":
+          type: file
+          description: Barcodes form aligned reads.
+          pattern: "*_aligned_bc.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  versions_t1k:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - t1k:
+          type: string
+          description: The name of the tool
+      - run-t1k 2>&1 | head -n 1 | cut -d '-' -f 1 | cut -d v -f 2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - t1k:
+          type: string
+          description: The name of the tool
+      - run-t1k 2>&1 | head -n 1 | cut -d '-' -f 1 | cut -d v -f 2:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@georgiakes"
+maintainers:
+  - "@georgiakes"

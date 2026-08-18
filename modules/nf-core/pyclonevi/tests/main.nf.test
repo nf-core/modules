@@ -10,14 +10,13 @@ nextflow_process {
 
     test("pyclonevi") {
 
-
         config "./nextflow.config"
 
         when {
             process {
                 """
                 input[0] = [
-                    meta = [ id : "test", patient : "HCC1395", tumour_sample : "HCC1395_HCC1395T" ],
+                    [ id : "test", patient : "HCC1395", tumour_sample : "HCC1395_HCC1395T" ],
                     file(params.modules_testdata_base_path + 'delete_me/pyclonevi/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                     [ 'HCC1395_HCC1395T' ]
                 ]
@@ -26,14 +25,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert file(process.out.ctree_input[0][1]).exists() },
-                { assert file(process.out.pyclone_input[0][1][0]).exists() },
-                { assert file(process.out.pyclone_input[0][1][1]).exists() },
-                { assert file(process.out.pyclone_all_fits[0][1]).exists() },
-                { assert file(process.out.pyclone_best_fit[0][1]).exists() }
+                { assert snapshot(
+                    sanitizeOutput(process.out,
+                        unstableKeys: ["ctree_input", "pyclone_input", "pyclone_all_fits", "pyclone_best_fit"]),
+                    path(process.out.versions_pyclonevi[0]).yaml
+                    ).match() }
             )
         }
 
@@ -47,7 +45,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    meta = [ id : "test", patient : "HCC1395", tumour_sample : "HCC1395_HCC1395T" ],
+                    [ id : "test", patient : "HCC1395", tumour_sample : "HCC1395_HCC1395T" ],
                     file(params.modules_testdata_base_path + 'delete_me/pyclonevi/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                     [ 'HCC1395_HCC1395T']
                 ]
@@ -58,7 +56,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_pyclonevi[0]).yaml
+                    ).match() }
             )
         }
 

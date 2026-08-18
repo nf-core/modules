@@ -38,8 +38,7 @@ nextflow_process {
                         "test.abacas.nucmer.filtered.delta" // Full path present in file
                     ] ? file(it).name : it
                 },
-                process.out.versions,
-                path(process.out.versions[0]).yaml
+                process.out.findAll { key, val -> key.startsWith('versions') }
             ).match()
         }
     }
@@ -69,8 +68,7 @@ nextflow_process {
             assert process.success
             assert snapshot(
                 process.out.results,
-                process.out.versions,
-                path(process.out.versions[0]).yaml
+                process.out.findAll { key, val -> key.startsWith('versions') }
             ).match()
         }
     }

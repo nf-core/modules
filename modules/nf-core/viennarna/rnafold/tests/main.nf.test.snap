@@ -1,52 +1,83 @@
 {
     "stub": {
         "content": [
-            [
-                [
-                    {
-                        
-                    },
-                    "transcriptome.fasta.fold:md5,d41d8cd98f00b204e9800998ecf8427e"
+            {
+                "rnafold_ps": [
+                    [
+                        {
+                            "id1": "no meta id and no prefix"
+                        },
+                        "transcriptome.fasta.ps:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "rnafold_txt": [
+                    [
+                        {
+                            "id1": "no meta id and no prefix"
+                        },
+                        "transcriptome.fasta.fold:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_rnafold": [
+                    [
+                        "VIENNARNA_RNAFOLD",
+                        "RNAfold",
+                        "2.6.4"
+                    ]
                 ]
-            ],
-            [
-                [
-                    {
-                        
-                    },
-                    "versions.yml:md5,76ca9d956465e05df59c27f000276284"
-                ]
-            ]
+            }
         ],
+        "timestamp": "2026-06-18T06:35:41.248024241",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-05-22T16:52:27.132604"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "rnafold - fasta": {
         "content": [
-            [
-                [
-                    {
-                        
-                    },
-                    "transcriptome.fasta.fold:md5,5f8a62d2119ffa8ae0907917c772af02"
+            {
+                "rnafold_ps": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "ENST00000359963_ss.ps",
+                            "ENST00000400593_ss.ps",
+                            "ENST00000426585_ss.ps",
+                            "ENST00000430910_ss.ps",
+                            "ENST00000454360_ss.ps",
+                            "ENST00000472972_ss.ps",
+                            "ENST00000493696_ss.ps",
+                            "ENST00000558085_ss.ps",
+                            "ENST00000591299_ss.ps",
+                            "ENST00000592107_ss.ps",
+                            "ENST00000592918_ss.ps",
+                            "ENST00000656324_ss.ps"
+                        ]
+                    ]
+                ],
+                "rnafold_txt": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fold:md5,5f8a62d2119ffa8ae0907917c772af02"
+                    ]
+                ],
+                "versions_rnafold": [
+                    [
+                        "VIENNARNA_RNAFOLD",
+                        "RNAfold",
+                        "2.6.4"
+                    ]
                 ]
-            ],
-            [
-                [
-                    {
-                        
-                    },
-                    "versions.yml:md5,76ca9d956465e05df59c27f000276284"
-                ]
-            ]
+            }
         ],
+        "timestamp": "2026-06-18T06:41:47.919065461",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-05-22T16:52:19.507543"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

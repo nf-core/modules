@@ -48,7 +48,7 @@ nextflow_process {
                     def read_qc = path(process.out.fastq.get(0).get(1)).linesGzip[3]
                     assert read_qc.equals("C1CGGGCGG=GGGJGJG=JJCJJJCJGJJJJGJJJ1JJJGJJGGJGJJGGGJJGJJJCJGGGJ(=G1GGG(CCCGGGCGCGGGCCGCCG8GGGGGGGGGGCC(CGG1GGGG1GGCGCGGCGGGCGCGGGCGGGGCGCCGGGGGCG8GGGG")
                 },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 
@@ -106,7 +106,7 @@ nextflow_process {
                     def read_qc = path(process.out.fastq.get(0).get(1).get(1)).linesGzip[3]
                     assert read_qc.equals("1CCGGGGGGGCGGGJJJJJGJG1GJGJ=JGJJCJJJCJJJGJ1GJGJGGJJC8JGG=JGGCGCCGCGGCCCGJCGGGGCJC==CGG88CGGGCGGGCCCGGC8JJJJCGGCGGCCGGGG=CGGGGCCGGCCCGCGCCCCG8GGGG=GGGC")
                 },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 

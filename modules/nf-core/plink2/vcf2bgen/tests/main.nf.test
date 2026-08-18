@@ -8,15 +8,17 @@ nextflow_process {
     tag "modules_nfcore"
     tag "plink2"
     tag "plink2/vcf2bgen"
-
+    config "./nextflow.config"
     test("plink2 - vcf2bgen - vcf - double-id") {
-        config "./nextflow.config"
- 
+
         when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
             process {
                 """
                 input[0] = [
-                    [ id: 'test', single_end:false ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
                     'DS',
                     true,
@@ -27,26 +29,24 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
-                { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
-                { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
-                { assert process.out.log_file.get(0).get(1) ==~ ".*.log" },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out.sample_file).match("doubleid-samplefile") },
-                { assert snapshot(process.out.bgen_file).match("doubleid-bgenfile") }            )
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_file"])).match() }
+            )
         }
 
     }
 
     test("plink2 - vcf2bgen - vcf - const-fid") {
-        config "./nextflow.config"
-        
+
         when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
             process {
                 """
                 input[0] = [
-                    [ id: 'test', single_end:false ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
                     'DS',
                     true,
@@ -57,26 +57,24 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
-                { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
-                { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
-                { assert process.out.log_file.get(0).get(1) ==~ ".*.log" },
-                { assert snapshot(process.out.sample_file).match("constfid-samplefile") },
-                { assert snapshot(process.out.bgen_file).match("constfid-bgenfile") }
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_file"])).match() }
             )
         }
 
     }
 
     test("plink2 - vcf2bgen - vcf - ref-last") {
-        config "./nextflow.config"
 
         when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
             process {
                 """
                 input[0] = [
-                    [ id: 'test', single_end:false ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
                     'DS',
                     true,
@@ -87,27 +85,25 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
-                { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
-                { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
-                { assert process.out.log_file.get(0).get(1) ==~ ".*.log" },
-                { assert snapshot(process.out.sample_file).match("reflast-samplefile") },
-                { assert snapshot(process.out.bgen_file).match("reflast-bgenfile") }
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_file"])).match() }
             )
         }
 
     }
 
     test("plink2 - vcf2bgen - stub") {
-        config "./nextflow.config"
         options "-stub"
 
         when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
             process {
                 """
                 input[0] = [
-                    [ id: 'test', single_end:false ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
                     'DS',
                     true,
@@ -118,14 +114,11 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
-                { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
-                { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
-                { assert process.out.log_file.get(0).get(1) ==~ ".*.log" }
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
-
 }

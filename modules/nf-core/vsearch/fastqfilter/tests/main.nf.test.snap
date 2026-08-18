@@ -14,7 +14,11 @@
                     "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
                 "2": [
-                    "versions.yml:md5,1384b47c55da9f6c34be13581f944ef2"
+                    [
+                        "VSEARCH_FASTQFILTER",
+                        "vsearch",
+                        "2.31.0"
+                    ]
                 ],
                 "fasta": [
                     [
@@ -27,16 +31,20 @@
                 "log": [
                     "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
-                "versions": [
-                    "versions.yml:md5,1384b47c55da9f6c34be13581f944ef2"
+                "versions_vsearch": [
+                    [
+                        "VSEARCH_FASTQFILTER",
+                        "vsearch",
+                        "2.31.0"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-05-06T16:04:20.212718",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-22T16:13:06.370748174"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 - fastq": {
         "content": [
@@ -49,17 +57,22 @@
                 ]
             ],
             [
-                "Reading input file 100%",
                 "88 sequences kept (of which 0 truncated), 12 sequences discarded."
             ],
-            [
-                "versions.yml:md5,1384b47c55da9f6c34be13581f944ef2"
-            ]
+            {
+                "versions_vsearch": [
+                    [
+                        "VSEARCH_FASTQFILTER",
+                        "vsearch",
+                        "2.31.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-05-07T13:56:17.409982",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-22T16:12:56.87317757"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }

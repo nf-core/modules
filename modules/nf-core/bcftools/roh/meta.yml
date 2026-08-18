@@ -1,6 +1,6 @@
 name: "bcftools_roh"
-description: A program for detecting runs of homo/autozygosity. Only bi-allelic sites
-  are considered.
+description: A program for detecting runs of homo/autozygosity. Only bi-allelic
+  sites are considered.
 keywords:
   - roh
   - biallelic
@@ -13,7 +13,8 @@ tools:
       homepage: https://www.htslib.org/
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -67,17 +68,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.roh":
           type: file
-          description: Contains site-specific and/or per-region runs of homo/autozygosity
-            calls.
+          description: Contains site-specific and/or per-region runs of
+            homo/autozygosity calls.
           pattern: "*.{roh}"
           ontologies: []
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

@@ -1,9 +1,9 @@
 name: "ilastik_multicut"
-description: Ilastik is a tool that utilizes machine learning algorithms to classify
-  pixels, segment, track and count cells in images. Ilastik contains a graphical user
-  interface to interactively label pixels. However, this nextflow module will implement
-  the --headless mode, to apply pixel classification using a pre-trained .ilp file
-  on an input image.
+description: Ilastik is a tool that utilizes machine learning algorithms to
+  classify pixels, segment, track and count cells in images. Ilastik contains a
+  graphical user interface to interactively label pixels. However, this nextflow
+  module will implement the --headless mode, to apply pixel classification using
+  a pre-trained .ilp file on an input image.
 keywords:
   - multicut
   - segmentation
@@ -15,7 +15,8 @@ tools:
       homepage: "https://www.ilastik.org/"
       documentation: "https://www.ilastik.org/documentation/"
       tool_dev_url: "https://github.com/ilastik/ilastik"
-      license: ["GPL3"]
+      license:
+        - "GPL3"
       identifier: biotools:ilastik
 input:
   - - meta:
@@ -27,20 +28,21 @@ input:
         type: file
         description: h5 file containing image stack to classify file
         pattern: "*.{h5,hdf5}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3590 # HDF5
     - probs:
         type: file
-        description: Probability map for boundary based segmentation as exported by
-          the pixel classification workflow.
+        description: Probability map for boundary based segmentation as exported
+          by the pixel classification workflow.
         pattern: "*.{h5,hdf5}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3590 # HDF5
   - ilp:
       type: file
-      description: Trained 'Boundary-based Segmentation with Multicut' .ilp project
-        file
+      description: Trained 'Boundary-based Segmentation with Multicut' .ilp
+        project file
       pattern: "*.{ilp}"
-
-      ontologies: []
+      ontologies: [] # no existing ontology
 output:
   mask:
     - - meta:
@@ -52,14 +54,29 @@ output:
           type: file
           description: Multicut segmentation mask output.
           pattern: "*.{tiff}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3591
+  versions_ilastik:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ilastik:
+          type: string
+          description: The name of the tool
+      - /opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ilastik:
+          type: string
+          description: The name of the tool
+      - /opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@FloWuenne"
 maintainers:

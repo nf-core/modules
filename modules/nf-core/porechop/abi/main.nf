@@ -3,9 +3,9 @@ process PORECHOP_ABI {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/porechop_abi:0.5.0post1--py310h275bdba_0'
-        : 'biocontainers/porechop_abi:0.5.0post1--py310h275bdba_0'}"
+        : 'quay.io/biocontainers/porechop_abi:0.5.0post1--py310h275bdba_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -13,8 +13,8 @@ process PORECHOP_ABI {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
-    tuple val(meta), path("*.log"), emit: log
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.log")     , emit: log
+    tuple val("${task.process}"), val('porechop_abi'), eval("porechop_abi --version"), topic: versions, emit: versions_porechop_abi
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,23 +34,12 @@ process PORECHOP_ABI {
         ${args} \\
         --output ${prefix}.fastq.gz \\
         | tee ${prefix}.log
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        porechop_abi: \$( porechop_abi --version )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.porechop_abi"
-    def adapters_list = custom_adapters ? "--custom_adapters ${custom_adapters}" : ""
     """
     echo "" | gzip > ${prefix}.fastq.gz
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        porechop_abi: \$( porechop_abi --version )
-    END_VERSIONS
     """
 }

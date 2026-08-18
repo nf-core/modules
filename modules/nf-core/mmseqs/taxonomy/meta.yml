@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mmseqs_taxonomy"
-description: Computes the lowest common ancestor by identifying the query sequence
-  homologs against the target database.
+description: Computes the lowest common ancestor by identifying the query
+  sequence homologs against the target database.
 keywords:
   - protein sequence
   - nucleotide sequence
@@ -17,7 +16,8 @@ tools:
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
       doi: "10.1093/bioinformatics/btw006"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:mmseqs
 input:
   - - meta:
@@ -30,7 +30,8 @@ input:
         description: An MMseqs2 database with query data
   - db_target:
       type: directory
-      description: an MMseqs2 database with target data including the taxonomy classification
+      description: an MMseqs2 database with target data including the taxonomy
+        classification
 output:
   db_taxonomy:
     - - meta:
@@ -40,14 +41,29 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - ${prefix}_taxonomy:
           type: directory
-          description: An MMseqs2 database with target data including the taxonomy classification
+          description: An MMseqs2 database with target data including the taxonomy
+            classification
+  versions_mmseqs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@darcy220606"
 maintainers:

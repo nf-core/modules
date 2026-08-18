@@ -3,9 +3,9 @@ process RNAQUAST {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rnaquast:2.3.0--h9ee0642_0':
-        'biocontainers/rnaquast:2.3.0--h9ee0642_0' }"
+        'quay.io/biocontainers/rnaquast:2.3.0--h9ee0642_0' }"
 
     input:
     tuple val(meta) , path(fasta)
@@ -14,7 +14,7 @@ process RNAQUAST {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('rnaquast'), eval("rnaQUAST.py -h | grep -i 'rnaQUAST.py v' | sed -E 's/.*v\\.([0-9.]+).*/\\1/'"), topic: versions, emit: versions_rnaquast
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,22 +32,11 @@ process RNAQUAST {
         ${reference} \\
         ${gtf} \\
         -o ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rnaquast: \$(rnaQUAST.py -h | grep -i 'rnaQUAST.py v' | sed -E 's/.*v\\.([0-9.]+).*/\\1/')
-    END_VERSIONS
     """
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
     touch ${prefix}/rnaQUAST.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rnaquast: \$(rnaQUAST.py -h | grep -i 'rnaQUAST.py v' | sed -E 's/.*v\\.([0-9.]+).*/\\1/')
-    END_VERSIONS
     """
 }

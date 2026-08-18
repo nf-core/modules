@@ -24,15 +24,16 @@ nextflow_process {
                         [ id:'minigenome_gtf' ],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf')
                     ]
+
                     input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/CTAT_HumanFusionLib.mini.dat.gz')
                     input[3] = "homo_sapiens"
-                    input[4] = "http://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam37.4/Pfam-A.hmm.gz"
+                    input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/Pfam-A.hmm.gz')
                     input[5] = [
-                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm",
-                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3f",
-                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3i",
-                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3m",
-                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3p"
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3f'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3i'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3m'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3p')
                     ]
                     input[6] = "https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm"
                     """
@@ -52,7 +53,7 @@ nextflow_process {
         }
 
         then {
-            def stable_name    = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: true)
+            def stable_name  = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: true)
             def stable_files = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: false, include: ['*','**/*'],
                 ignore: ['refGene.sort.bed.gz.tbi','**/refGene.sort.bed.gz.tbi', 'refGene.bed', '**/cancer_splicing.idx', 'ref_annot.c*',
                     'PFAM.domtblout.dat.gz', 'blast_pairs*', 'fusion_annot_lib.idx', 'pfam_domains.dbm', 'ref_annot.gtf.gene_spans',
@@ -60,13 +61,11 @@ nextflow_process {
             def stable_content = stable_files.findAll { it.size() > 0 }
             assertAll(
                 { assert process.success },
-                {
-                    assert snapshot(
-                        stable_name*.name,
-                        stable_content,
-                        process.out.versions
-                    ).match()
-                }
+                { assert snapshot(
+                    stable_name*.name,
+                    stable_content,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
 
         }
@@ -89,19 +88,12 @@ nextflow_process {
         }
 
         then {
-            def stable_name    = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: true)
-            def stable_content = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: false, include: ['*','**/*'], ignore: ['refGene.sort.bed.gz.tbi','**/refGene.sort.bed.gz.tbi','**/cancer_splicing.idx'])
             assertAll(
                 { assert process.success },
                 {
-                    assert snapshot(
-                        stable_name*.name,
-                        stable_content,
-                        process.out.versions
-                    ).match()
+                    assert snapshot(sanitizeOutput(process.out)).match()
                 }
             )
-
         }
 
     }

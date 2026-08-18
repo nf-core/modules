@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mirtop_counts"
-description: mirtop counts generates a file with the minimal information about each
-  sequence and the count data in columns for each samples.
+description: mirtop counts generates a file with the minimal information about
+  each sequence and the count data in columns for each samples.
 keywords:
   - mirna
   - isomir
@@ -12,9 +11,9 @@ tools:
       homepage: "https://github.com/miRTop/mirtop"
       documentation: "https://mirtop.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/miRTop/mirtop"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: biotools:miRTop
-
 input:
   - - meta:
         type: map
@@ -61,14 +60,28 @@ output:
           description: TSV file
           pattern: "*.{tsv}"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_mirtop:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mirtop:
+          type: string
+          description: The name of the tool
+      - mirtop --version 2>&1 | sed -n 's/^mirtop //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mirtop:
+          type: string
+          description: The name of the tool
+      - mirtop --version 2>&1 | sed -n 's/^mirtop //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@atrigila"
 maintainers:

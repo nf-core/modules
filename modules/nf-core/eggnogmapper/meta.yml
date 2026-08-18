@@ -1,91 +1,134 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "eggnogmapper"
 description: Fast genome-wide functional annotation through orthology assignment.
 keywords:
   - annotation
+  - functional annotation
   - orthology
   - genomics
+  - eggnog
 tools:
   - "eggnogmapper":
-      description: "Fast genome-wide functional annotation through orthology assignment."
+      description: |
+        EggNOG-mapper is a tool for fast functional annotation of novel sequences.
+        It uses precomputed orthologous groups and phylogenies from the eggNOG database
+        to transfer functional information from fine-grained orthologs only.
       homepage: "https://github.com/eggnogdb/eggnog-mapper"
       documentation: "https://github.com/eggnogdb/eggnog-mapper/wiki"
       tool_dev_url: "https://github.com/eggnogdb/eggnog-mapper"
       doi: "10.1093/molbev/msab293"
-      licence: ["AGPL v3"]
-      identifier: ""
+      licence:
+        - "AGPL v3"
+      identifier: "biotools:eggnog-mapper-v2"
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'test', single_end:false ]`
+          e.g. `[ id:'sample1' ]`
     - fasta:
         type: file
-        description: Database of sequences in FASTA format
-        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
-        ontologies: []
-  - eggnog_db:
-      type: file
-      description: The eggnog database file (e.g. eggnog-mapper/data/eggnog.db)
-      pattern: "*.db"
-      ontologies: []
+        description: Input sequences in FASTA format (plain or gzip-compressed)
+        pattern: "*.{fasta,faa,fa}(.gz)?"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - search_mode:
+        type: string
+        description: |
+          Search mode passed to emapper.py via -m. Determines which backend
+          is used and which database flag is applied internally.
+          Supported modes:
+            - diamond: DIAMOND-based homology search (--dmnd_db)
+            - novel_fams: DIAMOND search against novel families (--dmnd_db)
+            - mmseqs: MMseqs2-based search (--mmseqs_db)
+            - hmmer: HMMER-based search (--database)
+            - no_search: Skip search step and annotate from a precomputed
+              *.emapper.seed_orthologs file (--annotate_hits_table)
+            - cache: Reuse a previously generated hits table (--cache)
+        enum: [diamond, novel_fams, mmseqs, hmmer, no_search, cache]
+    - db:
+        type: file
+        description: |
+          Database file, directory, or precomputed results file required by the
+          selected search_mode. The module automatically assigns the correct
+          flag depending on search_mode:
+            - diamond / novel_fams: DIAMOND database (*.dmnd)
+            - mmseqs: MMseqs2 database directory or prefix
+            - hmmer: HMM database (*.hmm, *.h3m)
+            - no_search: Precomputed *.emapper.seed_orthologs file
+            - cache: Previously generated *.emapper.hits file
+          This input is mandatory but its expected format depends on search_mode.
+        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/format_1370 # HMMER format
+          - edam: http://edamontology.org/format_3475 # TSV
   - eggnog_data_dir:
       type: directory
-      description: Directory containing eggnog database files (e.g. eggnog-mapper/data)
+      description: |
+        Directory containing eggnog-mapper database files
+        (e.g. can be downloaded via download_eggnog_data.py,
+        found in the eggnog-mapper repository)
       pattern: "*"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing database information
-          e.g. `[ id:'test' ]`
-    - eggnog_diamond_db:
-        type: file
-        description: The eggnog Diamond protein database file (e.g. eggnog-mapper/data/eggnog_proteins.dmnd)
-        pattern: "*.dmnd"
-        ontologies: []
 output:
   annotations:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "*.emapper.annotations":
           type: file
-          description: TSV with the results from the annotation phase
+          description: TSV file with the results from the annotation phase, including
+            functional annotations, GO terms, KEGG pathways, and COG categories
           pattern: "*.emapper.annotations"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   orthologs:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "*.emapper.seed_orthologs":
           type: file
-          description: TSV with the results from parsing the hits, linking queries with
-            seed orthologs (with commented metadata)
+          description: TSV file with the results from parsing the hits, linking queries
+            with their best seed orthologs (includes commented metadata header)
           pattern: "*.emapper.seed_orthologs"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   hits:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "*.emapper.hits":
           type: file
-          description: TSV with the results from the Diamond search phase
+          description: TSV file with the raw search hits from the Diamond/MMseqs2/HMMER
+            search phase before annotation
           pattern: "*.emapper.hits"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_eggnogmapper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - eggnog-mapper:
+          type: string
+          description: The name of the tool
+      - emapper.py --version 2>&1 | grep -o 'emapper-[0-9]\+\.[0-9]\+\.[0-9]\+' | sed 's/emapper-//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - eggnog-mapper:
+          type: string
+          description: The name of the tool
+      - emapper.py --version 2>&1 | grep -o 'emapper-[0-9]\+\.[0-9]\+\.[0-9]\+' | sed 's/emapper-//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"
 maintainers:

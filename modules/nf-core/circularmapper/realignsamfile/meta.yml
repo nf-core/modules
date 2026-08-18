@@ -70,13 +70,28 @@ output:
           description: Realigned BAM file
           pattern: "*.bam"
           ontologies: []
+  versions_circularmapper:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - circularmapper:
+          type: string
+          description: The tool name
+      - "1.93.5":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - circularmapper:
+          type: string
+          description: The tool name
+      - "1.93.5":
+          type: string
+          description: The command used to generate the version of the tool
+
 authors:
   - "@shyama-mama"
   - "@jbv2"

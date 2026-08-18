@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
@@ -32,7 +32,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.gff[0][1]).text.contains('AGAT	gene') },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
@@ -46,7 +48,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
@@ -62,7 +64,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -74,7 +76,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
@@ -82,7 +84,7 @@ nextflow_process {
                     ]
                 ]
 
-                input[1] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.4.2/share/agat_config.yaml', checkIfExists: true)
+                input[1] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.6.1/share/agat_config.yaml', checkIfExists: true)
                 """
             }
         }
@@ -91,7 +93,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.gff[0][1]).text.contains('AGAT	gene') },
-                { assert snapshot(process.out.versions).match("versions_config") }
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
@@ -105,7 +109,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
@@ -113,7 +117,7 @@ nextflow_process {
                     ]
                 ]
 
-                input[1] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.4.2/share/agat_config.yaml', checkIfExists: true)
+                input[1] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.6.1/share/agat_config.yaml', checkIfExists: true)
                 """
             }
         }
@@ -121,7 +125,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

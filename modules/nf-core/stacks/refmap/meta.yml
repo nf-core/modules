@@ -1,0 +1,219 @@
+name: "stacks_refmap"
+description: ref_map.pl script from Stacks for the analysis of RAD-seq data when
+  a reference genome is available.
+keywords:
+  - rad-seq
+  - gbs
+  - variant-calling
+  - population-genomics
+  - genomics
+tools:
+  - "stacks":
+      description: "Stacks is a software pipeline for building loci from short-read
+        sequences."
+      homepage: "https://catchenlab.life.illinois.edu/stacks/"
+      documentation: "https://catchenlab.life.illinois.edu/stacks/manual/"
+      tool_dev_url: "http://groups.google.com/group/stacks-users"
+      doi: "10.1111/mec.12354"
+      licence:
+        - "GPL v3"
+      identifier: biotools:stacks
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'test',
+          single_end:false ]
+    - bams:
+        type: file
+        description: BAM alignment files from individual samples
+        pattern: "*.bam"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+  - popmap:
+      type: file
+      description: Tab-delimited population map file
+      pattern: "*.tsv"
+      ontologies:
+        - edam: http://edamontology.org/format_3475
+output:
+  catalog_calls:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - catalog.calls:
+          type: file
+          description: Stacks catalog calls output file
+          pattern: "catalog.calls"
+          ontologies: []
+  catalog_chrs:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - catalog.chrs.tsv:
+          type: file
+          description: Stacks catalog chrs output file
+          pattern: "catalog.chrs.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  catalog_fa:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - catalog.fa.gz:
+          type: file
+          description: Stacks catalog fasta output file
+          pattern: "catalog.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  gstacks_log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - gstacks.log:
+          type: file
+          description: Stacks gstacks log output file
+          pattern: "gstacks.log"
+          ontologies: []
+  gstacks_log_distribs:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - gstacks.log.distribs:
+          type: file
+          description: Stacks gstacks log distribs output file
+          pattern: "gstacks.log.distribs"
+          ontologies: []
+  haplotypes:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.haplotypes.tsv:
+          type: file
+          description: Stacks haplotypes output file
+          pattern: "populations.haplotypes.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  hapstats:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.hapstats.tsv:
+          type: file
+          description: Stacks hapstats output file
+          pattern: "populations.hapstats.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  sumstats:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.sumstats.tsv:
+          type: file
+          description: Stacks populations sumstats output file
+          pattern: "populations.sumstats.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  sumstats_summary:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.sumstats_summary.tsv:
+          type: file
+          description: Stacks populations sumstats summary output file
+          pattern: "populations.sumstats_summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  populations_log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.log:
+          type: file
+          description: Stacks populations log output file
+          pattern: "populations.log"
+          ontologies: []
+  populations_log_distribs:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.log.distribs:
+          type: file
+          description: Stacks populations log distribs output file
+          pattern: "populations.log.distribs"
+          ontologies: []
+  ref_map_log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - ref_map.log:
+          type: file
+          description: Stacks ref_map log output file
+          pattern: "ref_map.log"
+          ontologies: []
+  vcf:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.snps.vcf:
+          type: file
+          description: Stacks populations vcf output file
+          pattern: "populations.snps.vcf"
+          ontologies: []
+  genepop:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.snps.genepop:
+          type: file
+          description: Stacks populations genepop output file
+          pattern: "populations.snps.genepop"
+          ontologies: []
+  structure:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.structure:
+          type: file
+          description: Stacks populations structure output file
+          pattern: "populations.structure"
+          ontologies: []
+  versions_stacks_refmap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stacks_refmap:
+          type: string
+          description: The name of the tool
+      - "populations -v 2>&1 | sed 's/^.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stacks_refmap:
+          type: string
+          description: The name of the tool
+      - "populations -v 2>&1 | sed 's/^.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@TheGreatJack"
+maintainers:
+  - "@TheGreatJack"

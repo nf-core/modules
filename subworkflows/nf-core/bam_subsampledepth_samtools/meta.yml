@@ -1,41 +1,53 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "bam_subsampledepth_samtools"
-description: Subsample a BAM/CRAM/SAM file using samtools to a given mean depth
+description: |
+  Subsample a BAM/CRAM/SAM file using samtools to a given mean depth.
+  "region", "subsample_fraction", "mean_depth" and "depth" keys will be added to the meta
+  map to distinguish the different file generated and therefore shouldn't be used.
+  The `depth` key will be added to the meta map of the output channel.
 keywords:
   - subsample
   - bam
   - sam
   - cram
 components:
-  - samtools/depth
+  - samtools/coverage
   - samtools/view
-  - gawk
 input:
   - ch_bam:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files and their indexes and the depth at which to subsample them.
-        Structure: [ val(meta), path(bam), path(bai), val(depth) ]
+        The input channel containing the BAM/CRAM/SAM files and their indexes.
+        Structure: [ val(meta), path(bam), path(bai) ]
       pattern: "*.{bam,cram,sam}"
+  - ch_depth:
+      type: float
+      description: |
+        Target depth to downsample each input of ch_bam to.
+        Structure: [ val(meta), val(depth) ]
+        The meta map will be combined to the meta map of the ch_bam channel.
   - ch_fasta:
       type: file
       description: |
         The reference genome channel containing the fasta files and its index
         Structure: [ val(meta), path(fasta), path(fai) ]
       pattern: "*.{fa(sta)?}"
+  - ch_region:
+      type: file
+      description: |
+        An optional channel containing the different regions to consider
+        for the coverage calculation and downsampling.
+        Structure: [ val(meta), path(region) ]
+      pattern: "*.bed"
 output:
   - bam_subsampled:
       type: file
       description: |
-        Channel containing subsampled BAM/CRAM/SAM files and their indexes
+        Channel containing subsampled BAM/CRAM/SAM files and their indexes.
+        depth and subsample_fraction parameter will be added to the meta map.
+        The later will be used to set the `--subsample` parameter in SAMTOOLS/VIEW command.
         Structure: [ val(meta), path(bam), path(csi) ]
       pattern: "*.{bam,cram,sam}"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@louislenezet"
 maintainers:

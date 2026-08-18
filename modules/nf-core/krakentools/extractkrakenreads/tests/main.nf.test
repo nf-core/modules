@@ -17,7 +17,10 @@ nextflow_process {
                 script "../../../untar/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)]
+                    input[0] = [
+                        [id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
+                    ]
                     """
                 }
             }
@@ -25,7 +28,10 @@ nextflow_process {
                 script "../../../kraken2/kraken2/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test', single_end: true], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                    input[0] = [
+                        [id: 'test', single_end: true],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
                     input[1] = UNTAR.out.untar.map{ it[1] }
                     input[2] = true
                     input[3] = true
@@ -48,7 +54,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot ( process.out ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -59,7 +65,10 @@ nextflow_process {
                 script "../../../untar/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)]
+                    input[0] = [
+                        [id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
+                    ]
                     """
                 }
             }
@@ -67,7 +76,8 @@ nextflow_process {
                 script "../../../kraken2/kraken2/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test', single_end: false],
+                    input[0] = [
+                        [id: 'test', single_end: false],
                         [
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -95,7 +105,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot ( process.out ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -105,7 +115,10 @@ nextflow_process {
                 script "../../../untar/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)]
+                    input[0] = [
+                        [id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
+                    ]
                     """
                 }
             }
@@ -113,7 +126,8 @@ nextflow_process {
                 script "../../../kraken2/kraken2/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test', single_end: false],
+                    input[0] = [
+                        [id: 'test', single_end: false],
                         [
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -142,7 +156,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot ( process.out ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -157,7 +171,10 @@ nextflow_process {
                 script "../../../untar/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)]
+                    input[0] = [
+                        [id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
+                    ]
                     """
                 }
             }
@@ -165,7 +182,10 @@ nextflow_process {
                 script "../../../kraken2/kraken2/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test', single_end: true], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                    input[0] = [
+                        [id: 'test', single_end: true],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
                     input[1] = UNTAR.out.untar.map{ it[1] }
                     input[2] = true
                     input[3] = true
@@ -188,7 +208,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot ( process.out ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -202,7 +222,10 @@ nextflow_process {
                 script "../../../untar/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)]
+                    input[0] = [
+                        [id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
+                    ]
                     """
                 }
             }
@@ -210,7 +233,8 @@ nextflow_process {
                 script "../../../kraken2/kraken2/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test', single_end: false],
+                    input[0] = [
+                        [id: 'test', single_end: false],
                         [
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -238,20 +262,23 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot ( process.out ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
     test ("stub sarscov2 illumina paired end with parents [fastq]") {
 
         options '-stub'
-        
+
         setup {
             run("UNTAR") {
                 script "../../../untar/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)]
+                    input[0] = [
+                        [id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
+                    ]
                     """
                 }
             }
@@ -259,7 +286,8 @@ nextflow_process {
                 script "../../../kraken2/kraken2/main.nf"
                 process {
                     """
-                    input[0] = [ [id: 'test', single_end: false],
+                    input[0] = [
+                        [id: 'test', single_end: false],
                         [
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -288,8 +316,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot ( process.out ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-    }    
+    }
 }

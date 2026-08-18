@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "bbmap_repair"
 description: Re-pairs reads that became disordered or had some mates eliminated.
 keywords:
@@ -7,13 +6,13 @@ keywords:
   - preprocessing
 tools:
   - repair:
-      description: Repair.sh is a tool that re-pairs reads that became disordered or
-        had some mates eliminated tools.
+      description: Repair.sh is a tool that re-pairs reads that became disordered
+        or had some mates eliminated tools.
       homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/
       documentation: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
-      licence: ["UC-LBL license (see package)"]
+      licence:
+        - "UC-LBL license (see package)"
       identifier: biotools:bbmap
-
 input:
   - - meta:
         type: map
@@ -56,19 +55,33 @@ output:
           pattern: "*singleton.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
   log:
     - "*.log":
         type: file
         description: log file containing stdout and stderr from repair.sh
         pattern: "*.log"
         ontologies: []
+  versions_bbmap:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - bbmap:
+          type: string
+          description: The name of the tool
+      - bbversion.sh | grep -v "Duplicate cpuset":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - bbmap:
+          type: string
+          description: The name of the tool
+      - bbversion.sh | grep -v "Duplicate cpuset":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mazzalab"
 maintainers:

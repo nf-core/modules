@@ -8,7 +8,7 @@ keywords:
 tools:
   - "seqtk_comp":
       description: |
-        Seqtk is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format. 
+        Seqtk is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format.
         The seqtk comp command computes base composition, sequence length, and GC content for quality control.
 
       homepage: https://github.com/lh3/seqtk
@@ -39,20 +39,34 @@ output:
             e.g. [ id:'sample1', single_end:false ]
       - "*.seqtk_stats.tsv":
           type: file
-          description: The output TSV file summarizing sequence statistics with columns
-            for sequence name, length, counts of A, C, G, T, and N bases, and GC content
-            percentage."
+          description: The output TSV file summarizing sequence statistics with
+            columns for sequence name, length, counts of A, C, G, T, and N bases,
+            and GC content percentage."
           pattern: "*.seqtk_stats.tsv"
 
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_seqtk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sainsachiko"
 maintainers:

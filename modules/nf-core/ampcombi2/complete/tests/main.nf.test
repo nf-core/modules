@@ -27,7 +27,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.tsv[0]).readLines()[0].contains("ampir"),
-                    process.out.versions).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }

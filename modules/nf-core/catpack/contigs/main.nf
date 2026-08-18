@@ -3,9 +3,9 @@ process CATPACK_CONTIGS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15bcec1eccda12562504e88d44abc8a29742c6b600ae178cc9579fedc3a69062/data'
+        : 'community.wave.seqera.io/library/cat_gzip:0ab95a62b35744c9'}"
 
     input:
     tuple val(meta), path(contigs)
@@ -21,7 +21,7 @@ process CATPACK_CONTIGS {
     tuple val(meta), path("*.diamond"), optional: true, emit: diamond
     tuple val(meta), path("*.predicted_proteins.faa"), optional: true, emit: faa
     tuple val(meta), path("*.gff"), optional: true, emit: gff
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,20 +32,26 @@ process CATPACK_CONTIGS {
     def premade_proteins = proteins ? "--proteins_fasta ${proteins}" : ''
     def premade_table = diamond_table ? "--diamond_alignment ${diamond_table}" : ''
     """
+    # CAT_pack does not support gzipped input, so decompress any gzipped contigs.
+    contigs_fastas=""
+    for f in ${contigs}; do
+        if [[ "\$f" == *.gz ]]; then
+            gunzip -c "\$f" > "\$(basename "\$f" .gz)"
+            contigs_fastas="\${contigs_fastas} \$(basename "\$f" .gz)"
+        else
+            contigs_fastas="\${contigs_fastas} \$f"
+        fi
+    done
+
     CAT_pack contigs \\
         --nproc ${task.cpus} \\
-        --contigs_fasta ${contigs} \\
+        --contigs_fasta \${contigs_fastas## } \\
         --database_folder ${database} \\
         --taxonomy_folder ${taxonomy} \\
         --out_prefix ${prefix} \\
         ${premade_proteins} \\
         ${premade_table} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +63,5 @@ process CATPACK_CONTIGS {
     touch ${prefix}.diamond
     touch ${prefix}.predicted_proteins.faa
     touch ${prefix}.predicted_proteins.gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 }

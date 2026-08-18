@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "strobealign"
 description: "Align short reads using dynamic seed size with strobemers"
 keywords:
@@ -10,15 +9,15 @@ keywords:
   - bam
   - sam
 tools:
-- "strobealign":
-    description: "Align short reads using dynamic seed size with strobemers"
-    homepage: "https://github.com/ksahlin/strobealign"
-    documentation: "https://github.com/ksahlin/strobealign?tab=readme-ov-file#usage"
-    tool_dev_url: "https://github.com/ksahlin/strobealign"
-    doi: "10.1186/s13059-022-02831-7"
-    licence: ['MIT']
-    identifier: biotools:strobealign
-
+  - "strobealign":
+      description: "Align short reads using dynamic seed size with strobemers"
+      homepage: "https://github.com/ksahlin/strobealign"
+      documentation: "https://github.com/ksahlin/strobealign?tab=readme-ov-file#usage"
+      tool_dev_url: "https://github.com/ksahlin/strobealign"
+      doi: "10.1186/s13059-022-02831-7"
+      licence:
+        - "MIT"
+      identifier: biotools:strobealign
 input:
   - - meta:
         type: map
@@ -31,8 +30,8 @@ input:
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
         ontologies:
-          - edam: "http://edamontology.org/data_2044" # Sequence
-          - edam: "http://edamontology.org/format_1930" # FASTQ
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1930"
   - - meta2:
         type: map
         description: |
@@ -43,8 +42,8 @@ input:
         description: Reference genome in FASTA format
         pattern: "*.{fasta,fa}"
         ontologies:
-          - edam: "http://edamontology.org/data_2044" # Sequence
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
   - - meta3:
         type: map
         description: |
@@ -55,7 +54,7 @@ input:
         description: Strobealign genome index file
         pattern: "*.sti"
         ontologies:
-          - edam: "http://edamontology.org/data_3210" # Genome index
+          - edam: "http://edamontology.org/data_3210"
   - sort_bam:
       type: boolean
       description: use samtools sort (true) or samtools view (false)
@@ -70,18 +69,17 @@ output:
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2572"
   cram:
     - - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.cram":
           type: file
           description: Output CRAM file containing read alignments
           pattern: "*.{cram}"
           ontologies:
-            - edam: "http://edamontology.org/format_3462" # CRAM
+            - edam: "http://edamontology.org/format_3462"
   csi:
     - - meta:
           type: map
@@ -118,7 +116,7 @@ output:
           description: Output TSV file containing read alignments
           pattern: "*.{tsv.gz}"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   sti:
     - - meta:
           type: map
@@ -128,15 +126,67 @@ output:
           description: Optional strobealign index file for fasta reference
           pattern: "*.{sti}"
           ontologies: []
+  versions_strobealign:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - strobealign:
+          type: string
+          description: The name of the tool
+      - strobealign --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed 's/pigz //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - strobealign:
+          type: string
+          description: The name of the tool
+      - strobealign --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed 's/pigz //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
-- "@matthdsm"
+  - "@matthdsm"
 maintainers:
-- "@matthdsm"
-- "@nvnieuwk"
+  - "@matthdsm"
+  - "@nvnieuwk"

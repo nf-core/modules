@@ -13,10 +13,10 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
-                    [ id:'test_out' ],                                                                                                                                                             
-                    [ 
+                    [ id:'test_out' ],
+                    [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bedgraph/test.bedgraph', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                     ]
@@ -42,17 +42,17 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
-                    [ id:'test_out' ],                                                                                                                                                             
-                    [ 
+                    [ id:'test_out' ],
+                    [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bedgraph/test.bedgraph', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                     ]
                 ]
 
                 input[1] = [
-                    [ id: 'genome' ],                                                                                                                                                                         
+                    [ id: 'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.sizes', checkIfExists: true)
                 ]
                 """
@@ -74,10 +74,10 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
-                    [ id:'test_out' ],                                                                                                                                                             
-                    [ 
+                    [ id:'test_out' ],
+                    [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bedgraph/test.bedgraph', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                     ]

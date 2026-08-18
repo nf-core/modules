@@ -3,9 +3,9 @@ process STARAMR_SEARCH {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/staramr:0.10.0--pyhdfd78af_0':
-        'biocontainers/staramr:0.10.0--pyhdfd78af_0' }"
+        'quay.io/biocontainers/staramr:0.10.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(genome_fasta) // genome as a fasta file
@@ -48,13 +48,12 @@ process STARAMR_SEARCH {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}_results
     touch ${prefix}_results/results.xlsx
-    touch ${prefix}_results/{summary,detailed_summary,resfinder,pointfinder,plasmidfinder,mlst}.tsv.gz
-    touch ${prefix}_results/settings.txt.gz
+    echo | gzip > ${prefix}_results/{summary,detailed_summary,resfinder,pointfinder,plasmidfinder,mlst}.tsv.gz
+    echo | gzip > ${prefix}_results/settings.txt.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

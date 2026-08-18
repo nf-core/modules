@@ -2,9 +2,9 @@ process GANON_BUILDCUSTOM {
     tag "${meta.id}"
     label 'process_high'
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/ganon:2.1.0--py310hab1bfa5_1'
-        : 'biocontainers/ganon:2.1.0--py310hab1bfa5_1'}"
+        : 'quay.io/biocontainers/ganon:2.1.0--py310hab1bfa5_1'}"
 
     input:
     tuple val(meta), path(input)
@@ -15,7 +15,7 @@ process GANON_BUILDCUSTOM {
     output:
     tuple val(meta), path("*.{hibf,ibf,tax}"), emit: db
     tuple val(meta), path("*.info.tsv"), emit: info, optional: true
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('ganon'), eval("ganon --version 2>1 | sed 's/.*ganon //g'"), emit: versions_ganon, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,25 +36,14 @@ process GANON_BUILDCUSTOM {
         ${genome_size_args} \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def taxonomy_args = taxonomy_files ? "--taxonomy-files ${taxonomy_files}" : ""
-    def genome_size_args = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
     """
     touch ${prefix}.hibf
     touch ${prefix}.tax
     touch ${prefix}.info.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
-    END_VERSIONS
     """
 }

@@ -4,7 +4,6 @@ keywords:
   - cooler/balance
   - cooler
   - cool
-  - cooler
 tools:
   - "cooler":
       description: Sparse binary format for genomic interaction matrices
@@ -12,7 +11,8 @@ tools:
       documentation: https://cooler.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifier: ""
 input:
   - - meta:
@@ -40,13 +40,27 @@ output:
           description: Output COOL file balancing weights
           pattern: "*.cool"
           ontologies: []
+  versions_cooler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nservant"
   - "@muffato"

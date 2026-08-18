@@ -1,164 +1,5 @@
 {
-    "sawfish_jointcall - one sample": {
-        "content": [
-            [
-                "versions.yml:md5,a4558bd0e8487faf7562a43cc1b8de9c"
-            ],
-            "cohort_genotyped.sv.vcf.gz.tbi",
-            [
-                "##reference=file://genome3.fasta",
-                "##source=\"sawfish 2.1.1\"",
-                "##sawfish_cmdline=\"sawfish joint-call --threads 2 --ref genome3.fasta --sample sample1 --output-dir cohort\"",
-                "##contig=<ID=chr19:45760000-45770300,length=10301>",
-                "##ALT=<ID=DEL,Description=\"Deletion\">",
-                "##ALT=<ID=INS,Description=\"Insertion\">",
-                "##ALT=<ID=DUP,Description=\"Duplication\">",
-                "##ALT=<ID=DUP:TANDEM,Description=\"Tandem Duplication\">",
-                "##ALT=<ID=INV,Description=\"Inversion\">",
-                "##ALT=<ID=CNV,Description=\"Copy number variable region\">",
-                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
-                "##FILTER=<ID=.,Description=\"Unknown filtration status\">",
-                "##FILTER=<ID=InvBreakpoint,Description=\"Breakpoint represented as part of an inversion record (same EVENT ID)\">",
-                "##FILTER=<ID=MinQUAL,Description=\"QUAL score is less than 10\">",
-                "##FILTER=<ID=MaxScoringDepth,Description=\"SV candidate exceeds max scoring depth in at least one sample\">",
-                "##FILTER=<ID=ConflictingBreakpointGT,Description=\"Genotypes of breakpoints in a multi-breakpoint event conflict in the majority of cases\">",
-                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the variant described in this record\">",
-                "##INFO=<ID=EVENT,Number=A,Type=String,Description=\"ID of associated event\">",
-                "##INFO=<ID=EVENTTYPE,Number=A,Type=String,Description=\"Type of associated event\">",
-                "##INFO=<ID=HOMLEN,Number=.,Type=Integer,Description=\"Length of base pair identical micro-homology at event breakpoints\">",
-                "##INFO=<ID=HOMSEQ,Number=.,Type=String,Description=\"Sequence of base pair identical micro-homology at event breakpoints\">",
-                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Imprecise structural variation\">",
-                "##INFO=<ID=INSLEN,Number=.,Type=Integer,Description=\"Insertion length\">",
-                "##INFO=<ID=INSSEQ,Number=.,Type=String,Description=\"Insertion sequence (for symbolic alt alleles)\">",
-                "##INFO=<ID=MATEID,Number=.,Type=String,Description=\"ID of mate breakends\">",
-                "##INFO=<ID=SVCLAIM,Number=A,Type=String,Description=\"Claim made by the structural variant call. Valid values are D, J, DJ for abundance, adjacency and both respectively\">",
-                "##INFO=<ID=SVLEN,Number=A,Type=Integer,Description=\"Length of structural variant\">",
-                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
-                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
-                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotype Quality\">",
-                "##FORMAT=<ID=PL,Number=G,Type=Integer,Description=\"Phred-scaled genotype likelihoods rounded to the closest integer\">",
-                "##FORMAT=<ID=AD,Number=R,Type=Integer,Description=\"Read depth for each allele\">",
-                "##FORMAT=<ID=CN,Number=1,Type=Float,Description=\"Copy number\">",
-                "##FORMAT=<ID=CNQ,Number=1,Type=Float,Description=\"Copy number genotype quality\">",
-                "##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase set identifier\">",
-                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tNA03697B2",
-                "chr19:45760000-45770300\t1\tsawfish:CNV:0:0:0\tC\t<DEL>\t62\tPASS\tIMPRECISE;SVTYPE=DEL;END=9000;SVLEN=8999;SVCLAIM=D\tGT:CN:CNQ\t1/1:0:31",
-                "chr19:45760000-45770300\t10205\tsawfish:0:0:0:0\tC\tCCCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAG\t999\tPASS\tSVTYPE=INS;END=10205;SVLEN=1633;HOMLEN=1;HOMSEQ=C;INSLEN=1633\tGT:GQ:PL:AD\t1/1:129:999,129,0:0,43"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-29T15:54:40.048519654"
-    },
-    "sawfish_jointcall": {
-        "content": [
-            [
-                "versions.yml:md5,a4558bd0e8487faf7562a43cc1b8de9c"
-            ],
-            "cohort_genotyped.sv.vcf.gz.tbi",
-            [
-                "##reference=file://genome3.fasta",
-                "##source=\"sawfish 2.1.1\"",
-                "##sawfish_cmdline=\"sawfish joint-call --threads 2 --ref genome3.fasta --sample sample1 --sample sample2 --output-dir cohort\"",
-                "##contig=<ID=chr19:45760000-45770300,length=10301>",
-                "##ALT=<ID=DEL,Description=\"Deletion\">",
-                "##ALT=<ID=INS,Description=\"Insertion\">",
-                "##ALT=<ID=DUP,Description=\"Duplication\">",
-                "##ALT=<ID=DUP:TANDEM,Description=\"Tandem Duplication\">",
-                "##ALT=<ID=INV,Description=\"Inversion\">",
-                "##ALT=<ID=CNV,Description=\"Copy number variable region\">",
-                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
-                "##FILTER=<ID=.,Description=\"Unknown filtration status\">",
-                "##FILTER=<ID=InvBreakpoint,Description=\"Breakpoint represented as part of an inversion record (same EVENT ID)\">",
-                "##FILTER=<ID=MinQUAL,Description=\"QUAL score is less than 10\">",
-                "##FILTER=<ID=MaxScoringDepth,Description=\"SV candidate exceeds max scoring depth in at least one sample\">",
-                "##FILTER=<ID=ConflictingBreakpointGT,Description=\"Genotypes of breakpoints in a multi-breakpoint event conflict in the majority of cases\">",
-                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the variant described in this record\">",
-                "##INFO=<ID=EVENT,Number=A,Type=String,Description=\"ID of associated event\">",
-                "##INFO=<ID=EVENTTYPE,Number=A,Type=String,Description=\"Type of associated event\">",
-                "##INFO=<ID=HOMLEN,Number=.,Type=Integer,Description=\"Length of base pair identical micro-homology at event breakpoints\">",
-                "##INFO=<ID=HOMSEQ,Number=.,Type=String,Description=\"Sequence of base pair identical micro-homology at event breakpoints\">",
-                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Imprecise structural variation\">",
-                "##INFO=<ID=INSLEN,Number=.,Type=Integer,Description=\"Insertion length\">",
-                "##INFO=<ID=INSSEQ,Number=.,Type=String,Description=\"Insertion sequence (for symbolic alt alleles)\">",
-                "##INFO=<ID=MATEID,Number=.,Type=String,Description=\"ID of mate breakends\">",
-                "##INFO=<ID=SVCLAIM,Number=A,Type=String,Description=\"Claim made by the structural variant call. Valid values are D, J, DJ for abundance, adjacency and both respectively\">",
-                "##INFO=<ID=SVLEN,Number=A,Type=Integer,Description=\"Length of structural variant\">",
-                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
-                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
-                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotype Quality\">",
-                "##FORMAT=<ID=PL,Number=G,Type=Integer,Description=\"Phred-scaled genotype likelihoods rounded to the closest integer\">",
-                "##FORMAT=<ID=AD,Number=R,Type=Integer,Description=\"Read depth for each allele\">",
-                "##FORMAT=<ID=CN,Number=1,Type=Float,Description=\"Copy number\">",
-                "##FORMAT=<ID=CNQ,Number=1,Type=Float,Description=\"Copy number genotype quality\">",
-                "##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase set identifier\">",
-                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tNA03697B2\tNA037562",
-                "chr19:45760000-45770300\t1\tsawfish:CNV:1:0:0\tC\t<DEL>\t126\tPASS\tIMPRECISE;SVTYPE=DEL;END=9000;SVLEN=8999;SVCLAIM=D\tGT:CN:CNQ\t1/1:0:31\t1/1:0:32",
-                "chr19:45760000-45770300\t10205\tsawfish:0:0:0:0\tC\tCCCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAG\t999\tPASS\tSVTYPE=INS;END=10205;SVLEN=1633;HOMLEN=1;HOMSEQ=C;INSLEN=1633\tGT:GQ:PL:AD\t1/1:129:999,129,0:0,43\t1/1:123:999,123,0:0,41"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-29T15:51:22.842054057"
-    },
-    "sawfish_jointcall_sample_csv": {
-        "content": [
-            [
-                "versions.yml:md5,a4558bd0e8487faf7562a43cc1b8de9c"
-            ],
-            "cohort_genotyped.sv.vcf.gz.tbi",
-            [
-                "##reference=file://genome3.fasta",
-                "##source=\"sawfish 2.1.1\"",
-                "##sawfish_cmdline=\"sawfish joint-call --threads 2 --ref genome3.fasta --sample-csv samples.csv --output-dir cohort\"",
-                "##contig=<ID=chr19:45760000-45770300,length=10301>",
-                "##ALT=<ID=DEL,Description=\"Deletion\">",
-                "##ALT=<ID=INS,Description=\"Insertion\">",
-                "##ALT=<ID=DUP,Description=\"Duplication\">",
-                "##ALT=<ID=DUP:TANDEM,Description=\"Tandem Duplication\">",
-                "##ALT=<ID=INV,Description=\"Inversion\">",
-                "##ALT=<ID=CNV,Description=\"Copy number variable region\">",
-                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
-                "##FILTER=<ID=.,Description=\"Unknown filtration status\">",
-                "##FILTER=<ID=InvBreakpoint,Description=\"Breakpoint represented as part of an inversion record (same EVENT ID)\">",
-                "##FILTER=<ID=MinQUAL,Description=\"QUAL score is less than 10\">",
-                "##FILTER=<ID=MaxScoringDepth,Description=\"SV candidate exceeds max scoring depth in at least one sample\">",
-                "##FILTER=<ID=ConflictingBreakpointGT,Description=\"Genotypes of breakpoints in a multi-breakpoint event conflict in the majority of cases\">",
-                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the variant described in this record\">",
-                "##INFO=<ID=EVENT,Number=A,Type=String,Description=\"ID of associated event\">",
-                "##INFO=<ID=EVENTTYPE,Number=A,Type=String,Description=\"Type of associated event\">",
-                "##INFO=<ID=HOMLEN,Number=.,Type=Integer,Description=\"Length of base pair identical micro-homology at event breakpoints\">",
-                "##INFO=<ID=HOMSEQ,Number=.,Type=String,Description=\"Sequence of base pair identical micro-homology at event breakpoints\">",
-                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Imprecise structural variation\">",
-                "##INFO=<ID=INSLEN,Number=.,Type=Integer,Description=\"Insertion length\">",
-                "##INFO=<ID=INSSEQ,Number=.,Type=String,Description=\"Insertion sequence (for symbolic alt alleles)\">",
-                "##INFO=<ID=MATEID,Number=.,Type=String,Description=\"ID of mate breakends\">",
-                "##INFO=<ID=SVCLAIM,Number=A,Type=String,Description=\"Claim made by the structural variant call. Valid values are D, J, DJ for abundance, adjacency and both respectively\">",
-                "##INFO=<ID=SVLEN,Number=A,Type=Integer,Description=\"Length of structural variant\">",
-                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
-                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
-                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotype Quality\">",
-                "##FORMAT=<ID=PL,Number=G,Type=Integer,Description=\"Phred-scaled genotype likelihoods rounded to the closest integer\">",
-                "##FORMAT=<ID=AD,Number=R,Type=Integer,Description=\"Read depth for each allele\">",
-                "##FORMAT=<ID=CN,Number=1,Type=Float,Description=\"Copy number\">",
-                "##FORMAT=<ID=CNQ,Number=1,Type=Float,Description=\"Copy number genotype quality\">",
-                "##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase set identifier\">",
-                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tNA03697B2\tNA037562",
-                "chr19:45760000-45770300\t1\tsawfish:CNV:1:0:0\tC\t<DEL>\t126\tPASS\tIMPRECISE;SVTYPE=DEL;END=9000;SVLEN=8999;SVCLAIM=D\tGT:CN:CNQ\t1/1:0:31\t1/1:0:32",
-                "chr19:45760000-45770300\t10205\tsawfish:0:0:0:0\tC\tCCCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAG\t999\tPASS\tSVTYPE=INS;END=10205;SVLEN=1633;HOMLEN=1;HOMSEQ=C;INSLEN=1633\tGT:GQ:PL:AD\t1/1:129:999,129,0:0,43\t1/1:123:999,123,0:0,41"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-20T11:45:23.601151596"
-    },
-    "sawfish_jointcall_stub": {
+    "homo_sapiens - 2 samples - [dir, fasta, bam x 2] - stub": {
         "content": [
             {
                 "0": [
@@ -178,7 +19,482 @@
                     ]
                 ],
                 "10": [
-                    "versions.yml:md5,a4558bd0e8487faf7562a43cc1b8de9c"
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        [
+                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "11": [
+                    [
+                        "SAWFISH_JOINTCALL",
+                        "sawfish",
+                        "2.2.0"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        [
+                            "contig.alignment.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "contig.alignment.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "contig.alignment.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        [
+                            "contig.alignment.bam.csi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "contig.alignment.bam.csi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "contig.alignment.bam.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        [
+                            "run.stats.json:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "run.stats.json:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "run.stats.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "depth.bw:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "6": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "copynum.bedgraph:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "7": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "gc_bias_corrected_depth.bw:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "8": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "copynum.summary.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "9": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        [
+                            "contig.alignment.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "contig.alignment.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "contig.alignment.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "bam_index": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        [
+                            "contig.alignment.bam.csi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "contig.alignment.bam.csi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "contig.alignment.bam.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "copynum_bedgraph": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "copynum.bedgraph:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "copynum_summary": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "copynum.summary.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "depth_bw": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "depth.bw:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "gc_bias_corrected_depth_bw": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "gc_bias_corrected_depth.bw:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        [
+                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "maf_bw": [
+                    
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        [
+                            "run.stats.json:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "run.stats.json:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "run.stats.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "tbi": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "cohort_genotyped.sv.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "cohort_genotyped.sv.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_sawfish": [
+                    [
+                        "SAWFISH_JOINTCALL",
+                        "sawfish",
+                        "2.2.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.5"
+        },
+        "timestamp": "2026-02-12T14:35:20.34527922"
+    },
+    "homo_sapiens - 1 sample - [dir, fasta, bam]": {
+        "content": [
+            [
+                [
+                    "SAWFISH_JOINTCALL",
+                    "sawfish",
+                    "2.2.0"
+                ]
+            ],
+            "cohort_genotyped.sv.vcf.gz.tbi",
+            [
+                "##reference=file://genome3.fasta",
+                "##source=\"sawfish 2.2.0\"",
+                "##sawfish_cmdline=\"sawfish joint-call --threads 2 --ref genome3.fasta --sample sample1 --output-dir cohort\"",
+                "##contig=<ID=chr19:45760000-45770300,length=10301>",
+                "##ALT=<ID=DEL,Description=\"Deletion\">",
+                "##ALT=<ID=INS,Description=\"Insertion\">",
+                "##ALT=<ID=DUP,Description=\"Duplication\">",
+                "##ALT=<ID=DUP:TANDEM,Description=\"Tandem Duplication\">",
+                "##ALT=<ID=INV,Description=\"Inversion\">",
+                "##ALT=<ID=CNV,Description=\"Copy number variable region\">",
+                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
+                "##FILTER=<ID=.,Description=\"Unknown filtration status\">",
+                "##FILTER=<ID=InvBreakpoint,Description=\"Breakpoint represented as part of an inversion record (same EVENT ID)\">",
+                "##FILTER=<ID=MinQUAL,Description=\"QUAL score is less than 10\">",
+                "##FILTER=<ID=MaxScoringDepth,Description=\"SV candidate exceeds max scoring depth in at least one sample\">",
+                "##FILTER=<ID=ConflictingBreakpointGT,Description=\"Genotypes of breakpoints in a multi-breakpoint event conflict in the majority of cases\">",
+                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the variant described in this record\">",
+                "##INFO=<ID=EVENT,Number=A,Type=String,Description=\"ID of associated event\">",
+                "##INFO=<ID=EVENTTYPE,Number=A,Type=String,Description=\"Type of associated event\">",
+                "##INFO=<ID=HOMLEN,Number=A,Type=Integer,Description=\"Length of base pair identical micro-homology at breakpoints\">",
+                "##INFO=<ID=HOMSEQ,Number=A,Type=String,Description=\"Sequence of base pair identical micro-homology at breakpoints\">",
+                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Imprecise structural variation\">",
+                "##INFO=<ID=INSLEN,Number=.,Type=Integer,Description=\"Insertion length\">",
+                "##INFO=<ID=INSSEQ,Number=.,Type=String,Description=\"Insertion sequence (for symbolic alt alleles)\">",
+                "##INFO=<ID=MATEID,Number=A,Type=String,Description=\"ID of mate breakends\">",
+                "##INFO=<ID=SVCLAIM,Number=A,Type=String,Description=\"Claim made by the structural variant call. Valid values are D, J, DJ for abundance, adjacency and both respectively\">",
+                "##INFO=<ID=SVLEN,Number=A,Type=Integer,Description=\"Length of structural variant\">",
+                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
+                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
+                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotype Quality\">",
+                "##FORMAT=<ID=PL,Number=G,Type=Integer,Description=\"Phred-scaled genotype likelihoods rounded to the closest integer\">",
+                "##FORMAT=<ID=AD,Number=R,Type=Integer,Description=\"Read depth for each allele\">",
+                "##FORMAT=<ID=CN,Number=1,Type=Float,Description=\"Copy number\">",
+                "##FORMAT=<ID=CNQ,Number=1,Type=Float,Description=\"Copy number genotype quality\">",
+                "##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase set identifier\">",
+                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tNA03697B2",
+                "chr19:45760000-45770300\t1\tsawfish:CNV:0:0:0\tC\t<DEL>\t62\tPASS\tIMPRECISE;SVTYPE=DEL;END=9000;SVLEN=8999;SVCLAIM=D\tGT:CN:CNQ\t1/1:0:31",
+                "chr19:45760000-45770300\t10205\tsawfish:0:0:0:0\tC\tCCCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAG\t999\tPASS\tSVTYPE=INS;END=10205;SVLEN=1633;HOMLEN=1;HOMSEQ=C;INSLEN=1633\tGT:GQ:PL:AD\t1/1:129:999,129,0:0,43"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.5"
+        },
+        "timestamp": "2026-02-12T14:29:21.940235282"
+    },
+    "homo_sapiens - 2 samples - [dir, fasta, bam x 2, csv]": {
+        "content": [
+            [
+                [
+                    "SAWFISH_JOINTCALL",
+                    "sawfish",
+                    "2.2.0"
+                ]
+            ],
+            "cohort_genotyped.sv.vcf.gz.tbi",
+            [
+                "##reference=file://genome3.fasta",
+                "##source=\"sawfish 2.2.0\"",
+                "##sawfish_cmdline=\"sawfish joint-call --threads 2 --ref genome3.fasta --sample-csv samples.csv --output-dir cohort\"",
+                "##contig=<ID=chr19:45760000-45770300,length=10301>",
+                "##ALT=<ID=DEL,Description=\"Deletion\">",
+                "##ALT=<ID=INS,Description=\"Insertion\">",
+                "##ALT=<ID=DUP,Description=\"Duplication\">",
+                "##ALT=<ID=DUP:TANDEM,Description=\"Tandem Duplication\">",
+                "##ALT=<ID=INV,Description=\"Inversion\">",
+                "##ALT=<ID=CNV,Description=\"Copy number variable region\">",
+                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
+                "##FILTER=<ID=.,Description=\"Unknown filtration status\">",
+                "##FILTER=<ID=InvBreakpoint,Description=\"Breakpoint represented as part of an inversion record (same EVENT ID)\">",
+                "##FILTER=<ID=MinQUAL,Description=\"QUAL score is less than 10\">",
+                "##FILTER=<ID=MaxScoringDepth,Description=\"SV candidate exceeds max scoring depth in at least one sample\">",
+                "##FILTER=<ID=ConflictingBreakpointGT,Description=\"Genotypes of breakpoints in a multi-breakpoint event conflict in the majority of cases\">",
+                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the variant described in this record\">",
+                "##INFO=<ID=EVENT,Number=A,Type=String,Description=\"ID of associated event\">",
+                "##INFO=<ID=EVENTTYPE,Number=A,Type=String,Description=\"Type of associated event\">",
+                "##INFO=<ID=HOMLEN,Number=A,Type=Integer,Description=\"Length of base pair identical micro-homology at breakpoints\">",
+                "##INFO=<ID=HOMSEQ,Number=A,Type=String,Description=\"Sequence of base pair identical micro-homology at breakpoints\">",
+                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Imprecise structural variation\">",
+                "##INFO=<ID=INSLEN,Number=.,Type=Integer,Description=\"Insertion length\">",
+                "##INFO=<ID=INSSEQ,Number=.,Type=String,Description=\"Insertion sequence (for symbolic alt alleles)\">",
+                "##INFO=<ID=MATEID,Number=A,Type=String,Description=\"ID of mate breakends\">",
+                "##INFO=<ID=SVCLAIM,Number=A,Type=String,Description=\"Claim made by the structural variant call. Valid values are D, J, DJ for abundance, adjacency and both respectively\">",
+                "##INFO=<ID=SVLEN,Number=A,Type=Integer,Description=\"Length of structural variant\">",
+                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
+                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
+                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotype Quality\">",
+                "##FORMAT=<ID=PL,Number=G,Type=Integer,Description=\"Phred-scaled genotype likelihoods rounded to the closest integer\">",
+                "##FORMAT=<ID=AD,Number=R,Type=Integer,Description=\"Read depth for each allele\">",
+                "##FORMAT=<ID=CN,Number=1,Type=Float,Description=\"Copy number\">",
+                "##FORMAT=<ID=CNQ,Number=1,Type=Float,Description=\"Copy number genotype quality\">",
+                "##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase set identifier\">",
+                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tNA03697B2\tNA037562",
+                "chr19:45760000-45770300\t1\tsawfish:CNV:1:0:0\tC\t<DEL>\t126\tPASS\tIMPRECISE;SVTYPE=DEL;END=9000;SVLEN=8999;SVCLAIM=D\tGT:CN:CNQ\t1/1:0:31\t1/1:0:32",
+                "chr19:45760000-45770300\t10205\tsawfish:0:0:0:0\tC\tCCCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAG\t999\tPASS\tSVTYPE=INS;END=10205;SVLEN=1633;HOMLEN=1;HOMSEQ=C;INSLEN=1633\tGT:GQ:PL:AD\t1/1:129:999,129,0:0,43\t1/1:123:999,123,0:0,41"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.5"
+        },
+        "timestamp": "2026-02-12T14:29:29.508948825"
+    },
+    "homo_sapiens - 2 samples - [dir, fasta, bam x 2] ": {
+        "content": [
+            [
+                [
+                    "SAWFISH_JOINTCALL",
+                    "sawfish",
+                    "2.2.0"
+                ]
+            ],
+            "cohort_genotyped.sv.vcf.gz.tbi",
+            [
+                "##reference=file://genome3.fasta",
+                "##source=\"sawfish 2.2.0\"",
+                "##sawfish_cmdline=\"sawfish joint-call --threads 2 --ref genome3.fasta --sample sample1 --sample sample2 --output-dir cohort\"",
+                "##contig=<ID=chr19:45760000-45770300,length=10301>",
+                "##ALT=<ID=DEL,Description=\"Deletion\">",
+                "##ALT=<ID=INS,Description=\"Insertion\">",
+                "##ALT=<ID=DUP,Description=\"Duplication\">",
+                "##ALT=<ID=DUP:TANDEM,Description=\"Tandem Duplication\">",
+                "##ALT=<ID=INV,Description=\"Inversion\">",
+                "##ALT=<ID=CNV,Description=\"Copy number variable region\">",
+                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
+                "##FILTER=<ID=.,Description=\"Unknown filtration status\">",
+                "##FILTER=<ID=InvBreakpoint,Description=\"Breakpoint represented as part of an inversion record (same EVENT ID)\">",
+                "##FILTER=<ID=MinQUAL,Description=\"QUAL score is less than 10\">",
+                "##FILTER=<ID=MaxScoringDepth,Description=\"SV candidate exceeds max scoring depth in at least one sample\">",
+                "##FILTER=<ID=ConflictingBreakpointGT,Description=\"Genotypes of breakpoints in a multi-breakpoint event conflict in the majority of cases\">",
+                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the variant described in this record\">",
+                "##INFO=<ID=EVENT,Number=A,Type=String,Description=\"ID of associated event\">",
+                "##INFO=<ID=EVENTTYPE,Number=A,Type=String,Description=\"Type of associated event\">",
+                "##INFO=<ID=HOMLEN,Number=A,Type=Integer,Description=\"Length of base pair identical micro-homology at breakpoints\">",
+                "##INFO=<ID=HOMSEQ,Number=A,Type=String,Description=\"Sequence of base pair identical micro-homology at breakpoints\">",
+                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Imprecise structural variation\">",
+                "##INFO=<ID=INSLEN,Number=.,Type=Integer,Description=\"Insertion length\">",
+                "##INFO=<ID=INSSEQ,Number=.,Type=String,Description=\"Insertion sequence (for symbolic alt alleles)\">",
+                "##INFO=<ID=MATEID,Number=A,Type=String,Description=\"ID of mate breakends\">",
+                "##INFO=<ID=SVCLAIM,Number=A,Type=String,Description=\"Claim made by the structural variant call. Valid values are D, J, DJ for abundance, adjacency and both respectively\">",
+                "##INFO=<ID=SVLEN,Number=A,Type=Integer,Description=\"Length of structural variant\">",
+                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
+                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
+                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotype Quality\">",
+                "##FORMAT=<ID=PL,Number=G,Type=Integer,Description=\"Phred-scaled genotype likelihoods rounded to the closest integer\">",
+                "##FORMAT=<ID=AD,Number=R,Type=Integer,Description=\"Read depth for each allele\">",
+                "##FORMAT=<ID=CN,Number=1,Type=Float,Description=\"Copy number\">",
+                "##FORMAT=<ID=CNQ,Number=1,Type=Float,Description=\"Copy number genotype quality\">",
+                "##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase set identifier\">",
+                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tNA03697B2\tNA037562",
+                "chr19:45760000-45770300\t1\tsawfish:CNV:1:0:0\tC\t<DEL>\t126\tPASS\tIMPRECISE;SVTYPE=DEL;END=9000;SVLEN=8999;SVCLAIM=D\tGT:CN:CNQ\t1/1:0:31\t1/1:0:32",
+                "chr19:45760000-45770300\t10205\tsawfish:0:0:0:0\tC\tCCCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAG\t999\tPASS\tSVTYPE=INS;END=10205;SVLEN=1633;HOMLEN=1;HOMSEQ=C;INSLEN=1633\tGT:GQ:PL:AD\t1/1:129:999,129,0:0,43\t1/1:123:999,123,0:0,41"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.5"
+        },
+        "timestamp": "2026-02-12T14:29:14.713008367"
+    },
+    "homo_sapiens - 2 samples - [dir, fasta, bam x 2] - MAF output": {
+        "content": [
+            [
+                [
+                    "SAWFISH_JOINTCALL",
+                    "sawfish",
+                    "2.2.0"
+                ]
+            ],
+            "cohort_genotyped.sv.vcf.gz.tbi",
+            [
+                "##reference=file://genome3.fasta",
+                "##source=\"sawfish 2.2.0\"",
+                "##sawfish_cmdline=\"sawfish joint-call --threads 2 --ref genome3.fasta --sample sample1 --sample sample2 --output-dir cohort\"",
+                "##contig=<ID=chr19:45760000-45770300,length=10301>",
+                "##ALT=<ID=DEL,Description=\"Deletion\">",
+                "##ALT=<ID=INS,Description=\"Insertion\">",
+                "##ALT=<ID=DUP,Description=\"Duplication\">",
+                "##ALT=<ID=DUP:TANDEM,Description=\"Tandem Duplication\">",
+                "##ALT=<ID=INV,Description=\"Inversion\">",
+                "##ALT=<ID=CNV,Description=\"Copy number variable region\">",
+                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
+                "##FILTER=<ID=.,Description=\"Unknown filtration status\">",
+                "##FILTER=<ID=InvBreakpoint,Description=\"Breakpoint represented as part of an inversion record (same EVENT ID)\">",
+                "##FILTER=<ID=MinQUAL,Description=\"QUAL score is less than 10\">",
+                "##FILTER=<ID=MaxScoringDepth,Description=\"SV candidate exceeds max scoring depth in at least one sample\">",
+                "##FILTER=<ID=ConflictingBreakpointGT,Description=\"Genotypes of breakpoints in a multi-breakpoint event conflict in the majority of cases\">",
+                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the variant described in this record\">",
+                "##INFO=<ID=EVENT,Number=A,Type=String,Description=\"ID of associated event\">",
+                "##INFO=<ID=EVENTTYPE,Number=A,Type=String,Description=\"Type of associated event\">",
+                "##INFO=<ID=HOMLEN,Number=A,Type=Integer,Description=\"Length of base pair identical micro-homology at breakpoints\">",
+                "##INFO=<ID=HOMSEQ,Number=A,Type=String,Description=\"Sequence of base pair identical micro-homology at breakpoints\">",
+                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Imprecise structural variation\">",
+                "##INFO=<ID=INSLEN,Number=.,Type=Integer,Description=\"Insertion length\">",
+                "##INFO=<ID=INSSEQ,Number=.,Type=String,Description=\"Insertion sequence (for symbolic alt alleles)\">",
+                "##INFO=<ID=MATEID,Number=A,Type=String,Description=\"ID of mate breakends\">",
+                "##INFO=<ID=SVCLAIM,Number=A,Type=String,Description=\"Claim made by the structural variant call. Valid values are D, J, DJ for abundance, adjacency and both respectively\">",
+                "##INFO=<ID=SVLEN,Number=A,Type=Integer,Description=\"Length of structural variant\">",
+                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
+                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
+                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotype Quality\">",
+                "##FORMAT=<ID=PL,Number=G,Type=Integer,Description=\"Phred-scaled genotype likelihoods rounded to the closest integer\">",
+                "##FORMAT=<ID=AD,Number=R,Type=Integer,Description=\"Read depth for each allele\">",
+                "##FORMAT=<ID=CN,Number=1,Type=Float,Description=\"Copy number\">",
+                "##FORMAT=<ID=CNQ,Number=1,Type=Float,Description=\"Copy number genotype quality\">",
+                "##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase set identifier\">",
+                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tNA03697B2\tNA037562",
+                "chr19:45760000-45770300\t1\tsawfish:CNV:1:0:0\tC\t<DEL>\t126\tPASS\tIMPRECISE;SVTYPE=DEL;END=9000;SVLEN=8999;SVCLAIM=D\tGT:CN:CNQ\t1/1:0:31\t1/1:0:32",
+                "chr19:45760000-45770300\t10205\tsawfish:0:0:0:0\tC\tCCCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAG\t999\tPASS\tSVTYPE=INS;END=10205;SVLEN=1633;HOMLEN=1;HOMSEQ=C;INSLEN=1633\tGT:GQ:PL:AD\t1/1:129:999,129,0:0,43\t1/1:123:999,123,0:0,41"
+            ],
+            [
+                [
+                    {
+                        "id": "cohort"
+                    },
+                    "maf.bw:md5,594ad937321d34420fde12ce06719efd"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.5"
+        },
+        "timestamp": "2026-02-12T14:29:37.791207913"
+    },
+    "homo_sapiens - 2 samples - [dir, fasta, bam x 2] - MAF output - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "cohort_genotyped.sv.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "cohort_genotyped.sv.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "10": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        [
+                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "11": [
+                    [
+                        "SAWFISH_JOINTCALL",
+                        "sawfish",
+                        "2.2.0"
+                    ]
                 ],
                 "2": [
                     [
@@ -253,11 +569,7 @@
                         {
                             "id": "cohort"
                         },
-                        [
-                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "sawfish.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
+                        "maf.bw:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "bam": [
@@ -328,6 +640,14 @@
                         ]
                     ]
                 ],
+                "maf_bw": [
+                    [
+                        {
+                            "id": "cohort"
+                        },
+                        "maf.bw:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "stats": [
                     [
                         {
@@ -356,15 +676,19 @@
                         "cohort_genotyped.sv.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,a4558bd0e8487faf7562a43cc1b8de9c"
+                "versions_sawfish": [
+                    [
+                        "SAWFISH_JOINTCALL",
+                        "sawfish",
+                        "2.2.0"
+                    ]
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.04.5"
         },
-        "timestamp": "2025-09-18T16:41:45.042910123"
+        "timestamp": "2026-02-17T14:41:17.041312301"
     }
 }

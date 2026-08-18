@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "deeptools_multibigwigsummary"
-description: Computes the average scores for each of the files in every genomic region
+description: Computes the average scores for each of the files in every genomic
+  region
 keywords:
   - bigwig
   - deeptools
@@ -15,9 +15,9 @@ tools:
       documentation: "https://deeptools.readthedocs.io/en/develop/"
       tool_dev_url: "https://github.com/deeptools/deepTools/"
       doi: "10.1093/nar/gku365"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:deeptools
-
 input:
   - - meta:
         type: map
@@ -32,7 +32,6 @@ input:
     - labels:
         type: list
         description: Labels for the bigWig files used in the matrix
-
   - - meta2:
         type: map
         description: |
@@ -46,7 +45,6 @@ input:
           - edam: "http://edamontology.org/data_3002"
           - edam: "http://edamontology.org/format_3003"
         optional: true
-
 output:
   matrix:
     - - meta:
@@ -59,18 +57,30 @@ output:
           description: Matrix file from multiBigwigSummary
           pattern: "*.npz"
           ontologies: []
+  versions_deeptools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - multiBigwigSummary --version | sed "s/multiBigwigSummary //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - multiBigwigSummary --version | sed "s/multiBigwigSummary //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ugoiannacchero"
   - "@daisymut"
-
 maintainers:
   - "@ugoiannacchero"
   - "@daisymut"

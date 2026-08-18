@@ -10,7 +10,8 @@ tools:
       homepage: "https://github.com/marbl/meryl"
       documentation: "https://meryl.readthedocs.io/en/latest/quick-start.html"
       tool_dev_url: "https://github.com/marbl/meryl"
-      licence: ["GPL"]
+      licence:
+        - "GPL"
       identifier: biotools:meryl
 input:
   - - meta:
@@ -38,13 +39,27 @@ output:
           type: directory
           description: A Meryl k-mer database
           pattern: "*.meryl"
+  versions_meryl:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - meryl:
+          type: string
+          description: The name of the tool
+      - meryl --version |& sed 's/meryl //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - meryl:
+          type: string
+          description: The name of the tool
+      - meryl --version |& sed 's/meryl //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:

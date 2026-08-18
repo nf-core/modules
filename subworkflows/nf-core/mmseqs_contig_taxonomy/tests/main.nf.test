@@ -47,13 +47,12 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert workflow.out.db_contig.get(0).get(1) ==~ ".*/bacteroides_fragilis" },
                 { assert snapshot (
-                        workflow.out.versions,
                         file(workflow.out.taxonomy[0][1]).readLines()[0].contains("NZ_CP069563.1"),
                         file(workflow.out.db_taxonomy.get(0).get(1)).list().sort(),
                         file(workflow.out.db_contig.get(0).get(1)).name,
                         file(workflow.out.db_mmseqs.get(0)).name,
-                        ).match()
-                },
+                    ).match()
+                }
             )
         }
     }

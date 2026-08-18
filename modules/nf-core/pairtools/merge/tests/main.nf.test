@@ -11,7 +11,7 @@ nextflow_process {
     tag "pairtools/merge"
 
     test("test-pairtools-merge") {
-        
+
         when {
             process {
                 """
@@ -27,11 +27,33 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					path(process.out.pairs[0][1]).linesGzip[3..7],
-					process.out.versions
+					sanitizeOutput(process.out, unstableKeys: ["pairs"])
 					).match()
 				}
             )
         }
     }
-    
+
+    test("test-pairtools-merge - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.pairsam', checkIfExists: true) ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
 }

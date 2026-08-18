@@ -1,0 +1,118 @@
+nextflow_process {
+
+    name "Test Process MULTIQCSAV"
+    script "../main.nf"
+    process "MULTIQCSAV"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "multiqcsav"
+
+    config "./nextflow.config"
+
+    test("NovaSeq6000") {
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ id: 'NovaSeq6000' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz', checkIfExists: true)
+                ]
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                ch_sav_in = UNTAR.out.untar.map{ meta, untar ->
+
+                    def xml = []
+                    untar.eachFileRecurse { file ->
+                        if (file.fileName.toString() == 'RunInfo.xml') {
+                            xml << file
+                        }
+                    }
+
+                    def interop = []
+                    untar.eachFileRecurse { file ->
+                        if (file.parent.name == 'InterOp' && file.fileName.toString().endsWith(".bin")) {
+                            interop << file
+                        }
+                    }
+
+                    return [
+                        meta,
+                        xml,
+                        interop,
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastqc/test_fastqc.zip', checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/seqinspector/1.0.0/assets/multiqc_config.yml", checkIfExists: true),
+                        [],
+                        [],
+                        []
+                    ]
+                }
+
+                input[0] = ch_sav_in
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                sanitizeOutput(process.out).collectEntries { key, val ->
+                        if (key == "data") {
+                            return [key, val.collect { [path(it[1]).list().collect { file(it.toString()).name }] }]
+                        }
+                        else if (key == "plots") {
+                            return [key, val.collect { [
+                                "pdf",
+                                path("${it[1]}/pdf").list().collect { file(it.toString()).name },
+                                "png",
+                                path("${it[1]}/png").list().collect { file(it.toString()).name },
+                                "svg",
+                                path("${it[1]}/svg").list().collect { file(it.toString()).name }] }]
+                        }
+                        else if (key == "report") {
+                            return [key, file(val[0][1].toString()).name]
+                        }
+                        return [key, val]
+                    }
+            ).match()
+        }
+    }
+
+    test("NovaSeq6000 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [id:'stub'],
+                        [],
+                        [],
+                        [],
+                        [],
+                        [],
+                        [],
+                        []
+                    ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

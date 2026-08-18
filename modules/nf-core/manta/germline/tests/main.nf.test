@@ -42,7 +42,7 @@ nextflow_process {
                     path(process.out.candidate_small_indels_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1"),
                     path(process.out.candidate_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1"),
                     path(process.out.diploid_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1"),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions_") }
                 ).match() }
             )
         }
@@ -81,7 +81,7 @@ nextflow_process {
                     path(process.out.candidate_small_indels_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1"),
                     path(process.out.candidate_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1"),
                     path(process.out.diploid_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1"),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions_") }
                 ).match() }
             )
         }
@@ -124,7 +124,7 @@ nextflow_process {
                     path(process.out.candidate_small_indels_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1"),
                     path(process.out.candidate_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1"),
                     path(process.out.diploid_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1"),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions_") }
                 ).match() }
             )
         }

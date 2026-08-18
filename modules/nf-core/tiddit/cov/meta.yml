@@ -11,7 +11,8 @@ tools:
       homepage: https://github.com/SciLifeLab/TIDDIT
       documentation: https://github.com/SciLifeLab/TIDDIT/blob/master/README.md
       doi: "10.12688/f1000research.11168.1"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:tiddit
 input:
   - - meta:
@@ -24,6 +25,12 @@ input:
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
         ontologies: []
+    - index:
+        type: file
+        description: Index of BAM/CRAM file
+        pattern: "*.{bai,crai,csi}"
+        ontologies:
+          - edam: http://edamontology.org/format_3327
   - - meta2:
         type: map
         description: |
@@ -43,7 +50,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bed":
+      - ${prefix}.bed:
           type: file
           description: The coverage of different regions in bed format. Optional.
           pattern: "*.bed"
@@ -54,18 +61,32 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.wig":
+      - ${prefix}.wig:
           type: file
           description: The coverage of different regions in WIG format. Optional.
           pattern: "*.wig"
           ontologies: []
+  versions_tiddit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tiddit:
+          type: string
+          description: The name of the tool
+      - "tiddit | sed -n 's/^usage: tiddit-//; s/ .*//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tiddit:
+          type: string
+          description: The name of the tool
+      - "tiddit | sed -n 's/^usage: tiddit-//; s/ .*//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@projectoriented"
   - "@ramprasadn"

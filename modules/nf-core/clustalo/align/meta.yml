@@ -12,7 +12,8 @@ tools:
       documentation: "http://www.clustal.org/omega/"
       tool_dev_url: "http://www.clustal.org/omega/"
       doi: "10.1038/msb.2011.75"
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: ""
   - "pigz":
       description: "Parallel implementation of the gzip algorithm."
@@ -75,9 +76,9 @@ input:
         - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - compress:
       type: boolean
-      description: Flag representing whether the output MSA should be compressed. Set
-        to true to enable/false to disable compression. Compression is done using pigz,
-        and is multithreaded.
+      description: Flag representing whether the output MSA should be compressed.
+        Set to true to enable/false to disable compression. Compression is done
+        using pigz, and is multithreaded.
 output:
   alignment:
     - - meta:
@@ -93,13 +94,46 @@ output:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_clustalo:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clustalo:
+          type: string
+          description: The name of the tool
+      - clustalo --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clustalo:
+          type: string
+          description: The name of the tool
+      - clustalo --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
   - "@joseespinosa"

@@ -1,5 +1,6 @@
 name: bandage_image
-description: Render an assembly graph in GFA 1.0 format to PNG and SVG image formats
+description: Render an assembly graph in GFA 1.0 format to PNG and SVG image
+  formats
 keywords:
   - gfa
   - graph
@@ -36,7 +37,8 @@ output:
           type: file
           description: Bandage image in PNG format
           pattern: "*.png"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3603 # PNG
   svg:
     - - meta:
           type: map
@@ -47,14 +49,31 @@ output:
           type: file
           description: Bandage image in SVG format
           pattern: "*.svg"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3604" # SVG
+  versions_bandage:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bandage:
+          type: string
+          description: The name of the tool
+      - 'export QT_QPA_PLATFORM=offscreen; Bandage --version 2>&1| grep Version | sed "s/^Version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bandage:
+          type: string
+          description: The name of the tool
+      - 'export QT_QPA_PLATFORM=offscreen; Bandage --version 2>&1| grep Version | sed "s/^Version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@heuermh"
 maintainers:

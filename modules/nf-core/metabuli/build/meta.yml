@@ -1,0 +1,95 @@
+name: "metabuli_build"
+description: Builds a database for classification with metabuli from FASTA files
+  and a taxonomy
+keywords:
+  - database
+  - taxonomic classification
+  - classification
+  - metagenomics
+tools:
+  - "metabuli":
+      description: "Metabuli: specific and sensitive metagenomic classification via
+        joint analysis of DNA and amino acid"
+      homepage: "https://github.com/steineggerlab/Metabuli"
+      documentation: "https://github.com/steineggerlab/Metabuli"
+      tool_dev_url: "https://github.com/steineggerlab/Metabuli"
+      doi: "10.1101/2023.05.31.543018"
+      licence:
+        - "GPL v3"
+      identifier: biotools:metabuli
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - fasta:
+        type: file
+        description: List of fasta files with input assemblies
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+  - taxonomy_names:
+      type: file
+      description: File describing individual members of a taxonomic tree in NCBI
+        nodes.dmp format
+      ontologies:
+        - edam: http://edamontology.org/data_3028
+  - taxonomy_nodes:
+      type: file
+      description: File describing parent-child relationships of a taxonomic tree
+        in NCBI nodes.dmp format
+      ontologies:
+        - edam: http://edamontology.org/data_3028
+  - taxonomy_merged:
+      type: file
+      description: Optional input to map old/deprecated TaxID to new ones
+      ontologies:
+        - edam: http://edamontology.org/data_3028
+  - accession2taxid:
+      type: directory
+      description: TSV file (with no header) of first column with mapping
+        accession (from first part of each fasta entry) and second column the
+        corresponding TaxID
+      ontologies:
+        - edam: http://edamontology.org/data_3028
+  - cds_info:
+      type: file
+      description: List of files to cds files
+      ontologies:
+        - edam: "http://edamontology.org/format_1936"
+output:
+  db:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - $prefix:
+          type: directory
+          description: metabuli database directory for classification
+  versions_metabuli:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metabuli:
+          type: string
+          description: The name of the tool
+      - metabuli 2>&1 | awk '/metabuli Version:/ {print $3}':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metabuli:
+          type: string
+          description: The name of the tool
+      - metabuli 2>&1 | awk '/metabuli Version:/ {print $3}':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pawelciurkaardigen"
+  - "@MichalStachowiakArdigen"
+  - "@sofstam"
+maintainers:
+  - "@pawelciurkaardigen"
+  - "@MichalStachowiakArdigen"
+  - "@softam"

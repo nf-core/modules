@@ -14,9 +14,9 @@ tools:
   - ampcombi2/cluster:
       description: "A tool for clustering all AMP hits found across many samples and
         supporting many AMP prediction tools."
-      homepage: "https://github.com/Darcy220606/AMPcombi"
-      documentation: "https://github.com/Darcy220606/AMPcombi"
-      tool_dev_url: "https://github.com/Darcy220606/AMPcombi/tree/dev"
+      homepage: "https://github.com/paleobiotechnology/AMPcombi"
+      documentation: "https://ampcombi.readthedocs.io"
+      tool_dev_url: "https://github.com/paleobiotechnology/AMPcombi/tree/dev"
       licence: ["MIT"]
       identifier: ""
 
@@ -55,14 +55,29 @@ output:
         pattern: "*.log"
         ontologies:
           - edam: "http://edamontology.org/format_2330" # Log
+  versions_ampcombi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ampcombi:
+          type: string
+          description: The name of the tool
+      - ampcombi --version | sed 's/ampcombi //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ampcombi:
+          type: string
+          description: The name of the tool
+      - ampcombi --version | sed 's/ampcombi //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@darcy220606"
 maintainers:
   - "@darcy220606"
+  - "@jasmezz"

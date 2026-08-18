@@ -24,8 +24,8 @@ input:
           e.g. [ id:'test' ]
     - reads:
         type: file
-        description: Input reads from Oxford Nanopore or PacBio data in FASTA/FASTQ
-          format.
+        description: Input reads from Oxford Nanopore or PacBio data in
+          FASTA/FASTQ format.
         pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
@@ -104,13 +104,29 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
+  versions_flye:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flye:
+          type: string
+          description: The name of the tool
+      - flye --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flye:
+          type: string
+          description: The name of the tool
+      - flye --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@mirpedrol"
 maintainers:

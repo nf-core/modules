@@ -4,6 +4,8 @@ nextflow_workflow {
     script "../main.nf"
     workflow "VCF_IMPUTE_GLIMPSE"
 
+    config "./nextflow.config"
+
     tag "subworkflows"
     tag "bcftools/index"
     tag "subworkflows_nfcore"
@@ -12,82 +14,187 @@ nextflow_workflow {
     tag "glimpse/ligate"
     tag "glimpse/chunk"
 
-    test("Should run without failures") {
-        config "./nextflow.config"
-
+    test("homo_sapiens - vcf no sample, panel vcf region, no chunks, no map, chunking") {
         when {
             params {
                 outdir = "tests/results"
-                impute_dataset = "https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/"
             }
             workflow {
                 """
-                samples_infos = Channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt')
-
-                ch_panel = Channel.fromList([
-                    [[ chr:"chr21"],
-                    file(params.impute_dataset + "panel/chr21/1000GP.chr21.s.norel.vcf.gz", checkIfExists: true),
-                    file(params.impute_dataset + "panel/chr21/1000GP.chr21.s.norel.vcf.gz.csi", checkIfExists: true)],
-                    [[ chr:"chr22"],
-                    file(params.impute_dataset + "panel/chr22/1000GP.chr22.s.norel.vcf.gz", checkIfExists: true),
-                    file(params.impute_dataset + "panel/chr22/1000GP.chr22.s.norel.vcf.gz.csi", checkIfExists: true)]
-                ])
-                region = Channel.fromList([
-                    [[chr: "chr21", region: "chr21:16600000-16800000"], "chr21:16600000-16800000"],
-                    [[chr: "chr22", region: "chr22:16600000-16800000"], "chr22:16600000-16800000"]
-                ])
-
-                input_vcf = Channel.fromList([
-                    [[ id:'NA12878'], // meta map
-                    file(params.impute_dataset + "individuals/NA12878/NA12878.s.1x.bcf", checkIfExists: true),
-                    file(params.impute_dataset + "individuals/NA12878/NA12878.s.1x.bcf.csi", checkIfExists: true),
-                    ],
-                    [[ id:'NA19401'], // meta map
-                    file(params.impute_dataset + "individuals/NA19401/NA19401.s.1x.bcf", checkIfExists: true),
-                    file(params.impute_dataset + "individuals/NA19401/NA19401.s.1x.bcf.csi", checkIfExists: true),
-                    ]
-                ])
-                input_vcf_multiple = input_vcf
-                    .combine( samples_infos )
-                    .combine( region )
-                    .map{ metaI, vcf, index, sample, metaCR, region ->
-                        [metaI + metaCR, vcf, index, sample, region ]
-                    }
-
-                ch_map = Channel.fromList([
-                    [[ chr: "chr21"],
-                        file(params.impute_dataset + "reference_genome/GRCh38_chr21.glimpse.map", checkIfExists: true)
-                    ],
-                    [[ chr: "chr22"],
-                        file(params.impute_dataset + "reference_genome/GRCh38_chr21.glimpse.map", checkIfExists: true)
-                    ]
-                ])
-
-                // Combine input and map depending on chromosome name
-                input[0] = input_vcf_multiple
-                    .map{ metaIRC, vcf, index, sample, region ->
-                        [metaIRC.subMap(["chr"]), metaIRC, vcf, index, sample, region]
-                    }
-                    .combine(ch_panel, by: 0)
-                    .combine(ch_map, by: 0)
-                    .map{ metaC, metaIRC, vcf, index, sample, region, ref, ref_index, map ->
-                        [metaIRC, vcf, index, sample, region, ref, ref_index, map]
-                    }
+                input[0] = channel.of([
+                    [id:'input_vcf'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    []
+                ]) // input
+                input[1] = channel.of([
+                    [panel:'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22"
+                ]) // reference
+                input[2] = channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    [], []
+                ]) // chunks
+                input[3] = channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    []
+                ]) // map
+                input[4] = true // perform chunking
                 """
             }
         }
 
         then {
-            def lines = path(workflow.out.merged_variants.get(0).get(1)).linesGzip.last()
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out.versions).match("versions") },
-                { assert snapshot(workflow.out.chunk_chr).match("chunk_chr") },
-                { assert workflow.out.merged_variants.size() == 4},
-                { assert snapshot(lines).match("merged") }
-            )
+            assert workflow.success
+            assert snapshot(
+                workflow.out.chunks,
+                workflow.out.vcf_index.collect{ meta, vcf, index -> [
+                    meta,
+                    path(vcf).getFileName().toString(),
+                    path(index).getFileName().toString(),
+                    path(vcf).vcf.summary,
+                    path(vcf).vcf.header.getGenotypeSamples().sort(),
+                    path(vcf).vcf.variantsMD5
+                ]}
+            ).match()
         }
 
+    }
+
+    test("homo_sapiens - vcf and sample, panel vcf region, chunks, map, no chunking") {
+        when {
+            params {
+                outdir = "tests/results"
+            }
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id:'input_vcf'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    []
+                ]) // input
+                input[1] = channel.of([
+                    [panel:'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22"
+                ]) // reference
+                input[2] = channel.of(
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16570065-16597215", "chr22:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16587172-16609999", "chr22:16592229-16609999"]
+                ) // chunks
+                input[3] = channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists: true)
+                ]) // map
+                input[4] = false // perform chunking
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.chunks,
+                workflow.out.vcf_index.collect{ meta, vcf, index -> [
+                    meta,
+                    path(vcf).getFileName().toString(),
+                    path(index).getFileName().toString(),
+                    path(vcf).vcf.summary,
+                    path(vcf).vcf.header.getGenotypeSamples().sort(),
+                    path(vcf).vcf.variantsMD5
+                ]}
+            ).match()
+        }
+
+    }
+
+    test("homo_sapiens - stub test") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = channel.of([ [id:'input_vcf'], [], [], [] ]) // input
+                input[1] = channel.of([ [panel:'ref_panel', chr: "22"], [], [], "chr22"]) // reference
+                input[2] = channel.of(
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16570065-16597215", "chr22:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16587172-16609999", "chr22:16592229-16609999"]
+                )
+                input[3] = channel.of([ [panel: 'ref_panel', chr: "22"], [] ]) // Map
+                input[4] = false // perform chunking
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(sanitizeOutput(workflow.out)).match()
+        }
+    }
+
+    test("homo_sapiens - error chunks provided and chunk is true") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = channel.of([ [id:'input_vcf'], [], [], [] ]) // input
+                input[1] = channel.of([ [panel:'ref_panel', chr: "22"], [], [], "chr22"]) // reference
+                input[2] = channel.of(
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16570065-16597215", "chr22:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16587172-16609999", "chr22:16592229-16609999"]
+                ) // chunks
+                input[3] = channel.of([ [panel: 'ref_panel', chr: "22"], [] ]) // Map
+                input[4] = true // perform chunking
+                """
+            }
+        }
+        then {
+            assert workflow.failed
+            assert workflow.errorMessage.contains("ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking.")
+        }
+    }
+
+    test("homo_sapiens - error no chunks provided and chunk is false") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = channel.of([ [id:'input_vcf'], [], [], [] ]) // input
+                input[1] = channel.of([ [panel:'ref_panel', chr: "22"], [], [], "chr22"]) // reference
+                input[2] = channel.of([ [panel: 'ref_panel', chr: "22"], [], [] ]) // chunks
+                input[3] = channel.of([ [panel: 'ref_panel', chr: "22"], [] ]) // map
+                input[4] = false // perform chunking
+                """
+            }
+        }
+        then {
+            assert workflow.failed
+            assert workflow.errorMessage.contains("ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true.")
+        }
+    }
+
+    test("homo_sapiens - error empty joint") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = channel.of([ [id:'input_vcf'], [], [], [] ]) // input
+                input[1] = channel.of([ [panel:'ref_panel', chr: "22"], [], [], "chr22"]) // reference
+                input[2] = channel.of(
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16570065-16597215", "chr22:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16587172-16609999", "chr22:16592229-16609999"]
+                ) // chunks
+                input[3] = channel.of([ [panel: 'ref_panel_1', chr: "22"], [] ]) // Wrong panel
+                input[4] = false // perform chunking
+                """
+            }
+        }
+        then {
+            assert workflow.failed
+            assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_chunks and ch_map channel as input.")
+        }
     }
 
 }

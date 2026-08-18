@@ -10,6 +10,7 @@ keywords:
 components:
   - bcl2fastq
   - bclconvert
+  - multiqcsav
 input:
   - meta:
       type: map
@@ -48,6 +49,10 @@ output:
       type: file
       description: Demultiplexing statistics (bcl2fastq only)
       pattern: "Stats/*"
+  - logs:
+      type: file
+      description: Demultiplexing logs (bclconvert only)
+      pattern: "Logs/*"
   - versions:
       type: file
       description: File containing software versions

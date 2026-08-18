@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mtmalign_align"
 description: Aligns protein structures using mTM-align
 keywords:
@@ -13,7 +13,8 @@ tools:
       documentation: "http://yanglab.nankai.edu.cn/mTM-align/help/"
       tool_dev_url: "http://yanglab.nankai.edu.cn/mTM-align/"
       doi: "10.1093/bioinformatics/btx828"
-      licence: ["None"]
+      licence:
+        - "None"
       identifier: ""
   - "pigz":
       description: "Parallel implementation of the gzip algorithm."
@@ -28,17 +29,17 @@ input:
           e.g. `[ id:'test']`
     - pdbs:
         type: file
-        description: Input protein structures in PDB format. Files may be gzipped or
-          uncompressed. They should contain exactly one chain!
+        description: Input protein structures in PDB format. Files may be gzipped
+          or uncompressed. They should contain exactly one chain!
         pattern: "*.{pdb}"
         ontologies:
           - edam: http://edamontology.org/format_1476 # PDB
           - edam: http://edamontology.org/format_1477 # mmCIF
   - compress:
       type: boolean
-      description: Flag representing whether the output MSA should be compressed. Set
-        to true to enable/false to disable compression. Compression is done using pigz,
-        and is multithreaded.
+      description: Flag representing whether the output MSA should be compressed.
+        Set to true to enable/false to disable compression. Compression is done
+        using pigz, and is multithreaded.
 output:
   alignment:
     - - meta:
@@ -62,17 +63,51 @@ output:
             e.g. `[ id:'test']`
       - "${prefix}.pdb${compress ? '.gz' : ''}":
           type: file
-          description: Overlaid structures in PDB format. May be gzipped or uncompressed.
+          description: Overlaid structures in PDB format. May be gzipped or
+            uncompressed.
           pattern: "${prefix}.pdb{.gz,}"
           ontologies:
             - edam: http://edamontology.org/format_1476 # PDB
+  versions_mtmalign:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mtm-align:
+          type: string
+          description: The name of the tool
+      - mtm-align -h | sed -n "s/.*Version \([0-9]*\).*/\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mtm-align:
+          type: string
+          description: The name of the tool
+      - mtm-align -h | sed -n "s/.*Version \([0-9]*\).*/\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lrauschning"
 maintainers:
