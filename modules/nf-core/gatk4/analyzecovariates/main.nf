@@ -24,12 +24,12 @@ process GATK4_ANALYZECOVARIATES {
 
     """
     gatk AnalyzeCovariates \\
-      -before ${before_table} \\
-      -after ${after_table} \\
-      ${third_table} \\
-      -csv ${meta.id}.csv \\
-      -plots ${meta.id}.pdf \\
-      ${args}
+        -before ${before_table} \\
+        -after ${after_table} \\
+        ${third_table} \\
+        -csv ${meta.id}.csv \\
+        -plots ${meta.id}.pdf \\
+        ${args}
     """
 
     stub:

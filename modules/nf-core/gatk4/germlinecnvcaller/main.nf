@@ -38,6 +38,8 @@ process GATK4_GERMLINECNVCALLER {
     """
     export THEANO_FLAGS="base_compiledir=\$PWD"
     export PYTENSOR_FLAGS="base_compiledir=\$PWD"
+    export MPLCONFIGDIR="\$PWD"
+    export XDG_CACHE_HOME="\$PWD"
     export OMP_NUM_THREADS=${task.cpus}
     export MKL_NUM_THREADS=${task.cpus}
 
