@@ -48,7 +48,7 @@ workflow SNPCLUSTERING {
      * Convert imputed VCF to PLINK2 pfiles
      */
     PLINK2_VCF(BEAGLE5_BEAGLE.out.vcf)
-    ch_versions = ch_versions.mix(PLINK2_VCF.out.versions)
+    ch_versions = ch_versions.mix(PLINK2_VCF.out.versions_plink2)
 
     /*
      * PLINK2_PCA expects:
@@ -62,7 +62,7 @@ workflow SNPCLUSTERING {
         }
 
     PLINK2_PCA(ch_plink_pca_input)
-    ch_versions = ch_versions.mix(PLINK2_PCA.out.versions)
+    ch_versions = ch_versions.mix(PLINK2_PCA.out.versions_plink2)
 
     /*
      * Convert .eigenvec to TSV for downstream clustering modules
