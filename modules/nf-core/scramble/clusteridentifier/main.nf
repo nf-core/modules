@@ -2,6 +2,7 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
     tag "$meta.id"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65d3a32dfd347b370e87589189717c75468e6d737b7cee6931e4dae21ce1a9cf/data':
@@ -13,7 +14,7 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
 
     output:
     tuple val(meta), path("*.clusters.txt") , emit: clusters
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('scramble'), val('1.0.2'), topic: versions, emit: versions_scramble // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +22,6 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     // The tool does not contain a way to specify the reference file when using CRAM files.
     // It just looks in the header of the CRAM file where the reference file is located,
@@ -39,21 +39,11 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
         ${args} \\
         ${input} \\
         > ${prefix}.clusters.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        scramble: ${VERSION}
-    END_VERSIONS
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.clusters.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        scramble: ${VERSION}
-    END_VERSIONS
     """
 }
