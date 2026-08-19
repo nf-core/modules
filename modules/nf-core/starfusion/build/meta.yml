@@ -4,7 +4,6 @@ keywords:
   - download
   - starfusion
   - build
-
 tools:
   - star-fusion:
       description: Fusion calling algorithm for RNAseq data
@@ -48,6 +47,21 @@ input:
   - dfam_species:
       type: string
       description: Dfam species name
+  - pfam_url:
+      type: file
+      description: Pfam-A HMM database file (gzipped)
+      pattern: "*.{hmm.gz}"
+      ontologies: []
+  - dfam_urls:
+      type: file
+      description: Dfam HMM database files and indices
+      pattern: "*.{hmm,h3f,h3i,h3m,h3p}"
+      ontologies: []
+  - annot_filter_url:
+      type: file
+      description: Annotation filter rule file URL or path
+      pattern: "*.pm"
+      ontologies: []
 output:
   reference:
     - - meta:
@@ -64,9 +78,10 @@ output:
       - gunzip:
           type: string
           description: The tool name
-      - version:
-          type: string
-          description: The version of gunzip
+      - gunzip --version 2>&1 | sed "1!d;s/^.*(gzip) //; s/ Copyright.*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
   versions_hmmer:
     - - ${task.process}:
           type: string
@@ -74,9 +89,10 @@ output:
       - hmmer:
           type: string
           description: The tool name
-      - version:
-          type: string
-          description: The version of HMMER
+      - hmmpress -h 2>&1 | sed "2!d;s/^# HMMER //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
   versions_starfusion:
     - - ${task.process}:
           type: string
@@ -84,7 +100,7 @@ output:
       - star-fusion:
           type: string
           description: The tool name
-      - "1.15.1":
+      - 1.15.1:
           type: string
           description: The version of STAR-Fusion (hardcoded, not available via CLI)
 topics:
@@ -92,18 +108,37 @@ topics:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - tool_name:
+      - gunzip:
           type: string
           description: The tool name
-      - version:
+      - gunzip --version 2>&1 | sed "1!d;s/^.*(gzip) //; s/ Copyright.*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
           type: string
-          description: The version of the tool
+          description: The process the versions were collected from
+      - hmmer:
+          type: string
+          description: The tool name
+      - hmmpress -h 2>&1 | sed "2!d;s/^# HMMER //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - star-fusion:
+          type: string
+          description: The tool name
+      - 1.15.1:
+          type: string
+          description: The version of STAR-Fusion (hardcoded, not available via CLI)
 authors:
   - "@praveenraj2018"
   - "@martings"
   - "@alanmmobbs93"
   - "@delfiterradas"
   - "@sofiromano"
-
 maintainers:
   - "@praveenraj2018"
