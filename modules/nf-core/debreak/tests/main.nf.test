@@ -27,10 +27,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.findAll { key, val -> key.startsWith("versions") },
-                    process.out.vcf.collect { meta, vcf -> file(vcf).name }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:['vcf'])).match() } ,
             )
         }
 
