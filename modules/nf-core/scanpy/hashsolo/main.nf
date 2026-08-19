@@ -14,7 +14,7 @@ process SCANPY_HASHSOLO {
     tuple val(meta), path("*_assignment_hashsolo.csv"), emit: assignment
     tuple val(meta), path("*_hashsolo.h5ad")          , emit: h5ad
     tuple val(meta), path("*_params_hashsolo.csv")    , emit: params
-    path "versions.yml"                               , emit: versions
+    path "versions.yml"                               , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
