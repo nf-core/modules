@@ -19,7 +19,7 @@ process STARFUSION_BUILD {
 
     output:
     tuple val(meta), path("${prefix}_genome_lib_build_dir"), emit: reference
-    tuple val("${task.process}"), val('gunzip'), eval('gunzip --version 2>&1 | head -1 | sed "s/^.*(gzip) //; s/ Copyright.*//"'), topic: versions, emit: versions_gunzip
+    tuple val("${task.process}"), val('gunzip'), eval('gunzip --version 2>&1 | sed "1!d;s/^.*(gzip) //; s/ Copyright.*//"'), topic: versions, emit: versions_gunzip
     tuple val("${task.process}"), val('hmmer'), eval('hmmpress -h 2>&1 | sed "2!d;s/^# HMMER //;s/ .*$//"'), topic: versions, emit: versions_hmmer
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('star-fusion'), val('1.15.1'), topic: versions, emit: versions_starfusion

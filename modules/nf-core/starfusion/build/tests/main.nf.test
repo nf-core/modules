@@ -44,7 +44,6 @@ nextflow_process {
     }
 
     test("STARFUSION_BUILD - human - minigenome - stub") {
-        tag "stub"
         options "-stub"
 
         when {
@@ -77,13 +76,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["versions_gunzip", "versions_hmmer"])).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("STARFUSION_BUILD - stub - fail") {
-        tag "stub"
         options "-stub"
 
         when {
