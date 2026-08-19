@@ -29,7 +29,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
                     process.out.bai,
                     file(process.out.metrics[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
@@ -61,7 +61,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
                     process.out.bai,
                     file(process.out.metrics[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
@@ -94,7 +94,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    cram(process.out.cram[0][1], fasta).getReadsMD5(),
+                    process.out.cram.collect{meta, cram_ ->  file(cram_).name + ':readsMD5,' + cram(cram_, fasta).getReadsMD5()},
                     file(process.out.crai[0][1]).name,
                     file(process.out.metrics[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
