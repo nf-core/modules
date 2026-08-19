@@ -13,9 +13,6 @@ nextflow_process {
     test("homo sapiens - vcf") {
 
         when {
-            params {
-                filtervarianttranches_args = '--info-key CNN_1D'
-            }
             process {
                 """
                 input[0] = [
