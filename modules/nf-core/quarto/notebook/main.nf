@@ -1,6 +1,6 @@
 // NB 1: You'll likely want to override this with a container containing all
-// required dependencies for your analyses, or use wave to build the container
-// for you from the environment.yml. You'll at least need Quarto itself,
+// required dependencies for your analyses. Or use wave to build the container
+// for you from the environment.yml You'll at least need Quarto itself,
 // Papermill and whatever language you are running your analyses on; you can see
 // an example in this module's environment file.
 //
@@ -8,8 +8,8 @@
 // your notebook to a `versions.csv` file (formatted as `package,version`),
 // which will be added to the `versions` topic; module versions are handled
 // separately by `eval()` statements.
-process QUARTO_PRERENDER {
-    tag "${prefix}"
+process QUARTO_NOTEBOOK {
+    tag "${meta.id}"
     label 'process_low'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -18,16 +18,18 @@ process QUARTO_PRERENDER {
 
     input:
     tuple val(meta), path(notebook)
-    val parameters
+    val(parameters)
     path input_files
+    path extensions
 
     output:
-    tuple val(meta), path("${prefix}{.md,_files}")                                             , emit: rendered
+    tuple val(meta), path("*.html")                                                            , emit: html
     tuple val(meta), path(notebook)                                                            , emit: notebook
-    tuple val(meta), path("${prefix}-params.yml")                                              , emit: params_yaml
-    tuple val(meta), path("${notebook_parameters.artifact_dir}/*")                             , emit: artifacts, optional: true
+    tuple val(meta), path("params.yml")                                                        , emit: params_yaml
+    tuple val(meta), path("${notebook_parameters.artifact_dir}/*")                             , emit: artifacts  , optional: true
+    tuple val(meta), path("_extensions")                                                       , emit: extensions , optional: true
     path "versions.yml"                                                                        , emit: versions          , topic: versions
-    tuple val("${task.process}"), val('quarto')   , eval('quarto -v')                          , emit: versions_quarto   , topic: versions
+    tuple val("${task.process}"), val('quarto'), eval('quarto -v')                             , emit: versions_quarto   , topic: versions
     tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "'), emit: versions_papermill, topic: versions
 
     when:
@@ -35,12 +37,12 @@ process QUARTO_PRERENDER {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${notebook.baseName}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     // Implicit parameters can be overwritten by supplying a value with parameters
     notebook_parameters = [
         meta: meta,
         cpus: task.cpus,
-        artifact_dir: "${prefix}-artifacts",
+        artifact_dir: "artifacts",
     ] + (parameters ?: [:])
     // Parse parameters through a YAML file, which is better than CLI because:
     //  - No issue with escaping
@@ -51,7 +53,7 @@ process QUARTO_PRERENDER {
     def yaml_content = yamlBuilder.toString().tokenize('\n').join("\n    ")
     """
     # Dump parameters to yaml file
-    cat <<- END_YAML_PARAMS > ${prefix}-params.yml
+    cat <<- END_YAML_PARAMS > params.yml
     ${yaml_content}
     END_YAML_PARAMS
 
@@ -76,17 +78,16 @@ process QUARTO_PRERENDER {
     export OMP_NUM_THREADS="${task.cpus}"
     export NUMBA_NUM_THREADS="${task.cpus}"
 
-    # Render notebook to markdown
+    # Render notebook
     quarto render \\
         ${notebook} \\
         ${args} \\
-        --to markdown \\
-        --execute-params ${prefix}-params.yml \\
-        --output ${prefix}.md
+        --execute-params params.yml \\
+        --output ${prefix}.html
 
     # Check that notebook package versions is exported
     if [ ! -f versions.csv ]; then
-        echo "ERROR: versions.csv not found; the .qmd script must write out [tool,version] pairs used within the notebook." >&2
+        echo "ERROR: versions.csv not found; the notebook must write out [tool,version] pairs used within it." >&2
         exit 1
     fi
 
@@ -98,14 +99,16 @@ process QUARTO_PRERENDER {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${notebook.baseName}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    // Implicit parameters can be overwritten by supplying a value with parameters
     notebook_parameters = [
         meta: meta,
         cpus: task.cpus,
         artifact_dir: "artifacts",
     ] + (parameters ?: [:])
     """
-    # Note: The fix is also needed in the stub for `quarto -v` to work.
+    # Fix Quarto for Apptainer (see https://community.seqera.io/t/confusion-over-why-a-tool-works-in-docker-but-fails-in-singularity-when-the-installation-doesnt-differ-i-e-using-wave-micromamba/1244)
+    # Note: This is needed in the stub for `quarto -v` to work.
     ENV_QUARTO=/opt/conda/etc/conda/activate.d/quarto.sh
     set +u
     if [ -z "\${QUARTO_DENO}" ] && [ -f "\${ENV_QUARTO}" ]; then
@@ -113,8 +116,8 @@ process QUARTO_PRERENDER {
     fi
     set -u
 
-    touch ${prefix}.md
-    touch ${prefix}-params.yml
+    touch ${prefix}.html
+    touch params.yml
     touch versions.yml
     """
 }
