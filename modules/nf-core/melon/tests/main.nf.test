@@ -14,13 +14,10 @@ nextflow_process {
             script "modules/nf-core/untar/main.nf"
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = [
                     [],
-                    file(
-                        params.modules_testdata_base_path + 'delete_me/melon_db.tar.gz',
-                        checkIfExists: true
-                    )
-                ])
+                    file(params.modules_testdata_base_path + 'delete_me/melon_db.tar.gz', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -32,10 +29,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:true ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true)
                 ]
-
                 input[1] =  UNTAR.out.untar.map{ it[1] }
                 input[2] = []
                 """
@@ -45,10 +41,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv_output,
-                                process.out.json_output,
-                                process.out.versions).match() },
-                { assert path(process.out.log[0][1]).exists() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
             )
         }
 
@@ -62,10 +55,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:true ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true)
                 ]
-
                 input[1] =  UNTAR.out.untar.map{ it[1] }
                 input[2] = []
                 """
@@ -75,10 +67,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv_output,
-                                process.out.json_output,
-                                process.out.versions).match() },
-                { assert path(process.out.log[0][1]).exists() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

@@ -2,7 +2,7 @@ process CHECKQC {
     tag "$meta.id"
     label 'process_single'
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6ec3d6e7260c79ecd92ff53e66337a8f1db4ca8d0a3ba561c35f21fa9acdd6ba/data':
         'community.wave.seqera.io/library/sample-sheet_numpy_pandas_pip_pruned:0b9dc0869e46a949' }"
 

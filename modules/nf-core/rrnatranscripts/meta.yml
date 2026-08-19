@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: rrnatranscripts
 description: Ribosomal RNA extraction from a GTF file.
 keywords:
@@ -10,7 +9,8 @@ tools:
       description: |
         Extraction of ribosomal RNA
       homepage: https://github.com/nf-core/rnafusion
-      licence: ["GPL-3.0-or-later"]
+      licence:
+        - "GPL-3.0-or-later"
       identifier: ""
 input:
   - - meta:
@@ -44,6 +44,11 @@ output:
         pattern: "versions.yml"
         ontologies:
           - edam: "http://edamontology.org/format_3750" # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@rannick"
 maintainers:

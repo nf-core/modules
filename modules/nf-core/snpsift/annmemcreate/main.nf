@@ -3,7 +3,7 @@ process SNPSIFT_ANNMEMCREATE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c5ee8f24fb1bcd6e98ecb91fcf013f35a8db193dc9af4883c468e623aaebd7cf/data'
         : 'community.wave.seqera.io/library/htslib_snpsift:6167cd8f20036c55'}"
 

@@ -14,7 +14,6 @@ nextflow_process {
 
 
     setup {
-
         run("ANTISMASH_ANTISMASHDOWNLOADDATABASES") {
             script "../../../antismash/antismashdownloaddatabases"
             process {
@@ -51,16 +50,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.gbk_results.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-START##") },
+                { assert path(process.out.gbk_input.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-END##") },
+                { assert path(process.out.html.get(0).get(1)).text.contains("https://antismash.secondarymetabolites.org/") },
+                { assert path(process.out.json_sideloading.get(0).get(1)).text.contains("NZ_CP069563.1") },
+                { assert path(process.out.log.get(0).get(1)).text.contains("antiSMASH status: SUCCESS") },
                 { assert snapshot(
-                    path(process.out.gbk_results.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-START##"),
-                    path(process.out.gbk_input.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-END##"),
-                    path(process.out.zip.get(0).get(1)).exists(),
-                    path(process.out.html.get(0).get(1)).text.contains("https://antismash.secondarymetabolites.org/"),
-                    path(process.out.json_sideloading.get(0).get(1)).text.contains("NZ_CP069563.1"),
-                    path(process.out.log.get(0).get(1)).text.contains("antiSMASH status: SUCCESS"),
+                    file(process.out.zip.get(0).get(1)).name,
                     process.out.html_accessory_files,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
         }
@@ -82,10 +80,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match()}
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }

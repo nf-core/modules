@@ -1,14 +1,14 @@
 name: nextclade_run
-description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality
-  checks (C++ implementation)
+description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence
+  quality checks (C++ implementation)
 keywords:
   - nextclade
   - variant
   - consensus
 tools:
   - nextclade:
-      description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence
-        quality checks
+      description: SARS-CoV-2 genome clade assignment, mutation calling, and
+        sequence quality checks
       homepage: https://github.com/nextstrain/nextclade
       documentation: https://github.com/nextstrain/nextclade
       tool_dev_url: https://github.com/nextstrain/nextclade
@@ -27,8 +27,8 @@ input:
         ontologies: []
   - dataset:
       type: directory
-      description: Path containing the dataset files obtained by running nextclade dataset
-        get
+      description: Path containing the dataset files obtained by running nextclade
+        dataset get
       pattern: "*"
 output:
   csv:
@@ -119,7 +119,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}.aligned.fasta:
           type: file
-          description: FASTA file containing aligned sequences from nextclade results
+          description: FASTA file containing aligned sequences from nextclade
+            results
           pattern: "*.{aligned.fasta}"
           ontologies: []
   fasta_translation:
@@ -130,7 +131,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_translation.*.fasta":
           type: file
-          description: FASTA file containing aligned peptides from nextclade results
+          description: FASTA file containing aligned peptides from nextclade
+            results
           pattern: "*.{_translation.}*.{fasta}"
           ontologies: []
   nwk:
@@ -144,13 +146,27 @@ output:
           description: NWK file containing nextclade results
           pattern: "*.{nwk}"
           ontologies: []
+  versions_nextclade:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - nextclade:
+          type: string
+          description: The tool name
+      - "nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'":
+          type: eval
+          description: The version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - nextclade:
+          type: string
+          description: The tool name
+      - "nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'":
+          type: eval
+          description: The version of the tool
 authors:
   - "@antunderwood"
   - "@drpatelh"

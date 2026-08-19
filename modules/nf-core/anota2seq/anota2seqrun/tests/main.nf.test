@@ -39,7 +39,6 @@ nextflow_process {
                     process.out.total_mrna,
                     process.out.translation,
                     process.out.buffering,
-                    process.out.versions,
                     file(process.out.fold_change_plot[0][1]).name,
                     file(process.out.interaction_p_distribution_plot[0][1]).name,
                     file(process.out.residual_distribution_summary_plot[0][1]).name,
@@ -49,11 +48,41 @@ nextflow_process {
                     file(process.out.rvm_fit_for_omnibus_group_plot[0][1]).name,
                     file(process.out.simulated_vs_obt_dfbetas_without_interaction_plot[0][1]).name,
                     file(process.out.rdata[0][1]).name,
-                    path(process.out.versions[0]).yaml
+                    process.out.versions_anota2seq,
+                    path(process.out.versions_anota2seq[0]).yaml
                 ).match() }
             )
         }
-
     }
+    test("human - tsv -- stub") {
+        options "-stub"
 
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'treatment_vs_control'],
+                    'treatment',
+                    'control',
+                    'treatment'
+                    ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/samplesheet.csv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_anota2seq[0]).yaml
+                ).match() }
+            )
+        }
+    }
 }

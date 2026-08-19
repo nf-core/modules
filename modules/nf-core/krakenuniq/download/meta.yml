@@ -14,26 +14,41 @@ tools:
       documentation: https://github.com/fbreitwieser/krakenuniq
       tool_dev_url: https://github.com/fbreitwieser/krakenuniq
       doi: 10.1186/s13059-018-1568-0
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:KrakenUniq
 input:
   - pattern:
       type: string
-      description: Pattern indicating what type of NCBI data to download. See KrakenUniq
-        documnation for possibilities.
+      description: Pattern indicating what type of NCBI data to download. See
+        KrakenUniq documnation for possibilities.
 output:
   output:
     - ${pattern}/:
         type: directory
-        description: Directory containing downloaded data with directory naming being
-          the user provided pattern.
+        description: Directory containing downloaded data with directory naming
+          being the user provided pattern.
+  versions_krakenuniq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krakenuniq:
+          type: string
+          description: The name of the tool
+      - krakenuniq --version | sed '1!d;s/KrakenUniq version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krakenuniq:
+          type: string
+          description: The name of the tool
+      - krakenuniq --version | sed '1!d;s/KrakenUniq version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

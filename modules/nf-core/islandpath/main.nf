@@ -2,10 +2,11 @@ process ISLANDPATH {
     tag "$meta.id"
     label 'process_medium'
 
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/islandpath:1.0.6--hdfd78af_0':
-        'biocontainers/islandpath:1.0.6--hdfd78af_0' }"
+        'quay.io/biocontainers/islandpath:1.0.6--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(genome)
@@ -13,7 +14,7 @@ process ISLANDPATH {
     output:
     tuple val(meta), path("*.gff")        , emit: gff
     path "Dimob.log"                      , emit: log
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('islandpath'), val('1.0.6'), topic: versions, emit: versions_islandpath
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,17 +22,17 @@ process ISLANDPATH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def VERSION = '1.0.6'
     """
     islandpath \\
         $genome \\
         ${prefix}.gff \\
         $args
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        islandpath: $VERSION
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gff
+    touch Dimob.log
     """
 }

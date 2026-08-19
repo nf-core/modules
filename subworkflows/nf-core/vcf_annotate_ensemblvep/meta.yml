@@ -34,6 +34,11 @@ input:
       description: |
         any extra files needed by plugins for ensemblvep (optional)
         Structure: [ path(file1), path(file2)... ]
+  - ch_gtf:
+      description: |
+        sorted, bgzipped GTF file (+ tabix index) to annotate with instead of a cache (optional).
+        Mutually exclusive with ch_cache.
+        Structure: [ path(gtf), path(gtf_tbi) ]
 output:
   - vcf_tbi:
       description: |

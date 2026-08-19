@@ -3,7 +3,7 @@ process CTATSPLICING_PREPGENOMELIB {
     label 'process_single'
     stageInMode 'copy'
 
-    container "nf-core/ctatsplicing:0.0.3"
+    container "quay.io/nf-core/ctatsplicing:0.0.3"
 
     input:
     tuple val(meta), path(genome_lib)

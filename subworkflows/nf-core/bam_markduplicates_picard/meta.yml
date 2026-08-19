@@ -55,6 +55,10 @@ output:
       description: |
         File containing samtools idxstats output
         Structure: [ val(meta), path(idxstats) ]
+  - per_sample_mqc_bundle:
+      description: |
+        Per-sample MultiQC-feeding outputs (stats, flagstat, idxstats, metrics) joined on meta.
+        Structure: [ val(meta), list(files) ]
   - versions:
       description: |
         Files containing software versions

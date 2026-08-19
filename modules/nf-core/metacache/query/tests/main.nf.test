@@ -46,7 +46,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.versions,
+                process.out.findAll { key, val -> key.startsWith('versions') },
                 file(process.out.mapping_results[0][1]).readLines()[0]
             ).match()
         }
@@ -97,15 +97,10 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.versions,
+                process.out.findAll { key, val -> key.startsWith('versions') },
                 file(process.out.mapping_results[0][1]).readLines()[0],
                 file(process.out.abundances[0][1]).readLines()[0]
             ).match()
         }
-
     }
-
-
-
-
 }

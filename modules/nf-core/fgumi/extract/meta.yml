@@ -1,0 +1,70 @@
+name: fgumi_extract
+description: Extract unique molecular indices (UMIs) from FASTQ files and write
+  an unaligned BAM file.
+keywords:
+  - umi
+  - extract
+  - fastq
+  - bam
+tools:
+  - fgumi:
+      description: High-performance tools for working with UMI-tagged sequencing
+        data.
+      homepage: https://github.com/fulcrumgenomics/fgumi
+      documentation: https://docs.rs/fgumi
+      tool_dev_url: https://github.com/fulcrumgenomics/fgumi
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Input FASTQ files used for UMI extraction.
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - library:
+        type: string
+        description: Library name to store in the output BAM read group.
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Unaligned BAM with extracted UMIs in SAM tags.
+          pattern: "*.bam"
+          ontologies: []
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgumi:
+          type: string
+          description: The tool name
+      - 'fgumi --version | sed "s/^fgumi //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgumi:
+          type: string
+          description: The tool name
+      - 'fgumi --version | sed "s/^fgumi //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"

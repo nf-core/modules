@@ -3,7 +3,7 @@ process HIFITRIMMER_FILTERBAM {
    label 'process_medium'
 
    conda "${moduleDir}/environment.yml"
-   container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+   container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
       'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d413393b4194a57d7508e03614d1f4b1ba64b7294a817fd9547613421bc9343/data' :
       'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:3a74b5c5520eaff2' }"
 
@@ -20,6 +20,13 @@ process HIFITRIMMER_FILTERBAM {
    task.ext.when == null || task.ext.when
 
    script:
+   def deprecation_message = """
+   WARNING: This module has been deprecated.
+
+   Reason:
+   Command filterbam is no longer supported by hifi-trimmer, please use hifitrimmer/trim module instead.
+   """
+   assert false: deprecation_message
    def prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
    def args2 = task.ext.args2 ?: ''
@@ -37,6 +44,13 @@ process HIFITRIMMER_FILTERBAM {
    """
 
    stub:
+   def deprecation_message = """
+   WARNING: This module has been deprecated.
+
+   Reason:
+   Command filterbam is no longer supported by hifi-trimmer, please use hifitrimmer/trim module instead.
+   """
+   assert false: deprecation_message
    def args = task.ext.args ?: ''
    def prefix = task.ext.prefix ?: "${meta.id}"
    def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"

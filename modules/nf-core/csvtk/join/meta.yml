@@ -28,7 +28,7 @@ input:
           - edam: http://edamontology.org/format_3752 # CSV
           - edam: http://edamontology.org/format_3475 # TSV
 output:
-  csv:
+  out_file:
     - - meta:
           type: map
           description: |
@@ -48,7 +48,7 @@ output:
       - csvtk:
           type: string
           description: The name of the tool
-      - csvtk version | sed -e "s/csvtk v//g":
+      - csvtk version | sed -e 's/csvtk v//g':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -59,7 +59,7 @@ topics:
       - csvtk:
           type: string
           description: The name of the tool
-      - csvtk version | sed -e "s/csvtk v//g":
+      - csvtk version | sed -e 's/csvtk v//g':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

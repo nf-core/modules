@@ -21,8 +21,7 @@ nextflow_workflow {
                 process {
                     """
                     input[0] = [[ id:'homo_sapiens_genome' ],
-                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                     """
                 }
             }
@@ -32,8 +31,7 @@ nextflow_workflow {
                 process {
                     """
                     input[0] = [[ id:'sarscov2_genome' ],
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ]
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                     """
                 }
             }
@@ -47,9 +45,9 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 input[1] = BWA_INDEX_HUMAN.out.index
                 input[2] = BWA_INDEX_COV2.out.index
-                input[3] = [[ id:'homo_sapiens_genome' ],
+                input[3] = Channel.value([[ id:'homo_sapiens_genome' ],
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ])
                 """
             }
         }

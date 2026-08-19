@@ -3,7 +3,7 @@ process TMB_PYTMB {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b2858b1afbb8c24385b1172cf2cf561e59ba8ab1b82d5dfe74ac36549c6ac78/data':
         'community.wave.seqera.io/library/tmb:1.5.0--0724a7e1e50a32cd' }"
 

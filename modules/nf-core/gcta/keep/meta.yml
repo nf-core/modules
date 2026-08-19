@@ -1,0 +1,83 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_keep"
+description: Apply a keep file to a dense GRM using `gcta --keep`
+keywords:
+  - gcta
+  - genome-wide complex trait analysis
+  - grm
+  - genetic relationship matrix
+  - genetics
+tools:
+  - "gcta":
+      description: "Genome-wide Complex Trait Analysis (GCTA) estimates genetic relationships, variance components, and association statistics from genome-wide data."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://yanglab.westlake.edu.cn/software/gcta/"
+      licence: ["GPL-3.0-only"]
+      identifier: "biotools:gcta"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing dense GRM metadata
+          e.g. `[ id:'plink_simulated' ]`
+          `meta.id` is required and is the dense GRM basename contract used by `gcta --grm`.
+          Input files must therefore be staged as `<meta.id>.grm.id`, `<meta.id>.grm.bin`, and `<meta.id>.grm.N.bin`.
+    - grm_files:
+        type: file
+        description: Dense GRM file bundle
+        pattern: "*.grm.*"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing keep-file metadata
+          e.g. `[ id:'plink_simulated_keep' ]`
+    - keep_file:
+        type: file
+        description: Keep file listing the individuals to retain
+        pattern: "*.{keep,txt,id}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+
+output:
+  filtered_grm:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing dense GRM metadata
+            e.g. `[ id:'plink_simulated' ]`
+            `meta.id` is preserved from the input dense GRM basename contract.
+      - "${prefix}.grm.*":
+          type: file
+          description: Filtered GRM file bundle
+          pattern: "${prefix}.grm.*"
+          ontologies: []
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the version was collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"

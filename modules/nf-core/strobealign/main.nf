@@ -3,7 +3,7 @@ process STROBEALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/59cce6872df48a1e5cc9ccee89f066210694c6ec9f62d9c931cc6925ca0f6a5f/data' :
         'community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:4fa4f439c6bea386' }"
 

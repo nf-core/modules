@@ -38,7 +38,7 @@ nextflow_process {
 					process.out.tooshort_fasta,
 					file(process.out.marker_bins[0][1]).name, // unstable
 					process.out.marker_genes,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith("versions")}
 					).match()
 				}
             )
@@ -74,6 +74,7 @@ nextflow_process {
                     ]
                     input[2] = false
                     input[3] = false
+                    input[4] = false
                     """
                 }
             }
@@ -110,7 +111,7 @@ nextflow_process {
 					process.out.tooshort_fasta,
 					file(process.out.marker_bins[0][1]).name, // unstable
 					process.out.marker_genes,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith("versions")}
 					).match()
 				}
             )
