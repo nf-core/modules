@@ -38,7 +38,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["versions_gunzip", "versions_hmmer"])).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
