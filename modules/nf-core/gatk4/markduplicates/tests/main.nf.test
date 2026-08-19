@@ -29,7 +29,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.bam,
+                    bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.bai,
                     file(process.out.metrics[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
@@ -61,7 +61,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.bam,
+                    bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.bai,
                     file(process.out.metrics[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
@@ -90,10 +90,11 @@ nextflow_process {
         }
 
         then {
+            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta'
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.cram[0][1]).name,
+                    cram(process.out.cram[0][1], fasta).getReadsMD5(),
                     file(process.out.crai[0][1]).name,
                     file(process.out.metrics[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
