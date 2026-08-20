@@ -47,8 +47,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     stable_name,
-                    process.out.plot_pdf,
-                    process.out.images_pdf,
+                    process.out.plot_pdf.collect { meta, files -> [meta, file(files).name] },
+                    process.out.images_pdf.collect { meta, files -> [meta, file(files).name] },
                     process.out.images_png,
                     stable_data_output,
                     process.out.findAll { key, val -> key.startsWith("versions")}
