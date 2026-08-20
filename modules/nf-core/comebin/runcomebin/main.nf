@@ -16,7 +16,7 @@ process COMEBIN_RUNCOMEBIN {
     tuple val(meta), path("${prefix}/comebin.log")             , emit: log
     tuple val(meta), path("${prefix}/embeddings.tsv")          , emit: embeddings
     tuple val(meta), path("${prefix}/covembeddings.tsv")       , emit: covembeddings
-    tuple val("${task.process}"), val('comebin'), eval("run_comebin.sh | sed '2!d;s/COMEBin version: //'"), topic: versions, emit: versions_comebin
+    tuple val("${task.process}"), val('comebin'), eval("run_comebin.sh | sed '5!d;s/COMEBin version: //'"), topic: versions, emit: versions_comebin
 
     when:
     task.ext.when == null || task.ext.when
