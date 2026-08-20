@@ -1,11 +1,11 @@
 process GATK4_ANALYZECOVARIATES {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data':
-        'community.wave.seqera.io/library/gatk4-main_gcnvkernel:961440660027ec01' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data'
+        : 'community.wave.seqera.io/library/gatk4-main_gcnvkernel:961440660027ec01'}"
 
     input:
     tuple val(meta), path(before_table), path(after_table), path(additional_table)
@@ -36,7 +36,7 @@ process GATK4_ANALYZECOVARIATES {
     def args = task.ext.args ?: ''
 
     """
-    echo $args
+    echo ${args}
 
     touch ${meta.id}.csv
     touch ${meta.id}.pdf

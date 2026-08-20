@@ -3,14 +3,14 @@ process GATK4_APPLYBQSR {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data':
-        'community.wave.seqera.io/library/gatk4-main_gcnvkernel:961440660027ec01' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data'
+        : 'community.wave.seqera.io/library/gatk4-main_gcnvkernel:961440660027ec01'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(bqsr_table), path(intervals)
     tuple val(meta2), path(fasta), path(fai), path(dict)
-    val(output_suffix)
+    val output_suffix
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
