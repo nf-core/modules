@@ -46,7 +46,7 @@ process PICARD_LIFTOVERVCF {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.lifted.vcf.gz
-    echo | gzip > ${prefix}.unlifted.vcf.gz
+    echo "" | gzip > ${prefix}.lifted.vcf.gz
+    echo "" | gzip > ${prefix}.unlifted.vcf.gz
     """
 }

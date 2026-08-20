@@ -24,7 +24,7 @@ process PICARD_MARKDUPLICATES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "${reads.getExtension()}"
+    def suffix = reads.getExtension()
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
     def avail_mem = 3072
     if (!task.memory) {
@@ -50,7 +50,7 @@ process PICARD_MARKDUPLICATES {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "${reads.getExtension()}"
+    def suffix = reads.getExtension()
     if ("${reads}" == "${prefix}.${suffix}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
