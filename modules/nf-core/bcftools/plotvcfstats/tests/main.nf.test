@@ -58,6 +58,37 @@ nextflow_process {
 
     }
 
+
+    test("sarscov2 - bcftools - only individual pdf") {
+        config "./individual_pdf.config"
+
+        when {
+            process {
+                """
+                input[0] = BCFTOOLS_STATS.out.stats
+                """
+            }
+
+        }
+
+
+        then {
+            def stable_name = getAllFilesFromDir(process.out.plot_dir.get(0).get(1), relative: true, includeDir: true )
+            def stable_data_output = getAllFilesFromDir(process.out.plot_dir.get(0).get(1), ignore: [ '*.{aux,tex,log,pdf,png}' ] )
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    stable_name,
+                    process.out.plot_pdf.collect { meta, files -> [meta, file(files).name] },
+                    process.out.images_pdf.collect { meta, files -> [meta, files.collect { file(it).name }] },
+                    process.out.images_png,
+                    stable_data_output,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
+
     test("sarscov2 - bcftools - stub") {
 
         options "-stub"
