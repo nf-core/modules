@@ -49,14 +49,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.index[0][1]).exists() },
-                { assert path(process.out.info[0][1]).exists() },
-                { assert snapshot(
-                    path(process.out.index[0][1]).getFileName().toString(),
-                    path(process.out.info[0][1]).getFileName().toString(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index", "info"])).match() }
             )
         }
     }
@@ -78,14 +71,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.index[0][1]).exists() },
-                { assert path(process.out.info[0][1]).exists() },
-                { assert snapshot(
-                    path(process.out.index[0][1]).getFileName().toString(),
-                    path(process.out.info[0][1]).getFileName().toString(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index", "info"])).match() }
             )
         }
     }
@@ -93,7 +79,6 @@ nextflow_process {
     test("sarscov2 - fasta - kmersize - stub") {
 
         options "-stub"
-        config "./nextflow.config"
 
         when {
             params {
