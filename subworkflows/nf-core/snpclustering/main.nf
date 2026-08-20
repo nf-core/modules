@@ -161,4 +161,3 @@ process EIGENVEC_TO_TSV {
     END_VERSIONS
     """
 }
-
