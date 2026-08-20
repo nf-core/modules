@@ -21,16 +21,11 @@ input:
           e.g. [ id:'test' ]
     - bam:
         type: file
-        description: BAM file
+        description: Input BAM file
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information.
-          e.g. [ id:'test' ]
-    - bam_index:
+    - bai:
         type: file
         description: BAM index file
         pattern: "*.bam.bai"
