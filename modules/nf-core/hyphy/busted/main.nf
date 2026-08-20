@@ -24,10 +24,10 @@ process HYPHY_BUSTED {
     """
     hyphy busted \\
         CPU=${task.cpus} \\
-        --alignment ${alignment} \\
-        --tree ${tree} \\
-        ${args} \\
+        --alignment $alignment \\
+        --tree $tree \\
         --output ${prefix}_BUSTED.json \\
+        $args \\
         > ${prefix}_BUSTED_output.txt
     """
 
