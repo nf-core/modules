@@ -3,9 +3,9 @@ process FGUMI_DOWNSAMPLE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e6/e613097ca7c84595a8683b6b042d113ac40e1936a809477aa95fcd1f8f3bfca2/data'
-:         'community.wave.seqera.io/library/fgumi:0.6.0--c97194d17da0d1cd' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e6/e613097ca7c84595a8683b6b042d113ac40e1936a809477aa95fcd1f8f3bfca2/data':
+        'community.wave.seqera.io/library/fgumi:0.6.0--c97194d17da0d1cd' }"
 
     input:
     tuple val(meta), path(bam)
