@@ -1,14 +1,12 @@
 name: "comebin_runcomebin"
-description: Effective binning of metagenomic contigs using COntrastive
-  Multi-viEw representation learning
+description: Effective binning of metagenomic contigs using COntrastive Multi-viEw representation learning
 keywords:
   - metagenomics
   - binning
   - clustering
 tools:
   - "comebin":
-      description: "COMEBin allows effective binning of metagenomic contigs using COntrastive
-        Multi-viEw representation learning"
+      description: "COMEBin allows effective binning of metagenomic contigs using COntrastive Multi-viEw representation learning"
       homepage: "https://github.com/ziyewang/COMEBin"
       documentation: "https://github.com/ziyewang/COMEBin"
       tool_dev_url: "https://github.com/ziyewang/COMEBin"
@@ -39,8 +37,7 @@ output:
   bins:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
       - ${prefix}/comebin_res_bins/*.fa.gz:
           type: file
           description: List of FASTA files of binned contigs
@@ -51,8 +48,7 @@ output:
   tsv:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
       - ${prefix}/comebin_res.tsv:
           type: file
           description: |
@@ -63,8 +59,7 @@ output:
   log:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
       - ${prefix}/comebin.log:
           type: file
           description: |
@@ -75,8 +70,7 @@ output:
   embeddings:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
       - ${prefix}/embeddings.tsv:
           type: file
           description: |
@@ -87,8 +81,7 @@ output:
   covembeddings:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
       - ${prefix}/covembeddings.tsv:
           type: file
           description: |
@@ -103,7 +96,7 @@ output:
       - comebin:
           type: string
           description: The name of the tool
-      - "run_comebin.sh | sed '2!d;s/COMEBin version: //'":
+      - "run_comebin.sh | sed '5!d;s/COMEBin version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -114,10 +107,24 @@ topics:
       - comebin:
           type: string
           description: The name of the tool
-      - "run_comebin.sh | sed '2!d;s/COMEBin version: //'":
+      - "run_comebin.sh | sed '5!d;s/COMEBin version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@prototaxites"
 maintainers:
   - "@prototaxites"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/comebin:1.1.0--f7721f7c5a189044
+      build_id: bd-f7721f7c5a189044_1
+      scan_id: sc-52432bea18de12e1_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/comebin:1.1.0--a7e5189ce655fa30
+      build_id: bd-a7e5189ce655fa30_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46c7be4715b72a8d91735d465c9d677cc918f2921f2bdb528dd20222d07975a0/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/comebin/runcomebin/.conda-lock/linux_amd64-bd-f7721f7c5a189044_1.txt
