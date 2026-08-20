@@ -4,8 +4,8 @@ process COMEBIN_RUNCOMEBIN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/72a0296d1cef48031110d012695efbc67dc4a2d5cdeda0598ff8758bfd11b40c/data'
-:         'community.wave.seqera.io/library/comebin:1.1.0--2004b04680b82730' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46c7be4715b72a8d91735d465c9d677cc918f2921f2bdb528dd20222d07975a0/data'
+:         'community.wave.seqera.io/library/comebin:1.1.0--f7721f7c5a189044' }"
 
     input:
     tuple val(meta), path(assembly), path(bam, stageAs: "bam/*")
