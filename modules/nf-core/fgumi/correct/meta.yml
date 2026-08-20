@@ -105,3 +105,27 @@ authors:
   - "@nh13"
 maintainers:
   - "@nh13"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fgumi:0.6.0--c97194d17da0d1cd
+      build_id: bd-c97194d17da0d1cd_1
+      scan_id: sc-12a9f07935b105c6_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/fgumi:0.6.0--c2c03620f6999cbb
+      build_id: bd-c2c03620f6999cbb_1
+      scan_id: sc-28cfea28ac8f0b00_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fgumi:0.6.0--9104012f8f17c48e
+      build_id: bd-9104012f8f17c48e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9f99979f01d1b8142c2883a1da264fec0f446be1ae59e96a70ec5975209fd965/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fgumi:0.6.0--bf2cc0c2bf5f1666
+      build_id: bd-bf2cc0c2bf5f1666_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e6/e613097ca7c84595a8683b6b042d113ac40e1936a809477aa95fcd1f8f3bfca2/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fgumi/correct/.conda-lock/linux_amd64-bd-c97194d17da0d1cd_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fgumi/correct/.conda-lock/linux_arm64-bd-c2c03620f6999cbb_1.txt
