@@ -12,7 +12,7 @@ process RIBOTRICER_PREPAREORFS {
 
     output:
     tuple val(meta), path("*_candidate_orfs.tsv"), emit: candidate_orfs
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('ribotricer'), eval("ribotricer --version 2>&1 | sed -n 's/^ribotricer, version //p'"), topic: versions, emit: versions_ribotricer
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,25 +23,15 @@ process RIBOTRICER_PREPAREORFS {
 
     """
     ribotricer prepare-orfs \\
-        --gtf $gtf \\
-        --fasta $fasta \\
-        --prefix $prefix \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ribotricer: \$(ribotricer --version | grep ribotricer |& sed '1!d ; s/ribotricer, version //')
-    END_VERSIONS
+        --gtf ${gtf} \\
+        --fasta ${fasta} \\
+        --prefix ${prefix} \\
+        ${args}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_candidate_orfs.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ribotricer: \$(ribotricer --version | grep ribotricer |& sed '1!d ; s/ribotricer, version //')
-    END_VERSIONS
     """
 }

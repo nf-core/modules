@@ -23,7 +23,7 @@ process RIBOWALTZ {
     tuple val(meta), path("*nt_coverage_psite.tsv{,.gz}")     , emit: cds_window_coverage  , optional: true
     tuple val(meta), path("ribowaltz_qc/*.pdf")               , emit: ribowaltz_qc         , optional: true
     tuple val(meta), path("ribowaltz_qc/*.tsv")               , emit: ribowaltz_qc_data    , optional: true
-    path "versions.yml"                                       , emit: versions
+    path "versions.yml"                                       , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
