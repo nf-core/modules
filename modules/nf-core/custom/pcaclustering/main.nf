@@ -17,7 +17,7 @@ process CUSTOM_PCACLUSTERING {
     output:
     tuple val(meta), path("*.clusters.csv")        , emit: clusters
     tuple val(meta), path("*.clustering_info.json"), emit: info
-    path "versions.yml"                            , emit: versions
+    path "versions.yml"                            , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

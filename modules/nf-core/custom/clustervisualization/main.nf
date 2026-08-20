@@ -15,7 +15,7 @@ process CUSTOM_CLUSTERVISUALIZATION {
     tuple val(meta), path("*.tsne.tsv"), emit: tsne_tsv
     tuple val(meta), path("*.umap.png"), emit: umap_png, optional: true
     tuple val(meta), path("*.tsne.png"), emit: tsne_png, optional: true
-    path "versions.yml"                , emit: versions
+    path "versions.yml"                , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

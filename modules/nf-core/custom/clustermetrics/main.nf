@@ -15,7 +15,7 @@ process CUSTOM_CLUSTERMETRICS {
     tuple val(meta), path("*.k_sweep.csv")  , emit: k_sweep
     tuple val(meta), path("*.selected.json"), emit: selected
     tuple val(meta), path("*.png")          , emit: plots, optional: true
-    path "versions.yml"                     , emit: versions
+    path "versions.yml"                     , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -1,6 +1,5 @@
 name: "CUSTOM_CLUSTERMETRICS"
-description: "Computes clustering quality metrics (silhouette, Calinski-Harabasz,
-  Davies-Bouldin) and performs k-sweep analysis"
+description: "Computes clustering quality metrics (silhouette, Calinski-Harabasz, Davies-Bouldin) and performs k-sweep analysis"
 keywords:
   - clustering
   - metrics
@@ -29,7 +28,7 @@ input:
           column per numeric feature (e.g. PCA scores).
         pattern: "*.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3475 # TSV
     - clusters:
         type: file
         description: |
@@ -37,7 +36,7 @@ input:
           `cluster` columns. Label -1 is treated as DBSCAN noise.
         pattern: "*.csv"
         ontologies:
-          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
   metrics:
     - - meta:
@@ -48,7 +47,7 @@ output:
           description: TSV with selected cluster quality metrics
           pattern: "*.metrics.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   k_sweep:
     - - meta:
           type: map
@@ -58,7 +57,7 @@ output:
           description: CSV with metrics for different values of k
           pattern: "*.k_sweep.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   selected:
     - - meta:
           type: map
@@ -68,7 +67,7 @@ output:
           description: JSON with the selected/best metrics
           pattern: "*.selected.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464
+            - edam: http://edamontology.org/format_3464 # JSON
   plots:
     - - meta:
           type: map
@@ -84,7 +83,7 @@ output:
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
 topics:
   versions:
     - versions.yml:
