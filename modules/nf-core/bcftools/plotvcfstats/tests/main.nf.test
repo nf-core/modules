@@ -41,12 +41,15 @@ nextflow_process {
         }
 
         then {
-            def stable_name = getAllFilesFromDir(process.out.plot_dir.get(0).get(1), relative: true, includeDir: true, ignore: [ '*.{aux,tex,log,pdf}' ])
+            def stable_name = getAllFilesFromDir(process.out.plot_dir.get(0).get(1), relative: true, includeDir: true )
             def stable_data_output = getAllFilesFromDir(process.out.plot_dir.get(0).get(1), ignore: [ '*.{aux,tex,log,pdf,png}' ] )
             assertAll(
                 { assert process.success },
                 { assert snapshot(
                     stable_name,
+                    process.out.plot_pdf,
+                    process.out.images_pdf,
+                    process.out.images_png,
                     stable_data_output,
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }

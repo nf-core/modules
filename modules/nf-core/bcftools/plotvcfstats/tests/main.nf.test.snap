@@ -21,11 +21,23 @@
                     ]
                 ],
                 "2": [
+                    
+                ],
+                "3": [
+                    
+                ],
+                "4": [
                     [
                         "BCFTOOLS_PLOTVCFSTATS",
                         "bcftools",
                         "1.23.1"
                     ]
+                ],
+                "images_pdf": [
+                    
+                ],
+                "images_png": [
+                    
                 ],
                 "plot_dir": [
                     [
@@ -54,10 +66,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-23T03:07:15.522329858",
+        "timestamp": "2026-08-20T16:32:13.417424519",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     },
     "sarscov2 - bcftools": {
@@ -70,10 +82,35 @@
                 "depth.0.png",
                 "indels.0.dat",
                 "indels.0.png",
+                "plot-vcfstats.log",
                 "plot.py",
                 "substitutions.0.png",
+                "summary.tex",
                 "tstv_by_af.0.dat",
                 "tstv_by_qual.0.dat"
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.plot-vcfstats.pdf:md5,58faa76b0ff1ec6abc331d28600fa1c1"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    [
+                        "depth.0.png:md5,763a6e9f8cad019ae3fee55afad9a16f",
+                        "indels.0.png:md5,5153a779d76aba6e6848b2c17989ead4",
+                        "substitutions.0.png:md5,8e509db6947f31eacfea03149fe2a3cc"
+                    ]
+                ]
             ],
             [
                 "counts_by_af.indels.dat:md5,82fae810b86c20ff99616c58ff3b3596",
@@ -94,10 +131,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-23T03:06:57.656175973",
+        "timestamp": "2026-08-20T16:32:02.122105031",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     }
 }
