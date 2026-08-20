@@ -10,7 +10,8 @@ tools:
       homepage: "https://github.com/lh3/wgsim"
       documentation: "https://github.com/lh3/wgsim"
       tool_dev_url: "https://github.com/lh3/wgsim"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:wgsim
 input:
   - - meta:
@@ -36,13 +37,27 @@ output:
           pattern: "*.{fastq}"
           ontologies:
             - edam: http://edamontology.org/format_1930 # FASTQ
+  versions_wgsim:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wgsim:
+          type: string
+          description: The name of the tool
+      - "wgsim 2>&1 | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wgsim:
+          type: string
+          description: The name of the tool
+      - "wgsim 2>&1 | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@priyanka-surana"
 maintainers:

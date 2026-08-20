@@ -11,9 +11,9 @@ process VIENNARNA_RNAFOLD {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.fold")      , emit: rnafold_txt
-    tuple val(meta), path("*.ps")        , emit: rnafold_ps
-    tuple val(meta), path("versions.yml"), emit: versions
+    tuple val(meta), path("*.fold")                                                             , emit: rnafold_txt
+    tuple val(meta), path("*.ps")                                                               , emit: rnafold_ps
+    tuple val("${task.process}"), val('RNAfold'), eval("RNAfold --version 2>&1 | sed -n '1s/RNAfold //p'"), emit: versions_rnafold, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process VIENNARNA_RNAFOLD {
         --jobs=${task.cpus} \\
         --infile=${fasta} \\
         --outfile=${prefix}.fold
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RNAfold: \$( RNAfold --version |& sed '1!d ; s/RNAfold //')
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process VIENNARNA_RNAFOLD {
     """
     touch ${prefix}.fold
     touch ${prefix}.ps
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RNAfold: \$( RNAfold --version |& sed '1!d ; s/RNAfold //')
-    END_VERSIONS
     """
 }

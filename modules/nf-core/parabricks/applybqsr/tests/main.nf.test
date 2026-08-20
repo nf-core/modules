@@ -10,6 +10,8 @@ nextflow_process {
     tag "parabricks/applybqsr"
     tag "gpu"
 
+    config './nextflow.config'
+
     test("sarscov2 | paired-end | [bam]") {
 
         when {
@@ -17,19 +19,17 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    []
                 ]
                 input[1] = [
-                    [], []  // index not needed unless using intervals
-                ]
-                input[2] = [
                     [ id:'bqsr_table'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
                 ]
-                input[3] = [
+                input[2] = [
                     [], []  // no intervals
                 ]
-                input[4] = [
+                input[3] = [
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
@@ -57,21 +57,18 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id:'test-index'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[2] = [
+                input[1] = [
                     [ id:'bqsr_table'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
                 ]
-                input[3] = [
+                input[2] = [
                     [ id:'intervals'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 ]
-                input[4] = [
+                input[3] = [
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                    ]
@@ -98,19 +95,17 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    []
                 ]
                 input[1] = [
-                    [], []  // index not needed unless using intervals
-                ]
-                input[2] = [
                     [ id:'bqsr_table'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
                 ]
-                input[3] = [
+                input[2] = [
                     [], []  // no intervals
                 ]
-                input[4] = [
+                input[3] = [
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                    ]
@@ -140,21 +135,18 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id:'test-index'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
                 ]
-                input[2] = [
+                input[1] = [
                     [ id:'bqsr_table'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
                 ]
-                input[3] = [
+                input[2] = [
                     [ id:'intervals'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
                 ]
-                input[4] = [
+                input[3] = [
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                    ]
@@ -180,21 +172,18 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id:'test-index'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[2] = [
+                input[1] = [
                     [ id:'bqsr_table'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
                 ]
-                input[3] = [
+                input[2] = [
                     [ id:'intervals'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 ]
-                input[4] = [
+                input[3] = [
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                    ]

@@ -31,6 +31,8 @@ def create_pyclone_input(input_data, patient_id, output_data):
     df = pd.read_csv(input_data, sep="\t", header=0)
     df = df[~df["chr"].isin(["chrX", "chrY", "X", "Y"])]
 
+    df = df[~df["blacklisted"]]
+
     df["normal_cn"] = 2
     df["patient_id"] = patient_id
     df["mutation_id"] = df.apply(lambda row: f"{patient_id}:{row['chr'][3:]}:{row['from']}:{row['alt']}", axis=1)
@@ -163,9 +165,7 @@ if __name__ == "__main__":
 
     # Version
     version = (
-        subprocess.check_output("pip show pyclone-vi | grep Version | awk '{print \$NF}'", shell=True)
-        .decode()
-        .split("\\n")[0]
+        subprocess.check_output("pyclone-vi --version | sed 's/.*version //g'", shell=True).decode().split("\\n")[0]
     )
 
     f = open("versions.yml", "a")

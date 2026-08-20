@@ -1,0 +1,119 @@
+name: "fgumi_zipper"
+description: Zip an unmapped UMI BAM together with its aligned BAM using fgumi
+keywords:
+  - UMIs
+  - zipper
+  - bam
+  - alignment
+  - merge
+tools:
+  - "fgumi":
+      description: "High-performance tools for UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://fgumi.readthedocs.io/"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence:
+        - "MIT"
+      identifier: biotools:fgumi
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Aligned (mapped) BAM, in the same queryname order as the unmapped BAM
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - unmapped:
+        type: file
+        description: Unmapped UMI BAM (e.g. from fgumi extract), queryname order
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: Reference genome FASTA index (.fai)
+        pattern: "*.fai"
+        ontologies: []
+    - dict:
+        type: file
+        description: Reference sequence dictionary (.dict)
+        pattern: "*.dict"
+        ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Zipped BAM with UMI tags transferred onto the aligned reads
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fgumi:0.6.0--c97194d17da0d1cd
+      build_id: bd-c97194d17da0d1cd_1
+      scan_id: sc-12a9f07935b105c6_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/fgumi:0.6.0--c2c03620f6999cbb
+      build_id: bd-c2c03620f6999cbb_1
+      scan_id: sc-28cfea28ac8f0b00_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fgumi:0.6.0--bf2cc0c2bf5f1666
+      build_id: bd-bf2cc0c2bf5f1666_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e6/e613097ca7c84595a8683b6b042d113ac40e1936a809477aa95fcd1f8f3bfca2/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fgumi:0.6.0--9104012f8f17c48e
+      build_id: bd-9104012f8f17c48e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9f99979f01d1b8142c2883a1da264fec0f446be1ae59e96a70ec5975209fd965/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fgumi/zipper/.conda-lock/linux_amd64-bd-c97194d17da0d1cd_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fgumi/zipper/.conda-lock/linux_arm64-bd-c2c03620f6999cbb_1.txt

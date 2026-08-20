@@ -1,0 +1,112 @@
+name: "fgumi_fastq"
+description: Convert a BAM file to interleaved FASTQ format with fgumi
+keywords:
+  - bam
+  - fastq
+  - convert
+  - UMIs
+tools:
+  - "fgumi":
+      description: "High-performance tools for UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://fgumi.readthedocs.io/"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence:
+        - "MIT"
+      identifier: biotools:fgumi
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Input BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+output:
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.fastq.gz":
+          type: file
+          description: Interleaved FASTQ file (gzip-compressed)
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930"
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_gzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip --version 2>&1 | sed '1!d;s/gzip //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip --version 2>&1 | sed '1!d;s/gzip //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fgumi_gzip:934119bc275ab7a2
+      build_id: bd-934119bc275ab7a2_1
+      scan_id: sc-c1968f695c6ce2dd_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/fgumi_gzip:c968ce9f846de727
+      build_id: bd-c968ce9f846de727_1
+      scan_id: sc-eed9eefe23a09daf_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fgumi_gzip:15c7afce978cf600
+      build_id: bd-15c7afce978cf600_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ea/ea9756c684085fa9050ba182975df4bd4675658f458267ecc3f2d4c93a3f8dff/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fgumi_gzip:4e6f33b2a4ea48d1
+      build_id: bd-4e6f33b2a4ea48d1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/233ca4b4658beb1089b1548fc8ebdc848dc051173d3ae257161298657981b8b6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fgumi/fastq/.conda-lock/linux_amd64-bd-934119bc275ab7a2_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fgumi/fastq/.conda-lock/linux_arm64-bd-c968ce9f846de727_1.txt

@@ -1,0 +1,211 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "custom_orfmerge"
+description: |
+  Cluster normalised per-sample, per-caller ORF predictions into a single
+  cohort-level catalogue. Pair with `custom/orfnormalise` upstream and
+  (typically) `bedtools/getfasta` + `seqkit/translate` downstream to obtain
+  the AA FASTA.
+
+  Rows sharing an identical exon structure are grouped first and clustered as a
+  single proxy chosen by class specificity, then the members are restored. Class
+  selects the strategy, so without this an ORF that two callers class differently
+  would be split across strategies and could never merge.
+
+  Proxies are then partitioned by clustering strategy. The harmonised `orf_class`
+  written by `custom/orfnormalise` selects the strategy but is never part of a
+  grouping key, because callers disagree on class for the same ORF (Ribo-TISH
+  reports `5'UTR` for both uORFs and CDS-overlapping uORFs) and keying on it
+  would emit one catalogue row per disagreeing caller:
+
+    - canonical_cds:        grouped by (transcript_id, strand), then
+                            reciprocal-overlap clustered within the
+                            transcript so a short truncated variant is
+                            not folded into the full-length CDS.
+    - uORF, uoORF, dORF,    collapse by (transcript_id, strand, start,
+      doORF, intORF, other: end). A single transcript can host multiple
+                            distinct uORFs / dORFs / internal ORFs, so
+                            keying on the outer span keeps them in
+                            separate clusters while still merging
+                            cross-caller calls that agree on coordinates.
+    - novel_u:              greedy reciprocal-overlap clustering on summed
+                            exon-block intersection at `--reciprocal-overlap`
+                            (default 0.8). Catches fuzzy cross-caller
+                            matches and exact-coordinate collapses in
+                            one pass. Order-dependent at the boundary:
+                            a chain A-B-C where A-B and B-C overlap at
+                            ~0.85 but A-C only at ~0.75 may cluster as
+                            {A,B,C} or {A,B}+{C} depending on iteration
+                            order. Rare in practice at 0.8.
+
+  Cross-caller consensus is recorded in two column families on the
+  catalogue TSV:
+
+    - `called_by_<caller>`: 0/1 indicator per supported caller
+                            (ribotish, ribocode, ribotricer, rpbp, price).
+    - `score_<caller>`:     best score from that caller within the cluster.
+                            Score direction is per-caller (p-values are
+                            minimised; Bayes factors / phase scores are
+                            maximised).
+
+  Cross-sample recurrence is recorded in two further columns:
+
+    - `n_samples`:          number of distinct samples contributing to the
+                            cluster (a cohort recurrence metric).
+    - `samples`:            sorted, comma-separated list of those sample ids.
+
+  Emits a small MultiQC custom-content TSV (per-class counts) for
+  inclusion in downstream MultiQC reports.
+
+  Alongside the full catalogue, emits a consensus view (`*.consensus.*`)
+  filtered to ORFs supported by at least `--min-callers` distinct callers
+  and recurring in at least `--min-samples` samples (both default 1, i.e.
+  no filtering, so the consensus view equals the full catalogue). Raising
+  either threshold yields a higher-confidence catalogue without altering
+  the full one.
+keywords:
+  - orf
+  - ribo-seq
+  - catalogue
+  - merge
+  - clustering
+tools:
+  - "orfmerge":
+      description: |
+        Python helper that clusters normalised ORF BED12+TSV pairs across
+        callers and samples into one unified catalogue, recording per-caller
+        provenance and best score in the output table.
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/orfmerge/main.nf"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map. Typically a cohort-level `[ id: 'allsamples' ]`.
+    - bed12s:
+        type: file
+        description: |
+          One or more normalised BED12 files (output of `custom/orfnormalise`).
+          Files are co-indexed with `tsvs` only via shared `orf_id`s; per-row
+          alignment is not required.
+        pattern: "*.bed12"
+        ontologies:
+          - edam: http://edamontology.org/format_3586 # BED
+    - tsvs:
+        type: file
+        description: |
+          One or more normalised sidecar TSV files (output of
+          `custom/orfnormalise`).
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+output:
+  bed12:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.bed12:
+          type: file
+          description: Merged ORF catalogue as BED12 (genomic blocks).
+          pattern: "*.bed12"
+          ontologies:
+            - edam: http://edamontology.org/format_3586 # BED
+  catalogue_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.tsv:
+          type: file
+          description: |
+            Per-ORF table with `called_by_<caller>` and `score_<caller>`
+            columns for each supported caller, `n_samples` / `samples`
+            cross-sample recurrence columns, plus orf_class, aa_length,
+            host gene_id / transcript_id, `orf_type_native` listing every
+            caller-native ORF-type label in the cluster, and the
+            `is_smorf` length flag.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  orf_to_gene_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.orf_to_gene.tsv:
+          type: file
+          description: |
+            One row per (orf_id, gene_id, transcript_id) mapping. An ORF can
+            map to multiple host transcripts/genes when callers picked
+            different annotated isoforms; downstream gene-level aggregation
+            collapses these.
+          pattern: "*.orf_to_gene.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  multiqc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.mqc.tsv:
+          type: file
+          description: |
+            MultiQC custom-content TSV (per-class ORF counts).
+          pattern: "*.mqc.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  consensus_bed12:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.consensus.bed12:
+          type: file
+          description: |
+            Consensus-filtered catalogue as BED12 (ORFs meeting the
+            `--min-callers` / `--min-samples` thresholds).
+          pattern: "*.consensus.bed12"
+          ontologies:
+            - edam: http://edamontology.org/format_3586 # BED
+  consensus_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.consensus.tsv:
+          type: file
+          description: |
+            Consensus-filtered per-ORF table, same columns as the full
+            catalogue TSV.
+          pattern: "*.consensus.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  consensus_orf_to_gene_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.consensus.orf_to_gene.tsv:
+          type: file
+          description: |
+            ORF-to-gene mapping restricted to the consensus-filtered ORFs.
+          pattern: "*.consensus.orf_to_gene.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

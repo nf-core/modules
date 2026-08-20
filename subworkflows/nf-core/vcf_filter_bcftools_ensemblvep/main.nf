@@ -25,7 +25,7 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
         )
 
         ch_vcf = BCFTOOLS_VIEW.out.vcf
-        ch_tbi = BCFTOOLS_VIEW.out.tbi
+        ch_tbi = BCFTOOLS_VIEW.out.index
     }
 
     if (filter_with_filter_vep) {
@@ -33,6 +33,7 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
         ENSEMBLVEP_FILTERVEP(
             ch_vcf,
             ch_filter_vep_feature_file.map { _meta, file -> file },
+            "vcf"
         )
 
         HTSLIB_BGZIPTABIX(
