@@ -96,7 +96,7 @@ output:
       - comebin:
           type: string
           description: The name of the tool
-      - "run_comebin.sh | sed '2!d;s/COMEBin version: //'":
+      - "run_comebin.sh | sed '5!d;s/COMEBin version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -107,7 +107,7 @@ topics:
       - comebin:
           type: string
           description: The name of the tool
-      - "run_comebin.sh | sed '2!d;s/COMEBin version: //'":
+      - "run_comebin.sh | sed '5!d;s/COMEBin version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
