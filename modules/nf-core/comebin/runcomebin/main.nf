@@ -3,9 +3,9 @@ process COMEBIN_RUNCOMEBIN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/comebin:1.0.4--hdfd78af_0':
-        'quay.io/biocontainers/comebin:1.0.4--hdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/72a0296d1cef48031110d012695efbc67dc4a2d5cdeda0598ff8758bfd11b40c/data'
+:         'community.wave.seqera.io/library/comebin:1.1.0--2004b04680b82730' }"
 
     input:
     tuple val(meta), path(assembly), path(bam, stageAs: "bam/*")
