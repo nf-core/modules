@@ -1,0 +1,162 @@
+nextflow_workflow {
+
+    name "Test Subworkflow SNPCLUSTERING"
+    script "../main.nf"
+    workflow "SNPCLUSTERING"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/snpclustering"
+    tag "snpclustering"
+    tag "plink2"
+    tag "plink2/vcf"
+    tag "plink2/pca"
+    tag "beagle5/beagle"
+    tag "custom/pcaclustering"
+    tag "custom/clustermetrics"
+    tag "custom/clustervisualization"
+
+    config "./nextflow.config"
+
+    test("homo_sapiens - 1000GP.chr22.vcf.gz - kmeans 3 clusters") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true)
+                ])
+                input[1] = Channel.empty()
+                input[2] = Channel.empty()
+                input[3] = ""
+                input[4] = params.npcs
+                input[5] = params.use_approx
+                input[6] = "kmeans"
+                input[7] = 3
+                input[8] = params.dbscan_eps
+                input[9] = params.dbscan_min_samples
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.clusters.collect { [
+                    it[0],
+                    path(it[1]).getFileName().toString()
+                ]},
+                workflow.out.cluster_info.collect { [
+                    it[0],
+                    path(it[1]).getFileName().toString()
+                ]},
+                workflow.out.metrics.collect { [
+                    it[0],
+                    path(it[1]).getFileName().toString()
+                ]},
+                workflow.out.versions
+            ).match()
+        }
+    }
+
+    test("homo_sapiens - 1000GP.chr22.vcf.gz - dbscan") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true)
+                ])
+                input[1] = Channel.empty()
+                input[2] = Channel.empty()
+                input[3] = ""
+                input[4] = params.npcs
+                input[5] = params.use_approx
+                input[6] = "dbscan"
+                input[7] = params.n_clusters
+                input[8] = params.dbscan_eps
+                input[9] = params.dbscan_min_samples
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.clusters.collect { [
+                    it[0],
+                    path(it[1]).getFileName().toString()
+                ]},
+                workflow.out.cluster_info.collect { [
+                    it[0],
+                    path(it[1]).getFileName().toString()
+                ]},
+                workflow.out.metrics.collect { [
+                    it[0],
+                    path(it[1]).getFileName().toString()
+                ]},
+                workflow.out.versions
+            ).match()
+        }
+    }
+
+    test("homo_sapiens - 1000GP.chr22.vcf.gz - kmeans - stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true)
+                ])
+                input[1] = Channel.empty()
+                input[2] = Channel.empty()
+                input[3] = ""
+                input[4] = params.npcs
+                input[5] = params.use_approx
+                input[6] = "kmeans"
+                input[7] = 3
+                input[8] = params.dbscan_eps
+                input[9] = params.dbscan_min_samples
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(sanitizeOutput(workflow.out)).match()
+        }
+    }
+
+    test("homo_sapiens - 1000GP.chr22.vcf.gz - dbscan - stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true)
+                ])
+                input[1] = Channel.empty()
+                input[2] = Channel.empty()
+                input[3] = ""
+                input[4] = params.npcs
+                input[5] = params.use_approx
+                input[6] = "dbscan"
+                input[7] = params.n_clusters
+                input[8] = params.dbscan_eps
+                input[9] = params.dbscan_min_samples
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(sanitizeOutput(workflow.out)).match()
+        }
+    }
+}
