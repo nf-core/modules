@@ -40,6 +40,18 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
             - edam: http://edamontology.org/format_3989 # GZIP
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: Log file of run
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text
   versions_semibin:
     - - ${task.process}:
           type: string
