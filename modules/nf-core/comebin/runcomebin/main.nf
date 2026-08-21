@@ -3,9 +3,9 @@ process COMEBIN_RUNCOMEBIN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/comebin:1.0.4--hdfd78af_0':
-        'quay.io/biocontainers/comebin:1.0.4--hdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46c7be4715b72a8d91735d465c9d677cc918f2921f2bdb528dd20222d07975a0/data'
+:         'community.wave.seqera.io/library/comebin:1.1.0--f7721f7c5a189044' }"
 
     input:
     tuple val(meta), path(assembly), path(bam, stageAs: "bam/*")
@@ -16,7 +16,7 @@ process COMEBIN_RUNCOMEBIN {
     tuple val(meta), path("${prefix}/comebin.log")             , emit: log
     tuple val(meta), path("${prefix}/embeddings.tsv")          , emit: embeddings
     tuple val(meta), path("${prefix}/covembeddings.tsv")       , emit: covembeddings
-    tuple val("${task.process}"), val('comebin'), eval("run_comebin.sh | sed '2!d;s/COMEBin version: //'"), topic: versions, emit: versions_comebin
+    tuple val("${task.process}"), val('comebin'), eval("run_comebin.sh | sed '5!d;s/COMEBin version: //'"), topic: versions, emit: versions_comebin
 
     when:
     task.ext.when == null || task.ext.when

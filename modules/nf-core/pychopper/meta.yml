@@ -6,16 +6,15 @@ keywords:
   - nanopore
 tools:
   - "pychopper":
-      description: "A tool to identify, orient and rescue full length cDNA reads from
-        nanopore data."
+      description: "A tool to identify, orient and rescue full length cDNA reads from nanopore data."
       homepage: "https://github.com/epi2me-labs/pychopper"
       documentation: "https://github.com/epi2me-labs/pychopper"
       tool_dev_url: "https://github.com/epi2me-labs/pychopper"
-      licence: ["Oxford Nanopore Technologies PLC. Public License Version 1.0"]
+      licence:
+        - "Oxford Nanopore Technologies PLC. Public License Version 1.0"
       identifier: ""
   - "gzip":
-      description: "Gzip reduces the size of the named files using Lempel-Ziv coding
-        (LZ77)."
+      description: "Gzip reduces the size of the named files using Lempel-Ziv coding (LZ77)."
       documentation: "https://linux.die.net/man/1/gzip"
       args_id: "$args3"
       identifier: ""
@@ -44,13 +43,29 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{fastq.gz}"
+  versions_pychopper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pychopper:
+          type: string
+          description: The name of the tool
+      - 2.7.10:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pychopper:
+          type: string
+          description: The name of the tool
+      - 2.7.10:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@chriswyatt1"
 maintainers:

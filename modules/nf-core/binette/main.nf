@@ -12,7 +12,7 @@ process BINETTE {
     tuple val(meta2), path(checkm2_db)
 
     output:
-    tuple val(meta), path("final_bins/*.fa.gz")              , emit: final_bins
+    tuple val(meta), path("final_bins/*.fa.gz")              , emit: final_bins, optional: true
     tuple val(meta), path("*.final_contig_to_bin.tsv")       , emit: contig2bin
     tuple val(meta), path("input_bins_quality_reports/*.tsv"), emit: input_bins_quality_reports
     tuple val(meta), path("*.final_bins_quality_reports.tsv"), emit: final_bins_quality_report
@@ -42,7 +42,9 @@ process BINETTE {
         --outdir . \\
         ${args}
 
-    find final_bins/ -maxdepth 1 -name "*.fa" -type f -exec gzip {} \\;
+    if [ -d final_bins ]; then
+        find final_bins/ -maxdepth 1 -name "*.fa" -type f -exec gzip {} \\;
+    fi
 
     find input_bins_quality_reports/ -maxdepth 1 -name "*.tsv" -type f | while read file; do
         newname="input_bins_quality_reports/${prefix}.\$(basename "\$file")"
