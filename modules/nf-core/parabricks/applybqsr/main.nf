@@ -8,8 +8,7 @@ process PARABRICKS_APPLYBQSR {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.7.1-1"
 
     input:
-    tuple val(meta),  path(bam)
-    tuple val(meta2), path(bam_index)
+    tuple val(meta),  path(bam), path(bai)
     tuple val(meta3), path(bqsr_table)
     tuple val(meta4), path(intervals)
     tuple val(meta5), path(fasta)
