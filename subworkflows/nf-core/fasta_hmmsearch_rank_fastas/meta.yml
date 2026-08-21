@@ -21,6 +21,10 @@ input:
       type: file
       description: |
         The input channel containing sequences to be searched and ranked
+  - save_domtblout:
+      type: boolean
+      description: |
+        Whether hmmsearch should also write and emit its per-domain hit table (--domtblout)
 output:
   - hmmrank:
       type: file
@@ -34,6 +38,12 @@ output:
         Channel containing subsets of sequences
         Structure: [ val(meta), path(fasta) ]
       pattern: "*.fa.gz"
+  - domain_summary:
+      type: file
+      description: |
+        Channel containing hmmsearch's per-domain hit table, only present when save_domtblout is true
+        Structure: [ val(meta), path(domtbl) ]
+      pattern: "*.domtbl.gz"
 authors:
   - "@erikrikarddaniel"
 maintainers:
