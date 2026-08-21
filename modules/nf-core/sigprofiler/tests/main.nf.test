@@ -31,7 +31,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstablePattern:[
+                    sanitizeOutput(process.out, unstablePatterns:[
                         "**/*.pdf", "**/*.csv", "**/*.out", "**/*.err",
                         "**/*Signatures.txt", "**/*Signatures_SEM_Error.txt",
                         "**/*Samples_stats.txt", "**/*COSMIC_DBS78*.txt",
