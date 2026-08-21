@@ -1,4 +1,4 @@
-process SEMIBIN_SINGLEEASYBIN {
+process SEMIBIN_MULTIEASYBIN {
     tag "${meta.id}"
     label 'process_medium'
 
@@ -8,13 +8,13 @@ process SEMIBIN_SINGLEEASYBIN {
 :         'community.wave.seqera.io/library/semibin:2.4.1--594344a862aee1b8' }"
 
     input:
-    tuple val(meta), path(fasta), path(bam)
+    tuple val(meta), path(fasta), path(bam), path(depths)
 
     output:
-    tuple val(meta), path("${prefix}/*.csv")                                , emit: csv
-    tuple val(meta), path("${prefix}/*.h5")                                 , emit: model           , optional: true
-    tuple val(meta), path("${prefix}/*.tsv")                                , emit: tsv
-    tuple val(meta), path("${prefix}/output_bins/*.fa.gz")                  , emit: output_fasta
+    tuple val(meta), path("${prefix}/bins/*.fa.gz")   , emit: bins
+    tuple val(meta), path("${prefix}/samples/*/*.csv"), emit: csv
+    tuple val(meta), path("${prefix}/samples/*/*.tsv"), emit: tsv
+    tuple val(meta), path("${prefix}/SemiBinRun.log") , emit: log
     tuple val("${task.process}"), val('SemiBin'), eval("SemiBin2 --version"), emit: versions_semibin, topic: versions
 
     when:
@@ -24,13 +24,14 @@ process SEMIBIN_SINGLEEASYBIN {
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ""
     prefix    = task.ext.prefix ?: "${meta.id}"
-    """
 
+    def input_depth = bam ? "--input-bam ${bam}" : "--abundance ${depths}"
+    """
     SemiBin2 \\
         ${args} \\
-        single_easy_bin \\
+        multi_easy_bin \\
         --input-fasta ${fasta} \\
-        --input-bam ${bam} \\
+        ${input_depth} \\
         --output ${prefix} \\
         -t ${task.cpus} \\
         ${args2}
@@ -39,11 +40,17 @@ process SEMIBIN_SINGLEEASYBIN {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}
-    touch ${prefix}/{contig_bins,recluster_bins_info}.tsv
-    touch ${prefix}/{data,data_split}.csv
-    mkdir ${prefix}/output_bins
-    touch ${prefix}/output_bins/SemiBin_{0,1,2,3}.fa
-    gzip  ${prefix}/output_bins/SemiBin*
+    mkdir -p ${prefix}/samples/S1/
+    mkdir -p ${prefix}/samples/S2/
+    mkdir -p ${prefix}/bins
+
+    touch ${prefix}/samples/{S1,S2}/{contig_bins,recluster_bins_info}.tsv
+    touch ${prefix}/samples/{S1,S2}/{data,data_cov,data_split}.csv
+    touch ${prefix}/SemiBinRun.log
+
+    echo "" | gzip > ${prefix}/bins/S1_SemiBin_0.fa.gz
+    echo "" | gzip > ${prefix}/bins/S1_SemiBin_1.fa.gz
+    echo "" | gzip > ${prefix}/bins/S2_SemiBin_0.fa.gz
+    echo "" | gzip > ${prefix}/bins/S2_SemiBin_1.fa.gz
     """
 }
