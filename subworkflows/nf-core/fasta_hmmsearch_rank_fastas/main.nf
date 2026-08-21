@@ -5,14 +5,15 @@ include { SEQTK_SUBSEQ    } from '../../../modules/nf-core/seqtk/subseq/main'
 workflow FASTA_HMMSEARCH_RANK_FASTAS {
 
     take:
-    ch_hmms  // channel: [ val(meta), file(hmm) ], i.e. a list of hmm profiles, each with its meta object
-    ch_fasta // channel: file(fasta), a single fasta file
+    ch_hmms         // channel: [ val(meta), file(hmm) ], i.e. a list of hmm profiles, each with its meta object
+    ch_fasta        // channel: file(fasta), a single fasta file
+    save_domtblout  // boolean: also write and emit hmmsearch's per-domain hit table (--domtblout)
 
     main:
 
     ch_hmms
         .combine(ch_fasta)
-        .map { index -> [ index[0], index[1], index[2], false, true, false ] }
+        .map { index -> [ index[0], index[1], index[2], false, true, save_domtblout ] }
         .set { ch_hmmsearch }
 
     HMMER_HMMSEARCH ( ch_hmmsearch )
@@ -43,6 +44,7 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
     // SEQTK_SUBSEQ emits version as a topic channel
 
     emit:
-    hmmrank                 = HMMER_HMMRANK.out.hmmrank       // channel: [ [ id: 'rank' ], hmmrank_tsv ]
-    seqfastas               = SEQTK_SUBSEQ.out.sequences      // channel: [ meta, fasta ]
+    hmmrank                 = HMMER_HMMRANK.out.hmmrank             // channel: [ [ id: 'rank' ], hmmrank_tsv ]
+    seqfastas               = SEQTK_SUBSEQ.out.sequences            // channel: [ meta, fasta ]
+    domain_summary          = HMMER_HMMSEARCH.out.domain_summary    // channel: [ meta, domtbl ]
 }
