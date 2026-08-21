@@ -36,8 +36,8 @@ process HYPHY_MEME {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
-    
-    touch ${prefix}.json
-    touch ${prefix}_output.txt
+
+    touch ${prefix}_MEME.json
+    touch ${prefix}_MEME_output.txt
     """
 }
