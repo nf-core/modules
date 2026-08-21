@@ -33,6 +33,7 @@ nextflow_process {
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
+                input[4] = 'bam'
                 """
             }
         }
@@ -43,6 +44,46 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.bai[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 | paired-end | [bam] | cram out") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'bqsr_table'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
+                ]
+                input[2] = [
+                    [], []  // no intervals
+                ]
+                input[3] = [
+                    [ id:'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[4] = 'cram'
+                """
+            }
+        }
+
+        then {
+            def fasta = "https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta"
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    cram(process.out.cram[0][1],fasta).getReadsMD5(),
+                    file(process.out.crai[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -72,6 +113,7 @@ nextflow_process {
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                    ]
+                input[4] = 'bam'
                 """
             }
         }
@@ -109,16 +151,18 @@ nextflow_process {
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                    ]
+                input[4] = 'cram'
                 """
             }
         }
 
         then {
+            def fasta = "https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/genome.fasta"
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.bai[0][1]).name,
+                    cram(process.out.cram[0][1],fasta).getReadsMD5(),
+                    file(process.out.crai[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -150,6 +194,7 @@ nextflow_process {
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                    ]
+                input[4] = 'cram'
                 """
             }
         }
@@ -157,7 +202,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -187,6 +232,7 @@ nextflow_process {
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                    ]
+                input[4] = 'bam'
                 """
             }
         }
@@ -194,7 +240,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
