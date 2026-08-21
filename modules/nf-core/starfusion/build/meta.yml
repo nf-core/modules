@@ -4,7 +4,6 @@ keywords:
   - download
   - starfusion
   - build
-
 tools:
   - star-fusion:
       description: Fusion calling algorithm for RNAseq data
@@ -12,7 +11,8 @@ tools:
       documentation: https://github.com/STAR-Fusion/STAR-Fusion/wiki/installing-star-fusion
       tool_dev_url: https://github.com/STAR-Fusion/STAR-Fusion
       doi: "10.1186/s13059-019-1842-9"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 
 input:
@@ -47,6 +47,21 @@ input:
   - dfam_species:
       type: string
       description: Dfam species name
+  - pfam_url:
+      type: file
+      description: Pfam-A HMM database file (gzipped)
+      pattern: "*.{hmm.gz}"
+      ontologies: []
+  - dfam_urls:
+      type: file
+      description: Dfam HMM database files and indices
+      pattern: "*.{hmm,h3f,h3i,h3m,h3p}"
+      ontologies: []
+  - annot_filter_url:
+      type: file
+      description: Annotation filter rule file URL or path
+      pattern: "*.pm"
+      ontologies: []
 output:
   reference:
     - - meta:
@@ -56,19 +71,74 @@ output:
           type: directory
           description: Genome library build directory
           pattern: "*_genome_lib_build_dir"
+  versions_gunzip:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gunzip:
+          type: string
+          description: The tool name
+      - gunzip --version 2>&1 | sed "1!d;s/^.*(gzip) //; s/ Copyright.*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hmmer:
+          type: string
+          description: The tool name
+      - hmmpress -h 2>&1 | sed "2!d;s/^# HMMER //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_starfusion:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - star-fusion:
+          type: string
+          description: The tool name
+      - 1.15.1:
+          type: string
+          description: The version of STAR-Fusion (hardcoded, not available via CLI)
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gunzip:
+          type: string
+          description: The tool name
+      - gunzip --version 2>&1 | sed "1!d;s/^.*(gzip) //; s/ Copyright.*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hmmer:
+          type: string
+          description: The tool name
+      - hmmpress -h 2>&1 | sed "2!d;s/^# HMMER //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - star-fusion:
+          type: string
+          description: The tool name
+      - 1.15.1:
+          type: string
+          description: The version of STAR-Fusion (hardcoded, not available via CLI)
 authors:
   - "@praveenraj2018"
   - "@martings"
   - "@alanmmobbs93"
   - "@delfiterradas"
   - "@sofiromano"
-
 maintainers:
   - "@praveenraj2018"
