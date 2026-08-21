@@ -26,8 +26,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        file(process.out.hashmap[0][1]).name,
-                        file(process.out.versions[0]).name
+                        sanitizeOutput(process.out.findAll { key, val -> key != "hashmap" }),
+                        process.out.hashmap.collect { meta, hashmap -> [meta, file(hashmap).name] }
                     ).match()
                 }
             )
@@ -54,8 +54,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        file(process.out.hashmap[0][1]).name,
-                        file(process.out.versions[0]).name
+                        sanitizeOutput(process.out.findAll { key, val -> key != "hashmap" }),
+                        process.out.hashmap.collect { meta, hashmap -> [meta, file(hashmap).name] }
                     ).match()
                 }
             )

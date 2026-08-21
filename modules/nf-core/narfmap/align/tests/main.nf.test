@@ -43,7 +43,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
+                    process.out.bam.collect { meta, bamFile -> [meta, "${file(bamFile).name}:readsMD5,${bam(bamFile).getReadsMD5()}"] },
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
@@ -73,7 +73,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
+                    process.out.bam.collect { meta, bamFile -> [meta, "${file(bamFile).name}:readsMD5,${bam(bamFile).getReadsMD5()}"] },
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
@@ -106,7 +106,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
+                    process.out.bam.collect { meta, bamFile -> [meta, "${file(bamFile).name}:readsMD5,${bam(bamFile).getReadsMD5()}"] },
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
@@ -139,7 +139,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
+                    process.out.bam.collect { meta, bamFile -> [meta, "${file(bamFile).name}:readsMD5,${bam(bamFile).getReadsMD5()}"] },
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
@@ -172,7 +172,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
+                    process.out.bam.collect { meta, bamFile -> [meta, "${file(bamFile).name}:readsMD5,${bam(bamFile).getReadsMD5()}"] },
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
@@ -207,7 +207,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
+                    process.out.bam.collect { meta, bamFile -> [meta, file(bamFile).name] },
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()
