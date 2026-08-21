@@ -33,6 +33,7 @@ nextflow_process {
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
+                input[4] = 'bam'
                 """
             }
         }
@@ -72,6 +73,7 @@ nextflow_process {
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                    ]
+                input[4] = 'bam'
                 """
             }
         }
@@ -109,6 +111,7 @@ nextflow_process {
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                    ]
+                input[4] = 'cram'
                 """
             }
         }
@@ -151,6 +154,7 @@ nextflow_process {
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                    ]
+                input[4] = 'cram'
                 """
             }
         }
@@ -188,6 +192,7 @@ nextflow_process {
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                    ]
+                input[4] = 'bam'
                 """
             }
         }

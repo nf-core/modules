@@ -25,6 +25,7 @@ input:
         pattern: "*.{bam,cram}"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
     - bai:
         type: file
         description: BAM / CRAM index file
@@ -60,6 +61,10 @@ input:
         pattern: "*.fasta"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
+  - output_fmt:
+      type: string
+      description: Output format for the alignment. Options are 'bam' or 'cram'
+      pattern: "{bam,cram}"
 output:
   bam:
     - - meta:
@@ -95,7 +100,7 @@ output:
           description: CRAM file after applying BQSR.
           pattern: "*.cram"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_3462" # CRAM
   crai:
     - - meta:
           type: map
