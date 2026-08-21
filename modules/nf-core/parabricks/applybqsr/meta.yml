@@ -21,14 +21,14 @@ input:
           e.g. [ id:'test' ]
     - bam:
         type: file
-        description: Input BAM file
-        pattern: "*.bam"
+        description: Input BAM / CRAM file
+        pattern: "*.{bam,cram}"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
     - bai:
         type: file
-        description: BAM index file
-        pattern: "*.bam.bai"
+        description: BAM / CRAM index file
+        pattern: "*.{bam.bai,cram.crai}"
         ontologies: []
   - - meta3:
         type: map
@@ -83,6 +83,29 @@ output:
           type: file
           description: bai index corresponding to output bam file.
           pattern: "*.bam.bai"
+          ontologies: []
+  cram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'test' ]
+      - "*.cram":
+          type: file
+          description: CRAM file after applying BQSR.
+          pattern: "*.cram"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  crai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'test' ]
+      - "*.crai":
+          type: file
+          description: crai index corresponding to output cram file.
+          pattern: "*.cram.crai"
           ontologies: []
   versions_parabricks:
     - - ${task.process}:

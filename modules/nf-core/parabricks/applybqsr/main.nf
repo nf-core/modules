@@ -14,8 +14,10 @@ process PARABRICKS_APPLYBQSR {
     tuple val(meta5), path(fasta)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    tuple val(meta), path("*.bai"), emit: bai
+    tuple val(meta), path("*.bam"), emit: bam, optional: true
+    tuple val(meta), path("*.bai"), emit: bai, optional: true
+    tuple val(meta), path("*.cram"), emit: cram, optional: true
+    tuple val(meta), path("*.crai"), emit: crai, optional: true
     tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
