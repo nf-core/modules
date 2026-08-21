@@ -1,0 +1,100 @@
+nextflow_workflow {
+    name "Test Subworkflow GUNZIP_FASTA_INDEX"
+    script "../main.nf"
+    workflow "GUNZIP_FASTA_INDEX"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/gunzip_fasta_index"
+    tag "gunzip"
+    tag "gawk"
+    tag "samtools/faidx"
+
+
+    test("Bacteroides fragilis genome [fasta] w/ index") {
+        when {
+
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = true
+                """
+            }
+
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+
+        cleanup {
+            nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/nf-core")
+        }
+    }
+
+    test("Bacteroides fragilis genome [fasta] w/ index no sizes") {
+        when {
+
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = false
+                """
+            }
+
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+
+        cleanup {
+            nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/nf-core")
+        }
+    }
+
+    test("Bacteroides fragilis genome - stub") {
+        options "-stub"
+        when {
+
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+
+        cleanup {
+            nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/nf-core")
+        }
+    }
+}
