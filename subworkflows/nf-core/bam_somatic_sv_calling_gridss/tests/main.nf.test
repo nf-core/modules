@@ -1,13 +1,13 @@
 nextflow_workflow {
 
-    name "Test Subworkflow BAM_TUMOR_NORMAL_SOMATIC_STRUCTURAL_VARIANT_CALLING_GRIDSS"
+    name "Test Subworkflow BAM_SOMATIC_SV_CALLING_GRIDSS"
     script "../main.nf"
-    workflow "BAM_TUMOR_NORMAL_SOMATIC_STRUCTURAL_VARIANT_CALLING_GRIDSS"
+    workflow "BAM_SOMATIC_SV_CALLING_GRIDSS"
     config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "subworkflows/bam_tumor_normal_somatic_structural_variant_calling_gridss"
+    tag "subworkflows/bam_somatic_sv_calling_gridss"
     tag "bwa/index"
     tag "gridss"
     tag "gridss/extractoverlappingfragments"
@@ -53,12 +53,13 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]).join(BWA_INDEX.out.index)
-                input[2] = channel.value([ [], [] ])
-                input[3] = channel.value([
+                input[2] = [ [], [] ]
+                input[3] = [
                     [ id:'gridss_config' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gridss/gridss.properties', checkIfExists: true)
-                ])
-                input[4] = null
+                ]
+                input[4] = [ [], [] ]
+                input[5] = false
                 """
             }
         }
@@ -96,12 +97,16 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]).join(BWA_INDEX.out.index)
-                input[2] = channel.value([ [], [] ])
-                input[3] = channel.value([
+                input[2] = [ [], [] ]
+                input[3] = [
                     [ id:'gridss_config' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gridss/gridss.properties', checkIfExists: true)
-                ])
-                input[4] = params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed'
+                ]
+                input[4] = [
+                    [ id:'target_bed' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                input[5] = true
                 """
             }
         }
@@ -141,12 +146,13 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]).join(BWA_INDEX.out.index)
-                input[2] = channel.value([ [], [] ])
-                input[3] = channel.value([
+                input[2] = [ [], [] ]
+                input[3] = [
                     [ id:'gridss_config' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gridss/gridss.properties', checkIfExists: true)
-                ])
-                input[4] = null
+                ]
+                input[4] = [ [], [] ]
+                input[5] = false
                 """
             }
         }

@@ -9,14 +9,15 @@ include { GRIDSS_CALL                                                           
 include { GRIDSS_SOMATICFILTER                                                            } from '../../../modules/nf-core/gridss/somaticfilter/main'
 
 
-workflow BAM_TUMOR_NORMAL_SOMATIC_STRUCTURAL_VARIANT_CALLING_GRIDSS {
+workflow BAM_SOMATIC_SV_CALLING_GRIDSS {
 
     take:
-    ch_input_bam            // channel: [ val(meta), [ tumor_bam, normal_bam ], [tumor_bai, normal_bai] ]
-    ch_fasta_fai_bwaindex   // channel: [ val(meta2), fasta, fai, bwa_index ]
-    ch_pondir               // channel: [ val(meta3), [ pondir ] ]
-    ch_gridss_config        // channel: [ val(meta4), [ gridss_config ] ]
-    val_target_bed          // string:  target BED for panel/exome data, null to run untargeted
+    ch_input_bam            // channel: mandatory [ val(meta), [ tumor_bam, normal_bam ], [tumor_bai, normal_bai] ]
+    ch_fasta_fai_bwaindex   // channel: mandatory [ val(meta2), fasta, fai, bwa_index ]
+    ch_pondir               // channel: mandatory [ val(meta3), [ pondir ] ]
+    ch_gridss_config        // channel: optional  [ val(meta4), [ gridss_config ] ]
+    ch_target_bed           // channel: optional  [ val(meta5), [ target_bed ] ]
+    is_targeted             // boolean: mandatory true for panel/exome data, false to run untargeted
 
     main:
 
@@ -31,9 +32,7 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_STRUCTURAL_VARIANT_CALLING_GRIDSS {
 
     // Targeted (panel/exome) data is subset to the fragments overlapping the target
     // regions before preprocessing, untargeted data goes straight to preprocessing
-    if (val_target_bed) {
-
-        def ch_target_bed = channel.value(tuple([ id:'target_bed' ], file(val_target_bed, checkIfExists: true)))
+    if (is_targeted) {
 
         GRIDSS_EXTRACTOVERLAPPINGFRAGMENTS_NORMAL(
             ch_input_normal,

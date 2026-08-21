@@ -52,16 +52,23 @@ input:
         assemble and call steps. Pass [ [], [] ] to use the GRIDSS defaults.
         Structure: [ val(meta4), path(gridss_config) ]
       pattern: "*.properties"
-  - val_target_bed:
-      type: string
+  - ch_target_bed:
+      type: file
       description: |
-        Path to a BED file of target regions for panel/exome data. When set, reads
-        overlapping the targets are extracted with gridss_extract_overlapping_fragments
-        and re-indexed before preprocessing. Pass null to run on the full BAM files.
-        When set, `ext.prefix` must disambiguate the tumor and normal outputs of
-        GRIDSS_EXTRACTOVERLAPPINGFRAGMENTS, which otherwise both default to
-        `${meta.id}.subset`.
+        BED file of target regions for panel/exome data. Only used when `is_targeted`
+        is true, in which case reads overlapping the targets are extracted with
+        gridss_extract_overlapping_fragments and re-indexed before preprocessing.
+        Pass [ [], [] ] when running untargeted.
+        Structure: [ val(meta5), path(target_bed) ]
       pattern: "*.bed"
+  - is_targeted:
+      type: boolean
+      description: |
+        Set to true for panel/exome data to subset the BAM files to the fragments
+        overlapping `ch_target_bed` before preprocessing, false to run GRIDSS on the
+        full BAM files. When true, `ext.prefix` must disambiguate the tumor and normal
+        outputs of GRIDSS_EXTRACTOVERLAPPINGFRAGMENTS, which otherwise both default to
+        `${meta.id}.subset`.
 output:
   - gridss_vcf:
       type: file
