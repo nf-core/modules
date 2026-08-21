@@ -9,10 +9,10 @@ process SEMIBIN_CONCATENATEFASTA {
 
     input:
     tuple val(meta), path(fastas)
-    val compress_out
 
     output:
     tuple val(meta), path("*.fasta*"), emit: concat_fasta
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('semibin'), eval("SemiBin2 --version"), topic: versions, emit: versions_semibin
 
     when:
@@ -22,20 +22,28 @@ process SEMIBIN_CONCATENATEFASTA {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def outfile = compress_out ? "${prefix}.fasta.gz" : "${prefix}.fasta"
     """
     SemiBin2 \\
         ${args} \\
         concatenate_fasta \\
         ${args2} \\
         --input-fasta ${fastas} \\
-        --output ${outfile}
+        --output .
+
+    if [ -f concatenated.fa ]; then
+       mv concatenated.fa ${prefix}.fasta
+    fi
+
+    if [ -f concatenated.fa.gz ]; then
+       mv concatenated.fa.gz ${prefix}.fasta.gz
+    fi
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def stub_command = compress_out ? "echo '' | gzip > ${prefix}.fasta.gz" : "echo '' > ${prefix}.fasta"
+    def stub_command = task.ext.args ==~ /--compression/ ? "echo '' | gzip > ${prefix}.fasta.gz" : "echo '' > ${prefix}.fasta"
     """
     ${stub_command}
+    touch SemiBinRun.log
     """
 }
