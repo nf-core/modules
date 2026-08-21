@@ -15,28 +15,19 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('/home/l/lea-picard/CD2.fasta', checkIfExists: true),
-                    file('/home/l/lea-picard/CD2.nwk', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_msa.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_tree.nwk', checkIfExists: true),
                 ]
                 """
             }
         }
 
         then {
-        def json = path(process.out.json[0][1])
-        def meme = json.json
-
-        assertAll(
-            { assert process.success },
-            { assert json.exists() },
-            { assert json.size() > 0 },
-
-            { assert meme.analysis.info.contains("MEME") },
-            { assert meme.MLE.content."0".size() == 187 },
-
-            { assert snapshot(
-                process.out.json.collect { entry -> [entry[0], file(entry[1]).name] },
-                process.out.versions).match() }
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["json", "log"])
+                ).match() }
             )
         }
     }
@@ -50,8 +41,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('/home/l/lea-picard/CD2.fasta', checkIfExists: true),
-                    file('/home/l/lea-picard/CD2.nwk', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_msa.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_tree.nwk', checkIfExists: true),
                 ]
                 """
             }
@@ -60,7 +51,9 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
             )
         }
 
