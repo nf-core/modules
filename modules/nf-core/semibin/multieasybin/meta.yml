@@ -1,4 +1,4 @@
-name: semibin_singleeasybin
+name: semibin_multieasybin
 description: metagenomic binning with self-supervised learning
 keywords:
   - binning
@@ -11,7 +11,8 @@ tools:
       documentation: "https://semibin.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/BigDataBiology/SemiBin"
       doi: "10.1038/s41467-022-29843-y"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:semibin
 input:
   - - meta:
@@ -21,61 +22,78 @@ input:
           e.g. [ id:'test' ]
     - fasta:
         type: file
-        description: Fasta file of the assembled contigs
+        description: |
+          Fasta file of concatenated contigs from all samples to be binned. They should have
+          a header like: `>S1:<contig1>`, `S2:<contig1>`. The `:` separator between sample and
+          contig name can be configured.
         pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
     - bam:
         type: file
-        description: BAM/CRAM/SAM file
+        description: A list of BAM/CRAM files - one per sample, mapped to the concatenated reference.
         pattern: "*.{bam,cram}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
+    - depths:
+        type: file
+        description: |
+          Optionally, instead of BAM files, a list of text files in Strobealign --aemb format.
+          One per sample. Requires at least 5 samples.
+        pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
+  bins:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/bins/*.fa.gz:
+          type: file
+          description: Output bins from all samples (prefixed with sample name)
+          pattern: "*.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP format
   csv:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - ${prefix}/*.csv:
+      - ${prefix}/samples/*/*.csv:
           type: file
-          description: generated files
+          description: CSV files describing the binning run, per sample.
           pattern: "*.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
-  model:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - ${prefix}/*.h5:
-          type: file
-          description: model file
-          pattern: "*.h5"
-          ontologies: []
   tsv:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - ${prefix}/*.tsv:
+      - ${prefix}/samples/*/*.tsv:
           type: file
-          description: information of bins
+          description: TSV files describing the binning run, per sample.
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  output_fasta:
+  log:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - ${prefix}/output_bins/*.fa.gz:
+      - ${prefix}/SemiBinRun.log:
           type: file
-          description: precluster fasta files
-          pattern: "*.fa"
-          ontologies: []
+          description: Log file of SemiBin run
+          pattern: "${prefix}/SemiBinRun.log"
+          ontologies:
+            - edam: http://edamontology.org/data_2526 # Text
   versions_semibin:
     - - ${task.process}:
           type: string
@@ -83,7 +101,7 @@ output:
       - SemiBin:
           type: string
           description: The name of the tool
-      - "SemiBin2 --version":
+      - SemiBin2 --version:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -94,13 +112,13 @@ topics:
       - SemiBin:
           type: string
           description: The name of the tool
-      - "SemiBin2 --version":
+      - SemiBin2 --version:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
-  - "@BigDataBiology"
+  - "@prototaxites"
 maintainers:
-  - "@BigDataBiology"
+  - "@prototaxites"
 containers:
   docker:
     linux/arm64:
