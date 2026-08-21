@@ -12,7 +12,7 @@ process VCONTACT3_RUN {
     path database
 
     output:
-    tuple val(meta), path("vcontact3_output/"), emit: results
+    tuple val(meta), path("${prefix}/"), emit: results
     tuple val("${task.process}"), val('vcontact3'), val('3.1.6'), emit: versions_vcontact3, topic: versions
 
     when:
@@ -20,21 +20,23 @@ process VCONTACT3_RUN {
 
     script:
     def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     vcontact3 run \\
         -n ${genomes.join(' ')} \\
-        -o vcontact3_output/ \\
+        -o ${prefix}/ \\
         --threads ${task.cpus} \\
         -d ${database} \\
         ${args}
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p vcontact3_output/
-    touch vcontact3_output/clusters.csv
-    touch vcontact3_output/merged_df.csv
-    touch vcontact3_output/vContact_contig_id.txt
+    mkdir -p ${prefix}/
+    touch ${prefix}/clusters.csv
+    touch ${prefix}/merged_df.csv
+    touch ${prefix}/vContact_contig_id.txt
     """
 }
