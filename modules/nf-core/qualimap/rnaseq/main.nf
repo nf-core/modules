@@ -13,7 +13,7 @@ process QUALIMAP_RNASEQ {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    tuple val("${task.process}"), val('qualimap'), eval("qualimap 2>&1 | sed -n 's/.*QualiMap v.\\(.*\\)/\\1/p'"), emit: versions_qualimap, topic: versions
+    tuple val("${task.process}"), val('qualimap'), eval("qualimap -h | sed -n 's/^QualiMap v.//p'"), topic: versions, emit: versions_qualimap
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,14 +35,14 @@ process QUALIMAP_RNASEQ {
     mkdir -p tmp
     export _JAVA_OPTIONS=-Djava.io.tmpdir=./tmp
     qualimap \\
-        --java-mem-size=$memory \\
+        --java-mem-size=${memory} \\
         rnaseq \\
-        $args \\
-        -bam $bam \\
-        -gtf $gtf \\
-        -p $strandedness \\
-        $paired_end \\
-        -outdir $prefix
+        ${args} \\
+        -bam ${bam} \\
+        -gtf ${gtf} \\
+        -p ${strandedness} \\
+        ${paired_end} \\
+        -outdir ${prefix}
     """
 
     stub:

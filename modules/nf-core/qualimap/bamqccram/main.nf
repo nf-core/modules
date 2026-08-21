@@ -15,7 +15,8 @@ process QUALIMAP_BAMQCCRAM {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path  "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('qualimap'), eval("qualimap -h | sed -n 's/^QualiMap v.//p'"), topic: versions, emit: versions_qualimap
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +27,7 @@ process QUALIMAP_BAMQCCRAM {
 
     def collect_pairs = meta.single_end ? '' : '--collect-overlap-pairs'
     def memory = (task.memory.mega*0.8).intValue() + 'M'
-    def regions = gff ? "--gff $gff" : ''
+    def regions = gff ? "--gff ${gff}" : ''
 
     def strandedness = 'non-strand-specific'
     if (meta.strandedness == 'forward') {
@@ -34,6 +35,7 @@ process QUALIMAP_BAMQCCRAM {
     } else if (meta.strandedness == 'reverse') {
         strandedness = 'strand-specific-reverse'
     }
+
     """
     unset DISPLAY
     mkdir -p tmp
@@ -41,32 +43,20 @@ process QUALIMAP_BAMQCCRAM {
 
     samtools view -hb -T ${fasta} ${cram} |
     qualimap \\
-        --java-mem-size=$memory \\
+        --java-mem-size=${memory} \\
         bamqc \\
-        $args \\
+        ${args} \\
         -bam /dev/stdin \\
-        $regions \\
-        -p $strandedness \\
-        $collect_pairs \\
-        -outdir $prefix \\
-        -nt $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        qualimap: \$(echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+        ${regions} \\
+        -p ${strandedness} \\
+        ${collect_pairs} \\
+        -outdir ${prefix} \\
+        -nt ${task.cpus}
     """
 
     stub:
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        qualimap: \$(echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }
