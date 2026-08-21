@@ -29,10 +29,10 @@ nextflow_process {
                 { assert snapshot(
                     process.out.metrics,
                     process.out.k_sweep,
-                    process.out.selected
-                ).match() },
-                { assert process.out.versions },
-                { assert path(process.out.versions[0]).yaml }
+                    process.out.selected,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
@@ -60,10 +60,10 @@ nextflow_process {
                     process.out.metrics,
                     process.out.k_sweep,
                     process.out.selected,
-                    process.out.plots
-                ).match() },
-                { assert process.out.versions },
-                { assert path(process.out.versions[0]).yaml }
+                    process.out.plots,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
