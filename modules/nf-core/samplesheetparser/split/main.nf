@@ -1,4 +1,4 @@
-process SAMPLESHEETPARSER_INFO {
+process SAMPLESHEETPARSER_SPLIT {
     tag "$meta.id"
     label 'process_single'
 
@@ -9,9 +9,11 @@ process SAMPLESHEETPARSER_INFO {
 
     input:
     tuple val(meta), path(samplesheet)
+    val by
 
     output:
-    tuple val(meta), path("*.info.json"), emit: json
+    tuple val(meta), path("split/*.csv"), emit: samplesheets
+    tuple val(meta), path("*.split.json"), emit: json
     tuple val("${task.process}"), val('samplesheet-parser'), eval("samplesheet --version | sed 's/samplesheet-parser //'"), topic: versions, emit: versions_samplesheetparser
 
     when:
@@ -20,15 +22,25 @@ process SAMPLESHEETPARSER_INFO {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if (!['project', 'lane'].contains(by.toLowerCase())) {
+        error "by must be 'project' or 'lane', got: ${by}"
+    }
     """
-    samplesheet info \\
+    mkdir -p split
+
+    samplesheet split \\
+        --by ${by} \\
+        --output-dir split \\
+        --format json \\
         ${args} \\
-        ${samplesheet} > ${prefix}.info.json
+        ${samplesheet} > ${prefix}.split.json
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.info.json
+    mkdir -p split
+    touch split/stub_SampleSheet.csv
+    touch ${prefix}.split.json
     """
 }
