@@ -1,0 +1,69 @@
+name: "custom_eigenvectotsv"
+description: Convert a PLINK2 .eigenvec file into a tab-separated file with a standardised sample_id column
+keywords:
+  - pca
+  - eigenvec
+  - plink2
+  - tsv
+  - conversion
+tools:
+  - "gawk":
+      description: "GNU implementation of the awk programming language"
+      homepage: "https://www.gnu.org/software/gawk/"
+      documentation: "https://www.gnu.org/software/gawk/manual/gawk.html"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - eigenvec:
+        type: file
+        description: Eigenvector file produced by PLINK2 PCA (--pca), with header starting with '#FID IID PC1 ...'
+        pattern: "*.eigenvec"
+
+        ontologies: []
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: Tab-separated eigenvector file with the IID column renamed to sample_id
+          pattern: "*.tsv"
+
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_gawk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gawk:
+          type: string
+          description: The name of the tool
+      - awk --version | head -1 | sed 's/GNU Awk //;s/,.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gawk:
+          type: string
+          description: The name of the tool
+      - awk --version | head -1 | sed 's/GNU Awk //;s/,.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@dbaku42"
+maintainers:
+  - "@dbaku42"

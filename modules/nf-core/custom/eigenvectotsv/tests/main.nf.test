@@ -1,0 +1,55 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_EIGENVECTOTSV"
+    script "../main.nf"
+    process "CUSTOM_EIGENVECTOTSV"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/eigenvectotsv"
+
+    test("homo_sapiens - test.eigenvec") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/clustering/test.eigenvec', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - test.eigenvec - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/clustering/test.eigenvec', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
