@@ -1,5 +1,5 @@
 ## optimized nvidia base container for older python and tensorflow
-FROM nvcr.io/nvidia/tensorflow:20.10-tf1-py3@sha256:9206ed88af83ca5dd4ba6bd95cf6aff6f8432ce98699aa43c216222747dc4500
+FROM nvcr.io/nvidia/tensorflow:20.12-tf1-py3@sha256:312147204a65c65ba25a75944333105493772121c11c33e769919ea10e9a256f
 
 ARG NUMORPH_3DUNET_VERSION="1.0.9"
 
