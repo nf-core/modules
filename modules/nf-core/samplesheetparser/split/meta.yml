@@ -37,9 +37,9 @@ input:
         pattern: "*.{csv,CSV}"
         ontologies:
           - edam: "http://edamontology.org/format_3752"
-  - - by:
-        type: string
-        description: Grouping key — either 'project' or 'lane'
+  - by:
+      type: string
+      description: Grouping key — either 'project' or 'lane'
 output:
   samplesheets:
     - - meta:
@@ -47,7 +47,8 @@ output:
           description: Groovy Map containing sample information
       - "split/*.csv":
           type: file
-          description: Per-group SampleSheet.csv files written to the split/ subdirectory
+          description: Per-group SampleSheet.csv files written to the split/
+            subdirectory
           pattern: "split/*.csv"
           ontologies:
             - edam: "http://edamontology.org/format_3752"
