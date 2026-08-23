@@ -1,0 +1,63 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core subworkflows test expression_proteinactivity
+nextflow_workflow {
+
+    name "Test Subworkflow EXPRESSION_PROTEINACTIVITY"
+    script "../main.nf"
+    workflow "EXPRESSION_PROTEINACTIVITY"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/expression_proteinactivity"
+    tag "salmon"
+    tag "salmon/index"
+    tag "salmon/quant"
+    tag "aracne"
+    tag "viper"
+
+    test("homo_sapiens paired-end [fastq]") {
+
+        setup {
+            run("SALMON_INDEX") {
+                script "../../../../modules/nf-core/salmon/index/main.nf"
+                process {
+                """
+                input[0] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))        // genome_fasta
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)) // transcriptome_fasta
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                make_index = false
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))        // genome_fasta
+                input[2] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)) // transcriptome_fasta
+                input[3] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true))          // genome_gtf
+                input[4] = SALMON_INDEX.out.index
+                input[5] = make_index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.index },
+                { assert workflow.out.json_info },
+                { assert workflow.out.results },
+                { assert snapshot(
+                    workflow.out.lib_format_counts,
+                    workflow.out.versions).match() }
+            )
+        }
+    }
+}
