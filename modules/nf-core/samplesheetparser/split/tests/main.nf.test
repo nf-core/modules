@@ -26,7 +26,23 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    [
+                        samplesheets: process.out.samplesheets,
+                        // The JSON report echoes the split output file paths; snapshot
+                        // them as basenames so the report is reproducible regardless
+                        // of the (volatile) work directory.
+                        json: process.out.json.collect { meta, jsonFile ->
+                            def text = file(jsonFile).text
+                            def report = text ? new groovy.json.JsonSlurper().parseText(text) : text
+                            if (report instanceof Map && report.files) {
+                                report.files = report.files.collectEntries { k, v -> [ k, file(v).name ] }
+                            }
+                            [ meta, report ]
+                        },
+                        versions: process.out.versions_samplesheetparser
+                    ]
+                ).match() }
             )
         }
     }
@@ -48,7 +64,23 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    [
+                        samplesheets: process.out.samplesheets,
+                        // The JSON report echoes the split output file paths; snapshot
+                        // them as basenames so the report is reproducible regardless
+                        // of the (volatile) work directory.
+                        json: process.out.json.collect { meta, jsonFile ->
+                            def text = file(jsonFile).text
+                            def report = text ? new groovy.json.JsonSlurper().parseText(text) : text
+                            if (report instanceof Map && report.files) {
+                                report.files = report.files.collectEntries { k, v -> [ k, file(v).name ] }
+                            }
+                            [ meta, report ]
+                        },
+                        versions: process.out.versions_samplesheetparser
+                    ]
+                ).match() }
             )
         }
     }
@@ -72,7 +104,23 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    [
+                        samplesheets: process.out.samplesheets,
+                        // The JSON report echoes the split output file paths; snapshot
+                        // them as basenames so the report is reproducible regardless
+                        // of the (volatile) work directory.
+                        json: process.out.json.collect { meta, jsonFile ->
+                            def text = file(jsonFile).text
+                            def report = text ? new groovy.json.JsonSlurper().parseText(text) : text
+                            if (report instanceof Map && report.files) {
+                                report.files = report.files.collectEntries { k, v -> [ k, file(v).name ] }
+                            }
+                            [ meta, report ]
+                        },
+                        versions: process.out.versions_samplesheetparser
+                    ]
+                ).match() }
             )
         }
     }
