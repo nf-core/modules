@@ -89,7 +89,7 @@ output:
       - ska:
           type: string
           description: The name of the tool
-      - "ska --version | grep Version | sed '1!d ; s/Version: //'":
+      - "ska --version | sed -n 's/Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -101,7 +101,7 @@ topics:
       - ska:
           type: string
           description: The name of the tool
-      - "ska --version | grep Version | sed '1!d ; s/Version: //'":
+      - "ska --version | sed -n 's/Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
 
