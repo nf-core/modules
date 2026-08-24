@@ -2,6 +2,14 @@
     "Merge two V1 sheets into V2 - stub": {
         "content": [
             {
+                "json": [
+                    [
+                        {
+                            "id": "test_stub"
+                        },
+                        "test_stub.merge.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "samplesheet": [
                     [
                         {
@@ -10,24 +18,16 @@
                         "test_stub.merged.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "json": [
-                    [
-                        {
-                            "id": "test_stub"
-                        },
-                        ""
-                    ]
-                ],
-                "versions": [
+                "versions_samplesheetparser": [
                     [
                         "SAMPLESHEETPARSER_MERGE",
                         "samplesheet-parser",
-                        "2.5.0"
+                        "2.5.1"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-22T19:45:30.61577",
+        "timestamp": "2026-08-24T08:43:40.957926",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -36,6 +36,14 @@
     "Merge two V1 sheets into V2": {
         "content": [
             {
+                "json": [
+                    [
+                        {
+                            "id": "test_merge_v2"
+                        },
+                        "test_merge_v2.merge.json:md5,0e86e774409ae31b836aea6cb6116264"
+                    ]
+                ],
                 "samplesheet": [
                     [
                         {
@@ -44,39 +52,16 @@
                         "test_merge_v2.merged.csv:md5,ad2adf8639e375a8d5dc9c0d4413529f"
                     ]
                 ],
-                "json": [
-                    [
-                        {
-                            "id": "test_merge_v2"
-                        },
-                        {
-                            "has_conflicts": false,
-                            "sample_count": 10,
-                            "output_path": "test_merge_v2.merged.csv",
-                            "source_versions": {
-                                "flowcell_samplesheet.v1.csv": "V1",
-                                "flowcell_samplesheet_b.v1.csv": "V1"
-                            },
-                            "summary": "OK - 0 conflict(s), 0 warning(s), 10 sample(s) merged",
-                            "conflicts": [
-                                
-                            ],
-                            "warnings": [
-                                
-                            ]
-                        }
-                    ]
-                ],
-                "versions": [
+                "versions_samplesheetparser": [
                     [
                         "SAMPLESHEETPARSER_MERGE",
                         "samplesheet-parser",
-                        "2.5.0"
+                        "2.5.1"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-22T19:45:09.130186",
+        "timestamp": "2026-08-24T08:43:23.942102",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -85,6 +70,14 @@
     "Merge two V1 sheets into V1": {
         "content": [
             {
+                "json": [
+                    [
+                        {
+                            "id": "test_merge_v1"
+                        },
+                        "test_merge_v1.merge.json:md5,272847a17d92173177ce4525fce18943"
+                    ]
+                ],
                 "samplesheet": [
                     [
                         {
@@ -93,39 +86,16 @@
                         "test_merge_v1.merged.csv:md5,af99a1dd72d220959822f0efddc7ca91"
                     ]
                 ],
-                "json": [
-                    [
-                        {
-                            "id": "test_merge_v1"
-                        },
-                        {
-                            "has_conflicts": false,
-                            "sample_count": 10,
-                            "output_path": "test_merge_v1.merged.csv",
-                            "source_versions": {
-                                "flowcell_samplesheet.v1.csv": "V1",
-                                "flowcell_samplesheet_b.v1.csv": "V1"
-                            },
-                            "summary": "OK - 0 conflict(s), 0 warning(s), 10 sample(s) merged",
-                            "conflicts": [
-                                
-                            ],
-                            "warnings": [
-                                
-                            ]
-                        }
-                    ]
-                ],
-                "versions": [
+                "versions_samplesheetparser": [
                     [
                         "SAMPLESHEETPARSER_MERGE",
                         "samplesheet-parser",
-                        "2.5.0"
+                        "2.5.1"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-22T19:44:59.396468",
+        "timestamp": "2026-08-24T08:43:15.745769",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -134,6 +104,14 @@
     "Merge two V2 sheets into V2": {
         "content": [
             {
+                "json": [
+                    [
+                        {
+                            "id": "test_merge_v2_v2"
+                        },
+                        "test_merge_v2_v2.merge.json:md5,3b6fc9921c0cfd4ba921cb10876ea985"
+                    ]
+                ],
                 "samplesheet": [
                     [
                         {
@@ -142,39 +120,16 @@
                         "test_merge_v2_v2.merged.csv:md5,a0b87079f695f84979160ed3234086d8"
                     ]
                 ],
-                "json": [
-                    [
-                        {
-                            "id": "test_merge_v2_v2"
-                        },
-                        {
-                            "has_conflicts": false,
-                            "sample_count": 10,
-                            "output_path": "test_merge_v2_v2.merged.csv",
-                            "source_versions": {
-                                "flowcell_samplesheet.v2.csv": "V2",
-                                "flowcell_samplesheet_b.v2.csv": "V2"
-                            },
-                            "summary": "OK - 0 conflict(s), 0 warning(s), 10 sample(s) merged",
-                            "conflicts": [
-                                
-                            ],
-                            "warnings": [
-                                
-                            ]
-                        }
-                    ]
-                ],
-                "versions": [
+                "versions_samplesheetparser": [
                     [
                         "SAMPLESHEETPARSER_MERGE",
                         "samplesheet-parser",
-                        "2.5.0"
+                        "2.5.1"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-22T19:45:20.207084",
+        "timestamp": "2026-08-24T08:43:32.795415",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"

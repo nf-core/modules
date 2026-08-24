@@ -2,6 +2,14 @@
     "Split V1 sheet by project - stub": {
         "content": [
             {
+                "json": [
+                    [
+                        {
+                            "id": "test_stub"
+                        },
+                        "test_stub.split.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "samplesheets": [
                     [
                         {
@@ -10,24 +18,16 @@
                         "stub_SampleSheet.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "json": [
-                    [
-                        {
-                            "id": "test_stub"
-                        },
-                        ""
-                    ]
-                ],
-                "versions": [
+                "versions_samplesheetparser": [
                     [
                         "SAMPLESHEETPARSER_SPLIT",
                         "samplesheet-parser",
-                        "2.5.0"
+                        "2.5.1"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-22T19:46:05.248364",
+        "timestamp": "2026-08-24T08:44:05.617102",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -36,6 +36,14 @@
     "Split V1 sheet by project": {
         "content": [
             {
+                "json": [
+                    [
+                        {
+                            "id": "test_split_project"
+                        },
+                        "test_split_project.split.json:md5,784b714bc9ed38ee5e3e10a2f5943c1a"
+                    ]
+                ],
                 "samplesheets": [
                     [
                         {
@@ -47,40 +55,16 @@
                         ]
                     ]
                 ],
-                "json": [
-                    [
-                        {
-                            "id": "test_split_project"
-                        },
-                        {
-                            "source_version": "V1",
-                            "by": "project",
-                            "output_dir": "split",
-                            "summary": "Split into 2 file(s), 5 sample(s) total, 0 warning(s)",
-                            "files": {
-                                "ProjectAlpha": "ProjectAlpha_SampleSheet.csv",
-                                "ProjectBeta": "ProjectBeta_SampleSheet.csv"
-                            },
-                            "sample_counts": {
-                                "ProjectAlpha": 3,
-                                "ProjectBeta": 2
-                            },
-                            "warnings": [
-                                
-                            ]
-                        }
-                    ]
-                ],
-                "versions": [
+                "versions_samplesheetparser": [
                     [
                         "SAMPLESHEETPARSER_SPLIT",
                         "samplesheet-parser",
-                        "2.5.0"
+                        "2.5.1"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-22T19:45:42.332249",
+        "timestamp": "2026-08-24T08:43:49.115804",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -89,6 +73,14 @@
     "Split V2 sheet by lane": {
         "content": [
             {
+                "json": [
+                    [
+                        {
+                            "id": "test_split_lane"
+                        },
+                        "test_split_lane.split.json:md5,74573718047c1e01fdfbc1e92ecd6615"
+                    ]
+                ],
                 "samplesheets": [
                     [
                         {
@@ -100,40 +92,16 @@
                         ]
                     ]
                 ],
-                "json": [
-                    [
-                        {
-                            "id": "test_split_lane"
-                        },
-                        {
-                            "source_version": "V2",
-                            "by": "lane",
-                            "output_dir": "split",
-                            "summary": "Split into 2 file(s), 5 sample(s) total, 0 warning(s)",
-                            "files": {
-                                "1": "1_SampleSheet.csv",
-                                "2": "2_SampleSheet.csv"
-                            },
-                            "sample_counts": {
-                                "1": 3,
-                                "2": 2
-                            },
-                            "warnings": [
-                                
-                            ]
-                        }
-                    ]
-                ],
-                "versions": [
+                "versions_samplesheetparser": [
                     [
                         "SAMPLESHEETPARSER_SPLIT",
                         "samplesheet-parser",
-                        "2.5.0"
+                        "2.5.1"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-22T19:45:54.265389",
+        "timestamp": "2026-08-24T08:43:57.337404",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"

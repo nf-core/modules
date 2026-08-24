@@ -29,23 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    [
-                        samplesheet: process.out.samplesheet,
-                        // The JSON report echoes the output path; snapshot it with the
-                        // path reduced to a basename so the report is reproducible
-                        // regardless of the (volatile) work directory.
-                        json: process.out.json.collect { meta, jsonFile ->
-                            def text = file(jsonFile).text
-                            def report = text ? new groovy.json.JsonSlurper().parseText(text) : text
-                            if (report instanceof Map && report.output_path) {
-                                report.output_path = file(report.output_path).name
-                            }
-                            [ meta, report ]
-                        },
-                        versions: process.out.versions_samplesheetparser
-                    ]
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -70,23 +54,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    [
-                        samplesheet: process.out.samplesheet,
-                        // The JSON report echoes the output path; snapshot it with the
-                        // path reduced to a basename so the report is reproducible
-                        // regardless of the (volatile) work directory.
-                        json: process.out.json.collect { meta, jsonFile ->
-                            def text = file(jsonFile).text
-                            def report = text ? new groovy.json.JsonSlurper().parseText(text) : text
-                            if (report instanceof Map && report.output_path) {
-                                report.output_path = file(report.output_path).name
-                            }
-                            [ meta, report ]
-                        },
-                        versions: process.out.versions_samplesheetparser
-                    ]
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -111,23 +79,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    [
-                        samplesheet: process.out.samplesheet,
-                        // The JSON report echoes the output path; snapshot it with the
-                        // path reduced to a basename so the report is reproducible
-                        // regardless of the (volatile) work directory.
-                        json: process.out.json.collect { meta, jsonFile ->
-                            def text = file(jsonFile).text
-                            def report = text ? new groovy.json.JsonSlurper().parseText(text) : text
-                            if (report instanceof Map && report.output_path) {
-                                report.output_path = file(report.output_path).name
-                            }
-                            [ meta, report ]
-                        },
-                        versions: process.out.versions_samplesheetparser
-                    ]
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -154,23 +106,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    [
-                        samplesheet: process.out.samplesheet,
-                        // The JSON report echoes the output path; snapshot it with the
-                        // path reduced to a basename so the report is reproducible
-                        // regardless of the (volatile) work directory.
-                        json: process.out.json.collect { meta, jsonFile ->
-                            def text = file(jsonFile).text
-                            def report = text ? new groovy.json.JsonSlurper().parseText(text) : text
-                            if (report instanceof Map && report.output_path) {
-                                report.output_path = file(report.output_path).name
-                            }
-                            [ meta, report ]
-                        },
-                        versions: process.out.versions_samplesheetparser
-                    ]
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
