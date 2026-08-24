@@ -18,7 +18,7 @@ process SOUPORCELL {
     tuple val(meta), path("*/ambient_rna.txt")      , emit: ambient_rna
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     // (See this issue: https://github.com/wheaton5/souporcell/issues/262)
-    tuple val("${task.process}"), val('sortmerna'), val("2.5"), topic: versions, emit: versions_sortmerna
+    tuple val("${task.process}"), val('souporcell'), val("2.5"), topic: versions, emit: versions_souporcell
 
     when:
     task.ext.when == null || task.ext.when

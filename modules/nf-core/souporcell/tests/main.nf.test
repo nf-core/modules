@@ -3,21 +3,25 @@ nextflow_process {
 
     name "Test Process SOUPORCELL"
     script "../main.nf"
+    config "./nextflow.config"
     process "SOUPORCELL"
 
     tag "modules"
     tag "modules_nfcore"
     tag "souporcell"
 
-    test("homo sapiens - bam and barcodes") {
+    test("homo sapiens - bam and barcodes - ext.args") {
         when {
+            params{
+                module_args = ""//--skip_remap SKIP_REMAP --restarts 0 --ignore True"
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
-                    2
+                    1
                 ]
                 input[1] = [
                     [ id:'genome' ],
@@ -35,9 +39,13 @@ nextflow_process {
         }
     }
 
+
     test("homo sapience - bam and barcodes - stub") {
         options "-stub"
         when {
+            params{
+                module_args = ""
+            }
             process {
                 """
                 input[0] = [
