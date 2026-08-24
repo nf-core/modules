@@ -48,7 +48,10 @@ input:
           Optional per-domain hit tables from hmmsearch (--domtblout). When supplied, the
           ranked table gains the target and profile lengths and, for each of the three
           coordinate sets, the outer bounds of the match, the size of the union of the
-          pair's domains, and the number of disjoint pieces it falls into.
+          pair's domains, and the number of separate stretches that union spans. Every
+          domain hmmsearch reported is counted, whatever its own significance: a hit can
+          clear the full-sequence threshold while each of its domains is weak in isolation,
+          and dropping those would leave exactly such hits without coordinates.
         pattern: "*.domtbl.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
@@ -65,7 +68,9 @@ output:
             TSV file with ranked hmmer results: one row per (accno, profile) pair with
             profile, accno, profile_desc, evalue, score and rank. When domtblouts are
             supplied it also carries tlen and qlen, plus from, to, len and n_islands for
-            each of the hmm, ali and env coordinate sets.
+            each of the hmm, ali and env coordinate sets. n_islands is 1 when the domains
+            merge into a single continuous stretch and rises as they scatter; coordinates
+            are inclusive, so domains that abut with no gap between them count as one.
           pattern: "*.hmmrank.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format

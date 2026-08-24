@@ -31,10 +31,12 @@ process HMMER_HMMRANK {
             group_by(accno, profile) %>%
             # Sorted by start, so anything overlapping a row lies before it. cummax(t) is how far
             # right the rows up to here reach; lag() shifts that so each row sees how far
-            # everything before it reached. A start beyond that opens a new island, and since
-            # starts are sorted no later domain can fill the gap either. Note the default must be
+            # everything before it reached. A start past that opens a new island, and since
+            # starts are sorted no later domain can fill the gap either. Coordinates are
+            # inclusive, so a domain starting exactly one position beyond the previous reach
+            # continues it rather than opening a gap: hence the + 1L. Note the default must be
             # 0L, not 0: lag() casts it to the column type and errors on a lossy double cast.
-            mutate(island = cumsum(f > lag(cummax(t), default = 0L))) %>%
+            mutate(island = cumsum(f > lag(cummax(t), default = 0L) + 1L)) %>%
             group_by(accno, profile, island) %>%
             summarise(s = min(f), e = max(t), .groups = 'drop_last') %>%
             summarise(
