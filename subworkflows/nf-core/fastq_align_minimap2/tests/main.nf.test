@@ -1,0 +1,122 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTQ_ALIGN_MINIMAP2"
+    script "../main.nf"
+    workflow "FASTQ_ALIGN_MINIMAP2"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_align_minimap2"
+    tag "cat/fastq"
+    tag "minimap2/align"
+    tag "subworkflows/bam_stats_samtools"
+
+    test("nanopore fastq with concatenation") {
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists:true)
+                    ]
+                ]
+
+                input[1] = Channel.value([
+                    [ id:'sarscov2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists:true)
+                ])
+
+                input[2] = 'bai'
+                input[3] = true
+                input[4] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert file(workflow.out.merged_fastq[0][1]).exists() },
+                { assert file(workflow.out.bam[0][1]).exists() },
+                { assert file(workflow.out.index[0][1]).exists() },
+                { assert snapshot(
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats
+                ).match() }
+            )
+        }
+    }
+
+    test("nanopore fastq without concatenation") {
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)
+                ]
+
+                input[1] = Channel.value([
+                    [ id:'sarscov2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists:true)
+                ])
+
+                input[2] = 'bai'
+                input[3] = true
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert file(workflow.out.bam[0][1]).exists() },
+                { assert file(workflow.out.index[0][1]).exists() },
+                { assert snapshot(
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats
+                ).match() }
+            )
+        }
+    }
+
+    test("nanopore fastq without concatenation - stub") {
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)
+                ]
+
+                input[1] = Channel.value([
+                    [ id:'sarscov2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists:true)
+                ])
+
+                input[2] = 'bai'
+                input[3] = true
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
