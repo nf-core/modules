@@ -32,14 +32,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstablePatterns:[
-                        "**/*.pdf", "**/*.csv", "**/*.out", "**/*.err",
+                        "**/*.pdf", "**/*.csv",
                         "**/*Signatures.txt", "**/*Signatures_SEM_Error.txt",
-                        "**/*Samples_stats.txt", "**/*COSMIC_DBS78*.txt",
+                        "**/*Samples_stats.txt", "**/COSMIC_*",
                         "**/*Probabilities.txt", "**/*_De-Novo_Signature*",
                         "**/*Stats_refit.txt", "**/*Log.txt",
                         "**/JOB_METADATA.txt", "**/Seeds.txt",
                         "**/*_seqinfo.txt"
-                    ]),
+                    ], ignorePatterns: ["**/*.out", "**/*.err"]),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
