@@ -4,8 +4,14 @@ process GATK4SPARK_MARKDUPLICATES {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/49/498aea9c9bcaf736b9fb2a01366c1b7b38ccc0d38143178afc325d6a93241447/data'
-        : 'community.wave.seqera.io/library/gatk4-spark:4.6.2.0--8b5cd67ee60a714e'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/52/52d885fca7370c57fd53c004c1af8b58c299ebb35227f1142c1cde49863fb54a/data'
+        : 'community.wave.seqera.io/library/gatk4-spark:4.7.0.0--053572f7d6f2e926'}"
+
+    // Spark's native UnixLoginModule fails to resolve a username for the container's UID
+    // (LoginException "invalid null input" for name), because the container's own /etc/passwd
+    // has no entry for the host UID that docker.runOptions maps it to. Bind-mounting the
+    // host's /etc/passwd/group (which do have that entry) fixes the native lookup.
+    containerOptions { workflow.containerEngine in ['docker', 'podman'] ? '-v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro' : '' }
 
     input:
     tuple val(meta), path(bam)

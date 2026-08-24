@@ -2,9 +2,9 @@ process RGI_CARDANNOTATION {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/rgi:6.0.5--pyh05cac1d_0'
-        : 'quay.io/biocontainers/rgi:6.0.5--pyh05cac1d_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3f452c8e124ee58ab6b26442d15401c57d471cb753f53921570dc484df4e7620/data'
+        : 'community.wave.seqera.io/library/rgi_kma:e905ecb8305e2609' }"
 
     input:
     path card
@@ -13,7 +13,9 @@ process RGI_CARDANNOTATION {
     path ("card_database_processed"), emit: db
     env 'RGI_VERSION', emit: tool_version
     env 'DB_VERSION', emit: db_version
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('rgi'), eval("rgi main --version"),  emit: versions_rgi, topic: versions
+    tuple val("${task.process}"), val('rgi-database'), eval("echo \$DB_VERSION"),  emit: versions_db , topic: versions
+    tuple val("${task.process}"), val('kma'), eval("kma -v | sed 's/KMA-//'"),  emit: versions_kma, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,12 +35,6 @@ process RGI_CARDANNOTATION {
     cp ${card}/* card_database_processed
 
     RGI_VERSION=\$(rgi main --version)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rgi: \$(echo \$RGI_VERSION)
-        rgi-database: \$(echo \$DB_VERSION)
-    END_VERSIONS
     """
 
     stub:
@@ -51,11 +47,5 @@ process RGI_CARDANNOTATION {
 
     RGI_VERSION=\$(rgi main --version)
     DB_VERSION=stub_version
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rgi: \$(echo \$RGI_VERSION)
-        rgi-database: \$(echo \$DB_VERSION)
-    END_VERSIONS
     """
 }

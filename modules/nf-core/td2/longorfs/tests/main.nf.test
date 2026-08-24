@@ -9,15 +9,17 @@ nextflow_process {
     tag "td2"
     tag "td2/longorfs"
 
-    test("td2.longorfs - transcriptome.fasta") {
+    test("td2.longorfs - minigenome.fa") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test_td2_longorfs' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true),
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true),
                 ]
+                input[1] = [[id: 'test'], 24, 24]
+                input[2] = [[], []]
                 """
             }
         }
@@ -25,16 +27,12 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.orfs,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
-    test("td2.longorfs - transcriptome.fasta -stub") {
+    test("td2.longorfs - minigenome.fa -stub") {
 
         options "-stub"
 
@@ -42,8 +40,36 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test_td2_longorfs' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true),
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true),
+                ]
+                input[1] = [[id: 'test'], 24, 24]
+                input[2] = [[], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("td2.longorfs - minigenome.fa - gene-transcript mapping") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true),
+                ]
+                input[1] = [[id: 'test'], 24, 24]
+                input[2] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/gene2transcript_mapping.tsv', checkIfExists: true)
                 ]
                 """
             }
@@ -52,13 +78,37 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.orfs,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
+    }
 
+    test("td2.longorfs - minigenome.fa - gene-transcript mapping - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true),
+                ]
+                input[1] = [[id: 'test'], 24, 24]
+                input[2] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/gene2transcript_mapping.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
     }
 
 }

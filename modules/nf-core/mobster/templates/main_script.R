@@ -38,27 +38,53 @@ samples = strsplit(x="$meta.tumour_sample", ",") %>% unlist()  # list of samples
 
 ## read mCNAqc object
 if ( grepl(".rds\$", tolower("$rds_join")) ) {
-    obj = readRDS("$rds_join")
-    if (class(obj) == "m_cnaqc") {
-        original = obj %>% get_sample(sample=samples, which_obj="original")
-        input_table = lapply(names(original),
-                             function(sample_name) {
+  obj = readRDS("$rds_join")
+  if (as.logical(opt[["qc_chr"]])){
+    chroms <- intersect(names(obj), paste0("chr", 1:22))
+    input_table <- lapply(chroms,function(c){
+      original = obj[[c]] %>% get_sample(sample=samples, which_obj="original")
+      joint_table_chr = lapply(names(original),
+                               function(sample_name) {
                                  purity = original[[sample_name]][["purity"]]
                                  table_s = original[[sample_name]] %>%
-                                     # keep only mutations on the diploid karyotype
-                                     CNAqc::subset_by_segment_karyotype("1:1") %>%
-                                     CNAqc::Mutations() %>%
-                                     dplyr::mutate(sample_id=sample_name, purity=purity)
+                                   # CNAqc::subset_by_segment_karyotype("1:1") %>%
+                                   CNAqc::Mutations() %>%
+                                   dplyr::filter(karyotype=="1:1") %>%
+                                   dplyr::mutate(sample_id=sample_name, purity=purity) %>%
+                                   dplyr::filter(blacklisted==FALSE)
                                  if (nrow(table_s) == 0) {
-                                     cli::cli_alert_warning("Sample {sample_name} has no diploid mutations!")
+                                   cli::cli_alert_warning("Sample {sample_name} has no diploid mutations!")
                                  }
                                  return(table_s)
-                                 }) %>% dplyr::bind_rows()
+                               }) %>% dplyr::bind_rows()
+    })  %>% dplyr::bind_rows()
+  } else {
+    if (class(obj) == "m_cnaqc") {
+      original = obj %>% get_sample(sample=samples, which_obj="original")
+      input_table = lapply(names(original),
+                           function(sample_name) {
+                             purity = original[[sample_name]][["purity"]]
+                             table_s = original[[sample_name]] %>%
+                               # keep only mutations on the diploid karyotype
+                               CNAqc::subset_by_segment_karyotype("1:1") %>%
+                               CNAqc::Mutations() %>%
+                               dplyr::mutate(sample_id=sample_name, purity=purity) %>%
+                               dplyr::filter(blacklisted==FALSE)
+                             if (nrow(table_s) == 0) {
+                               cli::cli_alert_warning("Sample {sample_name} has no diploid mutations!")
+                             }
+                             return(table_s)
+                           }) %>% dplyr::bind_rows()
     } else {
-        cli::cli_abort("Object of class {class($rds_join)} not supported.")
+      cli::cli_abort("Object of class {class($rds_join)} not supported.")
     }
+  }
 } else {
-    input_table = read.csv("$rds_join")
+  input_table = read.csv("$rds_join")
+  input_table = input_table %>%
+    dplyr::filter(karyotype=="1:1") %>%
+    dplyr::filter(chr %in% c(paste0('chr', 1:22), as.character(1:22))) %>%
+    dplyr::filter(blacklisted==FALSE)
 }
 
 ## Function to run a single MOBSTER fit

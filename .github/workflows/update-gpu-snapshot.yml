@@ -4,8 +4,9 @@ on:
   issue_comment:
     types: [created]
 
+permissions: {}
+
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
   NFT_VER: "0.9.5"
   NXF_ANSI_LOG: false
@@ -13,13 +14,22 @@ env:
   NXF_VER: "25.10.2"
 
 jobs:
-  update-gpu-snapshot:
-    # Only run if comment is on a PR with the main repo, and if it contains the magic keywords
+  prepare-gpu-update:
+    # Only run if comment is on a PR with the main repo, and if it contains the magic keywords.
     if: >
       contains(github.event.comment.html_url, '/pull/') &&
       contains(github.event.comment.body, '@nf-core-bot update gpu snapshot') &&
-      github.repository == 'nf-core/modules'
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
+      github.repository == 'nf-core/modules' &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+    permissions:
+      issues: write
+      pull-requests: read
+    runs-on: ubuntu-latest
+    outputs:
+      head_repo: ${{ steps.pr.outputs.head_repo }}
+      head_sha: ${{ steps.pr.outputs.head_sha }}
+      test_path: ${{ steps.path.outputs.test_path }}
+      valid_path: ${{ steps.path.outputs.valid_path }}
     steps:
       # indication that the snapshot is being updated
       - name: React on comment
@@ -27,41 +37,103 @@ jobs:
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: eyes
-      # Use the @nf-core-bot token to check out so we can push later
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          token: ${{ secrets.nf_core_bot_auth_token }}
 
-      - name: Get the test path from the comment (after "@nf-core-bot update gpu snapshot path:")
-        id: get-test-path
+      - name: Record pull request head
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.issue.number }}
         run: |
-          echo "test_path=$(echo ${{ github.event.comment.body }} | grep -oP 'path:\s*\K[^ ]+')" >> $GITHUB_OUTPUT
+          pr_json=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")
+          head_sha=$(jq -r '.head.sha // empty' <<< "$pr_json")
+          head_repo=$(jq -r '.head.repo.full_name // empty' <<< "$pr_json")
+          if ! [[ "$head_sha" =~ ^[0-9a-f]{40}$ ]] || [ -z "$head_repo" ]; then
+            echo "The pull request head metadata is invalid."
+            exit 1
+          fi
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+          echo "head_repo=$head_repo" >> "$GITHUB_OUTPUT"
 
-      - name: if test path is empty, exit
+      - name: Parse and validate test path
+        id: path
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        shell: bash
+        run: |
+          command_pattern='^[[:space:]]*@nf-core-bot[[:space:]]+update[[:space:]]+gpu[[:space:]]+snapshot[[:space:]]+path:[[:space:]]*([^[:space:]]+)[[:space:]]*$'
+          module_path_pattern='^modules/nf-core/[a-z0-9][a-z0-9-]*(/[a-z0-9][a-z0-9-]*)?/tests$'
+          subworkflow_path_pattern='^subworkflows/nf-core/[a-z0-9][a-z0-9_-]*/tests$'
+          match_count=0
+          test_path=''
+
+          while IFS= read -r line; do
+            if [[ "$line" =~ $command_pattern ]]; then
+              match_count=$((match_count + 1))
+              test_path=${BASH_REMATCH[1]}
+            fi
+          done <<< "$COMMENT_BODY"
+
+          if [ "$match_count" -ne 1 ] || [ -z "$test_path" ] || [[ "$test_path" == /* ]] || [[ "$test_path" == *..* ]]; then
+            echo "valid_path=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! [[ "$test_path" =~ $module_path_pattern || "$test_path" =~ $subworkflow_path_pattern ]]; then
+            echo "valid_path=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "test_path=$test_path" >> "$GITHUB_OUTPUT"
+          echo "valid_path=true" >> "$GITHUB_OUTPUT"
+
+      - name: React if test path is invalid
+        if: steps.path.outputs.valid_path != 'true'
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
-        if: steps.get-test-path.outputs.test_path == ''
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: "-1"
 
-      - name: if test path is empty, exit
-        if: steps.get-test-path.outputs.test_path == ''
-        run: exit 0
+  update-gpu-snapshot:
+    needs: prepare-gpu-update
+    if: needs.prepare-gpu-update.outputs.valid_path == 'true'
+    permissions:
+      contents: read
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
+    outputs:
+      has_patch: ${{ steps.patch.outputs.has_patch }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: ${{ needs.prepare-gpu-update.outputs.head_repo }}
+          ref: ${{ needs.prepare-gpu-update.outputs.head_sha }}
+          persist-credentials: false
 
-      # Action runs on the issue comment, so we don't get the PR by default
-      # Use the gh cli to check out the PR
-      - name: Checkout Pull Request
-        run: gh pr checkout ${{ github.event.issue.number }}
+      - name: Verify test path
         env:
-          GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
+          TEST_PATH: ${{ needs.prepare-gpu-update.outputs.test_path }}
+        run: |
+          workspace=$(realpath --canonicalize-existing "$GITHUB_WORKSPACE")
+          test_path=$(realpath --canonicalize-existing "$TEST_PATH")
+          if [ "$test_path" != "${workspace}/${TEST_PATH}" ]; then
+            echo "The test path contains a symlink or is outside the workspace."
+            exit 1
+          fi
+          if [ ! -f "$TEST_PATH/main.nf.test" ] || [ -L "$TEST_PATH/main.nf.test" ]; then
+            echo "The test path does not contain a regular main.nf.test file."
+            exit 1
+          fi
+          if [ ! -f "$TEST_PATH/main.nf.test.snap" ] || [ -L "$TEST_PATH/main.nf.test.snap" ]; then
+            echo "The test path does not contain a regular snapshot file."
+            exit 1
+          fi
 
-      - uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
         with:
           distribution: "temurin"
           java-version: "17"
 
       - name: Set up Nextflow
-        uses: nf-core/setup-nextflow@b4ec1bc7c16a94435159de94a05253542fddf6ef # v3
+        uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
         with:
           version: "${{ env.NXF_VER }}"
 
@@ -76,28 +148,102 @@ jobs:
           version: "${{ env.NFT_VER }}"
           install-fast-diff: true
 
-      - name: Update gpu snapshot
-        id: update-gpu-snapshot
+      - name: Update GPU snapshot
+        env:
+          TEST_PATH: ${{ needs.prepare-gpu-update.outputs.test_path }}
         run: |
           nf-test test \
-          --profile=docker,gpu \
-          --verbose \
-          --ci \
-          --update-snapshot \
-          --filter process,workflow \
-          --tag gpu \
-          ${{ steps.get-test-path.outputs.test_path }}
+            --profile=docker,gpu \
+            --verbose \
+            --ci \
+            --update-snapshot \
+            --filter process,workflow \
+            --tag gpu \
+            "$TEST_PATH"
 
-      - name: clean up
+      - name: Create GPU snapshot patch
+        id: patch
+        env:
+          PATCH_FILE: ${{ runner.temp }}/gpu-snapshot.patch
+          TEST_PATH: ${{ needs.prepare-gpu-update.outputs.test_path }}
         run: |
-          rm -rf setup-nextflow
+          snapshot_file="${TEST_PATH}/main.nf.test.snap"
+          git diff --binary --full-index --no-ext-diff -- "$snapshot_file" > "$PATCH_FILE"
+          if [ ! -s "$PATCH_FILE" ]; then
+            echo "The GPU test did not update its snapshot."
+            exit 1
+          fi
+          echo "has_patch=true" >> "$GITHUB_OUTPUT"
 
-      - name: Commit & push changes
+      - name: Upload GPU snapshot patch
+        if: steps.patch.outputs.has_patch == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: gpu-snapshot-patch
+          path: ${{ runner.temp }}/gpu-snapshot.patch
+          if-no-files-found: error
+          retention-days: 1
+
+  push-gpu-snapshot:
+    needs: [prepare-gpu-update, update-gpu-snapshot]
+    if: needs.update-gpu-snapshot.outputs.has_patch == 'true'
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      # Action runs on the issue comment, so we don't get the PR by default.
+      # Use the gh cli to check out the PR.
+      - name: Checkout exact pull request head
+        env:
+          EXPECTED_HEAD_SHA: ${{ needs.prepare-gpu-update.outputs.head_sha }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.issue.number }}
         run: |
+          gh pr checkout "$PR_NUMBER"
+          if [ "$(git rev-parse HEAD)" != "$EXPECTED_HEAD_SHA" ]; then
+            echo "The pull request head changed after the GPU test ran."
+            exit 1
+          fi
+
+      - name: Download GPU snapshot patch
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: gpu-snapshot-patch
+          path: ${{ runner.temp }}/gpu-snapshot
+
+      - name: Validate and apply GPU snapshot patch
+        env:
+          PATCH_FILE: ${{ runner.temp }}/gpu-snapshot/gpu-snapshot.patch
+          TEST_PATH: ${{ needs.prepare-gpu-update.outputs.test_path }}
+        run: |
+          if [ ! -f "$PATCH_FILE" ] || [ -L "$PATCH_FILE" ]; then
+            echo "The artifact does not contain a regular GPU snapshot patch."
+            exit 1
+          fi
+          git apply --check --index "$PATCH_FILE"
+          git apply --index "$PATCH_FILE"
+
+          expected_file="${TEST_PATH}/main.nf.test.snap"
+          changed_files=$(git diff --cached --name-only)
+          if [ "$changed_files" != "$expected_file" ]; then
+            echo "The patch changes a file outside the requested snapshot."
+            exit 1
+          fi
+
+      - name: Commit and push GPU snapshot
+        env:
+          GH_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
+        run: |
+          gh auth setup-git
           git config user.email "core@nf-co.re"
           git config user.name "nf-core-bot"
           git config push.default upstream
-          git add .
           git status
-          git commit -m "[automated] Update gpu snapshot"
-          git push
+          git -c core.hooksPath=/dev/null -c commit.gpgsign=false commit --no-verify -m "[automated] Update gpu snapshot"
+          git -c core.hooksPath=/dev/null push --no-verify

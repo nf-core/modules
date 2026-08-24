@@ -1,0 +1,89 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "arcane_index"
+description: Build a k-mer hash index from a filtered reference for alignment-free single-cell RNA-seq quantification with Arcane
+keywords:
+  - single-cell
+  - rnaseq
+  - index
+  - kmer
+  - hash
+  - transcriptomics
+tools:
+  - "arcane":
+      description: "Arcane: Alignment-free single cell RNA-seq gene expression estimation"
+      homepage: "https://gitlab.com/rahmannlab/arcane"
+      documentation: "https://gitlab.com/rahmannlab/arcane"
+      tool_dev_url: "https://gitlab.com/rahmannlab/arcane"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reference:
+        type: file
+        description: Filtered sequence reference FASTA file produced by the arcane filter step
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontology:
+          - edam: "http://edamontology.org/format_1929"
+    - genes:
+        type: file
+        description: |
+          Gene IDs file (one per line, in gene_number order) produced by the arcane filter
+          step. Must be staged alongside `reference` — arcane index locates it implicitly
+          by filename convention relative to `--ref`.
+        pattern: "*_genes.txt"
+  - n_objects:
+      type: integer
+      description: Number of k-mers to be stored in the hash table (passed to `--nobjects`)
+
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.hash":
+          type: file
+          description: Binary hash table file containing the built k-mer index
+          pattern: "*.hash"
+  info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.info":
+          type: file
+          description: Index metadata file accompanying the hash table
+          pattern: "*.info"
+  versions_arcane:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "arcane":
+          type: string
+          description: The name of the tool
+      - "arcane --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - arcane:
+          type: string
+          description: The name of the tool
+      - arcane --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@LeonHornich"
+maintainers:
+  - "@LeonHornich"
