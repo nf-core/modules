@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "souporcell"
-description: souporcell is a method for clustering mixed-genotype scRNAseq
-  experiments by individual.
+description: souporcell is a method for clustering mixed-genotype scRNAseq experiments by individual.
 keywords:
   - clustering
   - mixed-genotype
@@ -13,7 +11,8 @@ tools:
       documentation: "https://demultiplexing-doublet-detecting-docs.readthedocs.io/en/latest/Souporcell.html"
       tool_dev_url: "https://github.com/wheaton5/souporcell"
       doi: "10.1101/699637v1"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:souporcell
 
 input:
@@ -24,15 +23,13 @@ input:
           e.g. `[ id:'sample1' ]`
     - bam:
         type: file
-        description: A BAM file from cellranger containing single-cell RNA-seq
-          alignments.
+        description: A BAM file from cellranger containing single-cell RNA-seq alignments.
         pattern: "*.bam"
         ontologies:
           - edam: http://edamontology.org/format_2572 # BAM
     - barcodes:
         type: file
-        description: A barcode or whitelist TSV file from cellranger identifying
-          individual cell barcodes.
+        description: A barcode or whitelist TSV file from cellranger identifying individual cell barcodes.
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
@@ -66,7 +63,6 @@ output:
           pattern: "clusters.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-
   vcf:
     - - meta:
           type: map
@@ -79,7 +75,6 @@ output:
           pattern: "cluster_genotypes.vcf"
           ontologies:
             - edam: http://edamontology.org/format_3016 # VCF
-
   ambient_rna:
     - - meta:
           type: map
@@ -92,14 +87,28 @@ output:
           pattern: "ambient_rna.txt"
           ontologies:
             - edam: http://edamontology.org/format_2330 # Plain text
+  versions_sortmerna:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sortmerna:
+          type: string
+          description: The name of the tool
+      - "2.5":
+          type: string
+          description: The expression to obtain the version of the tool
 
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sortmerna:
+          type: string
+          description: The name of the tool
+      - "2.5":
+          type: string
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@seohyonkim"
