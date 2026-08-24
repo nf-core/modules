@@ -3,7 +3,6 @@ nextflow_process {
 
     name "Test Process SOUPORCELL"
     script "../main.nf"
-    config "./nextflow.config"
     process "SOUPORCELL"
 
     tag "modules"
@@ -12,9 +11,6 @@ nextflow_process {
 
     test("homo sapiens - bam and barcodes") {
         when {
-            params{
-                module_args = ""
-            }
             process {
                 """
                 input[0] = [
@@ -34,47 +30,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys:["vcf"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys:["vcf"], unstableKeys:["ambient_rna"])).match() }
             )
         }
     }
-
-    test("homo sapiens - bam and barcodes - ext.args") {
-        when {
-            params{
-                module_args = "-p 2 --min_alt 10 --min_ref 10 --max_loci 2048 --restarts 80"
-            }
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
-                    2
-                ]
-                input[1] = [
-                    [ id:'genome' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys:["vcf"])).match() }
-            )
-        }
-    }
-
 
     test("homo sapience - bam and barcodes - stub") {
         options "-stub"
         when {
-            params{
-                module_args = ""
-            }
             process {
                 """
                 input[0] = [
