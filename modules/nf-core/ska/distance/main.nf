@@ -15,7 +15,7 @@ process SKA_DISTANCE {
     tuple val(meta), path("*clusters.tsv") , emit: cluster_list , optional: true
     tuple val(meta), path("*cluster*.txt") , emit: cluster_files, optional: true
     tuple val(meta), path("*.dot")         , emit: dot          , optional: true
-    tuple val("${task.process}"), val('ska'), eval("ska --version | grep Version | sed '1!d ; s/Version: //'"), emit: versions_ska, topic: versions
+    tuple val("${task.process}"), val('ska'), eval("ska --version | sed -n 's/Version: //p'"), emit: versions_ska, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
