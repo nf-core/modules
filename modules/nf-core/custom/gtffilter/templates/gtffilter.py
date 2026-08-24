@@ -87,7 +87,7 @@ def filter_gtf(fasta: Optional[str], gtf_in: str, filtered_gtf_out: str, skip_tr
         logger.debug("All sequence IDs from FASTA: " + ", ".join(sorted(seq_names_in_genome)))
 
     seq_names_in_gtf = set()
-    
+
     # Flexible pattern matching for transcript_id across Ensembl ("..."), RefSeq/NCBI (=...), or unquoted formats
     transcript_id_pattern = re.compile(r'transcript_id[\s=]+["\']?([^"\';\s]+)')
 
@@ -98,7 +98,7 @@ def filter_gtf(fasta: Optional[str], gtf_in: str, filtered_gtf_out: str, skip_tr
             line_count = 0
             for line in gtf:
                 line = line.decode("utf-8") if is_gz else line
-                
+
                 # 1. Preserve GTF header/comment lines starting with '#'
                 if line.startswith("#"):
                     out.write(line.encode() if is_gz else line)
@@ -115,7 +115,7 @@ def filter_gtf(fasta: Optional[str], gtf_in: str, filtered_gtf_out: str, skip_tr
                 # 2. Filter by sequence name (if FASTA sequence headers provided)
                 if seq_names_in_genome is None or seq_name in seq_names_in_genome:
                     has_transcript_id = bool(transcript_id_pattern.search(line))
-                    is_gene_feature = (feature_type == "gene")
+                    is_gene_feature = feature_type == "gene"
 
                     # 3. Retain feature if:
                     # - skip_transcript_id_check is set, OR
