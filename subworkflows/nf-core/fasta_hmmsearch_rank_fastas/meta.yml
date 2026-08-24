@@ -29,7 +29,10 @@ output:
   - hmmrank:
       type: file
       description: |
-        Channel containing the TSV file from ranking hmmsearch hits
+        Channel containing the TSV file from ranking hmmsearch hits.
+        When save_domtblout is set, the table also carries the target and profile lengths
+        and, for each of the three coordinate sets, the bounds of the match, the size of the
+        union of the pair's domains, and the number of disjoint pieces it falls into.
         Structure: [ val(meta), path(hmmrank) ]
       pattern: "*.hmmrank.tsv.gz"
   - bai:
