@@ -38,8 +38,18 @@ input:
           e.g. `[ id:'sample1' ]`
     - tblouts:
         type: file
-        description: table outputs from hmmsearch
-        pattern: "*.tsv.gz"
+        description: per-sequence hit tables from hmmsearch (--tblout)
+        pattern: "*.tbl.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - domtblouts:
+        type: file
+        description: |
+          Optional per-domain hit tables from hmmsearch (--domtblout). When supplied, the
+          ranked table gains the target and profile lengths and, for each of the three
+          coordinate sets, the outer bounds of the match, the size of the union of the
+          pair's domains, and the number of disjoint pieces it falls into.
+        pattern: "*.domtbl.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
 output:
@@ -51,7 +61,11 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.hmmrank.tsv.gz":
           type: file
-          description: TSV file with ranked hmmer results
+          description: |
+            TSV file with ranked hmmer results: one row per (accno, profile) pair with
+            profile, accno, profile_desc, evalue, score and rank. When domtblouts are
+            supplied it also carries tlen and qlen, plus from, to, len and n_islands for
+            each of the hmm, ali and env coordinate sets.
           pattern: "*.hmmrank.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format

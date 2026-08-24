@@ -4,6 +4,7 @@ nextflow_process {
     name "Test Process HMMER_HMMRANK"
     script "../main.nf"
     process "HMMER_HMMRANK"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -32,7 +33,7 @@ nextflow_process {
             process {
                 """
                 input[0] = HMMER_HMMFETCH.out.hmm.map {
-                    [ it[0], it[1], file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/domain_16s.fna"), false, true, false ]
+                    [ it[0], it[1], file(params.phyloplace_testdata_base_path + 'domain_16s.fna'), false, true, true ]
                 }
                 """
             }
@@ -45,7 +46,7 @@ nextflow_process {
                 """
                 input[0] = HMMER_HMMSEARCH.out.target_summary
                     .collect { it[1] }
-                    .map { [ [ id: '16S-test' ], it ] }
+                    .map { [ [ id: '16S-test' ], it, [] ] }
                 """
             }
         }
@@ -61,6 +62,100 @@ nextflow_process {
         }
     }
 
+    test("hmmrank - 16S with domain coordinates") {
+        when {
+            process {
+                """
+                input[0] = HMMER_HMMSEARCH.out.target_summary
+                    .collect { it[1] }
+                    .map { [ [ id: '16S-test' ], it ] }
+                    .combine(HMMER_HMMSEARCH.out.domain_summary.collect { it[1] }.map { [ it ] })
+                """
+            }
+        }
+
+        then {
+            def rows = path(process.out.hmmrank[0][1]).linesGzip
+            def header = rows[0].split('\t') as List
+
+            assertAll(
+                { assert process.success },
+                // the coordinate columns are present and populated
+                { assert header.containsAll([
+                    'tlen', 'qlen',
+                    'hmm_from', 'hmm_to', 'hmm_len', 'hmm_n_islands',
+                    'ali_from', 'ali_to', 'ali_len', 'ali_n_islands',
+                    'env_from', 'env_to', 'env_len', 'env_n_islands'
+                ]) },
+                { assert rows.size() > 1 },
+                { assert rows[1..-1].every { it.split('\t')[header.indexOf('hmm_len')].isInteger() } },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    // Curated excerpts of a real search of the NrdJ and NrdJm1 profiles against GTDB r226
+    // representatives. Five targets, nine (target, profile) pairs, chosen to cover the domain
+    // layouts the coordinate arithmetic has to handle: a single domain, several overlapping
+    // domains, several disjoint domains, and domains that overlap in profile coordinates while
+    // lying far apart on the target sequence.
+    test("hmmrank - domain coordinates against a known table") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'nrdj' ],
+                    [
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJ.tbl.gz', checkIfExists: true),
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJm1.tbl.gz', checkIfExists: true)
+                    ],
+                    [
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJ.domtbl.gz', checkIfExists: true),
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJm1.domtbl.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            def cols = [
+                'accno', 'profile',
+                'hmm_from', 'hmm_to', 'hmm_len', 'hmm_n_islands',
+                'ali_from', 'ali_to', 'ali_len', 'ali_n_islands',
+                'env_from', 'env_to', 'env_len', 'env_n_islands',
+                'tlen', 'qlen'
+            ]
+            // One row per (target, profile), coordinates being the union of that pair's domains.
+            def expected = [
+                'AACBMDAH_04658 NrdJ   11  95  68 2  57  238  67 2  40  242 128 2  805 407',
+                'AACBMDAH_04658 NrdJm1  1 397 397 1  14  803 400 2  14  805 425 2  805 748',
+                'AACBMDAH_04659 NrdJm1 513 748 236 1   1  620 239 2   1  620 249 2  626 748',
+                'AAGAFPGM_00302 NrdJ   12 406 379 4 176  724 377 5 156  725 489 5  780 407',
+                'AAGAFPGM_00302 NrdJm1  6 711 588 4 134  735 555 4 129  770 615 2  780 748',
+                'DPHPGHLN_02900 NrdJ   62 384 306 3 205 1379 327 4 190 1397 401 4 1460 407',
+                'DPHPGHLN_02900 NrdJm1  1 747 747 1  14 1454 752 3  14 1455 791 3 1460 748',
+                'MNMMFBCN_00658 NrdJ   11 386 353 3  84  718 374 5  67  732 485 4  798 407',
+                'MNMMFBCN_00658 NrdJm1  1 748 748 1  42  792 751 1  42  792 751 1  798 748'
+            ].collect { it.split(/ +/).join(' ') }.sort()
+
+            def rows = path(process.out.hmmrank[0][1]).linesGzip
+            def header = rows[0].split('\t') as List
+            def got = rows[1..-1].collect { line ->
+                def f = line.split('\t')
+                cols.collect { f[header.indexOf(it)] }.join(' ')
+            }.sort()
+
+            assertAll(
+                { assert process.success },
+                { assert got == expected }
+            )
+        }
+    }
+
     test("hmmrank - 16S -- stub") {
         options "-stub"
 
@@ -69,7 +164,7 @@ nextflow_process {
                 """
                 input[0] = HMMER_HMMSEARCH.out.target_summary
                     .collect { it[1] }
-                    .map { [ [ id: '16S-test' ], it ] }
+                    .map { [ [ id: '16S-test' ], it, [] ] }
                 """
             }
         }
