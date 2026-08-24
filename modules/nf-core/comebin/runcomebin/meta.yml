@@ -96,7 +96,7 @@ output:
       - comebin:
           type: string
           description: The name of the tool
-      - "run_comebin.sh | sed '5!d;s/COMEBin version: //'":
+      - "run_comebin.sh -V | sed 's/COMEBin version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -107,7 +107,7 @@ topics:
       - comebin:
           type: string
           description: The name of the tool
-      - "run_comebin.sh | sed '5!d;s/COMEBin version: //'":
+      - "run_comebin.sh -V | sed 's/COMEBin version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
@@ -117,14 +117,14 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/comebin:1.1.0--f7721f7c5a189044
-      build_id: bd-f7721f7c5a189044_1
-      scan_id: sc-52432bea18de12e1_1
+      name: community.wave.seqera.io/library/comebin:1.1.0--5223c63734f57091
+      build_id: bd-5223c63734f57091_1
+      scan_id: sc-bb9f1c74b5b67abb_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/comebin:1.1.0--a7e5189ce655fa30
-      build_id: bd-a7e5189ce655fa30_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46c7be4715b72a8d91735d465c9d677cc918f2921f2bdb528dd20222d07975a0/data
+      name: oras://community.wave.seqera.io/library/comebin:1.1.0--86e04d7ead7b11d3
+      build_id: bd-86e04d7ead7b11d3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/198a5d41bedf5947594f33867ff992ebe73c91ddae3cd9eae2a0b1862f911b2a/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/comebin/runcomebin/.conda-lock/linux_amd64-bd-f7721f7c5a189044_1.txt
+      lock_file: modules/nf-core/comebin/runcomebin/.conda-lock/linux_amd64-bd-5223c63734f57091_1.txt
