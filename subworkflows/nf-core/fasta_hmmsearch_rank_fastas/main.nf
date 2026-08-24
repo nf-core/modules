@@ -18,9 +18,18 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
 
     HMMER_HMMSEARCH ( ch_hmmsearch )
 
+    // The per-domain tables are what carry alignment coordinates, so hand them to the ranking
+    // step when hmmsearch was asked to write them. ifEmpty keeps the ranking running when it
+    // was not: an optional output leaves an empty channel, which would otherwise stall combine.
+    HMMER_HMMSEARCH.out.domain_summary
+        .collect { index -> index[1] }
+        .ifEmpty { [] }
+        .set { ch_domtblouts }
+
     HMMER_HMMSEARCH.out.target_summary
         .collect { index -> index[1] }
         .map { index -> [ [ id: 'rank' ], index ] }
+        .combine(ch_domtblouts.map { index -> [ index ] })
         .set { ch_hmmrank }
 
     HMMER_HMMRANK ( ch_hmmrank )
