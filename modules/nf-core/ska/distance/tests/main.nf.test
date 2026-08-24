@@ -29,7 +29,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.versions_ska,
                     path(process.out.distances[0][1]).csv(sep:"\t").rows,
                     path(process.out.cluster_list[0][1]).csv(sep:"\t").rows,
                     process.out.dot
@@ -102,7 +102,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.versions_ska,
                     path(process.out.distances[0][1]).csv(sep:"\t").columnNames.sort(),
                     path(process.out.distances[0][1]).csv(sep:"\t").rows[0].values().sort(),
                     path(process.out.cluster_list[0][1]).csv(sep:"\t").columnNames.sort(),
