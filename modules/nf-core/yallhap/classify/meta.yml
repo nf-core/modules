@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "yallhap_classify"
+description: Y-chromosome haplogroup classification from VCF files
+keywords:
+  - haplogroups
+  - Y-chromosome
+  - ydna
+  - ancient DNA
+  - classify
+  - phylogenetics
+tools:
+  - "yallhap":
+      description: "Modern Y-chromosome haplogroup inference tool supporting modern and ancient DNA with probabilistic confidence scoring"
+      homepage: "https://github.com/trianglegrrl/yallHap"
+      documentation: "https://github.com/trianglegrrl/yallHap#readme"
+      tool_dev_url: "https://github.com/trianglegrrl/yallHap"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF file containing Y-chromosome variants
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF
+    - tbi:
+        type: file
+        description: Index file for the VCF (optional for uncompressed VCF)
+        pattern: "*.{tbi,csi}"
+        ontologies:
+          - edam: http://edamontology.org/format_3700 # Tabix index
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference tree information
+          e.g. [ id:'yfull' ]
+    - tree:
+        type: file
+        description: YFull phylogenetic tree in JSON format
+        pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing SNP database information
+          e.g. [ id:'ybrowse_grch38' ]
+    - snp_db:
+        type: file
+        description: SNP database CSV file (YBrowse format) with variant positions
+        pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.json":
+          type: file
+          description: JSON file containing haplogroup classification results
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: TSV file containing haplogroup classification results
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_yallhap:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - yallhap:
+          type: string
+          description: The tool name
+      - "yallhap --version | sed 's/.*version //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - yallhap:
+          type: string
+          description: The tool name
+      - "yallhap --version | sed 's/.*version //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@trianglegrrl"
+maintainers:
+  - "@trianglegrrl"
