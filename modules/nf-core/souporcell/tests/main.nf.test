@@ -3,18 +3,14 @@ nextflow_process {
 
     name "Test Process SOUPORCELL"
     script "../main.nf"
-    config "./nextflow.config"
     process "SOUPORCELL"
 
     tag "modules"
     tag "modules_nfcore"
     tag "souporcell"
 
-    test("homo sapiens - bam and barcodes - ext.args") {
+    test("homo sapiens - bam and barcodes") {
         when {
-            params{
-                module_args = ""//--skip_remap SKIP_REMAP --restarts 0 --ignore True"
-            }
             process {
                 """
                 input[0] = [
@@ -34,7 +30,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys:["vcf"], unstableKeys:["ambient_rna"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["ambient_rna", "vcf"])).match() } // variants md5 not stable
             )
         }
     }

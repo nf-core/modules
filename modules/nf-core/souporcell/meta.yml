@@ -87,11 +87,11 @@ output:
           pattern: "ambient_rna.txt"
           ontologies:
             - edam: http://edamontology.org/format_2330 # Plain text
-  versions_sortmerna:
+  versions_souporcell:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - sortmerna:
+      - souporcell:
           type: string
           description: The name of the tool
       - "2.5":
@@ -103,7 +103,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - sortmerna:
+      - souporcell:
           type: string
           description: The name of the tool
       - "2.5":
