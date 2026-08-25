@@ -66,28 +66,14 @@ workflow FASTA_CLEAN_FAIDX {
         val_get_chromsizes
     )
 
-    // LOGIC: GENERATE A SEQUENCE DESCRIPTION FILE FROM THE FAI
-    ch_stats_json = SAMTOOLS_FAIDX.out.fai
-        .map { meta, fai ->
-            def lengths = fai.readLines()
-                .findAll { line -> line.trim() }
-                .collect { line -> line.split('\t')[1].toLong() }
 
-            def sequence_map = [
-                n_sequences : lengths.size(),
-                total_length: lengths.sum() ?: 0L,
-            ]
-            if (lengths) {
-                sequence_map.max_length = lengths.max()
-            }
+    //
+    // MODULE: GENERATE GENOME STATS FROM FASTA INDEX
+    //
+    GENOME_STATS (
+        SAMTOOLS_FAIDX.out.fai
+    )
 
-            def outfile = file("${params.outdir}/genome_stats/${meta.id}.genome_stats.json")
-            outfile.parent.mkdirs()
-            outfile.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(sequence_map))
-
-
-            tuple(meta, outfile)
-        }
 
     //
     // MODULE: GENERATE A SAMTOOLS DICT FILE BASED ON THE CORRECTED FASTA FILE
@@ -102,5 +88,40 @@ workflow FASTA_CLEAN_FAIDX {
     fai                     = SAMTOOLS_FAIDX.out.fai
     sizes                   = SAMTOOLS_FAIDX.out.sizes
     dict                    = SAMTOOLS_DICT.out.dict
-    sequence_description    = ch_stats_json
+    sequence_description    = GENOME_STATS.out.json
+}
+
+process GENOME_STATS {
+    executor "local"
+
+    input:
+    // NOTE: Due to how the staging of files works, inputting the fai as a path
+    //       results in the process trying to seach in the wrong place.
+    tuple val(meta), val(fai)
+
+    output:
+    tuple val(meta), path("*.json"), emit: json
+
+    exec:
+    def outfile = task.workDir.resolve("${meta.id}.genome_stats.json")
+
+    def lengths = fai.readLines()
+        .findAll { line -> line.trim() }
+        .collect { line -> line.split('\t')[1].toLong() }
+
+    def sequence_map = [
+            n_sequences : lengths.size(),
+            total_length: lengths.sum() ?: 0L,
+        ]
+
+    if (lengths) {
+        sequence_map.max_length = lengths.max()
+    }
+
+    outfile.text = groovy.json.JsonOutput.prettyPrint(
+        groovy.json.JsonOutput.toJson(sequence_map)
+    )
+
+    // NOTE: Using the new File syntax writes the file to the top of the workdir
+    //       resulting in the process being unable to find the file inside it self.
 }
