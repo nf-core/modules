@@ -21,14 +21,16 @@ process HMMER_HMMRANK {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def domtbl_list = domtblouts ? "c('${domtblouts.join("','")}')" : ''
     def read_domtblouts = domtblouts ? """
-    # Read the domtblout files and reduce each (accno, profile) pair's domains to one row per
-    # coordinate set: the outer bounds of the pair, plus the size of the union of its domains.
+    # Read the domtblout files and reduce each hit's domains to one row per coordinate set: the
+    # outer bounds of the hit, plus the size of the union of its domains. A hit is keyed on the
+    # query name as well as the file, since one HMM file may hold several models and the whole
+    # file is then searched in one go, putting several models in the same table.
 
     islands <- function(d, set) {
         d %>%
-            select(accno, profile, f = !!sym(paste0(set, '_from')), t = !!sym(paste0(set, '_to'))) %>%
-            arrange(accno, profile, f) %>%
-            group_by(accno, profile) %>%
+            select(accno, profile, query, f = !!sym(paste0(set, '_from')), t = !!sym(paste0(set, '_to'))) %>%
+            arrange(accno, profile, query, f) %>%
+            group_by(accno, profile, query) %>%
             # Sorted by start, so anything overlapping a row lies before it. cummax(t) is how far
             # right the rows up to here reach; lag() shifts that so each row sees how far
             # everything before it reached. A start past that opens a new island, and since
@@ -37,7 +39,7 @@ process HMMER_HMMRANK {
             # continues it rather than opening a gap: hence the + 1L. Note the default must be
             # 0L, not 0: lag() casts it to the column type and errors on a lossy double cast.
             mutate(island = cumsum(f > lag(cummax(t), default = 0L) + 1L)) %>%
-            group_by(accno, profile, island) %>%
+            group_by(accno, profile, query, island) %>%
             summarise(s = min(f), e = max(t), .groups = 'drop_last') %>%
             summarise(
                 from = min(s), to = max(e), len = sum(e - s + 1), n_islands = n(),
@@ -54,24 +56,24 @@ process HMMER_HMMRANK {
         separate(
             content,
             c(
-                'accno', 'd0', 'tlen', 'd1', 'd2', 'qlen', 'd3', 'd4', 'd5', 'd6', 'd7', 'd8', 'd9', 'd10', 'd11',
-                'hmm_from', 'hmm_to', 'ali_from', 'ali_to', 'env_from', 'env_to', 'd12', 'rest'
+                'accno', 'd0', 'tlen', 'query', 'd1', 'qlen', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'd8', 'd9', 'd10',
+                'hmm_from', 'hmm_to', 'ali_from', 'ali_to', 'env_from', 'env_to', 'd11', 'rest'
             ),
             '\\\\s+', extra = 'merge', convert = FALSE
         ) %>%
         transmute(
             profile = basename(fname) %>% str_remove('^${prefix}\\\\.') %>% str_remove('\\\\.domtbl\\\\.gz\$'),
-            accno,
+            accno, query,
             across(c(tlen, qlen, hmm_from, hmm_to, ali_from, ali_to, env_from, env_to), as.integer)
         )
 
     domain_coords <- domains %>%
-        distinct(accno, profile, tlen, qlen) %>%
-        left_join(islands(domains, 'hmm'), by = c('accno', 'profile')) %>%
-        left_join(islands(domains, 'ali'), by = c('accno', 'profile')) %>%
-        left_join(islands(domains, 'env'), by = c('accno', 'profile'))
+        distinct(accno, profile, query, tlen, qlen) %>%
+        left_join(islands(domains, 'hmm'), by = c('accno', 'profile', 'query')) %>%
+        left_join(islands(domains, 'ali'), by = c('accno', 'profile', 'query')) %>%
+        left_join(islands(domains, 'env'), by = c('accno', 'profile', 'query'))
 """ : ''
-    def join_domtblouts = domtblouts ? "        left_join(domain_coords, by = c('accno', 'profile')) %>%\n" : ''
+    def join_domtblouts = domtblouts ? "        left_join(domain_coords, by = c('accno', 'profile', 'profile_desc' = 'query')) %>%\n" : ''
 
     """
     #!/usr/bin/env Rscript

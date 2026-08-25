@@ -75,20 +75,26 @@ nextflow_process {
         }
 
         then {
-            def rows = path(process.out.hmmrank[0][1]).linesGzip
-            def header = rows[0].split('\t') as List
-
+            // read the output only inside the assertions, so a failed process is reported as
+            // such instead of throwing out of this block and hiding its log
             assertAll(
                 { assert process.success },
                 // the coordinate columns are present and populated
-                { assert header.containsAll([
+                { assert path(process.out.hmmrank[0][1]).linesGzip[0].split('\t').toList().containsAll([
                     'tlen', 'qlen',
                     'hmm_from', 'hmm_to', 'hmm_len', 'hmm_n_islands',
                     'ali_from', 'ali_to', 'ali_len', 'ali_n_islands',
                     'env_from', 'env_to', 'env_len', 'env_n_islands'
                 ]) },
-                { assert rows.size() > 1 },
-                { assert rows[1..-1].every { it.split('\t')[header.indexOf('hmm_len')].isInteger() } },
+                { assert path(process.out.hmmrank[0][1]).linesGzip.size() > 1 },
+                { def rows = path(process.out.hmmrank[0][1]).linesGzip
+                  def header = rows[0].split('\t') as List
+                  // NA is a legitimate value: hmmsearch reports a sequence on the per-sequence
+                  // threshold, so a hit can be ranked with no domain records behind it at all
+                  assert rows[1..-1].every {
+                      def v = it.split('\t')[header.indexOf('hmm_len')]
+                      v.isInteger() || v == 'NA'
+                  } },
                 { assert snapshot(
                     sanitizeOutput(process.out),
                     path(process.out.versions[0]).yaml
@@ -142,16 +148,79 @@ nextflow_process {
                 'MNMMFBCN_00658 NrdJm1  1 748 748 1  42  792 751 1  42  792 751 1  798 748'
             ].collect { it.split(/ +/).join(' ') }.sort()
 
-            def rows = path(process.out.hmmrank[0][1]).linesGzip
-            def header = rows[0].split('\t') as List
-            def got = rows[1..-1].collect { line ->
-                def f = line.split('\t')
-                cols.collect { f[header.indexOf(it)] }.join(' ')
-            }.sort()
+            // read the output only inside the assertion, so a failed process is reported as
+            // such instead of throwing out of this block and hiding its log
+            assertAll(
+                { assert process.success },
+                { def rows = path(process.out.hmmrank[0][1]).linesGzip
+                  def header = rows[0].split('\t') as List
+                  assert rows[1..-1].collect { line ->
+                      def f = line.split('\t')
+                      cols.collect { f[header.indexOf(it)] }.join(' ')
+                  }.sort() == expected }
+            )
+        }
+    }
+
+    // One HMM file may hold several models, in which case the whole file is searched in one go
+    // and both tables carry rows for several query names under one file-derived profile. The
+    // two fixtures above are concatenated here to make exactly that, so the expected table is
+    // the same as above, keyed on the query name rather than the file.
+    test("hmmrank - several models in one table") {
+        when {
+            process {
+                """
+                // gunzip, concatenate and re-gzip, rather than carrying a near-duplicate fixture
+                def combine = { name, srcs ->
+                    def out = file("\${workDir}/multimodel/\${name}")
+                    out.parent.mkdirs()
+                    def os = new java.util.zip.GZIPOutputStream(out.newOutputStream())
+                    srcs.each { src ->
+                        os.write(new java.util.zip.GZIPInputStream(file(src, checkIfExists: true).newInputStream()).bytes)
+                    }
+                    os.close()
+                    out
+                }
+                def base = params.phyloplace_testdata_base_path + 'hmmrank/'
+                input[0] = [
+                    [ id: 'nrdj' ],
+                    [ combine('NrdJboth.tbl.gz',    [ base + 'NrdJ.tbl.gz',    base + 'NrdJm1.tbl.gz' ]) ],
+                    [ combine('NrdJboth.domtbl.gz', [ base + 'NrdJ.domtbl.gz', base + 'NrdJm1.domtbl.gz' ]) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            def cols = [
+                'accno', 'profile_desc',
+                'hmm_from', 'hmm_to', 'hmm_len', 'hmm_n_islands',
+                'ali_from', 'ali_to', 'ali_len', 'ali_n_islands',
+                'env_from', 'env_to', 'env_len', 'env_n_islands',
+                'tlen', 'qlen'
+            ]
+            def expected = [
+                'AACBMDAH_04658 NrdJ   11  95  68 2  57  238  67 2  40  242 128 2  805 407',
+                'AACBMDAH_04658 NrdJm1  1 397 397 1  14  803 400 2  14  805 425 2  805 748',
+                'AACBMDAH_04659 NrdJm1 513 748 236 1   1  620 239 2   1  620 249 2  626 748',
+                'AAGAFPGM_00302 NrdJ   12 406 379 3 176  724 377 5 156  725 489 5  780 407',
+                'AAGAFPGM_00302 NrdJm1  6 711 588 4 134  735 555 4 129  770 615 2  780 748',
+                'DPHPGHLN_02900 NrdJ   62 384 306 2 205 1379 327 4 190 1397 401 4 1460 407',
+                'DPHPGHLN_02900 NrdJm1  1 747 747 1  14 1454 752 3  14 1455 791 3 1460 748',
+                'MNMMFBCN_00658 NrdJ   11 386 353 3  84  718 374 5  67  732 485 4  798 407',
+                'MNMMFBCN_00658 NrdJm1  1 748 748 1  42  792 751 1  42  792 751 1  798 748'
+            ].collect { it.split(/ +/).join(' ') }.sort()
 
             assertAll(
                 { assert process.success },
-                { assert got == expected }
+                // one row per (target, model): no multiplication from the shared profile name
+                { assert path(process.out.hmmrank[0][1]).linesGzip.size() == expected.size() + 1 },
+                { def rows = path(process.out.hmmrank[0][1]).linesGzip
+                  def header = rows[0].split('\t') as List
+                  assert rows[1..-1].collect { line ->
+                      def f = line.split('\t')
+                      cols.collect { f[header.indexOf(it)] }.join(' ')
+                  }.sort() == expected }
             )
         }
     }
