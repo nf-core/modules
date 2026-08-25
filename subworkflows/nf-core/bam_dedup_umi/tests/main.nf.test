@@ -48,14 +48,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    bam(workflow.out.transcriptome_bam[0][1]).getReadsMD5(),
-                    workflow.out.stats,
-                    workflow.out.flagstat,
-                    workflow.out.idxstats
-                ).match() },
-                { assert path(workflow.out.index.get(0).get(1)).exists() },
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam", "transcriptome_bam"])).match() },
                 { assert workflow.out.genome_stats.size() == 1 },
                 { assert workflow.out.genome_flagstat.size() == 1 },
                 { assert workflow.out.genome_idxstats.size() == 1 },
@@ -94,12 +87,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    workflow.out.stats,
-                    workflow.out.flagstat,
-                    workflow.out.idxstats
-                ).match() },
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"])).match() },
                 { assert path(workflow.out.index.get(0).get(1)).exists() },
                 { assert workflow.out.genome_stats.size() == 1 },
                 { assert workflow.out.genome_flagstat.size() == 1 },
