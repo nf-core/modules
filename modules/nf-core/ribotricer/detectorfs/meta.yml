@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ribotricer_detectorfs"
 description: "Accurate detection of short and long active ORFs using Ribo-seq data"
 keywords:
@@ -12,7 +11,8 @@ tools:
       documentation: "https://github.com/smithlabcode/ribotricer"
       tool_dev_url: "https://github.com/smithlabcode/ribotricer"
       doi: "10.1093/bioinformatics/btz878"
-      licence: ["GNU General Public v3 (GPL v3)"]
+      licence:
+        - "GNU General Public v3 (GPL v3)"
       identifier: biotools:ribotricer
 
 input:
@@ -30,6 +30,10 @@ input:
         type: file
         description: "Index for sorted BAM/CRAM/SAM file"
         pattern: "*.{bai}"
+        ontologies: []
+    - strandedness:
+        type: string
+        description: "Strandedness of the data"
         ontologies: []
   - - meta2:
         type: map
@@ -51,8 +55,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]
       - "*_protocol.txt":
           type: file
-          description: "txt file containing inferred protocol if it was inferred (not
-            supplied as input)"
+          description: "txt file containing inferred protocol if it was inferred (not supplied as input)"
           pattern: "*_protocol.txt"
           ontologies: []
   bam_summary:
@@ -161,13 +164,29 @@ output:
           pattern: "*_translating_ORFs.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_ribotricer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ribotricer:
+          type: string
+          description: The name of the tool
+      - ribotricer --version 2>&1 | sed -n 's/^ribotricer, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ribotricer:
+          type: string
+          description: The name of the tool
+      - ribotricer --version 2>&1 | sed -n 's/^ribotricer, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@pinin4fjords"
 maintainers:

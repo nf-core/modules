@@ -5,7 +5,7 @@
                 "# sample = testN",
                 "# readGroups = 1",
                 "# estimatedOrDefaults = defaults",
-                "# commandLine = CalibrateDragstrModel --str-table-path genome_strtablefile.zip --threads 2 --output test.txt --input test.paired_end.sorted.bam --reference genome.fasta --tmp-dir . --gp-values 10:1.0:50 --api-values 0:1.0:40 --gop-values 10:.25:50 --het-to-hom-ratio 2.0 --min-loci-count 50 --api-mono-threshold 3 --max-period 8 --max-repeats 20 --minimum-depth 10 --pileup-padding 5 --sampling-min-mq 20 --parallel false --shard-size 1000000 --down-sample-size 4096 --force-estimation false --interval-set-rule UNION --interval-padding 0 --interval-exclusion-padding 0 --interval-merging-rule ALL --read-validation-stringency SILENT --seconds-between-progress-updates 10.0 --disable-sequence-dictionary-validation false --create-output-bam-index true --create-output-bam-md5 false --create-output-variant-index true --create-output-variant-md5 false --max-variants-per-shard 0 --lenient false --add-output-sam-program-record true --add-output-vcf-command-line true --cloud-prefetch-buffer 40 --cloud-index-prefetch-buffer -1 --disable-bam-index-caching false --sites-only-vcf-output false --help false --version false --showHidden false --verbosity INFO --QUIET false --use-jdk-deflater false --use-jdk-inflater false --gcs-max-retries 20 --gcs-project-for-requester-pays  --disable-tool-default-read-filters false",
+                "# commandLine = CalibrateDragstrModel --str-table-path genome_strtablefile.zip --threads 4 --output test.txt --input test.paired_end.sorted.bam --reference genome.fasta --tmp-dir . --gp-values 10:1.0:50 --api-values 0:1.0:40 --gop-values 10:.25:50 --het-to-hom-ratio 2.0 --min-loci-count 50 --api-mono-threshold 3 --max-period 8 --max-repeats 20 --minimum-depth 10 --pileup-padding 5 --sampling-min-mq 20 --parallel false --shard-size 1000000 --down-sample-size 4096 --force-estimation false --interval-set-rule UNION --interval-padding 0 --interval-exclusion-padding 0 --interval-merging-rule ALL --read-validation-stringency SILENT --seconds-between-progress-updates 10.0 --disable-sequence-dictionary-validation false --create-output-bam-index true --create-output-bam-md5 false --output-cram-version 3.1 --create-output-variant-index true --create-output-variant-md5 false --max-variants-per-shard 0 --lenient false --add-output-sam-program-record true --add-output-vcf-command-line true --cloud-prefetch-buffer 40 --cloud-index-prefetch-buffer -1 --disable-bam-index-caching false --sites-only-vcf-output false --help false --version false --showHidden false --verbosity INFO --QUIET false --use-jdk-deflater false --use-jdk-inflater false --gcs-max-retries 20 --gcs-project-for-requester-pays  --disable-tool-default-read-filters false",
                 "############################################################################################"
             ],
             {
@@ -13,16 +13,16 @@
                     [
                         "GATK4_CALIBRATEDRAGSTRMODEL",
                         "gatk4",
-                        "4.6.2.0"
+                        "4.7.0.0"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-08-18T10:51:07.117399",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-21T15:51:55.157887749"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "test-gatk4-calibratedragstrmodel-cram": {
         "content": [
@@ -30,7 +30,7 @@
                 "# sample = testN",
                 "# readGroups = 1",
                 "# estimatedOrDefaults = defaults",
-                "# commandLine = CalibrateDragstrModel --str-table-path genome_strtablefile.zip --threads 2 --output test.txt --input test.paired_end.sorted.cram --reference genome.fasta --tmp-dir . --gp-values 10:1.0:50 --api-values 0:1.0:40 --gop-values 10:.25:50 --het-to-hom-ratio 2.0 --min-loci-count 50 --api-mono-threshold 3 --max-period 8 --max-repeats 20 --minimum-depth 10 --pileup-padding 5 --sampling-min-mq 20 --parallel false --shard-size 1000000 --down-sample-size 4096 --force-estimation false --interval-set-rule UNION --interval-padding 0 --interval-exclusion-padding 0 --interval-merging-rule ALL --read-validation-stringency SILENT --seconds-between-progress-updates 10.0 --disable-sequence-dictionary-validation false --create-output-bam-index true --create-output-bam-md5 false --create-output-variant-index true --create-output-variant-md5 false --max-variants-per-shard 0 --lenient false --add-output-sam-program-record true --add-output-vcf-command-line true --cloud-prefetch-buffer 40 --cloud-index-prefetch-buffer -1 --disable-bam-index-caching false --sites-only-vcf-output false --help false --version false --showHidden false --verbosity INFO --QUIET false --use-jdk-deflater false --use-jdk-inflater false --gcs-max-retries 20 --gcs-project-for-requester-pays  --disable-tool-default-read-filters false",
+                "# commandLine = CalibrateDragstrModel --str-table-path genome_strtablefile.zip --threads 4 --output test.txt --input test.paired_end.sorted.cram --reference genome.fasta --tmp-dir . --gp-values 10:1.0:50 --api-values 0:1.0:40 --gop-values 10:.25:50 --het-to-hom-ratio 2.0 --min-loci-count 50 --api-mono-threshold 3 --max-period 8 --max-repeats 20 --minimum-depth 10 --pileup-padding 5 --sampling-min-mq 20 --parallel false --shard-size 1000000 --down-sample-size 4096 --force-estimation false --interval-set-rule UNION --interval-padding 0 --interval-exclusion-padding 0 --interval-merging-rule ALL --read-validation-stringency SILENT --seconds-between-progress-updates 10.0 --disable-sequence-dictionary-validation false --create-output-bam-index true --create-output-bam-md5 false --output-cram-version 3.1 --create-output-variant-index true --create-output-variant-md5 false --max-variants-per-shard 0 --lenient false --add-output-sam-program-record true --add-output-vcf-command-line true --cloud-prefetch-buffer 40 --cloud-index-prefetch-buffer -1 --disable-bam-index-caching false --sites-only-vcf-output false --help false --version false --showHidden false --verbosity INFO --QUIET false --use-jdk-deflater false --use-jdk-inflater false --gcs-max-retries 20 --gcs-project-for-requester-pays  --disable-tool-default-read-filters false",
                 "############################################################################################"
             ],
             {
@@ -38,16 +38,16 @@
                     [
                         "GATK4_CALIBRATEDRAGSTRMODEL",
                         "gatk4",
-                        "4.6.2.0"
+                        "4.7.0.0"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-08-18T10:51:18.795689",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-21T15:52:11.558997042"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "test-gatk4-calibratedragstrmodel-gzipped-beds": {
         "content": [
@@ -55,7 +55,7 @@
                 "# sample = testN",
                 "# readGroups = 1",
                 "# estimatedOrDefaults = defaults",
-                "# commandLine = CalibrateDragstrModel --str-table-path genome_strtablefile.zip --threads 2 --output test.txt --input test.paired_end.sorted.cram --reference genome.fasta --tmp-dir . --gp-values 10:1.0:50 --api-values 0:1.0:40 --gop-values 10:.25:50 --het-to-hom-ratio 2.0 --min-loci-count 50 --api-mono-threshold 3 --max-period 8 --max-repeats 20 --minimum-depth 10 --pileup-padding 5 --sampling-min-mq 20 --parallel false --shard-size 1000000 --down-sample-size 4096 --force-estimation false --interval-set-rule UNION --interval-padding 0 --interval-exclusion-padding 0 --interval-merging-rule ALL --read-validation-stringency SILENT --seconds-between-progress-updates 10.0 --disable-sequence-dictionary-validation false --create-output-bam-index true --create-output-bam-md5 false --create-output-variant-index true --create-output-variant-md5 false --max-variants-per-shard 0 --lenient false --add-output-sam-program-record true --add-output-vcf-command-line true --cloud-prefetch-buffer 40 --cloud-index-prefetch-buffer -1 --disable-bam-index-caching false --sites-only-vcf-output false --help false --version false --showHidden false --verbosity INFO --QUIET false --use-jdk-deflater false --use-jdk-inflater false --gcs-max-retries 20 --gcs-project-for-requester-pays  --disable-tool-default-read-filters false",
+                "# commandLine = CalibrateDragstrModel --str-table-path genome_strtablefile.zip --threads 4 --output test.txt --input test.paired_end.sorted.cram --reference genome.fasta --tmp-dir . --gp-values 10:1.0:50 --api-values 0:1.0:40 --gop-values 10:.25:50 --het-to-hom-ratio 2.0 --min-loci-count 50 --api-mono-threshold 3 --max-period 8 --max-repeats 20 --minimum-depth 10 --pileup-padding 5 --sampling-min-mq 20 --parallel false --shard-size 1000000 --down-sample-size 4096 --force-estimation false --interval-set-rule UNION --interval-padding 0 --interval-exclusion-padding 0 --interval-merging-rule ALL --read-validation-stringency SILENT --seconds-between-progress-updates 10.0 --disable-sequence-dictionary-validation false --create-output-bam-index true --create-output-bam-md5 false --output-cram-version 3.1 --create-output-variant-index true --create-output-variant-md5 false --max-variants-per-shard 0 --lenient false --add-output-sam-program-record true --add-output-vcf-command-line true --cloud-prefetch-buffer 40 --cloud-index-prefetch-buffer -1 --disable-bam-index-caching false --sites-only-vcf-output false --help false --version false --showHidden false --verbosity INFO --QUIET false --use-jdk-deflater false --use-jdk-inflater false --gcs-max-retries 20 --gcs-project-for-requester-pays  --disable-tool-default-read-filters false",
                 "############################################################################################"
             ],
             {
@@ -63,16 +63,16 @@
                     [
                         "GATK4_CALIBRATEDRAGSTRMODEL",
                         "gatk4",
-                        "4.6.2.0"
+                        "4.7.0.0"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-08-18T10:51:46.698105",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-21T15:52:43.091220842"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "test-gatk4-calibratedragstrmodel-beds": {
         "content": [
@@ -80,7 +80,7 @@
                 "# sample = testN",
                 "# readGroups = 1",
                 "# estimatedOrDefaults = defaults",
-                "# commandLine = CalibrateDragstrModel --str-table-path genome_strtablefile.zip --threads 2 --output test.txt --input test.paired_end.sorted.cram --reference genome.fasta --tmp-dir . --gp-values 10:1.0:50 --api-values 0:1.0:40 --gop-values 10:.25:50 --het-to-hom-ratio 2.0 --min-loci-count 50 --api-mono-threshold 3 --max-period 8 --max-repeats 20 --minimum-depth 10 --pileup-padding 5 --sampling-min-mq 20 --parallel false --shard-size 1000000 --down-sample-size 4096 --force-estimation false --interval-set-rule UNION --interval-padding 0 --interval-exclusion-padding 0 --interval-merging-rule ALL --read-validation-stringency SILENT --seconds-between-progress-updates 10.0 --disable-sequence-dictionary-validation false --create-output-bam-index true --create-output-bam-md5 false --create-output-variant-index true --create-output-variant-md5 false --max-variants-per-shard 0 --lenient false --add-output-sam-program-record true --add-output-vcf-command-line true --cloud-prefetch-buffer 40 --cloud-index-prefetch-buffer -1 --disable-bam-index-caching false --sites-only-vcf-output false --help false --version false --showHidden false --verbosity INFO --QUIET false --use-jdk-deflater false --use-jdk-inflater false --gcs-max-retries 20 --gcs-project-for-requester-pays  --disable-tool-default-read-filters false",
+                "# commandLine = CalibrateDragstrModel --str-table-path genome_strtablefile.zip --threads 4 --output test.txt --input test.paired_end.sorted.cram --reference genome.fasta --tmp-dir . --gp-values 10:1.0:50 --api-values 0:1.0:40 --gop-values 10:.25:50 --het-to-hom-ratio 2.0 --min-loci-count 50 --api-mono-threshold 3 --max-period 8 --max-repeats 20 --minimum-depth 10 --pileup-padding 5 --sampling-min-mq 20 --parallel false --shard-size 1000000 --down-sample-size 4096 --force-estimation false --interval-set-rule UNION --interval-padding 0 --interval-exclusion-padding 0 --interval-merging-rule ALL --read-validation-stringency SILENT --seconds-between-progress-updates 10.0 --disable-sequence-dictionary-validation false --create-output-bam-index true --create-output-bam-md5 false --output-cram-version 3.1 --create-output-variant-index true --create-output-variant-md5 false --max-variants-per-shard 0 --lenient false --add-output-sam-program-record true --add-output-vcf-command-line true --cloud-prefetch-buffer 40 --cloud-index-prefetch-buffer -1 --disable-bam-index-caching false --sites-only-vcf-output false --help false --version false --showHidden false --verbosity INFO --QUIET false --use-jdk-deflater false --use-jdk-inflater false --gcs-max-retries 20 --gcs-project-for-requester-pays  --disable-tool-default-read-filters false",
                 "############################################################################################"
             ],
             {
@@ -88,15 +88,15 @@
                     [
                         "GATK4_CALIBRATEDRAGSTRMODEL",
                         "gatk4",
-                        "4.6.2.0"
+                        "4.7.0.0"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-08-18T10:51:30.819989",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-21T15:52:27.750901045"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }
