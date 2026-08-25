@@ -17,6 +17,10 @@ nextflow_workflow {
     test("Bacteroides fragilis genome [fasta] w/ index") {
         when {
 
+            params {
+                outdir = "test"
+            }
+
             workflow {
                 """
                 input[0] = channel.of(
@@ -35,13 +39,23 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    path(workflow.out.dict[0][1]).readLines()[0],
+                    workflow.out.reference,
+                    workflow.out.fai,
+                    workflow.out.sizes,
+                    workflow.out.sequence_description
+                ).match() }
             )
         }
     }
 
     test("Bacteroides fragilis genome [fasta] w/ index no sizes") {
         when {
+
+            params {
+                outdir = "test"
+            }
 
             workflow {
                 """
@@ -61,7 +75,12 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    path(workflow.out.dict[0][1]).readLines()[0],
+                    workflow.out.reference,
+                    workflow.out.fai,
+                    workflow.out.sequence_description
+                ).match() }
             )
         }
     }
@@ -69,6 +88,9 @@ nextflow_workflow {
     test("Bacteroides fragilis genome [fasta] w/ index no sizes no dict") {
         when {
 
+            params {
+                outdir = "test"
+            }
             workflow {
                 """
                 input[0] = channel.of(
@@ -96,6 +118,10 @@ nextflow_workflow {
         options "-stub"
         when {
 
+            params {
+                outdir = "test"
+            }
+
             workflow {
                 """
                 input[0] = channel.of(
@@ -113,7 +139,13 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    path(workflow.out.dict[0][1]).readLines()[0],
+                    workflow.out.reference,
+                    workflow.out.fai,
+                    workflow.out.sizes,
+                    workflow.out.sequence_description
+                ).match() }
             )
         }
     }

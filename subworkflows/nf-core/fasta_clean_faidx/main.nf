@@ -103,7 +103,7 @@ workflow FASTA_CLEAN_FAIDX {
     // MODULE: GENERATE A SAMTOOLS DICT FILE BASED ON THE CORRECTED FASTA FILE
     //
     SAMTOOLS_DICT (
-        SEQKIT_TRIM.out.fastx
+        SEQKIT_TRIM.out.fastx.filter { meta, file -> val_get_dict }
     )
 
 
