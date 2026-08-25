@@ -14,9 +14,9 @@ process SYRI {
     val(file_type)
 
     output:
-    tuple val(meta), path("*syri.out")      , emit: syri        , optional: true
+    tuple val(meta), path("*.syri.out")      , emit: syri        , optional: true
     tuple val(meta), path("*.error.log")    , emit: error       , optional: true
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('syri'), eval("syri --version"), emit: versions_syri, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,33 +27,23 @@ process SYRI {
     if ( ! ( file_type in [ 'T', 'S', 'B', 'P' ] ) ) { error "File type should be one of [ 'T', 'S', 'B', 'P' ]" }
     """
     syri \\
-        -c $infile \\
-        -q $query_fasta \\
-        -r $reference_fasta \\
-        -F $file_type \\
-        $args \\
-        --prefix $prefix \\
+        -c ${infile} \\
+        -q ${query_fasta} \\
+        -r ${reference_fasta} \\
+        -F ${file_type} \\
+        ${args} \\
+        --prefix ${prefix} \\
         2>| >(tee "${prefix}.error.log" >&2) \\
         || echo "Errors from syri printed to ${prefix}.error.log"
 
-    [ -f "${prefix}syri.out" ] \\
+    [ -f "${prefix}.syri.out" ] \\
         && rm "${prefix}.error.log" \\
         || echo 'Syri failed and no syri.out file was created'
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        syri: \$(syri --version)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}syri.out
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        syri: \$(syri --version)
-    END_VERSIONS
+    touch ${prefix}.syri.out
     """
 }
