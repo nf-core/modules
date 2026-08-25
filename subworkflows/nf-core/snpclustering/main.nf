@@ -1,9 +1,10 @@
-include { BEAGLE5_BEAGLE              } from '../../../modules/nf-core/beagle5/beagle'
-include { PLINK2_VCF                  } from '../../../modules/nf-core/plink2/vcf/main'
-include { PLINK2_PCA                  } from '../../../modules/nf-core/plink2/pca/main'
-include { CUSTOM_PCACLUSTERING        } from '../../../modules/nf-core/custom/pcaclustering/main'
-include { CUSTOM_CLUSTERMETRICS       } from '../../../modules/nf-core/custom/clustermetrics/main'
-include { CUSTOM_CLUSTERVISUALIZATION } from '../../../modules/nf-core/custom/clustervisualization/main'
+include { BEAGLE5_BEAGLE                } from '../../../modules/nf-core/beagle5/beagle'
+include { PLINK2_VCF                    } from '../../../modules/nf-core/plink2/vcf/main'
+include { PLINK2_PCA                    } from '../../../modules/nf-core/plink2/pca/main'
+include { GAWK as GAWK_EIGENVEC_TO_TSV  } from '../../../modules/nf-core/gawk/main'
+include { CUSTOM_PCACLUSTERING          } from '../../../modules/nf-core/custom/pcaclustering/main'
+include { CUSTOM_CLUSTERMETRICS         } from '../../../modules/nf-core/custom/clustermetrics/main'
+include { CUSTOM_CLUSTERVISUALIZATION   } from '../../../modules/nf-core/custom/clustervisualization/main'
 
 workflow SNPCLUSTERING {
 
@@ -21,6 +22,12 @@ workflow SNPCLUSTERING {
 
     main:
     ch_versions = Channel.empty()
+
+    // Bundled awk program (see ./awk/eigenvec_to_tsv.awk); shipped alongside
+    // the subworkflow and passed to GAWK_EIGENVEC_TO_TSV as `program_file` so
+    // the awk source stays readable as awk rather than as an escaped Groovy
+    // string.
+    ch_eigenvec_to_tsv_awk = file("${moduleDir}/awk/eigenvec_to_tsv.awk", checkIfExists: true)
 
     /*
      * Build BEAGLE input tuple:
@@ -65,16 +72,24 @@ workflow SNPCLUSTERING {
     ch_versions = ch_versions.mix(PLINK2_PCA.out.versions_plink2)
 
     /*
-     * Convert .eigenvec to TSV for downstream clustering modules
+     * Convert .eigenvec to a tab-separated file for downstream clustering
+     * modules: strips the leading '#' from the header and renames the IID
+     * column to sample_id. Output keeps its default naming (<meta.id>.eigenvec)
+     * — only the tab-separated content matters downstream, not the extension.
      */
-    EIGENVEC_TO_TSV(PLINK2_PCA.out.evecfile)
+    GAWK_EIGENVEC_TO_TSV(
+        PLINK2_PCA.out.evecfile,
+        ch_eigenvec_to_tsv_awk,
+        false
+    )
+    ch_versions = ch_versions.mix(GAWK_EIGENVEC_TO_TSV.out.versions_gawk)
 
     /*
      * PCA clustering
      * CUSTOM_PCACLUSTERING(tsv, algorithm, n_clusters, dbscan_eps, dbscan_min_samples)
      */
     CUSTOM_PCACLUSTERING(
-        EIGENVEC_TO_TSV.out.tsv,
+        GAWK_EIGENVEC_TO_TSV.out.output,
         algorithm,
         n_clusters,
         dbscan_eps,
@@ -86,7 +101,7 @@ workflow SNPCLUSTERING {
      * Metrics and visualization both expect one tuple input channel
      * built from: meta + tsv + cluster assignments
      */
-    ch_cluster_analysis_input = EIGENVEC_TO_TSV.out.tsv
+    ch_cluster_analysis_input = GAWK_EIGENVEC_TO_TSV.out.output
         .join(CUSTOM_PCACLUSTERING.out.clusters)
         .map { meta, tsv, clusters ->
             tuple(meta, tsv, clusters)
@@ -110,7 +125,7 @@ workflow SNPCLUSTERING {
     evfile        = PLINK2_PCA.out.evfile
     pca_log       = PLINK2_PCA.out.logfile
 
-    tsv           = EIGENVEC_TO_TSV.out.tsv
+    tsv           = GAWK_EIGENVEC_TO_TSV.out.output
 
     clusters      = CUSTOM_PCACLUSTERING.out.clusters
     cluster_info  = CUSTOM_PCACLUSTERING.out.info
@@ -126,38 +141,4 @@ workflow SNPCLUSTERING {
     tsne_png      = CUSTOM_CLUSTERVISUALIZATION.out.tsne_png
 
     versions      = ch_versions
-}
-
-process EIGENVEC_TO_TSV {
-
-    tag "${meta.id}"
-    label 'process_single'
-
-    input:
-    tuple val(meta), path(eigenvec)
-
-    output:
-    tuple val(meta), path("${meta.id}.tsv"), emit: tsv
-    path "versions.yml", emit: versions
-
-    script:
-    """
-    awk '
-    NR==1 {
-        sub(/^#/, "")
-        if (\$1 == "IID") {
-            \$1="sample_id"
-        }
-        print
-        next
-    }
-    {
-        print
-    }' OFS='\\t' ${eigenvec} > ${meta.id}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gawk: \$(awk --version | head -1 | sed 's/GNU Awk //;s/,.*//')
-    END_VERSIONS
-    """
 }
