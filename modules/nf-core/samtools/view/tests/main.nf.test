@@ -150,7 +150,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["cram", "unselected"], referenceFasta: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta', unstableKeys: ["bai", "unselected_index", "crai"])).match()}
+                // cram is empty so we checksum the name
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["unselected"], referenceFasta: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta', unstableKeys: ["cram", "bai", "unselected_index", "crai"])).match()}
             )
         }
     }
