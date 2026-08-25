@@ -112,7 +112,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["cram"], referenceFasta: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta')).match() } // for cram files
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["cram"], unstableKeys:["crai"], referenceFasta: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta')).match() } // for cram files
             )
         }
     }
@@ -145,7 +145,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["cram"], referenceFasta: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta')).match() } // for cram files
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["cram"], unstableKeys:["crai"], referenceFasta: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta')).match() } // for cram files
             )
         }
     }
