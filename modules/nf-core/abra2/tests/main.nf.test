@@ -37,9 +37,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, readsMD5Keys:["bam"])).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"])).match()}
             )
         }
 
@@ -76,9 +74,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, readsMD5Keys:["bam"])).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"])).match()}
             )
         }
 
@@ -151,9 +147,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, readsMD5Keys:["bam"])).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"])).match()}
             )
         }
 
@@ -193,9 +187,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, readsMD5Keys:["bam"])).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"])).match()}
             )
         }
 
@@ -248,12 +240,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, readsMD5Keys:["bam"])).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"])).match()}
             )
         }
-
     }
-
 }

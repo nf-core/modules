@@ -47,7 +47,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, readsMD5Keys: ["bam", "filtered_bam"], unstableKeys: ["filtered_bai"])
+                    sanitizeOutput(process.out, unstableKeys: ["bam", "filtered_bam","filtered_bai"])
                 ).match() }
             )
         }

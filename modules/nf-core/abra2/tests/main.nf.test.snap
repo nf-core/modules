@@ -47,7 +47,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.abra.bam:md5Reads,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.abra.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions_abra2": [
@@ -59,7 +59,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-08-25T12:56:41.909916",
+        "timestamp": "2026-08-25T15:10:45.755991",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -157,12 +157,22 @@
     },
     "homo_sapiens - multiple_bams": {
         "content": [
-            "a6d5eb709ea32e26a49597fe0dccd0b1",
-            "d61994c44cbec651473669378132cb7c",
-            [
-                
-            ],
             {
+                "bai": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test_multi",
+                            "single_end": false
+                        },
+                        [
+                            "test_multi.test.paired_end.sorted.bam:md5Reads,a6d5eb709ea32e26a49597fe0dccd0b1",
+                            "test_multi.test2.paired_end.sorted.bam:md5Reads,d61994c44cbec651473669378132cb7c"
+                        ]
+                    ]
+                ],
                 "versions_abra2": [
                     [
                         "ABRA2",
@@ -172,10 +182,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T10:57:12.366492643",
+        "timestamp": "2026-08-25T15:11:18.053315",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }
