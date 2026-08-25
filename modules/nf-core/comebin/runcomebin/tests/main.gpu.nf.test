@@ -1,17 +1,18 @@
 nextflow_process {
 
-    name "Test Process COMEBIN_RUNCOMEBIN"
+    name "Test Process COMEBIN_RUNCOMEBIN (GPU)"
     script "../main.nf"
     process "COMEBIN_RUNCOMEBIN"
 
+    tag "gpu"
     tag "modules"
     tag "modules_nfcore"
     tag "comebin"
     tag "comebin/runcomebin"
 
-    test("metagenome - binning") {
+    test("metagenome - binning - gpu") {
 
-        config "./nextflow.config"
+        config "./nextflow.gpu.config"
 
         when {
 
@@ -33,32 +34,6 @@ nextflow_process {
                 { assert snapshot(
                     sanitizeOutput(process.out, ignoreKeys: ["embeddings", "covembeddings", "log"])
                 ).match() }
-            )
-        }
-
-    }
-
-    test("metagenome - binning - stub") {
-
-        options "-stub"
-
-        when {
-
-            process {
-                """
-                input[0] = channel.of([
-                    [id: "test"],
-                    file("https://raw.githubusercontent.com/dialvarezs/nfcore-test-datasets/binning-dataset/data/genomics/prokaryotes/metagenome/binning/contigs.fasta.gz", checkIfExists: true),
-                    file("https://raw.githubusercontent.com/dialvarezs/nfcore-test-datasets/binning-dataset/data/genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists: true),
-                ])
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

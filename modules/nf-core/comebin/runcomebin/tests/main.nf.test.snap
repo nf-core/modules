@@ -1,11 +1,66 @@
 {
-    "sarscov2 - stub": {
+    "metagenome - binning": {
         "content": [
             {
                 "bins": [
                     [
                         {
-                            "id": "ref"
+                            "id": "test"
+                        },
+                        [
+                            "test.0.fa.gz:md5,bacf2861dae468f765906e97af02b1b0",
+                            "test.1.fa.gz:md5,5f7e9f03d50ec6719fb8a0688015e2f8",
+                            "test.2.fa.gz:md5,a198dfbd6ecfc5733fd05c35e6754eda",
+                            "test.3.fa.gz:md5,799ecf4c8b428c6ba216ba3cda56db77",
+                            "test.398.fa.gz:md5,7dc48b918787d969f90181086bd49159"
+                        ]
+                    ]
+                ],
+                "embedding_ids": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "embedding_ids.txt:md5,1a00882c69739f6eecf00f9747bfeaa9"
+                    ]
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "comebin_res.tsv:md5,4c37f9a63c8cfd046800016e0ad80185"
+                    ]
+                ],
+                "versions_comebin": [
+                    [
+                        "COMEBIN_RUNCOMEBIN",
+                        "comebin",
+                        "1.1.0"
+                    ]
+                ],
+                "versions_cuda": [
+                    [
+                        "COMEBIN_RUNCOMEBIN",
+                        "cuda",
+                        "no CUDA available"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-25T17:57:24.84287837",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "metagenome - binning - stub": {
+        "content": [
+            {
+                "bins": [
+                    [
+                        {
+                            "id": "test"
                         },
                         [
                             "1.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
@@ -16,23 +71,31 @@
                 "covembeddings": [
                     [
                         {
-                            "id": "ref"
+                            "id": "test"
                         },
-                        "covembeddings.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "covembeddings.npy:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "embedding_ids": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "embedding_ids.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "embeddings": [
                     [
                         {
-                            "id": "ref"
+                            "id": "test"
                         },
-                        "embeddings.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "embeddings.npy:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "log": [
                     [
                         {
-                            "id": "ref"
+                            "id": "test"
                         },
                         "comebin.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -40,7 +103,7 @@
                 "tsv": [
                     [
                         {
-                            "id": "ref"
+                            "id": "test"
                         },
                         "comebin_res.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -51,10 +114,17 @@
                         "comebin",
                         "1.1.0"
                     ]
+                ],
+                "versions_cuda": [
+                    [
+                        "COMEBIN_RUNCOMEBIN",
+                        "cuda",
+                        "no CUDA available"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-08-20T13:31:40.029941",
+        "timestamp": "2026-08-25T17:57:29.977851302",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
