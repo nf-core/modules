@@ -1,9 +1,23 @@
 {
     "bamcmp - human cov2": {
         "content": [
-            "ebea4b7f3db7b61d695b13ceb5be25e3",
-            "9f0edf6841d03413bfa72b70a036545a",
             {
+                "contamination_bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_contaminant.bam:md5,53569ae382b71ca068a8ffad3e26bb6a"
+                    ]
+                ],
+                "primary_filtered_bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_primary.bam:md5Reads,ebea4b7f3db7b61d695b13ceb5be25e3"
+                    ]
+                ],
                 "versions_bamcmp": [
                     [
                         "BAMCMP",
@@ -20,10 +34,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-22T21:25:33.376806465",
+        "timestamp": "2026-08-25T13:07:08.959797",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.04.6"
         }
     },
     "bamcmp - stub": {

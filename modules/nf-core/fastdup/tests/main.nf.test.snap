@@ -70,20 +70,34 @@
     },
     "sarscov2 - bam - create csi index": {
         "content": [
-            "894549ee3ced6b5ca2eed2563a985217",
-            "test.metrics.txt",
-            [
-                
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.bam.csi:md5,afdc79c180dd73c1c8dadbf65af0788e"
-                ]
-            ],
             {
+                "bai": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5Reads,894549ee3ced6b5ca2eed2563a985217"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam.csi:md5,afdc79c180dd73c1c8dadbf65af0788e"
+                    ]
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.metrics.txt:md5,c34639fd78e1f866c8595971ebbd27b5"
+                    ]
+                ],
                 "versions_fastdup": [
                     [
                         "FASTDUP",
@@ -93,27 +107,37 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-03T10:08:41.493463",
+        "timestamp": "2026-08-25T13:09:34.452312",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "sarscov2 - bam": {
         "content": [
-            "894549ee3ced6b5ca2eed2563a985217",
-            [
-                "## StringHeader",
-                "# fastdup --input test.paired_end.sorted.bam --metrics test.metrics.txt --output test.bam --num-threads 2",
-                "## StringHeader"
-            ],
-            [
-                
-            ],
-            [
-                
-            ],
             {
+                "bai": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5Reads,894549ee3ced6b5ca2eed2563a985217"
+                    ]
+                ],
+                "csi": [
+                    
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.metrics.txt:md5,8291306d57c8d4e360e0c2d8246396e2"
+                    ]
+                ],
                 "versions_fastdup": [
                     [
                         "FASTDUP",
@@ -123,28 +147,42 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-03T10:11:58.499113",
+        "timestamp": "2026-08-25T13:09:19.446805",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "sarscov2 - bam - create bai index": {
         "content": [
-            "894549ee3ced6b5ca2eed2563a985217",
-            "test.metrics.txt",
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.bam.bai:md5,412de50af8da0544bf151011ae739a2d"
-                ]
-            ],
-            [
-                
-            ],
             {
+                "bai": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam.bai:md5,412de50af8da0544bf151011ae739a2d"
+                    ]
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5Reads,894549ee3ced6b5ca2eed2563a985217"
+                    ]
+                ],
+                "csi": [
+                    
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.metrics.txt:md5,b11e42fb5a0b8b680321518fc06a06f0"
+                    ]
+                ],
                 "versions_fastdup": [
                     [
                         "FASTDUP",
@@ -154,10 +192,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-03T10:08:38.477602",
+        "timestamp": "2026-08-25T13:09:29.650892",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }
