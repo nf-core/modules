@@ -14,8 +14,8 @@ process SYRI {
     val(file_type)
 
     output:
-    tuple val(meta), path("*.syri.out")      , emit: syri        , optional: true
-    tuple val(meta), path("*.error.log")    , emit: error       , optional: true
+    tuple val(meta), path("*.syri.out"), emit: syri , optional: true
+    tuple val(meta), path("*.error.log"), emit: error , optional: true
     tuple val("${task.process}"), val('syri'), eval("syri --version"), emit: versions_syri, topic: versions
 
     when:
