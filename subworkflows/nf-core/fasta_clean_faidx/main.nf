@@ -1,7 +1,6 @@
 include { GUNZIP                        } from "../../../modules/nf-core/gunzip/main"
 include { SEQKIT_SEQ                    } from '../../../modules/nf-core/seqkit/seq/main'
 include { SEQKIT_REPLACE as SEQKIT_DOTS } from '../../../modules/nf-core/seqkit/replace/main'
-include { SEQKIT_REPLACE as SEQKIT_TRIM } from '../../../modules/nf-core/seqkit/replace/main'
 include { SAMTOOLS_FAIDX                } from "../../../modules/nf-core/samtools/faidx/main"
 include { SAMTOOLS_DICT                 } from "../../../modules/nf-core/samtools/dict/main"
 
@@ -41,7 +40,7 @@ workflow FASTA_CLEAN_FAIDX {
 
     //
     // MODULE: UPPERCASE THE REFERENCE SEQUENCE
-    //         AWK = IF HEADER PASS ELSE CONVERT LINE TO UPPER CASE
+    //         ALSO RETURN ONLY THE ID OF A SEQUENCE NOT THE FULL HEADER
     //
     SEQKIT_SEQ (
         unzipped_reference
@@ -58,21 +57,11 @@ workflow FASTA_CLEAN_FAIDX {
 
 
     //
-    // MODULE: TRIM HEADERS AFTER THE FIRST SPACE OR SPECIAL CHARACTER
-    //         EITHER OF WHICH CAN CAUSE ERRORS IN DOWNSTREAM ANALYSIS
-    //
-    SEQKIT_TRIM (
-        SEQKIT_DOTS.out.fastx,
-        "fasta"
-    )
-
-
-    //
     // MODULE: GENERATE INDEX OF REFERENCE FASTA
     //         OPTIONALLY EMIT CHROMOSOME SIZES FILE
     //
     SAMTOOLS_FAIDX (
-        SEQKIT_TRIM.out.fastx.map { meta, file -> [meta, file, []] },
+        SEQKIT_DOTS.out.fastx.map { meta, file -> [meta, file, []] },
         val_get_chromsizes
     )
 
@@ -103,12 +92,12 @@ workflow FASTA_CLEAN_FAIDX {
     // MODULE: GENERATE A SAMTOOLS DICT FILE BASED ON THE CORRECTED FASTA FILE
     //
     SAMTOOLS_DICT (
-        SEQKIT_TRIM.out.fastx.filter { meta, file -> val_get_dict }
+        SEQKIT_DOTS.out.fastx.filter { meta, file -> val_get_dict }
     )
 
 
     emit:
-    reference               = SEQKIT_TRIM.out.fastx
+    reference               = SEQKIT_DOTS.out.fastx
     fai                     = SAMTOOLS_FAIDX.out.fai
     sizes                   = SAMTOOLS_FAIDX.out.sizes
     dict                    = SAMTOOLS_DICT.out.dict
