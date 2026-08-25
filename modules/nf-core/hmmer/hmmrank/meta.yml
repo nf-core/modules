@@ -67,9 +67,11 @@ output:
       - "*.hmmrank.tsv.gz":
           type: file
           description: |
-            TSV file with ranked hmmer results: one row per (accno, profile) pair with
-            profile, accno, profile_desc, evalue, score and rank. When domtblouts are
-            supplied it also carries tlen and qlen, plus from, to, len and n_islands for
+            TSV file with ranked hmmer results: one row per (accno, profile, profile_desc)
+            combination -- profile_desc holds the query name, i.e. the model, which one file
+            may hold several of -- with profile, accno, profile_desc, evalue, score and rank.
+            When domtblouts are supplied it also carries tlen and qlen, plus from, to,
+            len and n_islands for
             each of the hmm, ali and env coordinate sets. n_islands is 1 when the domains
             merge into a single continuous stretch and rises as they scatter; coordinates
             are inclusive, so domains that abut with no gap between them count as one.

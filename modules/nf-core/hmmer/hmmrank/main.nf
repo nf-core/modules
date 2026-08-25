@@ -92,9 +92,12 @@ ${read_domtblouts}
             '\\\\s+',  extra='merge', convert = FALSE
         ) %>%
         transmute(profile = basename(fname) %>% str_remove('^${prefix}\\\\.') %>% str_remove('\\\\.tbl\\\\.gz\$'), accno, profile_desc, evalue = as.double(evalue), score = as.double(score)) %>%
-        # Group and calculate a rank based on score and evalue; let ties be resolved by profile in alphabetical order
+        # Group and calculate a rank based on score and evalue; let ties be resolved by profile and
+        # then model name, in alphabetical order. Both are needed: one file may hold several models,
+        # in which case profile is constant across them and would leave ties on input order, and
+        # rank 1 is what downstream consumers select on.
         group_by(accno) %>%
-        arrange(desc(score), evalue, profile) %>%
+        arrange(desc(score), evalue, profile, profile_desc) %>%
         mutate(rank = row_number()) %>%
         ungroup() %>%
 ${join_domtblouts}        write_tsv('${prefix}.hmmrank.tsv.gz')

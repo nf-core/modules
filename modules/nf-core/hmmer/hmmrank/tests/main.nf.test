@@ -89,12 +89,12 @@ nextflow_process {
                 { assert path(process.out.hmmrank[0][1]).linesGzip.size() > 1 },
                 { def rows = path(process.out.hmmrank[0][1]).linesGzip
                   def header = rows[0].split('\t') as List
+                  def hmmLens = rows[1..-1].collect { it.split('\t')[header.indexOf('hmm_len')] }
                   // NA is a legitimate value: hmmsearch reports a sequence on the per-sequence
-                  // threshold, so a hit can be ranked with no domain records behind it at all
-                  assert rows[1..-1].every {
-                      def v = it.split('\t')[header.indexOf('hmm_len')]
-                      v.isInteger() || v == 'NA'
-                  } },
+                  // threshold, so a hit can be ranked with no domain records behind it at all.
+                  // any() as well as every(), since all-NA is what a broken join looks like
+                  assert hmmLens.every { it.isInteger() || it == 'NA' }
+                  assert hmmLens.any { it.isInteger() } },
                 { assert snapshot(
                     sanitizeOutput(process.out),
                     path(process.out.versions[0]).yaml
@@ -174,11 +174,13 @@ nextflow_process {
                 def combine = { name, srcs ->
                     def out = file("\${workDir}/multimodel/\${name}")
                     out.parent.mkdirs()
-                    def os = new java.util.zip.GZIPOutputStream(out.newOutputStream())
-                    srcs.each { src ->
-                        os.write(new java.util.zip.GZIPInputStream(file(src, checkIfExists: true).newInputStream()).bytes)
+                    new java.util.zip.GZIPOutputStream(out.newOutputStream()).withStream { os ->
+                        srcs.each { src ->
+                            new java.util.zip.GZIPInputStream(file(src, checkIfExists: true).newInputStream()).withStream { gz ->
+                                os.write(gz.bytes)
+                            }
+                        }
                     }
-                    os.close()
                     out
                 }
                 def base = params.phyloplace_testdata_base_path + 'hmmrank/'
