@@ -22,7 +22,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["umap_png", "tsne_png"]),
+                    sanitizeOutput(process.out, unstableKeys: ["umap_tsv", "tsne_tsv", "umap_png", "tsne_png"]),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
