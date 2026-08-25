@@ -85,9 +85,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.log[0][1]).readLines()[0..1],
-                    sanitizeOutput(process.out, unstableKeys: ["log", "bam"])
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log"])
                 ).match() }
             )
         }
@@ -112,7 +111,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.log[0][1]).readLines()[0..1],
-                    sanitizeOutput(process.out, unstableKeys: ["log", "bam"])
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log"])
                     ).match() }
             )
         }
@@ -137,7 +136,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.log[0][1]).readLines()[0..1],
-                    sanitizeOutput(process.out, unstableKeys: ["log", "bam"])
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log"])
                     ).match() }
             )
         }

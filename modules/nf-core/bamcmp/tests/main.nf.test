@@ -76,7 +76,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out, readsMD5Keys:["primary_filtered_bam",])).match()
+                    sanitizeOutput(process.out, readsMD5Keys:["primary_filtered_bam", "contamination_bam"])).match()
                 }
             )
         }

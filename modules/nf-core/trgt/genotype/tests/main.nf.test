@@ -60,9 +60,8 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-					path(process.out.vcf[0][1]).vcf.summary,
-					bam(process.out.bam[0][1]).getReadsMD5(),
-                    sanitizeOutput(process.out, unstableKeys: ["vcf", "bam"])
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], variantsMD5Keys: ["vcf"])
                     ).match() }
             )
         }
@@ -95,7 +94,7 @@ nextflow_process {
                 { assert snapshot(
 					path(process.out.vcf[0][1]).vcf.summary,
 					bam(process.out.bam[0][1]).getReadsMD5(),
-                    sanitizeOutput(process.out, unstableKeys: ["vcf", "bam"])
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], variantsMD5Keys: ["vcf"])
                     ).match() }
             )
         }
