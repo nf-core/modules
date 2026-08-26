@@ -103,7 +103,8 @@ process GENOME_STATS {
     tuple val(meta), path("*.json"), emit: json
 
     exec:
-    def outfile = task.workDir.resolve("${meta.id}.genome_stats.json")
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def outfile = task.workDir.resolve("${prefix}.json")
 
     def lengths = fai.readLines()
         .findAll { line -> line.trim() }
