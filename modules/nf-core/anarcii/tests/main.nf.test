@@ -33,6 +33,7 @@ nextflow_process {
             assert "Query end" in anarciiResults.columnNames
             // A mismatched seq_type leaves sequences unnumbered as chain "F" instead of failing
             assert anarciiResults.columns["Chain"].every { it in ["A", "B"] }
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 
