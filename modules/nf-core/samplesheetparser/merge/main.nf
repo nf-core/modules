@@ -8,7 +8,7 @@ process SAMPLESHEETPARSER_MERGE {
         'quay.io/biocontainers/samplesheet-parser:2.5.1--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(samplesheets)
+    tuple val(meta), path(samplesheets, stageAs: "input*/*")
     val target_version
 
     output:
@@ -22,12 +22,13 @@ process SAMPLESHEETPARSER_MERGE {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (!['v1', 'v2'].contains(target_version.toLowerCase())) {
+    def to_norm = target_version.toLowerCase()
+    if (!['v1', 'v2'].contains(to_norm)) {
         error "target_version must be 'v1' or 'v2', got: ${target_version}"
     }
     """
     samplesheet merge \\
-        --to ${target_version} \\
+        --to ${to_norm} \\
         --output ${prefix}.merged.csv \\
         --format json \\
         ${args} \\

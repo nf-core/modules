@@ -10,6 +10,7 @@ process SAMPLESHEETPARSER_SPLIT {
     input:
     tuple val(meta), path(samplesheet)
     val by
+    val to
 
     output:
     tuple val(meta), path("split/*.csv"), emit: samplesheets
@@ -22,14 +23,20 @@ process SAMPLESHEETPARSER_SPLIT {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (!['project', 'lane'].contains(by.toLowerCase())) {
+    def by_norm = by.toLowerCase()
+    def to_norm = to.toLowerCase()
+    if (!['project', 'lane'].contains(by_norm)) {
         error "by must be 'project' or 'lane', got: ${by}"
+    }
+    if (!['v1', 'v2'].contains(to_norm)) {
+        error "to must be 'v1' or 'v2', got: ${to}"
     }
     """
     mkdir -p split
 
     samplesheet split \\
-        --by ${by} \\
+        --by ${by_norm} \\
+        --to ${to_norm} \\
         --output-dir split \\
         --format json \\
         ${args} \\
