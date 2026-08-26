@@ -31,7 +31,7 @@ process SEQTK_SUBSEQ {
         $args \\
         $sequences \\
         $filter_list | \\
-        gzip --no-name > ${sequences}${prefix}.${ext}.gz
+        gzip --no-name > ${prefix}.${ext}.gz
     """
 
     stub:
@@ -41,6 +41,6 @@ process SEQTK_SUBSEQ {
         ext = "fq"
     }
     """
-    echo "" | gzip > ${sequences}${prefix}.${ext}.gz
+    echo "" | gzip > ${prefix}.${ext}.gz
     """
 }
