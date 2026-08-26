@@ -65,7 +65,7 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
-      - "*.resolved.${sequences.extension}":
+      - "*.resolved.${sequences.extension ?: 'fasta'}":
           type: file
           description: The input sequences (same format as the input), headers stripped down to a bare id.
           pattern: "*.resolved.*"
