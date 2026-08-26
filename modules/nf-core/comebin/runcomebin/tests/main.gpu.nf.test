@@ -33,7 +33,7 @@ nextflow_process {
                 { assert process.out.bins.get(0).get(1).size() >= 1 },
                 { assert snapshot(
                     sanitizeOutput(process.out,
-                        // bin contents vary between machines, see the BLAS and OpenMP note in the PR
+                        // bin contents vary between machines, due to BLAS and OpenMP
                         unstableKeys: ["tsv"],
                         ignoreKeys: ["bins", "embeddings", "covembeddings", "log"])
                 ).match() }
