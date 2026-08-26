@@ -11,9 +11,12 @@ process CUSTOM_RESOLVETAXONOMY {
     tuple val(meta), path(taxonomy), path(sequences), val(taxonomy_required)
 
     output:
-    tuple val(meta), path("*.resolved.tax"),                    emit: taxonomy
-    tuple val(meta), path("*.resolved.${sequences.extension}"), emit: sequences
-    tuple val(meta), path("*.warnings.txt"),                    emit: warnings
+    // The fallback to 'fasta' matters when sequences has no extension at all (e.g. a
+    // download URL with no filename suffix) -- Path.extension is '' there, which
+    // would otherwise produce a malformed "*.resolved." glob matching nothing.
+    tuple val(meta), path("*.resolved.tax"),                                emit: taxonomy
+    tuple val(meta), path("*.resolved.${sequences.extension ?: 'fasta'}"),  emit: sequences
+    tuple val(meta), path("*.warnings.txt"),                                emit: warnings
     tuple val("${task.process}"), val('biopython'), eval("python3 -c 'import Bio; print(Bio.__version__)'"), emit: versions_biopython, topic: versions
 
     when:
@@ -21,13 +24,17 @@ process CUSTOM_RESOLVETAXONOMY {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // Falls back to 'fasta' when sequences has no extension at all (e.g. a
+    // download URL with no filename suffix) -- Path.extension is '' there, which
+    // would otherwise produce a malformed "${prefix}.resolved." output name.
+    def ext = sequences.extension ?: 'fasta'
     // Nextflow stages an absent optional path(taxonomy) as an empty list -- falsy in
     // Groovy -- rather than as a file, so this correctly distinguishes "no taxonomy
     // file given" from a real one, without ever interpolating the literal text "[]"
     // into the command line.
     def taxonomy_in = taxonomy ? "${taxonomy}" : ''
     """
-    python3 - "${taxonomy_in}" "${sequences}" "${taxonomy_required}" "${prefix}.resolved.tax" "${prefix}.resolved.${sequences.extension}" "${prefix}.warnings.txt" << 'PYEOF'
+    python3 - "${taxonomy_in}" "${sequences}" "${taxonomy_required}" "${prefix}.resolved.tax" "${prefix}.resolved.${ext}" "${prefix}.warnings.txt" << 'PYEOF'
 import sys
 from Bio import SeqIO
 
@@ -96,7 +103,8 @@ PYEOF
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def ext = sequences.extension ?: 'fasta'
     """
-    touch ${prefix}.resolved.tax ${prefix}.resolved.${sequences.extension} ${prefix}.warnings.txt
+    touch ${prefix}.resolved.tax ${prefix}.resolved.${ext} ${prefix}.warnings.txt
     """
 }

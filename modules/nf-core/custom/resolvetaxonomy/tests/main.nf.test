@@ -189,6 +189,39 @@ nextflow_process {
 
     }
 
+    test("sequences file with no extension at all") {
+
+        when {
+            process {
+                """
+                def noExtPath = java.nio.file.Files.createTempDirectory('resolvetaxonomy_test').resolve('resolvetaxonomy_embedded')
+                noExtPath.toFile().text = file(params.modules_testdata_base_path + 'generic/fasta/resolvetaxonomy_embedded.fasta', checkIfExists: true).text
+
+                input[0] = [
+                    [ id:'test' ],
+                    [],
+                    file(noExtPath.toString()),
+                    true,
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def sequences = path(process.out.sequences[0][1])
+
+            assertAll(
+                // Falls back to '.resolved.fasta', not a malformed '.resolved.' with
+                // no extension.
+                { assert sequences.toFile().name.endsWith('.resolved.fasta') },
+                { assert sequences.text.contains('>SeqA\n') },
+            )
+        }
+
+    }
+
     test("embedded taxonomy - stub") {
 
         options "-stub"
