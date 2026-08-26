@@ -12,17 +12,24 @@ nextflow_process {
     test("test_sigprofiler_single_sample") {
         when {
             params {
-              module_args = "[download_genome_sigprofiler:True, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:False ]"
+              module_args = "[download_genome_sigprofiler:True, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:False ]"
             }
 
             process {
                 """
+                ch_rows = channel.of(
+                    "\tSeed",
+                    "0\t315836613344651455423314970566641622150"
+                )
+                ch_seed = ch_rows.collectFile(name: 'seed.txt', newLine: true, sort: false)
+
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                 ]
                 input[1] = "GRCh38"
                 input[2] = []
+                input[3] = ch_seed
                 """
             }
         }
@@ -31,15 +38,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstablePatterns:[
-                        "**/*.pdf", "**/*.csv",
-                        "**/*Signatures.txt", "**/*Signatures_SEM_Error.txt",
-                        "**/*Samples_stats.txt", "**/COSMIC_*",
-                        "**/*Probabilities.txt", "**/*_De-Novo_Signature*",
-                        "**/*Stats_refit.txt", "**/*Log.txt",
-                        "**/JOB_METADATA.txt", "**/Seeds.txt",
-                        "**/*_seqinfo.txt"
-                    ], ignorePatterns: ["**/*.out", "**/*.err"]),
+                    sanitizeOutput(process.out, unstablePatterns: ["**/*.pdf", "**/JOB_METADATA.txt"], ignorePatterns:["**/*.err", "**/*.out"]),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -60,6 +59,7 @@ nextflow_process {
                 ]
                 input[1] = "GRCh38"
                 input[2] = []
+                input[3] = []
                 """
             }
         }
@@ -85,6 +85,7 @@ nextflow_process {
                 ]
                 input[1] = "GRCh38"
                 input[2] = []
+                input[3] = []
                 """
             }
         }
@@ -98,6 +99,7 @@ nextflow_process {
 
 
     test("test_sigprofiler - single_sample - stub") {
+        tag "stub"
         options "-stub"
         when {
             params {
@@ -111,6 +113,7 @@ nextflow_process {
                 ]
                 input[1] = "GRCh38"
                 input[2] = []
+                input[3] = []
                 """
             }
         }
@@ -118,7 +121,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
