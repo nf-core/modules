@@ -1,14 +1,14 @@
-name: samplesheetparser_diff
+name: samplesheetparser_merge
 description: |
-  Compare two Illumina SampleSheet.csv files (any combination of V1 and V2)
-  and emit a structured JSON diff covering header changes, added/removed
-  samples, and per-sample field changes. Exits 0 if identical, 1 if
-  differences are detected — useful as a CI pre-run guard.
+  Merge multiple per-project Illumina SampleSheet.csv files into one
+  combined sheet. Detects index collisions, Hamming distance violations,
+  and read-length mismatches across sheets. Mixed V1/V2 inputs are
+  auto-converted to the target format.
+  Exits 0 on clean merge, 1 if conflicts or warnings were found.
 keywords:
   - illumina
   - samplesheet
-  - diff
-  - comparison
+  - merge
   - bclconvert
   - bcl2fastq
   - genomics
@@ -30,31 +30,38 @@ input:
         type: map
         description: |
           Groovy Map containing sample information.
-          Use [ id:'run_id' ] to identify the sheet pair.
-    - old_sheet:
+          Use [ id:'run_id' ] to identify the merged run.
+    - samplesheets:
         type: file
-        description: Original (reference) SampleSheet.csv (V1 or V2)
+        description: Two or more Illumina SampleSheet.csv files to merge (V1 or
+          V2)
         pattern: "*.{csv,CSV}"
         ontologies:
           - edam: "http://edamontology.org/format_3752"
-    - new_sheet:
-        type: file
-        description: Updated SampleSheet.csv to compare against the original (V1 or V2)
-        pattern: "*.{csv,CSV}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3752"
+  - target_version:
+      type: string
+      description: Output format — either 'v1' or 'v2'
 output:
+  samplesheet:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.merged.csv":
+          type: file
+          description: Merged SampleSheet.csv in the requested format
+          pattern: "*.merged.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752"
   json:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*.diff.json":
+      - "*.merge.json":
           type: file
           description: |
-            Structured JSON diff report with has_changes, source_version,
-            target_version, header_changes, samples_added, samples_removed,
-            and sample_changes fields.
-          pattern: "*.diff.json"
+            Structured JSON merge report with has_conflicts, sample_count,
+            output_path, source_versions, summary, conflicts, and warnings fields.
+          pattern: "*.merge.json"
           ontologies:
             - edam: http://edamontology.org/format_3464
   versions_samplesheetparser:
