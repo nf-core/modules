@@ -37,7 +37,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstablePatterns: ["**/*.pdf", "**/JOB_METADATA.txt"], ignorePatterns:["**/*.err", "**/*.out"]),
+                    sanitizeOutput(
+                        process.out,
+                        unstablePatterns: ["**/*.pdf", "**/JOB_METADATA.txt", "**/*seqinfo.txt"], // some *seqinfo.txt are empty.
+                        ignorePatterns:["**/*.err", "**/*.out"] // .err and .out have timestamp in their name 
+                    ),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )

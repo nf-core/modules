@@ -41,6 +41,10 @@ input:
       type: file
       description: path to installed reference genome (optional)
       ontologies: []
+  - seeds:
+      type: file
+      description: Seeds file from previous run for reproducible resamples or "random" (default is "random").
+      ontologies: []
 output:
   results_sigprofiler:
     - - meta:
