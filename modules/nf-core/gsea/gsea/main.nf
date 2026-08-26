@@ -45,12 +45,7 @@ process GSEA_GSEA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def rpt_label = prefix.replaceAll('\\.$', '') // Remove any trailing dots from prefix when passed as report label, so GSEA doesn't produce double-dotted top-level outputs
     def chip_command = chip ? "-chip $chip -collapse true" : ''
-    // gsea-cli only accepts a single gene set collection per run: if given more
-    // than one -gmx file it builds an internal "analysis name" from rpt_label
-    // plus the list of collection names (Java List.toString(), e.g. "[a, b]")
-    // and validates *that* for spaces before it will even start, so it always
-    // crashes with "Analysis name cannot contain spaces". Callers must invoke
-    // this process once per gene set file rather than passing a list here.
+    // gsea-cli crashes if given more than one -gmx file; callers must invoke this process once per gene set file.
     def gmx = gene_sets instanceof List ? gene_sets[0] : gene_sets
 
     """
@@ -66,11 +61,7 @@ process GSEA_GSEA {
         $args
 
     # Un-timestamp the outputs for path consistency
-    # We always give gsea-cli a single -gmx file now, so its output directory is
-    # just "<rpt_label>.Gsea.<timestamp>" -- but match on "*.Gsea.*" rather than
-    # anchoring on the literal rpt_label anyway, in case that ever changes. Only
-    # rmdir entries that are actual directories: the .rpt report file's own name
-    # also matches "*.Gsea.*", and rmdir on a file fails with "Not a directory".
+    # Only rmdir actual directories: the .rpt file's name also matches "*.Gsea.*".
     mv *.Gsea.*/* .
     for gsea_dir in *.Gsea.*/; do
         [ -d "\$gsea_dir" ] && rmdir "\$gsea_dir"
