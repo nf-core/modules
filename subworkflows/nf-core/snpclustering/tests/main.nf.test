@@ -20,9 +20,6 @@ nextflow_workflow {
     config "./nextflow.config"
 
     def unstable = [
-        "umap_png",
-        "tsne_png",
-        "metric_plots",
         "beagle_log",
         "pca_log",
         "imputed_vcf",
@@ -30,10 +27,7 @@ nextflow_workflow {
         "pvar",
         "psam",
         "evecfile",
-        "evfile",
-        "tsv",
-        "umap_tsv",
-        "tsne_tsv"
+        "evfile"
     ]
 
     test("homo_sapiens - 1000GP.chr22.vcf.gz - kmeans 3 clusters") {
