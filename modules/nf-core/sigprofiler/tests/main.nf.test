@@ -17,11 +17,10 @@ nextflow_process {
 
             process {
                 """
-                ch_rows = channel.of(
+                ch_seed = channel.of(
                     "\tSeed",
                     "0\t315836613344651455423314970566641622150"
-                )
-                ch_seed = ch_rows.collectFile(name: 'seed.txt', newLine: true, sort: false)
+                ).collectFile(name: 'seed.txt', newLine: true, sort: false)
 
                 input[0] = [
                     [ id:'test' ],
