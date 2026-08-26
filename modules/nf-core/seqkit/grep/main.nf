@@ -48,6 +48,10 @@ process SEQKIT_GREP {
     """
     echo ${args}
 
-    echo "" | gzip > ${prefix}.${suffix}.gz
+    if [ "${compression_suffix}" = ".gz" ]; then
+        echo "" | gzip > ${prefix}.${suffix}
+    else
+        touch ${prefix}.${suffix}
+    fi
     """
 }

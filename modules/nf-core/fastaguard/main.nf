@@ -4,8 +4,8 @@ process FASTAGUARD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastaguard:0.6.0--hfa8f182_0':
-        'quay.io/biocontainers/fastaguard:0.6.0--hfa8f182_0' }"
+        'https://depot.galaxyproject.org/singularity/fastaguard:0.7.0--hfa8f182_0':
+        'quay.io/biocontainers/fastaguard:0.7.0--hfa8f182_0' }"
 
     input:
     tuple val(meta), path(fasta)
