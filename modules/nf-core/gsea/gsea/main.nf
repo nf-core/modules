@@ -45,26 +45,41 @@ process GSEA_GSEA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def rpt_label = prefix.replaceAll('\\.$', '') // Remove any trailing dots from prefix when passed as report label, so GSEA doesn't produce double-dotted top-level outputs
     def chip_command = chip ? "-chip $chip -collapse true" : ''
+    // gsea-cli only accepts a single gene set collection per run: if given more
+    // than one -gmx file it builds an internal "analysis name" from rpt_label
+    // plus the list of collection names (Java List.toString(), e.g. "[a, b]")
+    // and validates *that* for spaces before it will even start, so it always
+    // crashes with "Analysis name cannot contain spaces". Callers must invoke
+    // this process once per gene set file rather than passing a list here.
+    def gmx = gene_sets instanceof List ? gene_sets[0] : gene_sets
 
     """
     # Run GSEA
 
     gsea-cli GSEA \\
-        -res $gct \\
-        -cls ${cls}#${target}_versus_${reference} \\
-        -gmx $gene_sets \\
+        -res "$gct" \\
+        -cls "${cls}#${target}_versus_${reference}" \\
+        -gmx "$gmx" \\
         $chip_command \\
         -out . \\
-        --rpt_label $rpt_label \\
+        --rpt_label "$rpt_label" \\
         $args
 
     # Un-timestamp the outputs for path consistency
-    mv ${rpt_label}.Gsea.*/* .
+    # We always give gsea-cli a single -gmx file now, so its output directory is
+    # just "<rpt_label>.Gsea.<timestamp>" -- but match on "*.Gsea.*" rather than
+    # anchoring on the literal rpt_label anyway, in case that ever changes. Only
+    # rmdir entries that are actual directories: the .rpt report file's own name
+    # also matches "*.Gsea.*", and rmdir on a file fails with "Not a directory".
+    mv *.Gsea.*/* .
+    for gsea_dir in *.Gsea.*/; do
+        [ -d "\$gsea_dir" ] && rmdir "\$gsea_dir"
+    done
     timestamp=\$(cat *.rpt | grep producer_timestamp | awk '{print \$2}')
 
     for pattern in _\${timestamp} .\${timestamp}; do
         find . -name "*\${pattern}*" | sed "s|^\\./||" | while read -r f; do
-            mv \$f \${f//\$pattern/}
+            mv "\$f" "\${f//\$pattern/}"
         done
     done
     sed -i.bak "s/[_\\.]\$timestamp//g" *.rpt *.html && rm *.bak
