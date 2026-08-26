@@ -1,6 +1,6 @@
 process HYPHY_FUBAR {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
