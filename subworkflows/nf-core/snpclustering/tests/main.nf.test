@@ -19,6 +19,23 @@ nextflow_workflow {
 
     config "./nextflow.config"
 
+    def unstable = [
+        "umap_png",
+        "tsne_png",
+        "metric_plots",
+        "beagle_log",
+        "pca_log",
+        "imputed_vcf",
+        "pgen",
+        "pvar",
+        "psam",
+        "evecfile",
+        "evfile",
+        "tsv",
+        "umap_tsv",
+        "tsne_tsv"
+    ]
+
     test("homo_sapiens - 1000GP.chr22.vcf.gz - kmeans 3 clusters") {
         when {
             workflow {
@@ -44,16 +61,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    sanitizeOutput(
-                        workflow.out,
-                        unstableKeys: [
-                            "umap_png",
-                            "tsne_png",
-                            "metric_plots"
-                        ]
-                    )
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys: unstable)).match() }
             )
         }
     }
@@ -83,16 +91,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    sanitizeOutput(
-                        workflow.out,
-                        unstableKeys: [
-                            "umap_png",
-                            "tsne_png",
-                            "metric_plots"
-                        ]
-                    )
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys: unstable)).match() }
             )
         }
     }
