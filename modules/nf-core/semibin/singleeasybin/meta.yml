@@ -101,3 +101,27 @@ authors:
   - "@BigDataBiology"
 maintainers:
   - "@BigDataBiology"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/semibin:2.4.1--f56bcc59d929ffa0
+      build_id: bd-f56bcc59d929ffa0_1
+      scan_id: sc-ac89c91c6cbc8252_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/semibin:2.4.1--594344a862aee1b8
+      build_id: bd-594344a862aee1b8_1
+      scan_id: sc-053cbcebe5fc843e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/semibin:2.4.1--85b6858e3b6df529
+      build_id: bd-85b6858e3b6df529_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b2b3f8ee7844ec6f6ab7e89eb0397435eea5ff1c7866f055af6aac5969caf16/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/semibin:2.4.1--eefeb0dcf2ca104c
+      build_id: bd-eefeb0dcf2ca104c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4c/4c049230e87478349b2ecca53156faedfb077df85a4f6deaa8d0b22bd8a975c4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/semibin/singleeasybin/.conda-lock/linux_amd64-bd-594344a862aee1b8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/semibin/singleeasybin/.conda-lock/linux_arm64-bd-f56bcc59d929ffa0_1.txt
