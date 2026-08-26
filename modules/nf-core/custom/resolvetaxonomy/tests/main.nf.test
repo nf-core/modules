@@ -39,7 +39,7 @@ nextflow_process {
                 { assert sequences.contains('>SeqB\n') },
                 { assert !sequences.contains('Bacteria') },
                 { assert path(process.out.warnings[0][1]).text.trim().isEmpty() },
-                { assert process.out.versions_python },
+                { assert process.out.versions_biopython },
             )
         }
 

@@ -14,7 +14,7 @@ process CUSTOM_RESOLVETAXONOMY {
     tuple val(meta), path("*.resolved.tax"),                    emit: taxonomy
     tuple val(meta), path("*.resolved.${sequences.extension}"), emit: sequences
     tuple val(meta), path("*.warnings.txt"),                    emit: warnings
-    tuple val("${task.process}"), val('python'), eval("python3 --version | sed 's/Python //'"), emit: versions_python, topic: versions
+    tuple val("${task.process}"), val('biopython'), eval("python3 -c 'import Bio; print(Bio.__version__)'"), emit: versions_biopython, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

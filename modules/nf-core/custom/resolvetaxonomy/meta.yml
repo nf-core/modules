@@ -80,14 +80,14 @@ output:
           pattern: "*.warnings.txt"
           ontologies:
             - edam: http://edamontology.org/format_2330 # Textual format
-  versions_python:
+  versions_biopython:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - python:
+      - biopython:
           type: string
           description: The name of the tool
-      - python3 --version | sed 's/Python //':
+      - python3 -c 'import Bio; print(Bio.__version__)':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -95,10 +95,10 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - python:
+      - biopython:
           type: string
           description: The name of the tool
-      - python3 --version | sed 's/Python //':
+      - python3 -c 'import Bio; print(Bio.__version__)':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
