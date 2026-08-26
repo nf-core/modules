@@ -34,7 +34,7 @@ nextflow_process {
                     path(process.out.mlst_results.get(0).get(1)).readLines(),
                     path(process.out.pileup.get(0).get(1)).readLines()[0..10],
                     bam(process.out.sorted_bam.get(0).get(1)).getStatistics(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -65,7 +65,7 @@ nextflow_process {
     //                 path(process.out.fullgene_results.get(0).get(1)).readLines(),
     //                 path(process.out.pileup.get(0).get(1)).readLines(),
     //                 bam(process.out.sorted_bam.get(0).get(1)).getReadsMD5(),
-    //                 process.out.versions
+    //                 process.out.findAll { key, val -> key.startsWith('versions') }
     //                 ).match() }
     //         )
     //     }
@@ -93,7 +93,7 @@ nextflow_process {
     //                 path(process.out.fullgene_results.get(0).get(1)).readLines(),
     //                 path(process.out.pileup.get(0).get(1)).readLines(),
     //                 bam(process.out.sorted_bam.get(0).get(1)).getReadsMD5(),
-    //                 process.out.versions
+    //                 process.out.findAll { key, val -> key.startsWith('versions') }
     //                 ).match() }
     //         )
     //     }
@@ -121,10 +121,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -148,10 +145,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

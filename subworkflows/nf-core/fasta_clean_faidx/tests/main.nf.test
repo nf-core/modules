@@ -1,0 +1,152 @@
+nextflow_workflow {
+    name "Test Subworkflow FASTA_CLEAN_FAIDX"
+    script "../main.nf"
+    config "./nextflow.config"
+    workflow "FASTA_CLEAN_FAIDX"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_clean_faidx"
+    tag "gunzip"
+    tag "seqkit/seq"
+    tag "seqkit/replace"
+    tag "samtools/faidx"
+    tag "samtools/dict"
+
+
+    test("Bacteroides fragilis genome [fasta] w/ index") {
+        when {
+
+            params {
+                outdir = "test"
+            }
+
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = true
+                input[2] = true
+                """
+            }
+
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    path(workflow.out.dict[0][1]).readLines()[0],
+                    workflow.out.reference,
+                    workflow.out.fai,
+                    workflow.out.sizes,
+                    workflow.out.sequence_description
+                ).match() }
+            )
+        }
+    }
+
+    test("Bacteroides fragilis genome [fasta] w/ index no sizes") {
+        when {
+
+            params {
+                outdir = "test"
+            }
+
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = false
+                input[2] = true
+                """
+            }
+
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    path(workflow.out.dict[0][1]).readLines()[0],
+                    workflow.out.reference,
+                    workflow.out.fai,
+                    workflow.out.sequence_description
+                ).match() }
+            )
+        }
+    }
+
+    test("Bacteroides fragilis genome [fasta] w/ index no sizes no dict") {
+        when {
+
+            params {
+                outdir = "test"
+            }
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = false
+                input[2] = false
+                """
+            }
+
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("Bacteroides fragilis genome - stub") {
+        options "-stub"
+        when {
+
+            params {
+                outdir = "test"
+            }
+
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = true
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    path(workflow.out.dict[0][1]).readLines()[0],
+                    workflow.out.reference,
+                    workflow.out.fai,
+                    workflow.out.sizes,
+                    workflow.out.sequence_description
+                ).match() }
+            )
+        }
+    }
+}
