@@ -14,15 +14,15 @@ process PHISPY {
     tuple val(meta), path("${prefix}.tsv")                     , emit: coordinates
     tuple val(meta), path("${prefix}.gb*")                     , emit: gbk
     tuple val(meta), path("${prefix}.log")                     , emit: log
-    tuple val(meta), path("${prefix}_prophage_information.tsv"), optional:true, emit: information
-    tuple val(meta), path("${prefix}_bacteria.fasta")          , optional:true, emit: bacteria_fasta
-    tuple val(meta), path("${prefix}_bacteria.gbk")            , optional:true, emit: bacteria_gbk
-    tuple val(meta), path("${prefix}_phage.fasta")             , optional:true, emit: phage_fasta
-    tuple val(meta), path("${prefix}_phage.gbk")               , optional:true, emit: phage_gbk
-    tuple val(meta), path("${prefix}_prophage.gff3")           , optional:true, emit: prophage_gff
-    tuple val(meta), path("${prefix}_prophage.tbl")            , optional:true, emit: prophage_tbl
-    tuple val(meta), path("${prefix}_prophage.tsv")            , optional:true, emit: prophage_tsv
-    path "versions.yml"                                        , emit: versions
+    tuple val(meta), path("${prefix}_prophage_information.tsv"), emit: information   , optional:true
+    tuple val(meta), path("${prefix}_bacteria.fasta")          , emit: bacteria_fasta, optional:true
+    tuple val(meta), path("${prefix}_bacteria.gbk")            , emit: bacteria_gbk  , optional:true
+    tuple val(meta), path("${prefix}_phage.fasta")             , emit: phage_fasta   , optional:true
+    tuple val(meta), path("${prefix}_phage.gbk")               , emit: phage_gbk     , optional:true
+    tuple val(meta), path("${prefix}_prophage.gff3")           , emit: prophage_gff  , optional:true
+    tuple val(meta), path("${prefix}_prophage.tbl")            , emit: prophage_tbl  , optional:true
+    tuple val(meta), path("${prefix}_prophage.tsv")            , emit: prophage_tsv  , optional:true
+    tuple val("${task.process}"), val('phispy'), eval('PhiSpy.py --version 2>&1'), topic: versions, emit: versions_phispy
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,35 +33,31 @@ process PHISPY {
     // Extract GBK file extension, i.e. .gbff, .gbk.gz
     gbk_extension = gbk.getName() - gbk.getSimpleName()
 
-    if ("$gbk" == "${prefix}${gbk_extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${gbk}" == "${prefix}${gbk_extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     PhiSpy.py \\
-        $args \\
-        --threads $task.cpus \\
-        -p $prefix \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        -p ${prefix} \\
         -o . \\
-        $gbk
+        ${gbk}
 
     mv ${prefix}_prophage_coordinates.tsv ${prefix}.tsv
     mv ${prefix}_${gbk} ${prefix}${gbk_extension}
     mv ${prefix}_phispy.log ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        PhiSpy: \$(echo \$(PhiSpy.py --version 2>&1))
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     gbk_extension = gbk.getName() - gbk.getSimpleName()
+    gbl_create_cmd = gbk_extension.endsWith(".gz") ? 'echo "" | gzip >' : "touch"
 
-    if ("$gbk" == "${prefix}${gbk_extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${gbk}" == "${prefix}${gbk_extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     touch ${prefix}.tsv
-    touch ${prefix}${gbk_extension}
+    ${gbl_create_cmd} ${prefix}${gbk_extension}
     touch ${prefix}.log
     touch ${prefix}_prophage_information.tsv
     touch ${prefix}_bacteria.fasta
@@ -71,10 +67,5 @@ process PHISPY {
     touch ${prefix}_prophage.gff3
     touch ${prefix}_prophage.tbl
     touch ${prefix}_prophage.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        PhiSpy: \$(echo \$(PhiSpy.py --version 2>&1))
-    END_VERSIONS
     """
 }

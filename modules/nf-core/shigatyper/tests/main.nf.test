@@ -12,16 +12,18 @@ nextflow_process {
     test("test-shigatyper-pe") {
 
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false, is_ont:false ], // meta map
-				    [
+                    [ id:'test', single_end:false, is_ont:false ],
+                    [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
-				]
-
+                ]
                 """
             }
         }
@@ -29,7 +31,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -37,15 +39,17 @@ nextflow_process {
     test("test-shigatyper-se") {
 
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:true, is_ont:false ], // meta map
-				    [
+                    [ id:'test', single_end:true, is_ont:false ],
+                    [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
-				]
-
+                ]
                 """
             }
         }
@@ -53,7 +57,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -61,15 +65,17 @@ nextflow_process {
     test("test-shigatyper-ont") {
 
         when {
+            params {
+                module_args = "--ont"
+            }
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:true, is_ont:true ], // meta map
-				    [
+                    [ id:'test', single_end:true, is_ont:true ],
+                    [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
                     ]
-				]
-
+                ]
                 """
             }
         }
@@ -77,25 +83,25 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("test-shigatyper-ont-stub") {
-
         options '-stub'
-
         when {
+            params {
+                module_args = "--ont"
+            }
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:true, is_ont:true ], // meta map
-				    [
+                    [ id:'test', single_end:true, is_ont:true ],
+                    [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
                     ]
-				]
-
+                ]
                 """
             }
         }
@@ -103,7 +109,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

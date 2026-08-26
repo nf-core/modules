@@ -14,6 +14,7 @@ process PBMM2_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.{bai,csi}"), emit: index, optional: true
     tuple val("${task.process}"), val('pbmm2'), eval("pbmm2 --version  | sed '1s/pbmm2 //;q'"), topic: versions, emit: versions_pbmm2
 
     when:
@@ -47,5 +48,6 @@ process PBMM2_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
+    touch ${prefix}.bai
     """
 }
