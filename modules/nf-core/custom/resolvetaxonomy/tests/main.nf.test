@@ -1,0 +1,218 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_RESOLVETAXONOMY"
+    script "../main.nf"
+    process "CUSTOM_RESOLVETAXONOMY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/resolvetaxonomy"
+
+    test("embedded taxonomy, no external file, required") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [],
+                    file(params.modules_testdata_base_path + 'generic/fasta/resolvetaxonomy_embedded.fasta', checkIfExists: true),
+                    true,
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def taxonomy = path(process.out.taxonomy[0][1]).text
+            def sequences = path(process.out.sequences[0][1]).text
+
+            assertAll(
+                { assert taxonomy.contains('SeqA\tBacteria;PhylumA;ClassA;OrderA;FamilyA;GenusA;SpeciesA') },
+                { assert taxonomy.contains('SeqB\tBacteria;PhylumA;ClassB;OrderB;FamilyB;GenusB;SpeciesB') },
+                // Headers stripped down to a bare id -- no leftover taxonomy text that
+                // could later be mistaken for part of the sequence name downstream.
+                { assert sequences.contains('>SeqA\n') },
+                { assert sequences.contains('>SeqB\n') },
+                { assert !sequences.contains('Bacteria') },
+                { assert path(process.out.warnings[0][1]).text.trim().isEmpty() },
+                { assert process.out.versions_biopython },
+            )
+        }
+
+    }
+
+    test("external taxonomy file wins, warns on ignored embedded text") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/tax/resolvetaxonomy_override.tax', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/fasta/resolvetaxonomy_embedded.fasta', checkIfExists: true),
+                    true,
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def taxonomy = path(process.out.taxonomy[0][1]).text
+            def sequences = path(process.out.sequences[0][1]).text
+
+            assertAll(
+                // The explicit file's (distinguishable) content wins...
+                { assert taxonomy.contains('SeqA\tArchaea;OverridePhylum;OverrideClass') },
+                { assert taxonomy.contains('SeqB\tArchaea;OverridePhylum;OverrideClass2') },
+                // ...not the Bacteria;... lineage embedded in the FASTA headers.
+                { assert !taxonomy.contains('Bacteria') },
+                { assert sequences.contains('>SeqA\n') },
+                { assert !sequences.contains('Bacteria') },
+                // Ignored, not silently used -- a warning is reported.
+                { assert path(process.out.warnings[0][1]).text.toLowerCase().contains('ignoring') },
+            )
+        }
+
+    }
+
+    test("external taxonomy file, no embedded text, no warning") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/tax/resolvetaxonomy_plain.tax', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/fasta/resolvetaxonomy_plain.fasta', checkIfExists: true),
+                    true,
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def taxonomy = path(process.out.taxonomy[0][1]).text
+
+            assertAll(
+                { assert taxonomy.contains('SeqGood1\tBacteria;PhylumA;ClassA') },
+                { assert path(process.out.warnings[0][1]).text.trim().isEmpty() },
+            )
+        }
+
+    }
+
+    test("neither taxonomy file nor embedded text, required, fails clearly") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [],
+                    file(params.modules_testdata_base_path + 'generic/fasta/resolvetaxonomy_plain.fasta', checkIfExists: true),
+                    true,
+                ]
+                """
+            }
+        }
+
+        then {
+            assert !process.success
+            assert (process.stdout + process.stderr).join('\n').contains('taxonomy file')
+        }
+
+    }
+
+    test("neither taxonomy file nor embedded text, not required, warns and continues") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [],
+                    file(params.modules_testdata_base_path + 'generic/fasta/resolvetaxonomy_plain.fasta', checkIfExists: true),
+                    false,
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def taxonomy = path(process.out.taxonomy[0][1]).text
+
+            assertAll(
+                { assert taxonomy.trim().isEmpty() },
+                { assert path(process.out.warnings[0][1]).text.contains('SeqGood1') },
+                { assert path(process.out.warnings[0][1]).text.contains('SeqGood2') },
+            )
+        }
+
+    }
+
+    test("partial embedded taxonomy, not required, drops records with no taxonomy") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [],
+                    file(params.modules_testdata_base_path + 'generic/fasta/resolvetaxonomy_partial.fasta', checkIfExists: true),
+                    false,
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def taxonomy = path(process.out.taxonomy[0][1]).text
+
+            assertAll(
+                { assert taxonomy.contains('SeqC\tBacteria;PhylumA;ClassA;OrderA;FamilyA;GenusA;SpeciesC') },
+                { assert !taxonomy.contains('SeqD') },
+                { assert path(process.out.warnings[0][1]).text.contains('SeqD') },
+            )
+        }
+
+    }
+
+    test("embedded taxonomy - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [],
+                    file(params.modules_testdata_base_path + 'generic/fasta/resolvetaxonomy_embedded.fasta', checkIfExists: true),
+                    true,
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
