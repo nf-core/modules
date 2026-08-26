@@ -24,10 +24,10 @@ process HYPHY_BUSTED {
     """
     hyphy busted \\
         CPU=${task.cpus} \\
-        --alignment $alignment \\
-        --tree $tree \\
+        --alignment ${alignment} \\
+        --tree ${tree} \\
         --output ${prefix}_BUSTED.json \\
-        $args \\
+        ${args} \\
         > ${prefix}_BUSTED_output.txt
     """
 
@@ -35,9 +35,9 @@ process HYPHY_BUSTED {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
-    
-    touch ${prefix}.json
-    touch ${prefix}_output.txt
+    echo ${args}
+
+    touch ${prefix}_BUSTED.json
+    touch ${prefix}_BUSTED_output.txt
     """
 }
