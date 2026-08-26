@@ -1,14 +1,6 @@
 #!/usr/bin/env python
 
 import os
-
-# Create writable directories in the Nextflow task working directory
-os.makedirs(".matplotlib", exist_ok=True)
-os.makedirs("tmp", exist_ok=True)
-
-# Tell Matplotlib to use the writable directory
-os.environ["MPLCONFIGDIR"] = os.path.abspath(".matplotlib")
-
 import shlex
 import shutil
 import subprocess
@@ -16,6 +8,13 @@ import sys
 from importlib.metadata import version
 
 import pandas as pd
+
+# Create writable directories in the Nextflow task working directory
+os.makedirs(".matplotlib", exist_ok=True)
+os.makedirs("tmp", exist_ok=True)
+
+# Tell Matplotlib to use the writable directory
+os.environ["MPLCONFIGDIR"] = os.path.abspath(".matplotlib")
 
 
 def parse_args(x):
