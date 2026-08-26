@@ -135,6 +135,40 @@
             "nextflow": "25.10.4"
         }
     },
+    "Merge with warnings does not fail the task": {
+        "content": [
+            {
+                "json": [
+                    [
+                        {
+                            "id": "test_warn"
+                        },
+                        "test_warn.merge.json:md5,15c3c21ab36a8684ada42263f05f92e9"
+                    ]
+                ],
+                "samplesheet": [
+                    [
+                        {
+                            "id": "test_warn"
+                        },
+                        "test_warn.merged.csv:md5,0e4dcff190133485d832b6fd6cfa2cb5"
+                    ]
+                ],
+                "versions_samplesheetparser": [
+                    [
+                        "SAMPLESHEETPARSER_MERGE",
+                        "samplesheet-parser",
+                        "2.5.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-26T11:16:25.121571",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
     "Merge two identically-named sheets - no staging collision": {
         "content": [
             {

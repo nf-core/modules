@@ -31,6 +31,8 @@ process SAMPLESHEETPARSER_SPLIT {
     if (!['v1', 'v2'].contains(to_norm)) {
         error "to must be 'v1' or 'v2', got: ${to}"
     }
+    // `samplesheet split` exits 1 when the report contains warnings (and 2 on
+    // hard errors). Tolerate exit 1 so a warning does not kill the task.
     """
     mkdir -p split
 
@@ -40,7 +42,7 @@ process SAMPLESHEETPARSER_SPLIT {
         --output-dir split \\
         --format json \\
         ${args} \\
-        ${samplesheet} > ${prefix}.split.json
+        ${samplesheet} > ${prefix}.split.json || [ \$? -eq 1 ]
     """
 
     stub:

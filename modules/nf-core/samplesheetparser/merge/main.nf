@@ -23,16 +23,23 @@ process SAMPLESHEETPARSER_MERGE {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def to_norm = target_version.toLowerCase()
+    def sheets  = samplesheets instanceof List ? samplesheets : [ samplesheets ]
     if (!['v1', 'v2'].contains(to_norm)) {
         error "target_version must be 'v1' or 'v2', got: ${target_version}"
     }
+    if (sheets.size() < 2) {
+        error "SAMPLESHEETPARSER_MERGE requires at least two input sheets, got ${sheets.size()}"
+    }
+    // `samplesheet merge` exits 1 when the report contains conflicts or warnings
+    // (and 2 on hard errors). Tolerate exit 1 so a warning does not kill the task;
+    // downstream code should inspect `has_conflicts` in the JSON report.
     """
     samplesheet merge \\
         --to ${to_norm} \\
         --output ${prefix}.merged.csv \\
         --format json \\
         ${args} \\
-        ${samplesheets} > ${prefix}.merge.json
+        ${samplesheets} > ${prefix}.merge.json || [ \$? -eq 1 ]
     """
 
     stub:

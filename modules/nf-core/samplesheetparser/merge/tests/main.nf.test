@@ -144,4 +144,32 @@ nextflow_process {
             )
         }
     }
+
+    test("Merge with warnings does not fail the task") {
+
+        when {
+            process {
+                """
+                // Mixed V1 + V2 inputs on different lanes merge cleanly but emit
+                // warnings (e.g. MIXED_FORMAT), so the CLI exits 1. The module
+                // tolerates exit 1, so the task must still succeed.
+                input[0] = [
+                    [ id:'test_warn' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet_b.v2.csv', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'v1'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
 }
