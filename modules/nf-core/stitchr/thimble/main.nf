@@ -4,7 +4,7 @@ process STITCHR_THIMBLE {
 
 
     conda "${moduleDir}/environment.yml"
-    container "ghcr.io/qbic-pipelines/stitchr:1.3.1"
+    container "community.wave.seqera.io/library/pip_stitchr:9b1e4db63c6ec900"
 
 
     input:
