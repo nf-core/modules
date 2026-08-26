@@ -17,6 +17,7 @@ from importlib.metadata import version
 
 import pandas as pd
 
+
 def parse_args(x):
     x = x.strip("[]")
     lexer = shlex.shlex(x, posix=True)
