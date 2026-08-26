@@ -33,7 +33,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match()}
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match()}
             )
         }
     }
@@ -61,7 +61,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "csi"])).match()}
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["csi"])).match()}
             )
         }
     }
@@ -89,7 +89,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "bai"])).match()}
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["bai"])).match()}
             )
         }
     }
@@ -119,7 +119,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "bai", "unselected", "unselected_index"])).match()}
+                // bam is empty so we checksum the name
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["unselected"], unstableKeys: ["bam","bai", "unselected_index"])).match()}
             )
         }
     }
@@ -149,7 +150,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "bai", "unselected", "unselected_index", "crai"])).match()}
+                // cram is empty so we checksum the name
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["unselected"], referenceFasta: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta', unstableKeys: ["cram", "bai", "unselected_index", "crai"])).match()}
             )
         }
     }
@@ -181,7 +183,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["cram"])).match()}
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["cram"], referenceFasta: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta')).match()}
             )
         }
     }
@@ -213,7 +215,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match()}
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match()}
             )
         }
     }
@@ -245,7 +247,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "csi"])).match()}
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["csi"])).match()}
             )
         }
     }
@@ -277,9 +279,10 @@ nextflow_process {
         }
 
         then {
+
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "bai", "unselected", "unselected_index"])).match()}
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam", "unselected"], unstableKeys: ["bai", "unselected_index"])).match()}
             )
         }
     }
@@ -310,7 +313,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match()}
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match()}
             )
         }
     }
@@ -341,7 +344,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "csi"])).match()}
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }
