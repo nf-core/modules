@@ -48,7 +48,20 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam", "transcriptome_bam"], unstablePatterns:["**/*.log"])).match() },
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    bam(workflow.out.transcriptome_bam[0][1]).getReadsMD5(),
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats
+                ).match() },
+                { assert path(workflow.out.index.get(0).get(1)).exists() },
+                { assert workflow.out.genome_stats.size() == 1 },
+                { assert workflow.out.genome_flagstat.size() == 1 },
+                { assert workflow.out.genome_idxstats.size() == 1 },
+                { assert workflow.out.per_sample_mqc_bundle.size() == 1 },
+                { assert workflow.out.per_sample_mqc_bundle[0][0] == [ id:'test' ] },
+                { assert workflow.out.per_sample_mqc_bundle[0][1].size() == 4 }
             )
         }
 
@@ -81,7 +94,19 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam", "transcriptome_bam"], unstablePatterns:["**/*.log"])).match() },
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats
+                ).match() },
+                { assert path(workflow.out.index.get(0).get(1)).exists() },
+                { assert workflow.out.genome_stats.size() == 1 },
+                { assert workflow.out.genome_flagstat.size() == 1 },
+                { assert workflow.out.genome_idxstats.size() == 1 },
+                { assert workflow.out.per_sample_mqc_bundle.size() == 1 },
+                { assert workflow.out.per_sample_mqc_bundle[0][0] == [ id:'test' ] },
+                { assert workflow.out.per_sample_mqc_bundle[0][1].size() == 4 }
             )
         }
     }
