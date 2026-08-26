@@ -33,8 +33,7 @@ nextflow_process {
                 { assert process.out.bins.get(0).get(1).size() >= 1 },
                 { assert snapshot(
                     sanitizeOutput(process.out,
-                        // bin contents depend on BLAS and OpenMP thread pools, which COMEBin
-                        // does not control, so they differ between machines
+                        // bin contents vary between machines, see the BLAS and OpenMP note in the PR
                         unstableKeys: ["tsv"],
                         ignoreKeys: ["bins", "embeddings", "covembeddings", "log"])
                 ).match() }

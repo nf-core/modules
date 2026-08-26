@@ -5,12 +5,9 @@ channels:
   - bioconda
 dependencies:
   - bioconda::comebin=1.1.0
-  # CheckM's post-link script downloads its reference database and unpacks it at
-  # build time; the container base image provides neither tool, so without these
-  # the database silently ends up missing. See the PR for the build log.
+  # CheckM's post-link script needs both to unpack its database at build time
   - conda-forge::gzip=1.14
   - conda-forge::tar=1.35
-  # 12.9 is the lowest CUDA that pytorch 2.13 ships on linux-64, and NVIDIA drivers
-  # keep backward compatibility, so it runs on the widest range of hosts
+  # lowest CUDA pytorch 2.13 ships on linux-64, so it runs on the widest range of hosts
   - conda-forge::pytorch-gpu=2.13.0
   - conda-forge::cuda-version=12.9

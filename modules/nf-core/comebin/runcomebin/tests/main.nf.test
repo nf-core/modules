@@ -20,7 +20,11 @@ nextflow_process {
                 input[0] = channel.of([
                     [id: "test"],
                     file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/contigs.fasta.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s2.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s3.sorted.bam", checkIfExists: true),
+                    ],
                 ])
                 """
             }
@@ -32,8 +36,7 @@ nextflow_process {
                 { assert process.out.bins.get(0).get(1).size() >= 1 },
                 { assert snapshot(
                     sanitizeOutput(process.out,
-                        // bin contents depend on BLAS and OpenMP thread pools, which COMEBin
-                        // does not control, so they differ between machines
+                        // bin contents vary between machines, see the BLAS and OpenMP note in the PR
                         unstableKeys: ["tsv"],
                         ignoreKeys: ["bins", "embeddings", "covembeddings", "log"])
                 ).match() }
@@ -53,7 +56,11 @@ nextflow_process {
                 input[0] = channel.of([
                     [id: "test"],
                     file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/contigs.fasta.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s2.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s3.sorted.bam", checkIfExists: true),
+                    ],
                 ])
                 """
             }
