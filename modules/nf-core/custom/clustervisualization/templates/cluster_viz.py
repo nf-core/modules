@@ -56,7 +56,7 @@ def embed(x, method, umap_neighbors, tsne_perplexity):
     if method == "umap":
         reducer = umap.UMAP(n_components=2, n_neighbors=min(umap_neighbors, max(2, n - 1)), random_state=42, n_jobs=1)
     elif method == "tsne":
-        reducer = TSNE(n_components=2, perplexity=min(tsne_perplexity, max(2, n - 1)), random_state=42)
+        reducer = TSNE(n_components=2, perplexity=min(tsne_perplexity, max(2, n - 1)), random_state=42, n_jobs=1)
     else:
         raise ValueError(f"Unknown method '{method}' (expected 'umap' or 'tsne')")
     return reducer.fit_transform(x)
