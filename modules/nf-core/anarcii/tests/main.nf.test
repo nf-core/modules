@@ -33,7 +33,15 @@ nextflow_process {
             assert "Query end" in anarciiResults.columnNames
             // A mismatched seq_type leaves sequences unnumbered as chain "F" instead of failing
             assert anarciiResults.columns["Chain"].every { it in ["A", "B"] }
-            assert snapshot(sanitizeOutput(process.out)).match()
+            // Score drifts with thread count, so the file md5 is not portable across machines
+            assert snapshot(
+                anarciiResults.columnNames.sort(),
+                anarciiResults.columns["Name"],
+                anarciiResults.columns["Chain"],
+                anarciiResults.columns["Query start"],
+                anarciiResults.columns["Query end"],
+                process.out.versions_anarcii
+            ).match()
         }
     }
 
