@@ -12,6 +12,7 @@ nextflow_workflow {
     tag "plink2/vcf"
     tag "plink2/pca"
     tag "beagle5/beagle"
+    tag "gawk"
     tag "custom/pcaclustering"
     tag "custom/clustermetrics"
     tag "custom/clustervisualization"
@@ -41,22 +42,19 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
-            assert snapshot(
-                workflow.out.clusters.collect { [
-                    it[0],
-                    path(it[1]).getFileName().toString()
-                ]},
-                workflow.out.cluster_info.collect { [
-                    it[0],
-                    path(it[1]).getFileName().toString()
-                ]},
-                workflow.out.metrics.collect { [
-                    it[0],
-                    path(it[1]).getFileName().toString()
-                ]},
-                workflow.out.versions
-            ).match()
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    sanitizeOutput(
+                        workflow.out,
+                        unstableKeys: [
+                            "umap_png",
+                            "tsne_png",
+                            "metric_plots"
+                        ]
+                    )
+                ).match() }
+            )
         }
     }
 
@@ -83,22 +81,19 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
-            assert snapshot(
-                workflow.out.clusters.collect { [
-                    it[0],
-                    path(it[1]).getFileName().toString()
-                ]},
-                workflow.out.cluster_info.collect { [
-                    it[0],
-                    path(it[1]).getFileName().toString()
-                ]},
-                workflow.out.metrics.collect { [
-                    it[0],
-                    path(it[1]).getFileName().toString()
-                ]},
-                workflow.out.versions
-            ).match()
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    sanitizeOutput(
+                        workflow.out,
+                        unstableKeys: [
+                            "umap_png",
+                            "tsne_png",
+                            "metric_plots"
+                        ]
+                    )
+                ).match() }
+            )
         }
     }
 
@@ -126,8 +121,10 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
-            assert snapshot(sanitizeOutput(workflow.out)).match()
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            )
         }
     }
 
@@ -155,8 +152,10 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
-            assert snapshot(sanitizeOutput(workflow.out)).match()
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            )
         }
     }
 }

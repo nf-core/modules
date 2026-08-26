@@ -1,57 +1,167 @@
 {
     "homo_sapiens - 1000GP.chr22.vcf.gz - kmeans 3 clusters": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.clusters.csv"
+            {
+                "beagle_log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bglout.log:md5,00f899a6db795f7d4bd79b5961ec7d10"
+                    ]
+                ],
+                "cluster_info": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clustering_info.json:md5,f4f73c989de9e52384b786ff6ac040e5"
+                    ]
+                ],
+                "clusters": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clusters.csv:md5,be0a1b1d684974d5eff60be2c46ceedf"
+                    ]
+                ],
+                "evecfile": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.eigenvec:md5,655e0a4283a1f9d9f13c7dbe0e6da1d9"
+                    ]
+                ],
+                "evfile": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.eigenval:md5,a5d4576064133a95bbf629b99b43a0c3"
+                    ]
+                ],
+                "imputed_vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bglout.vcf.gz:md5,ef94995e50ba034aeb8119ad15fb6ccc"
+                    ]
+                ],
+                "k_sweep": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.k_sweep.csv:md5,113fa7245a810786ec404769f5ba5698"
+                    ]
+                ],
+                "metric_plots": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.calinski_harabasz.png",
+                            "test.davies_bouldin.png",
+                            "test.elbow.png",
+                            "test.silhouette.png"
+                        ]
+                    ]
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.metrics.tsv:md5,9f203e3c741435f1317dcb4ab44c43c3"
+                    ]
+                ],
+                "pca_log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.log:md5,3d794ffb37ae49b03dbc8a06a408825f"
+                    ]
+                ],
+                "pgen": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.pgen:md5,b183c72cbf75758521bd42a21a02e882"
+                    ]
+                ],
+                "psam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.psam:md5,31604b4a3b20fb02ef1c59e9ead65f00"
+                    ]
+                ],
+                "pvar": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.pvar:md5,9c89b734017db356ccaa0190ab88c199"
+                    ]
+                ],
+                "selected": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.selected.json:md5,ddbef02b869e51b8eaadceebd9ebd064"
+                    ]
+                ],
+                "tsne_png": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.tsne.png"
+                    ]
+                ],
+                "tsne_tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.tsne.tsv:md5,20f545d08f1175bfe1825b3932833b8d"
+                    ]
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.tsv:md5,94681fa5806fbf33fa5c5041c3c29f29"
+                    ]
+                ],
+                "umap_png": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.umap.png"
+                    ]
+                ],
+                "umap_tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.umap.tsv:md5,a7d209592da80adf142c5f1c2bce9ea2"
+                    ]
                 ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.clustering_info.json"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.metrics.tsv"
-                ]
-            ],
-            [
-                [
-                    "SNPCLUSTERING:BEAGLE5_BEAGLE",
-                    "beagle",
-                    "5.5"
-                ],
-                [
-                    "SNPCLUSTERING:GAWK_EIGENVEC_TO_TSV",
-                    "gawk",
-                    "5.3.1"
-                ],
-                [
-                    "SNPCLUSTERING:PLINK2_PCA",
-                    "plink2",
-                    "2.00a5.10LM"
-                ],
-                [
-                    "SNPCLUSTERING:PLINK2_VCF",
-                    "plink2",
-                    "2.00a2.3LM"
-                ],
-                "versions.yml:md5,088adb486c0aa9f234effd310576eaf7",
-                "versions.yml:md5,5e7ab136010cdcda51f91b12562b28c7",
-                "versions.yml:md5,7406d1551e405376f2e1be27dd888f0f"
-            ]
+            }
         ],
-        "timestamp": "2026-08-25T11:53:17.934676935",
+        "timestamp": "2026-08-26T15:28:38.960190054",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -59,57 +169,167 @@
     },
     "homo_sapiens - 1000GP.chr22.vcf.gz - dbscan": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.clusters.csv"
+            {
+                "beagle_log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bglout.log:md5,00f899a6db795f7d4bd79b5961ec7d10"
+                    ]
+                ],
+                "cluster_info": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clustering_info.json:md5,fa9a2eff36d06fe360a59f4c3cd63393"
+                    ]
+                ],
+                "clusters": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clusters.csv:md5,c119dc1c716d66ceebc220219b02a535"
+                    ]
+                ],
+                "evecfile": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.eigenvec:md5,cb7d3501265fb6e681f9a66552faff42"
+                    ]
+                ],
+                "evfile": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.eigenval:md5,a5d4576064133a95bbf629b99b43a0c3"
+                    ]
+                ],
+                "imputed_vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bglout.vcf.gz:md5,ef94995e50ba034aeb8119ad15fb6ccc"
+                    ]
+                ],
+                "k_sweep": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.k_sweep.csv:md5,d75662c7c614f39e294601653c02de8d"
+                    ]
+                ],
+                "metric_plots": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.calinski_harabasz.png",
+                            "test.davies_bouldin.png",
+                            "test.elbow.png",
+                            "test.silhouette.png"
+                        ]
+                    ]
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.metrics.tsv:md5,d3f1a0d467c21875176c6f8c691b8d71"
+                    ]
+                ],
+                "pca_log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.log:md5,65d20c952985adb5fa7229a5d0d4fc0c"
+                    ]
+                ],
+                "pgen": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.pgen:md5,b183c72cbf75758521bd42a21a02e882"
+                    ]
+                ],
+                "psam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.psam:md5,31604b4a3b20fb02ef1c59e9ead65f00"
+                    ]
+                ],
+                "pvar": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.pvar:md5,9c89b734017db356ccaa0190ab88c199"
+                    ]
+                ],
+                "selected": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.selected.json:md5,138b2bae0f67f913dcead80f8202d9af"
+                    ]
+                ],
+                "tsne_png": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.tsne.png"
+                    ]
+                ],
+                "tsne_tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.tsne.tsv:md5,f4952012bc87993ca78429d4a823edb1"
+                    ]
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.tsv:md5,8009b5a5210c1dae667f40c40b450035"
+                    ]
+                ],
+                "umap_png": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.umap.png"
+                    ]
+                ],
+                "umap_tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.umap.tsv:md5,26c791bc4d38dff6f979582611dbc27d"
+                    ]
                 ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.clustering_info.json"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.metrics.tsv"
-                ]
-            ],
-            [
-                [
-                    "SNPCLUSTERING:BEAGLE5_BEAGLE",
-                    "beagle",
-                    "5.5"
-                ],
-                [
-                    "SNPCLUSTERING:GAWK_EIGENVEC_TO_TSV",
-                    "gawk",
-                    "5.3.1"
-                ],
-                [
-                    "SNPCLUSTERING:PLINK2_PCA",
-                    "plink2",
-                    "2.00a5.10LM"
-                ],
-                [
-                    "SNPCLUSTERING:PLINK2_VCF",
-                    "plink2",
-                    "2.00a2.3LM"
-                ],
-                "versions.yml:md5,088adb486c0aa9f234effd310576eaf7",
-                "versions.yml:md5,5e7ab136010cdcda51f91b12562b28c7",
-                "versions.yml:md5,7406d1551e405376f2e1be27dd888f0f"
-            ]
+            }
         ],
-        "timestamp": "2026-08-25T11:53:57.926394897",
+        "timestamp": "2026-08-26T15:29:18.988004598",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -274,35 +494,10 @@
                         },
                         "test.umap.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
-                ],
-                "versions": [
-                    [
-                        "SNPCLUSTERING:BEAGLE5_BEAGLE",
-                        "beagle",
-                        "5.5"
-                    ],
-                    [
-                        "SNPCLUSTERING:GAWK_EIGENVEC_TO_TSV",
-                        "gawk",
-                        "5.3.1"
-                    ],
-                    [
-                        "SNPCLUSTERING:PLINK2_PCA",
-                        "plink2",
-                        "2.00a5.10LM"
-                    ],
-                    [
-                        "SNPCLUSTERING:PLINK2_VCF",
-                        "plink2",
-                        "2.00a2.3LM"
-                    ],
-                    "versions.yml:md5,a5331a41c30b50872e8f9dc902b1fbdb",
-                    "versions.yml:md5,c3f41cb637b4e448e41a2451ac6ea796",
-                    "versions.yml:md5,c9f69ed90f9787ff5d98fda995824a89"
                 ]
             }
         ],
-        "timestamp": "2026-08-25T11:54:24.140132513",
+        "timestamp": "2026-08-26T15:29:43.011468684",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -467,35 +662,10 @@
                         },
                         "test.umap.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
-                ],
-                "versions": [
-                    [
-                        "SNPCLUSTERING:BEAGLE5_BEAGLE",
-                        "beagle",
-                        "5.5"
-                    ],
-                    [
-                        "SNPCLUSTERING:GAWK_EIGENVEC_TO_TSV",
-                        "gawk",
-                        "5.3.1"
-                    ],
-                    [
-                        "SNPCLUSTERING:PLINK2_PCA",
-                        "plink2",
-                        "2.00a5.10LM"
-                    ],
-                    [
-                        "SNPCLUSTERING:PLINK2_VCF",
-                        "plink2",
-                        "2.00a2.3LM"
-                    ],
-                    "versions.yml:md5,a5331a41c30b50872e8f9dc902b1fbdb",
-                    "versions.yml:md5,c3f41cb637b4e448e41a2451ac6ea796",
-                    "versions.yml:md5,c9f69ed90f9787ff5d98fda995824a89"
                 ]
             }
         ],
-        "timestamp": "2026-08-25T11:54:10.985447937",
+        "timestamp": "2026-08-26T15:29:31.961527536",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
