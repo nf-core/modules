@@ -50,7 +50,7 @@ nextflow_process {
                         path(process.out.somatic_hc_vcf.get(0).get(1)).vcf.variantsMD5,
                         path(process.out.loh_vcf.get(0).get(1)).vcf.variantsMD5,
                         path(process.out.loh_hc_vcf.get(0).get(1)).vcf.variantsMD5,
-                        process.out.versions,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

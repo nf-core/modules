@@ -5,8 +5,8 @@
 import logging
 import os
 import platform
+from collections.abc import Iterator
 from itertools import groupby
-from typing import Iterator, Tuple
 
 
 def setup_logging() -> logging.Logger:
@@ -41,7 +41,7 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
     return yaml_str
 
 
-def parse_fasta(fasta_file: str) -> Iterator[Tuple[str, str]]:
+def parse_fasta(fasta_file: str) -> Iterator[tuple[str, str]]:
     """Parse a fasta file and yield tuples of header and sequence.
 
     Args:
@@ -114,9 +114,7 @@ def main() -> None:
     fasta_to_gtf("$add_fasta", f"{add_name}.gtf", "$biotype")
 
     # Concatenate new fasta to existing fasta, and the GTF we just generated to the GTF
-    genome_name = "$params.genome" if "$params.genome" != "null" else os.path.splitext(os.path.basename("$fasta"))[0]
-    output_prefix = "$task.ext.prefix" if "$task.ext.prefix" != "null" else f"{genome_name}_{add_name}"
-
+    output_prefix = "$prefix"
     os.mkdir("out")
     os.system(f"cat $fasta $add_fasta > out/{output_prefix}.fasta")
     os.system(f"cat $gtf {add_name}.gtf > out/{output_prefix}.gtf")

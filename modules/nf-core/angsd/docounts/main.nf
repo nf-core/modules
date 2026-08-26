@@ -3,9 +3,9 @@ process ANGSD_DOCOUNTS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/angsd:0.940--hce60e53_2':
-        'biocontainers/angsd:0.940--hce60e53_2' }"
+        'quay.io/biocontainers/angsd:0.940--hce60e53_2' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(minqfile)

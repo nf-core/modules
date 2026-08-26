@@ -11,31 +11,35 @@ nextflow_process {
     tag "cellrangerarc/count"
     tag "unzip"
 
-    setup {
-        run("UNZIP") {
-            script "../../../unzip/main.nf"
-
-            process {
-                """
-                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz',checkIfExists:true)]
-                """
-            }
-        }
-        run("CELLRANGERARC_MKREF") {
-            script "../../mkref/main.nf"
-
-            process {
-                """
-                input[0] = UNZIP.out.unzipped_archive.map{it[1]}+"/chr19.fa"
-                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz',checkIfExists:true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt',checkIfExists:true)
-                input[3] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/cellranger_arc_mkref_test_mm39_chr19_config.json',checkIfExists:true)
-                input[4] = "cellrangerarc_reference"
-                """
-            }
-        }
-    }
     test("test_cellrangerarc_count") {
+        setup {
+            run("UNZIP") {
+                script "../../../unzip/main.nf"
+
+                process {
+                    """
+                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz',checkIfExists:true)]
+                    """
+                }
+            }
+            run("CELLRANGERARC_MKREF") {
+                script "../../mkref/main.nf"
+
+                process {
+                    """
+                    input[0] = channel.of([
+                        [id: "cellrangerarc"]
+                    ])
+                    .combine(UNZIP.out.unzipped_archive.map{it[1]}+"/chr19.fa")
+                    .combine(channel.of([
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/cellranger_arc_mkref_test_mm39_chr19_config.json',checkIfExists:true)
+                    ]))
+                    """
+                }
+            }
+        }
 
         when {
             params {
@@ -43,14 +47,18 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[id:'test'],['gex','atac'],['SRR18907480_chr19_sub','SRR18907481_chr19_sub'],
-                    [file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_I2_001.fastq.gz',checkIfExists:true)
+                input[0] = [
+                    [id:'test'],
+                    ['gex','atac'],
+                    ['SRR18907480_chr19_sub','SRR18907481_chr19_sub'],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_I2_001.fastq.gz',checkIfExists:true)
                     ]
-                    ]
+                ]
                 input[1] = CELLRANGERARC_MKREF.out.reference
                 """
             }
@@ -135,7 +143,7 @@ nextflow_process {
 
                     assert snapshot(
                         stable_files,
-                        process.out.versions[0]
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
 
                     def unstable_file_names = [
@@ -166,6 +174,36 @@ nextflow_process {
             )
         }
     }
-// No stub test, as the stub test for `UNZIP` doesn't actually extract the archive.
-// This breaks the downstream stub tests as a fasta file is required.
+
+    test("test_cellrangerarc_count - stub") {
+        options "-stub"
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    ['gex','atac'],
+                    ['SRR18907480_chr19_sub','SRR18907481_chr19_sub'],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_I2_001.fastq.gz',checkIfExists:true)
+                    ]
+                ]
+                input[1] = [[], []]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)) }
+            )
+        }
+    }
 }

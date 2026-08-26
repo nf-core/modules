@@ -19,7 +19,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fastk_hist:
         type: file
-        description: A histogram files from the program FastK
+        description: A histogram file from the program FastK
         pattern: "*.hist"
         ontologies: []
     - fastk_ktab:
@@ -29,13 +29,13 @@ input:
         ontologies: []
     - assembly:
         type: file
-        description: Genome (primary) assembly files (fasta format)
-        pattern: ".fasta"
+        description: FASTA file containing a single primary haplotype
+        pattern: "*.{fasta.gz,fasta}"
         ontologies: []
     - haplotigs:
         type: file
-        description: Assembly haplotigs (fasta format)
-        pattern: ".fasta"
+        description: FASTA file, or list of FASTA files, containing an alternate haplotype or set of haplotypes
+        pattern: "*.{fasta.gz,fasta}"
         ontologies: []
   - - meta2:
         type: map
@@ -44,8 +44,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - mathaptab:
         type: file
-        description: trio maternal histogram ktab files from the program FastK
-          (option -t)
+        description: trio maternal histogram ktab files from the program FastK (option -t)
         pattern: "*.ktab*"
         ontologies: []
   - - meta3:
@@ -55,8 +54,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - pathaptab:
         type: file
-        description: trio paternal histogram ktab files from the program FastK
-          (option -t)
+        description: trio paternal histogram ktab files from the program FastK (option -t)
         pattern: "*.ktab*"
         ontologies: []
 output:
@@ -80,8 +78,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}.*_only.bed:
           type: file
-          description: Assembly only kmer positions not supported by reads in bed
-            format
+          description: Assembly only kmer positions not supported by reads in bed format
           pattern: "*_only.bed"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -211,3 +208,27 @@ authors:
 maintainers:
   - "@mahesh-panchal"
   - "@yumisims"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/merquryfk:1.2--5ac50fb470d146e0
+      build_id: bd-5ac50fb470d146e0_1
+      scan_id: sc-68bfb8fb0f296829_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/merquryfk:1.2--1e5626c171d2dfe9
+      build_id: bd-1e5626c171d2dfe9_1
+      scan_id: sc-201842fa3258d31c_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/merquryfk:1.2--273c5808a585c7dc
+      build_id: bd-273c5808a585c7dc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fb9dbdf098779f2b84401de5e6e8569dd9120018a47b92126876260a0bb621a6/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/merquryfk:1.2--2810c9cbc10a5bb6
+      build_id: bd-2810c9cbc10a5bb6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9d3a76b0ab12d4ea8b331912232557ab4797ff4ef336f46680ae92941afdb30/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/merquryfk/merquryfk/.conda-lock/linux_amd64-bd-5ac50fb470d146e0_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/merquryfk/merquryfk/.conda-lock/linux_arm64-bd-1e5626c171d2dfe9_1.txt

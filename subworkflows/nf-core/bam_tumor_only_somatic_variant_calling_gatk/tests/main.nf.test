@@ -51,8 +51,8 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert snapshot(
                     workflow.out.contamination_table,
                     workflow.out.filtered_stats,
@@ -105,8 +105,8 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert snapshot(workflow.out).match() }
             )
         }

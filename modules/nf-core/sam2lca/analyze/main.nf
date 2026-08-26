@@ -4,9 +4,9 @@ process SAM2LCA_ANALYZE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sam2lca:1.1.4--pyhdfd78af_0':
-        'biocontainers/sam2lca:1.1.4--pyhdfd78af_0' }"
+        'quay.io/biocontainers/sam2lca:1.1.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -16,7 +16,7 @@ process SAM2LCA_ANALYZE {
     tuple val(meta), path("*.csv")  , emit: csv
     tuple val(meta), path("*.json") , emit: json
     tuple val(meta), path("*.bam")  , emit: bam     , optional: true
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('sam2lca'), eval("sam2lca --version | sed 's/.*version //'"), topic: versions, emit: versions_sam2lca
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process SAM2LCA_ANALYZE {
         $args \\
         -o ${prefix} \\
         $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sam2lca: \$(sam2lca --version | sed 's/.*version //')
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process SAM2LCA_ANALYZE {
     """
     touch ${prefix}.csv
     touch ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sam2lca: \$(sam2lca --version | sed 's/.*version //')
-    END_VERSIONS
     """
 }

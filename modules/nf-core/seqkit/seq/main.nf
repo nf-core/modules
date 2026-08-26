@@ -4,9 +4,9 @@ process SEQKIT_SEQ {
     // File IO can be a bottleneck. See: https://bioinf.shenwei.me/seqkit/usage/#parallelization-of-cpu-intensive-jobs
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/seqkit:2.9.0--h9ee0642_0'
-        : 'biocontainers/seqkit:2.9.0--h9ee0642_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fe272ab9a519cf418160471a485b5ef50ea3f571a8e4555a826f70a4d8243ae/data'
+        : 'community.wave.seqera.io/library/seqkit:2.13.0--05c0a96bf9fb2751'}"
 
     input:
     tuple val(meta), path(fastx)
@@ -42,6 +42,8 @@ process SEQKIT_SEQ {
     """
 
     stub:
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def extension = "fastq"
     if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/) {
@@ -51,7 +53,11 @@ process SEQKIT_SEQ {
     if ("${prefix}.${extension}" == "${fastx}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
+    def create_cmd = extension.endsWith('gz') ? "echo '' | gzip >" : "touch"
     """
-    touch ${prefix}.${extension}
+    echo ${args}
+    echo ${args2}
+
+    ${create_cmd} ${prefix}.${extension}
     """
 }

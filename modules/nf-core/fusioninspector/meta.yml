@@ -12,9 +12,9 @@ tools:
       documentation: https://github.com/FusionInspector/FusionInspector/wiki
       tool_dev_url: https://github.com/FusionInspector/FusionInspector
       doi: 10.1101/2021.08.02.454639"
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -26,13 +26,13 @@ input:
         description: FASTQ file
         pattern: "*.{fastq*}"
         ontologies:
-          - edam: "http://edamontology.org/format_1930" # FASTQ
+          - edam: "http://edamontology.org/format_1930"
     - fusion_list:
         type: file
         description: Fusion targets list
         pattern: "*.{txt}"
         ontologies:
-          - edam: "http://edamontology.org/format_2330" # Textual format
+          - edam: "http://edamontology.org/format_2330"
   - - meta2:
         type: map
         description: |
@@ -42,7 +42,6 @@ input:
         type: directory
         description: Path to CTAT references
         pattern: "*"
-
 output:
   tsv:
     - - meta:
@@ -55,7 +54,7 @@ output:
           description: FusionInspector output TSV file
           pattern: "*.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   out_gtf:
     - - meta:
           type: map
@@ -67,7 +66,7 @@ output:
           description: GTF output file
           pattern: "*.gtf"
           ontologies:
-            - edam: "http://edamontology.org/format_2306" # GTF
+            - edam: "http://edamontology.org/format_2306"
   log:
     - - meta:
           type: map
@@ -79,8 +78,8 @@ output:
           description: FusionInspector log file
           pattern: "*.log"
           ontologies:
-            - edam: "http://edamontology.org/data_1678" # Log file
-            - edam: "http://edamontology.org/format_2330" # Plain text
+            - edam: "http://edamontology.org/data_1678"
+            - edam: "http://edamontology.org/format_2330"
   html:
     - - meta:
           type: map
@@ -92,7 +91,7 @@ output:
           description: HTML output files
           pattern: "*.html"
           ontologies:
-            - edam: "http://edamontology.org/format_2331" # HTML
+            - edam: "http://edamontology.org/format_2331"
   abridged_tsv:
     - - meta:
           type: map
@@ -104,7 +103,7 @@ output:
           description: Abridged TSV output file
           pattern: "*.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   igv_inputs:
     - - meta:
           type: map
@@ -135,13 +134,27 @@ output:
           type: directory
           description: Checkpoints directory
           pattern: "chckpts_dir"
+  versions_fusioninspector:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fusion-inspector:
+          type: string
+          description: The name of the tool
+      - "FusionInspector --version |& sed -n 's/.*version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fusion-inspector:
+          type: string
+          description: The name of the tool
+      - "FusionInspector --version |& sed -n 's/.*version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rannick"
   - "@delfiterradas"

@@ -3,9 +3,9 @@ process KAT_HIST {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kat:2.4.2--py38hfc5f9d8_2':
-        'biocontainers/kat:2.4.2--py38hfc5f9d8_2' }"
+        'quay.io/biocontainers/kat:2.4.2--py38hfc5f9d8_2' }"
 
     input:
     tuple val(meta), path(reads)
@@ -17,7 +17,7 @@ process KAT_HIST {
     tuple val(meta), path("*.ps")                     , emit: ps            , optional: true
     tuple val(meta), path("*.pdf")                    , emit: pdf           , optional: true
     tuple val(meta), path("*-hash.jf*")               , emit: jellyfish_hash, optional: true
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('kat'), eval("kat hist --version | sed 's/kat //'"), emit: versions_kat, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,10 +42,6 @@ This module is no longer maintained by the authors
 
     ls -l
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kat: \$( kat hist --version | sed 's/kat //' )
-    END_VERSIONS
     """
 
     stub:
@@ -61,9 +57,5 @@ This module is no longer maintained by the authors
     """
     touch ${prefix}.hist
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kat: \$( kat hist --version | sed 's/kat //' )
-    END_VERSIONS
     """
 }

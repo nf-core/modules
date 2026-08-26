@@ -36,7 +36,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*[!versions.yml][!${prefix}.${extension}]*":
+      - "*[!${prefix}.${extension}]*":
           type: file
           description: File containing output of gget command.
           ontologies: []
@@ -53,13 +53,27 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_gget:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gget:
+          type: string
+          description: The name of the tool
+      - "gget --version |& sed 's/gget version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gget:
+          type: string
+          description: The name of the tool
+      - "gget --version |& sed 's/gget version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@adamrtalbot"
 maintainers:

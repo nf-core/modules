@@ -1,0 +1,81 @@
+name: "CUSTOM_PCACLUSTERING"
+description: "Performs KMeans or DBSCAN clustering on a sample-by-feature numeric
+  matrix (e.g. principal components, embeddings)"
+keywords:
+  - clustering
+  - kmeans
+  - dbscan
+  - pca
+  - embeddings
+tools:
+  - "scikit-learn":
+      description: "Machine learning library for clustering"
+      homepage: "https://scikit-learn.org/"
+      documentation: "https://scikit-learn.org/stable/modules/clustering.html"
+      licence:
+        - "BSD-3-Clause"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - features:
+        type: file
+        description: |
+          Tab-separated file whose first column is sample IDs (any column
+          name) and remaining columns are numeric features (e.g. PLINK2 PCA
+          components with `FID` dropped, scikit-learn embeddings, etc.).
+        pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  - algorithm:
+      type: string
+      description: Clustering algorithm to use (kmeans or dbscan)
+  - n_clusters:
+      type: integer
+      description: Number of clusters for KMeans
+  - dbscan_eps:
+      type: float
+      description: Epsilon parameter for DBSCAN
+  - dbscan_min_samples:
+      type: integer
+      description: Minimum samples parameter for DBSCAN
+output:
+  clusters:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.clusters.csv":
+          type: file
+          description: CSV file with sample_id and assigned cluster
+          pattern: "*.clusters.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  info:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.clustering_info.json":
+          type: file
+          description: JSON file with clustering parameters and statistics
+          pattern: "*.clustering_info.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@dbaku42"
+maintainers:
+  - "@dbaku42"

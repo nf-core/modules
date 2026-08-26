@@ -3,9 +3,9 @@ process SHIGATYPER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shigatyper:2.0.5--pyhdfd78af_0':
-        'biocontainers/shigatyper:2.0.5--pyhdfd78af_0' }"
+        'quay.io/biocontainers/shigatyper:2.0.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +13,7 @@ process SHIGATYPER {
     output:
     tuple val(meta), path("${prefix}.tsv")     , emit: tsv
     tuple val(meta), path("${prefix}-hits.tsv"), optional: true, emit: hits
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('shigatyper'), eval("shigatyper --version | sed 's/ShigaTyper //'"), emit: versions_shigatyper, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,54 +22,26 @@ process SHIGATYPER {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    if (meta.is_ont) {
+    if (meta.single_end) {
         """
         shigatyper \\
-            $args \\
-            --SE $reads \\
-            --ont \\
-            --name $prefix
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            shigatyper: \$(shigatyper --version | sed -n 's/ShigaTyper \\(.*\\)/\\1/p')
-        END_VERSIONS
-        """
-    } else if (meta.single_end) {
-        """
-        shigatyper \\
-            $args \\
-            --SE $reads \\
-            --name $prefix
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            shigatyper: \$(shigatyper --version | sed -n 's/ShigaTyper \\(.*\\)/\\1/p')
-        END_VERSIONS
+            ${args} \\
+            --SE ${reads} \\
+            --name ${prefix}
         """
     } else {
         """
         shigatyper \\
-            $args \\
+            ${args} \\
             --R1 ${reads[0]} \\
             --R2 ${reads[1]} \\
-            --name $prefix
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            shigatyper: \$(shigatyper --version | sed -n 's/ShigaTyper \\(.*\\)/\\1/p')
-        END_VERSIONS
+            --name ${prefix}
         """
     }
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch "${prefix}.tsv"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shigatyper: \$(shigatyper --version | sed -n 's/ShigaTyper \\(.*\\)/\\1/p')
-    END_VERSIONS
+    touch ${prefix}.tsv
     """
 }

@@ -30,9 +30,33 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					path(process.out.restrict[0][1]).linesGzip[3..7],
-					process.out.versions
+					sanitizeOutput(process.out, unstableKeys: ["restrict"])
 					).match()
 				}
+            )
+        }
+    }
+
+    test("test-pairtools-restrict - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.4flip.pairs', checkIfExists: true)
+                ]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/frag.bed', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -1,0 +1,115 @@
+name: "sushie"
+description: Software to perform multi-ancestry SNP fine-mapping on molecular
+  data
+keywords:
+  - gwas
+  - fine mapping
+  - ancestry
+tools:
+  - "sushie":
+      description: "Software to perform multi-ancestry SNP fine-mapping on molecular
+        data"
+      homepage: "https://github.com/mancusolab/sushie/"
+      documentation: "https://mancusolab.github.io/sushie/"
+      tool_dev_url: "https://github.com/mancusolab/sushie/"
+      doi: "10.1038/s41588-025-02262-7"
+      licence:
+        - "MIT"
+      identifier: biotools:sushie
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - study_locus_files:
+        type: file
+        description: Study locus file(s)
+        pattern: "*.gwas"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - ld_files:
+      type: file
+      description: LD file(s)
+      pattern: "*.ld"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # TSV
+  - sample_sizes:
+      type: string
+      description: Sample size(s)
+output:
+  corr:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.sushie.corr.tsv.gz":
+          type: file
+          description: Effect size correlation
+          pattern: "*.sushie.corr.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  cs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.sushie.cs.tsv.gz":
+          type: file
+          description: Credible set
+          pattern: "*.sushie.cs.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  weights:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.sushie.weights.tsv.gz":
+          type: file
+          description: Prediction weights
+          pattern: "*.sushie.weights.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_sushie:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sushie:
+          type: string
+          description: The name of the tool
+      - "0.19":
+          type: string
+          description: The expression to obtain the version of the tool
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: Log file
+          pattern: "*.log"
+          ontologies: []
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sushie:
+          type: string
+          description: The name of the tool
+      - "0.19":
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@camlloyd"
+maintainers:
+  - "@camlloyd"

@@ -6,12 +6,13 @@ keywords:
   - sv
 tools:
   - cutesv:
-      description: a clustering-and-refinement method to analyze the signatures to implement
-        sensitive SV detection.
+      description: a clustering-and-refinement method to analyze the signatures to
+        implement sensitive SV detection.
       homepage: https://github.com/tjiangHIT/cuteSV
       documentation: https://github.com/tjiangHIT/cuteSV#readme
       tool_dev_url: https://github.com/tjiangHIT/cuteSV
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:cuteSV
 input:
   - - meta:
@@ -51,13 +52,27 @@ output:
           description: VCF file containing called variants from CuteSV
           pattern: "*.vcf"
           ontologies: []
+  versions_cutesv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cuteSV:
+          type: string
+          description: The name of the tool
+      - cuteSV --version 2>&1 | sed 's/cuteSV //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cuteSV:
+          type: string
+          description: The name of the tool
+      - cuteSV --version 2>&1 | sed 's/cuteSV //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@christopher-hakkaart"
   - "@yuukiiwa"

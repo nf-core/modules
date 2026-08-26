@@ -1,0 +1,354 @@
+name: riker_multi
+description: |
+  Run multiple riker collectors in a single BAM pass using riker multi. Specify
+  tools via ext.args (e.g. '--tools alignment basic isize'). The wgs, gcbias, and
+  error tools require a reference FASTA; the hybcap tool requires baits and targets.
+keywords:
+  - bam
+  - qc
+  - metrics
+  - multi
+  - alignment
+  - insert size
+  - gc bias
+  - coverage
+  - rna
+tools:
+  - riker:
+      description: |
+        Fast Rust CLI toolkit for sequencing QC metrics. Ports key QC metrics tools
+        from Picard with cleaner output and better performance.
+      homepage: https://github.com/fulcrumgenomics/riker
+      documentation: https://github.com/fulcrumgenomics/riker
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Aligned reads in BAM, CRAM, or SAM format
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+    - bai:
+        type: file
+        description: Index for the BAM/CRAM file
+        pattern: "*.{bai,crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+    - error_vcf:
+        type: file
+        description: VCF file containing known variants for error metrics. Must be bgzipped and indexed.
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+    - error_vcf_idx:
+        type: file
+        description: Index for the VCF file.
+        pattern: "*.vcf.gz.{tbi,csi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616" # TBI/CSI
+    - error_intervals:
+        type: file
+        description: IntervalList or BED file containing regions to exclude from error metrics. Optional.
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - gcbias_exclude_intervals:
+        type: file
+        description: IntervalList or BED file containing regions to exclude from GC bias metrics. Optional.
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - hybcap_baits:
+        type: file
+        description: Bait interval file (IntervalList or BED). Required when running the hybcap tool. Optional otherwise.
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - hybcap_targets:
+        type: file
+        description: Target interval file (IntervalList or BED). Required when running the hybcap tool. Optional otherwise.
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - rna_gene_model:
+        type: file
+        description: GTF or GFF file containing gene models. Required when running the rna tool. Optional otherwise.
+        pattern: "*.{gtf,gff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
+          - edam: "http://edamontology.org/format_1975" # GFF
+    - rna_ribosomal_intervals:
+        type: file
+        description: Explicit ribosomal intervals (BED or Picard IntervalList), unioned with biotype-derived rRNA genes from the gene model
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - wgs_intervals:
+        type: file
+        description: IntervalList or BED file containing intervals for whole-genome coverage metrics. Required when running the wgs tool. Optional otherwise.
+        pattern: "*.{interval_list,bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome FASTA file. Required when running wgs, gcbias, or error tools.
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: Index for the reference FASTA file
+        pattern: "*.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3326" # FASTA index
+output:
+  alignment_metrics:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.alignment-metrics.txt":
+          type: file
+          description: Alignment summary metrics (alignment tool)
+          pattern: "*.alignment-metrics.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  base_dist:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.base-distribution-by-cycle.txt":
+          type: file
+          description: Base distribution by cycle (basic tool)
+          pattern: "*.base-distribution-by-cycle.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  error_indel:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.error-indel.txt":
+          type: file
+          description: Indel error metrics (error tool)
+          pattern: "*.error-indel.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  error_mismatch:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.error-mismatch.txt":
+          type: file
+          description: Base mismatch error metrics (error tool)
+          pattern: "*.error-mismatch.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  error_overlap:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.error-overlap.txt":
+          type: file
+          description: Read overlap error metrics (error tool)
+          pattern: "*.error-overlap.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  gcbias_detail:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.gcbias-detail.txt":
+          type: file
+          description: Per-GC-bin detail metrics (gcbias tool)
+          pattern: "*.gcbias-detail.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  gcbias_summary:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.gcbias-summary.txt":
+          type: file
+          description: GC bias summary metrics (gcbias tool)
+          pattern: "*.gcbias-summary.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  hybcap_metrics:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.hybcap-metrics.txt":
+          type: file
+          description: Hybrid capture summary metrics (hybcap tool)
+          pattern: "*.hybcap-metrics.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  hybcap_per_base:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.hybcap-per-base.txt*":
+          type: file
+          description: Per-base coverage values (hybcap tool, optional)
+          pattern: "*.hybcap-per-base.txt{,.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  hybcap_per_target:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.hybcap-per-target.txt":
+          type: file
+          description: Per-target coverage metrics (hybcap tool, optional)
+          pattern: "*.hybcap-per-target.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  isize_metrics:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.isize-metrics.txt":
+          type: file
+          description: Insert size summary metrics (isize tool)
+          pattern: "*.isize-metrics.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  isize_histogram:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.isize-histogram.txt":
+          type: file
+          description: Insert size histogram (isize tool)
+          pattern: "*.isize-histogram.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  mean_qual:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.mean-quality-by-cycle.txt":
+          type: file
+          description: Mean quality by cycle (basic tool)
+          pattern: "*.mean-quality-by-cycle.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  pdf:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.pdf":
+          type: file
+          description: PDF plots from any tool that generates them
+          pattern: "*.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
+  qual_dist:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.quality-score-distribution.txt":
+          type: file
+          description: Quality score distribution (basic tool)
+          pattern: "*.quality-score-distribution.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  rna_biotype:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.rna-biotype.txt":
+          type: file
+          description: RNA biotype metrics (rna tool)
+          pattern: "*.rna-biotype.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  rna_insert_size:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.rna-insert-size.txt":
+          type: file
+          description: RNA insert size metrics (rna tool)
+          pattern: "*.rna-insert-size.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  rna_insert_size_histogram:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.rna-insert-size-histogram.txt":
+          type: file
+          description: RNA insert size histogram (rna tool)
+          pattern: "*.rna-insert-size-histogram.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  rna_metrics:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.rna-metrics.txt":
+          type: file
+          description: RNA summary metrics (rna tool)
+          pattern: "*.rna-metrics.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  wgs_metrics:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.wgs-metrics.txt":
+          type: file
+          description: Whole-genome coverage summary metrics (wgs tool)
+          pattern: "*.wgs-metrics.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  wgs_coverage:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.wgs-coverage.txt":
+          type: file
+          description: Per-depth coverage histogram (wgs tool)
+          pattern: "*.wgs-coverage.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_riker:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - riker:
+          type: string
+          description: The name of the tool
+      - riker --version 2>&1 | sed 's/riker //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - riker:
+          type: string
+          description: The name of the tool
+      - riker --version 2>&1 | sed 's/riker //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@emmcauley"
+  - "@matthdsm"
+  - "@tfenne"
+maintainers:
+  - "@emmcauley"
+  - "@matthdsm"

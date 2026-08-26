@@ -19,6 +19,10 @@ input:
       description: |
         All information necessary to download the cache
         Structure: [ val(meta), val(snpeff_db) ]
+  - ensemblvep_preflight_check:
+      description: |
+        Whether to check that the expected cache file is listed in the Ensembl CHECKSUMS file before downloading
+        Structure: val(true/false)
 output:
   - ensemblvep_cache:
       description: |

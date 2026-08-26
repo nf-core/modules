@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "amulety_translate"
 description: A module to translate BCR and TCR nucleotide sequences into amino acid
   sequences using amulety and igblast.
@@ -17,7 +16,8 @@ tools:
       documentation: "https://amulety.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/immcantation/amulety"
       doi: "10.1101/2025.03.21.644583"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
   - "igblast":
       description: "A tool for immunoglobulin (IG, BCR) and T cell receptor (TCR) V
@@ -26,9 +26,9 @@ tools:
       documentation: "https://ncbi.github.io/igblast/"
       tool_dev_url: "https://github.com/ncbi/igblast"
       doi: "10.1093/nar/gkt382"
-      licence: ["United States Government Work"]
+      licence:
+        - "United States Government Work"
       identifier: biotools:igblast
-
 input:
   - - meta:
         type: map
@@ -40,11 +40,10 @@ input:
         description: TSV with BCR/TCR nucleotide sequences in AIRR rearrangement format
         pattern: "*.{tsv}"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   - reference_igblast:
       type: file
       description: Built reference databases for igblast
-
       ontologies: []
 output:
   repertoire_translated:
@@ -57,9 +56,8 @@ output:
           type: file
           description: TSV with BCR/TCR amino acid sequences in AIRR rearrangement format
           pattern: "*.tsv"
-
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   versions_amulety:
     - - ${task.process}:
           type: string
@@ -67,8 +65,8 @@ output:
       - amulety:
           type: string
           description: The tool name
-      - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
-          type: string
+      - amulety --help 2>&1 | grep -o 'version [0-9\.]\+' | grep -o '[0-9\.]\+':
+          type: eval
           description: The command used to generate the version of the tool
   versions_igblastn:
     - - ${task.process}:
@@ -77,10 +75,39 @@ output:
       - igblastn:
           type: string
           description: The tool name
-      - "igblastn -version | grep -o 'igblast[0-9\\. ]\\+' | grep -o '[0-9\\. ]\\+'":
-          type: string
+      - igblastn -version | grep -o 'igblast[0-9\. ]\+' | grep -o '[0-9\. ]\+':
+          type: eval
           description: The command used to generate the version of the tool
-
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version 2>&1 | grep -o 'Python [0-9\.]\+' | grep -o '[0-9\.]\+':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pytorch:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pytorch:
+          type: string
+          description: The name of the tool
+      - python -c 'import torch; print(torch.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_transformers:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - transformers:
+          type: string
+          description: The name of the tool
+      - python -c 'import transformers; print(transformers.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -89,8 +116,8 @@ topics:
       - amulety:
           type: string
           description: The tool name
-      - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
-          type: string
+      - amulety --help 2>&1 | grep -o 'version [0-9\.]\+' | grep -o '[0-9\.]\+':
+          type: eval
           description: The command used to generate the version of the tool
     - - ${task.process}:
           type: string
@@ -98,10 +125,36 @@ topics:
       - igblastn:
           type: string
           description: The tool name
-      - "igblastn -version | grep -o 'igblast[0-9\\. ]\\+' | grep -o '[0-9\\. ]\\+'":
-          type: string
+      - igblastn -version | grep -o 'igblast[0-9\. ]\+' | grep -o '[0-9\. ]\+':
+          type: eval
           description: The command used to generate the version of the tool
-
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version 2>&1 | grep -o 'Python [0-9\.]\+' | grep -o '[0-9\.]\+':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pytorch:
+          type: string
+          description: The name of the tool
+      - python -c 'import torch; print(torch.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - transformers:
+          type: string
+          description: The name of the tool
+      - python -c 'import transformers; print(transformers.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ggabernet"
 maintainers:

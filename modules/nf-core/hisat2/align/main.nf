@@ -3,7 +3,7 @@ process HISAT2_ALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/hisat2_samtools:5a258fe6e30b2c20' :
         'community.wave.seqera.io/library/hisat2_samtools:6ca0ef72b662d5c8' }"
 

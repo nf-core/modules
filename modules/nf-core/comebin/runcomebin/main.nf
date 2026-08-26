@@ -3,30 +3,30 @@ process COMEBIN_RUNCOMEBIN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/comebin:1.0.4--hdfd78af_0':
-        'biocontainers/comebin:1.0.4--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a7/a720950b3444c8a0d7a64618dac6864ea11e15ed25f24a522aa5ff3e5742c9ae/data'
+        : 'community.wave.seqera.io/library/comebin_gzip_tar:818f10a274a0d480'}"
 
     input:
     tuple val(meta), path(assembly), path(bam, stageAs: "bam/*")
 
     output:
     tuple val(meta), path("${prefix}/comebin_res_bins/*.fa.gz"), emit: bins
-    tuple val(meta), path("${prefix}/comebin_res.tsv")         , emit: tsv
-    tuple val(meta), path("${prefix}/comebin.log")             , emit: log
-    tuple val(meta), path("${prefix}/embeddings.tsv")          , emit: embeddings
-    tuple val(meta), path("${prefix}/covembeddings.tsv")       , emit: covembeddings
-    tuple val("${task.process}"), val('comebin'), eval("run_comebin.sh | sed '2!d;s/COMEBin version: //'"), topic: versions, emit: versions_comebin
+    tuple val(meta), path("${prefix}/comebin_res.tsv"), emit: tsv
+    tuple val(meta), path("${prefix}/comebin.log"), emit: log
+    tuple val(meta), path("${prefix}/embeddings.tsv"), emit: embeddings
+    tuple val(meta), path("${prefix}/covembeddings.tsv"), emit: covembeddings
+    tuple val("${task.process}"), val('comebin'), eval("run_comebin.sh -V | sed 's/COMEBin version: //'"), topic: versions, emit: versions_comebin
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args               = task.ext.args ?: ''
-    prefix                 = task.ext.prefix ?: "${meta.id}"
-    def clean_assembly     = assembly.toString() - ~/\.gz$/
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def clean_assembly = assembly.toString() - ~/\.gz$/
     // ISSUE: temporary files will be generated in the directory of the assembly file, following links, copying prevents that
-    def setup_contigs      = assembly.toString() == clean_assembly ? "cat ${assembly} > local_assembly.fasta" : "zcat ${assembly} > local_assembly.fasta"
+    def setup_contigs = assembly.toString() == clean_assembly ? "cat ${assembly} > local_assembly.fasta" : "zcat ${assembly} > local_assembly.fasta"
     """
     ${setup_contigs}
 
@@ -35,7 +35,7 @@ process COMEBIN_RUNCOMEBIN {
         -a local_assembly.fasta \\
         -p bam/ \\
         -o . \\
-        $args
+        ${args}
 
     mv comebin_res ${prefix}
 
@@ -51,7 +51,7 @@ process COMEBIN_RUNCOMEBIN {
     """
 
     stub:
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/comebin_res_bins
 

@@ -4,9 +4,9 @@ process UMICOLLAPSE {
     label "process_high_memory"
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/umicollapse:1.1.0--hdfd78af_0'
-        : 'biocontainers/umicollapse:1.1.0--hdfd78af_0'}"
+        : 'quay.io/biocontainers/umicollapse:1.1.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(input), path(bai)

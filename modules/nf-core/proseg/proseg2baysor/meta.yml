@@ -1,0 +1,79 @@
+name: "proseg2baysor"
+description: Convert proseg outputs to baysor format for import to Xenium
+  explorer
+keywords:
+  - segmentation
+  - spatial
+  - transcriptomics
+tools:
+  - "proseg":
+      description: "Proseg (probabilistic segmentation) is a cell segmentation method
+        for in situ spatial transcriptomics."
+      homepage: "https://github.com/dcjones/proseg"
+      documentation: "https://github.com/dcjones/proseg"
+      tool_dev_url: "https://github.com/dcjones/proseg"
+      doi: "10.1038/s41592-025-02697-0"
+      licence:
+        - "GPLv3"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information
+    - sd_zarr:
+        type: file
+        description: "Path to the spatialdata Zarr file output by proseg."
+        pattern: "*.zarr"
+        ontologies:
+          - edam: http://edamontology.org/format_3470
+output:
+  cell_polygons:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}_cell-polygons.geojson:
+          type: file
+          description: "Path to the cell polygons file."
+          pattern: "*cell-polygons.geojson.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+            - edam: http://edamontology.org/format_3989
+  transcript_metadata:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}_transcript-metadata.csv:
+          type: file
+          description: Transcript ids, genes, revised positions, assignment
+            probability, etc.
+          pattern: "*transcript-metadata.csv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3989
+  versions_proseg:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - proseg:
+          type: string
+          description: The name of the tool
+      - proseg --version | sed 's/proseg //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - proseg:
+          type: string
+          description: The name of the tool
+      - proseg --version | sed 's/proseg //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@derrik-gratz"
+  - "@khersameesh24"
+maintainers:
+  - "@derrik-gratz"
+  - "@khersameesh24"

@@ -3,12 +3,12 @@ process ANNOTSV_ANNOTSV {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/363f212881f1b2f5c3395a6c7d1270694392e3a6f886e46e091e83527fed9b6b/data' :
         'community.wave.seqera.io/library/annotsv:3.5.3--71a461cb86d570b7' }"
 
     // Container options are needed to allow AnnotSV to overwrite a file in a dependency directory in Singularity
-    containerOptions "${ workflow.containerEngine == 'singularity' ? '--writable-tmpfs' : ''}"
+    containerOptions "${ workflow.containerEngine in ['singularity', 'apptainer'] ? '--writable-tmpfs' : ''}"
 
     input:
     tuple val(meta), path(sv_vcf), path(sv_vcf_index), path(candidate_small_variants)
@@ -18,8 +18,8 @@ process ANNOTSV_ANNOTSV {
     tuple val(meta5), path(gene_transcripts)
 
     output:
-    tuple val(meta), path("*.tsv")            , emit: tsv
-    tuple val(meta), path("*.unannotated.tsv"), emit: unannotated_tsv, optional: true
+    tuple val(meta), path("${prefix}.tsv")            , emit: tsv
+    tuple val(meta), path("${prefix}.unannotated.tsv"), emit: unannotated_tsv, optional: true
     tuple val(meta), path("*.vcf")            , emit: vcf            , optional: true
     tuple val("${task.process}"), val('annotsv'), eval("AnnotSV --version | sed 's/AnnotSV //'"), emit: versions_annotsv, topic: versions
 
@@ -28,7 +28,7 @@ process ANNOTSV_ANNOTSV {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     def cand_genes     = candidate_genes          ? "-candidateGenesFile ${candidate_genes}"              : ""
     def small_variants = candidate_small_variants ? "-candidateSnvIndelFiles ${candidate_small_variants}" : ""
@@ -51,7 +51,7 @@ process ANNOTSV_ANNOTSV {
 
     stub:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     def create_vcf = args.contains("-vcf 1") ? "touch ${prefix}.vcf" : ""
 

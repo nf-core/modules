@@ -3,7 +3,7 @@ process ANNDATA_BARCODES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa01776f530c0a0fe2b7d8d41009884040f75d175ff194641f846b215a1da8d6/data':
         'community.wave.seqera.io/library/anndata_pandas_python_pyyaml:3f88bccf1cdade40' }"
 
