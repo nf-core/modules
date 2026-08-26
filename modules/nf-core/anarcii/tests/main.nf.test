@@ -18,6 +18,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/anarcii/anarcii_vdjdb.fasta', checkIfExists: true),
                 ]
+                input[1] = 'tcr'
                 """
             }
         }
@@ -30,6 +31,8 @@ nextflow_process {
             assert "Score" in anarciiResults.columnNames
             assert "Query start" in anarciiResults.columnNames
             assert "Query end" in anarciiResults.columnNames
+            // A mismatched seq_type leaves sequences unnumbered as chain "F" instead of failing
+            assert anarciiResults.columns["Chain"].every { it in ["A", "B"] }
         }
     }
 
@@ -44,6 +47,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/anarcii/anarcii_vdjdb.fasta', checkIfExists: true),
                 ]
+                input[1] = 'tcr'
                 """
             }
         }

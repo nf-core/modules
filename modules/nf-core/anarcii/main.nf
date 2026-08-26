@@ -9,6 +9,7 @@ process ANARCII {
 
     input:
     tuple val(meta), path(fasta)
+    val seq_type
 
     output:
     tuple val(meta), path("*.csv"), emit: anarcii
@@ -22,6 +23,7 @@ process ANARCII {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     anarcii \\
+        -t ${seq_type} \\
         ${args}\\
         -o ${prefix}.csv \\
         ${fasta}
