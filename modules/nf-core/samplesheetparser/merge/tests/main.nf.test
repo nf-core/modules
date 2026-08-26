@@ -110,4 +110,38 @@ nextflow_process {
             )
         }
     }
+
+    test("Merge two identically-named sheets - no staging collision") {
+
+        when {
+            process {
+                """
+                // Real per-project sheets are usually all named 'SampleSheet.csv'.
+                // Restage the two non-colliding V1 sheets under that shared basename
+                // (in separate dirs) to exercise the stageAs "input*/*" handling.
+                def sheet_a  = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true)
+                def sheet_b  = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet_b.v1.csv', checkIfExists: true)
+                def staged_a = file("\${workDir}/samesheet/a/SampleSheet.csv")
+                def staged_b = file("\${workDir}/samesheet/b/SampleSheet.csv")
+                staged_a.parent.mkdirs()
+                staged_b.parent.mkdirs()
+                sheet_a.copyTo(staged_a)
+                sheet_b.copyTo(staged_b)
+
+                input[0] = [
+                    [ id:'test_samename' ],
+                    [ staged_a, staged_b ]
+                ]
+                input[1] = 'v1'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
 }

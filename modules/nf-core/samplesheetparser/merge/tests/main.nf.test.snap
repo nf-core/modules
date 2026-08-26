@@ -134,5 +134,39 @@
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
+    },
+    "Merge two identically-named sheets - no staging collision": {
+        "content": [
+            {
+                "json": [
+                    [
+                        {
+                            "id": "test_samename"
+                        },
+                        "test_samename.merge.json:md5,baf2369a1b4ec69d9ff44e83d89e4d07"
+                    ]
+                ],
+                "samplesheet": [
+                    [
+                        {
+                            "id": "test_samename"
+                        },
+                        "test_samename.merged.csv:md5,af99a1dd72d220959822f0efddc7ca91"
+                    ]
+                ],
+                "versions_samplesheetparser": [
+                    [
+                        "SAMPLESHEETPARSER_MERGE",
+                        "samplesheet-parser",
+                        "2.5.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-26T06:34:30.015043",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }
