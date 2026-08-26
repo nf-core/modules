@@ -106,7 +106,7 @@ nextflow_process {
             def mqc_counts = mqc_lines.collect { it.split('\t')[1].toInteger() }
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(sanitizeOutput (process.out)).match() },
                 { assert rows.size() > 0 },
                 { assert rows.every { it[aa].toInteger() > 0 } },
                 // Each row must come from at least one caller; the
@@ -180,7 +180,7 @@ nextflow_process {
             def n_samples = cols.indexOf('n_samples')
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(sanitizeOutput (process.out)).match() },
                 // The full catalogue is unaffected by the threshold.
                 { assert full_rows.size() > 0 },
                 // The 2-sample ORF survives; single-sample ORFs are dropped, so

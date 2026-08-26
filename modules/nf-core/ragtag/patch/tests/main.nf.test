@@ -81,7 +81,7 @@ test("A. thaliana Col-0 test data - ragtag - patch") {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput (process.out)).match() }
             )
         }
     }

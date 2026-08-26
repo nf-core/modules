@@ -43,7 +43,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput (workflow.out)).match() }
             )
         }
     }
@@ -69,7 +69,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput (workflow.out)).match() }
             )
         }
     }
@@ -104,7 +104,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput (workflow.out)).match() }
             )
         }
     }
@@ -148,7 +148,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput (workflow.out)).match() }
             )
         }
     }
@@ -191,7 +191,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput (workflow.out)).match() }
             )
         }
     }
@@ -236,7 +236,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput (workflow.out)).match() }
             )
         }
     }
@@ -278,7 +278,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput (workflow.out)).match() }
             )
         }
     }

@@ -41,7 +41,7 @@ nextflow_process {
             def smorf = cols.indexOf('is_smorf')
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(sanitizeOutput (process.out)).match() },
                 // every ORF must span a whole number of codons (frame guard)
                 { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
                 { assert rows.size() > 0 },
@@ -91,7 +91,7 @@ nextflow_process {
             def smorf = cols.indexOf('is_smorf')
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(sanitizeOutput (process.out)).match() },
                 // every ORF must span a whole number of codons (frame guard)
                 { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
                 { assert rows.size() > 0 },
@@ -140,7 +140,7 @@ nextflow_process {
             def block_counts = bed_lines.findAll { it.trim() }.collect { it.split('\t')[9].toInteger() }
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(sanitizeOutput (process.out)).match() },
                 // every ORF must span a whole number of codons (frame guard)
                 { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
                 { assert rows.size() > 0 },
@@ -183,7 +183,7 @@ nextflow_process {
             def smorf = cols.indexOf('is_smorf')
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(sanitizeOutput (process.out)).match() },
                 // every ORF must span a whole number of codons (frame guard)
                 { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
                 { assert rows.size() > 0 },
@@ -231,7 +231,7 @@ nextflow_process {
             def block_counts = bed_lines.findAll { it.trim() }.collect { it.split('\t')[9].toInteger() }
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(sanitizeOutput (process.out)).match() },
                 // every ORF must span a whole number of codons (frame guard)
                 { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
                 { assert rows.size() > 0 },
@@ -273,7 +273,7 @@ nextflow_process {
             def tid   = cols.indexOf('transcript_id')
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(sanitizeOutput (process.out)).match() },
                 // The Gene column holds PRICE's concatenated multi-gene form
                 // 'ENSG_A_ENSG_B'; the annotation resolves ENST_FAKE_TX to a
                 // single gene, which must win.

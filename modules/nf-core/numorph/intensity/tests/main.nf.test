@@ -83,7 +83,7 @@ nextflow_process {
         }
         then {
             assert process.success              // Check process completed successfully
-            assert snapshot(process.out).match() // Validate outputs match expected snapshot
+            assert snapshot(sanitizeOutput (process.out)).match() // Validate outputs match expected snapshot
         }
     }
 

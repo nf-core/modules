@@ -34,20 +34,9 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert snapshot(
-                    path(process.out.labelled_truth[0][1]).vcf.summary,
-                    file(process.out.labelled_truth[0][1]).name,
-                    path(process.out.labelled_query[0][1]).vcf.summary,
-                    file(process.out.labelled_query[0][1]).name,
-                    process.out.region_sequences,
-                    process.out.region_summary,
-                    process.out.summary,
-                    process.out.runinfo,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["labelled_truth", "labelled_query"])).match() }
             )
         }
 
@@ -83,20 +72,9 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert snapshot(
-                    path(process.out.labelled_truth[0][1]).vcf.summary,
-                    file(process.out.labelled_truth[0][1]).name,
-                    path(process.out.labelled_query[0][1]).vcf.summary,
-                    file(process.out.labelled_query[0][1]).name,
-                    process.out.region_sequences,
-                    process.out.region_summary,
-                    process.out.summary,
-                    process.out.runinfo,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["labelled_truth", "labelled_query"])).match() }
             )
         }
 
@@ -130,7 +108,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput (process.out)).match() }
             )
         }
 

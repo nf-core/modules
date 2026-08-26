@@ -188,7 +188,7 @@ chr_test\t300\t410\tminus_2exon\t20\t-\t300\t410\t0\t2\t10,10\t0,100
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput (process.out)).match() }
             )
         }
     }

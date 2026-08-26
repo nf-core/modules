@@ -46,7 +46,7 @@ nextflow_process {
     //     then {
     //         assertAll(
     //             { assert process.success },
-    //             { assert snapshot(process.out).match() },
+    //             { assert snapshot(sanitizeOutput (process.out)).match() },
     //             { assert process.out.success_log == [] },
     //             { assert process.out.error_log != null },
     //             { assert path(process.out.error_log.get(0).get(1)).getText().contains("genome.gff3 does not start with a >") }

@@ -103,7 +103,7 @@ nextflow_workflow {
             def readlines2 = path(workflow.out.reads[0][1][1]).linesGzip
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput (workflow.out)).match() }
             )
         }
     }
