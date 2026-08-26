@@ -111,7 +111,7 @@ nextflow_process {
         when {
             params {
                 genomegenerate_args = '--genomeSAindexNbases 9'
-                module_args = '--outSAMtype BAM SortedByCoordinate --outBAMsortMethod samtools --quantMode TranscriptVB'
+                module_args = '--outSAMtype BAM SortedByCoordinate --outBAMsortMethod samtools --quantMode TranscriptomeSAM TranscriptVB'
             }
             process {
                 """

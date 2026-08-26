@@ -41,7 +41,7 @@ process STARSUITE_ALIGN {
     def include_gtf  = gtf ? "--sjdbGTFfile $gtf" : ''
     def attr_rg      = args.contains('--outSAMattrRGline') ? '' : "--outSAMattrRGline 'ID:$prefix' 'SM:$prefix'"
     def out_sam_type = args.contains('--outSAMtype') ? '' : '--outSAMtype BAM Unsorted'
-    def transcriptome_check = args.contains('--quantMode TranscriptVB') ?
+    def transcriptome_check = args.tokenize().contains('TranscriptVB') ?
         "test -s $index/transcriptome.fa || { echo 'STAR Suite TranscriptVB quantification requires transcriptome.fa in the genome index.' >&2; exit 1; }" : ''
     """
     $transcriptome_check
