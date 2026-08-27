@@ -60,8 +60,5 @@ process SENTIEON_COVERAGEMETRICS {
     touch ${prefix}.sample_cumulative_coverage_counts
     touch ${prefix}.sample_cumulative_coverage_proportions
     touch ${prefix}.sample_interval_summary
-    touch ${prefix}.sample_cumulative_coverage_counts
-    touch ${prefix}.sample_cumulative_coverage_proportions
-    touch ${prefix}.sample_interval_summary
     """
 }
