@@ -276,13 +276,14 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     // On success try attach the multiqc report
     def mqc_report = getSingleReport(multiqc_report)
 
-    // Fix issue https://github.com/nf-core/modules/issues/9424 when running on AWS batch with S3 workDir. mqc_report is not downloaded locally.
+    // Fix issue https://github.com/nf-core/modules/issues/9424 when running on cloud based executor such as AWS batch with S3 workDir.
     def mqc_report_file = null
 
     if (mqc_report != null) {
         try {
-            // Check if we're using S3 for the report file and need to download it so the head node can access it
-            if (mqc_report.toUriString().startsWith('s3://')) {
+            // Check if the mqc_report is in local filesystem or needs to be staged from a non-default filesystem.baseDir.
+            // This is needed when the excutor is running on a remote filesystem, such as S3, Azure, gcs and the report needs to be staged locally for access on head node.
+            if (mqc_report.fileSystem != java.nio.file.FileSystems.getDefault()) {
                 def tempFile = file("${workflow.launchDir}/multiqc_report_${workflow.sessionId}.html")
                 mqc_report.copyTo(tempFile)
                 mqc_report_file = tempFile.toString()
