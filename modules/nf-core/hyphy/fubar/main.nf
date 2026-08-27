@@ -1,4 +1,4 @@
-process HYPHY_MEME {
+process HYPHY_FUBAR {
     tag "$meta.id"
     label 'process_medium'
 
@@ -22,13 +22,13 @@ process HYPHY_MEME {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    hyphy meme \\
+    hyphy fubar \\
         CPU=${task.cpus} \\
         --alignment ${alignment} \\
         --tree ${tree} \\
-        --output ${prefix}_MEME.json \\
+        --output ${prefix}_FUBAR.json \\
         ${args} \\
-        > ${prefix}_MEME_output.txt
+        > ${prefix}_FUBAR_output.txt
     """
 
     stub:
@@ -37,7 +37,7 @@ process HYPHY_MEME {
     """
     echo ${args}
 
-    touch ${prefix}_MEME.json
-    touch ${prefix}_MEME_output.txt
+    touch ${prefix}_FUBAR.json
+    touch ${prefix}_FUBAR_output.txt
     """
 }

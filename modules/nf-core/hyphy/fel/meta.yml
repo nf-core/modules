@@ -1,5 +1,5 @@
-name: "hyphy_meme"
-description: The Mixed Effects Model of Evolution (MEME) is used to identify individual codon sites subject to episodic or pervasive positive selection.
+name: "hyphy_fel"
+description: The Fixed Effects Likelihood (FEL) method is used to identify individual codons that have been subject to pervasive diversifying or purifying selection.
 keywords:
   - positive selection
   - episodic selection
@@ -46,7 +46,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.json":
           type: file
-          description: MEME results in JSON format.
+          description: FEL results in JSON format.
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
@@ -58,7 +58,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_output.txt":
           type: file
-          description: MEME results in human-readable format.
+          description: FEL results in human-readable format.
           pattern: "*.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # text

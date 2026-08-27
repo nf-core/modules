@@ -1,9 +1,11 @@
-name: "hyphy_meme"
-description: The Mixed Effects Model of Evolution (MEME) is used to identify individual codon sites subject to episodic or pervasive positive selection.
+name: "hyphy_fubar"
+description: FUBAR (Fast, Unconstrained Bayesian AppRoximation) uses a Bayesian approach to infer nonsynoymous (dN) and synonymous (dS) substitution rates on a per-site basis for a given coding alignment and corresponding phylogeny.
 keywords:
   - positive selection
-  - episodic selection
+  - pervasive selection
   - gene evolution
+  - pathogen evolution
+  - large datasets
 tools:
   - "hyphy":
       description: "An open-source software package for comparative sequence analysis using stochastic evolutionary models."
@@ -46,7 +48,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.json":
           type: file
-          description: MEME results in JSON format.
+          description: FUBAR results in JSON format.
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
@@ -58,7 +60,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_output.txt":
           type: file
-          description: MEME results in human-readable format.
+          description: FUBAR results in human-readable format.
           pattern: "*.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # text

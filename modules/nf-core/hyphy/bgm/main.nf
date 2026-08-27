@@ -1,6 +1,6 @@
-process HYPHY_MEME {
+process HYPHY_BGM {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
@@ -22,13 +22,13 @@ process HYPHY_MEME {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    hyphy meme \\
+    hyphy bgm \\
         CPU=${task.cpus} \\
         --alignment ${alignment} \\
         --tree ${tree} \\
-        --output ${prefix}_MEME.json \\
+        --output ${prefix}_BGM.json \\
         ${args} \\
-        > ${prefix}_MEME_output.txt
+        > ${prefix}_BGM_output.txt
     """
 
     stub:
@@ -37,7 +37,7 @@ process HYPHY_MEME {
     """
     echo ${args}
 
-    touch ${prefix}_MEME.json
-    touch ${prefix}_MEME_output.txt
+    touch ${prefix}_BGM.json
+    touch ${prefix}_BGM_output.txt
     """
 }
