@@ -1,7 +1,7 @@
 process STARFUSION_DETECT {
     tag "$meta.id"
     label 'process_high'
-
+// WARN: Tool is reporting wrong version number in current release, please check if this is fixed when updating.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75d085bf2a8e40c6693b357800eef0f9568f661226d0888339bc77f7852234bb/data' :
