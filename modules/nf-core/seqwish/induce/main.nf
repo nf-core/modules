@@ -12,7 +12,7 @@ process SEQWISH_INDUCE {
 
     output:
     tuple val(meta), path("*.gfa"), emit: gfa
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("seqwish"), eval("seqwish --version |& sed 's/v//;s/-.*//'"), topic: versions, emit: versions_seqwish
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,27 +28,17 @@ process SEQWISH_INDUCE {
         // for an example.
     """
     seqwish \\
-        --threads $task.cpus \\
-        --paf-alns=$input \\
-        --seqs=$fasta \\
+        --threads ${task.cpus} \\
+        --paf-alns=${input} \\
+        --seqs=${fasta} \\
         --gfa=${prefix}.gfa \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqwish: \$(echo \$(seqwish --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
-    END_VERSIONS
+        ${args}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gfa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqwish: \$(echo \$(seqwish --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
-    END_VERSIONS
     """
 
 }

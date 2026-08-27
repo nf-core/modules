@@ -4,8 +4,8 @@ process FGUMI_EXTRACT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64e8f594b6f0dd879bc5abbe4ca70b6b761e1920e407d9e1c7d27b89004aac34/data'
-        : 'community.wave.seqera.io/library/fgumi:0.5.0--a2d14bf52f73eaef'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/99c92db2efcbcc4d20f2541060e09ed0f5a4338927f4a2ae3ab683de585efeb6/data'
+        : 'community.wave.seqera.io/library/fgumi:0.7.0--d91f99b4cd4aae5a'}"
 
     input:
     tuple val(meta), path(reads), val(library)

@@ -56,9 +56,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["bam", "bam_index"])).match() }
             )
         }
     }
@@ -92,9 +90,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["bam", "bam_index"])).match() }
             )
         }
     }
@@ -124,12 +120,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -159,12 +150,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -194,12 +180,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -229,12 +210,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -264,10 +240,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index", "reports"])).match() }
             )
         }
     }
@@ -297,10 +270,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index", "reports"])).match() }
             )
         }
     }
@@ -330,7 +300,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -360,7 +330,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"])).match() }
             )
         }
     }
@@ -380,7 +350,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -400,7 +370,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }

@@ -1,0 +1,84 @@
+name: "rami2d_transform"
+description: Applies transformations to images using RAMI2D, designed to take the
+  transformation maps produced by rami2d-register
+keywords:
+  - imaging
+  - spatialomics
+  - multiplexed
+  - registration
+  - transform
+tools:
+  - rami2d:
+      description: "Robust Alignment of Multichannel Images in 2D"
+      homepage: "https://pypi.org/project/rami2d/"
+      documentation: "https://github.com/VictorDidier/RAMI2D"
+      tool_dev_url: "https://github.com/VictorDidier/RAMI2D"
+      licence:
+        - "BSD-3-Clause"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - image_file:
+        type: file
+        description: Absolute path to the input image file
+        pattern: "*.{tif}"
+        ontologies: []
+    - transform_dir:
+        type: directory
+        description: Directory containing the transformation matrices/files generated
+          by rami2d-register
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information for the markers file
+    - markers:
+        type: file
+        description: Optional CSV file with a column named marker_name containing the
+          names of the channels
+        pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752
+  - mpp:
+      type: float
+      description: Pixel size of the image in microns (microns per pixel)
+output:
+  transformed_image:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}/*transformed.ome.tif":
+          type: file
+          description: Transformed output image in OME TIFF format
+          pattern: "*.ome.tif"
+          ontologies: []
+  versions_rami2d:
+    - - ${task.process}:
+          type: string
+          description: Name of the task process
+      - rami2d:
+          type: string
+          description: Name of the tool
+      - rami2d-transform -v | sed "s/rami2d-transform //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Name of the task process
+      - rami2d:
+          type: string
+          description: Name of the tool
+      - rami2d-transform -v | sed "s/rami2d-transform //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@kubranarci"
+maintainers:
+  - "@kubranarci"
