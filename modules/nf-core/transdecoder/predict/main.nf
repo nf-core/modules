@@ -31,10 +31,12 @@ process TRANSDECODER_PREDICT {
     # private, writable directory of symlinks instead. mv handles both staging modes: it moves a
     # symlink as a symlink, and renames a real directory in place, so nothing is deleted either way.
     shopt -s dotglob nullglob
-    mv $fold ${fold}.staged
-    real_fold=\$(readlink -f ${fold}.staged)
-    mkdir $fold
-    ln -s "\$real_fold"/* $fold/
+    mv "$fold" "${fold}.staged"
+    real_fold=\$(readlink -f "${fold}.staged")
+    [ -n "\$(ls -A "\$real_fold")" ] || { echo "TRANSDECODER_LONGORF produced an empty directory: \$real_fold" >&2; exit 1; }
+    mkdir "$fold"
+    ln -s "\$real_fold"/* "$fold"/
+    shopt -u dotglob nullglob
 
     TransDecoder.Predict \\
         $args \\
