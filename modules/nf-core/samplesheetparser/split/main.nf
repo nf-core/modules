@@ -4,8 +4,8 @@ process SAMPLESHEETPARSER_SPLIT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samplesheet-parser:2.5.1--pyhdfd78af_0' :
-        'quay.io/biocontainers/samplesheet-parser:2.5.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/samplesheet-parser:2.5.2--pyhdfd78af_0' :
+        'quay.io/biocontainers/samplesheet-parser:2.5.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(samplesheet)
@@ -31,8 +31,8 @@ process SAMPLESHEETPARSER_SPLIT {
     if (!['v1', 'v2'].contains(to_norm)) {
         error "to must be 'v1' or 'v2', got: ${to}"
     }
-    // `samplesheet split` exits 1 when the report contains warnings (and 2 on
-    // hard errors). Tolerate exit 1 so a warning does not kill the task.
+    // samplesheet-parser >=2.5.2 exits 0 on a successful split (warnings are
+    // advisory), so no exit-code handling is needed here.
     """
     mkdir -p split
 
@@ -42,7 +42,7 @@ process SAMPLESHEETPARSER_SPLIT {
         --output-dir split \\
         --format json \\
         ${args} \\
-        ${samplesheet} > ${prefix}.split.json || [ \$? -eq 1 ]
+        ${samplesheet} > ${prefix}.split.json
     """
 
     stub:

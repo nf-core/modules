@@ -4,8 +4,8 @@ process SAMPLESHEETPARSER_MERGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samplesheet-parser:2.5.1--pyhdfd78af_0' :
-        'quay.io/biocontainers/samplesheet-parser:2.5.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/samplesheet-parser:2.5.2--pyhdfd78af_0' :
+        'quay.io/biocontainers/samplesheet-parser:2.5.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(samplesheets, stageAs: "input*/*")
@@ -30,16 +30,16 @@ process SAMPLESHEETPARSER_MERGE {
     if (sheets.size() < 2) {
         error "SAMPLESHEETPARSER_MERGE requires at least two input sheets, got ${sheets.size()}"
     }
-    // `samplesheet merge` exits 1 when the report contains conflicts or warnings
-    // (and 2 on hard errors). Tolerate exit 1 so a warning does not kill the task;
-    // downstream code should inspect `has_conflicts` in the JSON report.
+    // samplesheet-parser >=2.5.2 exits 0 on a successful merge (warnings are
+    // advisory) and non-zero only on conflicts (1) or hard errors (2), so no
+    // exit-code handling is needed here.
     """
     samplesheet merge \\
         --to ${to_norm} \\
         --output ${prefix}.merged.csv \\
         --format json \\
         ${args} \\
-        ${samplesheets} > ${prefix}.merge.json || [ \$? -eq 1 ]
+        ${samplesheets} > ${prefix}.merge.json
     """
 
     stub:

@@ -151,8 +151,8 @@ nextflow_process {
             process {
                 """
                 // Mixed V1 + V2 inputs on different lanes merge cleanly but emit
-                // warnings (e.g. MIXED_FORMAT), so the CLI exits 1. The module
-                // tolerates exit 1, so the task must still succeed.
+                // warnings (e.g. MIXED_FORMAT). Warnings are advisory in
+                // samplesheet-parser >=2.5.2 (exit 0), so the task must succeed.
                 input[0] = [
                     [ id:'test_warn' ],
                     [
