@@ -24,6 +24,15 @@ process TRANSDECODER_PREDICT {
     script:
     def args = task.ext.args ?: ''
     """
+    # \$fold is staged as a symlink into TRANSDECODER_LONGORF's own work directory.
+    # TransDecoder.Predict writes its checkpoints and intermediates there, which mutates
+    # that other task's output and makes this task uncacheable across -resume
+    # (nf-core/modules#12799). Give it a private, writable directory of symlinks instead.
+    real_fold=\$(readlink -f $fold)
+    rm $fold
+    mkdir $fold
+    ln -s "\$real_fold"/* $fold/
+
     TransDecoder.Predict \\
         $args \\
         -O . \\

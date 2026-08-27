@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process HYPHY_ABSREL"
+    script "../main.nf"
+    process "HYPHY_ABSREL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hyphy"
+    tag "hyphy/absrel"
+
+    test("absrel - fasta + nwk") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_msa.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_tree.nwk', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["json", "log"])
+                ).match() }
+            )
+        }
+    }
+
+    test("absrel - fasta + nwk - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_msa.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_tree.nwk', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+}
