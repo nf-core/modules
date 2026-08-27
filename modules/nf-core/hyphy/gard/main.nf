@@ -1,7 +1,6 @@
 process HYPHY_GARD {
     tag "$meta.id"
     label 'process_high'
-    label 'process_long'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
