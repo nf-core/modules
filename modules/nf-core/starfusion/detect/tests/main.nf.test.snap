@@ -1,4 +1,135 @@
 {
+    "Should create stub files": {
+        "content": [
+            {
+                "abridged": [
+                    [
+                        {
+                            "id": "test_stub",
+                            "single_end": false
+                        },
+                        "test_stub.starfusion.abridged.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "coding_effect": [
+                    [
+                        {
+                            "id": "test_stub",
+                            "single_end": false
+                        },
+                        "test_stub.starfusion.abridged.coding_effect.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "fusions": [
+                    [
+                        {
+                            "id": "test_stub",
+                            "single_end": false
+                        },
+                        "test_stub.starfusion.fusion_predictions.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_starfusion": [
+                    [
+                        "STARFUSION_DETECT",
+                        "star-fusion",
+                        "1.15.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-26T22:47:46.842423",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
+        }
+    },
+    "Paired end - Should run without failures": {
+        "content": [
+            {
+                "abridged": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.starfusion.abridged.tsv:md5,d6d20fdd4b5cba21b9c0ebf8e0ea19ff"
+                    ]
+                ],
+                "coding_effect": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.starfusion.abridged.coding_effect.tsv"
+                    ]
+                ],
+                "fusions": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.starfusion.fusion_predictions.tsv:md5,82834fffed743afe07da82bd56d50c99"
+                    ]
+                ],
+                "versions_starfusion": [
+                    [
+                        "STARFUSION_DETECT",
+                        "star-fusion",
+                        "1.15.1"
+                    ]
+                ]
+            },
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "#FusionName",
+                        "TATDN1--GSDMB",
+                        "ACACA--STAC2",
+                        "TATDN1--GSDMB",
+                        "CCDC6--RET",
+                        "TOB1--SYNRG",
+                        "TATDN1--GSDMB",
+                        "BCAS4--BCAS3",
+                        "RPS6KB1--SNF8",
+                        "BAG6--SLC44A4",
+                        "BCR--ABL1",
+                        "VAPB--IKZF3",
+                        "CYTH1--EIF3H",
+                        "RAB22A--MYO9B",
+                        "RARA--PKIA",
+                        "ARFGEF2--SULF2",
+                        "SUMF1--LRRFIP2",
+                        "ANKHD1--PCDH1",
+                        "MED1--ACSF2",
+                        "AHCTF1--NAAA",
+                        "MED1--STXBP4",
+                        "BCAS4--BCAS3",
+                        "ZMYND8--CEP250",
+                        "AC007562.1--AC012005.2",
+                        "VAPB--IKZF3",
+                        "SUMF1--LRRFIP2",
+                        "ZMYND8--CEP250",
+                        "RARA--PKIA",
+                        "CYTH1--EIF3H",
+                        "MED13--BCAS3",
+                        "VAPB--IKZF3"
+                    ]
+                ]
+            ]
+        ],
+        "timestamp": "2026-08-26T22:49:13.484112",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
+        }
+    },
     "Single end - Should run without failures": {
         "content": [
             {
