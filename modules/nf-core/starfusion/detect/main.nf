@@ -15,7 +15,10 @@ process STARFUSION_DETECT {
     tuple val(meta), path("*.fusion_predictions.tsv"), emit: fusions
     tuple val(meta), path("*.abridged.tsv")          , emit: abridged
     tuple val(meta), path("*.coding_effect.tsv")     , emit: coding_effect, optional: true
-    path "versions.yml"                              , emit: versions
+    // STAR-Fusion's own `--version` prints '1.15.0' even for the 1.15.1 release, so
+    // we emit the correct pinned version (from environment.yml) rather than the
+    // tool's self-reported string.
+    tuple val("${task.process}"), val('star-fusion'), eval("echo 1.15.1"), topic: versions, emit: versions_starfusion
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +28,6 @@ process STARFUSION_DETECT {
     def fastq_arg    = reads ? (meta.single_end ? "--left_fq ${reads[0]}" : "--left_fq ${reads[0]} --right_fq ${reads[1]}") : ""
     def junction_arg =  junction ? "-J ${junction}" : ""
     def args         = task.ext.args ?: ''
-    def VERSION      = '1.15.1' // WARN: This is the actual version of the STAR-FUSION, but version information of tool is not updated and prints '1.15.0'
     """
     STAR-Fusion \\
         --genome_lib_dir $reference \\
@@ -40,23 +42,13 @@ process STARFUSION_DETECT {
     if [ -f star-fusion.fusion_predictions.abridged.coding_effect.tsv ]; then
         mv star-fusion.fusion_predictions.abridged.coding_effect.tsv ${prefix}.abridged.coding_effect.tsv
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        STAR-Fusion: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}.starfusion"
-    def VERSION = '1.15.1'
     """
     touch ${prefix}.fusion_predictions.tsv
     touch ${prefix}.abridged.tsv
     touch ${prefix}.abridged.coding_effect.tsv
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        STAR-Fusion: $VERSION
-    END_VERSIONS
     """
 }
