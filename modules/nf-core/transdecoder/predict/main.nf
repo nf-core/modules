@@ -30,13 +30,13 @@ process TRANSDECODER_PREDICT {
     # task's output and makes this task uncacheable across -resume (nf-core/modules#12799). Give it a
     # private, writable directory of symlinks instead. mv handles both staging modes: it moves a
     # symlink as a symlink, and renames a real directory in place, so nothing is deleted either way.
-    shopt -s dotglob nullglob
+    # find avoids the dotglob/nullglob shell-option juggling that caused three earlier bugs here.
     mv "$fold" "${fold}.staged"
     real_fold=\$(readlink -f "${fold}.staged")
+    [ -d "\$real_fold" ] || { echo "TRANSDECODER_LONGORF's directory is missing: \$real_fold" >&2; exit 1; }
     [ -n "\$(ls -A "\$real_fold")" ] || { echo "TRANSDECODER_LONGORF produced an empty directory: \$real_fold" >&2; exit 1; }
     mkdir "$fold"
-    ln -s "\$real_fold"/* "$fold"/
-    shopt -u dotglob nullglob
+    find "\$real_fold" -mindepth 1 -maxdepth 1 -exec ln -s {} "$fold"/ \\;
 
     TransDecoder.Predict \\
         $args \\
