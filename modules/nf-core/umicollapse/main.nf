@@ -39,7 +39,6 @@ process UMICOLLAPSE {
     # The generated launcher allows configuring heap size, but not stack size.
     UMICOLLAPSE_JAR=\$(find "\$(dirname "\$(command -v umicollapse)")/../share" -maxdepth 2 -name umicollapse.jar -print -quit)
 
-    set -o pipefail
     java \\
         -Xmx${max_heap_size_mega}M \\
         -Xss${max_stack_size_mega}M \\
