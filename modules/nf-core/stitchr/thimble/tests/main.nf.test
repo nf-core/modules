@@ -3,41 +3,61 @@ nextflow_process {
     name "Test Process STITCHR_THIMBLE"
     script "../main.nf"
     process "STITCHR_THIMBLE"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "stitchr"
     tag "stitchr/thimble"
+    tag "stitchr/stitchrdl"
+
+    setup {
+        run("STITCHR_STITCHRDL") {
+            script "../../stitchrdl/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'human' ],
+                    'human'
+                ]
+                """
+            }
+        }
+    }
 
     test("human - tsv") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/stitchr/stitchr_vdjdb.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/stitchr/stitchr_vdjdb.tsv', checkIfExists: true)
                 ]
-                  input[1] = [
-                    [ id: 'alt_codon_usage' ],
+                input[1] = [
+                    [ id:'alt_codon_usage' ],
                     []
                 ]
                 input[2] = [
-                    [ id: 'allele_preference' ],
+                    [ id:'allele_preference' ],
                     []
                 ]
-                input[3] = "human"
+                input[3] = STITCHR_STITCHRDL.out.stitchrdl_data
                 """
             }
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert process.success },
+                // structural checks, so an IMGT release that shifts the md5 still
+                // reports something more useful than a hash mismatch
+                { assert path(process.out.thimble[0][1]).readLines()[0].startsWith("TCR_name\tTRA_nt") },
+                { assert path(process.out.thimble[0][1]).readLines().size() > 1 },
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -48,32 +68,32 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/stitchr/stitchr_vdjdb.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/stitchr/stitchr_vdjdb.tsv', checkIfExists: true)
                 ]
-                 input[1] = [
-                    [ id: 'alt_codon_usage' ],
+                input[1] = [
+                    [ id:'alt_codon_usage' ],
                     []
                 ]
                 input[2] = [
-                    [ id: 'allele_preference' ],
+                    [ id:'allele_preference' ],
                     []
                 ]
-                input[3] = "human"
+                input[3] = STITCHR_STITCHRDL.out.stitchrdl_data
                 """
             }
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert snapshot(
-                process.out,
-                process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
