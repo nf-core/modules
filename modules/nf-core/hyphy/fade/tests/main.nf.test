@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process HYPHY_FADE"
+    script "../main.nf"
+    process "HYPHY_FADE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hyphy"
+    tag "hyphy/fade"
+
+    test("fade - fasta + nwk") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_aa_msa.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_tree.nwk', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["json", "log"])
+                ).match() }
+            )
+        }
+    }
+
+    test("fade - fasta + nwk - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_aa_msa.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_tree.nwk', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+}

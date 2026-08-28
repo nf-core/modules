@@ -59,14 +59,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-					path(process.out.vcf[0][1]).vcf.summary,
-					bam(process.out.bam[0][1]).getReadsMD5(),
-                    sanitizeOutput(process.out, unstableKeys: ["vcf", "bam"])
-                    ).match() }
-            )
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], variantsMD5Keys: ["vcf"])).match() })
         }
-
     }
 
     test("homo sapiens - [bam,bai,[]], [fa,fai], bed") {
@@ -92,11 +86,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-					path(process.out.vcf[0][1]).vcf.summary,
-					bam(process.out.bam[0][1]).getReadsMD5(),
-                    sanitizeOutput(process.out, unstableKeys: ["vcf", "bam"])
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], variantsMD5Keys: ["vcf"])).match() }
             )
         }
 
