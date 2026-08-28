@@ -1,0 +1,148 @@
+name: "pcaone"
+description: Fast, accurate and memory-efficient PCA on large-scale genotype or single-cell data
+keywords:
+  - pca
+  - population genetics
+  - dimensionality reduction
+  - svd
+  - genotype
+tools:
+  - "pcaone":
+      description: "Fast, Accurate and Memory-Efficient Principal Component Analysis All in One For Large-scale Dataset"
+      homepage: "https://github.com/Zilong-Li/PCAone"
+      documentation: "https://github.com/Zilong-Li/PCAone/blob/main/README.org"
+      tool_dev_url: "https://github.com/Zilong-Li/PCAone"
+      doi: "10.1101/gr.277525.122"
+      licence:
+        - "GPL-3.0-only"
+      identifier: biotools:pcaone
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bed:
+        type: file
+        description: PLINK binary biallelic genotype file
+        pattern: "*.bed"
+        ontologies: []
+    - bim:
+        type: file
+        description: PLINK extended variant information file
+        pattern: "*.bim"
+        ontologies: []
+    - fam:
+        type: file
+        description: PLINK sample information file
+        pattern: "*.fam"
+        ontologies: []
+output:
+  eigvecs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.eigvecs":
+          type: file
+          description: Eigenvectors (top PCs), one row per sample
+          pattern: "*.eigvecs"
+          ontologies: []
+  eigvecs2:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.eigvecs2":
+          type: file
+          description: Eigenvectors with a header line, produced when requested via ext.args
+          pattern: "*.eigvecs2"
+          ontologies: []
+  eigvals:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.eigvals":
+          type: file
+          description: Eigenvalues for the top PCs
+          pattern: "*.eigvals"
+          ontologies: []
+  loadings:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.loadings":
+          type: file
+          description: Feature/SNP loadings, produced with the --printv option
+          pattern: "*.loadings"
+          ontologies: []
+  mbim:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.mbim":
+          type: file
+          description: Plink-like bim file with allele frequency, written alongside loadings
+          pattern: "*.mbim"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: PCAone run log
+          pattern: "*.log"
+          ontologies: []
+  versions_pcaone:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pcaone:
+          type: string
+          description: The name of the tool
+      - PCAone 2>&1 | grep -m1 -oE "v[0-9]+\.[0-9]+\.[0-9]+" | tr -d v:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pcaone:
+          type: string
+          description: The name of the tool
+      - PCAone 2>&1 | grep -m1 -oE "v[0-9]+\.[0-9]+\.[0-9]+" | tr -d v:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@dbaku42"
+maintainers:
+  - "@dbaku42"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/pcaone:0.7.2--22489ef995a570f0
+      build_id: bd-22489ef995a570f0_1
+      scan_id: sc-68b2c1495e94edd8_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pcaone:0.7.2--66ce0ae6c0a926e0
+      build_id: bd-66ce0ae6c0a926e0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8f908496d8e5dc44b1f5caa8d330e714250aacc9f65c1577791436914897af56/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/pcaone/.conda-lock/linux_amd64-bd-22489ef995a570f0_1.txt
