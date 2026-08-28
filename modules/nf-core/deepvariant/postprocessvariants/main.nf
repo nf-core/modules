@@ -6,7 +6,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     container "docker.io/google/deepvariant:1.10.0"
 
     input:
-    tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords), path(small_model_calls), path(intervals)
+    tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords), path(small_model_calls), path(phase_inputs), path(intervals)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
@@ -56,6 +56,21 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
         small_model_arg = "--small_model_cvo_records ${small_model_tfrecords_logical_name}"
     }
 
+    // The following block determines whether phase info was outputted, and if so, adds the info from it
+    // to the argument --phased_reads_input_path.
+    def phased_inputs_arg = ""
+    if (phase_inputs) {
+        phase_inputs_matcher = (phase_inputs[0].baseName =~ /^(.+)-\d{5}-of-(\d{5})$/)
+        if (!phase_inputs_matcher.matches()) {
+            throw new IllegalArgumentException("read-phasing_debug baseName '" + phase_inputs[0].baseName + "' doesn't match the expected pattern")
+        }
+        phase_input_name = phase_inputs_matcher[0][1]
+        phase_input_shardCount = phase_inputs_matcher[0][2]
+        // Reconstruct the logical name. Example: test_call_variant_outputs.examples.tfrecord@12.gz
+        phase_input_logical_name = "${phase_input_name}@${phase_input_shardCount}.gz"
+        phased_inputs_arg = "--phased_reads_input_path ${phase_input_logical_name}"
+    }
+
     """
     export MPLCONFIGDIR=\$PWD/.matplotlib
     mkdir -p \$MPLCONFIGDIR
@@ -69,6 +84,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
         --gvcf_outfile "${prefix}.g.vcf.gz" \\
         ${regions} \\
         ${small_model_arg} \\
+        ${phased_inputs_arg} \\
         --cpus $task.cpus
 
     """
