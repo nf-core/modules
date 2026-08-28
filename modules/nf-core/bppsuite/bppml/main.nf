@@ -40,7 +40,7 @@ process BPPSUITE_BPPML {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
-    
+
     touch ${prefix}.params.txt
     touch ${prefix}.ML.dnd_1
     touch ${prefix}.infos_1
