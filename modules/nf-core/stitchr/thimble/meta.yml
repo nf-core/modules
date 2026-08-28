@@ -22,32 +22,24 @@ input:
         description: |
           Groovy Map containing per sample information
           e.g. `[ id:'sample1' ]`
-    - samplesheet:
+    - tcr_table:
         type: file
         description: tsv containing J,V and CDR3 information
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475
+  - alt_codon_usage:
+      type: file
+      description: txt containing alternative codon usage in kazusa-like format
+      pattern: "*.txt"
+      ontologies: []
+  - allele_preferences:
+      type: file
+      description: tsv containing alternative allele preferences
+      pattern: "*.tsv"
+      ontologies:
+        - edam: http://edamontology.org/format_3475
   - - meta2:
-        type: map
-        description: |
-          Information about codon usage
-    - alt_codon_usage:
-        type: file
-        description: txt containing alternative codon usage in kazusa-like format
-        pattern: "*.txt"
-        ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Information about non-standard allele preferences
-    - allele_preferences:
-        type: file
-        description: tsv containing alternative allele preferences
-        pattern: "*.tsv"
-        ontologies:
-          - edam: http://edamontology.org/format_3475
-  - - meta4:
         type: map
         description: |
           Groovy Map containing reference information
@@ -61,7 +53,7 @@ input:
         description: |
           IMGT reference produced by STITCHR_STITCHRDL. Staged as a directory named
           `Data` so that it resolves ahead of the empty copy packaged in the
-          container. Must match `species`.
+          container.
 output:
   thimble:
     - - meta:
@@ -69,7 +61,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}.tsv:
+      - ${prefix}_stitchr.tsv:
           type: file
           description: |
             tsv containing full TCR sequences

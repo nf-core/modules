@@ -8,13 +8,13 @@ process STITCHR_THIMBLE {
         'community.wave.seqera.io/library/pip_stitchr:9b1e4db63c6ec900' }"
 
     input:
-    tuple val(meta), path(samplesheet)
-    tuple val(meta2), path(alt_codon_usage)
-    tuple val(meta3), path(allele_preferences)
-    tuple val(meta4), val(species), path(stitchr_data, stageAs: 'Data')
+    tuple val(meta), path(tcr_table)
+    path alt_codon_usage
+    path allele_preferences
+    tuple val(meta2), val(species), path(stitchr_data, stageAs: 'Data')
 
     output:
-    tuple val(meta), path("${prefix}.tsv"), emit: thimble
+    tuple val(meta), path("${prefix}_stitchr.tsv"), emit: thimble
     tuple val("${task.process}"), val('stitchr'), eval("stitchr --version"), topic: versions, emit: versions_stitchr
 
     when:
@@ -32,8 +32,8 @@ process STITCHR_THIMBLE {
 
     thimble \\
         ${args} \\
-        -in ${samplesheet} \\
-        -o ${prefix}.tsv \\
+        -in ${tcr_table} \\
+        -o ${prefix}_stitchr.tsv \\
         ${codon_usage} \\
         ${allele_preference} \\
         -s ${species.toUpperCase()}
@@ -42,6 +42,6 @@ process STITCHR_THIMBLE {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.tsv
+    touch ${prefix}_stitchr.tsv
     """
 }
