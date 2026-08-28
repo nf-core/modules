@@ -27,26 +27,22 @@ input:
         description: Reference fasta file
         pattern: "*.{fa,fasta,fna}"
         ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'genome' ]
     - gtf:
         type: file
         description: Reference gtf annotation file
         pattern: "*.{gtf}"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'genome' ]
     - splicesites:
         type: file
         description: Splices sites in gtf file
         pattern: "*.{txt}"
         ontologies: []
+  - hisat2_memory_input:
+      type: string
+      description: |
+        Memory threshold for HISAT2 index building. When available process memory
+        meets or exceeds this value, splice sites and exons are used to build a
+        splice-aware index. Use false to disable splice-aware indexing.
 output:
   index:
     - - meta:

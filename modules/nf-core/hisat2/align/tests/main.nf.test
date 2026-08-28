@@ -29,14 +29,10 @@ nextflow_process {
                 script "../../build/main.nf"
                 process {
                 """
-                input[0] = Channel.of([
-                    [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[1] = Channel.of([ [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
-                ])
-                input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
+                def fasta_file = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                def gtf_file = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                input[0] = HISAT2_EXTRACTSPLICESITES.out.txt.map { meta, txt -> [meta, fasta_file, gtf_file, txt] }
+                input[1] = false
                 """
                 }
             }
@@ -89,14 +85,10 @@ nextflow_process {
                 script "../../build/main.nf"
                 process {
                 """
-                input[0] = Channel.of([
-                    [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[1] = Channel.of([ [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
-                ])
-                input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
+                def fasta_file = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                def gtf_file = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                input[0] = HISAT2_EXTRACTSPLICESITES.out.txt.map { meta, txt -> [meta, fasta_file, gtf_file, txt] }
+                input[1] = false
                 """
                 }
             }
@@ -146,14 +138,10 @@ nextflow_process {
                 script "../../build/main.nf"
                 process {
                 """
-                input[0] = Channel.of([
-                    [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[1] = Channel.of([ [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
-                ])
-                input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
+                def fasta_file = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                def gtf_file = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                input[0] = HISAT2_EXTRACTSPLICESITES.out.txt.map { meta, txt -> [meta, fasta_file, gtf_file, txt] }
+                input[1] = false
                 """
                 }
             }
@@ -207,14 +195,10 @@ nextflow_process {
                 script "../../build/main.nf"
                 process {
                 """
-                input[0] = Channel.of([
-                    [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[1] = Channel.of([ [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
-                ])
-                input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
+                def fasta_file = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                def gtf_file = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                input[0] = HISAT2_EXTRACTSPLICESITES.out.txt.map { meta, txt -> [meta, fasta_file, gtf_file, txt] }
+                input[1] = false
                 """
                 }
             }
@@ -255,10 +239,11 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    [],
+                    []
                 ])
-                input[1] = [[:],[]]
-                input[2] = [[:],[]]
+                input[1] = false
                 """
                 }
             }
@@ -301,10 +286,11 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    [],
+                    []
                 ])
-                input[1] = [[:],[]]
-                input[2] = [[:],[]]
+                input[1] = false
                 """
                 }
             }
@@ -344,10 +330,11 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    [],
+                    []
                 ])
-                input[1] = [[:],[]]
-                input[2] = [[:],[]]
+                input[1] = false
                 """
                 }
             }
@@ -391,10 +378,11 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    [],
+                    []
                 ])
-                input[1] = [[:],[]]
-                input[2] = [[:],[]]
+                input[1] = false
                 """
                 }
             }
