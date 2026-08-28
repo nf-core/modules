@@ -1,0 +1,151 @@
+name: "bppsuite_bppml"
+description: Bio++ Maximum Likelihood Computation (bppml) is a command-line tool within the Bio++ suite designed for maximum likelihood estimation of evolutionary parameters on phylogenetic trees. It estimates branch lengths, substitution model parameters (such as $d_N/d_S$ ratios, transition/transversion ratios, or amino acid replacement matrices), site-specific rate distributions, and equilibrium frequencies for nucleotide, codon, or protein alignments under defined phylogenetic models.
+keywords:
+  - branch length estimation
+  - maximum likelihood
+  - substitution models
+  - site-specific rate distributions
+  - nucleotide models
+  - codon models
+  - protein models
+tools:
+  - "bppsuite":
+      description: "BppSuite is a suite of ready-to-use programs for phylogenetic and sequence analysis."
+      homepage: "https://github.com/BioPP/bppsuite"
+      documentation: "https://pbil.univ-lyon1.fr/bpp-doc/bppsuite/bppsuite.html"
+      tool_dev_url: "https://github.com/BioPP/bppsuite"
+      doi: "10.1093/molbev/mst097"
+      licence:
+        - "CECILL-2.1"
+      identifier: biotools:biopp
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - alignment:
+        type: file
+        description: Aligned sequences in FASTA format.
+        pattern: "*.{fa,fas,fasta,aln}"
+        ontologies:
+          - edam: http://edamontology.org/format_2554
+          - edam: http://edamontology.org/format_1921
+          - edam: http://edamontology.org/format_1984
+    - tree:
+        type: file
+        description: Phylogenetic gene tree in text or xml format
+        pattern: "*.{tree,txt,nwk,newick,nhx,phyloxml,xml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1910"
+          - edam: "http://edamontology.org/format_3159"
+          - edam: http://edamontology.org/format_2332 # XML
+    - params:
+        type: file
+        description: Text file with all other parameters necessary to run a model in bppml.
+        pattern: "*.{txt,.bpp}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+
+output:
+  params:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.params*":
+          type: file
+          description: Optimized parameters estimated by bppml in text format. Required output.
+          pattern: "*.params*"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  tree:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.{nwk,tree,dnd}*":
+          type: file
+          description: Resulting phylogenetic tree after parameter optimization. Optional.
+          pattern: "*.{nwk,tree,dnd}*"
+          ontologies:
+            - edam: "http://edamontology.org/format_1910"
+            - edam: "http://edamontology.org/format_3159"
+  backup:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.backup*":
+          type: file
+          description: A backup file where parameters values are stored during the optimization process in text format. Optional.
+          pattern: "*.backup*"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  infos:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.infos*":
+          type: file
+          description: Alignment information log file (site specific rates, etc) in text format. Optional.
+          pattern: "*.infos*"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  messages:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.messages*":
+          type: file
+          description: Error or warning messages in text format. Optional.
+          pattern: "*.messages*"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  profile:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.profile*":
+          type: file
+          description: Optimization steps in text format. Optional.
+          pattern: "*.profile*"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_bppsuite:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bppml:
+          type: string
+          description: The name of the tool
+      - bppml | sed -n 's/.*version \([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bppml:
+          type: string
+          description: The name of the tool
+      - bppml | sed -n 's/.*version \([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@leapicard"
+maintainers:
+  - "@leapicard"
