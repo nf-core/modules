@@ -41,15 +41,15 @@ input:
           - edam: "http://edamontology.org/format_1910"
           - edam: "http://edamontology.org/format_3159"
           - edam: http://edamontology.org/format_2332 # XML
-    - params:
+    - parameters:
         type: file
         description: Text file with all other parameters necessary to run a model in bppml.
-        pattern: "*.{txt,.bpp}"
+        pattern: "*.{txt,bpp}"
         ontologies:
           - edam: "http://edamontology.org/format_2330"
 
 output:
-  params:
+  parameters:
     - - meta:
           type: map
           description: |

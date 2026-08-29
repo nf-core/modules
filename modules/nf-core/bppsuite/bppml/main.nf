@@ -8,10 +8,10 @@ process BPPSUITE_BPPML {
         'quay.io/biocontainers/bppsuite:3.0.0--hd63eeec_0' }"
 
     input:
-    tuple val(meta), path(alignment), path(tree), path(params)
+    tuple val(meta), path(alignment), path(tree), path(parameters)
 
     output:
-    tuple val(meta), path("*.params*"), emit: params
+    tuple val(meta), path("*.params*"), emit: parameters
     tuple val(meta), path("*.{nwk,tree,dnd}*"), emit: tree, optional: true
     tuple val(meta), path("*.backup*"), emit: backup, optional: true
     tuple val(meta), path("*.infos*"), emit: infos, optional: true
@@ -31,7 +31,7 @@ process BPPSUITE_BPPML {
         ALIGNMENT=${alignment} \\
         TREE=${tree} \\
         DATA=${prefix} \\
-        param=${params} \\
+        param=${parameters} \\
         $args
     """
 
