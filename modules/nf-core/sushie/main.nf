@@ -3,8 +3,8 @@ process SUSHIE {
     label 'process_single'
 
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1c/1c60e240ae250a71f0bdd7b28a36d643bbcaa082f9ba03bd1ac059babe6cd9a2/data'
-        : 'community.wave.seqera.io/library/python_pip_c-compiler_git_sushie:2ece141e8298f509'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bb/bb9fae2a9fe86eaafc849e163bc267cbb7a27320fffb938b3d2fc8ba20153f71/data'
+        : 'community.wave.seqera.io/library/python_pip_c-compiler_git_pruned:eab3b4c658ec0e54'}"
 
     input:
     tuple val(meta), path(study_locus_files)
