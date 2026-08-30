@@ -2,6 +2,7 @@ process SUSHIE {
     tag "$meta.id"
     label 'process_single'
 
+    conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bb/bb9fae2a9fe86eaafc849e163bc267cbb7a27320fffb938b3d2fc8ba20153f71/data'
         : 'community.wave.seqera.io/library/python_pip_c-compiler_git_pruned:eab3b4c658ec0e54'}"
@@ -24,10 +25,6 @@ process SUSHIE {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "SUSHIE module does not support Conda. Please use Docker instead."
-    }
     """
     sushie \\
     finemap \\
@@ -43,10 +40,6 @@ process SUSHIE {
     stub:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "SUSHIE module does not support Conda. Please use Docker instead."
-    }
     """
     echo ${args}
 
