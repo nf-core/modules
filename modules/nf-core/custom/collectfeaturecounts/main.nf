@@ -29,12 +29,12 @@ process CUSTOM_COLLECTFEATURECOUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        R: 4.1.0
-        dplyr: 1.0.7
-        readr: 2.0.0
-        stringr: 1.4.0
-        dtplyr: 1.1.0
-        data.table: 1.14.0
+        R: \$(Rscript -e 'cat(paste0(R.Version()[c("major","minor")], collapse = "."))')
+        dplyr: \$(Rscript -e 'cat(as.character(packageVersion("dplyr")))')
+        readr: \$(Rscript -e 'cat(as.character(packageVersion("readr")))')
+        stringr: \$(Rscript -e 'cat(as.character(packageVersion("stringr")))')
+        dtplyr: \$(Rscript -e 'cat(as.character(packageVersion("dtplyr")))')
+        data.table: \$(Rscript -e 'cat(as.character(packageVersion("data.table")))')
     END_VERSIONS
     """
 }
