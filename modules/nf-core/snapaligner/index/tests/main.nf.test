@@ -32,7 +32,7 @@ nextflow_process {
                 {
                     assert snapshot(sanitizeOutput(process.out).collectEntries { key, val ->
                         if (key == 'index' && val instanceof List && val.size() == 1 && val[0] instanceof List) {
-                            [key, [val[0][0], val[0][1].findAll { !it.toString().contains('OverflowTable') }]]
+                            [key, [val[0][0], val[0][1].collect { it.toString().contains('OverflowTable') ? 'OverflowTable' : it }]]
                         } else {
                             [key, val]
                         }
