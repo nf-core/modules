@@ -1,5 +1,5 @@
 process HISAT2_BUILD {
-    tag "${fasta}"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"

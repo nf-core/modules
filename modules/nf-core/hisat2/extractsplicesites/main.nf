@@ -1,5 +1,5 @@
 process HISAT2_EXTRACTSPLICESITES {
-    tag "${gtf}"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
