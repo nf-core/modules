@@ -1,0 +1,85 @@
+nextflow_process {
+
+    name "Test Process COMPLEASM_RUN"
+    script "../main.nf"
+    process "COMPLEASM_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "compleasm"
+    tag "compleasm/run"
+
+    test("bacteroides_fragilis - genome - fasta.gz") {
+
+        config './nextflow.config'
+
+        when {
+            params {
+                module_args = '--odb odb10'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = 'bacteria'
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    with(path(process.out.summary[0][1]).text) {
+                        assert contains('## lineage: bacteria_odb10')
+                        assert contains('S:')
+                        assert contains('D:')
+                        assert contains('F:')
+                        assert contains('M:')
+                        assert contains('N:')
+                    }
+                },
+                { assert snapshot(
+                    // summary.txt and full_table_busco_format.tsv embed the compleasm version and the lineage creation date
+                    sanitizeOutput(process.out, unstableKeys: ['summary', 'full_table_busco_format'], ignoreKeys: ['library'])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - genome - fasta.gz - stub") {
+
+        options "-stub"
+
+        config './nextflow.config'
+
+        when {
+            params {
+                module_args = '--odb odb10'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = 'bacteria'
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
