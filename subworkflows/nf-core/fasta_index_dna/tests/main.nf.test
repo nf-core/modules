@@ -58,7 +58,7 @@ nextflow_workflow {
         }
     }
     test("Params: bwamem2 | generate bwamem2 index") {
-
+        config "./nextflow.config"
         when {
             workflow {
                 """
@@ -179,6 +179,7 @@ nextflow_workflow {
     }
     test("Params: bwamem2 | generate bwamem2 index - stub") {
         options '-stub'
+        config "./nextflow.config"
         when {
             workflow {
                 """
