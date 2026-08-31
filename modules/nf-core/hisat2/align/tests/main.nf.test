@@ -55,7 +55,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match() }
             )
         }
     }
@@ -157,7 +157,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match() }
             )
         }
     }
@@ -250,7 +250,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match() }
             )
         }
     }
@@ -334,7 +334,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match() }
             )
         }
     }
