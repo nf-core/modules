@@ -8,7 +8,7 @@ process CUSTOM_COLLECTFEATURECOUNTS {
         'community.wave.seqera.io/library/r-base_r-dplyr_r-readr_r-purrr_pruned:0f879b99d6a89834' }"
 
     input:
-    tuple val(meta), path(inputfiles)
+    tuple val(meta), path(inputfiles, stageAs: "input/*")
 
     output:
     tuple val(meta), path("${prefix}.counts.tsv.gz"), emit: counts
@@ -19,62 +19,7 @@ process CUSTOM_COLLECTFEATURECOUNTS {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def file_list = inputfiles instanceof List ? inputfiles : [inputfiles]
-    def r_files = file_list.collect { "'${it}'" }.join(', ')
-    """
-    #!/usr/bin/env Rscript
-
-    library(data.table)
-    library(dtplyr)
-    library(readr)
-    library(dplyr)
-    library(tidyr)
-    library(stringr)
-
-    setDTthreads($task.cpus)
-
-    tibble(f = c($r_files)) %>%
-        mutate(
-            d = purrr::map(
-                f,
-                function(file) {
-                    fread(file, sep = '\\t', skip = 1) %>%
-                        melt(measure.vars = c(ncol(.)), variable.name = 'sample', value.name = 'count') %>%
-                        lazy_dt() %>%
-                        filter(count > 0) %>%
-                        mutate(
-                            sample = str_remove(sample, '.sorted.bam'),
-                            r = count/Length
-                        ) %>%
-                        rename(orf = Geneid, chr = Chr, start = Start, end = End, strand = Strand, length = Length) %>%
-                        group_by(sample) %>%
-                        # Rounded so tables independently computed elsewhere from the same underlying
-                        # counts (e.g. after a caller-consolidation step using a different R backend)
-                        # stay byte-comparable -- data.table/dtplyr and plain dplyr can otherwise round
-                        # the last significant digit of the same mathematical value differently.
-                        mutate(tpm = round(r/sum(r) * 1e6, 6)) %>% ungroup() %>%
-                        select(-r) %>%
-                        as_tibble()
-                }
-            )
-        ) %>%
-        tidyr::unnest(d) %>%
-        select(-f) %>%
-        write_tsv("${prefix}.counts.tsv.gz")
-
-    writeLines(
-        c(
-            "\\"${task.process}\\":",
-            paste0("    R: ", paste0(R.Version()[c("major","minor")], collapse = ".")),
-            paste0("    dplyr: ", packageVersion('dplyr')),
-            paste0("    readr: ", packageVersion('readr')),
-            paste0("    stringr: ", packageVersion('stringr')),
-            paste0("    dtplyr: ", packageVersion('dtplyr')),
-            paste0("    data.table: ", packageVersion('data.table'))
-        ),
-        "versions.yml"
-    )
-    """
+    template 'collectfeaturecounts.R'
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
