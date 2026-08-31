@@ -71,9 +71,10 @@ convert_colnames <- function(x) {
 #' @param chr Chromosome name
 #' @param prefix Prefix name for the output files
 #' @param tolerance Difference
+#' @param digits Number of decimal to round cm and rate
 process_map_file <- function(
   file_path, chr = NULL, prefix = "output",
-  tolerance = NULL
+  tolerance = NULL, digits = NULL
 ) {
   # Read the map file into a data.table
   options(warn = 2) # all warnings will be set to error
@@ -163,18 +164,42 @@ process_map_file <- function(
     stop("First cM value must be 0 after normalization")
   }
 
+  compute_rate <- FALSE
+  # Remove duplicated cm values
+  if (any(duplicated(map_df[["cm"]]))) {
+    message("Duplicated cm values found in map file. Removing them.")
+    map_df <- map_df[!duplicated(map_df[["cm"]]), ]
+    compute_rate <- TRUE
+  }
+
+  # Remove null rate values
+  if ("rate" %in% colnames(map_df)) {
+    zero_rows <- which(
+      map_df[["rate"]] == 0 & seq_len(nrow(map_df)) != nrow(map_df)
+    )
+    if (length(zero_rows) > 0) {
+      message("Zero rate values found in map file. Removing them.")
+      print(map_df[zero_rows, ])
+      map_df <- map_df[-zero_rows, ]
+      compute_rate <- TRUE
+    }
+  }
+
   # Compute forward rate for previous row (interval prev -> current)
   delta_bp <- c(diff(map_df[["pos"]]))
   delta_cm <- c(diff(map_df[["cm"]]))
   rate <- c(delta_cm / delta_bp * 1e6, 0)
 
-  if (!"rate" %in% colnames(map_df)) {
+  if (!"rate" %in% colnames(map_df) || compute_rate) {
     map_df[["rate"]] <- rate
   } else {
     map_df[["diff"]] <- abs(map_df[["rate"]] - rate)
     if (any(map_df[["diff"]] > tolerance)) {
       print(map_df[map_df[["diff"]] > tolerance, ])
-      stop("cm[n] must equal cm[n-1] + ( (pos[n] - pos[n-1]) / 1e6 * rate[n-1])")
+      stop(
+        "cm[n] must equal cm[n-1]",
+        " + ( (pos[n] - pos[n-1]) / 1e6 * rate[n-1])"
+      )
     }
   }
 
@@ -182,8 +207,16 @@ process_map_file <- function(
     stop("rate column should be numeric")
   }
 
-  map_df[["rate"]] <- signif(map_df[["rate"]], digits = 8)
-  map_df[["cm"]] <- signif(map_df[["cm"]], digits = 8)
+  # Sanity check, but should never be reached
+  zero_rows <- which(
+    map_df[["rate"]] == 0 & seq_len(nrow(map_df)) != nrow(map_df)
+  )
+  if (length(zero_rows) > 0) {
+    stop("rate should be greater than 0")
+  }
+
+  map_df[["rate"]] <- round(map_df[["rate"]], digits = digits)
+  map_df[["cm"]] <- round(map_df[["cm"]], digits = digits)
 
   # Process the data
   glimpse_file <- paste0(prefix, ".glimpse.map")
@@ -226,15 +259,17 @@ opt <- list(
   output_prefix = "${prefix}",
   map_file = "${map_file}",
   chr = "${meta.chr}",
-  tolerance = NULL
+  tolerance = NULL,
+  digits = 8
 )
 
 opt_valid <- process_inputs(
   opt,
-  args = '${args}',
+  args = "${args}",
   keys_to_nullify = c("output_prefix", "chr", "tolerance"),
   expected_files = c("map_file"),
   expected_double = c("tolerance"),
+  expected_integer = c("digits"),
   required_opts = c("map_file", "output_prefix")
 )
 
@@ -242,7 +277,8 @@ process_map_file(
   file_path = opt_valid[["map_file"]],
   chr =  opt_valid[["chr"]],
   prefix =  opt_valid[["output_prefix"]],
-  tolerance =  parse_tolerance(opt_valid[["tolerance"]])
+  tolerance =  parse_tolerance(opt_valid[["tolerance"]]),
+  digits = opt_valid[["digits"]]
 )
 
 process_end(

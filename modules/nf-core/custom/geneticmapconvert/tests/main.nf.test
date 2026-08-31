@@ -120,7 +120,7 @@ nextflow_process {
     test("Convert map with pos rate cm - with header - meta.chr (stitch format)") {
         when {
             params {
-                module_args = "--tolerance 10e-4"
+                module_args = "--tolerance 10e-4 --digits 4"
             }
             process {
                 """
@@ -361,6 +361,46 @@ nextflow_process {
             assertAll(
                 { assert process.failed },
                 { assert process.errorReport.contains("More than one chromosome present in file") }
+            )
+        }
+    }
+
+    test("Test warning - duplicated cm and null rate") {
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                def mapFile = file("${launchDir}/genetic_map")
+                mapFile.text = [
+                    "position COMBINED_rate(cM/Mb) Genetic_Map(cM)",
+                    "9887804 1.0259671467 0",
+                    "9928594 0.5391704405 0.0418491999",
+                    "9928786 0.4555289041 0.0418491999", // duplicated cM
+                    "9928860 0 0.0419864298", // Null rate value
+                    "9929079 0.4540137301 0.0420860339",
+                    "9932218 0.4441583107 0.0435111830",
+                    "9935312 0.4436493131 0.0448854089",
+                    "9935844 0 0.0451214303",
+                ].join('''\n''')
+                genetic_map = channel.fromPath(mapFile)
+                input[0] = channel.of([
+                    [id: "test", chr:"chr22"]
+                ]).combine(genetic_map)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.glimpse_map[0][1]).readLines().size() == 7 }, // 2/9 lines are removed
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys:["session_info"]),
+                    path(process.out.versions[0]).yaml,
+                    path(process.out.glimpse_map[0][1]).readLines(), // 9928786 and 9928860 position removed
+                ).match() }
             )
         }
     }
