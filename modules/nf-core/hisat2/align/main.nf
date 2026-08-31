@@ -27,14 +27,7 @@ process HISAT2_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def strandedness = ''
-    if (meta.strandedness == 'forward') {
-        strandedness = meta.single_end ? '--rna-strandness F' : '--rna-strandness FR'
-    }
-    else if (meta.strandedness == 'reverse') {
-        strandedness = meta.single_end ? '--rna-strandness R' : '--rna-strandness RF'
-    }
-    ss = "${splicesites}" ? "--known-splicesite-infile ${splicesites}" : ''
+    def ss = "${splicesites}" ? "--known-splicesite-infile ${splicesites}" : ''
     def rg = args.contains("--rg-id") ? "" : "--rg-id ${prefix} --rg SM:${prefix}"
     if (meta.single_end) {
         def unaligned = save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
@@ -43,7 +36,6 @@ process HISAT2_ALIGN {
         hisat2 \\
             -x \$INDEX \\
             -U ${reads} \\
-            ${strandedness} \\
             ${ss} \\
             --summary-file ${prefix}.hisat2.summary.log \\
             --threads ${task.cpus} \\
@@ -61,7 +53,6 @@ process HISAT2_ALIGN {
             -x \$INDEX \\
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
-            ${strandedness} \\
             ${ss} \\
             --summary-file ${prefix}.hisat2.summary.log \\
             --threads ${task.cpus} \\
