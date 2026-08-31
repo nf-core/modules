@@ -29,15 +29,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                {
-                    assert snapshot(sanitizeOutput(process.out).collectEntries { key, val ->
-                        if (key == 'index' && val instanceof List && val.size() == 1 && val[0] instanceof List) {
-                            [key, [val[0][0], val[0][1].collect { it.toString().contains('OverflowTable') ? 'OverflowTable' : it }]]
-                        } else {
-                            [key, val]
-                        }
-                    }).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstablePatterns: ["**/GenomeIndexHash*", "**/OverflowTable*"])).match() }
             )
         }
     }
