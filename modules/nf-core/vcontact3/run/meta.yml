@@ -20,13 +20,13 @@ input:
   - - meta:
         type: map
         description: Groovy map containing sample metadata
-    - genomes:
+    - genome:
         type: file
-        description: Input FASTA or GenBank files with viral sequences
+        description: Input FASTA or GenBank file with viral sequences
         pattern: "*.{fasta,fa,faa,gbk,gb}"
         ontologies: []
   - database:
-      type: file
+      type: directory
       description: VCONTACT3 reference database directory produced by
         VCONTACT3_PREPAREDDATABASES
       pattern: "*"
@@ -47,8 +47,8 @@ output:
       - vcontact3:
           type: string
           description: The name of the tool
-      - 3.1.6:
-          type: string
+      - vcontact3 version:
+          type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
@@ -58,8 +58,8 @@ topics:
       - vcontact3:
           type: string
           description: The name of the tool
-      - 3.1.6:
-          type: string
+      - vcontact3 version:
+          type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@JP-Bro"
