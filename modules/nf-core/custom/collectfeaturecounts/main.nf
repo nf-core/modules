@@ -4,8 +4,8 @@ process CUSTOM_COLLECTFEATURECOUNTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/143121bf17b3f4e9539d8cd17aaaa428aae54ce827471c4fc6399465263efa2e/data' :
-        'community.wave.seqera.io/library/r-base_r-dplyr_r-readr_r-purrr_pruned:0f879b99d6a89834' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bfe4a872ba15a90cc12fb24aa96ddda852d5b295c214684d9c8fdf3dc02af535/data' :
+        'community.wave.seqera.io/library/r-base_r-data.table_r-dplyr_r-dtplyr_pruned:e289d008f8e006c5' }"
 
     input:
     tuple val(meta), path(inputfiles, stageAs: "input/*")
