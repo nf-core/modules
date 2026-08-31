@@ -19,6 +19,8 @@ process CUSTOM_COLLECTFEATURECOUNTS {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
+    def file_list = inputfiles instanceof List ? inputfiles : [inputfiles]
+    def r_files = file_list.collect { "'${it}'" }.join(', ')
     """
     #!/usr/bin/env Rscript
 
@@ -31,7 +33,7 @@ process CUSTOM_COLLECTFEATURECOUNTS {
 
     setDTthreads($task.cpus)
 
-    tibble(f = Sys.glob('*.featureCounts.tsv')) %>%
+    tibble(f = c($r_files)) %>%
         mutate(
             d = purrr::map(
                 f,
