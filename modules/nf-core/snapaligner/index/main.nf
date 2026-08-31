@@ -1,5 +1,5 @@
 process SNAPALIGNER_INDEX {
-    tag "${fasta}"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
