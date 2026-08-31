@@ -43,8 +43,13 @@ nextflow_process {
                     }
                 },
                 { assert snapshot(
+                    path(process.out.full_table[0][1])
+                        .readLines()
+                        .sort() // compleasm appends the missing genes in the order of a Python set, which varies between runs
+                        .join("\n")
+                        .md5(),
                     // summary.txt and full_table_busco_format.tsv embed the compleasm version and the lineage creation date
-                    sanitizeOutput(process.out, unstableKeys: ['summary', 'full_table_busco_format'], ignoreKeys: ['library'])
+                    sanitizeOutput(process.out, unstableKeys: ['summary', 'full_table', 'full_table_busco_format'], ignoreKeys: ['library'])
                 ).match() }
             )
         }
