@@ -1,11 +1,11 @@
 process HISAT2_EXTRACTSPLICESITES {
-    tag "$gtf"
+    tag "${gtf}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2ec9b73c6b92e99334c6500b1b622edaac316315ac1708f0b425df3131d0a83/data' :
-        'community.wave.seqera.io/library/hisat2_samtools:6be64e12472a7b75' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/926acc69b178be609fcabc0983e6ed70f9c4068cb3020f534142cb68a2bcd2cd/data'
+        : 'community.wave.seqera.io/library/hisat2_samtools:fc94775cba724724'}"
 
     input:
     tuple val(meta), path(gtf)
@@ -21,8 +21,8 @@ process HISAT2_EXTRACTSPLICESITES {
     def args = task.ext.args ?: ''
     """
     hisat2_extract_splice_sites.py \\
-        $args \\
-        $gtf \\
+        ${args} \\
+        ${gtf} \\
         > ${gtf.baseName}.splice_sites.txt
     """
 

@@ -4,8 +4,8 @@ process HISAT2_BUILD {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/hisat2:2.2.2--h503566f_0'
-        : 'quay.io/biocontainers/hisat2:2.2.2--h503566f_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3c/3c15aed21684ba714b9a26c2bd76e1c5c1f943aeed4350738d7264ad6dd3d586/data'
+        : 'community.wave.seqera.io/library/hisat2:2.2.3--a87b6bbdb67d48b8'}"
 
     input:
     tuple val(meta), path(fasta), path(gtf), path(splicesites)
