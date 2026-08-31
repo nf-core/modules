@@ -45,12 +45,12 @@ nextflow_workflow {
                 input[1] = Channel.empty()
                 input[2] = Channel.empty()
                 input[3] = ""
-                input[4] = params.npcs
-                input[5] = params.use_approx
+                input[4] = 8
+                input[5] = false
                 input[6] = "kmeans"
                 input[7] = 3
-                input[8] = params.dbscan_eps
-                input[9] = params.dbscan_min_samples
+                input[8] = 0.5
+                input[9] = 5
                 """
             }
         }
@@ -75,12 +75,12 @@ nextflow_workflow {
                 input[1] = Channel.empty()
                 input[2] = Channel.empty()
                 input[3] = ""
-                input[4] = params.npcs
-                input[5] = params.use_approx
+                input[4] = 8
+                input[5] = false
                 input[6] = "dbscan"
-                input[7] = params.n_clusters
-                input[8] = params.dbscan_eps
-                input[9] = params.dbscan_min_samples
+                input[7] = 3
+                input[8] = 0.5
+                input[9] = 5
                 """
             }
         }
@@ -106,12 +106,12 @@ nextflow_workflow {
                 input[1] = Channel.empty()
                 input[2] = Channel.empty()
                 input[3] = ""
-                input[4] = params.npcs
-                input[5] = params.use_approx
+                input[4] = 8
+                input[5] = false
                 input[6] = "kmeans"
                 input[7] = 3
-                input[8] = params.dbscan_eps
-                input[9] = params.dbscan_min_samples
+                input[8] = 0.5
+                input[9] = 5
                 """
             }
         }
@@ -137,12 +137,12 @@ nextflow_workflow {
                 input[1] = Channel.empty()
                 input[2] = Channel.empty()
                 input[3] = ""
-                input[4] = params.npcs
-                input[5] = params.use_approx
+                input[4] = 8
+                input[5] = false
                 input[6] = "dbscan"
-                input[7] = params.n_clusters
-                input[8] = params.dbscan_eps
-                input[9] = params.dbscan_min_samples
+                input[7] = 3
+                input[8] = 0.5
+                input[9] = 5
                 """
             }
         }

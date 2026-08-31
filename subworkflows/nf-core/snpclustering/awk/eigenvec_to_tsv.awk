@@ -1,9 +1,19 @@
-NR==1 {
+BEGIN {
+    FS = OFS = "\t"
+}
+
+NR == 1 {
     sub(/^#/, "")
-    if ($1 == "IID") {
-        $1 = "sample_id"
+    $0 = $0
+    for (i = 1; i <= NF; i++) {
+        if ($i == "IID") {
+            $i = "sample_id"
+        }
     }
     print
     next
 }
-{ print }
+
+{
+    print
+}
