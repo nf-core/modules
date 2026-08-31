@@ -15,7 +15,7 @@
                         {
                             "id": "test"
                         },
-                        "test.clustering_info.json:md5,5bfc98c30e4e6d7d4bd730e55fa90ca7"
+                        "test.clustering_info.json"
                     ]
                 ],
                 "clusters": [
@@ -159,9 +159,36 @@
                         "test.umap.tsv"
                     ]
                 ]
+            },
+            {
+                "algorithm": "kmeans",
+                "k": 3,
+                "inertia": 6.2255,
+                "n_samples": 3202,
+                "n_features": 8
+            },
+            {
+                "header": [
+                    "sample_id",
+                    "Dim1",
+                    "Dim2",
+                    "cluster"
+                ],
+                "n_rows": 3202,
+                "n_cols": 4
+            },
+            {
+                "header": [
+                    "sample_id",
+                    "Dim1",
+                    "Dim2",
+                    "cluster"
+                ],
+                "n_rows": 3202,
+                "n_cols": 4
             }
         ],
-        "timestamp": "2026-08-31T12:13:13.95854724",
+        "timestamp": "2026-08-31T12:49:22.352660673",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -183,7 +210,7 @@
                         {
                             "id": "test"
                         },
-                        "test.clustering_info.json:md5,fa9a2eff36d06fe360a59f4c3cd63393"
+                        "test.clustering_info.json"
                     ]
                 ],
                 "clusters": [
@@ -327,9 +354,38 @@
                         "test.umap.tsv"
                     ]
                 ]
+            },
+            {
+                "algorithm": "dbscan",
+                "eps": 0.5,
+                "min_samples": 5,
+                "n_clusters_found": 1,
+                "n_noise": 0,
+                "n_samples": 3202,
+                "n_features": 8
+            },
+            {
+                "header": [
+                    "sample_id",
+                    "Dim1",
+                    "Dim2",
+                    "cluster"
+                ],
+                "n_rows": 3202,
+                "n_cols": 4
+            },
+            {
+                "header": [
+                    "sample_id",
+                    "Dim1",
+                    "Dim2",
+                    "cluster"
+                ],
+                "n_rows": 3202,
+                "n_cols": 4
             }
         ],
-        "timestamp": "2026-08-31T12:13:46.467083247",
+        "timestamp": "2026-08-31T12:49:54.909445446",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
