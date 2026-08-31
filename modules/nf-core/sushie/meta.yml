@@ -1,14 +1,12 @@
 name: "sushie"
-description: Software to perform multi-ancestry SNP fine-mapping on molecular
-  data
+description: Software to perform multi-ancestry SNP fine-mapping on molecular data
 keywords:
   - gwas
   - fine mapping
   - ancestry
 tools:
   - "sushie":
-      description: "Software to perform multi-ancestry SNP fine-mapping on molecular
-        data"
+      description: "Software to perform multi-ancestry SNP fine-mapping on molecular data"
       homepage: "https://github.com/mancusolab/sushie/"
       documentation: "https://mancusolab.github.io/sushie/"
       tool_dev_url: "https://github.com/mancusolab/sushie/"
@@ -84,9 +82,10 @@ output:
       - sushie:
           type: string
           description: The name of the tool
-      - "0.19":
-          type: string
+      - sushie --version:
+          type: eval
           description: The expression to obtain the version of the tool
+
   log:
     - - meta:
           type: map
@@ -106,9 +105,10 @@ topics:
       - sushie:
           type: string
           description: The name of the tool
-      - "0.19":
-          type: string
+      - sushie --version:
+          type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@camlloyd"
 maintainers:
