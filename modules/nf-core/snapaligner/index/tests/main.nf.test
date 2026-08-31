@@ -27,13 +27,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.index[0][1].collect { file(it).name }.toSorted(),
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match()
+                {
+                    assert snapshot(sanitizeOutput(process.out).collectEntries { key, val ->
+                        if (key == 'index' && val instanceof List && val.size() == 1 && val[0] instanceof List) {
+                            [key, [val[0][0], val[0][1].findAll { !it.toString().contains('OverflowTable') }]]
+                        } else {
+                            [key, val]
+                        }
+                    }).match()
                 }
             )
         }
@@ -56,14 +59,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
-
 }

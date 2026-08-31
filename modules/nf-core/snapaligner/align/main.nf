@@ -37,8 +37,9 @@ process SNAPALIGNER_ALIGN {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch test.bam
-    touch test.bam.bai
+    touch ${prefix}.bam
+    touch ${prefix}.bam.bai
     """
 }
