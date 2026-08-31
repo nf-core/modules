@@ -3,9 +3,9 @@ process HISAT2_EXTRACTSPLICESITES {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/926acc69b178be609fcabc0983e6ed70f9c4068cb3020f534142cb68a2bcd2cd/data'
-        : 'community.wave.seqera.io/library/hisat2_samtools:fc94775cba724724'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92f546b522b78597047a54609eefcf35a014de082df0e500bc2adf64d2733669/data'
+:         'community.wave.seqera.io/library/hisat2_samtools:a0c9b8ccf8116a89' }"
 
     input:
     tuple val(meta), path(gtf)
