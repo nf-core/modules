@@ -9,12 +9,43 @@ nextflow_process {
     tag "comebin"
     tag "comebin/runcomebin"
 
-    // Tool requires a large input dataset of sufficient complexity to run
-    // that's larger than anything in test-datasets - stub test only
-    //
-    // Should revisit in future!
+    test("metagenome - binning") {
 
-    test("sarscov2 - stub") {
+        config "./nextflow.config"
+
+        when {
+
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/contigs.fasta.gz", checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s2.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s3.sorted.bam", checkIfExists: true),
+                    ],
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bins.get(0).get(1).size() >= 1 },
+                { assert snapshot(
+                    sanitizeOutput(process.out,
+                        // bin contents vary between machines due to BLAS and OpenMP
+                        unstableKeys: ["tsv"],
+                        ignoreKeys: ["bins", "embeddings", "covembeddings", "log"])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("metagenome - binning - stub") {
 
         options "-stub"
 
@@ -23,9 +54,13 @@ nextflow_process {
             process {
                 """
                 input[0] = channel.of([
-                    [id: "ref"],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true),
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/contigs.fasta.gz", checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s2.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s3.sorted.bam", checkIfExists: true),
+                    ],
                 ])
                 """
             }
