@@ -1,6 +1,6 @@
 process ANARCII {
     tag "${meta.id}"
-    label 'process_single'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -24,7 +24,8 @@ process ANARCII {
     """
     anarcii \\
         -t ${seq_type} \\
-        ${args}\\
+        -n ${task.cpus} \\
+        ${args} \\
         -o ${prefix}.csv \\
         ${fasta}
     """

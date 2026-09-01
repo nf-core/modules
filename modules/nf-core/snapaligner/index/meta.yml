@@ -47,11 +47,11 @@ input:
 output:
   index:
     - - meta:
-          type: file
-          description: SNAP genome index files
-          pattern: "{Genome,GenomeIndex,GenomeIndexHash,OverflowTable}"
-          ontologies: []
-      - snap/*:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - snap:
           type: file
           description: SNAP genome index files
           pattern: "{Genome,GenomeIndex,GenomeIndexHash,OverflowTable}"
