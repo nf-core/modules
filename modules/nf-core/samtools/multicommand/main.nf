@@ -37,7 +37,6 @@ process SAMTOOLS_MULTICOMMAND {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if (pipeline.size() <=1) {
@@ -59,7 +58,7 @@ process SAMTOOLS_MULTICOMMAND {
     def input_reference = (fasta && input.getExtension() == "cram") ? "--reference ${fasta}" : ""
     def output_reference = ""
 
-    if (final_command in ['view', 'sort', 'merge', 'cat', 'markdup', 'fixmate', 'merge', 'cat', 'collate']) {
+    if (final_command in ['view', 'sort', 'merge', 'cat', 'fixmate', 'merge', 'cat', 'collate']) {
         // These produce alignment files
         def argsKey = n_commands == 1 ? "args" : "args${n_commands}"
         def argsLast = task.ext[argsKey] ?: ""
@@ -70,6 +69,17 @@ process SAMTOOLS_MULTICOMMAND {
                 : "bam"
         output_reference = (fasta && input.getExtension() == "cram") ? "--reference ${fasta}" : ""
         output_string = "-o ${prefix}.${extension}"
+    } else if (final_command == "markdup") {
+        def argsKey = n_commands == 1 ? "args" : "args${n_commands}"
+        def argsLast = task.ext[argsKey] ?: ""
+        def extension = argsLast.contains("--output-fmt sam")
+            ? "sam"
+            : argsLast.contains("--output-fmt cram")
+                ? "cram"
+                : "bam"
+        output_reference = (fasta && input.getExtension() == "cram") ? "--reference ${fasta}" : ""
+        output_string = "${prefix}.${extension}"
+
     } else if (final_command == "fasta") {
         // fasta produces multiple files with special output flags
         output_string = "-0 ${prefix}_other.fasta.gz"
@@ -93,7 +103,11 @@ process SAMTOOLS_MULTICOMMAND {
         def argsKey = idx == 0 ? "args" : "args${idx + 1}"
         def taskArgs = task.ext[argsKey] ?: ""
         def lastCommand = (idx == n_commands - 1)
-
+        def stdoutMarker = "-"
+        if (subcommand == "collate") { stdoutMarker = "-O" }
+        if (subcommand in ["sort"]) { stdoutMarker = "" }
+        def stdinMarker = "-"
+        
         def cmd_parts = ["samtools", subcommand]
         if(subcommand != "cat") { cmd_parts <<  "-@ ${task.cpus}" }
         if (taskArgs) {
@@ -104,6 +118,13 @@ process SAMTOOLS_MULTICOMMAND {
                 cmd_parts << input_reference
             }
             cmd_parts << (input instanceof List ? input.join(" ") : input)
+            cmd_parts << stdoutMarker
+        }
+        if (idx != 0) {
+            cmd_parts << stdinMarker            
+        }
+        if (idx != 0 && !lastCommand) {
+            cmd_parts << stdoutMarker
         }
         if (!lastCommand) {
             if (subcommand != "cat") { cmd_parts << "-u" }
