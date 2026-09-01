@@ -1,6 +1,6 @@
 name: hamronization_deeparg
-description: Tool to convert and summarize DeepARG outputs using the hAMRonization
-  specification
+description: Tool to convert and summarize DeepARG outputs using the
+  hAMRonization specification
 keywords:
   - amr
   - antimicrobial resistance
@@ -8,19 +8,20 @@ keywords:
   - deeparg
 tools:
   - hamronization:
-      description: Tool to convert and summarize AMR gene detection outputs using the
-        hAMRonization specification
+      description: Tool to convert and summarize AMR gene detection outputs using
+        the hAMRonization specification
       homepage: https://github.com/pha4ge/hAMRonization/
       documentation: https://github.com/pha4ge/hAMRonization/
       tool_dev_url: https://github.com/pha4ge/hAMRonization
-      licence: ["GNU Lesser General Public v3 (LGPL v3)"]
+      licence:
+        - "GNU Lesser General Public v3 (LGPL v3)"
       identifier: biotools:hamronization
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - report:
         type: file
         description: Output .mapping.ARG file from DeepARG
@@ -44,7 +45,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.json":
           type: file
           description: hAMRonised report in JSON format
@@ -56,20 +57,34 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.tsv":
           type: file
           description: hAMRonised report in TSV format
           pattern: "*.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
+  versions_hamronization:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hamronization:
+          type: string
+          description: The name of the tool
+      - hamronize --version 2>&1 | sed 's/hamronize //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hamronization:
+          type: string
+          description: The name of the tool
+      - hamronize --version 2>&1 | sed 's/hamronize //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

@@ -1,0 +1,78 @@
+name: "gedi_indexgenome"
+description: Build a GEDI genome index from a FASTA and GTF for downstream PRICE ORF prediction
+keywords:
+  - riboseq
+  - index
+  - genome
+  - gedi
+  - price
+  - orf
+tools:
+  - "gedi":
+      description: "Gedi is a Java software platform for working with genomic data
+        (sequencing reads, sequences, per-base numeric values, annotations). It
+        provides the PRICE algorithm for ribosome profiling ORF discovery."
+      homepage: "https://github.com/erhard-lab/gedi"
+      documentation: "https://github.com/erhard-lab/gedi/wiki"
+      tool_dev_url: "https://github.com/erhard-lab/gedi"
+      doi: "10.1038/nmeth.4631"
+      licence:
+        - "GPL-3.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'homo_sapiens' ]`
+    - fasta:
+        type: file
+        description: Genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+    - gtf:
+        type: file
+        description: GTF annotation file
+        pattern: "*.{gtf}"
+        ontologies:
+          - edam: http://edamontology.org/format_2306
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information
+            e.g. `[ id:'homo_sapiens' ]`
+      - ${prefix}:
+          type: directory
+          description: |
+            GEDI genome index directory containing the `.oml` index file and
+            its sidecar resources. Consumed as `-genomic` by PRICE. Directory
+            name defaults to `meta.id` and can be overridden via `task.ext.prefix`.
+          pattern: "*"
+  versions_gedi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gedi:
+          type: string
+          description: The name of the tool
+      - gedi -e Version 2>&1 | sed -n 's/.*Gedi version \([^ ]*\).*/\1/p' | head -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gedi:
+          type: string
+          description: The name of the tool
+      - gedi -e Version 2>&1 | sed -n 's/.*Gedi version \([^ ]*\).*/\1/p' | head -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

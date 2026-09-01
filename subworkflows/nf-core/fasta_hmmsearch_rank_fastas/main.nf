@@ -5,27 +5,34 @@ include { SEQTK_SUBSEQ    } from '../../../modules/nf-core/seqtk/subseq/main'
 workflow FASTA_HMMSEARCH_RANK_FASTAS {
 
     take:
-    ch_hmms  // channel: [ val(meta), file(hmm) ], i.e. a list of hmm profiles, each with its meta object
-    ch_fasta // channel: file(fasta), a single fasta file
+    ch_hmms         // channel: [ val(meta), file(hmm) ], i.e. a list of hmm profiles, each with its meta object
+    ch_fasta        // channel: file(fasta), a single fasta file
+    save_domtblout  // boolean: also write and emit hmmsearch's per-domain hit table (--domtblout)
 
     main:
 
-    ch_versions = channel.empty()
-
     ch_hmms
         .combine(ch_fasta)
-        .map { index -> [ index[0], index[1], index[2], false, true, false ] }
+        .map { index -> [ index[0], index[1], index[2], false, true, save_domtblout ] }
         .set { ch_hmmsearch }
 
     HMMER_HMMSEARCH ( ch_hmmsearch )
 
+    // The per-domain tables are what carry alignment coordinates, so hand them to the ranking
+    // step when hmmsearch was asked to write them. ifEmpty keeps the ranking running when it
+    // was not: an optional output leaves an empty channel, which would otherwise stall combine.
+    HMMER_HMMSEARCH.out.domain_summary
+        .collect { index -> index[1] }
+        .ifEmpty { [] }
+        .set { ch_domtblouts }
+
     HMMER_HMMSEARCH.out.target_summary
         .collect { index -> index[1] }
         .map { index -> [ [ id: 'rank' ], index ] }
+        .combine(ch_domtblouts.map { index -> [ index ] })
         .set { ch_hmmrank }
 
     HMMER_HMMRANK ( ch_hmmrank )
-    ch_versions = ch_versions.mix(HMMER_HMMRANK.out.versions.first())
 
     HMMER_HMMRANK.out.hmmrank
         .map { index -> index[1] }
@@ -46,8 +53,7 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
     // SEQTK_SUBSEQ emits version as a topic channel
 
     emit:
-    hmmrank                 = HMMER_HMMRANK.out.hmmrank       // channel: [ [ id: 'rank' ], hmmrank_tsv ]
-    seqfastas               = SEQTK_SUBSEQ.out.sequences      // channel: [ meta, fasta ]
-
-    versions                = ch_versions                     // channel: [ versions.yml ]
+    hmmrank                 = HMMER_HMMRANK.out.hmmrank             // channel: [ [ id: 'rank' ], hmmrank_tsv ]
+    seqfastas               = SEQTK_SUBSEQ.out.sequences            // channel: [ meta, fasta ]
+    domain_summary          = HMMER_HMMSEARCH.out.domain_summary    // channel: [ meta, domtbl ]
 }

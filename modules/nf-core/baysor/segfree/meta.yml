@@ -1,0 +1,78 @@
+name: "baysor_segfree"
+description: Extract neighborhood composition vectors (NVCs) from a dataset.
+keywords:
+  - neighborhood
+  - segmentation-free
+  - ncvs-looms
+tools:
+  - "baysor":
+      description: "Baysor is a tool that segments cells using spatial gene expression
+        maps. Optionally, segmentation masks can be given as additional input."
+      homepage: "https://kharchenkolab.github.io/Baysor/dev/"
+      documentation: "https://kharchenkolab.github.io/Baysor/dev/"
+      tool_dev_url: "https://github.com/kharchenkolab/Baysor"
+      doi: "10.1038/s41587-021-01044-w"
+      licence:
+        - "MIT license"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - transcripts:
+        type: file
+        description: |
+          Tab-delimited file with transcript information. Must contain the following columns:
+          - x: x-coordinate of the transcript
+          - y: y-coordinate of the transcript
+          - gene: gene name of the transcript
+        pattern: "transcripts.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+    - config:
+        type: file
+        description: |
+          YAML configuration file for Baysor. Must contain the following fields:
+          - baysor_config: Baysor configuration parameters (see Baysor documentation for details)
+        pattern: "xenium.toml"
+        ontologies: []
+output:
+  ncvs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}_ncvs.loom:
+          type: file
+          description: Loom file containing neighborhood composition vectors
+            (NVCs)
+          ontologies:
+            - edam: http://edamontology.org/format_3602
+  versions_baysor:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - baysor:
+          type: string
+          description: The name of the tool
+      - baysor --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - baysor:
+          type: string
+          description: The name of the tool
+      - baysor --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@khersameesh24"
+maintainers:
+  - "@khersameesh24"

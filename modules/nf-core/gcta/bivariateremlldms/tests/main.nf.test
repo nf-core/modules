@@ -1,0 +1,317 @@
+nextflow_process {
+    name "Test Process GCTA_BIVARIATEREMLLDMS"
+    script "../main.nf"
+    process "GCTA_BIVARIATEREMLLDMS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/bivariateremlldms"
+    tag "gcta/makegrmpart"
+    tag "gawk"
+    config "./nextflow.config"
+
+    setup {
+        run("GAWK", alias: "GAWK_BIVARIATE_PHENO") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'Trait1__Trait2' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                    ]
+                ]
+                input[1] = Channel.of('FNR == NR { if (FNR == 1) next; trait1[\$2] = \$3; next } FNR == 1 { next } { print \$1, \$2, trait1[\$2], \$4 }').collectFile(name:'bivariate_phenotype.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_BIVARIATE_BINARY_PHENO") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'BinaryTrait1__BinaryTrait2' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, (NR % 2) + 1, (NR % 3 == 0 ? 2 : 1) }').collectFile(name:'bivariate_binary_phenotype.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_QUANTITATIVE_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_quant' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$5, \$6 }').collectFile(name:'quantitative_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_CATEGORICAL_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_cat' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'categorical_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_COMPLEMENT_VARIANTS") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated_complement' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_random_selected_snp.txt', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ]
+                ]
+                input[1] = Channel.of('FNR == NR { keep[\$1] = 1; next } !(\$2 in keep) { print \$2 }').collectFile(name:'complement_variants.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_LDMS1") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_ldms1' ],
+                    1,
+                    1,
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [
+                    [ id:'plink_random_selected_snp' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_random_selected_snp.txt', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_LDMS2") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_ldms2' ],
+                    1,
+                    1,
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = GAWK_COMPLEMENT_VARIANTS.out.output
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - bivariate phenotype with ldms mgrm and covariates") {
+        when {
+            process {
+                """
+                mgrm_file = Channel
+                    .of('plink_simulated_ldms1.part_1_1\\nplink_simulated_ldms2.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+
+                ldms_grm_files = GCTA_MAKEGRMPART_LDMS1.out.grm_files
+                    .mix(GCTA_MAKEGRMPART_LDMS2.out.grm_files)
+                    .map { meta, grm_files, nparts_gcta, part_gcta_job -> grm_files }
+                    .collect()
+                    .map { rows -> rows.flatten() }
+
+                input[0] = mgrm_file
+                    .combine(ldms_grm_files)
+                    .map { row -> [[ id:'plink_simulated_ldms' ], row[0], row[1..-1]] }
+                input[1] = GAWK_BIVARIATE_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_ldms' ], phenotype_file, 1, 2] }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output.map { meta, quant_covariates_file -> [[ id:'plink_simulated_ldms' ], quant_covariates_file] }
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { meta, cat_covariates_file -> [[ id:'plink_simulated_ldms' ], cat_covariates_file] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bivariate_results.size() == 1 },
+                { assert process.out.log_file.size() == 1 },
+                { assert process.out.bivariate_results.get(0).get(0).id == "plink_simulated_ldms" },
+                { assert file(process.out.bivariate_results.get(0).get(1)).name == "plink_simulated_ldms.hsq" },
+                { assert file(process.out.log_file.get(0).get(1)).name == "plink_simulated_ldms.log" },
+                { assert file(process.out.log_file.get(0).get(1)).exists() },
+                {
+                    def resultFile = file(process.out.bivariate_results.get(0).get(1))
+                    def parsedRows = resultFile.readLines()
+                        .collect { it.tokenize() }
+                        .findAll { row -> !row.isEmpty() && row[0] != 'Source' }
+                        .collect { row -> [row[0], row[1..-1]] }
+                    def valueBySource = parsedRows.collectEntries { row -> [(row[0]): row[1]] }
+                    def stableRows = parsedRows.findAll { row -> !['rG1', 'rG2'].contains(row[0]) }
+                    assert valueBySource["n"] == ["400"]
+                    assert valueBySource.keySet().containsAll(["rG1", "rG2"])
+                    assert snapshot(
+                        [
+                            [
+                                process.out.bivariate_results.get(0).get(0),
+                                resultFile.name,
+                                stableRows
+                            ]
+                        ],
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - binary bivariate phenotype with ldms mgrm and prevalence") {
+        when {
+            params {
+                module_args = '--reml-bivar-prevalence 0.30 0.25'
+            }
+            process {
+                """
+                mgrm_file = Channel
+                    .of('plink_simulated_ldms1.part_1_1\\nplink_simulated_ldms2.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+
+                ldms_grm_files = GCTA_MAKEGRMPART_LDMS1.out.grm_files
+                    .mix(GCTA_MAKEGRMPART_LDMS2.out.grm_files)
+                    .map { meta, grm_files, nparts_gcta, part_gcta_job -> grm_files }
+                    .collect()
+                    .map { rows -> rows.flatten() }
+
+                input[0] = mgrm_file
+                    .combine(ldms_grm_files)
+                    .map { row -> [[ id:'plink_simulated_ldms' ], row[0], row[1..-1]] }
+                input[1] = GAWK_BIVARIATE_BINARY_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_ldms' ], phenotype_file, '', ''] }
+                input[2] = [[ id:'plink_simulated_ldms' ], []]
+                input[3] = [[ id:'plink_simulated_ldms' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bivariate_results.size() == 1 },
+                { assert process.out.log_file.size() == 1 },
+                { assert process.out.bivariate_results.get(0).get(0).id == "plink_simulated_ldms" },
+                { assert file(process.out.bivariate_results.get(0).get(1)).name == "plink_simulated_ldms.hsq" },
+                { assert file(process.out.log_file.get(0).get(1)).name == "plink_simulated_ldms.log" },
+                {
+                    def logText = file(process.out.log_file.get(0).get(1)).text
+                    assert logText.contains("--reml-bivar-prevalence 0.3 0.25")
+                },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_file"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - bivariate phenotype fails when mgrm references missing GRM basename") {
+        when {
+            process {
+                """
+                broken_mgrm_file = Channel
+                    .of('plink_simulated_ldms_missing.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms_broken.mgrm', newLine: true)
+
+                ldms_grm_files = GCTA_MAKEGRMPART_LDMS1.out.grm_files
+                    .mix(GCTA_MAKEGRMPART_LDMS2.out.grm_files)
+                    .map { meta, grm_files, nparts_gcta, part_gcta_job -> grm_files }
+                    .collect()
+                    .map { rows -> rows.flatten() }
+
+                input[0] = broken_mgrm_file
+                    .combine(ldms_grm_files)
+                    .map { row -> [[ id:'plink_simulated_ldms' ], row[0], row[1..-1]] }
+                input[1] = GAWK_BIVARIATE_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_ldms' ], phenotype_file, '', ''] }
+                input[2] = [[ id:'plink_simulated_ldms' ], []]
+                input[3] = [[ id:'plink_simulated_ldms' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - bivariate phenotype with ldms mgrm - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                mgrm_file = Channel
+                    .of('plink_simulated_ldms1.part_1_1\\nplink_simulated_ldms2.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+
+                ldms_grm_files = GCTA_MAKEGRMPART_LDMS1.out.grm_files
+                    .mix(GCTA_MAKEGRMPART_LDMS2.out.grm_files)
+                    .map { meta, grm_files, nparts_gcta, part_gcta_job -> grm_files }
+                    .collect()
+                    .map { rows -> rows.flatten() }
+
+                input[0] = mgrm_file
+                    .combine(ldms_grm_files)
+                    .map { row -> [[ id:'plink_simulated_ldms' ], row[0], row[1..-1]] }
+                input[1] = GAWK_BIVARIATE_PHENO.out.output.map { meta, phenotype_file -> [[ id:'plink_simulated_ldms' ], phenotype_file, '', ''] }
+                input[2] = [[ id:'plink_simulated_ldms' ], []]
+                input[3] = [[ id:'plink_simulated_ldms' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bivariate_results.get(0).get(0).id == "plink_simulated_ldms" },
+                { assert file(process.out.bivariate_results.get(0).get(1)).name == "plink_simulated_ldms.hsq" },
+                { assert file(process.out.log_file.get(0).get(1)).name == "plink_simulated_ldms.log" },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_file"])).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,122 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hifitrimmer_trim"
+description: |
+  Run hifi-trimmer trim to filter and trim adapter-hit regions from PacBio HiFi reads.
+  Supports BAM/CRAM/FASTA/FASTQ input and emits gzip-compressed FASTA (default) or FASTQ, or SAM, BAM, or CRAM according to the selected output format.
+keywords:
+  - pacbio
+  - bam
+  - fasta
+  - fastq
+  - hifi_trimmer
+  - filtering
+  - trimming
+  - quality control
+  - adapter removal
+tools:
+  - hifi-trimmer:
+      description: |
+        hifi-trimmer: tools for processing HiFi read BLAST results and filtering/trimming read files.
+      homepage: "https://github.com/sanger-tol/hifi-trimmer"
+      documentation: "https://github.com/sanger-tol/hifi-trimmer"
+      licence: ["MIT"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: Input BAM/CRAM/FASTA/FASTQ file to filter and trim
+        pattern: "*.{bam,cram,fa,fasta,fa.gz,fasta.gz,fastq,fq,fastq.gz,fq.gz}"
+    - bed:
+        type: file
+        description: Input gzipped bed file contains regions to filter/trim
+        pattern: "*.bed.gz"
+output:
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.fasta.gz":
+          type: file
+          description: Gzip-compressed FASTA output from hifi-trimmer (default format)
+          pattern: "*.fasta.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.fastq.gz":
+          type: file
+          description: Gzip-compressed FASTQ output from hifi-trimmer when `-f fastq` is selected
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930" # FASTQ
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.sam":
+          type: file
+          description: SAM output from hifi-trimmer when `-f sam` is selected
+          pattern: "*.sam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2573" # SAM
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.bam":
+          type: file
+          description: BAM output from hifi-trimmer (default format)
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  cram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.cram":
+          type: file
+          description: CRAM output from hifi-trimmer when `-f cram` is selected
+          pattern: "*.cram"
+          ontologies:
+            - edam: "http://edamontology.org/format_3462" # CRAM
+  versions_hifitrimmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifi-trimmer:
+          type: string
+          description: The name of the tool
+      - hifi-trimmer --version | cut -d' ' -f3:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifi-trimmer:
+          type: string
+          description: The name of the tool
+      - hifi-trimmer --version | cut -d' ' -f3:
+          type: eval
+          description: The expression to obtain the version
+authors:
+  - "@sainsachiko"
+maintainers:
+  - "@sainsachiko"

@@ -16,7 +16,7 @@ process VIREO {
     tuple val(meta), path('*_prob_doublet.tsv.gz')   , emit: prob_doublets
     tuple val(meta), path('*_GT_donors.vireo.vcf.gz'), emit: genotype_vcf     , optional: true
     tuple val(meta), path('*_filtered_variants.tsv') , emit: filtered_variants, optional: true
-    path 'versions.yml'                              , emit: versions
+    tuple val("${task.process}"), val('vireo'), eval('vireo | sed "1!d ; s/Welcome to vireoSNP v//; s/\\!//"'), emit: versions_vireo, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +33,7 @@ process VIREO {
 
     """
     vireo \\
-        $input \\
+        ${input} \\
         -N ${n_donor} \\
         -d ${donor_file} \\
         -p $task.cpus \\
@@ -48,11 +48,6 @@ process VIREO {
         mv GT_donors.vireo.vcf.gz "${prefix}_GT_donors.vireo.vcf.gz"
         GTbarcode -i ${prefix}_GT_donors.vireo.vcf.gz -o ./${prefix}_filtered_variants.tsv ${randSeed_GTbarcode}
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vireo: \$(vireo | sed '1!d ; s/Welcome to vireoSNP //; s/!//')
-    END_VERSIONS
     """
 
     stub:
@@ -73,10 +68,5 @@ process VIREO {
     echo "" | gzip > ${prefix}_prob_doublet.tsv.gz
 
     ${optional_files}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vireo: \$(vireo | sed '1!d ; s/Welcome to vireoSNP //; s/!//')
-    END_VERSIONS
     """
 }

@@ -30,7 +30,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out
+                    sanitizeOutput(workflow.out)
                 ).match() }
             )
         }
@@ -56,7 +56,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out
+                    sanitizeOutput(workflow.out)
                 ).match() }
             )
         }
@@ -86,7 +86,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out
+                    sanitizeOutput(workflow.out)
                 ).match() }
             )
         }
@@ -111,7 +111,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out
+                    sanitizeOutput(workflow.out)
                 ).match() }
             )
         }

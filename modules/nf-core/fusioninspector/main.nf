@@ -4,8 +4,8 @@ process FUSIONINSPECTOR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/139b94a1f10c6e23a8c27eaed1e5a689db978a513d0ee155e74d35f0970814fe/data' :
-        'community.wave.seqera.io/library/fusion-inspector_igv-reports_perl-json-xs_pysam_pruned:c6147971d107ab11'}"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/42/4230f4794a421af3e8caf8de4b5b8a50ecff4768625543d97e2c1cdf5518f38e/data' :
+        'community.wave.seqera.io/library/fusion-inspector_perl-json-xs_perl-carp-assert_pip_pruned:367be466d24aba4a'}"
 
     input:
     tuple val(meta), path(reads), path(fusion_list)

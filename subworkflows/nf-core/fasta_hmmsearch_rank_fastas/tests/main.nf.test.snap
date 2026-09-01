@@ -1,76 +1,63 @@
 {
-    "28s_out": {
+    "seqfastas": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "rank"
-                        },
-                        "rank.hmmrank.tsv.gz:md5,d07a8a166c4795c2c375435bc30336cd"
-                    ]
+            [
+                [
+                    {
+                        "id": "arc16s"
+                    },
+                    "arc16s.fa.gz:md5,8c00033483c62c0e64b8fc4f958eb117"
                 ],
-                "1": [
-                    
+                [
+                    {
+                        "id": "bac16s"
+                    },
+                    "bac16s.fa.gz:md5,3e2e39f8d78a5e3965f0c4dc804dd977"
                 ],
-                "2": [
-                    "versions.yml:md5,afe27ad9b11150e9c2ff77ff1d63e587"
-                ],
-                "hmmrank": [
-                    [
-                        {
-                            "id": "rank"
-                        },
-                        "rank.hmmrank.tsv.gz:md5,d07a8a166c4795c2c375435bc30336cd"
-                    ]
-                ],
-                "seqfastas": [
-                    
-                ],
-                "versions": [
-                    "versions.yml:md5,afe27ad9b11150e9c2ff77ff1d63e587"
+                [
+                    {
+                        "id": "euk18s"
+                    },
+                    "euk18s.fa.gz:md5,c0117af2379df85b13890efde1bcdda4"
                 ]
-            }
+            ]
         ],
-        "timestamp": "2026-05-07T11:57:15.396998",
+        "timestamp": "2026-08-26T09:14:14.636250271",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.6"
         }
     },
-    "16s_out": {
+    "LSU rRNA - hmm/fasta": {
         "content": [
             {
-                "0": [
+                "domain_summary": [
+                    
+                ],
+                "hmmrank": [
                     [
                         {
                             "id": "rank"
                         },
-                        "rank.hmmrank.tsv.gz:md5,c9839df4d2ddbef1686ab52ed354ab87"
+                        "rank.hmmrank.tsv.gz:md5,d07a8a166c4795c2c375435bc30336cd"
                     ]
                 ],
-                "1": [
-                    [
-                        {
-                            "id": "arc16s"
-                        },
-                        "domain_16s.fnaarc16s.fa.gz:md5,8c00033483c62c0e64b8fc4f958eb117"
-                    ],
-                    [
-                        {
-                            "id": "bac16s"
-                        },
-                        "domain_16s.fnabac16s.fa.gz:md5,3e2e39f8d78a5e3965f0c4dc804dd977"
-                    ],
-                    [
-                        {
-                            "id": "euk18s"
-                        },
-                        "domain_16s.fnaeuk18s.fa.gz:md5,c0117af2379df85b13890efde1bcdda4"
-                    ]
-                ],
-                "2": [
-                    "versions.yml:md5,afe27ad9b11150e9c2ff77ff1d63e587"
+                "seqfastas": [
+                    
+                ]
+            }
+        ],
+        "timestamp": "2026-08-21T16:52:52.353601704",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "SSU rRNA - hmm/fasta": {
+        "content": [
+            {
+                "domain_summary": [
+                    
                 ],
                 "hmmrank": [
                     [
@@ -85,30 +72,79 @@
                         {
                             "id": "arc16s"
                         },
-                        "domain_16s.fnaarc16s.fa.gz:md5,8c00033483c62c0e64b8fc4f958eb117"
+                        "arc16s.fa.gz:md5,8c00033483c62c0e64b8fc4f958eb117"
                     ],
                     [
                         {
                             "id": "bac16s"
                         },
-                        "domain_16s.fnabac16s.fa.gz:md5,3e2e39f8d78a5e3965f0c4dc804dd977"
+                        "bac16s.fa.gz:md5,3e2e39f8d78a5e3965f0c4dc804dd977"
                     ],
                     [
                         {
                             "id": "euk18s"
                         },
-                        "domain_16s.fnaeuk18s.fa.gz:md5,c0117af2379df85b13890efde1bcdda4"
+                        "euk18s.fa.gz:md5,c0117af2379df85b13890efde1bcdda4"
                     ]
-                ],
-                "versions": [
-                    "versions.yml:md5,afe27ad9b11150e9c2ff77ff1d63e587"
                 ]
             }
         ],
-        "timestamp": "2026-05-07T11:57:08.203643",
+        "timestamp": "2026-08-26T09:14:02.918378183",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.6"
+        }
+    },
+    "hmmrank": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "rank"
+                    },
+                    "rank.hmmrank.tsv.gz:md5,7d1eef6cbb1d7f4f74d674418e8b24f0"
+                ]
+            ]
+        ],
+        "timestamp": "2026-08-24T20:22:54.733440172",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "domain_summary_filenames": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "arc16s"
+                    },
+                    "arc16s.domtbl.gz"
+                ],
+                [
+                    {
+                        "id": "bac16s"
+                    },
+                    "bac16s.domtbl.gz"
+                ],
+                [
+                    {
+                        "id": "euk18s"
+                    },
+                    "euk18s.domtbl.gz"
+                ],
+                [
+                    {
+                        "id": "mito12s"
+                    },
+                    "mito12s.domtbl.gz"
+                ]
+            ]
+        ],
+        "timestamp": "2026-08-21T18:11:11.296683107",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }

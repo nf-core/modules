@@ -14,7 +14,8 @@ tools:
       homepage: http://samtools.github.io/bcftools/bcftools.html
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -29,35 +30,35 @@ input:
           e.g. [ 'file1.vcf.gz', 'file2.vcf' ]
         pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3016" # VCF
-          - edam: "http://edamontology.org/format_3570" # BCF
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3570"
     - tbis:
         type: list
         description: |
           List containing the tbi index files corresponding to the vcf/bcf input files
         pattern: "*.tbi"
         ontologies:
-          - edam: "http://edamontology.org/format_3475" # Tabix index
+          - edam: "http://edamontology.org/format_3475"
     - file_list:
         type: file
         description: |
           Optional text file containing the list of VCF/BCF files to be processed by bcftools isec, one per line.
         ontologies:
-          - edam: "http://edamontology.org/format_2330" # Text file
+          - edam: "http://edamontology.org/format_2330"
     - targets_file:
         type: file
         description: |
           Optional file containing target regions to restrict the analysis to.
         ontologies:
-          - edam: "http://edamontology.org/format_3003" # BED
-          - edam: "http://edamontology.org/format_3475" # Tab-separated
+          - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_3475"
     - regions_file:
         type: file
         description: |
           Optional file containing regions to restrict the analysis to.
         ontologies:
-          - edam: "http://edamontology.org/format_3003" # BED
-          - edam: "http://edamontology.org/format_3475" # Tab-separated
+          - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_3475"
 output:
   results:
     - - meta:
@@ -70,8 +71,8 @@ output:
           description: Directory containing the output files from bcftools isec
           pattern: "${prefix}/"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # VCF
-            - edam: "http://edamontology.org/format_3570" # BCF
+            - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3570"
   versions_bcftools:
     - - ${task.process}:
           type: string
@@ -80,7 +81,7 @@ output:
           type: string
           description: The tool name
       - bcftools --version | sed '1!d; s/^.*bcftools //':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -91,7 +92,7 @@ topics:
           type: string
           description: The tool name
       - bcftools --version | sed '1!d; s/^.*bcftools //':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@joseespinosa"

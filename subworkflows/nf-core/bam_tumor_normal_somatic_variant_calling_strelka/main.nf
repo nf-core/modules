@@ -11,8 +11,6 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_STRELKA {
     ch_intervals     // channel: [mandatory] [ interval.bed.gz, interval.bed.gz.tbi, num_intervals ] or [ [], [], 0 ] if no intervals
 
     main:
-    ch_versions = channel.empty()
-
     // Combine cram and intervals for spread and gather strategy
     ch_cram_intervals = ch_cram.combine(ch_intervals)
         // Move num_intervals to meta map
@@ -50,10 +48,6 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_STRELKA {
         // add variantcaller to meta map and remove no longer necessary field: num_intervals
         .map{ meta, vcf -> [ meta - meta.subMap('num_intervals') + [ variantcaller:'strelka' ], vcf ] }
 
-    ch_versions = ch_versions.mix(STRELKA_SOMATIC.out.versions)
-
     emit:
     vcf      = ch_vcf
-
-    versions = ch_versions
 }

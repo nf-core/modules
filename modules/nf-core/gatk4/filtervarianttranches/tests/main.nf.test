@@ -34,7 +34,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.vcf[0][1]).name,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
                     file(process.out.tbi[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }

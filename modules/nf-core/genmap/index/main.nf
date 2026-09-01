@@ -12,7 +12,7 @@ process GENMAP_INDEX {
 
     output:
     tuple val(meta), path("${prefix}") , emit: index
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('genmap'), eval("genmap --version |& sed -n 's/GenMap version: //p'"), emit: versions_genmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process GENMAP_INDEX {
         --fasta-file ${fasta} \\
         --index ${prefix} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process GENMAP_INDEX {
 
     """
     touch ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
-    END_VERSIONS
     """
 }

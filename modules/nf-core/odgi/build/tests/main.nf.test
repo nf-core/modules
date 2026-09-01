@@ -25,8 +25,30 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
-                { assert path(process.out.og.get(0).get(1)).exists() } // the odgi file on disk may not be deterministic, but the graph itself is
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["og"])).match() } // the odgi file on disk may not be deterministic, but the graph itself is
+            )
+        }
+    }
+
+    test("homo_sapiens - pangenome - pangenome_smoothxg_gfa - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.smoothxg.gfa', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

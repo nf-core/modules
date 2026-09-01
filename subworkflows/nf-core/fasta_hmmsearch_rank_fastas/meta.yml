@@ -21,11 +21,18 @@ input:
       type: file
       description: |
         The input channel containing sequences to be searched and ranked
+  - save_domtblout:
+      type: boolean
+      description: |
+        Whether hmmsearch should also write and emit its per-domain hit table (--domtblout)
 output:
   - hmmrank:
       type: file
       description: |
-        Channel containing the TSV file from ranking hmmsearch hits
+        Channel containing the TSV file from ranking hmmsearch hits.
+        When save_domtblout is set, the table also carries the target and profile lengths
+        and, for each of the three coordinate sets, the bounds of the match, the size of the
+        union of the pair's domains, and the number of disjoint pieces it falls into.
         Structure: [ val(meta), path(hmmrank) ]
       pattern: "*.hmmrank.tsv.gz"
   - bai:
@@ -34,12 +41,12 @@ output:
         Channel containing subsets of sequences
         Structure: [ val(meta), path(fasta) ]
       pattern: "*.fa.gz"
-  - versions:
+  - domain_summary:
       type: file
       description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
+        Channel containing hmmsearch's per-domain hit table, only present when save_domtblout is true
+        Structure: [ val(meta), path(domtbl) ]
+      pattern: "*.domtbl.gz"
 authors:
   - "@erikrikarddaniel"
 maintainers:

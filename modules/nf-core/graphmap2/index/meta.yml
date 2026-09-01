@@ -1,5 +1,6 @@
 name: graphmap2_index
-description: A versatile pairwise aligner for genomic and spliced nucleotide sequences
+description: A versatile pairwise aligner for genomic and spliced nucleotide
+  sequences
 keywords:
   - index
   - fasta
@@ -10,7 +11,8 @@ tools:
         A versatile pairwise aligner for genomic and spliced nucleotide sequences.
       homepage: https://github.com/lbcb-sci/graphmap2
       documentation: https://github.com/lbcb-sci/graphmap2#graphmap2---a-highly-sensitive-and-accurate-mapper-for-long-error-prone-reads
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:Graphmap2
 input:
   - fasta:
@@ -25,13 +27,27 @@ output:
         description: Index file in gmidx format
         pattern: "*.gmidx"
         ontologies: []
+  versions_graphmap2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - graphmap2:
+          type: string
+          description: The name of the tool
+      - "graphmap2 2>&1 | sed -n 's/Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - graphmap2:
+          type: string
+          description: The name of the tool
+      - "graphmap2 2>&1 | sed -n 's/Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@yuukiiwa"
   - "@drpatelh"

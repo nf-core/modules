@@ -11,9 +11,9 @@ process VIENNARNA_RNACOFOLD {
     tuple val(meta), path(rnacofold_fasta)
 
     output:
-    tuple val(meta), path("*.csv")  , emit: rnacofold_csv
-    tuple val(meta), path("*.ps")   , emit: rnacofold_ps
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.csv")                                                                   , emit: rnacofold_csv
+    tuple val(meta), path("*.ps")                                                                    , emit: rnacofold_ps
+    tuple val("${task.process}"), val('RNAcofold'), eval("RNAcofold --version 2>&1 | sed -n '1s/RNAcofold //p'"), emit: versions_rnacofold, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process VIENNARNA_RNACOFOLD {
         --output-format="D" \\
         ${args} \\
         > ${rnacofold_fasta.baseName}.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RNAcofold: \$( RNAcofold --version |& sed '1!d ; s/RNAcofold //')
-    END_VERSIONS
     """
 
     stub:
     """
     touch ${rnacofold_fasta.baseName}.csv
     touch ${rnacofold_fasta.baseName}.ps
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RNAcofold: \$( RNAcofold --version |& sed '1!d ; s/RNAcofold //')
-    END_VERSIONS
     """
 }
