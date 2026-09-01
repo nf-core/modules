@@ -22,10 +22,20 @@ input:
 
         Structure: [ val(meta), path(fasta) ]
       pattern: "*.{(fasta,fa,fna)(.gz)}"
+
+  - val_replace_dots:
+      type: boolean
+      description: |
+        Whether to replace dots in the fasta reference name with underscores.
+
+        Some tools can't handle dots in the fasta name, however,
+        sometimes the ID must remain unchanged.
+
   - val_get_chromsizes:
       type: boolean
       description: |
         Whether to generate a chromosome sizes file from the fasta reference.
+
   - val_get_dict:
       type: boolean
       description: |
