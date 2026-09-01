@@ -11,44 +11,56 @@ nextflow_process {
     tag "semibin/singleeasybin"
     config './nextflow.config'
 
-    test("bacteroides_fragilis") {
+    test("metagenome - binning") {
 
         when {
             params {
                 module_args  = ''
-                module_args2 = '--ml-threshold 0 --minfasta-kbs 0 --min-len 0 --environment global'
+                module_args2 = '--ml-threshold 0 --minfasta-kbs 0 --min-len 0 --random-seed 0'
             }
             process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1_contigs.sorted.bam', checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/contigs.fasta.gz', checkIfExists:true),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/s1.sorted.bam', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/s2.sorted.bam', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/s3.sorted.bam', checkIfExists:true)
+                    ]
                 ]
                 """
             }
         }
         then {
-            assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert process.success },
+                // number and names of bins are not stable
+                { assert process.out.output_fasta.get(0).get(1).size() >= 1 },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["csv", "tsv"], ignoreKeys: ["output_fasta"])
+                ).match() }
             )
         }
     }
 
-    test("bacteroides_fragilis - stub") {
+    test("metagenome - binning - stub") {
         options '-stub'
         when {
             params {
                 module_args  = ''
-                module_args2 = '--ml-threshold 0 --minfasta-kbs 0 --min-len 0 --environment global'
+                module_args2 = '--ml-threshold 0 --minfasta-kbs 0 --min-len 0 --random-seed 0'
             }
             process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1_contigs.sorted.bam', checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/contigs.fasta.gz', checkIfExists:true),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/s1.sorted.bam', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/s2.sorted.bam', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/s3.sorted.bam', checkIfExists:true)
+                    ]
                 ]
                 """
             }

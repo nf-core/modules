@@ -1,0 +1,47 @@
+nextflow_process {
+
+    name "Test Process SEMIBIN_MULTIEASYBIN (GPU)"
+
+    script "../main.nf"
+    process "SEMIBIN_MULTIEASYBIN"
+
+    tag "gpu"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "semibin"
+    tag "semibin/multieasybin"
+    config './nextflow.gpu.config'
+
+    test("semibin_data - bam - gpu") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi.fasta.gz", checkIfExists:true),
+                    [
+                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted1.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted2.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted3.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted4.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted5.bam", checkIfExists:true)
+                    ],
+                    []
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                // number and names of bins are not stable
+                { assert process.out.bins.get(0).get(1).size() >= 1 },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["csv", "tsv", "log"], ignoreKeys: ["bins"])
+                ).match() }
+            )
+        }
+    }
+
+}

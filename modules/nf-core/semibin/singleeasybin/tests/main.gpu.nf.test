@@ -1,0 +1,40 @@
+nextflow_process {
+
+    name "Test Process SEMIBIN_SINGLEEASYBIN (GPU)"
+
+    script "../main.nf"
+    process "SEMIBIN_SINGLEEASYBIN"
+
+    tag "gpu"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "semibin"
+    tag "semibin/singleeasybin"
+    config './nextflow.gpu.config'
+
+    test("metagenome - binning - gpu") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/contigs.fasta.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                // number and names of bins are not stable
+                { assert process.out.output_fasta.get(0).get(1).size() >= 1 },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["csv", "tsv"], ignoreKeys: ["output_fasta"])
+                ).match() }
+            )
+        }
+    }
+
+}
