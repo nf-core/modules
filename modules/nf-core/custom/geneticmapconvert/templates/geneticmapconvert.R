@@ -72,9 +72,13 @@ convert_colnames <- function(x) {
 #' @param prefix Prefix name for the output files
 #' @param tolerance Difference
 #' @param digits Number of decimal to round cm and rate
+#' @param remove_duplicated_cm Should duplicated genetic distance be removed
+#' @param remove_null_rate Should zeros rate values be removed
 process_map_file <- function(
   file_path, chr = NULL, prefix = "output",
-  tolerance = NULL, digits = NULL
+  tolerance = NULL, digits = NULL,
+  remove_duplicated_cm = FALSE,
+  remove_null_rate = FALSE
 ) {
   # Read the map file into a data.table
   options(warn = 2) # all warnings will be set to error
@@ -166,7 +170,7 @@ process_map_file <- function(
 
   compute_rate <- FALSE
   # Remove duplicated cm values
-  if (any(duplicated(map_df[["cm"]]))) {
+  if (any(duplicated(map_df[["cm"]])) && remove_duplicated_cm) {
     message("Duplicated cm values found in map file. Removing them.")
     map_df <- map_df[!duplicated(map_df[["cm"]]), ]
     compute_rate <- TRUE
@@ -177,7 +181,7 @@ process_map_file <- function(
     zero_rows <- which(
       map_df[["rate"]] == 0 & seq_len(nrow(map_df)) != nrow(map_df)
     )
-    if (length(zero_rows) > 0) {
+    if (length(zero_rows) > 0 && remove_null_rate) {
       message("Zero rate values found in map file. Removing them.")
       print(map_df[zero_rows, ])
       map_df <- map_df[-zero_rows, ]
@@ -205,14 +209,6 @@ process_map_file <- function(
 
   if (!is.numeric(map_df[["rate"]])) {
     stop("rate column should be numeric")
-  }
-
-  # Sanity check, but should never be reached
-  zero_rows <- which(
-    map_df[["rate"]] == 0 & seq_len(nrow(map_df)) != nrow(map_df)
-  )
-  if (length(zero_rows) > 0) {
-    stop("rate should be greater than 0")
   }
 
   map_df[["rate"]] <- round(map_df[["rate"]], digits = digits)
@@ -260,7 +256,9 @@ opt <- list(
   map_file = "${map_file}",
   chr = "${meta.chr}",
   tolerance = NULL,
-  digits = 8
+  digits = 8,
+  remove_duplicated_cm = FALSE,
+  remove_null_rate = FALSE
 )
 
 opt_valid <- process_inputs(
@@ -270,6 +268,7 @@ opt_valid <- process_inputs(
   expected_files = c("map_file"),
   expected_double = c("tolerance"),
   expected_integer = c("digits"),
+  expected_boolean = c("remove_duplicated_cm", "remove_null_rate"),
   required_opts = c("map_file", "output_prefix")
 )
 
@@ -278,7 +277,9 @@ process_map_file(
   chr =  opt_valid[["chr"]],
   prefix =  opt_valid[["output_prefix"]],
   tolerance =  parse_tolerance(opt_valid[["tolerance"]]),
-  digits = opt_valid[["digits"]]
+  digits = opt_valid[["digits"]],
+  remove_duplicated_cm = opt_valid[["remove_duplicated_cm"]],
+  remove_null_rate = opt_valid[["remove_null_rate"]]
 )
 
 process_end(

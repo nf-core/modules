@@ -368,7 +368,7 @@ nextflow_process {
     test("Test warning - duplicated cm and null rate") {
         when {
             params {
-                module_args = ""
+                module_args = "--remove_duplicated_cm --remove_null_rate"
             }
             process {
                 """
