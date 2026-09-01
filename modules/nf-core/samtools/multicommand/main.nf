@@ -1,5 +1,5 @@
 process SAMTOOLS_MULTICOMMAND {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -10,7 +10,7 @@ process SAMTOOLS_MULTICOMMAND {
     input:
     tuple val(meta), path(input), path(index)
     tuple val(meta2), path(fasta), path(fai)
-    val(pipeline)
+    val pipeline
 
     output:
     // Alignment format outputs (view, sort, markdup, merge, cat, collate)
@@ -20,16 +20,16 @@ process SAMTOOLS_MULTICOMMAND {
     tuple val(meta), path("*.{bai,csi,crai}"), optional: true, emit: index
 
     // Sequence outputs (fasta, fastq)
-    tuple val(meta), path("*.fasta.gz")            , emit: fasta            , optional: true
-    tuple val(meta), path("*.fastq.gz")            , emit: fastq            , optional: true
-    tuple val(meta), path("*_{1,2}.fasta.gz")      , emit: fasta_pair       , optional: true
+    tuple val(meta), path("*.fasta.gz"), emit: fasta, optional: true
+    tuple val(meta), path("*.fastq.gz"), emit: fastq, optional: true
+    tuple val(meta), path("*_{1,2}.fasta.gz"), emit: fasta_pair, optional: true
     tuple val(meta), path("*_interleaved.fasta.gz"), emit: fasta_interleaved, optional: true
-    tuple val(meta), path("*_singleton.fasta.gz")  , emit: fasta_singleton  , optional: true
-    tuple val(meta), path("*_other.fasta.gz")      , emit: fasta_other      , optional: true
-    tuple val(meta), path("*_{1,2}.fastq.gz")      , emit: fastq_pair       , optional: true
-    tuple val(meta), path("*_interleaved.fastq")   , emit: fastq_interleaved, optional: true
-    tuple val(meta), path("*_singleton.fastq.gz")  , emit: fastq_singleton  , optional: true
-    tuple val(meta), path("*_other.fastq.gz")      , emit: fastq_other      , optional: true
+    tuple val(meta), path("*_singleton.fasta.gz"), emit: fasta_singleton, optional: true
+    tuple val(meta), path("*_other.fasta.gz"), emit: fasta_other, optional: true
+    tuple val(meta), path("*_{1,2}.fastq.gz"), emit: fastq_pair, optional: true
+    tuple val(meta), path("*_interleaved.fastq"), emit: fastq_interleaved, optional: true
+    tuple val(meta), path("*_singleton.fastq.gz"), emit: fastq_singleton, optional: true
+    tuple val(meta), path("*_other.fastq.gz"), emit: fastq_other, optional: true
 
     tuple val("${task.process}"), val('samtools'), eval('samtools version | sed "1!d;s/.* //"'), emit: versions_samtools, topic: versions
 
@@ -39,7 +39,7 @@ process SAMTOOLS_MULTICOMMAND {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if (pipeline.size() <=1) {
+    if (pipeline.size() <= 1) {
         error("Error: SAMTOOLS_MULTICOMMAND requires at least two commands!")
     }
 
@@ -69,7 +69,8 @@ process SAMTOOLS_MULTICOMMAND {
                 : "bam"
         output_reference = (fasta && input.getExtension() == "cram") ? "--reference ${fasta}" : ""
         output_string = "-o ${prefix}.${extension}"
-    } else if (final_command == "markdup") {
+    }
+    else if (final_command == "markdup") {
         def argsKey = n_commands == 1 ? "args" : "args${n_commands}"
         def argsLast = task.ext[argsKey] ?: ""
         def extension = argsLast.contains("--output-fmt sam")
@@ -79,64 +80,79 @@ process SAMTOOLS_MULTICOMMAND {
                 : "bam"
         output_reference = (fasta && input.getExtension() == "cram") ? "--reference ${fasta}" : ""
         output_string = "${prefix}.${extension}"
-
-    } else if (final_command == "fasta") {
+    }
+    else if (final_command == "fasta") {
         // fasta produces multiple files with special output flags
         output_string = "-0 ${prefix}_other.fasta.gz"
         if (!meta.single_end) {
             output_string = output_string + " -1 ${prefix}_1.fasta.gz -2 ${prefix}_2.fasta.gz -s ${prefix}_singleton.fasta.gz"
-        } else {
+        }
+        else {
             output_string = output_string + " -1 ${prefix}_1.fasta.gz -s ${prefix}_singleton.fasta.gz"
         }
-    } else if (final_command == "fastq") {
+    }
+    else if (final_command == "fastq") {
         // fastq produces multiple files with special output flags
         output_string = "-0 ${prefix}_other.fastq.gz"
         if (!meta.single_end) {
             output_string = output_string + " -1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz -s ${prefix}_singleton.fastq.gz"
-        } else {
+        }
+        else {
             output_string = output_string + " -1 ${prefix}_1.fastq.gz -s ${prefix}_singleton.fastq.gz"
         }
     }
 
     // Build the pipeline command
-    def pipeline_command = pipeline.withIndex().collect { subcommand, idx ->
-        def argsKey = idx == 0 ? "args" : "args${idx + 1}"
-        def taskArgs = task.ext[argsKey] ?: ""
-        def lastCommand = (idx == n_commands - 1)
-        def stdoutMarker = "-"
-        if (subcommand == "collate") { stdoutMarker = "-O" }
-        if (subcommand in ["sort", "cat", "view"]) { stdoutMarker = "" }
-        def stdinMarker = "-"
-        
-        def cmd_parts = ["samtools", subcommand]
-        if(subcommand != "cat") { cmd_parts <<  "-@ ${task.cpus}" }
-        if (taskArgs) {
-            cmd_parts << taskArgs
-        }
-        if (idx == 0) {
-            if (input_reference) {
-                cmd_parts << input_reference
+    def pipeline_command = pipeline
+        .withIndex()
+        .collect { subcommand, idx ->
+            def argsKey = idx == 0 ? "args" : "args${idx + 1}"
+            def taskArgs = task.ext[argsKey] ?: ""
+            def lastCommand = (idx == n_commands - 1)
+            def stdoutMarker = "-"
+            if (subcommand == "collate") {
+                stdoutMarker = "-O"
             }
-            cmd_parts << (input instanceof List ? input.join(" ") : input)
-            cmd_parts << stdoutMarker
-        }
-        if (idx != 0) {
-            cmd_parts << stdinMarker            
-        }
-        if (idx != 0 && !lastCommand) {
-            cmd_parts << stdoutMarker
-        }
-        if (!lastCommand) {
-            if (subcommand != "cat") { cmd_parts << "-u" }
-        } else {
-            if (output_reference) {
-                cmd_parts << output_reference
+            if (subcommand in ["sort", "cat", "view"]) {
+                stdoutMarker = ""
             }
-            cmd_parts << output_string
-        }
+            def stdinMarker = "-"
 
-        return cmd_parts.join(" ")
-    }.join(" |\\\n")
+            def cmd_parts = ["samtools", subcommand]
+            if (subcommand != "cat") {
+                cmd_parts << "-@ ${task.cpus}"
+            }
+            if (taskArgs) {
+                cmd_parts << taskArgs
+            }
+            if (idx == 0) {
+                if (input_reference) {
+                    cmd_parts << input_reference
+                }
+                cmd_parts << (input instanceof List ? input.join(" ") : input)
+                cmd_parts << stdoutMarker
+            }
+            if (idx != 0) {
+                cmd_parts << stdinMarker
+            }
+            if (idx != 0 && !lastCommand) {
+                cmd_parts << stdoutMarker
+            }
+            if (!lastCommand) {
+                if (subcommand != "cat") {
+                    cmd_parts << "-u"
+                }
+            }
+            else {
+                if (output_reference) {
+                    cmd_parts << output_reference
+                }
+                cmd_parts << output_string
+            }
+
+            return cmd_parts.join(" ")
+        }
+        .join(" |\\\n")
 
     // EXAMPLE:
     //
@@ -154,7 +170,6 @@ process SAMTOOLS_MULTICOMMAND {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def valid_options = ['view', 'sort', 'markdup', 'fixmate', 'merge', 'cat', 'collate', 'fastq', 'fasta']
@@ -178,21 +193,25 @@ process SAMTOOLS_MULTICOMMAND {
                 ? "cram"
                 : "bam"
         stub_outputs << "touch ${prefix}.${extension}"
-    } else if (final_command == "fasta") {
+    }
+    else if (final_command == "fasta") {
         if (meta.single_end) {
             stub_outputs << "echo | gzip > ${prefix}_1.fasta.gz"
             stub_outputs << "echo | gzip > ${prefix}_singleton.fasta.gz"
-        } else {
+        }
+        else {
             stub_outputs << "echo | gzip > ${prefix}_1.fasta.gz"
             stub_outputs << "echo | gzip > ${prefix}_2.fasta.gz"
             stub_outputs << "echo | gzip > ${prefix}_singleton.fasta.gz"
         }
         stub_outputs << "echo | gzip > ${prefix}_other.fasta.gz"
-    } else if (final_command == "fastq") {
+    }
+    else if (final_command == "fastq") {
         if (meta.single_end) {
             stub_outputs << "echo | gzip > ${prefix}_1.fastq.gz"
             stub_outputs << "echo | gzip > ${prefix}_singleton.fastq.gz"
-        } else {
+        }
+        else {
             stub_outputs << "echo | gzip > ${prefix}_1.fastq.gz"
             stub_outputs << "echo | gzip > ${prefix}_2.fastq.gz"
             stub_outputs << "echo | gzip > ${prefix}_singleton.fastq.gz"
