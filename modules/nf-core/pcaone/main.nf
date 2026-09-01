@@ -3,16 +3,16 @@ process PCAONE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8f908496d8e5dc44b1f5caa8d330e714250aacc9f65c1577791436914897af56/data'
-:         'community.wave.seqera.io/library/pcaone:0.7.2--22489ef995a570f0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8f908496d8e5dc44b1f5caa8d330e714250aacc9f65c1577791436914897af56/data':
+        'community.wave.seqera.io/library/pcaone:0.7.2--22489ef995a570f0' }"
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam)
 
     output:
     tuple val(meta), path("*.eigvecs")   , emit: eigvecs
-    tuple val(meta), path("*.eigvecs2")  , emit: eigvecs2  , optional: true
+    tuple val(meta), path("*.eigvecs2")  , emit: eigvecs2
     tuple val(meta), path("*.eigvals")   , emit: eigvals
     tuple val(meta), path("*.loadings")  , emit: loadings  , optional: true
     tuple val(meta), path("*.mbim")      , emit: mbim      , optional: true
@@ -39,6 +39,7 @@ process PCAONE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.eigvecs
+    touch ${prefix}.eigvecs2
     touch ${prefix}.eigvals
     touch ${prefix}.log
     """

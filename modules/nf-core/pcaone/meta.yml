@@ -58,7 +58,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.eigvecs2":
           type: file
-          description: Eigenvectors with a header line, produced when requested via ext.args
+          description: Eigenvectors with a header line
           pattern: "*.eigvecs2"
           ontologies: []
   eigvals:
@@ -132,17 +132,3 @@ authors:
   - "@dbaku42"
 maintainers:
   - "@dbaku42"
-containers:
-  docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/pcaone:0.7.2--22489ef995a570f0
-      build_id: bd-22489ef995a570f0_1
-      scan_id: sc-68b2c1495e94edd8_1
-  singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/pcaone:0.7.2--66ce0ae6c0a926e0
-      build_id: bd-66ce0ae6c0a926e0_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8f908496d8e5dc44b1f5caa8d330e714250aacc9f65c1577791436914897af56/data
-  conda:
-    linux/amd64:
-      lock_file: modules/nf-core/pcaone/.conda-lock/linux_amd64-bd-22489ef995a570f0_1.txt

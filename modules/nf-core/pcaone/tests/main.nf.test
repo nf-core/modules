@@ -12,6 +12,9 @@ nextflow_process {
     test("homo_sapiens - bed, bim, fam - popgen") {
 
         when {
+            params {
+                pcaone_args = '--svd 0'
+            }
             process {
                 """
                 input[0] = [
@@ -29,7 +32,42 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.eigvecs,
+                    process.out.eigvecs2,
                     process.out.eigvals,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+                { assert file(process.out.log[0][1]).text.contains('program started') }
+            )
+        }
+    }
+
+    test("homo_sapiens - bed, bim, fam - popgen - printv") {
+
+        when {
+            params {
+                pcaone_args = '--svd 0 --printv'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.eigvecs,
+                    process.out.eigvecs2,
+                    process.out.eigvals,
+                    process.out.loadings,
+                    process.out.mbim,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() },
                 { assert file(process.out.log[0][1]).text.contains('program started') }
@@ -42,6 +80,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                pcaone_args = '--svd 0'
+            }
             process {
                 """
                 input[0] = [
@@ -59,6 +100,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.eigvecs,
+                    process.out.eigvecs2,
                     process.out.eigvals,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() },
