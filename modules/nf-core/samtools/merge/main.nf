@@ -24,15 +24,17 @@ process SAMTOOLS_MERGE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
+    def index_type = file_type == "bam" ? "bai" : "crai"
     def reference = fasta ? "--reference ${fasta}" : ""
     """
     # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         merge \\
         --threads ${task.cpus - 1} \\
+        --write-index \\
         ${args} \\
         ${reference} \\
-        ${prefix}.${file_type} \\
+        ${prefix}.${file_type}##idx##${prefix}.${file_type}.${index_type} \\
         ${input_files}
     """
 
@@ -40,10 +42,9 @@ process SAMTOOLS_MERGE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
-    def index_type = file_type == "bam" ? "csi" : "crai"
-    def index = args.contains("--write-index") ? "touch ${prefix}.${index_type}" : ""
+    def index_type = file_type == "bam" ? "bai" : "crai"
     """
     touch ${prefix}.${file_type}
-    ${index}
+    touch ${prefix}.${file_type}.${index_type}
     """
 }

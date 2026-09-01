@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--write-index'
+                module_args = ''
             }
             process {
                 """
@@ -48,7 +48,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--write-index --output-fmt cram,version=3.0'
+                module_args = '--output-fmt cram,version=3.0'
             }
             process {
                 """
@@ -88,7 +88,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--write-index'
+                module_args = ''
             }
             process {
                 """
@@ -147,7 +147,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    process.out.index,
+                    file(process.out.index[0][1]).name,
                     process.out.cram,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()

@@ -84,7 +84,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.{bai,crai,csi}":
           type: file
-          description: BAM index file (optional)
+          description: BAM/CRAM index file, automatically generated alongside the output
           pattern: "*.{bai,crai,csi}"
           ontologies: []
   versions_samtools:
