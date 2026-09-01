@@ -7,6 +7,7 @@ include { SAMTOOLS_DICT                 } from "../../../modules/nf-core/samtool
 workflow FASTA_CLEAN_FAIDX {
     take:
     ch_reference          // channel.of( [meta], reference )
+    val_replace_dots      // boolean: replace dots in headers with underscores in trimmed reference
     val_get_chromsizes    // boolean: emit chromsizes
     val_get_dict          // boolean: emit dict
 
@@ -50,11 +51,19 @@ workflow FASTA_CLEAN_FAIDX {
     //
     // MODULE: REPLACE `.` IN HEADERS WITH `_`
     //         `.` CAN CAUSE ISSUES FOR SOME DOWNSTREAM TOOLS
+    //         CONTROLLING THIS ON val_replace_dots ALLOWS US TO STAY INSIDE OF
+    //         SOME STANDARDS (e.g. ONLY TAKE FIRST WORK IN HEADER)
     //
-    SEQKIT_DOTS (
-        SEQKIT_SEQ.out.fastx,
-        "fasta"
-    )
+    if (val_replace_dots) {
+        SEQKIT_DOTS (
+            SEQKIT_SEQ.out.fastx,
+            "fasta"
+        )
+
+        renamed_fasta = SEQKIT_DOTS.out.fastx
+    } else {
+        renamed_fasta = SEQKIT_SEQ.out.fastx
+    }
 
 
     //
@@ -62,7 +71,7 @@ workflow FASTA_CLEAN_FAIDX {
     //         OPTIONALLY EMIT CHROMOSOME SIZES FILE
     //
     SAMTOOLS_FAIDX (
-        SEQKIT_DOTS.out.fastx.map { meta, file -> [meta, file, []] },
+        renamed_fasta.map { meta, file -> [meta, file, []] },
         val_get_chromsizes
     )
 
@@ -79,12 +88,12 @@ workflow FASTA_CLEAN_FAIDX {
     // MODULE: GENERATE A SAMTOOLS DICT FILE BASED ON THE CORRECTED FASTA FILE
     //
     SAMTOOLS_DICT (
-        SEQKIT_DOTS.out.fastx.filter { meta, file -> val_get_dict }
+        renamed_fasta.filter { meta, file -> val_get_dict }
     )
 
 
     emit:
-    reference               = SEQKIT_DOTS.out.fastx
+    reference               = renamed_fasta
     fai                     = SAMTOOLS_FAIDX.out.fai
     sizes                   = SAMTOOLS_FAIDX.out.sizes
     dict                    = SAMTOOLS_DICT.out.dict
