@@ -53,7 +53,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["versions"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["versions_xengsort"])).match() }
             )
         }
     }
@@ -78,7 +78,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["versions"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["versions_xengsort"])).match() }
             )
         }
     }

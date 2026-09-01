@@ -45,25 +45,25 @@ process XENGSORT_CLASSIFY {
     
     if (meta.single_end) {
         """
-        echo "" | gzip > ${prefix}-host.fastq.gz
-        echo "" | gzip > ${prefix}-graft.fastq.gz
-        echo "" | gzip > ${prefix}-both.fastq.gz
-        echo "" | gzip > ${prefix}-neither.fastq.gz
-        echo "" | gzip > ${prefix}-ambiguous.fastq.gz
+        echo "" | gzip > ${prefix}-host.fq.gz
+        echo "" | gzip > ${prefix}-graft.fq.gz
+        echo "" | gzip > ${prefix}-both.fq.gz
+        echo "" | gzip > ${prefix}-neither.fq.gz
+        echo "" | gzip > ${prefix}-ambiguous.fq.gz
         """
     }
     else {
         """
-        echo "" | gzip > ${prefix}-host.1.fastq.gz
-        echo "" | gzip > ${prefix}-host.2.fastq.gz
-        echo "" | gzip > ${prefix}-graft.1.fastq.gz
-        echo "" | gzip > ${prefix}-graft.2.fastq.gz
-        echo "" | gzip > ${prefix}-both.1.fastq.gz
-        echo "" | gzip > ${prefix}-both.2.fastq.gz
-        echo "" | gzip > ${prefix}-neither.1.fastq.gz
-        echo "" | gzip > ${prefix}-neither.2.fastq.gz
-        echo "" | gzip > ${prefix}-ambiguous.1.fastq.gz
-        echo "" | gzip > ${prefix}-ambiguous.2.fastq.gz
+        echo "" | gzip > ${prefix}-host.1.fq.gz
+        echo "" | gzip > ${prefix}-host.2.fq.gz
+        echo "" | gzip > ${prefix}-graft.1.fq.gz
+        echo "" | gzip > ${prefix}-graft.2.fq.gz
+        echo "" | gzip > ${prefix}-both.1.fq.gz
+        echo "" | gzip > ${prefix}-both.2.fq.gz
+        echo "" | gzip > ${prefix}-neither.1.fq.gz
+        echo "" | gzip > ${prefix}-neither.2.fq.gz
+        echo "" | gzip > ${prefix}-ambiguous.1.fq.gz
+        echo "" | gzip > ${prefix}-ambiguous.2.fq.gz
         """
     }
 }
