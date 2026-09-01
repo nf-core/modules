@@ -35,8 +35,10 @@ description: |
   `orf_type_native` carries the caller's own ORF-type label verbatim, so every
   harmonisation decision below stays auditable without re-running the caller.
   ORF-type tokens are matched exactly (casefolded) against each caller's closed
-  vocabulary. Tokens matching no entry cause the process to fail; successful
-  outputs report `unmapped_orf_type=0` on the `# parser_columns:` provenance line.
+  vocabulary, on the part before any colon so that a qualified label such as
+  Ribo-TISH's `Novel:CDSFrameOverlap` matches on `Novel`. Tokens whose location
+  matches no entry cause the process to fail; successful outputs report
+  `unmapped_orf_type=0` on the `# parser_columns:` provenance line.
 
   `orf_class` is purely positional: it records where the ORF sits relative to
   the annotated CDS and never encodes its length. Select small ORFs with the
@@ -173,13 +175,12 @@ input:
     - gtf:
         type: file
         description: |
-          Annotation GTF. Required for ribocode (transcript-relative
-          coordinates → genomic lift) and strongly recommended for
-          ribotish (multi-exon block recovery from GenomePos) and
-          ribotricer (multi-exon block recovery from ORF_ID span). For
-          rpbp and price (genomic coordinates emitted directly by the
-          tool) the GTF is unused; pass `[ [:], [] ]` if you only run
-          those callers.
+          Annotation GTF, used by every caller: ribocode, ribotish and
+          ribotricer for genomic coordinates and multi-exon blocks, rpbp
+          and price to resolve `gene_id` from the ORF's transcript id.
+          Must cover the annotation the caller ran against, or a superset:
+          unmatched transcripts lose `gene_id`, and price falls back to its
+          `Gene` column, which concatenates every gene the ORF overlaps.
         pattern: "*.gtf"
         ontologies:
           - edam: http://edamontology.org/format_2306 # GTF

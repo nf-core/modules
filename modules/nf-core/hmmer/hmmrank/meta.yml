@@ -38,8 +38,23 @@ input:
           e.g. `[ id:'sample1' ]`
     - tblouts:
         type: file
-        description: table outputs from hmmsearch
-        pattern: "*.tsv.gz"
+        description: per-sequence hit tables from hmmsearch (--tblout)
+        pattern: "*.tbl.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - domtblouts:
+        type: file
+        description: |
+          Optional per-domain hit tables from hmmsearch (--domtblout). When supplied, the
+          ranked table gains the target and profile lengths and, for each of the three
+          coordinate sets, the outer bounds of the match, the size of the union of the
+          pair's domains, and the number of separate stretches that union spans. Every
+          domain hmmsearch reported is counted, whatever its own significance: a hit can
+          clear the full-sequence threshold while each of its domains is weak in isolation,
+          and dropping those would leave exactly such hits without coordinates. Domains are
+          grouped by query name as well as by file, so an HMM file holding several models
+          searched in one go still yields one row per (sequence, model).
+        pattern: "*.domtbl.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
 output:
@@ -51,7 +66,18 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.hmmrank.tsv.gz":
           type: file
-          description: TSV file with ranked hmmer results
+          description: |
+            TSV file with ranked hmmer results: one row per (accno, profile, profile_desc)
+            combination -- profile_desc holds the query name, i.e. the model, which one file
+            may hold several of -- with profile, accno, profile_desc, evalue, score and rank.
+            When domtblouts are supplied it also carries tlen and qlen, plus from, to,
+            len and n_islands for
+            each of the hmm, ali and env coordinate sets. n_islands is 1 when the domains
+            merge into a single continuous stretch and rises as they scatter; coordinates
+            are inclusive, so domains that abut with no gap between them count as one.
+            All fourteen are NA where a hit has no domain records behind it: hmmsearch
+            reports a sequence on the per-sequence threshold, while a domain also has to
+            clear the per-domain one, so the two tables need not agree on every hit.
           pattern: "*.hmmrank.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
