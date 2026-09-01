@@ -29,12 +29,11 @@ process UMITOOLS_DEDUP {
     stats = get_output_stats ? "--output-stats ${prefix}" : ""
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
-    if (!(args ==~ /.*--random-seed.*/)) {args += " --random-seed=100"}
     """
     #Prevent matplotlib from using /tmp
     mkdir .tmp && chmod 777 .tmp
 
-    MPLCONFIGDIR=.tmp TMPDIR=.tmp PYTHONHASHSEED=0 umi_tools \\
+    MPLCONFIGDIR=.tmp TMPDIR=.tmp umi_tools \\
         dedup \\
         -I $bam \\
         -S ${prefix}.bam \\
