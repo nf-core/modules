@@ -1,0 +1,69 @@
+name: "gappa_editmerge"
+description: Merges the pqueries of several jplace files, placed on a common reference
+  tree, into a single jplace file
+keywords:
+  - merge
+  - jplace
+  - phylogenetic placement
+tools:
+  - "gappa":
+      description: "Genesis Applications for Phylogenetic Placement Analysis"
+      homepage: "https://github.com/lczech/gappa"
+      documentation: "https://github.com/lczech/gappa/wiki"
+      tool_dev_url: "https://github.com/lczech/gappa"
+      doi: "10.1093/bioinformatics/btaa070"
+      licence: ["GPL v3"]
+      identifier: biotools:GAPPA
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - jplace:
+        type: file
+        description: |
+          Two or more jplace files output from phylogenetic placement, e.g. EPA-NG,
+          gzipped or not. All of them must reference the same tree; gappa aborts with
+          "Input jplace files have differing reference trees." if they do not.
+        pattern: "*.{jplace,jplace.gz}"
+        ontologies: []
+output:
+  jplace:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.merge.jplace*":
+          type: file
+          description: |
+            Single jplace file holding the pqueries of every input file. Gzipped when
+            `--compress` is passed via `task.ext.args`.
+          pattern: "*.merge.jplace{,.gz}"
+          ontologies: []
+  versions_gappa:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gappa:
+          type: string
+          description: The name of the tool
+      - gappa --version 2>&1 | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gappa:
+          type: string
+          description: The name of the tool
+      - gappa --version 2>&1 | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

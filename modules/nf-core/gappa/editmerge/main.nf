@@ -1,6 +1,6 @@
-process GAPPA_EXAMINEASSIGN {
+process GAPPA_EDITMERGE {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
@@ -8,14 +8,10 @@ process GAPPA_EXAMINEASSIGN {
         'quay.io/biocontainers/gappa:0.9.0--h077b44d_0' }"
 
     input:
-    tuple val(meta), path(jplace), path(taxonomy)
+    tuple val(meta), path(jplace)
 
     output:
-    tuple val(meta), path("*profile.tsv")         , emit: profile
-    tuple val(meta), path("*labelled_tree.newick"), emit: labelled_tree
-    tuple val(meta), path("*per_query.tsv")       , emit: per_query, optional: true
-    tuple val(meta), path("*krona.profile")       , emit: krona    , optional: true
-    tuple val(meta), path("*sativa.tsv")          , emit: sativa   , optional: true
+    tuple val(meta), path("*.merge.jplace*"), emit: jplace
     tuple val("${task.process}"), val('gappa'), eval("gappa --version 2>&1 | sed 's/v//'"), emit: versions_gappa, topic: versions
 
     when:
@@ -26,18 +22,17 @@ process GAPPA_EXAMINEASSIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     gappa \\
-        examine assign \\
+        edit \\
+        merge \\
         ${args} \\
         --threads ${task.cpus} \\
-        --jplace-path ${jplace} \\
-        --taxon-file ${taxonomy} \\
-        --file-prefix ${prefix}.
+        --file-prefix ${prefix}. \\
+        --jplace-path ${jplace}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.profile.tsv
-    touch ${prefix}.labelled_tree.newick
+    touch ${prefix}.merge.jplace
     """
 }
