@@ -105,7 +105,7 @@ process SAMTOOLS_MULTICOMMAND {
         def lastCommand = (idx == n_commands - 1)
         def stdoutMarker = "-"
         if (subcommand == "collate") { stdoutMarker = "-O" }
-        if (subcommand in ["sort"]) { stdoutMarker = "" }
+        if (subcommand in ["sort", "cat", "view"]) { stdoutMarker = "" }
         def stdinMarker = "-"
         
         def cmd_parts = ["samtools", subcommand]
