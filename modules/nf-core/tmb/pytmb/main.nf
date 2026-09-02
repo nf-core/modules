@@ -3,16 +3,16 @@ process TMB_PYTMB {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b2858b1afbb8c24385b1172cf2cf561e59ba8ab1b82d5dfe74ac36549c6ac78/data':
-        'community.wave.seqera.io/library/tmb:1.5.0--0724a7e1e50a32cd' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fb8cfebbaf26d58af3128fcf154d6221f3aeab0d1ad0df96f5e967d60ef4f4d9/data'
+:         'community.wave.seqera.io/library/tmb:1.6.0--1565c74af4a6a012' }"
 
     input:
     tuple val(meta), path(vcf), path(bed), val(eff_genome_size), path(var_config), path(db_config)
 
     output:
     tuple val(meta), path("*.log")          , emit: tmb_log
-    tuple val(meta), path("*_export.vcf.gz"), optional:true, emit: export_vcf
+    tuple val(meta), path("*_export.vcf.gz"), emit: export_vcf
     tuple val(meta), path("*_debug.vcf.gz") , optional:true, emit: debug_vcf
     tuple val("${task.process}"), val('tmb'), eval(" pyTMB.py --version | awk '{print \$2}' | tr -d '()' "), topic: versions, emit: versions_tmb
 
@@ -32,9 +32,10 @@ process TMB_PYTMB {
     def genome_size = eff_genome_size ? "--effGenomeSize ${eff_genome_size}" : "--bed ${bed}"
 
     """
-    pyTMB.py \\
+    pyTMB \\
         $args \\
         -i $vcf \\
+        --export ${prefix}_export.vcf.gz \\
         $genome_size \\
         --dbConfig $db_config \\
         --varConfig $var_config > ${prefix}.log
