@@ -20,6 +20,12 @@ process ISOSEQ3_TAG {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use nf-core/modules/isoseq/tag
+    Reason:
+    This module is no longer fit for purpose because it uses the isoseq3 meta-package, which is deprecated. Use nf-core/modules/isoseq/tag, which uses the isoseq package.
+    """
+    assert false : deprecation_message
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def valid_design = ~/^(?:\d{1,2}[UBGX]-)+T$|^(?:\d{1,2}[UBGX]-)+T(?:-\d{1,2}[UBGX])+$|^T(?:-\d{1,2}[UBGX])+$/
@@ -35,6 +41,12 @@ process ISOSEQ3_TAG {
     """
 
     stub:
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use nf-core/modules/isoseq/tag
+    Reason:
+    This module is no longer fit for purpose because it uses the isoseq3 meta-package, which is deprecated. Use nf-core/modules/isoseq/tag, which uses the isoseq package.
+    """
+    assert false : deprecation_message
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.flt.bam
