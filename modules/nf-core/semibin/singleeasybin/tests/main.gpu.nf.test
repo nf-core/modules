@@ -28,7 +28,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // number and names of bins are not stable
+                // bin names and contents vary between machines
                 { assert process.out.output_fasta.get(0).get(1).size() >= 1 },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["csv", "tsv"], ignoreKeys: ["output_fasta"])
