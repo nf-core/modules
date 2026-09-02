@@ -12,8 +12,8 @@ process ORTHOFINDER {
     tuple val(meta2), path(prior_run)
 
     output:
-    tuple val(meta), path("$prefix")                     , emit: orthofinder
-    tuple val(meta), path("$prefix/WorkingDirectory")    , emit: working
+    tuple val(meta), path("$results_dir")                     , emit: orthofinder
+    tuple val(meta), path("$results_dir/WorkingDirectory")    , emit: working
     tuple val("${task.process}"), val('orthofinder'), eval("NO_COLOR=1 orthofinder --version | cut -d 'v' -f2 | perl -pe 's/\\e\\[[0-9;]*m//g'"), emit: versions_orthofinder, topic: versions
 
 
@@ -25,6 +25,7 @@ process ORTHOFINDER {
     def args   = task.ext.args   ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def include_command = prior_run   ? "-b $prior_run" : ''
+    results_dir = prior_run ? "${prior_run}/OrthoFinder/Results_${prefix}" : "input/OrthoFinder/Results_${prefix}"
 
     """
     orthofinder \\
@@ -34,33 +35,26 @@ process ORTHOFINDER {
         -n $prefix \\
         $include_command \\
         $args
-
-    if [ -e input/OrthoFinder/Results_$prefix ]; then
-        mv input/OrthoFinder/Results_$prefix $prefix
-    fi
-
-    if [ -e ${prior_run}/OrthoFinder/Results_$prefix ]; then
-        mv ${prior_run}/OrthoFinder/Results_$prefix $prefix
-    fi
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    results_dir = prior_run ? "${prior_run}/OrthoFinder/Results_${prefix}" : "input/OrthoFinder/Results_${prefix}"
 
     """
-    mkdir -p    $prefix/Comparative_Genomics_Statistics
-    mkdir       $prefix/Gene_Duplication_Events
-    mkdir       $prefix/Gene_Trees
-    mkdir       $prefix/Orthogroup_Sequences
-    mkdir       $prefix/Orthogroups
-    mkdir       $prefix/Orthologues
-    mkdir       $prefix/Phylogenetic_Hierarchical_Orthogroups
-    mkdir       $prefix/Phylogenetically_Misplaced_Genes
-    mkdir       $prefix/Putative_Xenologs
-    mkdir       $prefix/Resolved_Gene_Trees
-    mkdir       $prefix/Single_Copy_Orthologue_Sequences
-    mkdir       $prefix/Species_Tree
-    mkdir       $prefix/WorkingDirectory
-    touch       $prefix/Log.txt
+    mkdir -p    $results_dir/Comparative_Genomics_Statistics
+    mkdir       $results_dir/Gene_Duplication_Events
+    mkdir       $results_dir/Gene_Trees
+    mkdir       $results_dir/Orthogroup_Sequences
+    mkdir       $results_dir/Orthogroups
+    mkdir       $results_dir/Orthologues
+    mkdir       $results_dir/Phylogenetic_Hierarchical_Orthogroups
+    mkdir       $results_dir/Phylogenetically_Misplaced_Genes
+    mkdir       $results_dir/Putative_Xenologs
+    mkdir       $results_dir/Resolved_Gene_Trees
+    mkdir       $results_dir/Single_Copy_Orthologue_Sequences
+    mkdir       $results_dir/Species_Tree
+    mkdir       $results_dir/WorkingDirectory
+    touch       $results_dir/Log.txt
     """
 }

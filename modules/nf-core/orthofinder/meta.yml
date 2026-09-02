@@ -46,7 +46,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - $prefix:
+      - $results_dir:
           type: directory
           description: OrthoFinder output directory
   working:
@@ -55,7 +55,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - $prefix/WorkingDirectory:
+      - $results_dir/WorkingDirectory:
           type: directory
           description: OrthoFinder WorkingDirectory (used for the resume function)
   versions_orthofinder:
