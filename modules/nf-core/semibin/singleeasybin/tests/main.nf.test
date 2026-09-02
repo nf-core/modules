@@ -33,10 +33,13 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
+            def bins = process.out.output_fasta.get(0).get(1).collect { path(it).fasta }
+            def featurised = path(process.out.csv.get(0).get(1).find { it.endsWith('/data.csv') })
+                .readLines().drop(1).collect { it.split(',')[0] }
             assertAll(
-                { assert process.success },
-                // bin names and contents vary between machines
-                { assert process.out.output_fasta.get(0).get(1).size() >= 1 },
+                // every contig SemiBin featurised lands in exactly one bin. Which bin varies between machines
+                { assert featurised && bins.collectMany { it.keySet().toList() }.sort() == featurised.sort() },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["csv", "tsv"], ignoreKeys: ["output_fasta"])
                 ).match() }

@@ -33,10 +33,16 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
+            // per sample: the contigs SemiBin featurised, and the contigs it wrote into that sample's bins
+            def featurised = process.out.csv.get(0).get(1).findAll { it.endsWith('/data.csv') }
+                .collectEntries { csv -> [csv.tokenize('/')[-2], path(csv).readLines().drop(1).collect { it.split(',')[0] }.sort()] }
+            def bins = process.out.bins.get(0).get(1).collectEntries { fa -> [fa, path(fa).fasta] }
+            def binned = bins.groupBy { fa, seqs -> fa.tokenize('/')[-1].tokenize('_')[0] }
+                .collectEntries { sample, group -> [sample, group.values().collectMany { it.keySet().toList() }.sort()] }
             assertAll(
-                { assert process.success },
-                // bin names and contents vary between machines
-                { assert process.out.bins.get(0).get(1).size() >= 1 },
+                // every contig lands in exactly one bin of its own sample. Which bin varies between machines
+                { assert featurised && binned == featurised },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["csv", "tsv", "log"], ignoreKeys: ["bins"])
                 ).match() }
