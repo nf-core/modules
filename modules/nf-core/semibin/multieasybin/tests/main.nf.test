@@ -11,24 +11,24 @@ nextflow_process {
     tag "semibin/multieasybin"
     config './nextflow.config'
 
-    test("semibin_data - bam") {
+    test("metagenome - binning - bam") {
 
         when {
             params {
                 module_args  = ''
-                module_args2 = '--ml-threshold 0 --minfasta-kbs 0 --min-len 0 --random-seed 0'
+                module_args2 = '-s C --ml-threshold 0 --minfasta-kbs 0 --min-len 0 --random-seed 0'
             }
             process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi.fasta.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/contigs.fasta.gz", checkIfExists:true),
                     [
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted1.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted2.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted3.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted4.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted5.bam", checkIfExists:true)
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s1.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s2.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s3.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s4.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s5.sorted.bam", checkIfExists:true),
                     ],
                     []
                 ]
@@ -47,25 +47,25 @@ nextflow_process {
         }
     }
 
-    test("semibin_data - abundance txt") {
+    test("metagenome - binning - abundance") {
 
         when {
             params {
                 module_args  = ''
-                module_args2 = '--ml-threshold 0 --minfasta-kbs 0 --min-len 0 --random-seed 0'
+                module_args2 = '-s C --ml-threshold 0 --minfasta-kbs 0 --min-len 0 --random-seed 0'
             }
             process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi.fasta.gz", checkIfExists:true),\
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/contigs.fasta.gz", checkIfExists:true),
                     [],
                     [
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/sample1.txt", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/sample2.txt", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/sample3.txt", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/sample4.txt", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/sample5.txt", checkIfExists:true)
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s1.aemb.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s2.aemb.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s3.aemb.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s4.aemb.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s5.aemb.tsv", checkIfExists:true),
                     ]
                 ]
                 """
@@ -83,24 +83,24 @@ nextflow_process {
         }
     }
 
-    test("semibin_data - stub") {
+    test("metagenome - binning - stub") {
         options '-stub'
         when {
             params {
                 module_args  = ''
-                module_args2 = '--ml-threshold 0 --minfasta-kbs 0 --min-len 0'
+                module_args2 = '-s C --ml-threshold 0 --minfasta-kbs 0 --min-len 0'
             }
             process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi.fasta.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/contigs.fasta.gz", checkIfExists:true),
                     [
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted1.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted2.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted3.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted4.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted5.bam", checkIfExists:true)
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s1.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s2.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s3.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s4.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s5.sorted.bam", checkIfExists:true),
                     ],
                     []
                 ]

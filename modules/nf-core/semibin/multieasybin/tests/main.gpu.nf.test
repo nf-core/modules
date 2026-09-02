@@ -12,20 +12,20 @@ nextflow_process {
     tag "semibin/multieasybin"
     config './nextflow.gpu.config'
 
-    test("semibin_data - bam - gpu") {
+    test("metagenome - binning - bam - gpu") {
 
         when {
             process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi.fasta.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/contigs.fasta.gz", checkIfExists:true),
                     [
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted1.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted2.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted3.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted4.bam", checkIfExists:true),
-                        file(params.modules_testdata_base_path + "delete_me/semibin2/input_multi_sorted5.bam", checkIfExists:true)
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s1.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s2.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s3.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s4.sorted.bam", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s5.sorted.bam", checkIfExists:true),
                     ],
                     []
                 ]
