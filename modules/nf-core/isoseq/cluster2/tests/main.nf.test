@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process ISOSEQ_CLUSTER2"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "ISOSEQ_CLUSTER2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "isoseq"
+    tag "isoseq/cluster2"
+
+    test("PacBio isoseq cluster2 - CCS clustering test") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // readsMD5Keys can't be used here: htsjdk's default strict validation rejects
+                // this PacBio BAM (nonzero MAPQ on an unmapped read), so bam() is called directly
+                // with stringency: "silent" instead.
+                { assert snapshot(
+                    bam(process.out.bam[0][1], stringency: "silent").getHeader(),
+                    bam(process.out.bam[0][1], stringency: "silent").getReadsMD5(),
+                    process.out.pbi.collect { file(it[1]).getName() }, // unstable
+                    process.out.cluster_report,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("PacBio isoseq cluster2 - CCS clustering test - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
