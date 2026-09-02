@@ -50,12 +50,17 @@ nextflow_process {
             }
         }
 
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["versions_xengsort"])).match() }
-            )
-        }
+    then {
+        assertAll(
+            { assert process.success },
+            { assert file(process.out.host[0][1]).exists() },
+            { assert file(process.out.graft[0][1]).exists() },
+            { assert file(process.out.both[0][1]).exists() },
+            { assert file(process.out.neither[0][1]).exists() },
+            { assert file(process.out.ambiguous[0][1]).exists() },
+            { assert snapshot(process.out.versions_xengsort).match() }
+        )
+    }
     }
 
     test("homo_sapiens - sarscov2 - [fastq.gz, fastq.gz] - paired_end") {
@@ -78,7 +83,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["versions_xengsort"])).match() }
+                { assert process.out.host[0][1].every      { f -> file(f).exists() } },
+                { assert process.out.graft[0][1].every     { f -> file(f).exists() } },
+                { assert process.out.both[0][1].every      { f -> file(f).exists() } },
+                { assert process.out.neither[0][1].every    { f -> file(f).exists() } },
+                { assert process.out.ambiguous[0][1].every { f -> file(f).exists() } },
+                { assert snapshot(process.out.versions_xengsort).match() }
             )
         }
     }
