@@ -91,12 +91,6 @@ input:
             description: Features symbol column
 
 output:
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
   - gprofiler2_all_enrich:
       description: Channel containing the main enrichment table output from gprofiler2
       structure:
