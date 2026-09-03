@@ -58,7 +58,7 @@ runs:
       if: ${{contains(inputs.profile, 'conda')}}
       uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb # v4
       with:
-        auto-update-conda: true
+        miniconda-version: "py312_24.11.1-0"
         conda-solver: libmamba
         conda-remove-defaults: true
 
