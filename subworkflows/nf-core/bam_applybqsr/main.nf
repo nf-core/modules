@@ -34,7 +34,7 @@ workflow BAM_APPLYBQSR {
         }
         .groupTuple()
 
-    SAMTOOLS_MERGE(reads_to_merge, references.map { meta, fasta, fai, _dict -> [meta, fasta, fai, []] })
+    SAMTOOLS_MERGE(reads_to_merge, references.map { meta, fasta, fai, _dict -> [meta, fasta, fai, []] }, output_suffix == 'cram' ? 'crai' : 'bai')
 
     // Unified output — bam or cram depending on what was produced
     recal_out = SAMTOOLS_MERGE.out.bam
