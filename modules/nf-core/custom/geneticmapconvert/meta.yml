@@ -2,6 +2,9 @@ name: "custom_geneticmapconvert"
 description: |
   This R script allows to automatically detect the different genetic map format and
   convert the input file in all the other format type.
+  Recombination rate will be recomputed in the following case:
+   - '--remove_duplicated_cm' and uplicated genetic distance present (lines removed except first one)
+   - '--remove_null_rate' and zero rate values present (line removed)
 keywords:
   - map
   - convertion
