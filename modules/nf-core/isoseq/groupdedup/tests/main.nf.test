@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process ISOSEQ_GROUPDEDUP"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "ISOSEQ_GROUPDEDUP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "isoseq"
+    tag "isoseq/tag"
+    tag "isoseq/refine"
+    tag "isoseq/groupdedup"
+
+    test("isoseq groupdedup - bam") {
+
+        setup {
+            run("ISOSEQ_TAG") {
+                script "../../tag/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'mini' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/mini.5p--3p.bam', checkIfExists: true)
+                        ]
+                    input[1] = "T-12U-16B"
+                    """
+                }
+            }
+            run("ISOSEQ_REFINE") {
+                script "../../refine/main.nf"
+                process {
+                    """
+                    input[0] = ISOSEQ_TAG.out.bam
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = ISOSEQ_REFINE.out.bam
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // readsMD5Keys can't be used here: htsjdk's default strict validation rejects
+                // this PacBio BAM (nonzero MAPQ on an unmapped read), so bam() is called directly
+                // with stringency: "silent" instead.
+                { assert snapshot(
+                    bam(process.out.bam[0][1], stringency: "silent").getHeader(),
+                    bam(process.out.bam[0][1], stringency: "silent").getReadsMD5(),
+                    process.out.pbi.collect { file(it[1]).getName() }, // unstable
+                    process.out.fasta,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("isoseq groupdedup - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'mini' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/mini.5p--3p.bam', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
