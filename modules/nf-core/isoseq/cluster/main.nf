@@ -28,23 +28,22 @@ process ISOSEQ_CLUSTER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use nf-core/modules/isoseq/cluster2
+
+    Reason:
+    isoseq cluster is being phased out upstream in favour of cluster2, which
+    is faster and has no memory constraints on large read counts.
     """
-    isoseq \\
-        cluster \\
-        $bam \\
-        ${prefix}.transcripts.bam \\
-        $args
-    """
+    assert false: deprecation_message
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use nf-core/modules/isoseq/cluster2
+
+    Reason:
+    isoseq cluster is being phased out upstream in favour of cluster2, which
+    is faster and has no memory constraints on large read counts.
     """
-    touch ${prefix}.transcripts.bam
-    touch ${prefix}.transcripts.bam.pbi
-    touch ${prefix}.transcripts.cluster
-    touch ${prefix}.transcripts.cluster_report.csv
-    touch ${prefix}.transcripts.transcriptset.xml
-    """
+    assert false: deprecation_message
 }
