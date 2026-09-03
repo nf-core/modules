@@ -1,0 +1,169 @@
+name: modkit_entropy
+description: |
+  Calculate methylation entropy over genomic windows from one or more mod-BAMs.
+  Entropy is a per-window measure of the diversity of methylation patterns
+  across reads covering the window and is complementary to mean methylation.
+  When `--regions` is supplied (via `ext.args` or the `regions` input), modkit
+  writes per-region BED/bedgraph/tsv files into a directory; otherwise a single
+  genome-wide BED file is produced.
+keywords:
+  - modkit
+  - methylation
+  - entropy
+  - nanopore
+  - ont
+  - modbam
+tools:
+  - "modkit":
+      description: A bioinformatics tool for working with modified bases in Oxford Nanopore
+        sequencing data.
+      homepage: https://github.com/nanoporetech/modkit
+      documentation: https://nanoporetech.github.io/modkit/
+      tool_dev_url: https://github.com/nanoporetech/modkit
+      licence:
+        - "Oxford Nanopore Technologies PLC. Public License Version 1.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`. The output inherits this meta.
+    - bams:
+        type: list
+        description: |
+          One or more modBAM files to compute entropy from. Passing more than
+          one BAM aggregates counts across them (multi-sample entropy).
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+    - bais:
+        type: list
+        description: |
+          BAM indices (`.bai` or `.csi`) matching each input BAM, one-to-one.
+        pattern: "*.{bai,csi}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'mm10' ]`.
+    - fasta:
+        type: file
+        description: Reference FASTA the BAM was aligned to.
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+    - fai:
+        type: file
+        description: Samtools FASTA index for `fasta`.
+        pattern: "*.fai"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing region information
+          e.g. `[ id:'promoters' ]`. May be `[[], []]` to skip.
+    - regions:
+        type: file
+        description: |
+          Optional BED file of regions over which to compute per-region
+          descriptive statistics. When provided, modkit writes per-region
+          outputs (`.bed`, `.bedgraph`, `.tsv`) into a directory.
+        pattern: "*.{bed,bed.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3003
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`.
+      - "*.bed":
+          type: file
+          description: |
+            Genome-wide entropy BED file, produced when `regions` is not
+            provided. One row per window.
+          pattern: "*.bed"
+          ontologies:
+            - edam: http://edamontology.org/format_3003
+  regions_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`.
+      - "entropy_regions/*.bed":
+          type: file
+          description: |
+            Per-region entropy BED files, produced when `regions` is provided.
+          pattern: "*.bed"
+          ontologies:
+            - edam: http://edamontology.org/format_3003
+  bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`.
+      - "entropy_regions/*.bedgraph":
+          type: file
+          description: |
+            Per-region entropy bedgraph, produced when `regions` is provided.
+          pattern: "*.bedgraph"
+          ontologies:
+            - edam: http://edamontology.org/format_3583
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`.
+      - "entropy_regions/*.tsv":
+          type: file
+          description: |
+            Per-region descriptive statistics TSV, produced when `regions`
+            is provided.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`.
+      - "*.log":
+          type: file
+          description: |
+            Optional modkit debug log (only emitted when `--log-filepath
+            <name>.log` is passed via `ext.args`).
+          pattern: "*.log"
+          ontologies: []
+  versions_modkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sahuno"
+maintainers:
+  - "@sahuno"
