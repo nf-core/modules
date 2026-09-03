@@ -14,7 +14,7 @@ components:
   - samtools/coverage
   - samtools/view
 input:
-  - ch_bam:
+  - ch_bam_bai:
       type: file
       description: |
         The input channel containing the BAM/CRAM/SAM files and their indexes.
@@ -32,7 +32,7 @@ input:
         The reference genome channel containing the fasta files and its index
         Structure: [ val(meta), path(fasta), path(fai) ]
       pattern: "*.{fa(sta)?}"
-  - ch_region:
+  - ch_regions:
       type: file
       description: |
         An optional channel containing the different regions to consider
