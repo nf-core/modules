@@ -60,7 +60,7 @@ workflow SNPCLUSTERING {
         .join(PLINK2_VCF.out.pvar)
         .join(PLINK2_VCF.out.psam)
         .map { meta, pgen, pvar, psam ->
-            tuple(meta, npcs, use_approx, pgen, psam, pvar)
+            tuple(meta, n_pcs, use_approx, pgen, psam, pvar)
         }
 
     PLINK2_PCA(ch_plink_pca_input)
