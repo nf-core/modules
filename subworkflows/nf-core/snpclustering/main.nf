@@ -12,7 +12,7 @@ workflow SNPCLUSTERING {
     refpanel_ch
     genmap_ch
     region
-    npcs
+    n_pcs
     use_approx
     algorithm
     n_clusters
