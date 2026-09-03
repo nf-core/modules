@@ -8,7 +8,8 @@ process PYGENPROP_INFO {
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/025a1b9aa4f0042c0af7e3a8acc54635876014f2b247ac801d91874d97440c99/data':
         'community.wave.seqera.io/library/pip_python_pygenprop:829a7d86185a9fd4' }"
 
-    input:tuple val(meta), path(meda)
+    input:
+    tuple val(meta), path(meda)
 
     output:
     tuple val(meta), path("*.info"), emit: info

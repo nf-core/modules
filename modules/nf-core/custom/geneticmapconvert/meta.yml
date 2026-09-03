@@ -98,13 +98,6 @@ output:
             chr, pos, cM
           pattern: "*.minimac.map"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
   session_info:
     - - meta:
           type: map
@@ -117,6 +110,13 @@ output:
           pattern: "*.log"
           ontologies:
             - edam: "http://edamontology.org/data_1678" # Log
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 topics:
   versions:
     - versions.yml:
