@@ -8,7 +8,7 @@ process SAMTOOLS_MULTICOMMAND {
         : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
 
     input:
-    tuple val(meta), path(input), path(index)
+    tuple val(meta), path(input, arity: '1..*'), path(index, arity: '0..*')
     tuple val(meta2), path(fasta), path(fai)
     val pipeline
 
@@ -52,105 +52,22 @@ process SAMTOOLS_MULTICOMMAND {
 
     def n_commands = pipeline.size()
     def final_command = pipeline[n_commands - 1]
-
-    // Build output string based on final command
-    def output_string = ""
-    def input_reference = (fasta && input.getExtension() == "cram") ? "--reference ${fasta}" : ""
-    def output_reference = ""
-
-    if (final_command in ['view', 'sort', 'merge', 'cat', 'fixmate', 'merge', 'cat', 'collate']) {
-        // These produce alignment files
-        def argsKey = n_commands == 1 ? "args" : "args${n_commands}"
-        def argsLast = task.ext[argsKey] ?: ""
-        def extension = argsLast.contains("--output-fmt sam")
-            ? "sam"
-            : argsLast.contains("--output-fmt cram")
-                ? "cram"
-                : "bam"
-        output_reference = (fasta && input.getExtension() == "cram") ? "--reference ${fasta}" : ""
-        output_string = "-o ${prefix}.${extension}"
-    }
-    else if (final_command == "markdup") {
-        def argsKey = n_commands == 1 ? "args" : "args${n_commands}"
-        def argsLast = task.ext[argsKey] ?: ""
-        def extension = argsLast.contains("--output-fmt sam")
-            ? "sam"
-            : argsLast.contains("--output-fmt cram")
-                ? "cram"
-                : "bam"
-        output_reference = (fasta && input.getExtension() == "cram") ? "--reference ${fasta}" : ""
-        output_string = "${prefix}.${extension}"
-    }
-    else if (final_command == "fasta") {
-        // fasta produces multiple files with special output flags
-        output_string = "-0 ${prefix}_other.fasta.gz"
-        if (!meta.single_end) {
-            output_string = output_string + " -1 ${prefix}_1.fasta.gz -2 ${prefix}_2.fasta.gz -s ${prefix}_singleton.fasta.gz"
-        }
-        else {
-            output_string = output_string + " -1 ${prefix}_1.fasta.gz -s ${prefix}_singleton.fasta.gz"
-        }
-    }
-    else if (final_command == "fastq") {
-        // fastq produces multiple files with special output flags
-        output_string = "-0 ${prefix}_other.fastq.gz"
-        if (!meta.single_end) {
-            output_string = output_string + " -1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz -s ${prefix}_singleton.fastq.gz"
-        }
-        else {
-            output_string = output_string + " -1 ${prefix}_1.fastq.gz -s ${prefix}_singleton.fastq.gz"
-        }
-    }
+    def is_cram_input = fasta && input.collect { f -> f.getExtension() == "cram" }.any()
 
     // Build the pipeline command
     def pipeline_command = pipeline
         .withIndex()
         .collect { subcommand, idx ->
-            def argsKey = idx == 0 ? "args" : "args${idx + 1}"
-            def taskArgs = task.ext[argsKey] ?: ""
-            def lastCommand = (idx == n_commands - 1)
-            def stdoutMarker = "-"
-            if (subcommand == "collate") {
-                stdoutMarker = "-O"
-            }
-            if (subcommand in ["sort", "cat", "view"]) {
-                stdoutMarker = ""
-            }
-            def stdinMarker = "-"
+            def is_first = (idx == 0)
+            def is_last = (idx == n_commands - 1)
+            def args = get_args(task, idx)
+            def input_part = get_input(is_first, input)
+            def output_part = get_output(subcommand, is_last, final_command, task, n_commands, prefix, meta?.single_end ?: false)
+            def threads_part = get_threads(subcommand, task)
+            def reference_part = get_reference(is_first, is_last, is_cram_input, args, fasta)
+            def uncompressed = !is_last && subcommand != "cat" ? "-u" : ""
 
-            def cmd_parts = ["samtools", subcommand]
-            if (subcommand != "cat") {
-                cmd_parts << "-@ ${task.cpus}"
-            }
-            if (taskArgs) {
-                cmd_parts << taskArgs
-            }
-            if (idx == 0) {
-                if (input_reference) {
-                    cmd_parts << input_reference
-                }
-                cmd_parts << (input instanceof List ? input.join(" ") : input)
-                cmd_parts << stdoutMarker
-            }
-            if (idx != 0) {
-                cmd_parts << stdinMarker
-            }
-            if (idx != 0 && !lastCommand) {
-                cmd_parts << stdoutMarker
-            }
-            if (!lastCommand) {
-                if (subcommand != "cat") {
-                    cmd_parts << "-u"
-                }
-            }
-            else {
-                if (output_reference) {
-                    cmd_parts << output_reference
-                }
-                cmd_parts << output_string
-            }
-
-            return cmd_parts.join(" ")
+            return build_command(subcommand, threads_part, args, input_part, output_part, reference_part, uncompressed)
         }
         .join(" |\\\n")
 
@@ -163,7 +80,7 @@ process SAMTOOLS_MULTICOMMAND {
     //     samtools sort ${args2} |\
     //     samtools markdup ${args3} -o output.bam
     //
-    // The args are numbered sequenctially for each tool in the sequence and CRAM references
+    // The args are numbered sequentially for each tool in the sequence and CRAM references
     // are automatically applied if needed. FASTA and FASTQ outputs are also available.
     """
     ${pipeline_command}
@@ -222,4 +139,113 @@ process SAMTOOLS_MULTICOMMAND {
     """
     ${stub_outputs.join("\n")}
     """
+}
+
+// ============================================================================
+// Helper Functions
+// ============================================================================
+
+def get_input(is_first, input) {
+    if (is_first) {
+        return input.join(" ")
+    }
+    return "-"
+}
+
+def get_output(subcommand, is_last, final_command, task, n_commands, prefix, single_end) {
+    if (!is_last) {
+        if (subcommand == "collate") {
+            return "-O"
+        }
+        else if (subcommand in ["view", "sort", "cat"]) {
+            return ""
+        }
+        return "-"
+    }
+
+    def argsKey = n_commands == 1 ? "args" : "args${n_commands}"
+    def argsLast = task.ext[argsKey] ?: ""
+
+    if (final_command in ['view', 'sort', 'merge', 'cat', 'fixmate', 'collate']) {
+        def extension = argsLast.contains("--output-fmt sam")
+            ? "sam"
+            : argsLast.contains("--output-fmt cram")
+                ? "cram"
+                : "bam"
+        return "-o ${prefix}.${extension}"
+    }
+    else if (final_command == "markdup") {
+        def extension = argsLast.contains("--output-fmt sam")
+            ? "sam"
+            : argsLast.contains("--output-fmt cram")
+                ? "cram"
+                : "bam"
+        return "${prefix}.${extension}"
+    }
+    else if (final_command == "fasta") {
+        def output = "-0 ${prefix}_other.fasta.gz"
+        if (!single_end) {
+            output += " -1 ${prefix}_1.fasta.gz -2 ${prefix}_2.fasta.gz -s ${prefix}_singleton.fasta.gz"
+        }
+        else {
+            output += " -1 ${prefix}_1.fasta.gz -s ${prefix}_singleton.fasta.gz"
+        }
+        return output
+    }
+    else if (final_command == "fastq") {
+        def output = "-0 ${prefix}_other.fastq.gz"
+        if (!single_end) {
+            output += " -1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz -s ${prefix}_singleton.fastq.gz"
+        }
+        else {
+            output += " -1 ${prefix}_1.fastq.gz -s ${prefix}_singleton.fastq.gz"
+        }
+        return output
+    }
+
+    return ""
+}
+
+def get_args(task, idx) {
+    def argsKey = idx == 0 ? "args" : "args${idx + 1}"
+    return task.ext[argsKey] ?: ""
+}
+
+def get_threads(subcommand, task) {
+    return subcommand != "cat" ? "-@ ${task.cpus}" : ""
+}
+
+def get_reference(is_first, is_last, is_cram_input, args, fasta) {
+    if (is_first && is_cram_input) {
+        return "--reference ${fasta}"
+    }
+    if (is_last && args.contains("--output-fmt cram")) {
+        return "--reference ${fasta}"
+    }
+    return ""
+}
+
+def build_command(subcommand, threads, args, input, output, reference, uncompressed) {
+    def parts = ["samtools", subcommand]
+
+    if (threads) {
+        parts << threads
+    }
+    if (args) {
+        parts << args
+    }
+    if (input) {
+        parts << input
+    }
+    if (reference) {
+        parts << reference
+    }
+    if (output) {
+        parts << output
+    }
+    if (uncompressed) {
+        parts << uncompressed
+    }
+
+    return parts.findAll().join(" ")
 }
