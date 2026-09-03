@@ -14,7 +14,8 @@ tools:
       homepage: http://qualimap.bioinfo.cipf.es/
       documentation: http://qualimap.conesalab.org/doc_html/index.html
       doi: 10.1093/bioinformatics/bts503
-      licence: ["GPL-2.0-only"]
+      licence:
+        - "GPL-2.0-only"
       identifier: biotools:qualimap
 input:
   - - meta:
@@ -55,7 +56,7 @@ output:
       - qualimap:
           type: string
           description: The name of the tool
-      - "qualimap 2>&1 | sed -n 's/.*QualiMap v.\\(.*\\)/\\1/p'":
+      - qualimap -h | sed -n 's/^QualiMap v.//p':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -67,7 +68,7 @@ topics:
       - qualimap:
           type: string
           description: The name of the tool
-      - "qualimap 2>&1 | sed -n 's/.*QualiMap v.\\(.*\\)/\\1/p'":
+      - qualimap -h | sed -n 's/^QualiMap v.//p':
           type: eval
           description: The expression to obtain the version of the tool
 

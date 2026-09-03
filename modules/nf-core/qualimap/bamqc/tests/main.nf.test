@@ -12,13 +12,11 @@ nextflow_process {
         when {
             process {
                 """
-                gff = []
-
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                ])
-                input[1] = gff
+                ]
+                input[1] = []
                 """
             }
         }
@@ -26,11 +24,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(
-                    file("${process.out.results[0][1]}/qualimapReport.html").name,
-                    path("${process.out.results[0][1]}/genome_results.txt"),
-                    process.out.findAll {key, value -> key.startsWith("versions")})
-                    .match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["results"])).match() }
             )
         }
     }
@@ -40,13 +34,11 @@ nextflow_process {
         when {
             process {
                 """
-                gff = []
-
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                ])
-                input[1] = gff
+                ]
+                input[1] = []
                 """
             }
         }
@@ -54,7 +46,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
