@@ -12,21 +12,21 @@ process GENOMAD_ENDTOEND {
     path genomad_db
 
     output:
-    tuple val(meta), path("${prefix}/"), emit: genomad_results
-    tuple val(meta), path("${prefix}/*_aggregated_classification/*_aggregated_classification.tsv"), emit: aggregated_classification, optional: true
-    tuple val(meta), path("${prefix}/*_marker_classification/*_marker_classification.tsv"), emit: marker_classification, optional: true
-    tuple val(meta), path("${prefix}/*_annotate/*_taxonomy.tsv"), emit: taxonomy
-    tuple val(meta), path("${prefix}/*_find_proviruses/*_provirus.tsv"), emit: provirus
-    tuple val(meta), path("${prefix}/*_score_calibration/*_compositions.tsv"), emit: compositions, optional: true
+    tuple val(meta), path("${prefix}/")                                                              , emit: genomad_results
+    tuple val(meta), path("${prefix}/*_aggregated_classification/*_aggregated_classification.tsv")   , emit: aggregated_classification, optional: true
+    tuple val(meta), path("${prefix}/*_marker_classification/*_marker_classification.tsv")           , emit: marker_classification, optional: true
+    tuple val(meta), path("${prefix}/*_annotate/*_taxonomy.tsv")                                     , emit: taxonomy
+    tuple val(meta), path("${prefix}/*_find_proviruses/*_provirus.tsv")                              , emit: provirus
+    tuple val(meta), path("${prefix}/*_score_calibration/*_compositions.tsv")                        , emit: compositions, optional: true
     tuple val(meta), path("${prefix}/*_score_calibration/*_calibrated_aggregated_classification.tsv"), emit: calibrated_classification, optional: true
-    tuple val(meta), path("${prefix}/*_summary/*_plasmid.fna.gz"), emit: plasmid_fasta
-    tuple val(meta), path("${prefix}/*_summary/*_plasmid_genes.tsv"), emit: plasmid_genes
-    tuple val(meta), path("${prefix}/*_summary/*_plasmid_proteins.faa.gz"), emit: plasmid_proteins
-    tuple val(meta), path("${prefix}/*_summary/*_plasmid_summary.tsv"), emit: plasmid_summary
-    tuple val(meta), path("${prefix}/*_summary/*_virus.fna.gz"), emit: virus_fasta
-    tuple val(meta), path("${prefix}/*_summary/*_virus_genes.tsv"), emit: virus_genes
-    tuple val(meta), path("${prefix}/*_summary/*_virus_proteins.faa.gz"), emit: virus_proteins
-    tuple val(meta), path("${prefix}/*_summary/*_virus_summary.tsv"), emit: virus_summary
+    tuple val(meta), path("${prefix}/*_summary/*_plasmid.fna.gz")                                    , emit: plasmid_fasta
+    tuple val(meta), path("${prefix}/*_summary/*_plasmid_genes.tsv")                                 , emit: plasmid_genes
+    tuple val(meta), path("${prefix}/*_summary/*_plasmid_proteins.faa.gz")                           , emit: plasmid_proteins
+    tuple val(meta), path("${prefix}/*_summary/*_plasmid_summary.tsv")                               , emit: plasmid_summary
+    tuple val(meta), path("${prefix}/*_summary/*_virus.fna.gz")                                      , emit: virus_fasta
+    tuple val(meta), path("${prefix}/*_summary/*_virus_genes.tsv")                                   , emit: virus_genes
+    tuple val(meta), path("${prefix}/*_summary/*_virus_proteins.faa.gz")                             , emit: virus_proteins
+    tuple val(meta), path("${prefix}/*_summary/*_virus_summary.tsv")                                 , emit: virus_summary
     tuple val("${task.process}"), val('genomad'), eval("genomad --version 2>&1 | sed 's/^.*geNomad, version //; s/ .*//'"), topic: versions, emit: versions_genomad
 
     when:
