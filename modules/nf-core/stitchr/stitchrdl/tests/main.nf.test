@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process STITCHR_STITCHRDL"
+    script "../main.nf"
+    process "STITCHR_STITCHRDL"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "stitchr"
+    tag "stitchr/stitchrdl"
+
+    test("human") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'human' ],
+                    'human'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.stitchrdl_data[0][1] == 'human' },
+                // the whole Data package travels, not just the species subdirectory:
+                // stitchr reads additional-genes.fasta and linkers.tsv at import time
+                { assert file("${process.out.stitchrdl_data[0][2]}/__init__.py").exists() },
+                { assert file("${process.out.stitchrdl_data[0][2]}/additional-genes.fasta").exists() },
+                { assert file("${process.out.stitchrdl_data[0][2]}/linkers.tsv").exists() },
+                { assert file("${process.out.stitchrdl_data[0][2]}/HUMAN/data-production-date.tsv").exists() },
+                // the downloaded reference tracks the live IMGT release, so only
+                // the versions are snapshotted here
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+            )
+        }
+
+    }
+
+    test("human - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'human' ],
+                    'human'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
