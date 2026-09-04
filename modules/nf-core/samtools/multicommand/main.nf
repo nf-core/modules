@@ -68,14 +68,14 @@ process SAMTOOLS_MULTICOMMAND {
             def is_first_command = (idx == 0)
             def is_last_command = (idx == n_commands - 1)
 
-            def cmd_args = get_args(task, idx)
-            def cmd_threads = get_threads(subcommand, task)
-            def cmd_input = is_first_command ? input : get_stdin()
+            def cmd_args = get_args(task.ext, idx)
+            def cmd_threads = get_threads(subcommand, task.cpus, args)
+            def cmd_input = is_first_command ? "${input}" : get_stdin()
             def cmd_output = is_last_command ? get_file_output(subcommand, cmd_args, prefix, meta?.single_end ?: false) : get_stdout(subcommand)
             def uncompressed = !is_last_command ? get_uncompressed_flag(subcommand) : ""
             def reference = get_reference(is_first_command, is_last_command, is_cram_input, is_cram_output, fasta)
 
-            return "samtools ${subcommand} ${cmd_threads} ${uncompressed} ${cmd_args} ${reference} ${cmd_input} ${cmd_output}"
+            return ["samtools", subcommand, cmd_threads, uncompressed, cmd_args, reference, cmd_input, cmd_output].findAll().join(" ")
         }
         .join(" |\\\n")
 
@@ -238,9 +238,9 @@ def get_file_output(subcommand, args, prefix, single_end) {
  * @param idx Zero-based pipeline step index
  * @return String Task extension arguments, or empty string if not defined
  */
-def get_args(task, idx) {
+def get_args(ext, idx) {
     def argsKey = idx == 0 ? "args" : "args${idx + 1}"
-    return task.ext[argsKey] ?: ""
+    return ext[argsKey] ?: ""
 }
 
 /**
@@ -249,9 +249,11 @@ def get_args(task, idx) {
  * @param task Nextflow task object
  * @return String Thread argument (e.g. "-@ 4"), or empty string for cat
  */
-def get_threads(subcommand, task) {
+def get_threads(subcommand, cpus, args) {
     if (subcommand != "cat") {
-        return "-@ ${task.cpus}"
+        if (!args.contains("-@")) {
+            return "-@ ${cpus}"
+        }
     }
     return ""
 }

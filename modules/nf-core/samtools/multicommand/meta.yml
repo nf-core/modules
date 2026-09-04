@@ -8,6 +8,13 @@ description: |
   is streamed to the next before being written to disk. The script can handle references being passed,
   as well as writing indexes, outputting in CRAM format, and conversion to FASTA and FASTQ.
 
+  By default, the threads for each tool are set to the total number of available cpus.
+  However, it may be desirable to configure the number of threads used for each step,
+  for example to give more threads to `samtools sort` than to `samtools view`. This can be achieved
+  by specifying a number of threads in `$argsX` with `-@`, which will override the number of threads
+  for that command. There is no sanity check that the number of threads is less than the total number
+  available when doing this.
+
   samtools view ${args} input.bam |\
     samtools sort ${args2} |\
     samtools markdup ${args3} -o output.bam
