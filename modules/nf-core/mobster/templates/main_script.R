@@ -41,7 +41,7 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
   obj = readRDS("$rds_join")
   if (as.logical(opt[["qc_chr"]])){
     chroms <- intersect(names(obj), paste0("chr", 1:22))
-    joint_table <- lapply(chroms,function(c){
+    input_table <- lapply(chroms,function(c){
       original = obj[[c]] %>% get_sample(sample=samples, which_obj="original")
       joint_table_chr = lapply(names(original),
                                function(sample_name) {
