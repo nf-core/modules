@@ -88,17 +88,12 @@ output:
       description: |
         Tab delimited output txt file containing buffer and imputation regions.
         Structure: [meta, txt]
-  - merged_variants:
+  - vcf_index:
       type: file
       description: |
-        Output phased VCF/BCF file for the merged regions.
+        Output phased VCF/BCF file for the merged regions, with its index.
         Phased information (HS field) is updated accordingly for the full region.
-        Structure: [ val(meta), bcf ]
-  - merged_variants_index:
-      type: file
-      description: |
-        Index output of phased VCF/BCF file for the merged regions.
-        Structure: [ val(meta), csi ]
+        Structure: [ val(meta), path(bcf), path(csi) ]
 authors:
   - "@LouisLeNezet"
 maintainers:

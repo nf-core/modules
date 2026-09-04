@@ -19,96 +19,149 @@ components:
   - gatk4/calculatecontamination
   - gatk4/filtermutectcalls
 input:
-  - meta:
-      type: map
+  - ch_input:
+      type: file
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - input:
-      type: list
-      description: list containing one BAM file, also able to take CRAM as an input
-      pattern: "[ *.{bam/cram} ]"
-  - input_index:
-      type: list
-      description: list containing one BAM file indexe, also able to take CRAM index as an input
-      pattern: "[ *.{bam.bai/cram.crai} ]"
-  - fasta:
+        One BAM or CRAM file with its index, plus an empty placeholder for the
+        optional matched normal sample, which is not used in tumour only mode.
+
+        Structure: [ val(meta), path(input), path(input_index), [] ]
+      pattern: "*.{bam,cram}"
+  - ch_fasta:
       type: file
-      description: The reference fasta file
+      description: |
+        The reference fasta file.
+
+        Structure: [ val(meta2), path(fasta) ]
       pattern: "*.fasta"
-  - fai:
+  - ch_fai:
       type: file
-      description: Index of reference fasta file
+      description: |
+        Index of the reference fasta file, plus the index of the bgzipped fasta
+        if it is compressed.
+
+        Structure: [ val(meta2), path(fai), path(gzi) ]
       pattern: "*.fasta.fai"
-  - dict:
+  - ch_dict:
       type: file
-      description: GATK sequence dictionary
+      description: |
+        GATK sequence dictionary.
+
+        Structure: [ val(meta2), path(dict) ]
       pattern: "*.dict"
-  - alleles:
+  - ch_alleles:
       type: file
-      description: vcf file to be used to force-call alleles.
+      description: |
+        vcf file to be used to force-call alleles.
+
+        Structure: [ val(meta3), path(alleles) ]
       pattern: "*.vcf.gz"
-  - alleles_tbi:
+  - ch_alleles_tbi:
       type: file
-      description: Index file for alleles to be force-called.
+      description: |
+        Index file for alleles to be force-called.
+
+        Structure: [ val(meta4), path(alleles_tbi) ]
       pattern: "*.vcf.gz.tbi"
-  - germline_resource:
+  - ch_germline_resource:
       type: file
-      description: Population vcf of germline sequencing, containing allele fractions.
+      description: |
+        Population vcf of germline sequencing, containing allele fractions.
+
+        Structure: [ val(meta5), path(germline_resource) ]
       pattern: "*.vcf.gz"
-  - germline_resource_tbi:
+  - ch_germline_resource_tbi:
       type: file
-      description: Index file for the germline resource.
+      description: |
+        Index file for the germline resource.
+
+        Structure: [ val(meta6), path(germline_resource_tbi) ]
       pattern: "*.vcf.gz.tbi"
-  - panel_of_normals:
+  - ch_panel_of_normals:
       type: file
-      description: vcf file to be used as a panel of normals.
+      description: |
+        vcf file to be used as a panel of normals.
+
+        Structure: [ val(meta7), path(panel_of_normals) ]
       pattern: "*.vcf.gz"
-  - panel_of_normals_tbi:
+  - ch_panel_of_normals_tbi:
       type: file
-      description: Index for the panel of normals.
+      description: |
+        Index for the panel of normals.
+
+        Structure: [ val(meta8), path(panel_of_normals_tbi) ]
       pattern: "*.vcf.gz.tbi"
-  - interval_file:
+  - ch_interval_file:
       type: file
-      description: File containing intervals.
+      description: |
+        File containing intervals.
+
+        Structure: [ val(meta9), path(interval_file) ]
       pattern: "*.interval_list"
 output:
-  - mutect2_vcf:
-      type: file
-      description: Compressed vcf file to be used for variant_calling.
-      pattern: "[ *.vcf.gz ]"
-  - mutect2_tbi:
-      type: file
-      description: Indexes of the mutect2_vcf file
-      pattern: "[ *vcf.gz.tbi ]"
-  - mutect2_stats:
-      type: file
-      description: Stats files for the mutect2 vcf
-      pattern: "[ *vcf.gz.stats ]"
-  - pileup_table:
-      type: file
-      description: File containing the pileup summary table.
-      pattern: "*.pileups.table"
   - contamination_table:
       type: file
-      description: File containing the contamination table.
+      description: |
+        File containing the contamination table.
+
+        Structure: [ val(meta), path(contamination_table) ]
       pattern: "*.contamination.table"
-  - segmentation_table:
-      type: file
-      description: Output table containing segmentation of tumor minor allele fractions.
-      pattern: "*.segmentation.table"
-  - filtered_vcf:
-      type: file
-      description: file containing filtered mutect2 calls.
-      pattern: "*.vcf.gz"
-  - filtered_tbi:
-      type: file
-      description: tbi file that pairs with filtered vcf.
-      pattern: "*.vcf.gz.tbi"
   - filtered_stats:
       type: file
-      description: file containing statistics of the filtermutectcalls run.
+      description: |
+        File containing statistics of the filtermutectcalls run.
+
+        Structure: [ val(meta), path(filtered_stats) ]
       pattern: "*.filteringStats.tsv"
+  - filtered_tbi:
+      type: file
+      description: |
+        tbi file that pairs with the filtered vcf.
+
+        Structure: [ val(meta), path(filtered_tbi) ]
+      pattern: "*.vcf.gz.tbi"
+  - filtered_vcf:
+      type: file
+      description: |
+        File containing filtered mutect2 calls.
+
+        Structure: [ val(meta), path(filtered_vcf) ]
+      pattern: "*.vcf.gz"
+  - mutect2_tbi:
+      type: file
+      description: |
+        Index of the mutect2_vcf file.
+
+        Structure: [ val(meta), path(mutect2_tbi) ]
+      pattern: "*.vcf.gz.tbi"
+  - mutect2_stats:
+      type: file
+      description: |
+        Stats file for the mutect2 vcf.
+
+        Structure: [ val(meta), path(mutect2_stats) ]
+      pattern: "*.vcf.gz.stats"
+  - mutect2_vcf:
+      type: file
+      description: |
+        Compressed vcf file to be used for variant_calling.
+
+        Structure: [ val(meta), path(mutect2_vcf) ]
+      pattern: "*.vcf.gz"
+  - pileup_table:
+      type: file
+      description: |
+        File containing the pileup summary table.
+
+        Structure: [ val(meta), path(pileup_table) ]
+      pattern: "*.pileups.table"
+  - segmentation_table:
+      type: file
+      description: |
+        Output table containing segmentation of tumour minor allele fractions.
+
+        Structure: [ val(meta), path(segmentation_table) ]
+      pattern: "*.segmentation.table"
 authors:
   - "@GCJMackenzie"
 maintainers:
