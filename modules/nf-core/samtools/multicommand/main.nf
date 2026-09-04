@@ -3,9 +3,9 @@ process SAMTOOLS_MULTICOMMAND {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c2/c2f02ceb8cbe5aa37930dcbc0de6f1d07dfb292178c7e780c44ab2f556bf829f/data'
-:         'community.wave.seqera.io/library/htslib_samtools:1.24--84fe6b04a60dfab2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c2/c2f02ceb8cbe5aa37930dcbc0de6f1d07dfb292178c7e780c44ab2f556bf829f/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.24--84fe6b04a60dfab2'}"
 
     input:
     tuple val(meta), path(input, arity: '1..*'), path(index, arity: '0..*')
@@ -52,7 +52,7 @@ process SAMTOOLS_MULTICOMMAND {
 
     def n_commands = pipeline.size()
     def is_cram_input = fasta && input.collect { f -> f.getExtension() == "cram" }.any()
-    def is_cram_output = fasta && get_args(task, n_commands - 1)
+    def is_cram_output = fasta && (get_output_extension(get_args(task, n_commands - 1)) == "cram")
 
     // Build the pipeline command
     //
@@ -143,11 +143,6 @@ process SAMTOOLS_MULTICOMMAND {
     ${stub_outputs.join("\n")}
     """
 }
-
-// ============================================================================
-// Helper Functions
-// ============================================================================
-
 
 // ============================================================================
 // Helper Functions
