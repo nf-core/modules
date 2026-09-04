@@ -1,0 +1,95 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "easypqp_convert"
+description: Convert peptide-spectrum matches (pepXML or idXML) and the matching spectra into EasyPQP pickle files for spectral library generation.
+keywords:
+  - proteomics
+  - spectral library
+  - dia
+  - pepxml
+  - idxml
+  - mzml
+tools:
+  - "easypqp":
+      description: "Python package to generate spectral libraries for data-independent acquisition (DIA) proteomics from DDA search results."
+      homepage: "https://github.com/grosenberger/easypqp"
+      documentation: "https://github.com/grosenberger/easypqp"
+      tool_dev_url: "https://github.com/grosenberger/easypqp"
+      licence: ["BSD-3-Clause"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - psms:
+        type: file
+        description: Peptide-spectrum matches in pepXML (interact-*.pep.xml, with PeptideProphet/iProphet probabilities) or OpenMS idXML format
+        pattern: "*.{pep.xml,idXML}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3655" # pepXML
+          - edam: "http://edamontology.org/format_3764" # idXML
+    - spectra:
+        type: file
+        description: Spectra file matching the identifications
+        pattern: "*.{mzML,mzXML,mgf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3244" # mzML
+          - edam: "http://edamontology.org/format_3654" # mzXML
+          - edam: "http://edamontology.org/format_3651" # MGF
+  - unimod:
+      type: file
+      description: Optional UniMod XML file used to annotate modifications. EasyPQP's bundled UniMod is used when omitted.
+      pattern: "*.xml"
+      ontologies:
+        - edam: "http://edamontology.org/format_2332" # XML
+
+output:
+  psmpkl:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.psmpkl":
+          type: file
+          description: Pickled pandas DataFrame with the parsed PSMs. Named after the spectra file basename, which easypqp library uses to pair PSMs and peaks.
+          pattern: "*.psmpkl"
+  peakpkl:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.peakpkl":
+          type: file
+          description: Pickled pandas DataFrame with the annotated fragment ion peaks. Named after the spectra file basename, which easypqp library uses to pair PSMs and peaks.
+          pattern: "*.peakpkl"
+  versions_easypqp:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - easypqp:
+          type: string
+          description: The tool name
+      - "easypqp --version 2>&1 | sed -nE 's/.*version ([0-9.]+).*/\\1/p'":
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - easypqp:
+          type: string
+          description: The tool name
+      - "easypqp --version 2>&1 | sed -nE 's/.*version ([0-9.]+).*/\\1/p'":
+          type: string
+          description: The command used to generate the version of the tool
+
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"
