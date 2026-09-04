@@ -29,7 +29,7 @@ process GENOMAD_ENDTOEND {
     tuple val(meta), path("${prefix}/*_summary/*_virus_summary.tsv")                                 , emit: virus_summary
     tuple val("${task.process}"), val('genomad'), eval("genomad --version 2>&1 | sed 's/^.*geNomad, version //; s/ .*//'"), topic: versions, emit: versions_genomad
     tuple val("${task.process}"), val('genomad_db'), eval("if [ -s ${genomad_db}/version.txt ]; then cat ${genomad_db}/version.txt; else echo 'unknown'; fi"), topic: versions, emit: versions_genomad_db
-    
+
     when:
     task.ext.when == null || task.ext.when
 
@@ -55,7 +55,7 @@ process GENOMAD_ENDTOEND {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
-    
+
     mkdir ${prefix}
     mkdir ${prefix}/${filename}_aggregated_classification
     touch ${prefix}/${filename}_aggregated_classification/${filename}_aggregated_classification.tsv
