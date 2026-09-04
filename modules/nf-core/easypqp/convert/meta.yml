@@ -1,0 +1,101 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "easypqp_convert"
+description: Convert peptide identifications (pepXML or idXML) and the matching spectra (mzML, mzXML or MGF) into EasyPQP PSM and peak pickle files for spectral library generation.
+keywords:
+  - proteomics
+  - spectral library
+  - dia
+  - pepxml
+  - idxml
+  - mzml
+tools:
+  - "easypqp":
+      description: "Python package to generate spectral libraries for data-independent acquisition (DIA) proteomics from DDA search results."
+      homepage: "https://github.com/grosenberger/easypqp"
+      documentation: "https://github.com/grosenberger/easypqp"
+      tool_dev_url: "https://github.com/grosenberger/easypqp"
+      licence: ["BSD-3-Clause"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - id_file:
+        type: file
+        description: |
+          Peptide identifications for one MS run. Either a pepXML file (`*.pep.xml`, e.g. interact-*.pep.xml from the
+          Trans-Proteomic Pipeline; PSMs without PeptideProphet/iProphet probabilities are ignored) or an OpenMS idXML
+          file (`*.idXML`, any score type; a q-value or PEP score is used when present). The idXML route is used by
+          nf-core/mhcquant with Comet/Percolator results.
+        pattern: "*.{pep.xml,idXML}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3655" # pepXML
+          - edam: "http://edamontology.org/format_3764" # idXML
+    - spectra:
+        type: file
+        description: |
+          Spectra of the same MS run in mzML, mzXML or MGF (timsTOF) format. The output pickles are named after the
+          basename of this file.
+        pattern: "*.{mzML,mzXML,mgf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3244" # mzML
+          - edam: "http://edamontology.org/format_3654" # mzXML
+          - edam: "http://edamontology.org/format_3651" # MGF
+  - unimod:
+      type: file
+      description: Optional UniMod XML file used to annotate modifications. EasyPQP's bundled UniMod is used when omitted.
+      pattern: "*.xml"
+      ontologies:
+        - edam: "http://edamontology.org/format_2332" # XML
+
+output:
+  psmpkl:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.psmpkl":
+          type: file
+          description: Pickled pandas DataFrame with the parsed PSMs. Named after the spectra file basename, which easypqp library uses to pair PSMs and peaks.
+          pattern: "*.psmpkl"
+  peakpkl:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.peakpkl":
+          type: file
+          description: Pickled pandas DataFrame with the annotated fragment ion peaks. Named after the spectra file basename, which easypqp library uses to pair PSMs and peaks.
+          pattern: "*.peakpkl"
+  versions_easypqp:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - easypqp:
+          type: string
+          description: The tool name
+      - "easypqp --version 2>&1 | sed -nE 's/.*version ([0-9.]+).*/\\1/p'":
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - easypqp:
+          type: string
+          description: The tool name
+      - "easypqp --version 2>&1 | sed -nE 's/.*version ([0-9.]+).*/\\1/p'":
+          type: string
+          description: The command used to generate the version of the tool
+
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"
