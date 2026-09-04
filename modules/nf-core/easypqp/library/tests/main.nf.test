@@ -9,17 +9,30 @@ nextflow_process {
     tag "modules_nfcore"
     tag "easypqp"
     tag "easypqp/library"
+    tag "easypqp/convert"
+
+    setup {
+        run("EASYPQP_CONVERT") {
+            script "../../convert/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/HepG2_rep1_small.mzML', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+    }
 
     test("proteomics - psmpkl - peakpkl") {
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'proteomics/easypqp/HepG2_rep1_small.psmpkl', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'proteomics/easypqp/HepG2_rep1_small.peakpkl', checkIfExists: true)
-                ]
+                input[0] = EASYPQP_CONVERT.out.psmpkl.join(EASYPQP_CONVERT.out.peakpkl)
                 """
             }
         }
@@ -43,11 +56,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'proteomics/easypqp/HepG2_rep1_small.psmpkl', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'proteomics/easypqp/HepG2_rep1_small.peakpkl', checkIfExists: true)
-                ]
+                input[0] = EASYPQP_CONVERT.out.psmpkl.join(EASYPQP_CONVERT.out.peakpkl)
                 """
             }
         }
