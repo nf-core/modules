@@ -54,13 +54,46 @@ output:
           description: Files containing the outputs of Cell Ranger
           pattern: "${prefix}/outs/*"
           ontologies: []
+  versions_cellranger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellranger:
+          type: string
+          description: The name of the tool
+      - 'cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed "s/^.* //g" | sed "s/(//g" | sed "s/)//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_universc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - universc:
+          type: string
+          description: The name of the tool
+      - 'bash /universc/launch_universc.sh --version | grep version | grep universc | sed "s/^.* //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellranger:
+          type: string
+          description: The name of the tool
+      - 'cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed "s/^.* //g" | sed "s/(//g" | sed "s/)//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - universc:
+          type: string
+          description: The name of the tool
+      - 'bash /universc/launch_universc.sh --version | grep version | grep universc | sed "s/^.* //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@kbattenb"
   - "@tomkellygenetics"
