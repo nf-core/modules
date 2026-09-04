@@ -3,9 +3,9 @@ process SAMTOOLS_MULTICOMMAND {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8c5d2818c8b9f58e1fba77ce219fdaf32087ae53e857c4a496402978af26e78c/data'
-        : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c2/c2f02ceb8cbe5aa37930dcbc0de6f1d07dfb292178c7e780c44ab2f556bf829f/data'
+:         'community.wave.seqera.io/library/htslib_samtools:1.24--84fe6b04a60dfab2' }"
 
     input:
     tuple val(meta), path(input, arity: '1..*'), path(index, arity: '0..*')
@@ -116,27 +116,27 @@ process SAMTOOLS_MULTICOMMAND {
     }
     else if (final_command == "fasta") {
         if (meta.single_end) {
-            stub_outputs << "echo | gzip > ${prefix}_1.fasta.gz"
-            stub_outputs << "echo | gzip > ${prefix}_singleton.fasta.gz"
+            stub_outputs << "echo | bgzip > ${prefix}_1.fasta.gz"
+            stub_outputs << "echo | bgzip > ${prefix}_singleton.fasta.gz"
         }
         else {
-            stub_outputs << "echo | gzip > ${prefix}_1.fasta.gz"
-            stub_outputs << "echo | gzip > ${prefix}_2.fasta.gz"
-            stub_outputs << "echo | gzip > ${prefix}_singleton.fasta.gz"
+            stub_outputs << "echo | bgzip > ${prefix}_1.fasta.gz"
+            stub_outputs << "echo | bgzip > ${prefix}_2.fasta.gz"
+            stub_outputs << "echo | bgzip > ${prefix}_singleton.fasta.gz"
         }
-        stub_outputs << "echo | gzip > ${prefix}_other.fasta.gz"
+        stub_outputs << "echo | bgzip > ${prefix}_other.fasta.gz"
     }
     else if (final_command == "fastq") {
         if (meta.single_end) {
-            stub_outputs << "echo | gzip > ${prefix}_1.fastq.gz"
-            stub_outputs << "echo | gzip > ${prefix}_singleton.fastq.gz"
+            stub_outputs << "echo | bgzip > ${prefix}_1.fastq.gz"
+            stub_outputs << "echo | bgzip > ${prefix}_singleton.fastq.gz"
         }
         else {
-            stub_outputs << "echo | gzip > ${prefix}_1.fastq.gz"
-            stub_outputs << "echo | gzip > ${prefix}_2.fastq.gz"
-            stub_outputs << "echo | gzip > ${prefix}_singleton.fastq.gz"
+            stub_outputs << "echo | bgzip > ${prefix}_1.fastq.gz"
+            stub_outputs << "echo | bgzip > ${prefix}_2.fastq.gz"
+            stub_outputs << "echo | bgzip > ${prefix}_singleton.fastq.gz"
         }
-        stub_outputs << "echo | gzip > ${prefix}_other.fastq.gz"
+        stub_outputs << "echo | bgzip > ${prefix}_other.fastq.gz"
     }
 
     """
@@ -280,12 +280,8 @@ def get_uncompressed_flag(subcommand) {
  * @return String Reference argument (e.g. "--reference file.fa"), or empty string if not needed
  */
 def get_reference(is_first_command, is_last_command, is_cram_input, is_cram_output, fasta) {
-    def reference_string = "--reference ${fasta}"
-    if (is_cram_input && is_first_command) {
-        return reference_string
-    }
-    else if (is_cram_output && is_last_command) {
-        return reference_string
+    if ((is_cram_input && is_first_command) || (is_cram_output && is_last_command)) {
+        return "--reference ${fasta}"
     }
     return ""
 }
