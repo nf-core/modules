@@ -106,7 +106,7 @@ process SAMTOOLS_MULTICOMMAND {
 
     def n_commands = pipeline.size()
     def final_command = pipeline[n_commands - 1]
-    def final_args = get_args(task, n_commands - 1)
+    def final_args = get_args(task.ext, n_commands - 1)
 
     def stub_outputs = []
 
