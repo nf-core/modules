@@ -21,9 +21,9 @@ process ANNOTSV_INSTALLANNOTATIONS {
     annotsv_v = annotsv_version ?: ''
     exomiser_v = exomiser_version ?: ''
 
-    if (( annotsv_v == '' && !(exomiser_v == '') ) || ( !(annotsv_v == '') && exomiser_v == '' ) ){
-        error "Must supply both annotsv_version and exomiser_version or neither"
-    }
+    if ( (!annotsv_v) != (!exomiser_v) ) {
+      error "Must supply both annotsv_version and exomiser_version or neither"
+  }
     """
     INSTALL_annotations.sh  ${annotsv_v} ${exomiser_v}
     """
