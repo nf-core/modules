@@ -1,0 +1,258 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "snpclustering"
+description: >
+  Subworkflow for SNP clustering. Takes genotyped VCF files, imputes missing
+  genotypes with BEAGLE5, converts to PLINK2 pgen format, performs PCA,
+  converts eigenvec to TSV with awk, then runs PCA-based clustering,
+  cluster metrics, and cluster visualization.
+keywords:
+  - snp
+  - clustering
+  - pca
+  - plink2
+  - beagle
+  - imputation
+  - population genetics
+components:
+  - beagle5/beagle
+  - plink2/vcf
+  - plink2/pca
+  - gawk
+  - custom/pcaclustering
+  - custom/clustermetrics
+  - custom/clustervisualization
+input:
+  - vcf_ch:
+      description: Channel with genotyped VCF and index
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - vcf:
+            type: file
+            description: Genotyped VCF file
+            pattern: "*.{vcf,vcf.gz}"
+        - vcf_index:
+            type: file
+            description: Index for the VCF file
+            pattern: "*.{tbi,csi}"
+  - refpanel_ch:
+      description: Optional BEAGLE reference panel channel
+  - genmap_ch:
+      description: Optional BEAGLE genetic map channel
+  - region:
+      type: string
+      description: Optional genomic region passed to BEAGLE
+  - npcs:
+      type: integer
+      description: Number of principal components to compute
+  - use_approx:
+      type: boolean
+      description: Whether to use approximate PCA
+  - algorithm:
+      type: string
+      description: Clustering algorithm to use (kmeans or dbscan)
+  - n_clusters:
+      type: integer
+      description: Number of clusters for k-means
+  - dbscan_eps:
+      type: float
+      description: DBSCAN eps parameter
+  - dbscan_min_samples:
+      type: integer
+      description: DBSCAN minimum samples parameter
+output:
+  - imputed_vcf:
+      description: Imputed VCF from BEAGLE5
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - vcf:
+            type: file
+            description: Imputed VCF from BEAGLE5
+            pattern: "*.{vcf,vcf.gz}"
+  - beagle_log:
+      description: BEAGLE5 log file
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - log:
+            type: file
+            description: BEAGLE5 log file
+            pattern: "*.log"
+  - pgen:
+      description: PLINK2 pgen file
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - pgen:
+            type: file
+            description: PLINK2 pgen file
+            pattern: "*.pgen"
+  - pvar:
+      description: PLINK2 pvar file
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - pvar:
+            type: file
+            description: PLINK2 pvar file
+            pattern: "*.pvar"
+  - psam:
+      description: PLINK2 psam file
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - psam:
+            type: file
+            description: PLINK2 psam file
+            pattern: "*.psam"
+  - evecfile:
+      description: PCA eigenvectors from PLINK2
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - eigenvec:
+            type: file
+            description: PCA eigenvectors from PLINK2
+            pattern: "*.eigenvec"
+  - evfile:
+      description: PCA eigenvalues from PLINK2
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - eigenval:
+            type: file
+            description: PCA eigenvalues from PLINK2
+            pattern: "*.eigenval"
+  - pca_log:
+      description: PLINK2 PCA log file
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - log:
+            type: file
+            description: PLINK2 PCA log file
+            pattern: "*.log"
+  - tsv:
+      description: TSV converted from eigenvec by gawk
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - tsv:
+            type: file
+            description: TSV converted from eigenvec by gawk
+            pattern: "*.eigenvec"
+  - clusters:
+      description: Cluster assignments
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - clusters:
+            type: file
+            description: Cluster assignments
+            pattern: "*.clusters.csv"
+  - cluster_info:
+      description: Clustering parameters and statistics
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - info:
+            type: file
+            description: Clustering parameters and statistics
+            pattern: "*.clustering_info.json"
+  - metrics:
+      description: Cluster quality metrics
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - metrics:
+            type: file
+            description: Cluster quality metrics
+            pattern: "*.metrics.tsv"
+  - k_sweep:
+      description: K sweep scores
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - k_sweep:
+            type: file
+            description: K sweep scores
+            pattern: "*.k_sweep.csv"
+  - selected:
+      description: Selected clustering parameters
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - selected:
+            type: file
+            description: Selected clustering parameters
+            pattern: "*.selected.json"
+  - metric_plots:
+      description: Cluster metric plots
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - plots:
+            type: file
+            description: Cluster metric plots
+            pattern: "*.png"
+  - umap_tsv:
+      description: UMAP coordinates per sample
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - umap_tsv:
+            type: file
+            description: UMAP coordinates per sample
+            pattern: "*.umap.tsv"
+  - tsne_tsv:
+      description: t-SNE coordinates per sample
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - tsne_tsv:
+            type: file
+            description: t-SNE coordinates per sample
+            pattern: "*.tsne.tsv"
+  - umap_png:
+      description: UMAP plot coloured by cluster
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - umap_png:
+            type: file
+            description: UMAP plot coloured by cluster
+            pattern: "*.umap.png"
+  - tsne_png:
+      description: t-SNE plot coloured by cluster
+      structure:
+        - meta:
+            type: map
+            description: Groovy map containing sample metadata
+        - tsne_png:
+            type: file
+            description: t-SNE plot coloured by cluster
+            pattern: "*.tsne.png"
+authors:
+  - "@dbaku42"
+maintainers:
+  - "@dbaku42"

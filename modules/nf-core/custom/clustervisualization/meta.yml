@@ -33,7 +33,7 @@ input:
           column per numeric feature (e.g. PCA scores).
         pattern: "*.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3475 # TSV
     - clusters:
         type: file
         description: |
@@ -41,7 +41,7 @@ input:
           `cluster` columns. Label -1 is treated as DBSCAN noise.
         pattern: "*.csv"
         ontologies:
-          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
   umap_tsv:
     - - meta:
@@ -53,7 +53,7 @@ output:
           pattern: "*.umap.tsv"
           ontologies:
             - edam: "http://edamontology.org/operation_2432"
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   tsne_tsv:
     - - meta:
           type: map
@@ -64,7 +64,7 @@ output:
           pattern: "*.tsne.tsv"
           ontologies:
             - edam: "http://edamontology.org/operation_2432"
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   umap_png:
     - - meta:
           type: map
@@ -89,7 +89,7 @@ output:
         description: "Software versions used in the module"
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
 topics:
   versions:
     - versions.yml:
