@@ -11,7 +11,7 @@ process ANNOTSV_INSTALLANNOTATIONS {
     tuple val(meta), val(annotsv_version), val(exomiser_version)
 
     output:
-    path "AnnotSV_annotations", emit: annotations
+    tuple val(meta), path("AnnotSV_annotations"), emit: annotations
     tuple val("${task.process}"), val('annotsv'), eval("AnnotSV --version | sed 's/AnnotSV //'"), emit: versions_annotsv, topic: versions
 
     when:
