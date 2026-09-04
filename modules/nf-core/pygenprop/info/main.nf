@@ -33,7 +33,7 @@ process PYGENPROP_INFO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.info
     """
