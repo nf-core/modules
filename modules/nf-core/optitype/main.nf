@@ -4,8 +4,8 @@ process OPTITYPE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9ff14340c6c903c1c9d926fb7ffa60460986852515c76673cc54f6c958ff35bd/data' :
-        'community.wave.seqera.io/library/optitype_coincbc_cplex:0b46ade42a5009b2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0a/0aaca7463454e693f5646e40a31b4deb8a575f0ac5b3c853fd740ff3031cc117/data' :
+        'community.wave.seqera.io/library/optitype_coincbc:722e52fd4495c161' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
