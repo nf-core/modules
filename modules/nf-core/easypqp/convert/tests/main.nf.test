@@ -27,9 +27,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                // The PSM pickle is not byte-stable between runs, the peak pickle is
+                { assert file(process.out.psmpkl[0][1]).size() > 0 },
                 { assert snapshot(
                     file(process.out.psmpkl[0][1]).name,
-                    file(process.out.peakpkl[0][1]).name,
+                    process.out.peakpkl,
                     process.out.versions_easypqp
                 ).match() }
             )

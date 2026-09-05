@@ -75,26 +75,24 @@ output:
   versions_easypqp:
     - - ${task.process}:
           type: string
-          description: The process the versions were collected from
+          description: The name of the process
       - easypqp:
           type: string
-          description: The tool name
-      - "easypqp --version 2>&1 | sed -nE 's/.*version ([0-9.]+).*/\\1/p'":
-          type: string
-          description: The command used to generate the version of the tool
-
+          description: The name of the tool
+      - "easypqp --version | sed 's/.*version //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
           type: string
-          description: The process the versions were collected from
+          description: The name of the process
       - easypqp:
           type: string
-          description: The tool name
-      - "easypqp --version 2>&1 | sed -nE 's/.*version ([0-9.]+).*/\\1/p'":
-          type: string
-          description: The command used to generate the version of the tool
-
+          description: The name of the tool
+      - "easypqp --version | sed 's/.*version //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jonasscheid"
 maintainers:
