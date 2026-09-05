@@ -43,28 +43,34 @@ process GSEA_GSEA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def rpt_label = prefix.replaceAll('\\.$', '') // Remove any trailing dots from prefix when passed as report label, so GSEA doesn't produce double-dotted top-level outputs
-    def chip_command = chip ? "-chip $chip -collapse true" : ''
+    def rpt_label = prefix.replaceAll('\\.$', '')
+    def chip_command = chip ? "-chip \"$chip\" -collapse true" : ''
+    // gsea-cli takes a comma-delimited -gmx value to pool multiple gene set files into one run.
+    def gmx = gene_sets instanceof List ? gene_sets.join(',') : gene_sets
 
     """
     # Run GSEA
 
     gsea-cli GSEA \\
-        -res $gct \\
-        -cls ${cls}#${target}_versus_${reference} \\
-        -gmx $gene_sets \\
+        -res "$gct" \\
+        -cls "${cls}#${target}_versus_${reference}" \\
+        -gmx "$gmx" \\
         $chip_command \\
         -out . \\
-        --rpt_label $rpt_label \\
+        --rpt_label "$rpt_label" \\
         $args
 
     # Un-timestamp the outputs for path consistency
-    mv ${rpt_label}.Gsea.*/* .
+    # Only rmdir actual directories: the .rpt file's name also matches "${rpt_label}.Gsea.*".
+    mv "$rpt_label".Gsea.*/* .
+    for gsea_dir in "$rpt_label".Gsea.*/; do
+        [ -d "\$gsea_dir" ] && rmdir "\$gsea_dir"
+    done
     timestamp=\$(cat *.rpt | grep producer_timestamp | awk '{print \$2}')
 
     for pattern in _\${timestamp} .\${timestamp}; do
         find . -name "*\${pattern}*" | sed "s|^\\./||" | while read -r f; do
-            mv \$f \${f//\$pattern/}
+            mv "\$f" "\${f//\$pattern/}"
         done
     done
     sed -i.bak "s/[_\\.]\$timestamp//g" *.rpt *.html && rm *.bak
