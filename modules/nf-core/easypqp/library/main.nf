@@ -13,7 +13,7 @@ process EASYPQP_LIBRARY {
     output:
     tuple val(meta), path("${prefix}.tsv")   , emit: tsv
     tuple val(meta), path("*_run_peaks.tsv"), emit: run_peaks, optional: true
-    tuple val("${task.process}"), val('easypqp'), eval("easypqp --version 2>&1 | sed -nE 's/.*version ([0-9.]+).*/\\1/p'"), topic: versions, emit: versions_easypqp
+    tuple val("${task.process}"), val('easypqp'), eval("easypqp --version | sed 's/.*version //'"), topic: versions, emit: versions_easypqp
 
     when:
     task.ext.when == null || task.ext.when
