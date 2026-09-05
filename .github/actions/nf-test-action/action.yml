@@ -76,6 +76,7 @@ runs:
       id: run-nf-test
       shell: bash
       env:
+        CONDA_BACKUP_CXX: ""
         SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
