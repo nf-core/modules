@@ -1,15 +1,15 @@
 nextflow_process {
 
-    name "Test Process MODKIT_EXTRACT_CALLS"
+    name "Test Process MODKIT_EXTRACTCALLS"
     script "../main.nf"
-    process "MODKIT_EXTRACT_CALLS"
+    process "MODKIT_EXTRACTCALLS"
     config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "modkit"
     tag "modkit/extract"
-    tag "modkit/extract/calls"
+    tag "modkit/extractcalls"
 
     test("homo sapiens - nanopore modbam - stub") {
 
