@@ -48,7 +48,7 @@ nextflow_process {
                 // every data row carries all six columns and a parseable entropy
                 { assert bed_lines[1..-1].every { it.split('\t').size() == 6 } },
                 { assert bed_lines[1..-1].every { it.split('\t')[3].isNumber() } },
-                { assert snapshot(process.out.versions_modkit).match() }
+                { assert snapshot([versions: process.out.versions_modkit]).match() }
             )
         }
     }
@@ -93,7 +93,7 @@ nextflow_process {
                 { assert regions_lines[1].split('\t')[3] == 'chr22:0-40001' },
                 { assert bedgraph_lines[0] == '#chrom\tstart\tend\tentropy\tstrand\tnum_reads' },
                 { assert bedgraph_lines.size() > 1 },
-                { assert snapshot(process.out.versions_modkit).match() }
+                { assert snapshot([versions: process.out.versions_modkit]).match() }
             )
         }
     }
