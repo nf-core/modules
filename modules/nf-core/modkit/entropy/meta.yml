@@ -4,8 +4,8 @@ description: |
   Entropy is a per-window measure of the diversity of methylation patterns
   across reads covering the window and is complementary to mean methylation.
   When `--regions` is supplied (via `ext.args` or the `regions` input), modkit
-  writes per-region BED/bedgraph/tsv files into a directory; otherwise a single
-  genome-wide BED file is produced.
+  writes `<prefix>_regions.bed` and `<prefix>_windows.bedgraph` into a
+  directory; otherwise a single genome-wide BED file is produced.
 keywords:
   - modkit
   - methylation
@@ -69,8 +69,9 @@ input:
         type: file
         description: |
           Optional BED file of regions over which to compute per-region
-          descriptive statistics. When provided, modkit writes per-region
-          outputs (`.bed`, `.bedgraph`, `.tsv`) into a directory.
+          descriptive statistics. When provided, modkit writes
+          `<prefix>_regions.bed` and `<prefix>_windows.bedgraph` into a
+          directory instead of a single genome-wide BED.
         pattern: "*.{bed,bed.gz}"
         ontologies:
           - edam: http://edamontology.org/format_3003
@@ -98,7 +99,9 @@ output:
       - "entropy_regions/*.bed":
           type: file
           description: |
-            Per-region entropy BED files, produced when `regions` is provided.
+            Per-region descriptive statistics, produced when `regions` is
+            provided (`entropy_regions/<prefix>_regions.bed`). One row per
+            region with mean/median/min/max entropy and window counts.
           pattern: "*.bed"
           ontologies:
             - edam: http://edamontology.org/format_3003
@@ -111,24 +114,11 @@ output:
       - "entropy_regions/*.bedgraph":
           type: file
           description: |
-            Per-region entropy bedgraph, produced when `regions` is provided.
+            Per-window entropy, produced when `regions` is provided
+            (`entropy_regions/<prefix>_windows.bedgraph`).
           pattern: "*.bedgraph"
           ontologies:
             - edam: http://edamontology.org/format_3583
-  tsv:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`.
-      - "entropy_regions/*.tsv":
-          type: file
-          description: |
-            Per-region descriptive statistics TSV, produced when `regions`
-            is provided.
-          pattern: "*.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475
   log:
     - - meta:
           type: map

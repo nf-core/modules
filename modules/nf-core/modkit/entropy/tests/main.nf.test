@@ -10,6 +10,94 @@ nextflow_process {
     tag "modkit"
     tag "modkit/entropy"
 
+    // modkit entropy's floating-point columns are not byte-deterministic across
+    // CPU counts / architectures, so the output files are asserted on structure
+    // (header line, column count) rather than md5, and only the versions topic
+    // is snapshotted.
+
+    test("homo sapiens - nanopore modbam - cpg") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true) ]
+                ]
+                input[1] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            def bed_lines = path(process.out.bed[0][1]).readLines()
+            assertAll(
+                { assert process.success },
+                { assert process.out.bed },
+                // no --regions: a single genome-wide BED, no entropy_regions/ dir
+                { assert !process.out.regions_bed },
+                { assert !process.out.bedgraph },
+                { assert bed_lines[0] == '#chrom\tstart\tend\tentropy\tstrand\tnum_reads' },
+                { assert bed_lines.size() > 1 },
+                // every data row carries all six columns and a parseable entropy
+                { assert bed_lines[1..-1].every { it.split('\t').size() == 6 } },
+                { assert bed_lines[1..-1].every { it.split('\t')[3].isNumber() } },
+                { assert snapshot(process.out.versions_modkit).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - nanopore modbam - cpg - regions") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true) ]
+                ]
+                input[1] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id: 'regions' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def regions_lines   = path(process.out.regions_bed[0][1]).readLines()
+            def bedgraph_lines  = path(process.out.bedgraph[0][1]).readLines()
+            assertAll(
+                { assert process.success },
+                // with --regions modkit writes a directory instead of a single BED
+                { assert !process.out.bed },
+                { assert process.out.regions_bed },
+                { assert process.out.bedgraph },
+                { assert file(process.out.regions_bed[0][1]).name == 'test_regions.bed' },
+                { assert file(process.out.bedgraph[0][1]).name == 'test_windows.bedgraph' },
+                { assert regions_lines[0].startsWith('chrom\tstart\tend\tregion_name\tmean_entropy') },
+                { assert regions_lines.size() > 1 },
+                // the region name column echoes the interval from the input BED
+                { assert regions_lines[1].split('\t')[3] == 'chr22:0-40001' },
+                { assert bedgraph_lines[0] == '#chrom\tstart\tend\tentropy\tstrand\tnum_reads' },
+                { assert bedgraph_lines.size() > 1 },
+                { assert snapshot(process.out.versions_modkit).match() }
+            )
+        }
+    }
+
     test("homo sapiens - nanopore modbam - cpg - stub") {
 
         options "-stub"
@@ -40,7 +128,9 @@ nextflow_process {
         }
     }
 
-    test("homo sapiens - nanopore modbam - cpg") {
+    test("homo sapiens - nanopore modbam - cpg - regions - stub") {
+
+        options "-stub"
 
         when {
             process {
@@ -55,7 +145,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[2] = [[],[]]
+                input[2] = [
+                    [ id: 'regions' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -63,13 +156,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.bed },
-                { assert path(process.out.bed[0][1]).exists() },
-                { assert path(process.out.bed[0][1]).size() > 0 },
-                // modkit entropy's BED output isn't byte-deterministic across CPU
-                // counts / architectures (float precision differs). Assert structure
-                // only and snapshot just the versions topic.
-                { assert snapshot(process.out.versions_modkit).match() }
+                // the stub mirrors the --regions layout, not the single-BED one
+                { assert !process.out.bed },
+                { assert process.out.regions_bed },
+                { assert process.out.bedgraph },
+                { assert snapshot(process.out).match() }
             )
         }
     }

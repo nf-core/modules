@@ -18,7 +18,6 @@ process MODKIT_ENTROPY {
     tuple val(meta), path("*.bed")                                  , emit: bed           , optional: true
     tuple val(meta), path("entropy_regions/*.bed")                  , emit: regions_bed   , optional: true
     tuple val(meta), path("entropy_regions/*.bedgraph")             , emit: bedgraph      , optional: true
-    tuple val(meta), path("entropy_regions/*.tsv")                  , emit: tsv           , optional: true
     tuple val(meta), path("*.log")                                  , emit: log           , optional: true
     tuple val("${task.process}"), val('modkit'), eval("modkit --version | sed 's/modkit //'"), emit: versions_modkit, topic: versions
 
@@ -46,7 +45,17 @@ process MODKIT_ENTROPY {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    touch ${prefix}.bed
-    """
+    // With --regions, modkit writes a directory containing <prefix>_regions.bed
+    // and <prefix>_windows.bedgraph instead of the single BED written otherwise.
+    if (regions) {
+        """
+        mkdir -p entropy_regions
+        touch entropy_regions/${prefix}_regions.bed
+        touch entropy_regions/${prefix}_windows.bedgraph
+        """
+    } else {
+        """
+        touch ${prefix}.bed
+        """
+    }
 }
