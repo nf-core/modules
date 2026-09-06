@@ -1,4 +1,4 @@
-process MODKIT_EXTRACT_FULL {
+process MODKIT_EXTRACTFULL {
     tag "$meta.id"
     label 'process_high'
 
