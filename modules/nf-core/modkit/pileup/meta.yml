@@ -57,8 +57,11 @@ input:
         type: file
         description: BED file that will restrict threshold estimation and pileup
           results to positions overlapping intervals in the file. Must be in
-          BED3 (chr, start, end) or BED6 format. Other column counts (e.g.
-          BED4) will be rejected by modkit.
+          BED3 (chr, start, end) or BED6 format; modkit rejects other column
+          counts with "improperly formatted BED line, must be BED3 or BED6"
+          followed by "zero valid positions parsed from BED file". Note also
+          that modkit requires --motif or --modified-bases in ext.args whenever
+          --include-bed is used, and errors out otherwise.
         pattern: "*.bed"
         ontologies: []
 output:
