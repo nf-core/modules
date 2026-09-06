@@ -30,8 +30,10 @@ input:
     - bam:
         type: file
         description: |
-          Unaligned BAM file produced by dorado basecaller. Modified base tags
-          (MM/ML) and other BAM tags are preserved through alignment.
+          BAM file to align, typically the unaligned output of dorado
+          basecaller. Any HTS-format input is accepted; an already-aligned BAM is
+          realigned. Modified base tags (MM/ML) and other BAM auxiliary tags are
+          preserved through alignment.
         pattern: "*.bam"
         ontologies:
           - edam: http://edamontology.org/format_2572
@@ -77,11 +79,14 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - "*_summary.tsv":
+      - "*.sequencing_summary.txt":
           type: file
-          description: Per-read summary TSV with alignment statistics. Present when
-            `--emit-summary` is set in task.ext.args.
-          pattern: "*_summary.tsv"
+          description: |
+            Per-read alignment summary, present only when `--emit-summary` is set
+            in `ext.args`. dorado writes this as a fixed-name
+            `sequencing_summary.txt`; the module renames it to
+            `<prefix>.sequencing_summary.txt` so outputs stay per-sample.
+          pattern: "*.sequencing_summary.txt"
           ontologies:
             - edam: http://edamontology.org/format_3475
   versions_dorado:
@@ -91,7 +96,7 @@ output:
       - dorado:
           type: string
           description: The name of the tool
-      - dorado --version 2>&1 | head -1 | sed 's/^//':
+      - dorado --version 2>&1 | head -1:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -102,7 +107,7 @@ topics:
       - dorado:
           type: string
           description: The name of the tool
-      - dorado --version 2>&1 | head -1 | sed 's/^//':
+      - dorado --version 2>&1 | head -1:
           type: eval
           description: The expression to obtain the version of the tool
 authors:

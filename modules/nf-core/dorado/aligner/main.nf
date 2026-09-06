@@ -13,9 +13,9 @@ process DORADO_ALIGNER {
     tuple val(meta2), path(reference), path(fai)        // reference FASTA (or .mmi index) and .fai
 
     output:
-    tuple val(meta), path("*.bam")        , emit: bam
-    tuple val(meta), path("*_summary.tsv"), emit: summary, optional: true
-    tuple val("${task.process}"), val('dorado'), eval("dorado --version 2>&1 | head -1 | sed 's/^//'"), emit: versions_dorado, topic: versions
+    tuple val(meta), path("*.bam")                   , emit: bam
+    tuple val(meta), path("*.sequencing_summary.txt"), emit: summary, optional: true
+    tuple val("${task.process}"), val('dorado'), eval("dorado --version 2>&1 | head -1"), emit: versions_dorado, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,17 +31,20 @@ process DORADO_ALIGNER {
         ${reference} \\
         ${bam} \\
         > ${prefix}.bam
+
+    # --emit-summary writes a fixed-name `sequencing_summary.txt` into the work
+    # directory; prefix it so outputs stay per-sample.
+    if [ -f sequencing_summary.txt ]; then
+        mv sequencing_summary.txt ${prefix}.sequencing_summary.txt
+    fi
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def summary = args.contains('--emit-summary') ? "touch ${prefix}.sequencing_summary.txt" : ''
     """
     touch ${prefix}.bam
-    touch ${prefix}_summary.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dorado: 1.4.0
-    END_VERSIONS
+    ${summary}
     """
 }

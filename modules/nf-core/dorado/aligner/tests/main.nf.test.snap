@@ -1,38 +1,21 @@
 {
-    "homo sapiens - GIAB HG002 unaligned BAM, hg38 reference": {
-        "content": [
-            "HG002.bam",
-            [
-                [
-                    "DORADO_ALIGNER",
-                    "dorado",
-                    "1.4.0+ba44a013"
-                ]
-            ]
-        ],
-        "timestamp": "2026-04-18T15:42:17.310250004",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "25.04.6"
-        }
-    },
-    "homo sapiens - GIAB HG002 unaligned BAM, hg38 reference - stub": {
+    "homo sapiens - nanopore bam - stub": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "HG002"
+                            "id": "test"
                         },
-                        "HG002.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
                     [
                         {
-                            "id": "HG002"
+                            "id": "test"
                         },
-                        "HG002_summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.sequencing_summary.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
@@ -45,17 +28,17 @@
                 "bam": [
                     [
                         {
-                            "id": "HG002"
+                            "id": "test"
                         },
-                        "HG002.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "summary": [
                     [
                         {
-                            "id": "HG002"
+                            "id": "test"
                         },
-                        "HG002_summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.sequencing_summary.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions_dorado": [
@@ -67,10 +50,30 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-18T15:42:09.954814026",
+        "timestamp": "2026-09-06T12:57:14.889702802",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.04.6"
+            "nextflow": "25.10.4"
+        }
+    },
+    "homo sapiens - nanopore bam": {
+        "content": [
+            {
+                "bam_name": "test.bam",
+                "reads_md5": "8dba95c6a3b4697ca91b235f508fd97f",
+                "versions": [
+                    [
+                        "DORADO_ALIGNER",
+                        "dorado",
+                        "1.4.0+ba44a013"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-06T12:57:27.50263503",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
         }
     }
 }
